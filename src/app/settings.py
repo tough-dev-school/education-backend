@@ -1,8 +1,12 @@
+import json
 import os
+import textwrap
 
 import environ
+from cryptography.hazmat.backends import default_backend
+from cryptography.x509 import load_pem_x509_certificate
 
-root = environ.Path(__file__) - 3        # three folder back (/a/b/c/ - 3 = /)
+root = environ.Path(__file__) - 2        # three folder back (/a/b/c/ - 3 = /)
 env = environ.Env(DEBUG=(bool, False))  # set default values and casting
 environ.Env.read_env()                   # reading .env file
 SITE_ROOT = root()
@@ -59,9 +63,22 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.RemoteUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
+}
 
 ROOT_URLCONF = 'app.urls'
 
@@ -97,6 +114,23 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'django.contrib.auth.backends.RemoteUserBackend',
 ]
+
+with open(os.path.join(SITE_ROOT, 'auth0', 'jwks.json'), 'r') as publickey_file:
+    jwks = json.load(publickey_file)
+    cert = '-----BEGIN CERTIFICATE-----\n' + textwrap.fill(jwks['keys'][0]['x5c'][0], 64) + '\n-----END CERTIFICATE-----'
+    certificate = load_pem_x509_certificate(str.encode(cert), default_backend())
+    publickey = certificate.public_key()
+
+
+JWT_AUTH = {
+    'JWT_PAYLOAD_GET_USERNAME_HANDLER':
+        'auth0.user.jwt_get_username_from_payload_handler',
+    'JWT_PUBLIC_KEY': publickey,
+    'JWT_ALGORITHM': 'RS256',
+    'JWT_AUDIENCE': 'weightless.pro/api',
+    'JWT_ISSUER': 'https://f213.eu.auth0.com/',
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+}
 
 MEDIA_URL = env('MEDIA_URL')
 MEDIA_ROOT = env('MEDIA_ROOT')
