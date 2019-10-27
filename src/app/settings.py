@@ -1,8 +1,4 @@
-import json
 import os
-
-from cryptography.hazmat.backends import default_backend
-from cryptography.x509 import load_pem_x509_certificate
 
 import environ
 
