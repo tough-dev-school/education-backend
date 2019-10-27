@@ -1,5 +1,6 @@
-from app.admin.mixin import AppAdminMixin
 from django.contrib import admin
+
+from app.admin.mixin import AppAdminMixin
 
 
 class ModelAdmin(AppAdminMixin, admin.ModelAdmin):
