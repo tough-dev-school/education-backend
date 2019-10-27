@@ -5,13 +5,6 @@ defaults: &defaults
     - image: circleci/python:3.6-stretch
       environment:
         - DATABASE_URL=sqlite:////tmp/prj.sqlite
-        - CELERY_BACKEND=redis://redis:6379
-        - CACHE_URL=rediscache://redis:6379
-        - FILE_STORAGE=django.core.files.storage.FileSystemStorage
-
-
-    - image: redis:3.2-alpine
-      name: redis
 
 jobs:
   build:
