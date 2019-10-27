@@ -40,12 +40,6 @@ jobs:
           command: mv src/app/.env.ci src/app/.env
 
       - run:
-          name: Compile translations
-          command: |
-            . venv/bin/activate
-            cd src && ./manage.py compilemessages
-
-      - run:
           name: Run linters
           command: |
             . venv/bin/activate
