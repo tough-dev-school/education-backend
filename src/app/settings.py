@@ -1,9 +1,10 @@
 import json
 import os
 
-import environ
 from cryptography.hazmat.backends import default_backend
 from cryptography.x509 import load_pem_x509_certificate
+
+import environ
 
 root = environ.Path(__file__) - 2        # three folder back (/a/b/c/ - 3 = /)
 env = environ.Env(DEBUG=(bool, False))  # set default values and casting
@@ -39,6 +40,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'users',
+    'courses',
 
     'rest_framework',
     'rest_framework.authtoken',
