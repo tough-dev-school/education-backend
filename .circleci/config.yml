@@ -65,7 +65,7 @@ jobs:
       - run:
           command: |
             . venv/bin/activate
-            cd src && py.test -n2 -x
+            cd src && py.test -x
 
 workflows:
   version: 2
