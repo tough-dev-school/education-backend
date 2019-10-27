@@ -36,7 +36,6 @@ pexpect==4.7.0
 pickleshare==0.7.5
 pluggy==0.13.0
 prompt-toolkit==2.0.10
-psycopg2==2.8.3
 ptyprocess==0.6.0
 py==1.8.0
 pycodestyle==2.5.0
