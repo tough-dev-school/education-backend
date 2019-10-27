@@ -1,6 +1,5 @@
 import json
 import os
-import textwrap
 
 import environ
 from cryptography.hazmat.backends import default_backend
@@ -28,7 +27,7 @@ TEST_RUNNER = 'app.test.disable_test_command_runner.DisableTestCommandRunner'
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '1v(zv1m7oy1co0c$$q52_i7-yr4g#@z0$y0xh%a=#p%si5n3*l'
+SECRET_KEY = 'tei5ie3Ki4ahra8Dei9gahj9tain;ae7aif6ayahtaephooto=aW]ios6oLo^Nga'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG', cast=bool, default=False)
@@ -39,7 +38,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'auth0',
     'users',
 
     'rest_framework',
@@ -114,23 +112,6 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'django.contrib.auth.backends.RemoteUserBackend',
 ]
-
-with open(os.path.join(SITE_ROOT, 'auth0', 'jwks.json'), 'r') as publickey_file:
-    jwks = json.load(publickey_file)
-    cert = '-----BEGIN CERTIFICATE-----\n' + textwrap.fill(jwks['keys'][0]['x5c'][0], 64) + '\n-----END CERTIFICATE-----'
-    certificate = load_pem_x509_certificate(str.encode(cert), default_backend())
-    publickey = certificate.public_key()
-
-
-JWT_AUTH = {
-    'JWT_PAYLOAD_GET_USERNAME_HANDLER':
-        'auth0.user.jwt_get_username_from_payload_handler',
-    'JWT_PUBLIC_KEY': publickey,
-    'JWT_ALGORITHM': 'RS256',
-    'JWT_AUDIENCE': 'weightless.pro/api',
-    'JWT_ISSUER': 'https://f213.eu.auth0.com/',
-    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
-}
 
 MEDIA_URL = env('MEDIA_URL')
 MEDIA_ROOT = env('MEDIA_ROOT')
