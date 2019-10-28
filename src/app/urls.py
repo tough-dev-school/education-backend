@@ -13,6 +13,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v2/users/<int:pk>/', UserView.as_view()),
     path('api/v2/download/<uuid:token>/', TokenDownloadView.as_view()),
+    path('api/v2/healthchecks/', include('django_healthchecks.urls')),
 ]
 
 
