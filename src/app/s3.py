@@ -22,6 +22,10 @@ class AppS3:
     def get_presigned_url(self, object_id: str, expires: int):
         return self.client.generate_presigned_url(
             ClientMethod='get_object',
-            Params={'Bucket': settings.AWS_STORAGE_BUCKET_NAME, 'Key': object_id},
+            Params={
+                'Bucket': settings.AWS_STORAGE_BUCKET_NAME,
+                'Key': object_id,
+                'ResponseContentDisposition': 'attachment',
+            },
             ExpiresIn=expires,
         )
