@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework import routers
 
+from onetime.api.views import TokenDownloadView
 from users.api.views import UserView
 
 router = routers.SimpleRouter()
@@ -11,6 +12,7 @@ router = routers.SimpleRouter()
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v2/users/<int:pk>/', UserView.as_view()),
+    path('api/v2/download/<uuid:token>/', TokenDownloadView.as_view())
 ]
 
 
