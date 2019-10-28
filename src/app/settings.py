@@ -121,6 +121,12 @@ SUIT_CONFIG = {
     'ADMIN_NAME': 'myapp secret place',
 }
 
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID', default=None)
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY', default=None)
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME', default=None)
+AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME', default=None)
+AWS_S3_ENDPOINT_URL = env('AWS_S3_ENDPOINT_URL', default=None)
+
 # Uncomment this lines to catch all runtime warnings as errors
 
 # import warnings  # noqa
