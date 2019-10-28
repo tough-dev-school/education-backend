@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs:
+  docker: circleci/docker@0.5.13
 
 defaults: &defaults
   docker:
@@ -68,3 +70,11 @@ workflows:
       - test:
           requires:
             - build
+
+      - docker/publish:
+          image: f213/pmdaily-backend
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
