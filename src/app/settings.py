@@ -108,9 +108,6 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': env.db(),    # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
 }
-CACHES = {
-    'default': env.cache(),
-}
 AUTH_USER_MODEL = 'users.User'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -121,10 +118,9 @@ HEALTH_CHECKS = {
     'db': 'django_healthchecks.contrib.check_database',
 }
 
-MEDIA_URL = env('MEDIA_URL')
-MEDIA_ROOT = env('MEDIA_ROOT')
+MEDIA_URL = env('MEDIA_URL', default='/media/')
 
-STATIC_URL = env('STATIC_URL')
+STATIC_URL = env('STATIC_URL', default='/static/')
 STATIC_ROOT = env('STATIC_ROOT')
 
 SUIT_CONFIG = {
