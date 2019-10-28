@@ -222,6 +222,12 @@ class DefaultModel(models.Model):
             if type(getattr(self.__class__, func_name)) is cached_property
         ]
 
+    def __str__(self):
+        if hasattr(self, 'name'):
+            return str(self.name)
+
+        return super().__str__()
+
 
 class TimestampedModel(DefaultModel, Timestamped):
     """
