@@ -8,7 +8,5 @@ class TokenDownloadView(AnonymousAPIView):
     def get(self, request, token):
         queryset = Token.objects.active()
         token = get_object_or_404(queryset, token=token)
-        print(token, queryset)
-        print(token.expires)
 
         return redirect(token.download())
