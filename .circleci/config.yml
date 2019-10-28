@@ -62,6 +62,22 @@ jobs:
             . venv/bin/activate
             cd src && py.test -x
 
+  deploy:
+    <<: *defaults
+
+    steps:
+      - checkout
+      - run:
+          name: Install deploy tooling
+          command: |
+            export D_RELEASE=0.5.1
+            wget -O - https://cdn.rawgit.com/f213/d/351d2459/install.sh|sh
+      - run:
+          name: Update image
+          command: |
+            ./d add-host-key --force
+            ./d update-image circle@borshev.com pmdaily f213/pmdaily-backend:${CIRCLE_SHA1}
+
 workflows:
   version: 2
   continuous-delivery:
