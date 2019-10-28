@@ -12,7 +12,7 @@ USE_i18N = True
 
 LANGUAGE_CODE = "en"
 
-USE_TZ = True
+USE_TZ = False
 TIME_ZONE = env('TIME_ZONE', cast=str, default='Europe/Moscow')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -37,6 +37,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'users',
     'courses',
+    'onetime',
 
     'rest_framework',
     'rest_framework.authtoken',
@@ -126,6 +127,7 @@ AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY', default=None)
 AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME', default=None)
 AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME', default=None)
 AWS_S3_ENDPOINT_URL = env('AWS_S3_ENDPOINT_URL', default=None)
+
 
 # Uncomment this lines to catch all runtime warnings as errors
 
