@@ -94,3 +94,10 @@ workflows:
           filters:
             branches:
               only: master
+
+      - deploy:
+          requires:
+            - docker/publish
+          filters:
+            branches:
+              only: master
