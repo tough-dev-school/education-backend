@@ -11,4 +11,4 @@ def test_expires_when_updated(token):
 
     token.refresh_from_db()
 
-    assert token.expires == datetime(2032, 12, 1, 21, 30)
+    assert token.expires == datetime(2032, 12, 3, 15, 30)

@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from app.models import DefaultQuerySet, TimestampedModel, models
 
-EXPIRATION_TIME = timedelta(hours=6)
+EXPIRATION_TIME = timedelta(days=2)
 
 
 class TokenQuerySet(DefaultQuerySet):
