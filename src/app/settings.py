@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'courses',
     'onetime',
 
+    'anymail',
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
@@ -132,6 +133,14 @@ AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY', default=None)
 AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME', default=None)
 AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME', default=None)
 AWS_S3_ENDPOINT_URL = env('AWS_S3_ENDPOINT_URL', default=None)
+
+EMAIL_ENABLED = env('EMAIL_ENABLED', cast=bool, default=False)
+
+EMAIL_BACKEND = env('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+ANYMAIL = {
+    'MAILJET_API_KEY': env('MAILJET_API_KEY', default=''),
+    'MAILJET_SECRET_KEY': env('MAILJET_SECRET_KEY', default=''),
+}
 
 
 # Uncomment this lines to catch all runtime warnings as errors
