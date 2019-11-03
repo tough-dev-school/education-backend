@@ -12,6 +12,10 @@ USE_i18N = True
 
 LANGUAGE_CODE = "en"
 
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
 USE_TZ = False
 TIME_ZONE = env('TIME_ZONE', cast=str, default='Europe/Moscow')
 
