@@ -24,6 +24,9 @@ class Token(TimestampedModel):
     record = models.ForeignKey('courses.Record', on_delete=models.CASCADE)
     expires = models.DateTimeField(blank=True, null=True)
 
+    def __str__(self):
+        return str(self.token)
+
     def download(self):
         self.expires = timezone.now() + EXPIRATION_TIME
         self.save()
