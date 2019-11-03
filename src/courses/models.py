@@ -1,9 +1,12 @@
+from django.utils.translation import ugettext_lazy as _
+
 from app.models import TimestampedModel, models
 from app.s3 import AppS3
 
 
 class Course(TimestampedModel):
     name = models.CharField(max_length=255)
+    name_genitive = models.CharField(_('Genitive name'), max_length=255)
     slug = models.SlugField()
 
 
