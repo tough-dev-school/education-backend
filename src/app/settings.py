@@ -15,6 +15,7 @@ LANGUAGE_CODE = "en"
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+FRONTEND_URL = 'https://pmdaily.ru'
 
 USE_TZ = False
 TIME_ZONE = env('TIME_ZONE', cast=str, default='Europe/Moscow')
@@ -32,6 +33,7 @@ SECRET_KEY = 'tei5ie3Ki4ahra8Dei9gahj9tain;ae7aif6ayahtaephooto=aW]ios6oLo^Nga'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG', cast=bool, default=False)
+CI = env('CI', cast=bool, default=False)
 
 ALLOWED_HOSTS = [
     'app.pmdaily.ru',
