@@ -137,10 +137,11 @@ SENTRY_DSN = env('SENTRY_DSN', cast=str, default='')
 if not DEBUG and len(SENTRY_DSN):
     import sentry_sdk
     from sentry_sdk.integrations.django import DjangoIntegration
+    from sentry_sdk.integrations.celery import CeleryIntegration
 
     sentry_sdk.init(
         dsn=SENTRY_DSN,
-        integrations=[DjangoIntegration()],
+        integrations=[DjangoIntegration(), CeleryIntegration()],
     )
 
 BROKER_URL = env('CELERY_BACKEND')
