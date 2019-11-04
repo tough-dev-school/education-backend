@@ -4,6 +4,7 @@ ADD requirements.txt /
 
 ENV STATIC_ROOT /var/lib/django-static
 ENV DATABASE_URL sqlite:////var/lib/django-db/pmdaily.sqlite
+ENV CELERY_BACKEND redis://redis:6379/8
 
 
 WORKDIR /srv
