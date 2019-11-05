@@ -4,6 +4,11 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
+def order(mixer):
+    return lambda **kwargs: mixer.blend('orders.Order', **kwargs)
+
+
+@pytest.fixture
 def course(mixer):
     return mixer.blend('courses.Course', name='Кройка и шитьё', name_genitive='Кройки и шитья')
 

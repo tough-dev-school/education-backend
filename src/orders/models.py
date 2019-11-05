@@ -1,3 +1,5 @@
+from typing import Optional
+
 from app.models import TimestampedModel, models
 
 
@@ -8,6 +10,10 @@ class ItemField(models.ForeignKey):
     def __init__(self, *args, **kwargs):
         self._is_item = True
         super().__init__(*args, **kwargs)
+
+
+class UnknownItemException(Exception):
+    pass
 
 
 class Order(TimestampedModel):
@@ -29,3 +35,20 @@ class Order(TimestampedModel):
             if getattr(field, '_is_item', False):
                 if getattr(self, f'{field.name}_id', None) is not None:
                     return getattr(self, field.name)
+
+    @classmethod
+    def get_item_foreignkey(cls, item) -> Optional[models.fields.Field]:
+        """
+        Given an item model, returns the ForeignKey to it"""
+        for field in cls._meta.get_fields():
+            if getattr(field, '_is_item', False):
+                if field.related_model == item.__class__:
+                    return field.name
+
+    def set_item(self, item):
+        foreign_key = self.__class__.get_item_foreignkey(item)
+        if foreign_key is not None:
+            setattr(self, foreign_key, item)
+            return
+
+        raise UnknownItemException('There is not foreignKey for {}'.format(item.__class__))
