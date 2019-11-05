@@ -16,5 +16,5 @@ def record(mixer, course):
 
 
 @pytest.fixture
-def shipment(record):
-    return RecordShipment(record)
+def shipment(user, record):
+    return RecordShipment(user, record)

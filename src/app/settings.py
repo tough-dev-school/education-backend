@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'users',
     'courses',
     'onetime',
+    'shipping',
 
     'anymail',
     'rest_framework',
