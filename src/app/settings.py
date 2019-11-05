@@ -12,6 +12,11 @@ USE_i18N = True
 
 LANGUAGE_CODE = "en"
 
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+FRONTEND_URL = 'https://pmdaily.ru'
+
 USE_TZ = False
 TIME_ZONE = env('TIME_ZONE', cast=str, default='Europe/Moscow')
 
@@ -28,6 +33,7 @@ SECRET_KEY = 'tei5ie3Ki4ahra8Dei9gahj9tain;ae7aif6ayahtaephooto=aW]ios6oLo^Nga'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG', cast=bool, default=False)
+CI = env('CI', cast=bool, default=False)
 
 ALLOWED_HOSTS = [
     'app.pmdaily.ru',
@@ -127,6 +133,24 @@ STATIC_ROOT = env('STATIC_ROOT')
 SUIT_CONFIG = {
     'ADMIN_NAME': 'myapp secret place',
 }
+
+SENTRY_DSN = env('SENTRY_DSN', cast=str, default='')
+
+if not DEBUG and len(SENTRY_DSN):
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+    from sentry_sdk.integrations.celery import CeleryIntegration
+
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration(), CeleryIntegration()],
+    )
+
+BROKER_URL = env('CELERY_BACKEND')
+CELERY_ALWAYS_EAGER = env('CELERY_ALWAYS_EAGER', cast=bool, default=DEBUG)  # by default in debug mode we run all celery tasks in foregroud.
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_ENABLE_UTC = False
+
 
 AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID', default=None)
 AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY', default=None)
