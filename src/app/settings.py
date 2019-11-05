@@ -46,6 +46,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     'users',
+    'orders',
     'courses',
     'onetime',
     'shipping',
