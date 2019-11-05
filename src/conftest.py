@@ -17,3 +17,8 @@ def anon():
 @pytest.fixture
 def mixer():
     return _mixer
+
+
+@pytest.fixture
+def user(mixer):
+    return mixer.blend('users.User')

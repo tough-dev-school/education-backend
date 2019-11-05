@@ -1,9 +1,12 @@
+from django.utils.translation import ugettext_lazy as _
+
 from app.models import TimestampedModel, models
 from app.s3 import AppS3
 
 
 class Course(TimestampedModel):
     name = models.CharField(max_length=255)
+    name_genitive = models.CharField(_('Genitive name'), max_length=255)
     slug = models.SlugField()
 
 
@@ -14,5 +17,5 @@ class Record(TimestampedModel):
 
     s3_object_id = models.CharField(max_length=512)
 
-    def get_url(self, expires: int = 60 * 60):
+    def get_url(self, expires: int = 3 * 24 * 60 * 60):
         return AppS3().get_presigned_url(self.s3_object_id, expires=expires)

@@ -20,6 +20,7 @@ class RecordAdmin(StackedInline):
 class CourseAdmin(ModelAdmin):
     fields = [
         'name',
+        'name_genitive',
         'slug',
     ]
     display_fields = fields
