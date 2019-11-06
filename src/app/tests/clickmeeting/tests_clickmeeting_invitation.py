@@ -14,7 +14,7 @@ def client(client, read_fixture):
 
 
 ROOM_URL = 'https://f213.clickmeeting.com/tst'
-INVITE_URL = 'https://api.clickmeeting.com/v1/conferences/2632756/invitation/email/ru/'
+INVITE_URL = 'https://api.clickmeeting.com/v1/conferences/2632756/invitation/email/ru'
 
 
 def test_ok(client):

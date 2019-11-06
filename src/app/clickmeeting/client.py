@@ -23,9 +23,10 @@ class ClickMeetingClient:
         if conference is None:
             raise ClickMeetingRoomNotFoundException(f'Room {room_url} not found')
 
-        response = self.http.post(f'conferences/{conference["id"]}/invitation/email/ru/', data={
-            'attendees': list(args),
+        response = self.http.post(f'conferences/{conference["id"]}/invitation/email/ru', data={
+            'attendees': [{'email': arg} for arg in args],
             'template': 'basic',
+            'role': 'listener',
         })
         if response['status'] != 'OK':
             raise ClickMeetingNonOkResponseException(f'Non-OK response from ClickMeeting during invitation: {response["status"]}')
