@@ -1,3 +1,5 @@
+import json
+
 import pytest
 from mixer.backend.django import mixer as _mixer
 
@@ -22,3 +24,14 @@ def mixer():
 @pytest.fixture
 def user(mixer):
     return mixer.blend('users.User')
+
+
+@pytest.fixture
+def read_fixture():
+    """JSON fixture reader"""
+
+    def read_file(f):
+        with open(f'{f}.json') as fp:
+            return json.load(fp)
+
+    return read_file

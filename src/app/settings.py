@@ -172,6 +172,8 @@ ANYMAIL = {
     'MAILJET_SECRET_KEY': env('MAILJET_SECRET_KEY', default=''),
 }
 
+CLICKMEETING_API_KEY = env('CLICKMEETING_API_KEY', default=None, cast=str)
+
 
 # Uncomment this lines to catch all runtime warnings as errors
 
