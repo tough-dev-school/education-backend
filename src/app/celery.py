@@ -1,8 +1,9 @@
 import locale
 import os
 
-from celery import Celery
 from django.conf import settings
+
+from celery import Celery
 
 __all__ = [
     'celery',
