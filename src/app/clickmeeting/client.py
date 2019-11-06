@@ -7,6 +7,10 @@ class ClickMeetingNonOkResponseException(Exception):
     pass
 
 
+class ClickMeetingRoomNotFoundException(Exception):
+    pass
+
+
 class ClickMeetingClient:
     def __init__(self):
         self.http = ClickMeetingClientHTTP(
@@ -14,9 +18,13 @@ class ClickMeetingClient:
             api_key=settings.CLICKMEETING_API_KEY,
         )
 
-    def invite(self, room_id: str, *args):
-        response = self.http.post(f'conferences/{room_id}/invitation/email/ru/', data={
-            'attendees': args,
+    def invite(self, room_url: str, *args):
+        conference = self.get_conference(room_url=room_url)
+        if conference is None:
+            raise ClickMeetingRoomNotFoundException(f'Room {room_url} not found')
+
+        response = self.http.post(f'conferences/{conference["id"]}/invitation/email/ru/', data={
+            'attendees': list(args),
             'template': 'basic',
         })
         if response['status'] != 'OK':

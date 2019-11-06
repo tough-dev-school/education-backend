@@ -2,5 +2,4 @@ from app.clickmeeting import ClickMeetingClient
 
 client = ClickMeetingClient()
 
-# client.invite('913631819', 'f+test@f213.in')
-print(client.http.get('conferences'))
+client.invite('https://f213.clickmeeting.com/tst', 'fedor@borshev.com')

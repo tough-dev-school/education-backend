@@ -21,8 +21,6 @@ class ClickMeetingClientHTTP:
     @property
     def headers(self):
         return {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
             'X-Api-Key': self.api_key,
         }
 
@@ -30,13 +28,20 @@ class ClickMeetingClientHTTP:
         response = requests.post(
             self.format_url(url),
             timeout=TIMEOUT,
-            json=data,
+            data=data,
             headers=self.headers,
         )
-        if response.status_code != 200:
-            raise ClickMeetingHTTPException(f"Non-ok HTTP response from ClickMeeting: {response.status_code}")
 
-        return response.json()
+        json = response.json()
+        if response.status_code != 200:
+            if 'errors' in json:
+                msg = f'Error from ClickMeeting: {json["errors"]}'
+            else:
+                msg = f'Non-ok HTTP response from ClickMeeting: {response.status_code}'
+
+            raise ClickMeetingHTTPException(msg)
+
+        return json
 
     def get(self, url):
         response = requests.get(
