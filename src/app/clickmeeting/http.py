@@ -3,6 +3,8 @@ from urllib.parse import urljoin
 
 import requests
 
+TIMEOUT = 10
+
 
 class ClickMeetingHTTPException(Exception):
     pass
@@ -27,8 +29,19 @@ class ClickMeetingClientHTTP:
     def post(self, url: str, data: dict, expected_status_code: list = None) -> Union[List, Dict]:
         response = requests.post(
             self.format_url(url),
-            timeout=3,
+            timeout=TIMEOUT,
             json=data,
+            headers=self.headers,
+        )
+        if response.status_code != 200:
+            raise ClickMeetingHTTPException(f"Non-ok HTTP response from ClickMeeting: {response.status_code}")
+
+        return response.json()
+
+    def get(self, url):
+        response = requests.get(
+            self.format_url(url),
+            timeout=TIMEOUT,
             headers=self.headers,
         )
         if response.status_code != 200:

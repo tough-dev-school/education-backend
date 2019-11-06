@@ -21,3 +21,10 @@ class ClickMeetingClient:
         })
         if response['status'] != 'OK':
             raise ClickMeetingNonOkResponseException(f'Non-OK response from ClickMeeting during invitation: {response["status"]}')
+
+    def get_conference(self, **kwargs):
+        response = self.http.get('conferences/')
+
+        for conference in response['active_conferences']:
+            if all(conference.get(key) == value for key, value in kwargs.items()):
+                return conference
