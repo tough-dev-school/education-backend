@@ -46,6 +46,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     'users',
+    'orders',
     'courses',
     'onetime',
     'shipping',
@@ -93,6 +94,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
+    'DEFAULT_PAGINATION_CLASS': 'app.pagination.AppPagination',
+    'PAGE_SIZE': 20,
 }
 
 ROOT_URLCONF = 'app.urls'
