@@ -7,6 +7,7 @@ from app.s3 import AppS3
 class Course(TimestampedModel):
     name = models.CharField(max_length=255)
     name_genitive = models.CharField(_('Genitive name'), max_length=255)
+    name_receipt = models.CharField(_('Name for receipts'), max_length=255, help_text=_('Will be printed in receipts'))
     slug = models.SlugField()
 
     class Meta:
@@ -16,6 +17,7 @@ class Course(TimestampedModel):
 class Record(TimestampedModel):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
+    name_receipt = models.CharField(_('Name for receipts'), max_length=255, help_text=_('Will be printed in receipts'))
     slug = models.SlugField()
 
     s3_object_id = models.CharField(max_length=512)
