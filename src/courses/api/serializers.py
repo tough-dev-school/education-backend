@@ -19,3 +19,18 @@ class RecordSerializer(serializers.ModelSerializer):
             'slug',
             'name',
         ]
+
+
+class PurchaseSerializer(serializers.Serializer):
+    """Simple serializer used to validate purchases"""
+
+    class Meta:
+        fields = [
+            'name',
+            'email',
+        ]
+
+    @classmethod
+    def _validate(cls, input: dict):
+        instance = cls(data=input)
+        instance.is_valid(raise_exception=True)
