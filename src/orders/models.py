@@ -1,5 +1,7 @@
 from typing import Optional
 
+from django.utils.translation import ugettext_lazy as _
+
 from app.models import TimestampedModel, models
 
 
@@ -19,7 +21,13 @@ class UnknownItemException(Exception):
 class Order(TimestampedModel):
     user = models.ForeignKey('users.User', on_delete=models.PROTECT)
     price = models.DecimalField(max_digits=9, decimal_places=2)
-    is_paid = models.BooleanField(default=False)
+
+    paid = models.DateTimeField(
+        _('Date when order got paid'),
+        null=True, blank=True,
+        help_text=_('If set during creation, order automaticaly gets shipped'),
+    )
+    shipped = models.DateTimeField(_('Date when order was shipped'), null=True, blank=True)
 
     course = ItemField('courses.Course', null=True, blank=True, on_delete=models.PROTECT)
     record = ItemField('courses.Record', null=True, blank=True, on_delete=models.PROTECT)
