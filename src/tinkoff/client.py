@@ -20,7 +20,7 @@ class TinkoffBank(Bank):
             'CustomerKey': self.user.id,
             'SuccessURL': self.success_url,
             'FailURL': self.fail_url,
-            # 'Receipt': self.get_reciept(),
+            'Receipt': self.get_receipt(),
             'NotificationURL': 'https://1c9edd6b.ngrok.io/api/v2/banking/tinkoff-notifications/',
         })
 
@@ -43,6 +43,23 @@ class TinkoffBank(Bank):
             raise TinkoffRequestException(f'Non-success request for {method}: {parsed["ErrorCode"]}, {parsed["Message"]} ({parsed["Details"]}')
 
         return parsed
+
+    def get_receipt(self):
+        return {
+            'Email': self.user.email,
+            'Taxation': 'usn_income',
+            'Items': self.get_items(),
+        }
+
+    def get_items(self):
+        return [{
+            'Name': self.order.item.name_receipt,
+            'Price': self.price,
+            'Quantity': 1,
+            'Amount': self.price,
+            'PaymentObject': 'service',
+            'Tax': "none",  # fuck
+        }]
 
     @staticmethod
     def _get_token(request: dict) -> str:

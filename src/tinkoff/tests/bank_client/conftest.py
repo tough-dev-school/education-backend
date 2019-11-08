@@ -1,7 +1,7 @@
 import pytest
 import requests_mock
 
-from tinkoff.bank import TinkoffBank
+from tinkoff.client import TinkoffBank
 
 pytestmark = [pytest.mark.django_db]
 
@@ -14,12 +14,16 @@ def tinkoff_credentials(settings):
 
 @pytest.fixture
 def record(mixer):
-    return mixer.blend('courses.Record', name='Пентакли и тентакли')
+    return mixer.blend(
+        'courses.Record',
+        name='Пентакли и тентакли',
+        name_receipt='Предоставление доступа к записи курса «Пентакли и Тентакли»',
+    )
 
 
 @pytest.fixture
 def order(mixer, record):
-    return mixer.blend('orders.Order', record=record)
+    return mixer.blend('orders.Order', record=record, price='100.50')
 
 
 @pytest.fixture
