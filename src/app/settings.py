@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'courses',
     'onetime',
     'shipping',
+    'tinkoff',
 
     'anymail',
     'rest_framework',
@@ -176,6 +177,9 @@ ANYMAIL = {
 }
 
 CLICKMEETING_API_KEY = env('CLICKMEETING_API_KEY', default=None, cast=str)
+
+TINKOFF_TERMINAL_KEY = env('TINKOFF_TERMINAL_KEY', default=None)
+TINKOFF_TERMINAL_PASSWORD = env('TINKOFF_TERMINAL_PASSWORD', default=None)
 
 
 # Uncomment this lines to catch all runtime warnings as errors

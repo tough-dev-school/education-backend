@@ -10,6 +10,7 @@ class RecordAdmin(TabularInline):
 
     fields = [
         'name',
+        'name_receipt',
         'slug',
         's3_object_id',
         'downloadable',
@@ -35,10 +36,13 @@ class CourseAdmin(ModelAdmin):
     fields = [
         'name',
         'name_genitive',
+        'name_receipt',
         'slug',
     ]
     display_fields = fields
-    prepopulated_fields = {'slug': ('name',)}
+    prepopulated_fields = {
+        'slug': ['name'],
+    }
     inlines = [
         RecordAdmin,
     ]
