@@ -14,3 +14,11 @@ class User(AbstractUser):
             return {'first_name': parts[0], 'last_name': parts[1]}
 
         return {'first_name': parts[0], 'last_name': ' '.join(parts[1:])}
+
+    def __str__(self):
+        name = self.first_name + ' ' + self.last_name
+
+        if len(name) < 3:
+            return self.username
+
+        return name.strip()

@@ -17,15 +17,15 @@ class RecordViewSet(ReadOnlyAppViewSet):
 
     @action(methods=['POST'], detail=True)
     def purchase(self, request, pk=None, **kwargs):
-        validators.PurchaseValidator.do(request.data)
+        validators.PurchaseValidator.do(request.POST)
 
         OrderCreator(
             user=UserCreator(
-                name=request.data['name'],
-                email=request.data['email'],
+                name=request.POST['name'],
+                email=request.POST['email'],
             )(),
             item=self.get_object(),
-            price=request.data['price'],
+            price=request.POST['price'],
         )()
 
         return Response(status=201)

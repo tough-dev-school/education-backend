@@ -2,7 +2,7 @@ from typing import Optional
 
 from django.utils.translation import ugettext_lazy as _
 
-from app.models import TimestampedModel, models
+from app.models import DefaultQuerySet, TimestampedModel, models
 
 
 class ItemField(models.ForeignKey):
@@ -18,7 +18,14 @@ class UnknownItemException(Exception):
     pass
 
 
+class OrderQuerySet(DefaultQuerySet):
+    def paid(self, invert=False):
+        return self.filter(paid__isnull=invert)
+
+
 class Order(TimestampedModel):
+    objects = OrderQuerySet.as_manager()  # type: OrderQuerySet
+
     user = models.ForeignKey('users.User', on_delete=models.PROTECT)
     price = models.DecimalField(max_digits=9, decimal_places=2)
 
