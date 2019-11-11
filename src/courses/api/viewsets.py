@@ -21,7 +21,7 @@ class RecordViewSet(ReadOnlyAppViewSet):
         validators.PurchaseValidator.do(request.POST)
 
         order = self._create_order(data=request.POST)
-        payment_link = self.get_payment_link(order)
+        payment_link = self.get_payment_link(order, success_url=request.POST.get('success_url'))
 
         return HttpResponseRedirect(redirect_to=payment_link)
 
@@ -35,8 +35,8 @@ class RecordViewSet(ReadOnlyAppViewSet):
             price=data['price'],
         )()
 
-    def get_payment_link(self, order):
-        bank = TinkoffBank(order=order)
+    def get_payment_link(self, order, success_url=None):
+        bank = TinkoffBank(order=order, success_url=success_url)
 
         return bank.get_initial_payment_url()
 
