@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from hashlib import sha256
+from urllib.parse import urljoin
 
 import requests
 from django.conf import settings
@@ -21,7 +22,7 @@ class TinkoffBank(Bank):
             'SuccessURL': self.success_url,
             'FailURL': self.fail_url,
             'Receipt': self.get_receipt(),
-            'NotificationURL': 'https://1c9edd6b.ngrok.io/api/v2/banking/tinkoff-notifications/',
+            'NotificationURL': self.get_notification_url(),
         })
 
     def call(self, method: str, payload: dict) -> dict:
@@ -73,3 +74,7 @@ class TinkoffBank(Bank):
 
         sorted_request = OrderedDict(sorted(_request.items(), key=lambda key, *args: key))
         return sha256(''.join(str(value) for value in sorted_request.values()).encode()).hexdigest().upper()
+
+    @staticmethod
+    def get_notification_url():
+        return urljoin(settings.ABSOLUTE_HOST, '/api/v2/banking/tinkoff-notifications/')
