@@ -1,4 +1,3 @@
-
 _registry = dict()
 
 __all__ = [
