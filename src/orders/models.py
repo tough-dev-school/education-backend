@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from app.models import DefaultQuerySet, TimestampedModel, models
+from orders import tasks
 
 
 class ItemField(models.ForeignKey):
@@ -75,4 +76,12 @@ class Order(TimestampedModel):
         self.save()
 
         if self.item is not None:
-            self.item.ship(to=self.user)
+            tasks.ship.delay(self.pk)
+
+    def ship(self):
+        """Ship the order. Better call it asynchronously"""
+        self.item.ship(to=self.user)
+
+        self.shipped = timezone.now()
+
+        self.save()

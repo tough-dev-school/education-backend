@@ -41,6 +41,13 @@ def test_ships(order, record, user, ship):
     ship.assert_called_once_with(record, to=user)
 
 
+def test_shipment_date(order):
+    order.set_paid()
+    order.refresh_from_db()
+
+    assert order.shipped == datetime(2032, 12, 1, 15, 30)
+
+
 def test_empty_item_does_not_break_things(order, ship):
     order.setattr_and_save('record', None)
 
