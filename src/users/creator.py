@@ -14,6 +14,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
             'last_name',
             'username',
             'email',
+            'subscribed',
         ]
 
 
@@ -25,6 +26,7 @@ class UserCreator:
         self.data = {
             'email': email,
             'username': email or str(uuid.uuid4()),
+            'subscribed': subscribe,
             **User.parse_name(name),
         }
 

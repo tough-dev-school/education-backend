@@ -1,7 +1,11 @@
 from django.contrib.auth.models import AbstractUser
+from django.utils.translation import ugettext_lazy as _
+
+from app.models import models
 
 
 class User(AbstractUser):
+    subscribed = models.BooleanField(_('Subscribed to newsletter'), default=False)
 
     @classmethod
     def parse_name(cls, name: str) -> dict:
