@@ -12,6 +12,12 @@ def tinkoff_credentials(settings):
     settings.TINKOFF_TERMINAL_PASSWORD = '123456'
 
 
+@pytest.fixture(autouse=True)
+def absolute_host(settings):
+    settings.ABSOLUTE_HOST = 'https://tst.hst'
+    settings.FRONTEND_URL = 'https://front.tst.hst'
+
+
 @pytest.fixture
 def record(mixer):
     return mixer.blend(

@@ -27,7 +27,12 @@ def test_initial_payment_url_payload(tinkoff, req, settings):
     assert payload['OrderId'] == tinkoff.order.id
     assert payload['CustomerKey'] == tinkoff.order.user.id
 
-    assert settings.FRONTEND_URL in payload['SuccessURL']
-    assert settings.FRONTEND_URL in payload['FailURL']
+    assert 'https://' in payload['SuccessURL']
+    assert 'https://' in payload['FailURL']
 
     assert 'Receipt' in payload
+    assert 'NotificationURL' in payload
+
+
+def test_notification_url(tinkoff):
+    assert tinkoff.get_notification_url() == 'https://tst.hst/api/v2/banking/tinkoff-notifications/'

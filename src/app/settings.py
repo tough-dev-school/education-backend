@@ -39,6 +39,7 @@ ALLOWED_HOSTS = [
     'app.pmdaily.ru',
     'localhost',
     'localhost:8000',
+    '85c8ac7a.ngrok.io',
 ]
 
 
@@ -160,6 +161,8 @@ BROKER_URL = env('CELERY_BACKEND')
 CELERY_ALWAYS_EAGER = env('CELERY_ALWAYS_EAGER', cast=bool, default=DEBUG)  # by default in debug mode we run all celery tasks in foregroud.
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_ENABLE_UTC = False
+
+ABSOLUTE_HOST = env('ABSOLUTE_HOST', cast=str, default='https://app.pmdaily.ru')
 
 
 AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID', default=None)
