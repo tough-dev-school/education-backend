@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from app.models import DefaultQuerySet, TimestampedModel, models
 from orders import tasks
+from orders.signals import order_got_shipped
 
 
 class ItemField(models.ForeignKey):
@@ -85,3 +86,8 @@ class Order(TimestampedModel):
         self.shipped = timezone.now()
 
         self.save()
+
+        order_got_shipped.send(
+            sender=self.__class__,
+            order=self,
+        )
