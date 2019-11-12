@@ -11,6 +11,19 @@ def subscribe(mocker):
 
 
 def test(subscribe, user):
-    subscribe_to_mailjet.delay(user.id)
+    subscribe_to_mailjet(user.id)
 
     subscribe.assert_called_once_with(user)
+
+
+@pytest.mark.parametrize('setting', [
+    'MAILJET_API_KEY',
+    'MAILJET_SECRET_KEY',
+    'MAILJET_CONTACT_LIST_ID',
+])
+def test_subscription_is_disabled_if_any_single_setting_is_disabled(subscribe, user, setting, settings):
+    setattr(settings, setting, '')
+
+    subscribe_to_mailjet(user.id)
+
+    subscribe.assert_not_called()

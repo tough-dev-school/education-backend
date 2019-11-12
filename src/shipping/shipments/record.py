@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from app.tasks import send_mail
 from courses.models import Record
+from shipping import factory
 from shipping.shipments.base import BaseShipment
 
 
@@ -17,20 +17,16 @@ class RecordTemplateContext(serializers.ModelSerializer):
         ]
 
 
+@factory.register(Record)
 class RecordShipment(BaseShipment):
+    template_id = 1069819
+
     @property
     def record(self):
         return self.stuff_to_ship
 
     def ship(self):
         self.send_email()
-
-    def send_email(self):
-        return send_mail.delay(
-            to=self.user.email,
-            template_id=1069819,
-            ctx=self.get_template_context(),
-        )
 
     def get_template_context(self) -> dict:
         return RecordTemplateContext().to_representation(self.record)

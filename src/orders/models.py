@@ -1,8 +1,11 @@
 from typing import Optional
 
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from app.models import DefaultQuerySet, TimestampedModel, models
+from orders import tasks
+from orders.signals import order_got_shipped
 
 
 class ItemField(models.ForeignKey):
@@ -67,3 +70,24 @@ class Order(TimestampedModel):
             return
 
         raise UnknownItemException('There is not foreignKey for {}'.format(item.__class__))
+
+    def set_paid(self):
+        self.paid = timezone.now()
+
+        self.save()
+
+        if self.item is not None:
+            tasks.ship.delay(self.pk)
+
+    def ship(self):
+        """Ship the order. Better call it asynchronously"""
+        self.item.ship(to=self.user)
+
+        self.shipped = timezone.now()
+
+        self.save()
+
+        order_got_shipped.send(
+            sender=self.__class__,
+            order=self,
+        )
