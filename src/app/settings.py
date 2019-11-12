@@ -42,6 +42,10 @@ ALLOWED_HOSTS = [
     '85c8ac7a.ngrok.io',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'pmdaily.ru',
+]
+
 
 # Application definition
 
