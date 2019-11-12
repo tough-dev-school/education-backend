@@ -7,17 +7,23 @@ from django.shortcuts import redirect
 from django.urls import path
 from rest_framework import routers
 
+from courses.api.viewsets import CourseViewSet, RecordViewSet
 from onetime.api.views import TokenDownloadView
+from tinkoff.api.views import TinkoffPaymentNotificationsView
 from users.api.views import UserView
 
 router = routers.SimpleRouter()
+router.register('courses', CourseViewSet)
+router.register('records', RecordViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('sentry-debug/', lambda request: 1 / 0),
     path('api/v2/users/<int:pk>/', UserView.as_view()),
     path('api/v2/download/<uuid:token>/', TokenDownloadView.as_view()),
+    path('api/v2/banking/tinkoff-notifications/', TinkoffPaymentNotificationsView.as_view()),
     path('api/v2/healthchecks/', include('django_healthchecks.urls')),
+    path('api/v2/', include(router.urls)),
 
 ]
 

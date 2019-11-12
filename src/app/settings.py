@@ -39,6 +39,7 @@ ALLOWED_HOSTS = [
     'app.pmdaily.ru',
     'localhost',
     'localhost:8000',
+    '85c8ac7a.ngrok.io',
 ]
 
 
@@ -46,9 +47,11 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     'users',
+    'orders',
     'courses',
     'onetime',
     'shipping',
+    'tinkoff',
 
     'anymail',
     'rest_framework',
@@ -68,7 +71,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -78,6 +81,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+if not DEBUG and not CI:
+    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
@@ -88,6 +96,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
+    'DEFAULT_PAGINATION_CLASS': 'app.pagination.AppPagination',
+    'PAGE_SIZE': 20,
 }
 
 ROOT_URLCONF = 'app.urls'
@@ -152,6 +162,8 @@ CELERY_ALWAYS_EAGER = env('CELERY_ALWAYS_EAGER', cast=bool, default=DEBUG)  # by
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_ENABLE_UTC = False
 
+ABSOLUTE_HOST = env('ABSOLUTE_HOST', cast=str, default='https://app.pmdaily.ru')
+
 
 AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID', default=None)
 AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY', default=None)
@@ -166,6 +178,11 @@ ANYMAIL = {
     'MAILJET_API_KEY': env('MAILJET_API_KEY', default=''),
     'MAILJET_SECRET_KEY': env('MAILJET_SECRET_KEY', default=''),
 }
+
+CLICKMEETING_API_KEY = env('CLICKMEETING_API_KEY', default=None, cast=str)
+
+TINKOFF_TERMINAL_KEY = env('TINKOFF_TERMINAL_KEY', default=None)
+TINKOFF_TERMINAL_PASSWORD = env('TINKOFF_TERMINAL_PASSWORD', default=None)
 
 
 # Uncomment this lines to catch all runtime warnings as errors
