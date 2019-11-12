@@ -2,7 +2,7 @@ import requests
 
 
 def send_happiness_message(text):
-    r = requests.post('https://timepad-informer.f213.in/msg/', json={
+    r = requests.post('https://timepad.f213.in/msg/', json={
         'text': text,
     })
 
