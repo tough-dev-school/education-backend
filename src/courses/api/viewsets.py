@@ -30,6 +30,7 @@ class RecordViewSet(ReadOnlyAppViewSet):
             user=UserCreator(
                 name=data['name'],
                 email=data['email'],
+                subscribe=data.get('subscribe', False)
             )(),
             item=self.get_object(),
             price=data['price'],

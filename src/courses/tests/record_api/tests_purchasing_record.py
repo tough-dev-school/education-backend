@@ -59,6 +59,32 @@ def test_user(client, record):
     assert placed.user.email == 'zaboy@gmail.com'
 
 
+@pytest.mark.parametrize('wants_to_subscribe', [True, False])
+def test_user_auto_subscription(client, wants_to_subscribe):
+    client.post('/api/v2/records/home-video/purchase/', {
+        'name': 'Забой Шахтёров',
+        'email': 'zaboy@gmail.com',
+        'price': 1900,
+        'subscribe': wants_to_subscribe
+    })
+
+    placed = get_order()
+
+    assert placed.user.subscribed is wants_to_subscribe
+
+
+def test_by_default_user_is_not_subscribed(client):
+    client.post('/api/v2/records/home-video/purchase/', {
+        'name': 'Забой Шахтёров',
+        'email': 'zaboy@gmail.com',
+        'price': 1900,
+    })
+
+    placed = get_order()
+
+    assert placed.user.subscribed is False
+
+
 def test_redirect(client, record):
     response = client.post('/api/v2/records/home-video/purchase/', {
         'name': 'Забой Шахтёров',
