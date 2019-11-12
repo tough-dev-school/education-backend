@@ -1,5 +1,6 @@
 from typing import Optional
 
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from app.models import DefaultQuerySet, TimestampedModel, models
@@ -67,3 +68,8 @@ class Order(TimestampedModel):
             return
 
         raise UnknownItemException('There is not foreignKey for {}'.format(item.__class__))
+
+    def set_paid(self):
+        self.paid = timezone.now()
+
+        self.save()
