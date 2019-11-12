@@ -99,6 +99,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
+    'DEFAULT_RENDERER_CLASSES': [
+        'app.renderers.AppJSONRenderer',
+    ],
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
     'DEFAULT_PAGINATION_CLASS': 'app.pagination.AppPagination',
     'PAGE_SIZE': 20,
