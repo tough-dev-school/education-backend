@@ -10,6 +10,7 @@ class Course(Shippable, TimestampedModel):
     name_genitive = models.CharField(_('Genitive name'), max_length=255)
     name_receipt = models.CharField(_('Name for receipts'), max_length=255, help_text=_('Will be printed in receipts'))
     slug = models.SlugField()
+    clickmeeting_room_url = models.URLField(_('Clickmeeting room URL'), null=True, blank=True, help_text=_('If set, every user who purcashes this course gets invited'))
 
     class Meta:
         ordering = ['-id']

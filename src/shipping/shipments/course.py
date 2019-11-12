@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from app.tasks import invite_to_clickmeeting
 from courses.models import Course
 from shipping import factory
 from shipping.shipments.base import BaseShipment
@@ -27,7 +28,11 @@ class CourseShipment(BaseShipment):
         self.send_email()
 
     def invite(self):
-        pass
+        if self.course.clickmeeting_room_url is not None:
+            invite_to_clickmeeting.delay(
+                room_url=self.course.clickmeeting_room_url,
+                email=self.user.email,
+            )
 
     def get_template_context(self) -> dict:
         return CourseTemplateContext().to_representation(self.course)
