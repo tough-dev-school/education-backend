@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from app.tasks import send_mail
 from courses.models import Record
+from shipping import factory
 from shipping.shipments.base import BaseShipment
 
 
@@ -17,6 +18,7 @@ class RecordTemplateContext(serializers.ModelSerializer):
         ]
 
 
+@factory.register(Record)
 class RecordShipment(BaseShipment):
     @property
     def record(self):

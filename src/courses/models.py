@@ -2,9 +2,10 @@ from django.utils.translation import ugettext_lazy as _
 
 from app.models import TimestampedModel, models
 from app.s3 import AppS3
+from shipping.mixins import Shippable
 
 
-class Course(TimestampedModel):
+class Course(Shippable, TimestampedModel):
     name = models.CharField(max_length=255)
     name_genitive = models.CharField(_('Genitive name'), max_length=255)
     name_receipt = models.CharField(_('Name for receipts'), max_length=255, help_text=_('Will be printed in receipts'))
@@ -14,7 +15,7 @@ class Course(TimestampedModel):
         ordering = ['-id']
 
 
-class Record(TimestampedModel):
+class Record(Shippable, TimestampedModel):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     name_receipt = models.CharField(_('Name for receipts'), max_length=255, help_text=_('Will be printed in receipts'))
