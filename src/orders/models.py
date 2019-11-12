@@ -73,3 +73,6 @@ class Order(TimestampedModel):
         self.paid = timezone.now()
 
         self.save()
+
+        if self.item is not None:
+            self.item.ship(to=self.user)

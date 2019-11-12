@@ -8,9 +8,22 @@ pytestmark = [
 ]
 
 
+@pytest.fixture(autouse=True)
+def ship(mocker):
+    return mocker.patch('shipping.factory.ship')
+
+
 @pytest.fixture
-def order(mixer):
-    return mixer.blend('orders.Order')
+def record(mixer):
+    return mixer.blend('courses.Record')
+
+
+@pytest.fixture
+def order(mixer, record, user):
+    order = mixer.blend('orders.Order', user=user)
+    order.set_item(record)
+
+    return order
 
 
 def test_works(order):
@@ -20,3 +33,17 @@ def test_works(order):
     order.refresh_from_db()
 
     assert order.paid == datetime(2032, 12, 1, 15, 30)
+
+
+def test_ships(order, record, user, ship):
+    order.set_paid()
+
+    ship.assert_called_once_with(record, to=user)
+
+
+def test_empty_item_does_not_break_things(order, ship):
+    order.setattr_and_save('record', None)
+
+    order.set_paid()
+
+    ship.assert_not_called()
