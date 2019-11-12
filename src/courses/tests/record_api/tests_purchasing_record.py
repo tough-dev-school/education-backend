@@ -65,7 +65,7 @@ def test_user_auto_subscription(client, wants_to_subscribe):
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
         'price': 1900,
-        'subscribe': wants_to_subscribe
+        'subscribe': wants_to_subscribe,
     })
 
     placed = get_order()
