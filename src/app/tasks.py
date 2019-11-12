@@ -1,11 +1,13 @@
 from typing import List, Union
 
 from anymail.exceptions import AnymailRequestsAPIError
+from django.apps import apps
 from requests.exceptions import RequestException
 
 from app.celery import celery
 from app.clickmeeting import ClickMeetingClient, ClickMeetingHTTPException
 from app.mail.owl import TemplOwl
+from app.mailjet import AppMailjet, AppMailjetWrongResponseException
 
 
 @celery.task(
@@ -34,3 +36,17 @@ def send_mail(to: Union[List, str], template_id, subject: str = '', ctx: dict = 
 def invite_to_clickmeeting(room_url: str, email: str):
     client = ClickMeetingClient()
     client.invite(room_url, email)
+
+
+@celery.task(
+    autoretry_for=[RequestException, AppMailjetWrongResponseException],
+    retry_kwargs={
+        'max_retries': 10,
+        'countdown': 5,
+    },
+)
+def subscribe_to_mailjet(user_id: int):
+    user = apps.get_model('users.User').objects.get(pk=user_id)
+    mailjet = AppMailjet()
+
+    mailjet.subscribe(user)
