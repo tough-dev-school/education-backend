@@ -11,24 +11,6 @@ pytestmark = [
 ]
 
 
-@pytest.fixture(autouse=True)
-def ship(mocker):
-    return mocker.patch('shipping.factory.ship')
-
-
-@pytest.fixture
-def record(mixer):
-    return mixer.blend('courses.Record')
-
-
-@pytest.fixture
-def order(mixer, record, user):
-    order = mixer.blend('orders.Order', user=user)
-    order.set_item(record)
-
-    return order
-
-
 def test_works(order):
     assert order.paid is None
 

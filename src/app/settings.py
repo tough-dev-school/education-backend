@@ -189,6 +189,7 @@ CLICKMEETING_API_KEY = env('CLICKMEETING_API_KEY', default=None, cast=str)
 TINKOFF_TERMINAL_KEY = env('TINKOFF_TERMINAL_KEY', default=None)
 TINKOFF_TERMINAL_PASSWORD = env('TINKOFF_TERMINAL_PASSWORD', default=None)
 
+SEND_HAPPINESS_MESSAGES = env('SEND_HAPPINESS_MESSAGES', cast=bool, default=False)
 
 # Uncomment this lines to catch all runtime warnings as errors
 

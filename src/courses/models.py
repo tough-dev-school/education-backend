@@ -29,3 +29,6 @@ class Record(Shippable, TimestampedModel):
 
     def get_url(self, expires: int = 3 * 24 * 60 * 60):
         return AppS3().get_presigned_url(self.s3_object_id, expires=expires)
+
+    def __str__(self):
+        return f'Запись {self.course.name_genitive}'
