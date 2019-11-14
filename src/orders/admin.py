@@ -38,6 +38,13 @@ class OrderAdmin(ModelAdmin):
         'set_not_paid',
     ]
 
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related(
+            'user',
+            'record',
+            'course',
+        )
+
     @field(short_description=_('User'), admin_order_field='user__id')
     def customer(self, obj):
         return str(obj.user)
