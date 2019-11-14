@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'onetime',
     'shipping',
     'tinkoff',
+    'triggers',
 
     'anymail',
     'rest_framework',
