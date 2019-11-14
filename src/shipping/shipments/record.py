@@ -6,7 +6,6 @@ from shipping.shipments.base import BaseShipment
 
 
 class RecordTemplateContext(serializers.ModelSerializer):
-    name_genitive = serializers.CharField(source='course.name_genitive')
     record_link = serializers.CharField(source='get_url')
 
     class Meta:
