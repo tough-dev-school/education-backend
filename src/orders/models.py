@@ -4,7 +4,6 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from app.models import DefaultQuerySet, TimestampedModel, models
-from orders import tasks
 from orders.signals import order_got_shipped
 
 
@@ -79,7 +78,7 @@ class Order(TimestampedModel):
         self.save()
 
         if not is_already_paid and self.item is not None:
-            tasks.ship.delay(self.pk)
+            self.ship()
 
     def ship(self):
         """Ship the order. Better call it asynchronously"""
