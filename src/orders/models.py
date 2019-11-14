@@ -72,11 +72,13 @@ class Order(TimestampedModel):
         raise UnknownItemException('There is not foreignKey for {}'.format(item.__class__))
 
     def set_paid(self):
+        is_already_paid = self.paid is not None
+
         self.paid = timezone.now()
 
         self.save()
 
-        if self.item is not None:
+        if not is_already_paid and self.item is not None:
             tasks.ship.delay(self.pk)
 
     def ship(self):
