@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 
-from app.admin import ModelAdmin, admin
+from app.admin import ModelAdmin, action, admin, field
 from app.admin.filters import BooleanFilter
 from orders.models import Order
 
@@ -33,23 +33,42 @@ class OrderAdmin(ModelAdmin):
     list_filter = [
         OrderPaidFilter,
     ]
+    actions = [
+        'set_paid',
+        'set_not_paid',
+    ]
 
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related(
+            'user',
+            'record',
+            'course',
+        )
+
+    @field(short_description=_('User'), admin_order_field='user__id')
     def customer(self, obj):
         return str(obj.user)
 
-    customer.short_description = _('User')
-    customer.admin_order_field = ('user__id')
-
+    @field(short_description=_('Item'))
     def item(self, obj):
         return obj.item.name
 
-    item.short_description = _('Item')
-
+    @field(short_description=_('Is paid'), admin_order_field='paid')
     def is_paid(self, obj):
         if obj.paid is not None:
             return _('Paid')
 
         return _('Not paid')
 
-    is_paid.short_description = _('Is paid')
-    is_paid.admin_order_field = 'paid'
+    @action(short_description=_('Set paid'))
+    def set_paid(self, request, queryset):
+        for order in queryset.iterator():
+            order.set_paid()
+
+        self.message_user(request, f'{queryset.count()} orders set as paid')
+
+    @action(short_description=_('Set not paid'))
+    def set_not_paid(self, request, queryset):
+        queryset.update(shipped=None, paid=None)
+
+        self.message_user(request, f'{queryset.count()} orders set as not paid')

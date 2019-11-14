@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 
-from app.admin import ModelAdmin, admin
+from app.admin import ModelAdmin, action, admin
 from app.admin.filters import BooleanFilter
 from onetime.models import Token
 
@@ -45,9 +45,8 @@ class TokenAdmin(ModelAdmin):
             'record__course',
         )
 
+    @action(short_description=_('Renew'))
     def renew(self, request, queryset):
         """Action to renew token"""
         queryset.update(expires=None)
         self.message_user(request, f'{queryset.count()} tokens renewd')
-
-    renew.short_description = _('Renew')

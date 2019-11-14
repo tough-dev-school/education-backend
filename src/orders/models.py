@@ -4,7 +4,6 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from app.models import DefaultQuerySet, TimestampedModel, models
-from orders import tasks
 from orders.signals import order_got_shipped
 
 
@@ -72,12 +71,14 @@ class Order(TimestampedModel):
         raise UnknownItemException('There is not foreignKey for {}'.format(item.__class__))
 
     def set_paid(self):
+        is_already_paid = self.paid is not None
+
         self.paid = timezone.now()
 
         self.save()
 
-        if self.item is not None:
-            tasks.ship.delay(self.pk)
+        if not is_already_paid and self.item is not None:
+            self.ship()
 
     def ship(self):
         """Ship the order. Better call it asynchronously"""
