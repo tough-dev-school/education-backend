@@ -1,3 +1,6 @@
+from urllib.parse import urljoin
+
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from app.models import TimestampedModel, models
@@ -7,28 +10,47 @@ from shipping.mixins import Shippable
 
 class Course(Shippable, TimestampedModel):
     name = models.CharField(max_length=255)
-    name_genitive = models.CharField(_('Genitive name'), max_length=255)
-    name_receipt = models.CharField(_('Name for receipts'), max_length=255, help_text=_('Will be printed in receipts'))
+    name_genitive = models.CharField(_('Genitive name'), max_length=255, help_text='«мастер-класса о TDD». К примеру для записей.')
+    name_receipt = models.CharField(_('Name for receipts'), max_length=255, help_text='«посещение мастер-класса по TDD» или «Доступ к записи курсов кройки и шитья»')
+    full_name = models.CharField(
+        _('Full name for letters'), max_length=255,
+        help_text='Билет на мастер-класс о TDD или «запись курсов кройки и шитья»',
+    )
     slug = models.SlugField()
     clickmeeting_room_url = models.URLField(_('Clickmeeting room URL'), null=True, blank=True, help_text=_('If set, every user who purcashes this course gets invited'))
 
     class Meta:
         ordering = ['-id']
 
+    def get_absolute_url(self):
+        return urljoin(settings.ABSOLUTE_HOST, '/'.join(['courses', self.slug, '']))
+
 
 class Record(Shippable, TimestampedModel):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    name_receipt = models.CharField(_('Name for receipts'), max_length=255, help_text=_('Will be printed in receipts'))
+    name_receipt = models.CharField(_('Name for receipts'), max_length=255, help_text='«Доступ к записи курсов кройки и шитья»')
+    full_name = models.CharField(_('Full name for letters'), max_length=255, help_text='«Запись мастер-класса о TDD»')
     slug = models.SlugField()
+    full_name = models.CharField(
+        _('Full name for letters'), max_length=255,
+        help_text='«Запись мастер-класса о TDD»',
+    )
 
     s3_object_id = models.CharField(max_length=512)
 
     class Meta:
         ordering = ['-id']
 
+    @property
+    def name_genitive(self):
+        return self.course.name_genitive
+
     def get_url(self, expires: int = 3 * 24 * 60 * 60):
         return AppS3().get_presigned_url(self.s3_object_id, expires=expires)
 
     def __str__(self):
-        return f'Запись {self.course.name_genitive}'
+        return f'Запись {self.name_genitive}'
+
+    def get_absolute_url(self):
+        return self.course.get_absolute_url()
