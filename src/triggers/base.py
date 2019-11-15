@@ -18,8 +18,8 @@ class BaseTrigger(metaclass=ABCMeta):
         if not self.should_be_sent():
             return False
 
-        if self.send():
-            self.log_success()
+        self.send()
+        self.log_success()
 
     @abstractmethod
     def condition(self) -> bool:

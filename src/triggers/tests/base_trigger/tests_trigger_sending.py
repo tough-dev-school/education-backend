@@ -32,12 +32,3 @@ def test_log(mocker, test_trigger, order, condition):
     test_trigger(order)()
 
     assert log_entry(order).exists() is condition
-
-
-def test_log_on_successfull_send(send, test_trigger, order, condition):
-    sent_was_ok = condition
-    send.return_value = sent_was_ok
-
-    test_trigger(order)()
-
-    assert log_entry(order).exists() is condition
