@@ -6,8 +6,22 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def order(mixer):
-    return mixer.blend('orders.Order')
+def user(mixer):
+    return mixer.blend('users.User', first_name='Камаз', last_name='Отходов', email='kamaz.otkhodov@gmail.com')
+
+
+@pytest.fixture
+def course(mixer):
+    return mixer.blend('courses.Course', name='Курс кройки и шитья', full_name='Билет на курс кройки и шитья')
+
+
+@pytest.fixture
+def order(mixer, user, course):
+    order = mixer.blend('orders.Order', user=user)
+
+    order.set_item(course)
+
+    return order
 
 
 @pytest.fixture
