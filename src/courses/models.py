@@ -1,3 +1,6 @@
+from urllib.parse import urljoin
+
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from app.models import TimestampedModel, models
@@ -14,6 +17,9 @@ class Course(Shippable, TimestampedModel):
 
     class Meta:
         ordering = ['-id']
+
+    def get_absolute_url(self):
+        return urljoin(settings.ABSOLUTE_HOST, '/'.join(['courses', self.slug, '']))
 
 
 class Record(Shippable, TimestampedModel):
@@ -36,3 +42,6 @@ class Record(Shippable, TimestampedModel):
 
     def __str__(self):
         return f'Запись {self.name_genitive}'
+
+    def get_absolute_url(self):
+        return self.course.get_absolute_url()
