@@ -1,25 +1,29 @@
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
-from app.admin import ModelAdmin, TabularInline, admin
+from app.admin import ModelAdmin, StackedInline, admin
 from courses.models import Course, Record
 
 
-class RecordAdmin(TabularInline):
+class RecordAdmin(StackedInline):
     model = Record
 
-    fields = [
-        'name',
-        'name_receipt',
-        'slug',
-        's3_object_id',
-        'downloadable',
-    ]
     readonly_fields = [
         'downloadable',
     ]
 
-    prepopulated_fields = {'slug': ('name',)}
+    fieldsets = [
+        (_('Name'), {'fields': [
+            'name',
+            'name_receipt',
+            'full_name',
+        ]}),
+        (_('Access'), {'fields': [
+            'downloadable',
+            's3_object_id',
+        ]}),
+    ]
+
     extra = 0
 
     def downloadable(self, obj):
@@ -33,13 +37,24 @@ class RecordAdmin(TabularInline):
 
 @admin.register(Course)
 class CourseAdmin(ModelAdmin):
-    fields = [
+    fieldsets = [
+        (_('Name'), {'fields': [
+            'name',
+            'name_genitive',
+            'name_receipt',
+            'full_name',
+        ]}),
+        (_('Access'), {'fields': [
+            'slug',
+        ]}),
+    ]
+
+    list_display = [
+        'id',
         'name',
-        'name_genitive',
-        'name_receipt',
         'slug',
     ]
-    display_fields = fields
+
     prepopulated_fields = {
         'slug': ['name'],
     }

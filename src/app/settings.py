@@ -50,6 +50,7 @@ CSRF_TRUSTED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'app',
     'users',
     'orders',
     'courses',
@@ -149,7 +150,7 @@ STATIC_URL = env('STATIC_URL', default='/static/')
 STATIC_ROOT = env('STATIC_ROOT')
 
 SUIT_CONFIG = {
-    'ADMIN_NAME': 'myapp secret place',
+    'ADMIN_NAME': 'Админка курсов',
 }
 
 SENTRY_DSN = env('SENTRY_DSN', cast=str, default='')

@@ -10,8 +10,12 @@ from shipping.mixins import Shippable
 
 class Course(Shippable, TimestampedModel):
     name = models.CharField(max_length=255)
-    name_genitive = models.CharField(_('Genitive name'), max_length=255)
-    name_receipt = models.CharField(_('Name for receipts'), max_length=255, help_text=_('Will be printed in receipts'))
+    name_genitive = models.CharField(_('Genitive name'), max_length=255, help_text='«мастер-класса о TDD». К примеру для записей.')
+    name_receipt = models.CharField(_('Name for receipts'), max_length=255, help_text='«посещение мастер-класса по TDD» или «Доступ к записи курсов кройки и шитья»')
+    full_name = models.CharField(
+        _('Full name for letters'), max_length=255,
+        help_text='Билет на мастер-класс о TDD или «запись курсов кройки и шитья»',
+    )
     slug = models.SlugField()
     clickmeeting_room_url = models.URLField(_('Clickmeeting room URL'), null=True, blank=True, help_text=_('If set, every user who purcashes this course gets invited'))
 
@@ -25,8 +29,13 @@ class Course(Shippable, TimestampedModel):
 class Record(Shippable, TimestampedModel):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    name_receipt = models.CharField(_('Name for receipts'), max_length=255, help_text=_('Will be printed in receipts'))
+    name_receipt = models.CharField(_('Name for receipts'), max_length=255, help_text='«Доступ к записи курсов кройки и шитья»')
+    full_name = models.CharField(_('Full name for letters'), max_length=255, help_text='«Запись мастер-класса о TDD»')
     slug = models.SlugField()
+    full_name = models.CharField(
+        _('Full name for letters'), max_length=255,
+        help_text='«Запись мастер-класса о TDD»',
+    )
 
     s3_object_id = models.CharField(max_length=512)
 
