@@ -30,7 +30,8 @@ class BaseTrigger(metaclass=ABCMeta):
         raise NotImplementedError('Please define in your trigger')
 
     def is_sent(self) -> bool:
-        return TriggerLogEntry.objects.filter(order=self.order, trigger=self.name).exists()
+        return TriggerLogEntry.objects.filter(order=self.order, trigger=self.name).exists() or \
+            TriggerLogEntry.objects.filter(order__user__email=self.order.user.email, trigger=self.name).exists()
 
     def should_be_sent(self) -> bool:
         if self.is_sent():

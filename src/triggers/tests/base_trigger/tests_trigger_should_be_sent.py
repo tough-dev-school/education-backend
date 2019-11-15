@@ -20,6 +20,15 @@ def test_another_order(test_trigger, mixer, order, another_order):
     assert test_trigger(order).should_be_sent() is True
 
 
+def test_another_order_with_the_same_email(test_trigger, mixer, order, another_order):
+    mixer.blend('triggers.TriggerLogEntry', order=another_order, trigger='test')
+
+    another_order.user.email = order.user.email
+    another_order.user.save()
+
+    assert test_trigger(order).should_be_sent() is False
+
+
 def test_another_trigger(test_trigger, mixer, order):
     mixer.blend('triggers.TriggerLogEntry', order=order, trigger='another-name-that-does-not-exist')
 
