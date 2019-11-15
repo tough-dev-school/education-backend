@@ -1,6 +1,7 @@
 import os
 
 import environ
+from celery.schedules import crontab
 
 root = environ.Path(__file__) - 2        # three folder back (/a/b/c/ - 3 = /)
 env = environ.Env(DEBUG=(bool, False))  # set default values and casting
@@ -169,6 +170,12 @@ BROKER_URL = env('CELERY_BACKEND')
 CELERY_ALWAYS_EAGER = env('CELERY_ALWAYS_EAGER', cast=bool, default=DEBUG)  # by default in debug mode we run all celery tasks in foregroud.
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_ENABLE_UTC = False
+CELERYBEAT_SCHEDULE = {
+    'run_started_purchase_trigger': {
+        'task': 'triggers.tasks.check_for_started_purchase_triggers',
+        'schedule': crontab(hour='*', minute=15),
+    },
+}
 
 ABSOLUTE_HOST = env('ABSOLUTE_HOST', cast=str, default='https://app.pmdaily.ru')
 
