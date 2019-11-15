@@ -31,4 +31,5 @@ class StartedPurchaseTrigger(BaseTrigger):
             'item': self.order.item.full_name,
             'item_lower': lower_first(self.order.item.full_name),
             'firstname': self.order.user.first_name,
+            'item_url': self.order.item.get_absolute_url(),
         }
