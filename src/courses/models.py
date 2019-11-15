@@ -23,7 +23,7 @@ class Course(Shippable, TimestampedModel):
         ordering = ['-id']
 
     def get_absolute_url(self):
-        return urljoin(settings.ABSOLUTE_HOST, '/'.join(['courses', self.slug, '']))
+        return urljoin(settings.FRONTEND_URL, '/'.join(['courses', self.slug, '']))
 
 
 class Record(Shippable, TimestampedModel):

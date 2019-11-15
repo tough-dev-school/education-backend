@@ -5,7 +5,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture(autouse=True)
 def set_main_website(settings):
-    settings.ABSOLUTE_HOST = 'https://test.mocked'
+    settings.FRONTEND_URL = 'https://test.mocked'
 
 
 def test(mixer):
