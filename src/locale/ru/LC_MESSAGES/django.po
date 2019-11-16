@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-16 14:25+0300\n"
+"POT-Creation-Date: 2019-11-16 14:32+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,11 +44,11 @@ msgstr "Ссылка на скачиваие"
 msgid "Genitive name"
 msgstr "В родительном падеже"
 
-#: courses/models.py:14 courses/models.py:32
+#: courses/models.py:14 courses/models.py:34
 msgid "Name for receipts"
 msgstr "Для чеков"
 
-#: courses/models.py:16 courses/models.py:33 courses/models.py:36
+#: courses/models.py:16 courses/models.py:35 courses/models.py:38
 msgid "Full name for letters"
 msgstr "Для писем"
 
@@ -60,6 +60,22 @@ msgstr "Ссылка на ClickMeeting"
 msgid "If set, every user who purcashes this course gets invited"
 msgstr "Купившие курс приглашаются автоматически"
 
+#: courses/models.py:24
+msgid "Course"
+msgstr "Курс"
+
+#: courses/models.py:25
+msgid "Courses"
+msgstr "Курсы"
+
+#: courses/models.py:46
+msgid "Record"
+msgstr "Запись"
+
+#: courses/models.py:47
+msgid "Records"
+msgstr "Записи"
+
 #: onetime/admin.py:9
 msgid "Is active"
 msgstr "Включено"
@@ -67,6 +83,14 @@ msgstr "Включено"
 #: onetime/admin.py:48
 msgid "Renew"
 msgstr "Отметить как неиспользованную"
+
+#: onetime/models.py:29
+msgid "Onetime token"
+msgstr "Одноразовый токен"
+
+#: onetime/models.py:30
+msgid "Onetime tokens"
+msgstr "Одноразовые токены"
 
 #: orders/admin.py:9 orders/admin.py:56
 msgid "Is paid"
@@ -107,6 +131,14 @@ msgstr "Заказ выполнится автоматически"
 #: orders/models.py:39
 msgid "Date when order was shipped"
 msgstr "Дата выполнения"
+
+#: orders/models.py:46
+msgid "Order"
+msgstr "Заказ"
+
+#: orders/models.py:47
+msgid "Orders"
+msgstr "Заказы"
 
 #: tinkoff/models.py:8
 msgid "Authorized"

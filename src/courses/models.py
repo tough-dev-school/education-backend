@@ -21,6 +21,8 @@ class Course(Shippable, TimestampedModel):
 
     class Meta:
         ordering = ['-id']
+        verbose_name = _('Course')
+        verbose_name_plural = _('Courses')
 
     def get_absolute_url(self):
         return urljoin(settings.FRONTEND_URL, '/'.join(['courses', self.slug, '']))
@@ -41,6 +43,8 @@ class Record(Shippable, TimestampedModel):
 
     class Meta:
         ordering = ['-id']
+        verbose_name = _('Record')
+        verbose_name_plural = _('Records')
 
     @property
     def name_genitive(self):

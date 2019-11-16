@@ -41,6 +41,11 @@ class Order(TimestampedModel):
     course = ItemField('courses.Course', null=True, blank=True, on_delete=models.PROTECT)
     record = ItemField('courses.Record', null=True, blank=True, on_delete=models.PROTECT)
 
+    class Meta:
+        ordering = ['-id']
+        verbose_name = _('Order')
+        verbose_name_plural = _('Orders')
+
     def __str__(self):
         return f'Order #{self.pk}'
 
