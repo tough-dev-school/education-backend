@@ -11,7 +11,8 @@ SITE_ROOT = root()
 USE_L10N = True
 USE_i18N = True
 
-LANGUAGE_CODE = "en"
+LANGUAGE_CODE = 'ru'
+LOCALE_PATHS = ['locale']
 
 INTERNAL_IPS = [
     '127.0.0.1',
