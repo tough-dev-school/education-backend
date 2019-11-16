@@ -10,6 +10,7 @@ ENV CELERY_BACKEND redis://redis:6379/8
 WORKDIR /srv
 ADD src /srv/
 
+RUN ./manage.py compilemessages
 RUN ./manage.py collectstatic --noinput
 
 VOLUME /srv

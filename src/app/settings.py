@@ -11,7 +11,8 @@ SITE_ROOT = root()
 USE_L10N = True
 USE_i18N = True
 
-LANGUAGE_CODE = "en"
+LANGUAGE_CODE = 'ru'
+LOCALE_PATHS = ['locale']
 
 INTERNAL_IPS = [
     '127.0.0.1',
@@ -152,6 +153,15 @@ STATIC_ROOT = env('STATIC_ROOT')
 
 SUIT_CONFIG = {
     'ADMIN_NAME': 'Админка курсов',
+    'MENU_ICONS': {
+        'courses': 'icon-folder-close',
+        'orders': 'icon-shopping-cart',
+        'onetime': 'icon-lock',
+        'auth': 'icon-lock',
+    },
+    'MENU_EXCLUDE': [
+        'authtoken',
+    ],
 }
 
 SENTRY_DSN = env('SENTRY_DSN', cast=str, default='')

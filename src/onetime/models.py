@@ -3,6 +3,7 @@ from datetime import timedelta
 
 from django.db.models import Q
 from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
 
 from app.models import DefaultQuerySet, TimestampedModel, models
 
@@ -23,6 +24,10 @@ class Token(TimestampedModel):
     token = models.CharField(max_length=36, default=uuid.uuid4, unique=True, db_index=True)
     record = models.ForeignKey('courses.Record', on_delete=models.CASCADE)
     expires = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = _('Onetime token')
+        verbose_name_plural = _('Onetime tokens')
 
     def __str__(self):
         return str(self.token)
