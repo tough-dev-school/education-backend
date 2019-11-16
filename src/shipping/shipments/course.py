@@ -17,7 +17,6 @@ class CourseTemplateContext(serializers.ModelSerializer):
 
 @factory.register(Course)
 class CourseShipment(BaseShipment):
-    template_id = 100500
 
     @property
     def course(self):
@@ -25,7 +24,6 @@ class CourseShipment(BaseShipment):
 
     def ship(self):
         self.invite()
-        self.send_email()
 
     def invite(self):
         if self.course.clickmeeting_room_url is not None:
