@@ -1,3 +1,9 @@
 .inline-group {
   margin-top: 150px;
 }
+
+input[type="text"],
+input[type="url"]
+{
+  width: 350px;
+}
