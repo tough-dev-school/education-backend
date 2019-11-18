@@ -32,7 +32,16 @@ class OrderAdmin(ModelAdmin):
     ]
 
     list_filter = [
+        'course',
+        'record',
         OrderPaidFilter,
+    ]
+    search_fields = [
+        'course__name',
+        'record__course__name',
+        'user__first_name',
+        'user__last_name',
+        'user__email',
     ]
     actions = [
         'set_paid',
