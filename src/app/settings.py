@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
+    'rest_framework_tracking',
 
     'suit',
     'django.contrib.admin',
