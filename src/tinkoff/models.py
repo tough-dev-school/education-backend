@@ -21,7 +21,7 @@ class PaymentNotification(TimestampedModel):
     error_code = models.CharField(max_length=512, null=True)
     amount = models.DecimalField(decimal_places=2, max_digits=9)
     rebill_id = models.BigIntegerField(null=True)
-    card_id = models.IntegerField()
+    card_id = models.CharField(null=True, max_length=64)
     pan = models.CharField(max_length=128, null=True)
     data = models.TextField(null=True)
     token = models.CharField(max_length=512)

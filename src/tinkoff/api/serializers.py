@@ -13,7 +13,7 @@ class PaymentNotificationSerializer(serializers.ModelSerializer):
     ErrorCode = serializers.CharField(source='error_code', required=False, allow_null=True)
     Amount = serializers.IntegerField(source='amount')
     RebillId = serializers.IntegerField(source='rebill_id', required=False, allow_null=True)
-    CardId = serializers.IntegerField(source='card_id')
+    CardId = serializers.CharField(source='card_id', required=False, allow_null=True, allow_blank=True)
     Pan = serializers.CharField(source='pan', required=False, allow_null=True)
     DATA = serializers.CharField(source='data', required=False, allow_null=True)
     Token = serializers.CharField(source='token')
