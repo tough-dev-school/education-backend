@@ -31,7 +31,13 @@ class BaseShipment(metaclass=ABCMeta):
         )
 
     def get_template_id(self):
-        if self.template_id is None:
+        if hasattr(self.stuff_to_ship, 'get_template_id'):  # per-item template_id
+            template_id = self.stuff_to_ship.get_template_id()
+
+            if template_id is not None:
+                return template_id
+
+        if self.template_id is None:  # default template_id
             raise ImproperlyConfigured('Please send template_id prop before sending mail')
 
         return self.template_id
