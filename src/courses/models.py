@@ -18,6 +18,7 @@ class Course(Shippable, TimestampedModel):
     )
     slug = models.SlugField()
     clickmeeting_room_url = models.URLField(_('Clickmeeting room URL'), null=True, blank=True, help_text=_('If set, every user who purcashes this course gets invited'))
+    template_id = models.CharField(_('Mailjet template_id'), max_length=256, blank=True, null=True, help_text=_('Leave it blank for the default template'))
 
     class Meta:
         ordering = ['-id']
@@ -40,6 +41,7 @@ class Record(Shippable, TimestampedModel):
     )
 
     s3_object_id = models.CharField(max_length=512)
+    template_id = models.CharField(_('Mailjet template_id'), max_length=256, blank=True, null=True, help_text=_('Leave it blank for the default template'))
 
     class Meta:
         ordering = ['-id']

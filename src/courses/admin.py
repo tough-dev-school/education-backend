@@ -17,6 +17,7 @@ class RecordAdmin(StackedInline):
             'name',
             'name_receipt',
             'full_name',
+            'template_id',
         ]}),
         (_('Access'), {'fields': [
             'downloadable',

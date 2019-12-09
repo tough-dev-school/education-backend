@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-16 14:32+0300\n"
+"POT-Creation-Date: 2019-12-09 22:45+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,15 +28,15 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: courses/admin.py:16 courses/admin.py:41
+#: courses/admin.py:16 courses/admin.py:42
 msgid "Name"
 msgstr "Название"
 
-#: courses/admin.py:21 courses/admin.py:47
+#: courses/admin.py:22 courses/admin.py:48
 msgid "Access"
 msgstr "Доступы"
 
-#: courses/admin.py:35
+#: courses/admin.py:36
 msgid "Downloadable link"
 msgstr "Ссылка на скачиваие"
 
@@ -44,11 +44,11 @@ msgstr "Ссылка на скачиваие"
 msgid "Genitive name"
 msgstr "В родительном падеже"
 
-#: courses/models.py:14 courses/models.py:34
+#: courses/models.py:14 courses/models.py:35
 msgid "Name for receipts"
 msgstr "Для чеков"
 
-#: courses/models.py:16 courses/models.py:35 courses/models.py:38
+#: courses/models.py:16 courses/models.py:36 courses/models.py:39
 msgid "Full name for letters"
 msgstr "Для писем"
 
@@ -60,19 +60,27 @@ msgstr "Ссылка на ClickMeeting"
 msgid "If set, every user who purcashes this course gets invited"
 msgstr "Купившие курс приглашаются автоматически"
 
-#: courses/models.py:24
+#: courses/models.py:21 courses/models.py:44
+msgid "Mailjet template_id"
+msgstr "ID шаблона в мейлджете"
+
+#: courses/models.py:21 courses/models.py:44
+msgid "Leave it blank for the default template"
+msgstr "Если оставить пустым — будет дефолтным"
+
+#: courses/models.py:25
 msgid "Course"
 msgstr "Курс"
 
-#: courses/models.py:25
+#: courses/models.py:26
 msgid "Courses"
 msgstr "Курсы"
 
-#: courses/models.py:46
+#: courses/models.py:48
 msgid "Record"
 msgstr "Запись"
 
-#: courses/models.py:47
+#: courses/models.py:49
 msgid "Records"
 msgstr "Записи"
 
@@ -92,31 +100,31 @@ msgstr "Одноразовый токен"
 msgid "Onetime tokens"
 msgstr "Одноразовые токены"
 
-#: orders/admin.py:9 orders/admin.py:56
+#: orders/admin.py:10 orders/admin.py:70
 msgid "Is paid"
 msgstr "Оплачен"
 
-#: orders/admin.py:48
+#: orders/admin.py:58
 msgid "User"
 msgstr "Юзер"
 
-#: orders/admin.py:52
+#: orders/admin.py:66
 msgid "Item"
 msgstr "Товар"
 
-#: orders/admin.py:59
+#: orders/admin.py:73
 msgid "Paid"
 msgstr "Оплачен"
 
-#: orders/admin.py:61
+#: orders/admin.py:75
 msgid "Not paid"
 msgstr "Не оплачен"
 
-#: orders/admin.py:63
+#: orders/admin.py:77
 msgid "Set paid"
 msgstr "Пометить оплаченным"
 
-#: orders/admin.py:70
+#: orders/admin.py:84
 msgid "Set not paid"
 msgstr "Пометить неоплаченынм"
 
