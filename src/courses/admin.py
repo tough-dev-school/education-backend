@@ -57,6 +57,11 @@ class CourseAdmin(ModelAdmin):
         'slug',
     ]
 
+    list_display_links = [
+        'id',
+        'name',
+    ]
+
     prepopulated_fields = {
         'slug': ['name'],
     }
