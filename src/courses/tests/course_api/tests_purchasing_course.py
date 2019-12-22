@@ -32,12 +32,12 @@ def get_order():
     return Order.objects.last()
 
 
-def test_order(client, course):
-    client.post('/api/v2/courses/ruloning-oboev/purchase/', {
+def test_order(api, course):
+    api.post('/api/v2/courses/ruloning-oboev/purchase/', {
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
         'price': 1900,
-    })
+    }, format='multipart', expected_status_code=302)
 
     placed = get_order()
 
@@ -45,12 +45,12 @@ def test_order(client, course):
     assert placed.price == Decimal('1900.00')
 
 
-def test_user(client, course):
-    client.post('/api/v2/courses/ruloning-oboev/purchase/', {
+def test_user(api, course):
+    api.post('/api/v2/courses/ruloning-oboev/purchase/', {
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
         'price': 1900,
-    })
+    }, format='multipart', expected_status_code=302)
 
     placed = get_order()
 
@@ -60,49 +60,49 @@ def test_user(client, course):
 
 
 @pytest.mark.parametrize('wants_to_subscribe', [True, False])
-def test_user_auto_subscription(client, wants_to_subscribe):
-    client.post('/api/v2/courses/ruloning-oboev/purchase/', {
+def test_user_auto_subscription(api, wants_to_subscribe):
+    api.post('/api/v2/courses/ruloning-oboev/purchase/', {
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
         'price': 1900,
         'subscribe': wants_to_subscribe,
-    })
+    }, format='multipart', expected_status_code=302)
 
     placed = get_order()
 
     assert placed.user.subscribed is wants_to_subscribe
 
 
-def test_by_default_user_is_not_subscribed(client):
-    client.post('/api/v2/courses/ruloning-oboev/purchase/', {
+def test_by_default_user_is_not_subscribed(api):
+    api.post('/api/v2/courses/ruloning-oboev/purchase/', {
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
         'price': 1900,
-    })
+    }, format='multipart', expected_status_code=302)
 
     placed = get_order()
 
     assert placed.user.subscribed is False
 
 
-def test_redirect(client, course):
-    response = client.post('/api/v2/courses/ruloning-oboev/purchase/', {
+def test_redirect(api, course):
+    response = api.post('/api/v2/courses/ruloning-oboev/purchase/', {
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
         'price': 1900,
-    })
+    }, format='multipart', expected_status_code=302, as_response=True)
 
     assert response.status_code == 302
     assert response['Location'] == 'https://bank.test/pay/'
 
 
-def test_custom_success_url(client, course, bank):
-    client.post('/api/v2/courses/ruloning-oboev/purchase/', {
+def test_custom_success_url(api, course, bank):
+    api.post('/api/v2/courses/ruloning-oboev/purchase/', {
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
         'price': 1900,
         'success_url': 'https://ok.true/yes',
-    })
+    }, format='multipart', expected_status_code=302)
 
     assert bank.call_args[1]['success_url'] == 'https://ok.true/yes'
 
