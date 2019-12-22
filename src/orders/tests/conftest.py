@@ -11,3 +11,8 @@ def course(mixer):
 @pytest.fixture
 def record(mixer, course):
     return mixer.blend('courses.Record', course=course)
+
+
+@pytest.fixture
+def bundle(mixer):
+    return mixer.blend('courses.Bundle')

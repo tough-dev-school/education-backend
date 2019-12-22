@@ -19,3 +19,9 @@ def test_order_with_course(order, course):
     order = order(course=course)
 
     assert order.item == course
+
+
+def test_order_with_bundle(order, bundle):
+    order = order(bundle=bundle)
+
+    assert order.item == bundle

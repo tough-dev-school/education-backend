@@ -29,6 +29,15 @@ def test_course(order, course):
     assert order.course == course
 
 
+def test_bundle(order, bundle):
+    order.set_item(bundle)
+    order.save()
+
+    order.refresh_from_db()
+
+    assert order.bundle == bundle
+
+
 def test_exception_when_there_is_not_foreignkey(order):
     with pytest.raises(UnknownItemException):
         order.set_item(order)

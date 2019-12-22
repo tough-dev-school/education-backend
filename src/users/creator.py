@@ -34,7 +34,6 @@ class UserCreator:
         self.resulting_user = self.get() or self.create()
 
         self.after_creation()
-
         return self.resulting_user
 
     def get(self):
