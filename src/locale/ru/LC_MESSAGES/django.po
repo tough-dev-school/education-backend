@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-09 22:45+0300\n"
+"POT-Creation-Date: 2019-12-22 15:16+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,11 +32,11 @@ msgstr "Нет"
 msgid "Name"
 msgstr "Название"
 
-#: courses/admin.py:22 courses/admin.py:48
+#: courses/admin.py:21 courses/admin.py:47
 msgid "Access"
 msgstr "Доступы"
 
-#: courses/admin.py:36
+#: courses/admin.py:56
 msgid "Downloadable link"
 msgstr "Ссылка на скачиваие"
 
@@ -83,6 +83,14 @@ msgstr "Запись"
 #: courses/models.py:49
 msgid "Records"
 msgstr "Записи"
+
+#: courses/models.py:78
+msgid "Bundle"
+msgstr "Набор"
+
+#: courses/models.py:79
+msgid "Bundles"
+msgstr "Наборы"
 
 #: onetime/admin.py:9
 msgid "Is active"
@@ -140,11 +148,11 @@ msgstr "Заказ выполнится автоматически"
 msgid "Date when order was shipped"
 msgstr "Дата выполнения"
 
-#: orders/models.py:46
+#: orders/models.py:47
 msgid "Order"
 msgstr "Заказ"
 
-#: orders/models.py:47
+#: orders/models.py:48
 msgid "Orders"
 msgstr "Заказы"
 

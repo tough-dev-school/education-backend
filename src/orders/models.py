@@ -40,6 +40,7 @@ class Order(TimestampedModel):
 
     course = ItemField('courses.Course', null=True, blank=True, on_delete=models.PROTECT)
     record = ItemField('courses.Record', null=True, blank=True, on_delete=models.PROTECT)
+    bundle = ItemField('courses.Bundle', null=True, blank=True, on_delete=models.PROTECT)
 
     class Meta:
         ordering = ['-id']

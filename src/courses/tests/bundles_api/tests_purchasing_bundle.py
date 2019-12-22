@@ -5,12 +5,10 @@ import pytest
 from orders.models import Order
 from tinkoff.client import TinkoffBank
 
-pytestmark = [pytest.mark.django_db]
-
-
-@pytest.fixture(autouse=True)
-def record(mixer):
-    return mixer.blend('courses.Record', slug='home-video')
+pytestmark = [
+    pytest.mark.django_db,
+    pytest.mark.usefixtures('bundle'),
+]
 
 
 @pytest.fixture(autouse=True)
@@ -32,8 +30,8 @@ def get_order():
     return Order.objects.last()
 
 
-def test_order(api, record):
-    api.post('/api/v2/records/home-video/purchase/', {
+def test_order(api, bundle):
+    api.post('/api/v2/bundles/pinetree-tickets/purchase/', {
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
         'price': 1900,
@@ -41,12 +39,12 @@ def test_order(api, record):
 
     placed = get_order()
 
-    assert placed.item == record
+    assert placed.item == bundle
     assert placed.price == Decimal('1900.00')
 
 
-def test_user(api, record):
-    api.post('/api/v2/records/home-video/purchase/', {
+def test_user(api, bundle):
+    api.post('/api/v2/bundles/pinetree-tickets/purchase/', {
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
         'price': 1900,
@@ -61,7 +59,7 @@ def test_user(api, record):
 
 @pytest.mark.parametrize('wants_to_subscribe', [True, False])
 def test_user_auto_subscription(api, wants_to_subscribe):
-    api.post('/api/v2/records/home-video/purchase/', {
+    api.post('/api/v2/bundles/pinetree-tickets/purchase/', {
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
         'price': 1900,
@@ -74,7 +72,7 @@ def test_user_auto_subscription(api, wants_to_subscribe):
 
 
 def test_by_default_user_is_not_subscribed(api):
-    api.post('/api/v2/records/home-video/purchase/', {
+    api.post('/api/v2/bundles/pinetree-tickets/purchase/', {
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
         'price': 1900,
@@ -85,8 +83,8 @@ def test_by_default_user_is_not_subscribed(api):
     assert placed.user.subscribed is False
 
 
-def test_redirect(api, record):
-    response = api.post('/api/v2/records/home-video/purchase/', {
+def test_redirect(api, bundle):
+    response = api.post('/api/v2/bundles/pinetree-tickets/purchase/', {
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
         'price': 1900,
@@ -96,8 +94,8 @@ def test_redirect(api, record):
     assert response['Location'] == 'https://bank.test/pay/'
 
 
-def test_custom_success_url(api, record, bank):
-    api.post('/api/v2/records/home-video/purchase/', {
+def test_custom_success_url(api, bundle, bank):
+    api.post('/api/v2/bundles/pinetree-tickets/purchase/', {
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
         'price': 1900,
@@ -108,6 +106,6 @@ def test_custom_success_url(api, record, bank):
 
 
 def test_invalid(client):
-    response = client.post('/api/v2/records/home-video/purchase/', {})
+    response = client.post('/api/v2/bundles/pinetree-tickets/purchase/', {})
 
     assert response.status_code == 400

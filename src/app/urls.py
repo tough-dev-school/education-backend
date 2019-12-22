@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from django.urls import path
 from rest_framework import routers
 
-from courses.api.viewsets import CourseViewSet, RecordViewSet
+from courses.api.viewsets import BundleViewSet, CourseViewSet, RecordViewSet
 from onetime.api.views import TokenDownloadView
 from tinkoff.api.views import TinkoffPaymentNotificationsView
 from users.api.views import UserView
@@ -15,6 +15,8 @@ from users.api.views import UserView
 router = routers.SimpleRouter()
 router.register('courses', CourseViewSet)
 router.register('records', RecordViewSet)
+router.register('bundles', BundleViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
