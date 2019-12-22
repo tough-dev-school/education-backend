@@ -23,6 +23,10 @@ class BundleAdmin(ModelAdmin):
             'name_receipt',
             'full_name',
         ]}),
+        (_('Items'), {'fields': [
+            'records',
+            'courses',
+        ]}),
     ]
 
     prepopulated_fields = {
