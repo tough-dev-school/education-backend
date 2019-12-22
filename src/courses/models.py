@@ -82,7 +82,7 @@ class Bundle(Shippable, TimestampedModel):
 
     def ship(self, to):
         for record in self.records.iterator():
-            record.ship()
+            record.ship(to=to)
 
         for course in self.courses.iterator():
-            course.ship()
+            course.ship(to=to)
