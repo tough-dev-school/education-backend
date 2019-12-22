@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-16 14:32+0300\n"
+"POT-Creation-Date: 2019-12-22 15:16+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,15 +28,15 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: courses/admin.py:16 courses/admin.py:41
+#: courses/admin.py:16 courses/admin.py:37 courses/admin.py:62
 msgid "Name"
 msgstr "Название"
 
-#: courses/admin.py:21 courses/admin.py:47
+#: courses/admin.py:42 courses/admin.py:68
 msgid "Access"
 msgstr "Доступы"
 
-#: courses/admin.py:35
+#: courses/admin.py:56
 msgid "Downloadable link"
 msgstr "Ссылка на скачиваие"
 
@@ -44,11 +44,12 @@ msgstr "Ссылка на скачиваие"
 msgid "Genitive name"
 msgstr "В родительном падеже"
 
-#: courses/models.py:14 courses/models.py:34
+#: courses/models.py:14 courses/models.py:34 courses/models.py:68
 msgid "Name for receipts"
 msgstr "Для чеков"
 
 #: courses/models.py:16 courses/models.py:35 courses/models.py:38
+#: courses/models.py:69 courses/models.py:72
 msgid "Full name for letters"
 msgstr "Для писем"
 
@@ -76,6 +77,14 @@ msgstr "Запись"
 msgid "Records"
 msgstr "Записи"
 
+#: courses/models.py:78
+msgid "Bundle"
+msgstr "Набор"
+
+#: courses/models.py:79
+msgid "Bundles"
+msgstr "Наборы"
+
 #: onetime/admin.py:9
 msgid "Is active"
 msgstr "Включено"
@@ -92,31 +101,31 @@ msgstr "Одноразовый токен"
 msgid "Onetime tokens"
 msgstr "Одноразовые токены"
 
-#: orders/admin.py:9 orders/admin.py:56
+#: orders/admin.py:10 orders/admin.py:70
 msgid "Is paid"
 msgstr "Оплачен"
 
-#: orders/admin.py:48
+#: orders/admin.py:58
 msgid "User"
 msgstr "Юзер"
 
-#: orders/admin.py:52
+#: orders/admin.py:66
 msgid "Item"
 msgstr "Товар"
 
-#: orders/admin.py:59
+#: orders/admin.py:73
 msgid "Paid"
 msgstr "Оплачен"
 
-#: orders/admin.py:61
+#: orders/admin.py:75
 msgid "Not paid"
 msgstr "Не оплачен"
 
-#: orders/admin.py:63
+#: orders/admin.py:77
 msgid "Set paid"
 msgstr "Пометить оплаченным"
 
-#: orders/admin.py:70
+#: orders/admin.py:84
 msgid "Set not paid"
 msgstr "Пометить неоплаченынм"
 
@@ -132,11 +141,11 @@ msgstr "Заказ выполнится автоматически"
 msgid "Date when order was shipped"
 msgstr "Дата выполнения"
 
-#: orders/models.py:46
+#: orders/models.py:47
 msgid "Order"
 msgstr "Заказ"
 
-#: orders/models.py:47
+#: orders/models.py:48
 msgid "Orders"
 msgstr "Заказы"
 
