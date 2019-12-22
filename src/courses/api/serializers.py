@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from courses.models import Course, Record
+from courses.models import Bundle, Course, Record
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -15,6 +15,15 @@ class CourseSerializer(serializers.ModelSerializer):
 class RecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Record
+        fields = [
+            'slug',
+            'name',
+        ]
+
+
+class BundleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bundle
         fields = [
             'slug',
             'name',
