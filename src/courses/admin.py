@@ -25,7 +25,6 @@ class BundleAdmin(ModelAdmin):
         ]}),
         (_('Items'), {'fields': [
             'records',
-            'courses',
         ]}),
     ]
 
