@@ -42,6 +42,7 @@ class RecordAdmin(StackedInline):
             'name',
             'name_receipt',
             'full_name',
+            'template_id',
         ]}),
         (_('Access'), {'fields': [
             'downloadable',
@@ -79,6 +80,11 @@ class CourseAdmin(ModelAdmin):
         'id',
         'name',
         'slug',
+    ]
+
+    list_display_links = [
+        'id',
+        'name',
     ]
 
     prepopulated_fields = {

@@ -28,11 +28,11 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: courses/admin.py:16 courses/admin.py:37 courses/admin.py:62
+#: courses/admin.py:16 courses/admin.py:42
 msgid "Name"
 msgstr "Название"
 
-#: courses/admin.py:42 courses/admin.py:68
+#: courses/admin.py:21 courses/admin.py:47
 msgid "Access"
 msgstr "Доступы"
 
@@ -44,12 +44,11 @@ msgstr "Ссылка на скачиваие"
 msgid "Genitive name"
 msgstr "В родительном падеже"
 
-#: courses/models.py:14 courses/models.py:34 courses/models.py:68
+#: courses/models.py:14 courses/models.py:35
 msgid "Name for receipts"
 msgstr "Для чеков"
 
-#: courses/models.py:16 courses/models.py:35 courses/models.py:38
-#: courses/models.py:69 courses/models.py:72
+#: courses/models.py:16 courses/models.py:36 courses/models.py:39
 msgid "Full name for letters"
 msgstr "Для писем"
 
@@ -61,19 +60,27 @@ msgstr "Ссылка на ClickMeeting"
 msgid "If set, every user who purcashes this course gets invited"
 msgstr "Купившие курс приглашаются автоматически"
 
-#: courses/models.py:24
+#: courses/models.py:21 courses/models.py:44
+msgid "Mailjet template_id"
+msgstr "ID шаблона в мейлджете"
+
+#: courses/models.py:21 courses/models.py:44
+msgid "Leave it blank for the default template"
+msgstr "Если оставить пустым — будет дефолтным"
+
+#: courses/models.py:25
 msgid "Course"
 msgstr "Курс"
 
-#: courses/models.py:25
+#: courses/models.py:26
 msgid "Courses"
 msgstr "Курсы"
 
-#: courses/models.py:46
+#: courses/models.py:48
 msgid "Record"
 msgstr "Запись"
 
-#: courses/models.py:47
+#: courses/models.py:49
 msgid "Records"
 msgstr "Записи"
 
