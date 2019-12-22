@@ -58,3 +58,29 @@ class Record(Shippable, TimestampedModel):
 
     def get_absolute_url(self):
         return self.course.get_absolute_url()
+
+
+class Bundle(Shippable, TimestampedModel):
+    records = models.ManyToManyField('courses.Record')
+    courses = models.ManyToManyField('courses.Course')
+
+    name = models.CharField(max_length=255)
+    name_receipt = models.CharField(_('Name for receipts'), max_length=255, help_text='«Доступ к записи курсов кройки и шитья»')
+    full_name = models.CharField(_('Full name for letters'), max_length=255, help_text='«Запись мастер-класса о TDD»')
+    slug = models.SlugField()
+    full_name = models.CharField(
+        _('Full name for letters'), max_length=255,
+        help_text='«Запись мастер-класса о TDD»',
+    )
+
+    class Meta:
+        ordering = ['-id']
+        verbose_name = _('Bundle')
+        verbose_name_plural = _('Bundles')
+
+    def ship(self, to):
+        for record in self.records.iterator():
+            record.ship()
+
+        for course in self.courses.iterator():
+            course.ship()
