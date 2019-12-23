@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Iterable, Optional
 
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -60,17 +60,27 @@ class Order(TimestampedModel):
                     return getattr(self, field.name)
 
     @classmethod
+    def _iterate_items(cls) -> Iterable[models.fields.Field]:
+        for field in cls._meta.get_fields():
+            if getattr(field, '_is_item', False):
+                yield field
+
+    @classmethod
     def get_item_foreignkey(cls, item) -> Optional[models.fields.Field]:
         """
         Given an item model, returns the ForeignKey to it"""
-        for field in cls._meta.get_fields():
-            if getattr(field, '_is_item', False):
-                if field.related_model == item.__class__:
-                    return field.name
+        for field in cls._iterate_items():
+            if field.related_model == item.__class__:
+                return field.name
+
+    def reset_items(self):
+        for field in self._iterate_items():
+            setattr(self, field.name, None)
 
     def set_item(self, item):
         foreign_key = self.__class__.get_item_foreignkey(item)
         if foreign_key is not None:
+            self.reset_items()
             setattr(self, foreign_key, item)
             return
 
