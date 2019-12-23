@@ -80,6 +80,9 @@ class Bundle(Shippable, TimestampedModel):
         verbose_name = _('Bundle')
         verbose_name_plural = _('Bundles')
 
+    def get_absolute_url(self):
+        return urljoin(settings.FRONTEND_URL, '/'.join(['bundles', self.slug, '']))
+
     def ship(self, to):
         for record in self.records.iterator():
             record.ship(to=to)
