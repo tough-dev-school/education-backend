@@ -16,6 +16,11 @@ def course(mixer):
 
 
 @pytest.fixture
+def record(mixer, course):
+    return mixer.blend('courses.Record', course=course)
+
+
+@pytest.fixture
 def order(mixer, user, course):
     order = mixer.blend('orders.Order', user=user)
 
