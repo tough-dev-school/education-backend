@@ -23,7 +23,7 @@ class RecordPurchaseTrigger(BaseTrigger):
             self.order.bundle is None
 
     def _is_created_recently(self) -> bool:
-        return timezone.now() - self.PERIOD > self.order.created > timezone.now() - self.PERIOD
+        return timezone.now() - self.PERIOD > self.order.created > timezone.now() - self.PERIOD * 2
 
     def send(self):
         send_mail.delay(
