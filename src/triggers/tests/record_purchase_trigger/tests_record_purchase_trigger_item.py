@@ -12,15 +12,17 @@ def test_conditions_for_order_with_record(trigger, freezer):
     assert trigger.should_be_sent() is True
 
 
-def test_conditions_for_order_with_course(trigger, freezer, course, order):
+def test_conditions_for_order_with_course(trigger, freezer, course):
     freezer.move_to('2032-12-04 16:00')
-    order.set_item(course)
+    trigger.order.set_item(course)
+    trigger.order.save()
 
     assert trigger.should_be_sent() is False
 
 
-def test_conditions_for_order_with_bundle(trigger, freezer, bundle, order):
+def test_conditions_for_order_with_bundle(trigger, freezer, bundle):
     freezer.move_to('2032-12-04 16:00')
-    order.set_item(bundle)
+    trigger.order.set_item(bundle)
+    trigger.order.save()
 
     assert trigger.should_be_sent() is False
