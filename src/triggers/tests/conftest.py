@@ -22,7 +22,10 @@ def record(mixer, course):
 
 @pytest.fixture
 def bundle(mixer):
-    return mixer.blend('courses.Bundle')
+    bundle = mixer.blend('courses.Bundle')
+    bundle.courses.add(course)
+
+    return bundle
 
 
 @pytest.fixture
