@@ -18,9 +18,7 @@ class RecordPurchaseTrigger(BaseTrigger):
         """
         return self.order.paid is not None and \
             self._is_created_recently() and \
-            self.order.record is not None and \
-            self.order.course is None and \
-            self.order.bundle is None
+            self.order.record is not None
 
     def _is_created_recently(self) -> bool:
         return timezone.now() - self.PERIOD > self.order.created > timezone.now() - self.PERIOD * 2
