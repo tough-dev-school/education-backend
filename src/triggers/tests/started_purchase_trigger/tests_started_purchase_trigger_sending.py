@@ -9,7 +9,7 @@ def send(mocker):
 
 
 @pytest.fixture(autouse=True)
-def condition(mocker, trigger):
+def set_condition_to_always_true(mocker, trigger):
     return mocker.patch.object(trigger, 'condition', return_value=True)
 
 
