@@ -9,7 +9,7 @@ pytestmark = [pytest.mark.django_db]
 def set_mailjet_credentials(settings):
     settings.MAILJET_API_KEY = 'key'
     settings.MAILJET_SECRET_KEY = 'secret'
-    settings.MAILJET_CONTACT_LIST_ID = 100500
+    settings.MAILJET_LIST_ID_WHERE_ALL_CONTACTS_ARE_STORED = 100500
 
 
 @pytest.fixture
