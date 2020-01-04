@@ -22,7 +22,7 @@ class AppMailjet:
 
     def subscribe(self, user: User):
         response = self.client.contactslist_managecontact.create(
-            id=settings.MAILJET_CONTACT_LIST_ID,
+            id=settings.MAILJET_LIST_ID_ALL_CONTACTS,
             data={
                 'Action': 'addnoforce',
                 'Email': user.email,

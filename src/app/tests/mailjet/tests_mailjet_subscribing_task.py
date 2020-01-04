@@ -19,7 +19,7 @@ def test(subscribe, user):
 @pytest.mark.parametrize('setting', [
     'MAILJET_API_KEY',
     'MAILJET_SECRET_KEY',
-    'MAILJET_CONTACT_LIST_ID',
+    'MAILJET_LIST_ID_ALL_CONTACTS',
 ])
 def test_subscription_is_disabled_if_any_single_setting_is_disabled(subscribe, user, setting, settings):
     setattr(settings, setting, '')

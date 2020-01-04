@@ -48,7 +48,7 @@ def invite_to_clickmeeting(room_url: str, email: str):
     },
 )
 def subscribe_to_mailjet(user_id: int):
-    if not all(getattr(settings, x) for x in ['MAILJET_API_KEY', 'MAILJET_SECRET_KEY', 'MAILJET_CONTACT_LIST_ID']):
+    if not all(getattr(settings, x) for x in ['MAILJET_API_KEY', 'MAILJET_SECRET_KEY', 'MAILJET_LIST_ID_ALL_CONTACTS']):
         return
 
     user = apps.get_model('users.User').objects.get(pk=user_id)
