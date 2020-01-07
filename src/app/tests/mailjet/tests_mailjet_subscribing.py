@@ -12,7 +12,7 @@ def mailjet(mailjet):
         yield mailjet
 
 
-def test_ok(mailjet, user):
+def test_ok(mailjet, user, subscribe_list):
     def assertion(req, res):
         query = req.json()
 
@@ -25,12 +25,11 @@ def test_ok(mailjet, user):
         return {'ok': 'mocked'}
 
     mailjet.http_mock.post('https://api.eu.mailjet.com/v3/REST/contactslist/100500/managecontact', json=assertion)
-
-    mailjet.subscribe(user)
+    mailjet.subscribe(user, subscribe_list)
 
 
 @pytest.mark.xfail(reason='Just to check if above works')
-def test_fail(mailjet, user):
+def test_fail(mailjet, user, subscribe_list):
     def assertion(req, res):
         query = req.json()
 
@@ -40,4 +39,4 @@ def test_fail(mailjet, user):
         return {'ok': 'mocked'}
 
     mailjet.http_mock.post('https://api.eu.mailjet.com/v3/REST/contactslist/100500/managecontact', json=assertion)
-    mailjet.subscribe(user)
+    mailjet.subscribe(user, subscribe_list)

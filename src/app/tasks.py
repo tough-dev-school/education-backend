@@ -47,14 +47,14 @@ def invite_to_clickmeeting(room_url: str, email: str):
         'countdown': 5,
     },
 )
-def subscribe_to_mailjet(user_id: int):
-    if not all(getattr(settings, x) for x in ['MAILJET_API_KEY', 'MAILJET_SECRET_KEY', 'MAILJET_LIST_ID_ALL_CONTACTS']):
+def subscribe_to_mailjet(user_id: int, list_id: int):
+    if not all(getattr(settings, x) for x in ['MAILJET_API_KEY', 'MAILJET_SECRET_KEY']):
         return
 
     user = apps.get_model('users.User').objects.get(pk=user_id)
     mailjet = AppMailjet()
 
-    mailjet.subscribe(user)
+    mailjet.subscribe(user, list_id)
 
 
 @celery.task

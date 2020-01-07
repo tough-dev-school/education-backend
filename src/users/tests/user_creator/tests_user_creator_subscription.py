@@ -1,4 +1,5 @@
 import pytest
+from django.conf import settings
 
 from users.creator import UserCreator
 
@@ -13,7 +14,7 @@ def subscribe(mocker):
 def test_user_is_subscribed_to_mailjet_by_default(subscribe):
     created = UserCreator(name='Рулон Обоев', email='rulon.oboev@gmail.com')()
 
-    subscribe.assert_called_once_with(created.id)
+    subscribe.assert_called_once_with(created.id, settings.MAILJET_LIST_ID_ALL_CONTACTS)
 
 
 def test_not_subscribed(subscribe):

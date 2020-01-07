@@ -9,7 +9,6 @@ pytestmark = [pytest.mark.django_db]
 def set_mailjet_credentials(settings):
     settings.MAILJET_API_KEY = 'key'
     settings.MAILJET_SECRET_KEY = 'secret'
-    settings.MAILJET_LIST_ID_ALL_CONTACTS = 100500
 
 
 @pytest.fixture
@@ -20,3 +19,8 @@ def mailjet():
 @pytest.fixture
 def user(mixer):
     return mixer.blend('users.User', email='test@e.mail', first_name='Rulon', last_name='Oboev')
+
+
+@pytest.fixture
+def subscribe_list():
+    return 100500
