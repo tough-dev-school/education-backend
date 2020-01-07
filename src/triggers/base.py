@@ -2,6 +2,8 @@ from abc import ABCMeta, abstractmethod
 
 from django.core.exceptions import ImproperlyConfigured
 
+from app.tasks import send_mail
+from triggers.helpers import lower_first
 from triggers.models import TriggerLogEntry
 
 
@@ -41,3 +43,18 @@ class BaseTrigger(metaclass=ABCMeta):
 
     def log_success(self):
         return TriggerLogEntry.objects.create(order=self.order, trigger=self.name)
+
+    def send(self):
+        send_mail.delay(
+            template_id=self.template_id,
+            to=self.order.user.email,
+            ctx=self.get_template_context(),
+        )
+
+    def get_template_context(self):
+        return {
+            'item': self.order.item.full_name,
+            'item_lower': lower_first(self.order.item.full_name),
+            'firstname': self.order.user.first_name,
+            'item_url': self.order.item.get_absolute_url(),
+        }
