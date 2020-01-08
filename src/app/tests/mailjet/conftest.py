@@ -19,8 +19,3 @@ def mailjet():
 @pytest.fixture
 def user(mixer):
     return mixer.blend('users.User', email='test@e.mail', first_name='Rulon', last_name='Oboev')
-
-
-@pytest.fixture
-def subscribe_list():
-    return 100500
