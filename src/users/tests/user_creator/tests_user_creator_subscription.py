@@ -1,5 +1,4 @@
 import pytest
-from django.conf import settings
 
 from users.creator import UserCreator
 
@@ -11,7 +10,7 @@ def subscribe(mocker):
     return mocker.patch('app.tasks.subscribe_to_mailjet.delay')
 
 
-def test_user_is_subscribed_to_mailjet_by_default(subscribe):
+def test_user_is_subscribed_to_mailjet_by_default(subscribe, settings):
     created = UserCreator(name='Рулон Обоев', email='rulon.oboev@gmail.com')()
 
     subscribe.assert_called_once_with(created.id, settings.MAILJET_LIST_ID_ALL_CONTACTS)
