@@ -7,7 +7,7 @@ from triggers.base import BaseTrigger
 
 class RecordPurchaseTrigger(BaseTrigger):
     name = 'purchase_record'
-    template_id = 123456  # FIXME
+    template_id = 1167476
 
     PERIOD = timedelta(days=3)
 
