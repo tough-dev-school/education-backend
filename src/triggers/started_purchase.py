@@ -2,10 +2,8 @@ from datetime import timedelta
 
 from django.utils import timezone
 
-from app.tasks import send_mail
 from orders.models import Order
 from triggers.base import BaseTrigger
-from triggers.helpers import lower_first
 
 
 class StartedPurchaseTrigger(BaseTrigger):
@@ -31,18 +29,3 @@ class StartedPurchaseTrigger(BaseTrigger):
             .filter(created__gte=timezone.now() - timedelta(weeks=5)) \
             .exclude(pk=self.order.pk) \
             .exists()
-
-    def send(self):
-        send_mail.delay(
-            template_id=self.template_id,
-            to=self.order.user.email,
-            ctx=self.get_template_context(),
-        )
-
-    def get_template_context(self):
-        return {
-            'item': self.order.item.full_name,
-            'item_lower': lower_first(self.order.item.full_name),
-            'firstname': self.order.user.first_name,
-            'item_url': self.order.item.get_absolute_url(),
-        }

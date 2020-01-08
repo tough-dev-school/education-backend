@@ -186,6 +186,10 @@ CELERYBEAT_SCHEDULE = {
         'task': 'triggers.tasks.check_for_started_purchase_triggers',
         'schedule': crontab(hour='*', minute=15),
     },
+    'run_record_purchase_trigger': {
+        'task': 'triggers.tasks.check_for_record_purchase_triggers',
+        'schedule': crontab(hour='*', minute=15),
+    },
 }
 
 ABSOLUTE_HOST = env('ABSOLUTE_HOST', cast=str, default='https://app.pmdaily.ru')

@@ -4,6 +4,7 @@ from django.utils import timezone
 
 from app.celery import celery
 from orders.models import Order
+from triggers.record_purchase import RecordPurchaseTrigger
 from triggers.started_purchase import StartedPurchaseTrigger
 
 
@@ -18,3 +19,16 @@ def run_started_purchase_trigger(order_id):
 def check_for_started_purchase_triggers():
     for order in Order.objects.filter(paid__isnull=True, created__gte=timezone.now() - timedelta(days=3)).iterator():
         run_started_purchase_trigger.delay(order.pk)
+
+
+@celery.task
+def run_record_purchase_trigger(order_id):
+    order = Order.objects.get(pk=order_id)
+
+    RecordPurchaseTrigger(order)()
+
+
+@celery.task
+def check_for_record_purchase_triggers():
+    for order in Order.objects.filter(paid__isnull=False, record__isnull=False, created__gte=timezone.now() - timedelta(days=3)).iterator():
+        run_record_purchase_trigger.delay(order.pk)
