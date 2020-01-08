@@ -13,7 +13,7 @@ def subscribe(mocker):
 def test_user_is_subscribed_to_mailjet_by_default(subscribe, settings):
     created = UserCreator(name='Рулон Обоев', email='rulon.oboev@gmail.com')()
 
-    subscribe.assert_called_once_with(created.id, settings.MAILJET_LIST_ID_ALL_CONTACTS)
+    subscribe.assert_called_once_with(created.id, settings.MAILJET_LIST_ID_WHERE_ALL_CONTACTS_ARE_STORED)
 
 
 def test_not_subscribed(subscribe):

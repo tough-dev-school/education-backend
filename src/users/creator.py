@@ -54,4 +54,4 @@ class UserCreator:
     def after_creation(self):
         if self.do_subscribe:
             if self.resulting_user.email and len(self.resulting_user.email):
-                subscribe_to_mailjet.delay(self.resulting_user.pk, settings.MAILJET_LIST_ID_ALL_CONTACTS)
+                subscribe_to_mailjet.delay(self.resulting_user.pk, settings.MAILJET_LIST_ID_WHERE_ALL_CONTACTS_ARE_STORED)
