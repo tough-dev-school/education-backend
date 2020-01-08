@@ -3,6 +3,7 @@ from typing import List, Union
 from anymail.exceptions import AnymailRequestsAPIError
 from django.apps import apps
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 from requests.exceptions import RequestException
 
 from app import tg
@@ -49,7 +50,7 @@ def invite_to_clickmeeting(room_url: str, email: str):
 )
 def subscribe_to_mailjet(user_id: int, list_id: int):
     if not all(getattr(settings, x) for x in ['MAILJET_API_KEY', 'MAILJET_SECRET_KEY']):
-        return
+        raise ImproperlyConfigured('Please set MAILJET_API_KEY and MAILJET_SECRET_KEY in settings')
 
     user = apps.get_model('users.User').objects.get(pk=user_id)
     mailjet = AppMailjet()
