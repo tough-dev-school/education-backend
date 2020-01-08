@@ -17,7 +17,6 @@ def test(subscribe, user):
     subscribe.assert_called_once_with(user, 100500)
 
 
-@pytest.mark.xfail(raises=ImproperlyConfigured)
 @pytest.mark.parametrize('setting', [
     'MAILJET_API_KEY',
     'MAILJET_SECRET_KEY',
@@ -25,4 +24,7 @@ def test(subscribe, user):
 def test_subscription_is_disabled_if_any_single_setting_is_disabled(user, setting, settings):
     setattr(settings, setting, '')
 
-    subscribe_to_mailjet(user.id, 100500)
+    with pytest.raises(ImproperlyConfigured) as excinfo:
+        subscribe_to_mailjet(user.id, 100500)
+
+    assert "Please set MAILJET_API_KEY and MAILJET_SECRET_KEY in settings" in str(excinfo.value)
