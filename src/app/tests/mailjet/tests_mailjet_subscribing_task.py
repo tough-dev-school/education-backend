@@ -12,7 +12,7 @@ def subscribe(mocker):
 
 
 def test(subscribe, user):
-    subscribe_to_mailjet(user_id=user.id, list_id=100500)
+    subscribe_to_mailjet(user.id, 100500)
 
     subscribe.assert_called_once_with(user, 100500)
 
@@ -25,6 +25,6 @@ def test_subscription_is_disabled_if_any_single_setting_is_disabled(user, settin
     setattr(settings, setting, '')
 
     with pytest.raises(ImproperlyConfigured) as excinfo:
-        subscribe_to_mailjet(user_id=user.id, list_id=100500)
+        subscribe_to_mailjet(user.id, 100500)
 
     assert "Please set MAILJET_API_KEY and MAILJET_SECRET_KEY in settings" in str(excinfo.value)

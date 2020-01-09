@@ -21,7 +21,6 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 class UserCreator:
     """Service object for creating a user"""
-
     def __init__(self, name, email, subscribe=True):
         self.do_subscribe = subscribe
 
@@ -55,4 +54,4 @@ class UserCreator:
     def after_creation(self):
         if self.do_subscribe:
             if self.resulting_user.email and len(self.resulting_user.email):
-                subscribe_to_mailjet.delay(user_id=self.resulting_user.pk, list_id=settings.MAILJET_LIST_ID_WHERE_ALL_CONTACTS_ARE_STORED)
+                subscribe_to_mailjet.delay(self.resulting_user.pk, settings.MAILJET_LIST_ID_WHERE_ALL_CONTACTS_ARE_STORED)
