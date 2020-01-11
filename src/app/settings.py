@@ -37,11 +37,12 @@ SECRET_KEY = 'tei5ie3Ki4ahra8Dei9gahj9tain;ae7aif6ayahtaephooto=aW]ios6oLo^Nga'
 DEBUG = env('DEBUG', cast=bool, default=False)
 CI = env('CI', cast=bool, default=False)
 
+ABSOLUTE_HOST = env('ABSOLUTE_HOST', cast=str, default='https://app.pmdaily.ru')
 ALLOWED_HOSTS = [
     'app.pmdaily.ru',
     'localhost',
     'localhost:8000',
-    '85c8ac7a.ngrok.io',
+    ABSOLUTE_HOST.replace('https://', ''),
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -191,8 +192,6 @@ CELERYBEAT_SCHEDULE = {
         'schedule': crontab(hour='*', minute=15),
     },
 }
-
-ABSOLUTE_HOST = env('ABSOLUTE_HOST', cast=str, default='https://app.pmdaily.ru')
 
 
 AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID', default=None)
