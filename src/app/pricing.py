@@ -2,20 +2,6 @@ from decimal import Decimal
 
 from babel.numbers import format_decimal
 
-STRIKETHROUGH = {
-    '1': '1̶',
-    '2': '2̶',
-    '3': '3̶',
-    '4': '4̶',
-    '5': '5̶',
-    '6': '6̶',
-    '7': '7̶',
-    '8': '8̶',
-    '9': '9̶',
-    '0': '0̶',
-    ',': ',̶',
-}
-
 
 def format_price(price: Decimal) -> str:
     if price is not None and price:
@@ -31,7 +17,7 @@ def format_old_price(old_price: Decimal, price: Decimal) -> str:
     if old_price == '0':
         return f'{price} ₽'
 
-    old_price = ''.join([STRIKETHROUGH.get(digit, digit) for digit in old_price])
-    old_price = old_price.replace('\xa0', '')
+    old_price = ''.join([f'{digit}\u0336' for digit in old_price])
+    old_price = old_price.replace('\xa0\u0336', '')
 
     return f'{old_price} {price} ₽'
