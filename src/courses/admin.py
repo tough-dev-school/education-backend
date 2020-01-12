@@ -23,6 +23,10 @@ class BundleAdmin(ModelAdmin):
             'name_receipt',
             'full_name',
         ]}),
+        (_('Price'), {'fields': [
+            'price',
+            'old_price',
+        ]}),
         (_('Items'), {'fields': [
             'records',
         ]}),
@@ -46,6 +50,10 @@ class RecordAdmin(StackedInline):
             'name_receipt',
             'full_name',
             'template_id',
+        ]}),
+        (_('Price'), {'fields': [
+            'price',
+            'old_price',
         ]}),
         (_('Access'), {'fields': [
             'downloadable',
@@ -72,6 +80,10 @@ class CourseAdmin(ModelAdmin):
             'name_genitive',
             'name_receipt',
             'full_name',
+        ]}),
+        (_('Price'), {'fields': [
+            'price',
+            'old_price',
         ]}),
         (_('Access'), {'fields': [
             'slug',

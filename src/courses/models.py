@@ -4,6 +4,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from app.models import TimestampedModel, models
+from app.pricing import format_price
 from app.s3 import AppS3
 from shipping import factory as ShippingFactory
 
@@ -18,8 +19,17 @@ class Shippable(TimestampedModel):
     )
     slug = models.SlugField()
 
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+    old_price = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
+
     class Meta:
         abstract = True
+
+    def get_price_display(self):
+        return format_price(self.price)
+
+    def get_old_price_display(self):
+        return format_price(self.old_price)
 
     def ship(self, to):
         return ShippingFactory.ship(self, to=to)
