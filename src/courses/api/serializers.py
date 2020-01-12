@@ -3,31 +3,34 @@ from rest_framework import serializers
 from courses.models import Bundle, Course, Record
 
 
-class CourseSerializer(serializers.ModelSerializer):
+class ShippableSerializer(serializers.ModelSerializer):
+    price = serializers.CharField(source='get_price_display')
+    old_price = serializers.CharField(source='get_old_price_display')
+    formatted_price = serializers.CharField(source='get_formatted_price_display')
+
     class Meta:
+        fields = [
+            'slug',
+            'name',
+            'price',
+            'old_price',
+            'formatted_price',
+        ]
+
+
+class CourseSerializer(ShippableSerializer):
+    class Meta(ShippableSerializer.Meta):
         model = Course
-        fields = [
-            'slug',
-            'name',
-        ]
 
 
-class RecordSerializer(serializers.ModelSerializer):
-    class Meta:
+class RecordSerializer(ShippableSerializer):
+    class Meta(ShippableSerializer.Meta):
         model = Record
-        fields = [
-            'slug',
-            'name',
-        ]
 
 
-class BundleSerializer(serializers.ModelSerializer):
-    class Meta:
+class BundleSerializer(ShippableSerializer):
+    class Meta(ShippableSerializer.Meta):
         model = Bundle
-        fields = [
-            'slug',
-            'name',
-        ]
 
 
 class PurchaseSerializer(serializers.Serializer):
