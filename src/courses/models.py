@@ -4,7 +4,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from app.models import TimestampedModel, models
-from app.pricing import format_price
+from app.pricing import format_old_price, format_price
 from app.s3 import AppS3
 from shipping import factory as ShippingFactory
 
@@ -30,6 +30,9 @@ class Shippable(TimestampedModel):
 
     def get_old_price_display(self):
         return format_price(self.old_price)
+
+    def get_formatted_price_display(self):
+        return format_old_price(self.old_price, self.price)
 
     def ship(self, to):
         return ShippingFactory.ship(self, to=to)

@@ -6,6 +6,7 @@ from courses.models import Bundle, Course, Record
 class ShippableSerializer(serializers.ModelSerializer):
     price = serializers.CharField(source='get_price_display')
     old_price = serializers.CharField(source='get_old_price_display')
+    formatted_price = serializers.CharField(source='get_formatted_price_display')
 
     class Meta:
         fields = [
@@ -13,6 +14,7 @@ class ShippableSerializer(serializers.ModelSerializer):
             'name',
             'price',
             'old_price',
+            'formatted_price',
         ]
 
 

@@ -13,6 +13,7 @@ def test_list(api, record):
 
     assert got[0]['price'] == '500'
     assert got[0]['old_price'] == '500,95'
+    assert got[0]['formatted_price'] == '5̶0̶0̶,̶9̶5̶ 500 ₽'
 
 
 def test_retrieve(api, record):
@@ -20,3 +21,4 @@ def test_retrieve(api, record):
 
     assert got['price'] == '500'
     assert got['old_price'] == '500,95'
+    assert got['formatted_price'] == '5̶0̶0̶,̶9̶5̶ 500 ₽'
