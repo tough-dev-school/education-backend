@@ -5,18 +5,36 @@ from django.utils.translation import ugettext_lazy as _
 
 from app.models import TimestampedModel, models
 from app.s3 import AppS3
-from shipping.mixins import Shippable
+from shipping import factory as ShippingFactory
 
 
-class Course(Shippable, TimestampedModel):
+class Shippable(TimestampedModel):
+    """Add this to every shippable item"""
     name = models.CharField(max_length=255)
-    name_genitive = models.CharField(_('Genitive name'), max_length=255, help_text='«мастер-класса о TDD». К примеру для записей.')
     name_receipt = models.CharField(_('Name for receipts'), max_length=255, help_text='«посещение мастер-класса по TDD» или «Доступ к записи курсов кройки и шитья»')
     full_name = models.CharField(
         _('Full name for letters'), max_length=255,
         help_text='Билет на мастер-класс о TDD или «запись курсов кройки и шитья»',
     )
     slug = models.SlugField()
+
+    class Meta:
+        abstract = True
+
+    def ship(self, to):
+        return ShippingFactory.ship(self, to=to)
+
+    def get_template_id(self):
+        """Get custom per-item template_id"""
+        if not hasattr(self, 'template_id'):
+            return
+
+        if self.template_id is not None and len(self.template_id):
+            return self.template_id
+
+
+class Course(Shippable):
+    name_genitive = models.CharField(_('Genitive name'), max_length=255, help_text='«мастер-класса о TDD». К примеру для записей.')
     clickmeeting_room_url = models.URLField(_('Clickmeeting room URL'), null=True, blank=True, help_text=_('If set, every user who purcashes this course gets invited'))
     template_id = models.CharField(_('Mailjet template_id'), max_length=256, blank=True, null=True, help_text=_('Leave it blank for the default template'))
 
@@ -29,16 +47,8 @@ class Course(Shippable, TimestampedModel):
         return urljoin(settings.FRONTEND_URL, '/'.join(['courses', self.slug, '']))
 
 
-class Record(Shippable, TimestampedModel):
+class Record(Shippable):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-    name_receipt = models.CharField(_('Name for receipts'), max_length=255, help_text='«Доступ к записи курсов кройки и шитья»')
-    full_name = models.CharField(_('Full name for letters'), max_length=255, help_text='«Запись мастер-класса о TDD»')
-    slug = models.SlugField()
-    full_name = models.CharField(
-        _('Full name for letters'), max_length=255,
-        help_text='«Запись мастер-класса о TDD»',
-    )
 
     s3_object_id = models.CharField(max_length=512)
     template_id = models.CharField(_('Mailjet template_id'), max_length=256, blank=True, null=True, help_text=_('Leave it blank for the default template'))
@@ -62,18 +72,9 @@ class Record(Shippable, TimestampedModel):
         return self.course.get_absolute_url()
 
 
-class Bundle(Shippable, TimestampedModel):
+class Bundle(Shippable):
     records = models.ManyToManyField('courses.Record')
     courses = models.ManyToManyField('courses.Course')
-
-    name = models.CharField(max_length=255)
-    name_receipt = models.CharField(_('Name for receipts'), max_length=255, help_text='«Доступ к записи курсов кройки и шитья»')
-    full_name = models.CharField(_('Full name for letters'), max_length=255, help_text='«Запись мастер-класса о TDD»')
-    slug = models.SlugField()
-    full_name = models.CharField(
-        _('Full name for letters'), max_length=255,
-        help_text='«Запись мастер-класса о TDD»',
-    )
 
     class Meta:
         ordering = ['-id']
