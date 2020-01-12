@@ -45,6 +45,10 @@ ALLOWED_HOSTS = [
     ABSOLUTE_HOST.replace('https://', ''),
 ]
 
+CORS_ORIGIN_WHITELIST = [
+    'https://pmdaily.ru',
+]
+
 CSRF_TRUSTED_ORIGINS = [
     'pmdaily.ru',
 ]
@@ -62,6 +66,7 @@ INSTALLED_APPS = [
     'tinkoff',
     'triggers',
 
+    'corsheaders',
     'anymail',
     'rest_framework',
     'rest_framework.authtoken',
@@ -83,6 +88,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
