@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytest
 
-from triggers.record_feedback import RecordFeedbackTrigger
+from triggers.record_purchase import RecordPurchaseTrigger
 
 pytestmark = [pytest.mark.django_db]
 
@@ -17,4 +17,4 @@ def order(order, record):
 
 @pytest.fixture
 def trigger(order):
-    return RecordFeedbackTrigger(order)
+    return RecordPurchaseTrigger(order)
