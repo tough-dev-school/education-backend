@@ -5,8 +5,8 @@ from django.utils import timezone
 from triggers.base import BaseTrigger
 
 
-class RecordFeedbackTrigger(BaseTrigger):
-    name = 'record_feedback'
+class RecordPurchaseTrigger(BaseTrigger):
+    name = 'purchase_record'
     template_id = 1167476
 
     PERIOD = timedelta(days=3)
