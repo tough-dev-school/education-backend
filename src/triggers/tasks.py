@@ -3,6 +3,7 @@ from datetime import timedelta
 from django.utils import timezone
 
 from app.celery import celery
+from factory import get_all_triggers, run
 from orders.models import Order
 from triggers.record_feedback import RecordFeedbackTrigger
 from triggers.started_purchase import StartedPurchaseTrigger
@@ -32,3 +33,16 @@ def run_record_feedback_trigger(order_id):
 def check_for_record_feedback_triggers():
     for order in Order.objects.filter(paid__isnull=False, record__isnull=False, created__gte=timezone.now() - timedelta(days=6)).iterator():
         run_record_feedback_trigger.delay(order.pk)
+
+
+@celery.task
+def run_all_triggers():
+    for trigger in get_all_triggers():
+        trigger.run()
+
+
+@celery.task
+def run_trigger(trigger_name, order_id):
+    order = Order.objects.get(pk=order_id)
+
+    run.delay(trigger_name, order)
