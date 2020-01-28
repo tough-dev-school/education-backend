@@ -2,9 +2,9 @@ from datetime import timedelta
 
 from django.utils import timezone
 
-from factory import register
+from triggers.factory import register
 from orders.models import Order
-from tasks import run_trigger
+from triggers.tasks import run_trigger
 from triggers.base import BaseTrigger
 
 

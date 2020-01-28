@@ -3,7 +3,7 @@ from datetime import timedelta
 from django.utils import timezone
 
 from app.celery import celery
-from factory import get_all_triggers, run
+from triggers.factory import get_all_triggers, run
 from orders.models import Order
 from triggers.record_feedback import RecordFeedbackTrigger
 from triggers.started_purchase import StartedPurchaseTrigger
