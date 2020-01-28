@@ -2,10 +2,10 @@ from datetime import timedelta
 
 from django.utils import timezone
 
-from triggers.factory import register
 from orders.models import Order
-from triggers.tasks import run_trigger
 from triggers.base import BaseTrigger
+from triggers.factory import register
+from triggers.tasks import run_trigger
 
 
 @register('record_feedback')
