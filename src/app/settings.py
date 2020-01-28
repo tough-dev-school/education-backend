@@ -193,8 +193,8 @@ CELERYBEAT_SCHEDULE = {
         'task': 'triggers.tasks.check_for_started_purchase_triggers',
         'schedule': crontab(hour='*', minute=15),
     },
-    'run_record_purchase_trigger': {
-        'task': 'triggers.tasks.check_for_record_purchase_triggers',
+    'run_record_feedback_trigger': {
+        'task': 'triggers.tasks.check_for_record_feedback_triggers',
         'schedule': crontab(hour='*', minute=15),
     },
 }
