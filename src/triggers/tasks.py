@@ -30,5 +30,5 @@ def run_record_feedback_trigger(order_id):
 
 @celery.task
 def check_for_record_feedback_triggers():
-    for order in Order.objects.filter(paid__isnull=False, record__isnull=False, created__gte=timezone.now() - timedelta(days=3)).iterator():
+    for order in Order.objects.filter(paid__isnull=False, record__isnull=False, created__gte=timezone.now() - timedelta(days=6)).iterator():
         run_record_feedback_trigger.delay(order.pk)
