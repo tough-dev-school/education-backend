@@ -45,4 +45,4 @@ def run_all_triggers():
 def run_trigger(trigger_name, order_id):
     order = Order.objects.get(pk=order_id)
 
-    run.delay(trigger_name, order)
+    run(trigger_name, order)
