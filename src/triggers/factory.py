@@ -1,6 +1,7 @@
 _registry = dict()
 
 __all__ = [
+    'get_all_triggers',
     'register',
     'run',
 ]
