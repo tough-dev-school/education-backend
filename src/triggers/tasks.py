@@ -3,8 +3,8 @@ from datetime import timedelta
 from django.utils import timezone
 
 from app.celery import celery
-from triggers import factory
 from orders.models import Order
+from triggers import factory
 from triggers.started_purchase import StartedPurchaseTrigger
 
 

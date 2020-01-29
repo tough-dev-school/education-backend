@@ -11,8 +11,6 @@ def test_class_register():
         some_value = 'ololo'
 
         def __init__(self):
-            print('Kill all humans')
+            pass
 
     assert factory._registry['test'] == TestClass
-
-

@@ -1,7 +1,7 @@
 import pytest
 
-from triggers.base import BaseTrigger
 from triggers import factory
+from triggers.base import BaseTrigger
 
 pytestmark = [pytest.mark.django_db]
 
