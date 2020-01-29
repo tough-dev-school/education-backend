@@ -12,10 +12,11 @@ class TriggerAlgoritmNotFound(Exception):
 
 
 def register(trigger_name):
-    def decorator(klass):
-        _registry[trigger_name] = klass
+    def decorator(cls):
+        cls.name = trigger_name
+        _registry[trigger_name] = cls
 
-        return klass
+        return cls
 
     return decorator
 
