@@ -13,6 +13,6 @@ def test_class_register():
         def __init__(self):
             print('Kill all humans')
 
-    assert factory._registry['test1'] == TestClass
+    assert factory._registry['test'] == TestClass
 
 
