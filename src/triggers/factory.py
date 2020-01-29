@@ -22,11 +22,11 @@ def register(trigger_name):
 
 
 def get(trigger_name):
-    klass = _registry.get(trigger_name)
-    if not klass:
-        raise TriggerAlgoritmNotFound(f'Trigger {trigger_name} not defined')
+    cls = _registry.get(trigger_name)
+    if not cls:
+        raise TriggerNotRegistered(f'Trigger {trigger_name} not defined')
 
-    return klass
+    return cls
 
 
 def run(trigger_name, order):
