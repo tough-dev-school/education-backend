@@ -11,6 +11,7 @@ pytestmark = [pytest.mark.django_db]
 def order(order, record):
     order.set_item(record)
     order.setattr_and_save('paid', datetime(2032, 12, 1, 15, 13))
+    order.setattr_and_save('created', datetime(2032, 12, 1, 15, 13))
 
     return order
 
