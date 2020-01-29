@@ -3,11 +3,11 @@ _registry = dict()
 __all__ = [
     'get_all_triggers',
     'register',
-    'run',
+    'get',
 ]
 
 
-class TriggerAlgoritmNotFound(Exception):
+class TriggerNotRegistered(Exception):
     pass
 
 
@@ -27,12 +27,6 @@ def get(trigger_name):
         raise TriggerNotRegistered(f'Trigger {trigger_name} not defined')
 
     return cls
-
-
-def run(trigger_name, order):
-    Triger = get(trigger_name)
-
-    return Triger(order)()
 
 
 def get_all_triggers():
