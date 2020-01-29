@@ -10,9 +10,8 @@ from triggers.tasks import run_trigger
 
 @register('record_feedback')
 class RecordFeedbackTrigger(BaseTrigger):
-    name = 'record_feedback'
-    template_id = 1167476
 
+    template_id = 1167476
     PERIOD = timedelta(days=3)
 
     @classmethod
