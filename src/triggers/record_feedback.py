@@ -14,8 +14,9 @@ class RecordFeedbackTrigger(BaseTrigger):
 
     @classmethod
     def find_orders(cls):
-        return (order.pk for order in
-                Order.objects.filter(paid__isnull=False, record__isnull=False, created__gte=timezone.now() - timedelta(days=6)).iterator())
+        orders = Order.objects.filter(paid__isnull=False, record__isnull=False, created__gte=timezone.now() - timedelta(days=6))
+
+        return orders.values_list('pk', flat=True).iterator()
 
     def condition(self):
         """Order should be paid, item should be a record and was created more then three days ago
