@@ -42,7 +42,7 @@ def test_trigger():
     class TestTrigger(BaseTrigger):
 
         @classmethod
-        def run(cls):
+        def find_orders(cls):
             return True
 
         def condition(self):
