@@ -5,7 +5,6 @@ from django.utils import timezone
 from orders.models import Order
 from triggers.base import BaseTrigger
 from triggers.factory import register
-from triggers.tasks import run_trigger
 
 
 @register('record_feedback')
@@ -22,8 +21,8 @@ class RecordFeedbackTrigger(BaseTrigger):
         """Order should be paid, item should be a record and was created more then three days ago
         """
         return self.order.paid is not None and \
-               self._is_created_recently() and \
-               self.order.record is not None
+            self._is_created_recently() and \
+            self.order.record is not None
 
     def _is_created_recently(self) -> bool:
         return timezone.now() - self.PERIOD > self.order.created > timezone.now() - self.PERIOD * 2
