@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from typing import Generator
 
 from django.core.exceptions import ImproperlyConfigured
 
@@ -29,6 +30,10 @@ class BaseTrigger(metaclass=ABCMeta):
 
     @abstractmethod
     def send(self) -> bool:
+        raise NotImplementedError('Please define in your trigger')
+
+    @abstractmethod
+    def find_orders(self) -> Generator:
         raise NotImplementedError('Please define in your trigger')
 
     def is_sent(self) -> bool:

@@ -12,6 +12,10 @@ class StartedPurchaseTrigger(BaseTrigger):
 
     PERIOD = timedelta(days=1)
 
+    @classmethod
+    def find_orders(cls):
+        pass
+
     def condition(self):
         """Order should not be paid and was created more then two days ago (safety)
         """
