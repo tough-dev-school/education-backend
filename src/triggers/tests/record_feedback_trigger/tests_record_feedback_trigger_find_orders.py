@@ -30,16 +30,16 @@ def test_find_orders_with_relevant_order(order):
 def test_not_running_trigger_for_not_paid_orders(order):
     order.setattr_and_save('paid', None)
 
-    assert find_orders() == []
+    assert order.pk not in find_orders()
 
 
 def test_not_running_trigger_for_old_orders(order, freezer):
     freezer.move_to('2032-12-10 15:30')
 
-    assert find_orders() == []
+    assert order.pk not in find_orders()
 
 
 def test_not_running_trigger_for_orders_without_record(order):
     order.setattr_and_save('record', None)
 
-    assert find_orders() == []
+    assert order.pk not in find_orders()
