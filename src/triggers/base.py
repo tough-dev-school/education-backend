@@ -32,6 +32,7 @@ class BaseTrigger(metaclass=ABCMeta):
     def send(self) -> bool:
         raise NotImplementedError('Please define in your trigger')
 
+    @classmethod
     @abstractmethod
     def find_orders(self) -> Generator:
         raise NotImplementedError('Please define in your trigger')
