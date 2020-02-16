@@ -6,6 +6,7 @@ from orders.models import Order
 from triggers.base import BaseTrigger
 from triggers.factory import register
 
+
 @register('started_purchase')
 class StartedPurchaseTrigger(BaseTrigger):
     template_id = 1090429
