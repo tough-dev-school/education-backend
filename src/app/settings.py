@@ -189,12 +189,8 @@ CELERY_ALWAYS_EAGER = env('CELERY_ALWAYS_EAGER', cast=bool, default=DEBUG)  # by
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_ENABLE_UTC = False
 CELERYBEAT_SCHEDULE = {
-    'run_started_purchase_trigger': {
-        'task': 'triggers.tasks.check_for_started_purchase_triggers',
-        'schedule': crontab(hour='*', minute=15),
-    },
-    'run_record_feedback_trigger': {
-        'task': 'triggers.tasks.check_for_record_feedback_triggers',
+    'run_all_triggers': {
+        'task': 'triggers.tasks.run_all_triggers',
         'schedule': crontab(hour='*', minute=15),
     },
 }
