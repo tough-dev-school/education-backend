@@ -11,23 +11,23 @@ def get_all_triggers_result(mocker):
 
 
 @pytest.fixture
-def trigger_find_orders(mocker, test_trigger):
+def find_orders(mocker, test_trigger):
     return mocker.patch.object(test_trigger, 'find_orders')
 
 
 @pytest.fixture
-def trigger_execute_result(mocker, test_trigger):
+def execute_result(mocker, test_trigger):
     return mocker.patch.object(test_trigger, '__call__')
 
 
-def test_runner_all_triggers_task(get_all_triggers_result, trigger_find_orders, test_trigger):
+def test_runner_all_triggers_task(get_all_triggers_result, find_orders, test_trigger):
     get_all_triggers_result.return_value = [test_trigger]
     run_all_triggers()
 
-    trigger_find_orders.assert_called_once()
+    find_orders.assert_called_once()
 
 
-def test_run_trigger_task(order, test_trigger, trigger_execute_result):
+def test_run_trigger_task(order, test_trigger, execute_result):
     run_trigger.delay(test_trigger.name, order.pk)
 
-    trigger_execute_result.assert_called_once()
+    execute_result.assert_called_once()
