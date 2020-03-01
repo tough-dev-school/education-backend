@@ -24,7 +24,8 @@ def find_orders():
 
 
 def test_find_orders_with_relevant_order(order):
-    assert find_orders() == [1]
+
+    assert order.pk in find_orders()
 
 
 def test_not_running_trigger_for_not_paid_orders(order):
