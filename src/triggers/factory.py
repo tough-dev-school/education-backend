@@ -4,6 +4,7 @@ __all__ = [
     'get_all_triggers',
     'register',
     'get',
+    'TriggerNotRegistered',
 ]
 
 
