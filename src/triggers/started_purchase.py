@@ -4,20 +4,13 @@ from django.utils import timezone
 
 from orders.models import Order
 from triggers.base import BaseTrigger
-from triggers.factory import register
 
 
-@register('started_purchase')
 class StartedPurchaseTrigger(BaseTrigger):
+    name = 'started_purchase'
     template_id = 1090429
 
     PERIOD = timedelta(days=1)
-
-    @classmethod
-    def find_orders(cls):
-        orders = Order.objects.filter(paid__isnull=True, created__gte=timezone.now() - timedelta(days=3))
-
-        return orders.values_list('pk', flat=True).iterator()
 
     def condition(self):
         """Order should not be paid and was created more then two days ago (safety)
