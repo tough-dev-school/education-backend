@@ -1,6 +1,5 @@
 import pytest
 
-from triggers import factory
 from triggers.base import BaseTrigger
 
 pytestmark = [pytest.mark.django_db]
@@ -37,13 +36,8 @@ def order(mixer, user, course):
 
 @pytest.fixture
 def test_trigger():
-
-    @factory.register('test')
     class TestTrigger(BaseTrigger):
-
-        @classmethod
-        def find_orders(cls):
-            return True
+        name = 'test'
 
         def condition(self):
             return True
