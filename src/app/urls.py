@@ -7,6 +7,7 @@ from django.shortcuts import redirect
 from django.urls import path
 from rest_framework import routers
 
+from app.views import HomePageView
 from courses.api.viewsets import BundleViewSet, CourseViewSet, RecordViewSet
 from onetime.api.views import TokenDownloadView
 from tinkoff.api.views import TinkoffPaymentNotificationsView
@@ -26,7 +27,7 @@ urlpatterns = [
     path('api/v2/banking/tinkoff-notifications/', TinkoffPaymentNotificationsView.as_view()),
     path('api/v2/healthchecks/', include('django_healthchecks.urls')),
     path('api/v2/', include(router.urls)),
-
+    path('', HomePageView.as_view()),
 ]
 
 
