@@ -17,7 +17,7 @@ LOCALE_PATHS = ['locale']
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
-FRONTEND_URL = 'https://pmdaily.ru'
+FRONTEND_URL = 'https://education.borshev.com'
 
 USE_TZ = False
 TIME_ZONE = env('TIME_ZONE', cast=str, default='Europe/Moscow')
@@ -42,15 +42,19 @@ ALLOWED_HOSTS = [
     'app.pmdaily.ru',
     'localhost',
     'localhost:8000',
+    'education.borshev.com',
     ABSOLUTE_HOST.replace('https://', ''),
 ]
 
 CORS_ORIGIN_WHITELIST = [
     'https://pmdaily.ru',
+    'https://education.borshev.com',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'pmdaily.ru',
+    'education.borshev.com',
+    'borshev.com',
 ]
 
 
