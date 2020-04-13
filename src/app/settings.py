@@ -37,9 +37,9 @@ SECRET_KEY = '***REMOVED***'
 DEBUG = env('DEBUG', cast=bool, default=False)
 CI = env('CI', cast=bool, default=False)
 
-ABSOLUTE_HOST = env('ABSOLUTE_HOST', cast=str, default='https://app.pmdaily.ru')
+ABSOLUTE_HOST = env('ABSOLUTE_HOST', cast=str, default='https://edu-app.borshev.com')
 ALLOWED_HOSTS = [
-    'app.pmdaily.ru',
+    'edu-app.borshev.com',
     'localhost',
     'localhost:8000',
     'education.borshev.com',
