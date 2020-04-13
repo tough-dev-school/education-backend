@@ -31,7 +31,7 @@ TEST_RUNNER = 'app.test.disable_test_command_runner.DisableTestCommandRunner'
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '***REMOVED***'
+SECRET_KEY = env('SECRET_KEY', cast=str, default='s3cr3t')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG', cast=bool, default=False)
