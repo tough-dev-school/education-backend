@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from .http import ClickMeetingClientHTTP
+from app.clickmeeting.http import ClickMeetingClientHTTP
 
 
 class ClickMeetingNonOkResponseException(Exception):
