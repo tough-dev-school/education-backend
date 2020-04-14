@@ -5,7 +5,7 @@ from app.tasks import invite_to_clickmeeting
 
 @pytest.fixture
 def invite(mocker):
-    return mocker.patch('app.clickmeeting.client.ClickMeetingClient.invite')
+    return mocker.patch('app.integrations.clickmeeting.client.ClickMeetingClient.invite')
 
 
 def test(invite):

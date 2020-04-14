@@ -1,7 +1,7 @@
 from django.conf import settings
 
-from app.zoomus.http import ZoomusClientHTTP
-from app.zoomus.user import ZoomusUser
+from app.integrations.zoomus.http import ZoomusClientHTTP
+from app.integrations.zoomus.user import ZoomusUser
 from users.models import User
 
 

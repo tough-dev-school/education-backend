@@ -3,9 +3,9 @@ from urllib.parse import urljoin
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
+from app.integrations.s3 import AppS3
 from app.models import TimestampedModel, models
 from app.pricing import format_old_price, format_price
-from app.s3 import AppS3
 from shipping import factory as ShippingFactory
 
 

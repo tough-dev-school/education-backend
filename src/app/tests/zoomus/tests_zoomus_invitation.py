@@ -1,6 +1,6 @@
 import pytest
 
-from app.zoomus import ZoomusHTTPException
+from app.integrations.zoomus import ZoomusHTTPException
 
 pytestmark = [pytest.mark.django_db]
 

@@ -1,7 +1,7 @@
 import jwt
 import pytest
 
-from app.zoomus.http import ZoomusClientHTTP
+from app.integrations.zoomus.http import ZoomusClientHTTP
 
 pytestmark = [
     pytest.mark.freeze_time('2032-12-01 15:30'),

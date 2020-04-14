@@ -1,6 +1,6 @@
-from app.clickmeeting.client import (
+from app.integrations.clickmeeting.client import (
     ClickMeetingClient, ClickMeetingNonOkResponseException, ClickMeetingRoomNotFoundException)
-from app.clickmeeting.http import ClickMeetingHTTPException
+from app.integrations.clickmeeting.http import ClickMeetingHTTPException
 
 __all__ = [
     ClickMeetingClient,

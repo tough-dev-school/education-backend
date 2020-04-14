@@ -5,12 +5,12 @@ from django.apps import apps
 from django.conf import settings
 from requests.exceptions import RequestException
 
-from app import tg
 from app.celery import celery
-from app.clickmeeting import ClickMeetingClient, ClickMeetingHTTPException
+from app.integrations import tg
+from app.integrations.clickmeeting import ClickMeetingClient, ClickMeetingHTTPException
+from app.integrations.mailjet import AppMailjet, AppMailjetWrongResponseException
+from app.integrations.zoomus import ZoomusClient, ZoomusHTTPException
 from app.mail.owl import TemplOwl
-from app.mailjet import AppMailjet, AppMailjetWrongResponseException
-from app.zoomus import ZoomusClient, ZoomusHTTPException
 
 
 @celery.task(

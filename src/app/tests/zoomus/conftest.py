@@ -1,7 +1,7 @@
 import pytest
 import requests_mock
 
-from app.zoomus.client import ZoomusClient
+from app.integrations.zoomus.client import ZoomusClient
 
 pytestmark = [pytest.mark.django_db]
 

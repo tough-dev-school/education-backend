@@ -1,6 +1,6 @@
 import pytest
 
-from app.zoomus.user import ZoomusUser
+from app.integrations.zoomus.user import ZoomusUser
 
 pytestmark = [pytest.mark.django_db]
 

@@ -1,6 +1,6 @@
 import pytest
 
-from app.clickmeeting import ClickMeetingHTTPException
+from app.integrations.clickmeeting import ClickMeetingHTTPException
 
 
 @pytest.mark.parametrize(

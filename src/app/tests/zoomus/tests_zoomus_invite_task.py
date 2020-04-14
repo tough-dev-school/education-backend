@@ -7,7 +7,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def invite(mocker):
-    return mocker.patch('app.zoomus.client.ZoomusClient.invite')
+    return mocker.patch('app.integrations.zoomus.client.ZoomusClient.invite')
 
 
 def test(invite, user):

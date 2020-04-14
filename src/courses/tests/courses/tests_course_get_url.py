@@ -5,7 +5,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture(autouse=True)
 def get_url(mocker):
-    return mocker.patch('app.s3.AppS3.get_presigned_url', return_value='https://test.com')
+    return mocker.patch('app.integrations.s3.AppS3.get_presigned_url', return_value='https://test.com')
 
 
 @pytest.fixture
