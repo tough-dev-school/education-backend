@@ -1,14 +1,14 @@
-amqp==2.5.1
+amqp==2.5.2
 appnope==0.1.0
 asn1crypto==1.0.1
 atomicwrites==1.3.0
 attrs==19.2.0
 Babel==2.7.0
 backcall==0.1.0
-billiard==3.5.0.5
+billiard==3.6.3.0
 boto3==1.10.2
 botocore==1.13.2
-celery==4.2.1
+celery==4.4.2
 certifi==2019.9.11
 cffi==1.12.3
 chardet==3.0.4
@@ -43,7 +43,7 @@ ipython-genutils==0.2.0
 isort==4.3.21
 jedi==0.15.1
 jmespath==0.9.4
-kombu==4.6.3
+kombu==4.6.8
 mailjet-rest==1.3.3
 mccabe==0.6.1
 mixer==6.1.3
