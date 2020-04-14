@@ -10,7 +10,7 @@ def enable_happiness_messages(settings):
 
 @pytest.fixture
 def tg_message(mocker):
-    return mocker.patch('app.tg.send_happiness_message')
+    return mocker.patch('app.integrations.tg.send_happiness_message')
 
 
 def test(tg_message, order):

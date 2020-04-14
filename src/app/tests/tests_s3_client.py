@@ -1,6 +1,6 @@
 import pytest
 
-from app.s3 import AppS3
+from app.integrations.s3 import AppS3
 
 pytestmark = [pytest.mark.django_db]
 

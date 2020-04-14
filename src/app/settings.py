@@ -225,6 +225,9 @@ ANYMAIL = {
 
 CLICKMEETING_API_KEY = env('CLICKMEETING_API_KEY', default=None, cast=str)
 
+ZOOMUS_API_KEY = env('ZOOMUS_API_KEY', default=None, cast=str)
+ZOOMUS_API_SECRET = env('ZOOMUS_API_SECRET', default=None, cast=str)
+
 TINKOFF_TERMINAL_KEY = env('TINKOFF_TERMINAL_KEY', default=None)
 TINKOFF_TERMINAL_PASSWORD = env('TINKOFF_TERMINAL_PASSWORD', default=None)
 

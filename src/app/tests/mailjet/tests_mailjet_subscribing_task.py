@@ -7,7 +7,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture(autouse=True)
 def subscribe(mocker):
-    return mocker.patch('app.mailjet.AppMailjet.subscribe')
+    return mocker.patch('app.integrations.mailjet.AppMailjet.subscribe')
 
 
 def test(subscribe, user):

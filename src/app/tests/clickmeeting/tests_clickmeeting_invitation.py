@@ -1,6 +1,6 @@
 import pytest
 
-from app.clickmeeting import ClickMeetingNonOkResponseException, ClickMeetingRoomNotFoundException
+from app.integrations.clickmeeting import ClickMeetingNonOkResponseException, ClickMeetingRoomNotFoundException
 
 
 @pytest.fixture

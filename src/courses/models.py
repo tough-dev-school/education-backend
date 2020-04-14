@@ -3,9 +3,9 @@ from urllib.parse import urljoin
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
+from app.integrations.s3 import AppS3
 from app.models import TimestampedModel, models
 from app.pricing import format_old_price, format_price
-from app.s3 import AppS3
 from shipping import factory as ShippingFactory
 
 
@@ -49,6 +49,7 @@ class Shippable(TimestampedModel):
 class Course(Shippable):
     name_genitive = models.CharField(_('Genitive name'), max_length=255, help_text='«мастер-класса о TDD». К примеру для записей.')
     clickmeeting_room_url = models.URLField(_('Clickmeeting room URL'), null=True, blank=True, help_text=_('If set, every user who purcashes this course gets invited'))
+    zoomus_webinar_id = models.CharField(_('Zoom.us webinar ID'), max_length=255, null=True, blank=True, help_text=_('If set, every user who purcashes this course gets invited'))
     template_id = models.CharField(_('Mailjet template_id'), max_length=256, blank=True, null=True, help_text=_('Leave it blank for the default template'))
 
     class Meta:

@@ -25,7 +25,7 @@ class ClickMeetingClientHTTP:
             'Content-Type': 'application/x-www-form-urlencoded',
         }
 
-    def post(self, url: str, data: dict, expected_status_code: list = None) -> Union[List, Dict]:
+    def post(self, url: str, data: dict) -> Union[List, Dict]:
         response = requests.post(
             self.format_url(url),
             timeout=TIMEOUT,

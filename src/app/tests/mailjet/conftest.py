@@ -1,6 +1,6 @@
 import pytest
 
-from app.mailjet import AppMailjet
+from app.integrations.mailjet import AppMailjet
 
 pytestmark = [pytest.mark.django_db]
 

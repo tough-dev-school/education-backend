@@ -1,7 +1,7 @@
 import pytest
 import requests_mock
 
-from app.clickmeeting import ClickMeetingClient
+from app.integrations.clickmeeting import ClickMeetingClient
 
 pytestmark = [pytest.mark.django_db]
 
