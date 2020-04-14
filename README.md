@@ -1,8 +1,8 @@
 # pmdaily-backend
 
-[![CircleCI](https://circleci.com/gh/f213/pmdaily-backend.svg?style=svg&circle-token=7928e0697de3b475905f58e96311c3df3e55eccc)](https://circleci.com/gh/f213/pmdaily-backend)
+[![CircleCI](https://circleci.com/gh/f213/education-backend.svg?style=svg&circle-token=7928e0697de3b475905f58e96311c3df3e55eccc)](https://circleci.com/gh/f213/education-backend)
 
-Это бекенд, который используется для продажи курсов на сайте pmdaily.ru.
+Это бекенд, который используется для продажи курсов на [моём сайте](https://education.borshev.com)
 
 ## Configuration
 Configuration is stored in `src/app/.env`, for examples see `src/app/.env.ci`
