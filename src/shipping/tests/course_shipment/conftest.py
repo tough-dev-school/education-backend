@@ -11,7 +11,6 @@ def course(mixer):
         'courses.Course',
         name='Кройка и шитьё',
         name_genitive='Кройки и шитья',
-        clickmeeting_room_url='https://room.url',
     )
 
 
@@ -21,5 +20,10 @@ def shipment(user, course):
 
 
 @pytest.fixture(autouse=True)
-def invite(mocker):
+def invite_to_clickmeeting(mocker):
     return mocker.patch('app.tasks.invite_to_clickmeeting.delay')
+
+
+@pytest.fixture(autouse=True)
+def invite_to_zoomus(mocker):
+    return mocker.patch('app.tasks.invite_to_zoomus.delay')

@@ -88,6 +88,7 @@ class CourseAdmin(ModelAdmin):
         (_('Access'), {'fields': [
             'slug',
             'clickmeeting_room_url',
+            'zoomus_webinar_id',
         ]}),
     ]
 

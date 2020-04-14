@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-22 15:16+0300\n"
+"POT-Creation-Date: 2020-04-14 19:36+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,67 +28,81 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: courses/admin.py:16 courses/admin.py:42
+#: courses/admin.py:20 courses/admin.py:48 courses/admin.py:78
 msgid "Name"
 msgstr "Название"
 
-#: courses/admin.py:21 courses/admin.py:47
+#: courses/admin.py:26 courses/admin.py:54 courses/admin.py:84
+msgid "Price"
+msgstr ""
+
+#: courses/admin.py:30
+#, fuzzy
+#| msgid "Item"
+msgid "Items"
+msgstr "Товар"
+
+#: courses/admin.py:58 courses/admin.py:88
 msgid "Access"
 msgstr "Доступы"
 
-#: courses/admin.py:56
+#: courses/admin.py:72
 msgid "Downloadable link"
 msgstr "Ссылка на скачиваие"
 
-#: courses/models.py:13
-msgid "Genitive name"
-msgstr "В родительном падеже"
-
-#: courses/models.py:14 courses/models.py:35
+#: courses/models.py:15
 msgid "Name for receipts"
 msgstr "Для чеков"
 
-#: courses/models.py:16 courses/models.py:36 courses/models.py:39
+#: courses/models.py:17
 msgid "Full name for letters"
 msgstr "Для писем"
 
-#: courses/models.py:20
+#: courses/models.py:50
+msgid "Genitive name"
+msgstr "В родительном падеже"
+
+#: courses/models.py:51
 msgid "Clickmeeting room URL"
 msgstr "Ссылка на ClickMeeting"
 
-#: courses/models.py:20
+#: courses/models.py:51 courses/models.py:52
 msgid "If set, every user who purcashes this course gets invited"
 msgstr "Купившие курс приглашаются автоматически"
 
-#: courses/models.py:21 courses/models.py:44
+#: courses/models.py:52
+msgid "Zoom.us webinar ID"
+msgstr "ID вебинара в зуме"
+
+#: courses/models.py:53 courses/models.py:68
 msgid "Mailjet template_id"
 msgstr "ID шаблона в мейлджете"
 
-#: courses/models.py:21 courses/models.py:44
+#: courses/models.py:53 courses/models.py:68
 msgid "Leave it blank for the default template"
 msgstr "Если оставить пустым — будет дефолтным"
 
-#: courses/models.py:25
+#: courses/models.py:57
 msgid "Course"
 msgstr "Курс"
 
-#: courses/models.py:26
+#: courses/models.py:58
 msgid "Courses"
 msgstr "Курсы"
 
-#: courses/models.py:48
+#: courses/models.py:72
 msgid "Record"
 msgstr "Запись"
 
-#: courses/models.py:49
+#: courses/models.py:73
 msgid "Records"
 msgstr "Записи"
 
-#: courses/models.py:78
+#: courses/models.py:95
 msgid "Bundle"
 msgstr "Набор"
 
-#: courses/models.py:79
+#: courses/models.py:96
 msgid "Bundles"
 msgstr "Наборы"
 
