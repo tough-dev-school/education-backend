@@ -1,6 +1,6 @@
 # pmdaily-backend
 
-[![CircleCI](https://circleci.com/gh/f213/education-backend.svg?style=svg&circle-token=7928e0697de3b475905f58e96311c3df3e55eccc)](https://circleci.com/gh/f213/education-backend)
+[![CircleCI](https://circleci.com/gh/f213/education-backend.svg?style=svg&circle-token=8ce8cbe93d81d60af6b67c82a82563d93da0cb03)](https://circleci.com/gh/f213/django)
 
 Backend that i use to sell [my courses](http://education.borshev.com)
 
