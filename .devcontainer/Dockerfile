@@ -17,7 +17,9 @@ FROM mcr.microsoft.com/vscode/devcontainers/python:0-${VARIANT}
 
 # [Optional] Uncomment this section to install additional packages.
 #
-# ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends vim locales-all
+
 # RUN apt-get update \
 #    && apt-get -y install --no-install-recommends <your-package-list-here> \
 #    #
