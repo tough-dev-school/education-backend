@@ -1,22 +1,20 @@
-FROM gdml/django-base:1.0.9
+FROM python:3.8-slim
 
+VOLUME /var/lib/django-db
+ENV DATABASE_URL sqlite:////var/lib/django-db/db.sqlite
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends build-essential libffi-dev locales-all gettext && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-cache-dir uwsgi==2.0.18
 ADD requirements.txt /
-
-ENV STATIC_ROOT /var/lib/django-static
-ENV DATABASE_URL sqlite:////var/lib/django-db/pmdaily.sqlite
-ENV CELERY_BACKEND redis://redis:6379/8
-
+RUN pip install --no-cache-dir -r /requirements.txt
 
 WORKDIR /srv
-ADD src /srv/
+ADD src/ /srv
 
+RUN ./manage.py collectstatic
 RUN ./manage.py compilemessages
-RUN ./manage.py collectstatic --noinput
 
-VOLUME /srv
-RUN mkdir /var/lib/django-db
-VOLUME /var/lib/django-db
-
-HEALTHCHECK CMD wget -q -O /dev/null http://localhost:8000/api/v2/healthchecks/db/ --header "Host: edu-app.borshev.com" || exit 1
-
-CMD ./manage.py migrate && uwsgi --master --http :8000 --module app.wsgi --workers 2 --threads 2 --harakiri 25 --max-requests 1000 --log-x-forwarded-for
+CMD uwsgi --http :8000 --wsgi-file app/wsgi.py --master --process 4 --threads 2

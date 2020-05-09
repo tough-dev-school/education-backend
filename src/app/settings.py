@@ -38,13 +38,7 @@ DEBUG = env('DEBUG', cast=bool, default=False)
 CI = env('CI', cast=bool, default=False)
 
 ABSOLUTE_HOST = env('ABSOLUTE_HOST', cast=str, default='https://edu-app.borshev.com')
-ALLOWED_HOSTS = [
-    'edu-app.borshev.com',
-    'localhost',
-    'localhost:8000',
-    'education.borshev.com',
-    ABSOLUTE_HOST.replace('https://', ''),
-]
+ALLOWED_HOSTS = ['*']
 
 CORS_ORIGIN_WHITELIST = [
     'https://pmdaily.ru',
@@ -102,8 +96,7 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
-if not DEBUG and not CI:
-    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
 
 REST_FRAMEWORK = {
