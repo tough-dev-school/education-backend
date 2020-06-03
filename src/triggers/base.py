@@ -27,10 +27,6 @@ class BaseTrigger(metaclass=ABCMeta):
     def condition(self) -> bool:
         raise NotImplementedError('Please define in your trigger')
 
-    @abstractmethod
-    def send(self) -> bool:
-        raise NotImplementedError('Please define in your trigger')
-
     def is_sent(self) -> bool:
         return TriggerLogEntry.objects.filter(order=self.order, trigger=self.name).exists() or \
             TriggerLogEntry.objects.filter(order__user__email=self.order.user.email, trigger=self.name).exists()
