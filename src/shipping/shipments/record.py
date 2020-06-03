@@ -18,7 +18,7 @@ class RecordTemplateContext(serializers.ModelSerializer):
 
 @factory.register(Record)
 class RecordShipment(BaseShipment):
-    template_id = 1069819
+    template_id = 'purchased-record'
 
     @property
     def record(self):

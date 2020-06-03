@@ -7,7 +7,7 @@ from triggers.base import BaseTrigger
 
 class RecordFeedbackTrigger(BaseTrigger):
     name = 'record_feedback'
-    template_id = 1167476
+    template_id = 'record-feedback'
 
     PERIOD = timedelta(days=3)
 

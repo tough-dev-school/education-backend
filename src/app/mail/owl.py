@@ -24,14 +24,13 @@ class TemplOwl:
             body='',
             to=self.to,
         )
-        msg.from_email = None  # force default mailprovider from email
         msg.template_id = self.template_id
         msg.merge_global_data = self.ctx
         return msg
 
     def send(self):
         if settings.EMAIL_ENABLED:
-            self.msg.send()
+            return self.msg.send()
 
     def attach(self, filename=None, content=None, mimetype=None):
         """Add an attachment to the message"""

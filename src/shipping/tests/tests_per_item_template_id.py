@@ -17,7 +17,7 @@ def shipment(user):
 
 
 @pytest.mark.parametrize('template_id, expected', [
-    [None, 1069819],  # the default one
+    [None, 'purchased-record'],  # the default one
     [100500, '100500'],
 ])
 def test(record, shipment, template_id, expected):

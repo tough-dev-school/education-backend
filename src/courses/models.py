@@ -65,7 +65,7 @@ class Record(Shippable):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     s3_object_id = models.CharField(max_length=512)
-    template_id = models.CharField(_('Mailjet template_id'), max_length=256, blank=True, null=True, help_text=_('Leave it blank for the default template'))
+    template_id = models.CharField(_('Postmark template_id'), max_length=256, blank=True, null=True, help_text=_('Leave it blank for the default template'))
 
     class Meta:
         ordering = ['-id']

@@ -182,10 +182,11 @@ if not DEBUG and len(SENTRY_DSN):
     import sentry_sdk
     from sentry_sdk.integrations.django import DjangoIntegration
     from sentry_sdk.integrations.celery import CeleryIntegration
+    from sentry_sdk.integrations.redis import RedisIntegration
 
     sentry_sdk.init(
         dsn=SENTRY_DSN,
-        integrations=[DjangoIntegration(), CeleryIntegration()],
+        integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration()],
     )
 
 BROKER_URL = env('CELERY_BACKEND')
@@ -218,9 +219,10 @@ MAILJET_API_KEY = env('MAILJET_API_KEY', default='')
 MAILJET_SECRET_KEY = env('MAILJET_SECRET_KEY', default='')
 MAILJET_CONTACT_LIST_ID = env('MAILJET_CONTACT_LIST_ID', cast=int, default=None)
 
+DEFAULT_FROM_EMAIL = env('EMAIL_FROM', cast=str, default='')
 ANYMAIL = {
-    'MAILJET_API_KEY': MAILJET_API_KEY,
-    'MAILJET_SECRET_KEY': MAILJET_SECRET_KEY,
+    'POSTMARK_SERVER_TOKEN': env('POSTMARK_SERVER_TOKEN'),
+    'DEBUG_API_REQUESTS': env('DEBUG'),
 }
 
 CLICKMEETING_API_KEY = env('CLICKMEETING_API_KEY', default=None, cast=str)

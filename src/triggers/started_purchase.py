@@ -8,7 +8,7 @@ from triggers.base import BaseTrigger
 
 class StartedPurchaseTrigger(BaseTrigger):
     name = 'started_purchase'
-    template_id = 1090429
+    template_id = 'started-purchase'
 
     PERIOD = timedelta(days=1)
 

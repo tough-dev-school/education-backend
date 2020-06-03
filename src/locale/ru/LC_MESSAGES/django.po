@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-14 19:36+0300\n"
+"POT-Creation-Date: 2020-06-03 19:09+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,7 +74,7 @@ msgstr "Купившие курс приглашаются автоматиче�
 msgid "Zoom.us webinar ID"
 msgstr "ID вебинара в зуме"
 
-#: courses/models.py:53 courses/models.py:68
+#: courses/models.py:53
 msgid "Mailjet template_id"
 msgstr "ID шаблона в мейлджете"
 
@@ -89,6 +89,10 @@ msgstr "Курс"
 #: courses/models.py:58
 msgid "Courses"
 msgstr "Курсы"
+
+#: courses/models.py:68
+msgid "Postmark template_id"
+msgstr "ID шаблона в постмарке"
 
 #: courses/models.py:72
 msgid "Record"
