@@ -3,6 +3,11 @@ import pytest
 from app.mail.owl import TemplOwl
 
 
+@pytest.fixture(autouse=True)
+def freeze_sender(settings):
+    settings.DEFAULT_FROM_EMAIL = 'Jesus Christ <me@christ.com>'
+
+
 @pytest.mark.parametrize('to, expected', [
     ['test@test.org', ['test@test.org']],
     [['test@test.org'], ['test@test.org']],
@@ -40,7 +45,7 @@ def test_omitted_subject():
 def test_msg_params():
     owl = TemplOwl('test@test.org', 100500, subject='Some email subject', ctx={'a': 'b'})
 
-    assert owl.msg.from_email is None
+    assert owl.msg.from_email == 'Jesus Christ <me@christ.com>'
     assert owl.msg.merge_global_data == {'a': 'b'}
     assert owl.msg.template_id == 100500
     assert owl.msg.subject == 'Some email subject'
