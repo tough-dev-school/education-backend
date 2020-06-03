@@ -2,7 +2,7 @@ import uuid
 
 from rest_framework import serializers
 
-from app.tasks import subscribe_to_mailjet
+from app.tasks import subscribe_to_mailchimp
 from users.models import User
 
 
@@ -53,4 +53,4 @@ class UserCreator:
     def after_creation(self):
         if self.do_subscribe:
             if self.resulting_user.email and len(self.resulting_user.email):
-                subscribe_to_mailjet.delay(self.resulting_user.pk)
+                subscribe_to_mailchimp.delay(self.resulting_user.pk)
