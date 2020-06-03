@@ -221,7 +221,7 @@ MAILJET_CONTACT_LIST_ID = env('MAILJET_CONTACT_LIST_ID', cast=int, default=None)
 
 DEFAULT_FROM_EMAIL = env('EMAIL_FROM', cast=str, default='')
 ANYMAIL = {
-    'POSTMARK_SERVER_TOKEN': env('POSTMARK_SERVER_TOKEN'),
+    'POSTMARK_SERVER_TOKEN': env('POSTMARK_SERVER_TOKEN', cast=str, default=''),
     'DEBUG_API_REQUESTS': env('DEBUG'),
 }
 
