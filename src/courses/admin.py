@@ -56,6 +56,7 @@ class RecordAdmin(StackedInline):
             'old_price',
         ]}),
         (_('Access'), {'fields': [
+            'slug',
             'downloadable',
             's3_object_id',
         ]}),
