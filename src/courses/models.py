@@ -76,7 +76,7 @@ class Record(Shippable):
     def name_genitive(self):
         return self.course.name_genitive
 
-    def get_url(self, expires: int = 3 * 24 * 60 * 60):
+    def get_url(self, expires: int = 30 * 24 * 60 * 60):
         return AppS3().get_presigned_url(self.s3_object_id, expires=expires)
 
     def __str__(self):
