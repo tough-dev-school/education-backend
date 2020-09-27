@@ -221,6 +221,7 @@ MAILJET_CONTACT_LIST_ID = env('MAILJET_CONTACT_LIST_ID', cast=int, default=None)
 
 MAILCHIMP_API_KEY = env('MAILCHIMP_API_KEY', default='')
 MAILCHIMP_CONTACT_LIST_ID = env('MAILCHIMP_CONTACT_LIST_ID', cast=str, default=None)
+
 DEFAULT_FROM_EMAIL = env('EMAIL_FROM', cast=str, default='')
 ANYMAIL = {
     'POSTMARK_SERVER_TOKEN': env('POSTMARK_SERVER_TOKEN', cast=str, default=''),

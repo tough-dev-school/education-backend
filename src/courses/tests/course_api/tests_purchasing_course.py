@@ -10,7 +10,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture(autouse=True)
 def course(mixer):
-    return mixer.blend('courses.Course', slug='ruloning-oboev')
+    return mixer.blend('courses.Course', slug='ruloning-oboev', price=1900)
 
 
 @pytest.fixture(autouse=True)
@@ -36,7 +36,6 @@ def test_order(api, course):
     api.post('/api/v2/courses/ruloning-oboev/purchase/', {
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
-        'price': 1900,
     }, format='multipart', expected_status_code=302)
 
     placed = get_order()
@@ -49,7 +48,6 @@ def test_user(api, course):
     api.post('/api/v2/courses/ruloning-oboev/purchase/', {
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
-        'price': 1900,
     }, format='multipart', expected_status_code=302)
 
     placed = get_order()
@@ -64,7 +62,6 @@ def test_user_auto_subscription(api, wants_to_subscribe):
     api.post('/api/v2/courses/ruloning-oboev/purchase/', {
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
-        'price': 1900,
         'subscribe': wants_to_subscribe,
     }, format='multipart', expected_status_code=302)
 
@@ -77,7 +74,6 @@ def test_by_default_user_is_not_subscribed(api):
     api.post('/api/v2/courses/ruloning-oboev/purchase/', {
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
-        'price': 1900,
     }, format='multipart', expected_status_code=302)
 
     placed = get_order()
@@ -89,7 +85,6 @@ def test_redirect(api, course):
     response = api.post('/api/v2/courses/ruloning-oboev/purchase/', {
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
-        'price': 1900,
     }, format='multipart', expected_status_code=302, as_response=True)
 
     assert response.status_code == 302
@@ -100,7 +95,6 @@ def test_custom_success_url(api, course, bank):
     api.post('/api/v2/courses/ruloning-oboev/purchase/', {
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
-        'price': 1900,
         'success_url': 'https://ok.true/yes',
     }, format='multipart', expected_status_code=302)
 

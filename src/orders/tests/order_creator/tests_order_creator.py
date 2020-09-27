@@ -10,8 +10,8 @@ def get_order():
     return Order.objects.last()
 
 
-def create(*args, price=100500, **kwargs):
-    return OrderCreator(*args, price=price, **kwargs)()
+def create(*args, **kwargs):
+    return OrderCreator(*args, **kwargs)()
 
 
 def test_user(user, course):
@@ -38,3 +38,12 @@ def test_record(user, record):
 
     assert order.price == 100500
     assert order.item == record
+
+
+def test_course_manual(user, course):
+    order = create(user=user, item=course, price=200500)
+
+    order.refresh_from_db()
+
+    assert order.price == 100500
+    assert order.item == course

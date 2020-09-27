@@ -81,6 +81,9 @@ def subscribe_to_mailjet(user_id: int):
     },
 )
 def subscribe_to_mailchimp(user_id: int):
+    if not settings.MAILCHIMP_CONTACT_LIST_ID:
+        return
+
     user = apps.get_model('users.User').objects.get(pk=user_id)
     mailchimp = AppMailchimp()
 
