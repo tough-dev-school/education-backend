@@ -1,5 +1,7 @@
+from decimal import Decimal
 from urllib.parse import urljoin
 
+from django.apps import apps
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
@@ -36,6 +38,14 @@ class Shippable(TimestampedModel):
 
     def ship(self, to):
         return ShippingFactory.ship(self, to=to)
+
+    def get_price(self, promocode=None) -> Decimal:
+        promocode = apps.get_model('orders.PromoCode').objects.get_or_nothing(name=promocode)
+
+        if promocode is not None:
+            return promocode.apply(self.price)
+
+        return self.price
 
     def get_template_id(self):
         """Get custom per-item template_id"""
