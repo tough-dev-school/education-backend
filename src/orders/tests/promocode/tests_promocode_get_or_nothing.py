@@ -19,5 +19,11 @@ def test_found(promocode, name):
     assert PromoCode.objects.get_or_nothing(name=name) == promocode
 
 
-def test_not_found(promocode):
+def test_not_found():
     assert PromoCode.objects.get_or_nothing(name='NONEXISTANT') is None
+
+
+def test_not_found_when_promo_code_is_disabled(promocode):
+    promocode.setattr_and_save('active', False)
+
+    assert PromoCode.objects.get_or_nothing(name='TESTCODE') is None
