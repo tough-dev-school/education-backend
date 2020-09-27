@@ -10,9 +10,14 @@ def promocode(mixer):
     return mixer.blend('orders.PromoCode', name='TESTCODE')
 
 
-def test_found(promocode):
-    assert PromoCode.objects.get_or_nothing('TESTCODE') == promocode
+@pytest.mark.parametrize('name', [
+    'TESTCODE',
+    'testcode',
+    'tEStCOde',
+])
+def test_found(promocode, name):
+    assert PromoCode.objects.get_or_nothing(name=name) == promocode
 
 
 def test_not_found(promocode):
-    assert PromoCode.objects.get_or_nothing('NONEXISTANT') is None
+    assert PromoCode.objects.get_or_nothing(name='NONEXISTANT') is None

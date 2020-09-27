@@ -8,7 +8,7 @@ from app.models import DefaultQuerySet, TimestampedModel, models
 class PromoCodeQuerySet(DefaultQuerySet):
     def get_or_nothing(self, name):
         try:
-            return self.get(name=name)
+            return self.get(name__iexact=name)
 
         except PromoCode.DoesNotExist:
             return None

@@ -13,8 +13,12 @@ def testcode(mixer):
     return mixer.blend('orders.PromoCode', discount_percent=10, name='TESTCODE')
 
 
-def test(api, course):
-    got = api.get(f'/api/v2/courses/{course.slug}/promocode/?promocode=TESTCODE')
+@pytest.mark.parametrize('promocode', [
+    'TESTCODE',
+    'testcode',
+])
+def test(api, course, promocode):
+    got = api.get(f'/api/v2/courses/{course.slug}/promocode/?promocode={promocode}')
 
     assert got['price'] == 90450
     assert got['formatted_price'] == '90 450'
