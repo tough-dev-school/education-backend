@@ -2,12 +2,10 @@ import pytest
 
 from tinkoff.client import TinkoffBank
 
-pytestmark = [pytest.mark.django_db]
 
-
-@pytest.fixture
-def bundle(mixer):
-    return mixer.blend('courses.Bundle', slug='pinetree-tickets', name='Флаг и билет на ёлку', price=1900)
+@pytest.fixture(autouse=True)
+def record(mixer):
+    return mixer.blend('courses.Record', slug='home-video', price=1900)
 
 
 @pytest.fixture(autouse=True)

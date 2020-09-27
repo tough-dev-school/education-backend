@@ -14,12 +14,12 @@ class OrderCreateSerializer(serializers.ModelSerializer):
 
 
 class OrderCreator:
-    def __init__(self, user: User, item, **kwargs):
+    def __init__(self, user: User, item, promocode=None, **kwargs):
         self.item = item
         self.data = {
             'user': user.pk,
             **kwargs,
-            'price': item.get_price(),
+            'price': item.get_price(promocode=promocode),
         }
 
     def __call__(self) -> Order:
