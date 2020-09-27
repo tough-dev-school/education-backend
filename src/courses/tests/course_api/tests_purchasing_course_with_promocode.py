@@ -19,7 +19,7 @@ def get_order():
     ('', 1900),
     ('3V1L_H4XX0R', 1900),
 ])
-def test_(api, course, promocode, expected):
+def test_purchasing_with_promocode(api, course, promocode, expected):
     api.post('/api/v2/courses/ruloning-oboev/purchase/', {
         'name': 'Забой Шахтёров',
         'email': 'zaboy@gmail.com',
