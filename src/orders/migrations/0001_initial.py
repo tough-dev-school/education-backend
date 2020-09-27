@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db import migrations, models
 
 import orders.models
+import orders.fields
 
 
 class Migration(migrations.Migration):
@@ -26,8 +27,8 @@ class Migration(migrations.Migration):
                 ('price', models.DecimalField(decimal_places=2, max_digits=9)),
                 ('paid', models.DateTimeField('Date when order got paid', null=True, blank=True, help_text='If set during creation, order automaticaly gets shipped')),
                 ('shipped', models.DateTimeField('Date when order was shipped', null=True, blank=True)),
-                ('course', orders.models.ItemField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='courses.Course')),
-                ('record', orders.models.ItemField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='courses.Record')),
+                ('course', orders.fields.ItemField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='courses.Course')),
+                ('record', orders.fields.ItemField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='courses.Record')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
             ],
             options={

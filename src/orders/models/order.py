@@ -4,16 +4,8 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from app.models import DefaultQuerySet, TimestampedModel, models
+from orders.fields import ItemField
 from orders.signals import order_got_shipped
-
-
-class ItemField(models.ForeignKey):
-    """This is a simple replacement for the ContentType framework -- fields of this type
-    are fields linked to items
-    """
-    def __init__(self, *args, **kwargs):
-        self._is_item = True
-        super().__init__(*args, **kwargs)
 
 
 class UnknownItemException(Exception):
