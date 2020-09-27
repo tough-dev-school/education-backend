@@ -6,9 +6,12 @@ from app.models import DefaultQuerySet, TimestampedModel, models
 
 
 class PromoCodeQuerySet(DefaultQuerySet):
+    def active(self):
+        return self.filter(active=True)
+
     def get_or_nothing(self, name):
         try:
-            return self.get(name=name)
+            return self.active().get(name__iexact=name)
 
         except PromoCode.DoesNotExist:
             return None
@@ -19,7 +22,7 @@ class PromoCode(TimestampedModel):
 
     name = models.CharField(_('Promo Code'), max_length=32, unique=True, db_index=True)
     discount_percent = models.IntegerField(_('Discount percent'))
-    active = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = _('Promo Code')

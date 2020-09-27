@@ -21,6 +21,7 @@ def test_get_price(record):
 
 @pytest.mark.parametrize('promocode, expected', [
     ('TESTCODE', '90450'),
+    ('testcode', '90450'),
     (None, '100500'),
     ('NONEXISTANT_PROMO_CODE_FROM_EV1L_H4XX0R', '100500'),
 ])
