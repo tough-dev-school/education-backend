@@ -42,7 +42,6 @@ class PurchaseViewSet(ReadOnlyAppViewSet):
                 subscribe=data.get('subscribe', False),
             )(),
             item=self.get_object(),
-            price=data['price'],
         )()
 
     def get_payment_link(self, order, success_url=None):

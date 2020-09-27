@@ -19,6 +19,7 @@ class OrderCreator:
         self.data = {
             'user': user.pk,
             **kwargs,
+            'price': item.price,
         }
 
     def __call__(self) -> Order:
