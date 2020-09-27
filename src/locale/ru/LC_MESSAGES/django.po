@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-03 19:09+0300\n"
+"POT-Creation-Date: 2020-09-27 15:04+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,11 +28,11 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: courses/admin.py:20 courses/admin.py:48 courses/admin.py:78
+#: courses/admin.py:20 courses/admin.py:48 courses/admin.py:79
 msgid "Name"
 msgstr "Название"
 
-#: courses/admin.py:26 courses/admin.py:54 courses/admin.py:84
+#: courses/admin.py:26 courses/admin.py:54 courses/admin.py:85
 msgid "Price"
 msgstr ""
 
@@ -42,11 +42,11 @@ msgstr ""
 msgid "Items"
 msgstr "Товар"
 
-#: courses/admin.py:58 courses/admin.py:88
+#: courses/admin.py:58 courses/admin.py:89
 msgid "Access"
 msgstr "Доступы"
 
-#: courses/admin.py:72
+#: courses/admin.py:73
 msgid "Downloadable link"
 msgstr "Ссылка на скачиваие"
 
@@ -126,53 +126,65 @@ msgstr "Одноразовый токен"
 msgid "Onetime tokens"
 msgstr "Одноразовые токены"
 
-#: orders/admin.py:10 orders/admin.py:70
+#: orders/admin/orders.py:10 orders/admin/orders.py:70
 msgid "Is paid"
 msgstr "Оплачен"
 
-#: orders/admin.py:58
+#: orders/admin/orders.py:58
 msgid "User"
 msgstr "Юзер"
 
-#: orders/admin.py:66
+#: orders/admin/orders.py:66
 msgid "Item"
 msgstr "Товар"
 
-#: orders/admin.py:73
+#: orders/admin/orders.py:73
 msgid "Paid"
 msgstr "Оплачен"
 
-#: orders/admin.py:75
+#: orders/admin/orders.py:75
 msgid "Not paid"
 msgstr "Не оплачен"
 
-#: orders/admin.py:77
+#: orders/admin/orders.py:77
 msgid "Set paid"
 msgstr "Пометить оплаченным"
 
-#: orders/admin.py:84
+#: orders/admin/orders.py:84
 msgid "Set not paid"
 msgstr "Пометить неоплаченынм"
 
-#: orders/models.py:35
+#: orders/models/order.py:27
 msgid "Date when order got paid"
 msgstr "Когда оплачен"
 
-#: orders/models.py:37
+#: orders/models/order.py:29
 msgid "If set during creation, order automaticaly gets shipped"
 msgstr "Заказ выполнится автоматически"
 
-#: orders/models.py:39
+#: orders/models/order.py:31
 msgid "Date when order was shipped"
 msgstr "Дата выполнения"
 
-#: orders/models.py:47
+#: orders/models/order.py:39
 msgid "Order"
 msgstr "Заказ"
 
-#: orders/models.py:48
+#: orders/models/order.py:40
 msgid "Orders"
 msgstr "Заказы"
+
+#: orders/models/promocode.py:7 orders/models/promocode.py:12
+msgid "Promo Code"
+msgstr "Промо-код"
+
+#: orders/models/promocode.py:8
+msgid "Discount percent"
+msgstr "Процент скидки"
+
+#: orders/models/promocode.py:13
+msgid "Promo Codes"
+msgstr "Промо-коды"
 
 #: tinkoff/models.py:8
 msgid "Authorized"
