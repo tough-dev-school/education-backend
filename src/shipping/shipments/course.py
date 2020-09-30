@@ -23,15 +23,17 @@ class CourseShipment(BaseShipment):
         return self.stuff_to_ship
 
     def ship(self):
-        self.invite()
+        self.invite_to_clickmeeting()
+        self.invite_to_zoomus()
 
-    def invite(self):
+    def invite_to_clickmeeting(self):
         if self.course.clickmeeting_room_url is not None:
             invite_to_clickmeeting.delay(
                 room_url=self.course.clickmeeting_room_url,
                 email=self.user.email,
             )
 
+    def invite_to_zoomus(self):
         if self.course.zoomus_webinar_id is not None and len(self.course.zoomus_webinar_id):
             invite_to_zoomus.delay(
                 webinar_id=self.course.zoomus_webinar_id,
