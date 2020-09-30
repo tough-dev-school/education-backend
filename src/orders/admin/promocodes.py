@@ -8,6 +8,7 @@ class PromoCodeAdmin(ModelAdmin):
         'id',
         'name',
         'discount_percent',
+        'comment',
         'active',
     ]
 
