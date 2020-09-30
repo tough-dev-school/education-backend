@@ -25,6 +25,7 @@ class OrderAdmin(ModelAdmin):
         'customer',
         'item',
         'is_paid',
+        'promocode',
     ]
     list_display_links = [
         'id',
