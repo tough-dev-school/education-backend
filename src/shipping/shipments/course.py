@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from app.tasks import invite_to_clickmeeting, invite_to_zoomus
+from app.tasks import invite_to_clickmeeting, invite_to_zoomus, send_mail
 from courses.models import Course
 from shipping import factory
 from shipping.shipments.base import BaseShipment
@@ -11,6 +11,7 @@ class CourseTemplateContext(serializers.ModelSerializer):
         model = Course
         fields = [
             'name',
+            'slug',
             'name_genitive',
         ]
 
@@ -25,6 +26,7 @@ class CourseShipment(BaseShipment):
     def ship(self):
         self.invite_to_clickmeeting()
         self.invite_to_zoomus()
+        self.send_welcome_letter()
 
     def invite_to_clickmeeting(self):
         if self.course.clickmeeting_room_url is not None:
@@ -38,6 +40,14 @@ class CourseShipment(BaseShipment):
             invite_to_zoomus.delay(
                 webinar_id=self.course.zoomus_webinar_id,
                 user_id=self.user.id,
+            )
+
+    def send_welcome_letter(self):
+        if self.course.welcome_letter_template_id is not None and len(self.course.welcome_letter_template_id):
+            send_mail.delay(
+                to=self.user.email,
+                template_id=self.course.welcome_letter_template_id,
+                ctx=self.get_template_context(),
             )
 
     def get_template_context(self) -> dict:
