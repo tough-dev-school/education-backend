@@ -90,6 +90,7 @@ class CourseAdmin(ModelAdmin):
             'slug',
             'clickmeeting_room_url',
             'zoomus_webinar_id',
+            'welcome_letter_template_id',
         ]}),
     ]
 

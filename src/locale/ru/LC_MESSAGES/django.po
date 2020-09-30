@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-30 13:29+0300\n"
+"POT-Creation-Date: 2020-09-30 17:07+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,39 +74,43 @@ msgstr "Купившие курс приглашаются автоматиче�
 msgid "Zoom.us webinar ID"
 msgstr "ID вебинара в зуме"
 
-#: courses/models.py:63
-msgid "Mailjet template_id"
-msgstr "ID шаблона в мейлджете"
+#: courses/models.py:64
+msgid "Welcome letter template id"
+msgstr "ID шаблона приветственного письма"
 
-#: courses/models.py:63 courses/models.py:78
-msgid "Leave it blank for the default template"
-msgstr "Если оставить пустым — будет дефолтным"
+#: courses/models.py:64
+msgid "Will be sent upon purchase if set"
+msgstr "Если задать — письмо будет уходить вместе с каждой покупкой"
 
-#: courses/models.py:67
+#: courses/models.py:68
 msgid "Course"
 msgstr "Курс"
 
-#: courses/models.py:68
+#: courses/models.py:69
 msgid "Courses"
 msgstr "Курсы"
 
-#: courses/models.py:78
+#: courses/models.py:79
 msgid "Postmark template_id"
 msgstr "ID шаблона в постмарке"
 
-#: courses/models.py:82
+#: courses/models.py:79
+msgid "Leave it blank for the default template"
+msgstr "Если оставить пустым — будет дефолтным"
+
+#: courses/models.py:83
 msgid "Record"
 msgstr "Запись"
 
-#: courses/models.py:83
+#: courses/models.py:84
 msgid "Records"
 msgstr "Записи"
 
-#: courses/models.py:105
+#: courses/models.py:106
 msgid "Bundle"
 msgstr "Набор"
 
-#: courses/models.py:106
+#: courses/models.py:107
 msgid "Bundles"
 msgstr "Наборы"
 

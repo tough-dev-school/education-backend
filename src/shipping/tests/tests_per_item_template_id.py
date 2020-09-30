@@ -1,5 +1,4 @@
 import pytest
-from django.core.exceptions import ImproperlyConfigured
 
 from shipping.shipments import RecordShipment
 
@@ -26,12 +25,3 @@ def test(record, shipment, template_id, expected):
     shipment = shipment(record)
 
     assert shipment.get_template_id() == expected
-
-
-def test_zero_template_id(record, shipment):
-    shipment = shipment(record)
-
-    shipment.template_id = None
-
-    with pytest.raises(ImproperlyConfigured):
-        shipment.get_template_id()
