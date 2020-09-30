@@ -22,7 +22,7 @@ class Order(TimestampedModel):
 
     user = models.ForeignKey('users.User', on_delete=models.PROTECT)
     price = models.DecimalField(max_digits=9, decimal_places=2)
-    promocode = models.ForeignKey('orders.PromoCode', blank=True, null=True, on_delete=models.PROTECT)
+    promocode = models.ForeignKey('orders.PromoCode', verbose_name=_('Promo Code'), blank=True, null=True, on_delete=models.PROTECT)
 
     paid = models.DateTimeField(
         _('Date when order got paid'),

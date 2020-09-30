@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-27 15:04+0300\n"
+"POT-Creation-Date: 2020-09-30 13:29+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,63 +50,63 @@ msgstr "Доступы"
 msgid "Downloadable link"
 msgstr "Ссылка на скачиваие"
 
-#: courses/models.py:15
+#: courses/models.py:17
 msgid "Name for receipts"
 msgstr "Для чеков"
 
-#: courses/models.py:17
+#: courses/models.py:19
 msgid "Full name for letters"
 msgstr "Для писем"
 
-#: courses/models.py:50
+#: courses/models.py:60
 msgid "Genitive name"
 msgstr "В родительном падеже"
 
-#: courses/models.py:51
+#: courses/models.py:61
 msgid "Clickmeeting room URL"
 msgstr "Ссылка на ClickMeeting"
 
-#: courses/models.py:51 courses/models.py:52
+#: courses/models.py:61 courses/models.py:62
 msgid "If set, every user who purcashes this course gets invited"
 msgstr "Купившие курс приглашаются автоматически"
 
-#: courses/models.py:52
+#: courses/models.py:62
 msgid "Zoom.us webinar ID"
 msgstr "ID вебинара в зуме"
 
-#: courses/models.py:53
+#: courses/models.py:63
 msgid "Mailjet template_id"
 msgstr "ID шаблона в мейлджете"
 
-#: courses/models.py:53 courses/models.py:68
+#: courses/models.py:63 courses/models.py:78
 msgid "Leave it blank for the default template"
 msgstr "Если оставить пустым — будет дефолтным"
 
-#: courses/models.py:57
+#: courses/models.py:67
 msgid "Course"
 msgstr "Курс"
 
-#: courses/models.py:58
+#: courses/models.py:68
 msgid "Courses"
 msgstr "Курсы"
 
-#: courses/models.py:68
+#: courses/models.py:78
 msgid "Postmark template_id"
 msgstr "ID шаблона в постмарке"
 
-#: courses/models.py:72
+#: courses/models.py:82
 msgid "Record"
 msgstr "Запись"
 
-#: courses/models.py:73
+#: courses/models.py:83
 msgid "Records"
 msgstr "Записи"
 
-#: courses/models.py:95
+#: courses/models.py:105
 msgid "Bundle"
 msgstr "Набор"
 
-#: courses/models.py:96
+#: courses/models.py:106
 msgid "Bundles"
 msgstr "Наборы"
 
@@ -126,63 +126,72 @@ msgstr "Одноразовый токен"
 msgid "Onetime tokens"
 msgstr "Одноразовые токены"
 
-#: orders/admin/orders.py:10 orders/admin/orders.py:70
+#: orders/admin/orders.py:10 orders/admin/orders.py:71
 msgid "Is paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders.py:58
+#: orders/admin/orders.py:59
 msgid "User"
 msgstr "Юзер"
 
-#: orders/admin/orders.py:66
+#: orders/admin/orders.py:67
 msgid "Item"
 msgstr "Товар"
 
-#: orders/admin/orders.py:73
+#: orders/admin/orders.py:74
 msgid "Paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders.py:75
+#: orders/admin/orders.py:76
 msgid "Not paid"
 msgstr "Не оплачен"
 
-#: orders/admin/orders.py:77
+#: orders/admin/orders.py:78
 msgid "Set paid"
 msgstr "Пометить оплаченным"
 
-#: orders/admin/orders.py:84
+#: orders/admin/orders.py:85
 msgid "Set not paid"
 msgstr "Пометить неоплаченынм"
 
-#: orders/models/order.py:27
-msgid "Date when order got paid"
-msgstr "Когда оплачен"
-
-#: orders/models/order.py:29
-msgid "If set during creation, order automaticaly gets shipped"
-msgstr "Заказ выполнится автоматически"
-
-#: orders/models/order.py:31
-msgid "Date when order was shipped"
-msgstr "Дата выполнения"
-
-#: orders/models/order.py:39
-msgid "Order"
-msgstr "Заказ"
-
-#: orders/models/order.py:40
-msgid "Orders"
-msgstr "Заказы"
-
-#: orders/models/promocode.py:7 orders/models/promocode.py:12
+#: orders/models/order.py:25 orders/models/promocode.py:23
+#: orders/models/promocode.py:29
 msgid "Promo Code"
 msgstr "Промо-код"
 
-#: orders/models/promocode.py:8
+#: orders/models/order.py:28
+msgid "Date when order got paid"
+msgstr "Когда оплачен"
+
+#: orders/models/order.py:30
+msgid "If set during creation, order automaticaly gets shipped"
+msgstr "Заказ выполнится автоматически"
+
+#: orders/models/order.py:32
+msgid "Date when order was shipped"
+msgstr "Дата выполнения"
+
+#: orders/models/order.py:40
+msgid "Order"
+msgstr "Заказ"
+
+#: orders/models/order.py:41
+msgid "Orders"
+msgstr "Заказы"
+
+#: orders/models/promocode.py:24
 msgid "Discount percent"
 msgstr "Процент скидки"
 
-#: orders/models/promocode.py:13
+#: orders/models/promocode.py:25
+msgid "Active"
+msgstr "Включено"
+
+#: orders/models/promocode.py:26
+msgid "Comment"
+msgstr "Комментарий"
+
+#: orders/models/promocode.py:30
 msgid "Promo Codes"
 msgstr "Промо-коды"
 
@@ -213,3 +222,8 @@ msgstr ""
 #: users/models.py:8
 msgid "Subscribed to newsletter"
 msgstr "Подписан на новости"
+
+#, fuzzy
+#~| msgid "Promo Code"
+#~ msgid "Promocode"
+#~ msgstr "Промо-код"
