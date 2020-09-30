@@ -22,7 +22,8 @@ class PromoCode(TimestampedModel):
 
     name = models.CharField(_('Promo Code'), max_length=32, unique=True, db_index=True)
     discount_percent = models.IntegerField(_('Discount percent'))
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(_('Active'), default=True)
+    comment = models.TextField(_('Comment'), blank=True, null=True)
 
     class Meta:
         verbose_name = _('Promo Code')
