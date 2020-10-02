@@ -1,3 +1,4 @@
+from django.core.exceptions import ImproperlyConfigured
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.viewsets import ReadOnlyModelViewSet as _ReadOnlyModelViewSet
 
@@ -5,6 +6,18 @@ __all__ = [
     'AppViewSet',
     'ReadOnlyAppViewSet',
 ]
+
+
+class ValidationMixin:
+    def get_validator_class(self):
+        if self.validator_class is None:
+            raise ImproperlyConfigured('Please set validator_class class variable')
+
+        return self.validator_class
+
+    def _validate(self, data):
+        Validator = self.get_validator_class()
+        Validator.do(data)
 
 
 class MultiSerializerMixin:
