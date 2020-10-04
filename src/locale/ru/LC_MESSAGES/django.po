@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-02 17:37+0300\n"
+"POT-Creation-Date: 2020-10-04 18:09+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgid "No"
 msgstr "Нет"
 
 #: courses/admin.py:20 courses/admin.py:48 courses/admin.py:79
-#: magnets/models.py:7
+#: magnets/models.py:15
 msgid "Name"
 msgstr "Название"
 
@@ -52,9 +52,6 @@ msgstr "Ссылка на скачиваие"
 #: courses/models.py:17
 msgid "Name for receipts"
 msgstr "Для чеков"
-
-msgid "Magnets"
-msgstr "Лид-магниты"
 
 #: courses/models.py:19
 msgid "Full name for letters"
@@ -116,19 +113,23 @@ msgstr "Набор"
 msgid "Bundles"
 msgstr "Наборы"
 
-#: magnets/models.py:10
+#: magnets/admin.py:31
+msgid "Lead count"
+msgstr "Количество лидов"
+
+#: magnets/models.py:18
 msgid "Letter template id"
 msgstr "ID почтового шаблона"
 
-#: magnets/models.py:10
+#: magnets/models.py:18
 msgid "Will be sent upon lead registration"
 msgstr "Автоматически уходит юзеру, когда он зарегился"
 
-#: magnets/models.py:13
+#: magnets/models.py:21
 msgid "Email Lead Magnet Campaign"
 msgstr "Почтовая кампания"
 
-#: magnets/models.py:14
+#: magnets/models.py:22
 msgid "Email Lead Magnet Campaigns"
 msgstr "Почтовые кампании"
 
@@ -244,6 +245,9 @@ msgstr ""
 #: users/models.py:8
 msgid "Subscribed to newsletter"
 msgstr "Подписан на новости"
+
+#~ msgid "Magnets"
+#~ msgstr "Лид-магниты"
 
 #, fuzzy
 #~| msgid "Promo Code"

@@ -1,22 +1,9 @@
-from functools import partial
-
 import pytest
 
-from magnets.creator import LeadCreator
 from magnets.models import LeadCampaignLogEntry
 from users.models import User
 
 pytestmark = [pytest.mark.django_db]
-
-
-@pytest.fixture
-def campaign(mixer):
-    return mixer.blend('magnets.EmaiLLeadMagnetCampaign')
-
-
-@pytest.fixture
-def creator(campaign):
-    return partial(LeadCreator, campaign=campaign)
 
 
 @pytest.fixture(autouse=True)
