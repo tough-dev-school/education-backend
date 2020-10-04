@@ -3,6 +3,7 @@ from functools import partial
 import pytest
 
 from magnets.creator import LeadCreator
+from magnets.models import LeadCampaignLogEntry
 from users.models import User
 
 pytestmark = [pytest.mark.django_db]
@@ -25,6 +26,10 @@ def subscribe(mocker):
 
 def get_user():
     return User.objects.last()
+
+
+def get_log_entry():
+    return LeadCampaignLogEntry.objects.last()
 
 
 def test(creator):
@@ -50,3 +55,12 @@ def test_existing_user(creator, mixer):
     user.refresh_from_db()
 
     assert get_user() == user
+
+
+def test_log_entry_is_created(creator, campaign):
+    creator(name='Фёдор Шаляпин', email='support@m1crosoft.com')()
+
+    log_entry = get_log_entry()
+
+    assert log_entry.campaign == campaign
+    assert log_entry.user == get_user()  # created user

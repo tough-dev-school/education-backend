@@ -12,3 +12,8 @@ class EmailLeadMagnetCampaign(TimestampedModel):
     class Meta:
         verbose_name = _('Email Lead Magnet Campaign')
         verbose_name_plural = _('Email Lead Magnet Campaigns')
+
+
+class LeadCampaignLogEntry(TimestampedModel):
+    campaign = models.ForeignKey(EmailLeadMagnetCampaign, on_delete=models.CASCADE)
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE)
