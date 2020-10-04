@@ -1,3 +1,4 @@
+import hashlib
 from urllib.parse import urljoin
 
 import requests
@@ -8,6 +9,10 @@ from users.models import User
 
 
 class AppMailchimpWrongResponseException(Exception):
+    pass
+
+
+class AppMailchimpNotFoundException(AppMailchimpWrongResponseException):
     pass
 
 
@@ -31,7 +36,25 @@ class AppMailchimp:
 
         return response
 
+    def _get(self, url: str):
+        response = requests.get(
+            url=self.format_url(url),
+            auth=HTTPBasicAuth('user', settings.MAILCHIMP_API_KEY),
+        )
+
+        if response.status_code == 404:
+            raise AppMailchimpNotFoundException(f'Got 404 response from mailchimp: {response.status_code}. Response = {response.json()}')
+
+        if response.status_code != 200:
+            raise AppMailchimpWrongResponseException(f'Wrong response from mailchimp: {response.status_code}. Response = {response.json()}')
+
+        return response
+
     def subscribe(self, user: User):
+        if not self.member_exists(user.email):
+            self._subscribe(user)
+
+    def _subscribe(self, user: User):
         self._post(
             url=f'/lists/{settings.MAILCHIMP_CONTACT_LIST_ID}/members',
             payload={
@@ -43,3 +66,12 @@ class AppMailchimp:
                 },
             },
         )
+
+    def member_exists(self, email: str) -> bool:
+        subscriber_hash = hashlib.md5(email.encode()).hexdigest()
+        try:
+            self._get(f'/lists/{settings.MAILCHIMP_CONTACT_LIST_ID}/members/{subscriber_hash}')
+        except AppMailchimpNotFoundException:
+            return False
+
+        return True

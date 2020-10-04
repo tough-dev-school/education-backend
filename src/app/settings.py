@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'shipping',
     'tinkoff',
     'triggers',
+    'magnets',
 
     'corsheaders',
     'anymail',

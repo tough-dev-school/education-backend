@@ -2,12 +2,10 @@ import pytest
 
 from app import tasks
 
-pytestmark = [pytest.mark.django_db]
-
-
-@pytest.fixture
-def subscribe(mocker):
-    return mocker.patch('app.integrations.mailchimp.AppMailchimp.subscribe')
+pytestmark = [
+    pytest.mark.django_db,
+    pytest.mark.usefixtures('member_is_always_new'),
+]
 
 
 def test_task(subscribe, user):
