@@ -1,0 +1,42 @@
+import pytest
+from django.core import mail
+
+pytestmark = [pytest.mark.django_db]
+
+
+@pytest.fixture(autouse=True)
+def enable_outgoing_email(settings):
+    settings.EMAIL_ENABLED = True
+
+
+@pytest.fixture
+def user(mixer):
+    return mixer.blend('users.User', email='lead@magnet.tester')
+
+
+@pytest.fixture
+def send_mail(mocker):
+    return mocker.patch('app.tasks.send_mail.delay')
+
+
+def test_emaiL_is_sent(user, campaign):
+    campaign.execute(user)
+
+    assert len(mail.outbox) == 1
+
+
+def test_email_is_sent_to_the_right_place_with_the_right_template_id(user, campaign, send_mail):
+    campaign.execute(user)
+
+    assert send_mail.call_args[1]['to'] == 'lead@magnet.tester'
+    assert send_mail.call_args[1]['template_id'] == campaign.template_id
+
+
+def test_email_is_sent_with_the_right_context(user, campaign, send_mail):
+    campaign.execute(user)
+
+    ctx = send_mail.call_args[1]['ctx']
+
+    assert ctx['campaign_name'] == campaign.name
+    assert ctx['firstname'] == user.first_name
+    assert ctx['lastname'] == user.last_name

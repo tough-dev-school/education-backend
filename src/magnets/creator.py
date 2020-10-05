@@ -16,6 +16,8 @@ class LeadCreator:
         self.user = self._create_user()
         self._create_log_entry()
 
+        self.campaign.execute(self.user)
+
     def _create_user(self) -> User:
         return UserCreator(
             name=self.data['name'],

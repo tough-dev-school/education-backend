@@ -11,6 +11,11 @@ def subscribe(mocker):
     return mocker.patch('app.tasks.subscribe_to_mailchimp.delay')
 
 
+@pytest.fixture
+def execute(mocker):
+    return mocker.patch('magnets.models.EmailLeadMagnetCampaign.execute')
+
+
 def get_user():
     return User.objects.last()
 
@@ -51,3 +56,11 @@ def test_log_entry_is_created(creator, campaign):
 
     assert log_entry.campaign == campaign
     assert log_entry.user == get_user()  # created user
+
+
+def test_campaign_is_executed(creator, mixer, execute):
+    user = mixer.blend(User, first_name='Фёдор', last_name='Шаляпин', email='support@m1crosoft.com')
+
+    creator(name='Фёдор Шаляпин', email='support@m1crosoft.com')()
+
+    execute.assert_called_once_with(user)

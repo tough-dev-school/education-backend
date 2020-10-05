@@ -5,11 +5,6 @@ from users.models import User
 pytestmark = [pytest.mark.django_db]
 
 
-@pytest.fixture(autouse=True)
-def campaign(mixer):
-    return mixer.blend('magnets.EmailLeadMagnetCampaign', slug='eggs')
-
-
 def get_user():
     return User.objects.last()
 
