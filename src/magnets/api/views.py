@@ -13,7 +13,7 @@ class EmailLeadMagnetCampaignView(AnonymousAPIView, ValidationMixin):
     validator_class = LeadValidator
 
     def post(self, request, slug):
-        self.data = request.data
+        self.data = request.POST
 
         self._validate(self.data)
 

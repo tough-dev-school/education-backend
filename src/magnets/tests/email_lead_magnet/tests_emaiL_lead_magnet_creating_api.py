@@ -13,7 +13,7 @@ def test_creating(api):
     api.post('/api/v2/leads/email/eggs/', {
         'name': 'Monty Python',
         'email': 'monty@python.org',
-    })
+    }, format='multipart')
 
     created = get_user()
 
@@ -26,7 +26,7 @@ def test_creating_response(api):
     got = api.post('/api/v2/leads/email/eggs/', {
         'name': 'Monty Python',
         'email': 'monty@python.org',
-    })
+    }, format='multipart')
 
     assert got['ok'] is True
     assert got['message'] == 'No spam, only ham'
@@ -35,7 +35,7 @@ def test_creating_response(api):
 def test_nameless(api):
     api.post('/api/v2/leads/email/eggs/', {
         'email': 'monty@python.org',
-    })
+    }, format='multipart')
 
     created = get_user()
 
@@ -45,4 +45,4 @@ def test_nameless(api):
 def test_wrong_email(api):
     api.post('/api/v2/leads/email/eggs/', {
         'name': 'Monty Python',
-    }, expected_status_code=400)
+    }, format='multipart', expected_status_code=400)
