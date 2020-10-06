@@ -66,7 +66,7 @@ class OrderAdmin(ModelAdmin):
 
     @field(short_description=_('Item'))
     def item(self, obj):
-        return obj.item.name
+        return obj.item.name if obj.item is not None else '—'
 
     @field(short_description=_('Is paid'), admin_order_field='paid')
     def is_paid(self, obj):
