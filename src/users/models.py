@@ -9,6 +9,9 @@ class User(AbstractUser):
 
     @classmethod
     def parse_name(cls, name: str) -> dict:
+        if name is None:
+            return {}
+
         parts = name.split(' ', 2)
 
         if len(parts) == 1:

@@ -4,7 +4,7 @@ from users.models import User
 
 
 class LeadCreator:
-    def __init__(self, name: str, email: str, campaign: EmailLeadMagnetCampaign):
+    def __init__(self, campaign: EmailLeadMagnetCampaign, email: str, name: str = None):
         self.data = {
             'name': name,
             'email': email,
