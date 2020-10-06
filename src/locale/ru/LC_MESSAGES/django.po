@@ -200,7 +200,7 @@ msgstr "Когда оплачен"
 
 #: orders/models/order.py:30
 msgid "If set during creation, order automaticaly gets shipped"
-msgstr "Заказ выполнится автоматически"
+msgstr "Чтобы отметить заказ оплаченым, воспользуйтесь массовой операцией из списка заказво"
 
 #: orders/models/order.py:32
 msgid "Date when order was shipped"
