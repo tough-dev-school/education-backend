@@ -91,6 +91,12 @@ class OrderAdmin(ModelAdmin):
 
     @action(short_description=_('Ship again if paid'))
     def ship_again_if_paid(self, request, queryset):
+        shipped_count = 0
+
         for order in queryset.iterator():
             if order.paid is not None:
                 order.ship(silent=True)
+                shipped_count += 1
+
+        if shipped_count:
+            self.message_user(request, f'{shipped_count} orders shipped again')
