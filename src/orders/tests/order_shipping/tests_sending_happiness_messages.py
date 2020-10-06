@@ -25,3 +25,9 @@ def test_not_sending_if_disabled(settings, tg_message, order):
     order.set_paid()
 
     tg_message.assert_not_called()
+
+
+def test_not_sending_in_silent_mode(settings, tg_message, order):
+    order.set_paid(silent=True)
+
+    tg_message.assert_not_called()

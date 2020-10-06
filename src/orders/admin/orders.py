@@ -47,6 +47,7 @@ class OrderAdmin(ModelAdmin):
     actions = [
         'set_paid',
         'set_not_paid',
+        'ship_again_if_paid',
     ]
 
     def get_queryset(self, request):
@@ -66,7 +67,7 @@ class OrderAdmin(ModelAdmin):
 
     @field(short_description=_('Item'))
     def item(self, obj):
-        return obj.item.name
+        return obj.item.name if obj.item is not None else '—'
 
     @field(short_description=_('Is paid'), admin_order_field='paid')
     def is_paid(self, obj):
@@ -87,3 +88,9 @@ class OrderAdmin(ModelAdmin):
         queryset.update(shipped=None, paid=None)
 
         self.message_user(request, f'{queryset.count()} orders set as not paid')
+
+    @action(short_description=_('Ship again if paid'))
+    def ship_again_if_paid(self, request, queryset):
+        for order in queryset.iterator():
+            if order.paid is not None:
+                order.ship(silent=True)

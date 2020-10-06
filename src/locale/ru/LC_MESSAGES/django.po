@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-04 18:09+0300\n"
+"POT-Creation-Date: 2020-10-06 12:06+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgid "No"
 msgstr "Нет"
 
 #: courses/admin.py:20 courses/admin.py:48 courses/admin.py:79
-#: magnets/models.py:15
+#: magnets/models.py:17
 msgid "Name"
 msgstr "Название"
 
@@ -113,23 +113,23 @@ msgstr "Набор"
 msgid "Bundles"
 msgstr "Наборы"
 
-#: magnets/admin.py:31
+#: magnets/admin.py:32
 msgid "Lead count"
 msgstr "Количество лидов"
 
-#: magnets/models.py:18
+#: magnets/models.py:20
 msgid "Letter template id"
 msgstr "ID почтового шаблона"
 
-#: magnets/models.py:18
+#: magnets/models.py:20
 msgid "Will be sent upon lead registration"
 msgstr "Автоматически уходит юзеру, когда он зарегился"
 
-#: magnets/models.py:21
+#: magnets/models.py:23
 msgid "Email Lead Magnet Campaign"
 msgstr "Почтовая кампания"
 
-#: magnets/models.py:22
+#: magnets/models.py:24
 msgid "Email Lead Magnet Campaigns"
 msgstr "Почтовые кампании"
 
@@ -149,33 +149,37 @@ msgstr "Одноразовый токен"
 msgid "Onetime tokens"
 msgstr "Одноразовые токены"
 
-#: orders/admin/orders.py:10 orders/admin/orders.py:71
+#: orders/admin/orders.py:10 orders/admin/orders.py:72
 msgid "Is paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders.py:59
+#: orders/admin/orders.py:60
 msgid "User"
 msgstr "Юзер"
 
-#: orders/admin/orders.py:67
+#: orders/admin/orders.py:68
 msgid "Item"
 msgstr "Товар"
 
-#: orders/admin/orders.py:74
+#: orders/admin/orders.py:75
 msgid "Paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders.py:76
+#: orders/admin/orders.py:77
 msgid "Not paid"
 msgstr "Не оплачен"
 
-#: orders/admin/orders.py:78
+#: orders/admin/orders.py:79
 msgid "Set paid"
 msgstr "Пометить оплаченным"
 
-#: orders/admin/orders.py:85
+#: orders/admin/orders.py:86
 msgid "Set not paid"
 msgstr "Пометить неоплаченынм"
+
+#: orders/admin/orders.py:92
+msgid "Ship again if paid"
+msgstr "Ещё раз выполнить (если заказ не оплачен — не выполнится)"
 
 #: orders/models/order.py:25 orders/models/promocode.py:23
 #: orders/models/promocode.py:29

@@ -21,8 +21,11 @@ def mark_order_as_payd_on_tinkoff_transactions(instance, created, **kwargs):
 
 
 @receiver(order_got_shipped)
-def notify_tg_when_order_is_shipped(order, **kwargs):
+def notify_tg_when_order_is_shipped(order, silent, **kwargs):
     if not settings.SEND_HAPPINESS_MESSAGES:
+        return
+
+    if silent:
         return
 
     send_happiness_message.delay(text='💰+{sum} ₽, {user}, {reason}'.format(

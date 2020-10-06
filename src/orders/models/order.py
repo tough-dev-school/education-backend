@@ -79,7 +79,7 @@ class Order(TimestampedModel):
 
         raise UnknownItemException('There is not foreignKey for {}'.format(item.__class__))
 
-    def set_paid(self):
+    def set_paid(self, silent=False):
         is_already_paid = self.paid is not None
 
         self.paid = timezone.now()
@@ -87,9 +87,9 @@ class Order(TimestampedModel):
         self.save()
 
         if not is_already_paid and self.item is not None:
-            self.ship()
+            self.ship(silent=silent)
 
-    def ship(self):
+    def ship(self, silent: bool = False):
         """Ship the order. Better call it asynchronously"""
         self.item.ship(to=self.user)
 
@@ -100,4 +100,5 @@ class Order(TimestampedModel):
         order_got_shipped.send(
             sender=self.__class__,
             order=self,
+            silent=silent,
         )
