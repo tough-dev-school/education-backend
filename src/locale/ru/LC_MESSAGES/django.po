@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-06 12:06+0300\n"
+"POT-Creation-Date: 2020-10-06 18:34+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -113,7 +113,7 @@ msgstr "Набор"
 msgid "Bundles"
 msgstr "Наборы"
 
-#: magnets/admin.py:32
+#: magnets/admin.py:33
 msgid "Lead count"
 msgstr "Количество лидов"
 
@@ -125,11 +125,19 @@ msgstr "ID почтового шаблона"
 msgid "Will be sent upon lead registration"
 msgstr "Автоматически уходит юзеру, когда он зарегился"
 
-#: magnets/models.py:23
+#: magnets/models.py:22
+msgid "Success Message"
+msgstr "Сообщение об успехе"
+
+#: magnets/models.py:22
+msgid "Will be shown under tilda form"
+msgstr "Покажется под формой в тильде"
+
+#: magnets/models.py:25
 msgid "Email Lead Magnet Campaign"
 msgstr "Почтовая кампания"
 
-#: magnets/models.py:24
+#: magnets/models.py:26
 msgid "Email Lead Magnet Campaigns"
 msgstr "Почтовые кампании"
 

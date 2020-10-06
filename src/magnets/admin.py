@@ -10,6 +10,7 @@ class EmailLeadMagnetCampaignAdmin(ModelAdmin):
         'name',
         'slug',
         'template_id',
+        'success_message',
     ]
 
     list_display = [
