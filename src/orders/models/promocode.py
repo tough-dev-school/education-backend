@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.db.models import Case, Count, When
 from django.utils.translation import ugettext_lazy as _
 
 from app.models import DefaultQuerySet, TimestampedModel, models
@@ -8,6 +9,12 @@ from app.models import DefaultQuerySet, TimestampedModel, models
 class PromoCodeQuerySet(DefaultQuerySet):
     def active(self):
         return self.filter(active=True)
+
+    def with_order_count(self):
+        return self.annotate(order_count=Count(Case(
+            When(order__paid__isnull=False, then=1),
+            output_field=models.IntegerField(),
+        )))
 
     def get_or_nothing(self, name):
         try:
