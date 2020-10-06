@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-06 18:34+0300\n"
+"POT-Creation-Date: 2020-10-06 21:58+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -157,40 +157,44 @@ msgstr "Одноразовый токен"
 msgid "Onetime tokens"
 msgstr "Одноразовые токены"
 
-#: orders/admin/orders.py:10 orders/admin/orders.py:72
+#: orders/admin/orders.py:10 orders/admin/orders.py:76
 msgid "Is paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders.py:60
+#: orders/admin/orders.py:64
 msgid "User"
 msgstr "Юзер"
 
-#: orders/admin/orders.py:68
+#: orders/admin/orders.py:72
 msgid "Item"
 msgstr "Товар"
 
-#: orders/admin/orders.py:75
+#: orders/admin/orders.py:79
 msgid "Paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders.py:77
+#: orders/admin/orders.py:81
 msgid "Not paid"
 msgstr "Не оплачен"
 
-#: orders/admin/orders.py:79
+#: orders/admin/orders.py:83
 msgid "Set paid"
 msgstr "Пометить оплаченным"
 
-#: orders/admin/orders.py:86
+#: orders/admin/orders.py:90
 msgid "Set not paid"
 msgstr "Пометить неоплаченынм"
 
-#: orders/admin/orders.py:92
+#: orders/admin/orders.py:96
 msgid "Ship again if paid"
 msgstr "Ещё раз выполнить (если заказ не оплачен — не выполнится)"
 
-#: orders/models/order.py:25 orders/models/promocode.py:23
-#: orders/models/promocode.py:29
+#: orders/admin/promocodes.py:31
+msgid "Order count"
+msgstr "Количество заказов"
+
+#: orders/models/order.py:25 orders/models/promocode.py:30
+#: orders/models/promocode.py:36
 msgid "Promo Code"
 msgstr "Промо-код"
 
@@ -200,7 +204,9 @@ msgstr "Когда оплачен"
 
 #: orders/models/order.py:30
 msgid "If set during creation, order automaticaly gets shipped"
-msgstr "Заказ выполнится автоматически"
+msgstr ""
+"Чтобы отметить заказ оплаченым, воспользуйтесь массовой операцией из списка "
+"заказво"
 
 #: orders/models/order.py:32
 msgid "Date when order was shipped"
@@ -214,19 +220,19 @@ msgstr "Заказ"
 msgid "Orders"
 msgstr "Заказы"
 
-#: orders/models/promocode.py:24
+#: orders/models/promocode.py:31
 msgid "Discount percent"
 msgstr "Процент скидки"
 
-#: orders/models/promocode.py:25
+#: orders/models/promocode.py:32
 msgid "Active"
 msgstr "Включено"
 
-#: orders/models/promocode.py:26
+#: orders/models/promocode.py:33
 msgid "Comment"
 msgstr "Комментарий"
 
-#: orders/models/promocode.py:30
+#: orders/models/promocode.py:37
 msgid "Promo Codes"
 msgstr "Промо-коды"
 

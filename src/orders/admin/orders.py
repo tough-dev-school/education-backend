@@ -49,6 +49,10 @@ class OrderAdmin(ModelAdmin):
         'set_not_paid',
         'ship_again_if_paid',
     ]
+    readonly_fields = [
+        'paid',
+        'shipped',
+    ]
 
     def get_queryset(self, request):
         return super().get_queryset(request).select_related(
