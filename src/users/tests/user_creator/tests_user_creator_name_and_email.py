@@ -21,8 +21,9 @@ def test_default_username():
     assert created.username == 'vedro.pomoev@gmail.com'
 
 
-def test_empty_name():
-    created = UserCreator(name='', email='rulon.oboev@gmail.com')()
+@pytest.mark.parametrize('name', ['', None])
+def test_empty_name(name):
+    created = UserCreator(name=name, email='rulon.oboev@gmail.com')()
 
     created.refresh_from_db()
 

@@ -34,6 +34,16 @@ def test(creator):
     assert created.last_name == 'Шаляпин'
 
 
+def test_nameless(creator):
+    creator(email='support@m1crosoft.com')()
+
+    created = get_user()
+
+    assert created.email == 'support@m1crosoft.com'
+    assert created.first_name == ''
+    assert created.last_name == ''
+
+
 def test_user_is_subscribed(creator, subscribe):
     creator(name='r00t', email='support@m1crosoft.com')()
 

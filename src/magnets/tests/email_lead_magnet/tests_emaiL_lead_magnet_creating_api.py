@@ -22,10 +22,24 @@ def test_creating(api):
     assert created.email == 'monty@python.org'
 
 
-def test_wrong_name(api):
+def test_creating_response(api):
+    got = api.post('/api/v2/leads/email/eggs/', {
+        'name': 'Monty Python',
+        'email': 'monty@python.org',
+    })
+
+    assert got['ok'] is True
+    assert got['message'] == 'No spam, only ham'
+
+
+def test_nameless(api):
     api.post('/api/v2/leads/email/eggs/', {
         'email': 'monty@python.org',
-    }, expected_status_code=400)
+    })
+
+    created = get_user()
+
+    assert created.email == 'monty@python.org'
 
 
 def test_wrong_email(api):

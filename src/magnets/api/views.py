@@ -16,16 +16,18 @@ class EmailLeadMagnetCampaignView(AnonymousAPIView, ValidationMixin):
         self.data = request.data
 
         self._validate(self.data)
+
         self.create_lead()
 
-        return Response({'ok': True}, status=201)
+        campaign = self.get_object()
+        return Response({'ok': True, 'message': campaign.success_message}, status=201)
 
     def get_object(self):
         return get_object_or_404(EmailLeadMagnetCampaign, slug=self.kwargs['slug'])
 
     def create_lead(self):
         return LeadCreator(
-            name=self.data['name'],
+            name=self.data.get('name'),
             email=self.data['email'],
             campaign=self.get_object(),
         )()
