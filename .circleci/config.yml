@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  docker: circleci/docker@0.5.13
+  docker: circleci/docker@1.0.1
 
 defaults: &defaults
   docker:
@@ -93,6 +93,8 @@ workflows:
 
       - docker/publish:
           image: f213/pmdaily-backend
+          cache_from: f213/pmdaily-backend
+          tag: ${CIRCLE_SHA1},latest
           requires:
             - test
           filters:
