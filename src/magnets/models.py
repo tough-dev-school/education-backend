@@ -19,6 +19,8 @@ class EmailLeadMagnetCampaign(TimestampedModel):
 
     template_id = models.CharField(_('Letter template id'), max_length=255, help_text=_('Will be sent upon lead registration'))
 
+    success_message = models.CharField(_('Success Message'), max_length=255, help_text=_('Will be shown under tilda form'))
+
     class Meta:
         verbose_name = _('Email Lead Magnet Campaign')
         verbose_name_plural = _('Email Lead Magnet Campaigns')
