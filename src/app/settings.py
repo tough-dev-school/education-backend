@@ -170,9 +170,11 @@ SUIT_CONFIG = {
         'courses': 'icon-folder-close',
         'orders': 'icon-shopping-cart',
         'onetime': 'icon-lock',
-        'auth': 'icon-lock',
+        'users': 'icon-lock',
+        'magnets': ' icon-filter',
     },
     'MENU_EXCLUDE': [
+        'auth',
         'authtoken',
     ],
 }
