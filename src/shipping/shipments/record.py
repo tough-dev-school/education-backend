@@ -40,6 +40,7 @@ class RecordShipment(BaseShipment):
             to=self.user.email,
             template_id=self.get_template_id(),
             ctx=self.get_template_context(),
+            disable_antispam=True,
         )
 
     def get_template_id(self):

@@ -34,6 +34,7 @@ class EmailLeadMagnetCampaign(TimestampedModel):
                 'firstname': user.first_name,
                 'lastname': user.last_name,
             },
+            disable_antispam=True,
         )
 
 
