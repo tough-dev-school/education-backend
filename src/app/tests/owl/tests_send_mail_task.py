@@ -27,6 +27,7 @@ ARGS = dict(
     ctx={
         'a': 'testing',
     },
+    disable_antispam=False,
 )
 
 

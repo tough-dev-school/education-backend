@@ -2,6 +2,8 @@ import pytest
 
 from app.mail.owl import TemplOwl
 
+pytestmark = [pytest.mark.django_db]
+
 
 @pytest.fixture(autouse=True)
 def freeze_sender(settings):
