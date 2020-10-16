@@ -1,7 +1,8 @@
 from django.utils.translation import ugettext_lazy as _
 
 from app.admin import ModelAdmin, admin
-from courses.admin.record import RecordAdmin
+from courses.admin.courses import actions
+from courses.admin.courses.record import RecordAdmin
 from courses.models import Course
 
 
@@ -42,4 +43,9 @@ class CourseAdmin(ModelAdmin):
     }
     inlines = [
         RecordAdmin,
+    ]
+    action_form = actions.CourseActionForm
+
+    actions = [
+        actions.send_email_to_all_purchased_users,
     ]

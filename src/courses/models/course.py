@@ -1,10 +1,14 @@
+from typing import Iterable
 from urllib.parse import urljoin
 
+from django.apps import apps
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from app.models import models
+from app.tasks import send_mail
 from courses.models.base import Shippable
+from users.models import User
 
 
 class Course(Shippable):
@@ -19,5 +23,17 @@ class Course(Shippable):
         verbose_name = _('Course')
         verbose_name_plural = _('Courses')
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return urljoin(settings.FRONTEND_URL, '/'.join(['courses', self.slug, '']))
+
+    def get_purchased_users(self) -> Iterable[User]:
+        return User.objects.filter(
+            id__in=apps.get_model('orders.Order').objects.filter(course=self).paid().values_list('user_id'),
+        )
+
+    def send_email_to_all_purchased_users(self, template_id: str):
+        for user in self.get_purchased_users().iterator():
+            send_mail.delay(
+                to=user.email,
+                template_id=template_id,
+            )

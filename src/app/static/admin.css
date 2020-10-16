@@ -2,8 +2,7 @@
   margin-top: 150px;
 }
 
-input[type="text"],
-input[type="url"]
-{
+.form-horizontal input[type="text"],
+.form-horizontal input[type="url"] {
   width: 350px;
 }
