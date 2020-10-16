@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-11 11:44+0300\n"
+"POT-Creation-Date: 2020-10-16 10:55+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,90 +28,101 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: courses/admin.py:20 courses/admin.py:48 courses/admin.py:79
-#: magnets/models.py:17
+#: courses/admin/bundle.py:19 courses/admin/course.py:12
+#: courses/admin/courses/record.py:16 magnets/models.py:17
 msgid "Name"
 msgstr "Название"
 
-#: courses/admin.py:26 courses/admin.py:54 courses/admin.py:85
+#: courses/admin/bundle.py:25 courses/admin/course.py:18
+#: courses/admin/courses/record.py:22
 msgid "Price"
 msgstr "Цена"
 
-#: courses/admin.py:30
+#: courses/admin/bundle.py:29
 msgid "Items"
 msgstr "Товары"
 
-#: courses/admin.py:58 courses/admin.py:89
+#: courses/admin/course.py:22 courses/admin/courses/record.py:26
 msgid "Access"
 msgstr "Доступы"
 
-#: courses/admin.py:73
+#: courses/admin/courses/actions.py:9
+#, fuzzy
+#| msgid "Postmark template_id"
+msgid "Email template id"
+msgstr "ID шаблона в постмарке"
+
+#: courses/admin/courses/actions.py:29
+msgid "Send email to all purchased_users"
+msgstr "Отправить письмо всем купившим"
+
+#: courses/admin/courses/record.py:41
 msgid "Downloadable link"
 msgstr "Ссылка на скачиваие"
 
-#: courses/models.py:17
+#: courses/models/base.py:14
 msgid "Name for receipts"
 msgstr "Для чеков"
 
-#: courses/models.py:19
+#: courses/models/base.py:16
 msgid "Full name for letters"
 msgstr "Для писем"
 
-#: courses/models.py:60
-msgid "Genitive name"
-msgstr "В родительном падеже"
-
-#: courses/models.py:61
-msgid "Clickmeeting room URL"
-msgstr "Ссылка на ClickMeeting"
-
-#: courses/models.py:61 courses/models.py:62
-msgid "If set, every user who purcashes this course gets invited"
-msgstr "Купившие курс приглашаются автоматически"
-
-#: courses/models.py:62
-msgid "Zoom.us webinar ID"
-msgstr "ID вебинара в зуме"
-
-#: courses/models.py:64
-msgid "Welcome letter template id"
-msgstr "ID шаблона приветственного письма"
-
-#: courses/models.py:64
-msgid "Will be sent upon purchase if set"
-msgstr "Если задать — письмо будет уходить вместе с каждой покупкой"
-
-#: courses/models.py:68
-msgid "Course"
-msgstr "Курс"
-
-#: courses/models.py:69
-msgid "Courses"
-msgstr "Курсы"
-
-#: courses/models.py:79
-msgid "Postmark template_id"
-msgstr "ID шаблона в постмарке"
-
-#: courses/models.py:79
-msgid "Leave it blank for the default template"
-msgstr "Если оставить пустым — будет дефолтным"
-
-#: courses/models.py:83
-msgid "Record"
-msgstr "Запись"
-
-#: courses/models.py:84
-msgid "Records"
-msgstr "Записи"
-
-#: courses/models.py:106
+#: courses/models/bundle.py:16
 msgid "Bundle"
 msgstr "Набор"
 
-#: courses/models.py:107
+#: courses/models/bundle.py:17
 msgid "Bundles"
 msgstr "Наборы"
+
+#: courses/models/course.py:15
+msgid "Genitive name"
+msgstr "В родительном падеже"
+
+#: courses/models/course.py:16
+msgid "Clickmeeting room URL"
+msgstr "Ссылка на ClickMeeting"
+
+#: courses/models/course.py:16 courses/models/course.py:17
+msgid "If set, every user who purcashes this course gets invited"
+msgstr "Купившие курс приглашаются автоматически"
+
+#: courses/models/course.py:17
+msgid "Zoom.us webinar ID"
+msgstr "ID вебинара в зуме"
+
+#: courses/models/course.py:19
+msgid "Welcome letter template id"
+msgstr "ID шаблона приветственного письма"
+
+#: courses/models/course.py:19
+msgid "Will be sent upon purchase if set"
+msgstr "Если задать — письмо будет уходить вместе с каждой покупкой"
+
+#: courses/models/course.py:23
+msgid "Course"
+msgstr "Курс"
+
+#: courses/models/course.py:24
+msgid "Courses"
+msgstr "Курсы"
+
+#: courses/models/record.py:12
+msgid "Postmark template_id"
+msgstr "ID шаблона в постмарке"
+
+#: courses/models/record.py:12
+msgid "Leave it blank for the default template"
+msgstr "Если оставить пустым — будет дефолтным"
+
+#: courses/models/record.py:16
+msgid "Record"
+msgstr "Запись"
+
+#: courses/models/record.py:17
+msgid "Records"
+msgstr "Записи"
 
 #: magnets/admin.py:33
 msgid "Lead count"

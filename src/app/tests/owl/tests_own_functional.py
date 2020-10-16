@@ -3,6 +3,8 @@ from django.core import mail
 
 from app.mail.owl import TemplOwl
 
+pytestmark = [pytest.mark.django_db]
+
 
 @pytest.fixture(autouse=True)
 def adjust_settings(settings):

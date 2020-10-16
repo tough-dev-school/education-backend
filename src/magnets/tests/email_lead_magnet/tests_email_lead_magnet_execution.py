@@ -1,6 +1,8 @@
 import pytest
 from django.core import mail
 
+from app.models import EmailLogEntry
+
 pytestmark = [pytest.mark.django_db]
 
 
@@ -20,6 +22,14 @@ def send_mail(mocker):
 
 
 def test_emaiL_is_sent(user, campaign):
+    campaign.execute(user)
+
+    assert len(mail.outbox) == 1
+
+
+def test_email_is_sent_even_if_the_letter_was_sent_already(user, campaign):
+    EmailLogEntry.objects.create(email='lead@magnet.tester', template_id=campaign.template_id)
+
     campaign.execute(user)
 
     assert len(mail.outbox) == 1
