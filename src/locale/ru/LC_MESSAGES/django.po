@@ -128,6 +128,10 @@ msgstr "Записи"
 msgid "Lead count"
 msgstr "Количество лидов"
 
+#: magnets/apps.py:8
+msgid "Magnets"
+msgstr "Лид-магниты"
+
 #: magnets/models.py:20
 msgid "Letter template id"
 msgstr "ID почтового шаблона"
@@ -271,12 +275,13 @@ msgstr ""
 msgid "Rejected"
 msgstr ""
 
+#: users/apps.py:7
+msgid "Users"
+msgstr "Юзеры"
+
 #: users/models.py:8
 msgid "Subscribed to newsletter"
 msgstr "Подписан на новости"
-
-#~ msgid "Magnets"
-#~ msgstr "Лид-магниты"
 
 #, fuzzy
 #~| msgid "Promo Code"
