@@ -37,10 +37,7 @@ class UserCreator:
         return self.resulting_user
 
     def get(self):
-        try:
-            return User.objects.get(email=self.data['email'])
-        except User.DoesNotExist:
-            pass
+        return User.objects.filter(email=self.data['email']).first()
 
     def create(self):
         serializer = UserCreateSerializer(data=self.data)

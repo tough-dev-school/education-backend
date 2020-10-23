@@ -13,6 +13,15 @@ def test_existing_user(user):
     assert created == user
 
 
+def test_two_users_with_same_email(user, mixer):
+    mixer.blend('users.User', email=user.email)
+    created = UserCreator(name='Камаз Отходов', email=user.email)()
+
+    created.refresh_from_db()
+
+    assert created == user
+
+
 def test_existing_user_name_does_not_change(user):
     created = UserCreator(name='Камаз Отходов', email=user.email)()
 
