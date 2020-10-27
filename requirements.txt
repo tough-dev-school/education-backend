@@ -12,7 +12,7 @@ celery==4.4.2
 certifi==2019.9.11
 cffi==1.12.3
 chardet==3.0.4
-cryptography==2.7
+cryptography==3.2
 decorator==4.4.0
 Django==2.2.13
 django-anymail==7.1.0
