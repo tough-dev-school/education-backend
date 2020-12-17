@@ -78,7 +78,6 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework_tracking',
 
-    'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -163,21 +162,6 @@ MEDIA_URL = env('MEDIA_URL', default='/media/')
 
 STATIC_URL = env('STATIC_URL', default='/static/')
 STATIC_ROOT = env('STATIC_ROOT')
-
-SUIT_CONFIG = {
-    'ADMIN_NAME': 'Админка курсов',
-    'MENU_ICONS': {
-        'courses': 'icon-folder-close',
-        'orders': 'icon-shopping-cart',
-        'onetime': 'icon-lock',
-        'users': 'icon-lock',
-        'magnets': ' icon-filter',
-    },
-    'MENU_EXCLUDE': [
-        'auth',
-        'authtoken',
-    ],
-}
 
 SENTRY_DSN = env('SENTRY_DSN', cast=str, default='')
 
