@@ -25,7 +25,6 @@ django-healthchecks==1.4.2
 djangorestframework==3.10.3
 djangorestframework-jwt==1.11.0
 docutils==0.15.2
-drf-tracking==1.5.0
 entrypoints==0.3
 Faker==0.9.1
 flake8==3.7.8
