@@ -6,12 +6,16 @@ from django.utils.translation import ugettext_lazy as _
 class CourseActionForm(ActionForm):
     template_id = forms.CharField(
         required=False,
+        label='',
         widget=forms.TextInput(attrs={'placeholder': _('Email template id')}),
         max_length=32,
     )
 
     class Media:
-        js = ['js/admin/course_action_form.js']
+        js = ('admin/js/vendor/jquery/jquery.js', 'js/admin/course_action_form.js')
+        css = {
+            'all': ['css/admin/course_action_form.css'],
+        }
 
 
 def send_email_to_all_purchased_users(modeladmin, request, queryset):

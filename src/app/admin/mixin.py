@@ -5,16 +5,13 @@ from django.db import models
 from django.template.defaultfilters import capfirst, time
 from django.utils import timezone
 from django.utils.html import format_html
-from suit.widgets import SuitSplitDateTimeWidget, SuitTimeWidget
 
 from app.admin.widgets import Select2Widget
 
 
 class AppAdminMixin:
     formfield_overrides = {
-        models.DateTimeField: {'widget': SuitSplitDateTimeWidget},
         models.ForeignKey: {'widget': Select2Widget},
-        models.TimeField: {'widget': SuitTimeWidget},
     }
     exclude = [
         'modified',
