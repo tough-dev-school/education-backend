@@ -17,12 +17,14 @@ cryptography==3.3.1
 decorator==4.4.0
 Django==3.1.4
 django-anymail==8.1
+django-axes==5.10.0
 django-behaviors==0.5.1
 django-cors-headers==3.6.0
 django-debug-toolbar==3.2
 django-environ==0.4.5
 django-filter==2.4.0
 django-healthchecks==1.4.2
+django-ipware==3.0.2
 djangorestframework==3.12.2
 docutils==0.15.2
 entrypoints==0.3

@@ -77,6 +77,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_filters',
 
+    'axes',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -98,6 +99,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.RemoteUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'axes.middleware.AxesMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
@@ -148,6 +150,7 @@ DATABASES = {
 }
 AUTH_USER_MODEL = 'users.User'
 AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesBackend',
     'django.contrib.auth.backends.ModelBackend',
     'django.contrib.auth.backends.RemoteUserBackend',
 ]
