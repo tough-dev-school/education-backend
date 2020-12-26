@@ -1,11 +1,9 @@
 from typing import Iterable, Optional
 
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from app.models import DefaultQuerySet, TimestampedModel, models
 from orders.fields import ItemField
-from orders.signals import order_got_shipped
 
 
 class UnknownItemException(Exception):
@@ -89,14 +87,5 @@ class Order(TimestampedModel):
 
     def ship(self, silent: bool = False):
         """Ship the order. Better call it asynchronously"""
-        self.item.ship(to=self.user)
-
-        self.shipped = timezone.now()
-
-        self.save()
-
-        order_got_shipped.send(
-            sender=self.__class__,
-            order=self,
-            silent=silent,
-        )
+        from orders.services.order_shipper import Pigwidgeon
+        Pigwidgeon(self, silent=silent)()
