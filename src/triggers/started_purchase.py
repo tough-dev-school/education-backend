@@ -16,6 +16,7 @@ class StartedPurchaseTrigger(BaseTrigger):
         """Order should not be paid and was created more then two days ago (safety)
         """
         return self.order.paid is None and \
+            self.order.giver is None and \
             self._is_created_recently() and \
             self._customer_has_no_paid_orders_in_last_month()
 
