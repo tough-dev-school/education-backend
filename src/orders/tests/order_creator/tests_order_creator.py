@@ -1,6 +1,5 @@
 import pytest
 
-from orders.creator import OrderCreator
 from orders.models import Order
 
 pytestmark = [pytest.mark.django_db]

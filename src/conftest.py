@@ -28,6 +28,11 @@ def user(mixer):
 
 
 @pytest.fixture
+def another_user(mixer):
+    return mixer.blend('users.User')
+
+
+@pytest.fixture
 def read_fixture():
     """JSON fixture reader"""
 

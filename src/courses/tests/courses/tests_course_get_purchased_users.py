@@ -19,11 +19,6 @@ def another_order(mixer, user):
     return mixer.blend('orders.Order', user=user, paid=timezone.now())
 
 
-@pytest.fixture
-def another_user(mixer):
-    return mixer.blend('users.User')
-
-
 @pytest.mark.usefixtures('user')
 def test_nothing(course):
     assert len(course.get_purchased_users()) == 0
