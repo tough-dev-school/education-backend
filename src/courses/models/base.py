@@ -1,7 +1,7 @@
 from decimal import Decimal
 
 from django.apps import apps
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from app.models import TimestampedModel, models
 from app.pricing import format_old_price, format_price

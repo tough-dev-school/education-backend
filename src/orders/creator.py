@@ -17,7 +17,13 @@ class OrderCreateSerializer(serializers.ModelSerializer):
 
 
 class OrderCreator:
-    def __init__(self, user: User, item, promocode=None, **kwargs):
+    def __init__(
+        self,
+        user: User,
+        item,
+        promocode=None,
+        **kwargs,
+    ):
         self.item = item
         self.data = {
             'user': user.pk,
