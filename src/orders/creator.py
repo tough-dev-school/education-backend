@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union
 
 from orders.models import Order, PromoCode
 from users.models import User
@@ -12,7 +12,7 @@ class OrderCreator:
         item,
         promocode: str = None,
         giver: User = None,
-        desired_shipment_date: datetime = None,
+        desired_shipment_date: Union[str, datetime] = None,
         gift_message: str = '',
     ):
         self.item = item
