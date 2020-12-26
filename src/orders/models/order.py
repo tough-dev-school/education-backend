@@ -35,6 +35,10 @@ class Order(TimestampedModel):
     record = ItemField('courses.Record', null=True, blank=True, on_delete=models.PROTECT)
     bundle = ItemField('courses.Bundle', null=True, blank=True, on_delete=models.PROTECT)
 
+    giver = models.ForeignKey('users.User', null=True, on_delete=models.SET_NULL, related_name='created_gifts')
+    desired_shipment_date = models.DateTimeField(_('Date when the gift should be shipped'), null=True, blank=True)
+    gift_message = models.TextField(default='')
+
     class Meta:
         ordering = ['-id']
         verbose_name = _('Order')

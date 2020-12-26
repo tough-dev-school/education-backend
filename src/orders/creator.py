@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 
 from orders.models import Order, PromoCode
@@ -10,11 +11,17 @@ class OrderCreator:
         user: User,
         item,
         promocode: str = None,
+        giver: User = None,
+        desired_shipment_date: datetime = None,
+        gift_message: str = '',
     ):
         self.item = item
         self.user = user
         self.price = item.get_price(promocode=promocode)
         self.promocode = self._get_promocode(promocode)
+        self.giver = giver
+        self.desired_shipment_date = desired_shipment_date
+        self.gift_message = gift_message
 
     def __call__(self) -> Order:
         order = self.create()
@@ -29,6 +36,9 @@ class OrderCreator:
             user=self.user,
             price=self.price,
             promocode=self.promocode,
+            giver=self.giver,
+            desired_shipment_date=self.desired_shipment_date,
+            gift_message=self.gift_message,
         )
 
     def _get_promocode(self, promocode_name: str) -> Optional[PromoCode]:
