@@ -1,11 +1,9 @@
 from typing import Iterable, Optional
 
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from app.models import DefaultQuerySet, TimestampedModel, models
 from orders.fields import ItemField
-from orders.signals import order_got_shipped
 
 
 class UnknownItemException(Exception):
@@ -34,6 +32,10 @@ class Order(TimestampedModel):
     course = ItemField('courses.Course', null=True, blank=True, on_delete=models.PROTECT)
     record = ItemField('courses.Record', null=True, blank=True, on_delete=models.PROTECT)
     bundle = ItemField('courses.Bundle', null=True, blank=True, on_delete=models.PROTECT)
+
+    giver = models.ForeignKey('users.User', null=True, on_delete=models.SET_NULL, related_name='created_gifts')
+    desired_shipment_date = models.DateTimeField(_('Date when the gift should be shipped'), null=True, blank=True)
+    gift_message = models.TextField(default='')
 
     class Meta:
         ordering = ['-id']
@@ -80,25 +82,10 @@ class Order(TimestampedModel):
         raise UnknownItemException('There is not foreignKey for {}'.format(item.__class__))
 
     def set_paid(self, silent=False):
-        is_already_paid = self.paid is not None
-
-        self.paid = timezone.now()
-
-        self.save()
-
-        if not is_already_paid and self.item is not None:
-            self.ship(silent=silent)
+        from orders.services.order_is_paid_setter import Griphook
+        Griphook(self, silent=silent)()
 
     def ship(self, silent: bool = False):
         """Ship the order. Better call it asynchronously"""
-        self.item.ship(to=self.user)
-
-        self.shipped = timezone.now()
-
-        self.save()
-
-        order_got_shipped.send(
-            sender=self.__class__,
-            order=self,
-            silent=silent,
-        )
+        from orders.services.order_shipper import Pigwidgeon
+        Pigwidgeon(self, silent=silent)()
