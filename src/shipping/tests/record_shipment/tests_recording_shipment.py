@@ -3,11 +3,6 @@ import pytest
 pytestmark = [pytest.mark.django_db]
 
 
-@pytest.fixture
-def send_mail(mocker):
-    return mocker.patch('app.tasks.send_mail.delay')
-
-
 def test_the_message_is_sent_to_email(send_mail, shipment, user):
     shipment()
 
