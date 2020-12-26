@@ -6,7 +6,6 @@ from orders.models import Order
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures('record'),
 ]
 
 
@@ -25,12 +24,12 @@ def default_gift_data():
     }
 
 
-def test_order(api, record, default_gift_data):
-    api.post('/api/v2/records/home-video/gift/', default_gift_data, format='multipart', expected_status_code=302)
+def test_order(api, course, default_gift_data):
+    api.post(f'/api/v2/courses/{course.slug}/gift/', default_gift_data, format='multipart', expected_status_code=302)
 
     placed = get_order()
 
-    assert placed.item == record
+    assert placed.item == course
 
     assert placed.desired_shipment_date == datetime(2032, 12, 1, 12, 35, 15)
 
@@ -50,17 +49,17 @@ def test_order(api, record, default_gift_data):
     'giver_email',
     'desired_shipment_date',
 ])
-def test_required_fields(api, required_field_name, default_gift_data):
+def test_required_fields(api, required_field_name, default_gift_data, course):
 
     del default_gift_data[required_field_name]
-    got = api.post('/api/v2/records/home-video/gift/', default_gift_data, format='multipart', expected_status_code=400)
+    got = api.post(f'/api/v2/courses/{course.slug}/gift/', default_gift_data, format='multipart', expected_status_code=400)
 
     assert required_field_name in got
 
 
-def test_gift_message(api, default_gift_data):
+def test_gift_message(api, default_gift_data, course):
     default_gift_data['gift_message'] = 'Гори в аду!'
-    api.post('/api/v2/records/home-video/gift/', default_gift_data, format='multipart', expected_status_code=302)
+    api.post(f'/api/v2/courses/{course.slug}/gift/', default_gift_data, format='multipart', expected_status_code=302)
 
     placed = get_order()
 
