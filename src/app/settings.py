@@ -36,6 +36,7 @@ SECRET_KEY = env('SECRET_KEY', cast=str, default='s3cr3t')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG', cast=bool, default=False)
 CI = env('CI', cast=bool, default=False)
+ANONYMIZE_ENABLED = DEBUG
 
 ABSOLUTE_HOST = env('ABSOLUTE_HOST', cast=str, default='https://edu-app.borshev.com')
 ALLOWED_HOSTS = [
@@ -72,6 +73,7 @@ INSTALLED_APPS = [
     'magnets',
 
     'corsheaders',
+    'hattori',
     'anymail',
     'rest_framework',
     'rest_framework.authtoken',
