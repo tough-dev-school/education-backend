@@ -12,7 +12,7 @@ class OrderCreator:
         item,
         promocode: Optional[str] = None,
         giver: User = None,
-        desired_shipment_date: Union[str, datetime] = None,
+        desired_shipment_date: Optional[Union[str, datetime]] = None,
         gift_message: str = '',
     ):
         self.item = item
