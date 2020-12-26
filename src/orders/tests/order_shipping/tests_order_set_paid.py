@@ -2,8 +2,6 @@ from datetime import datetime
 
 import pytest
 
-from orders.models import Order
-from orders.signals import order_got_shipped
 
 pytestmark = [
     pytest.mark.django_db,
@@ -39,32 +37,6 @@ def test_shipment_date(order):
     order.refresh_from_db()
 
     assert order.shipped == datetime(2032, 12, 1, 15, 30)
-
-
-def test_shipment_signal(order, connect_mock_handler):
-    handler = connect_mock_handler(order_got_shipped, sender=Order)
-
-    order.set_paid()
-
-    handler.assert_called_once()
-
-
-@pytest.mark.parametrize('silence', [True, False])
-def test_shipment_signal_silence(order, connect_mock_handler, silence):
-    handler = connect_mock_handler(order_got_shipped, sender=Order)
-
-    order.set_paid(silent=silence)
-
-    assert handler.call_args[1]['silent'] is silence
-
-
-def test_shipment_signal_is_not_sent_when_order_is_already_paid(order, connect_mock_handler):
-    handler = connect_mock_handler(order_got_shipped, sender=Order)
-    order.setattr_and_save('paid', datetime(2032, 12, 1, 15, 30))
-
-    order.set_paid()
-
-    handler.assert_not_called()
 
 
 def test_empty_item_does_not_break_things(order, ship):

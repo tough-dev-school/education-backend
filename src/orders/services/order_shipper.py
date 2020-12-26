@@ -14,12 +14,7 @@ class Pigwidgeon:
     def __call__(self):
         self.ship()
         self.mark_order_as_shipped()
-
-        order_got_shipped.send(
-            sender=Order,
-            order=self.order,
-            silent=self.silent,
-        )
+        self.send_happiness_message()
 
     def ship(self):
         self.order.item.ship(to=self.order.user)
@@ -27,3 +22,16 @@ class Pigwidgeon:
     def mark_order_as_shipped(self):
         self.order.shipped = timezone.now()
         self.order.save()
+
+    def send_happiness_message(self):
+        if not settings.SEND_HAPPINESS_MESSAGES:
+            return
+
+        if self.silent:
+            return
+
+        send_happiness_message.delay(text='💰+{sum} ₽, {user}, {reason}'.format(
+            sum=str(self.order.price).replace('.00', ''),
+            user=str(self.order.user),
+            reason=str(self.order.item),
+        ))
