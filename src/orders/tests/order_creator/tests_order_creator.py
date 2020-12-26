@@ -41,7 +41,7 @@ def test_record(user, record):
 
 
 def test_course_manual(user, course):
-    order = create(user=user, item=course, price=200500)
+    order = create(user=user, item=course)
 
     order.refresh_from_db()
 

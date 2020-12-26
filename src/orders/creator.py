@@ -1,19 +1,7 @@
 from typing import Optional
 
-from rest_framework import serializers
-
 from orders.models import Order, PromoCode
 from users.models import User
-
-
-class OrderCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = [
-            'user',
-            'price',
-            'promocode',
-        ]
 
 
 class OrderCreator:
@@ -21,16 +9,12 @@ class OrderCreator:
         self,
         user: User,
         item,
-        promocode=None,
-        **kwargs,
+        promocode: str = None,
     ):
         self.item = item
-        self.data = {
-            'user': user.pk,
-            **kwargs,
-            'price': item.get_price(promocode=promocode),
-            'promocode': self._get_promocode_id(promocode_name=promocode),
-        }
+        self.user = user
+        self.price = item.get_price(promocode=promocode)
+        self.promocode = self._get_promocode(promocode)
 
     def __call__(self) -> Order:
         order = self.create()
@@ -41,14 +25,11 @@ class OrderCreator:
         return order
 
     def create(self):
-        serializer = OrderCreateSerializer(data=self.data)
+        return Order.objects.create(
+            user=self.user,
+            price=self.price,
+            promocode=self.promocode,
+        )
 
-        serializer.save()
-
-        return serializer.instance
-
-    def _get_promocode_id(self, promocode_name: str) -> Optional[int]:
-        promocode = PromoCode.objects.get_or_nothing(name=promocode_name)
-
-        if promocode is not None:
-            return promocode.pk
+    def _get_promocode(self, promocode_name: str) -> Optional[PromoCode]:
+        return PromoCode.objects.get_or_nothing(name=promocode_name)
