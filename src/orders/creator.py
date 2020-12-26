@@ -42,6 +42,7 @@ class OrderCreator:
 
     def create(self):
         serializer = OrderCreateSerializer(data=self.data)
+        serializer.is_valid(raise_exception=True)
 
         serializer.save()
 
