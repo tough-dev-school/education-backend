@@ -31,6 +31,14 @@ def test_not_ships_if_order_is_already_paid(order, ship):
     ship.assert_not_called()
 
 
+def test_not_ships_if_order_has_desired_shipment_date(order, ship):
+    order.setattr_and_save('desired_shipment_date', datetime(2039, 12, 12, 15, 30))
+
+    order.set_paid()
+
+    ship.assert_not_called()
+
+
 def test_shipment_date(order):
     order.set_paid()
     order.refresh_from_db()

@@ -17,7 +17,8 @@ class Pigwidgeon:
         self.send_happiness_message()
 
     def ship(self):
-        self.order.item.ship(to=self.order.user)
+        if self.order.desired_shipment_date is None:
+            self.order.item.ship(to=self.order.user)
 
     def mark_order_as_shipped(self):
         self.order.shipped = timezone.now()

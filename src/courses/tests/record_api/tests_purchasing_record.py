@@ -21,6 +21,7 @@ def test_order(api, record):
 
     assert placed.item == record
     assert placed.price == Decimal('1900.00')
+    assert placed.desired_shipment_date is None
 
 
 def test_user(api, record):
