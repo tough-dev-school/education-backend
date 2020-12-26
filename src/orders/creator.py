@@ -17,7 +17,13 @@ class OrderCreateSerializer(serializers.ModelSerializer):
 
 
 class OrderCreator:
-    def __init__(self, user: User, item, promocode=None, **kwargs):
+    def __init__(
+        self,
+        user: User,
+        item,
+        promocode=None,
+        **kwargs,
+    ):
         self.item = item
         self.data = {
             'user': user.pk,
@@ -36,7 +42,6 @@ class OrderCreator:
 
     def create(self):
         serializer = OrderCreateSerializer(data=self.data)
-        serializer.is_valid(raise_exception=True)
 
         serializer.save()
 
