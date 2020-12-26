@@ -84,14 +84,8 @@ class Order(TimestampedModel):
         raise UnknownItemException('There is not foreignKey for {}'.format(item.__class__))
 
     def set_paid(self, silent=False):
-        is_already_paid = self.paid is not None
-
-        self.paid = timezone.now()
-
-        self.save()
-
-        if not is_already_paid and self.item is not None:
-            self.ship(silent=silent)
+        from orders.services.order_is_paid_setter import Griphook
+        Griphook(self, silent=silent)()
 
     def ship(self, silent: bool = False):
         """Ship the order. Better call it asynchronously"""
