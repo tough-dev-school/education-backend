@@ -14,11 +14,6 @@ def order(mixer, course, user):
     return mixer.blend('orders.Order', user=user, course=course, paid=timezone.now())
 
 
-@pytest.fixture
-def send_mail(mocker):
-    return mocker.patch('app.tasks.send_mail.delay')
-
-
 def test_sending_mail(course, user, send_mail):
     course.send_email_to_all_purchased_users(template_id='100500')
 

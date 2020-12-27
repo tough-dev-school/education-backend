@@ -15,9 +15,11 @@ class StartedPurchaseTrigger(BaseTrigger):
     def condition(self):
         """Order should not be paid and was created more then two days ago (safety)
         """
-        return self.order.paid is None and \
-            self._is_created_recently() and \
-            self._customer_has_no_paid_orders_in_last_month()
+        return all([
+            self.order.paid is None,
+            self._is_created_recently(),
+            self._customer_has_no_paid_orders_in_last_month(),
+        ])
 
     def _is_created_recently(self) -> bool:
         return timezone.now() - self.PERIOD > self.order.created > timezone.now() - self.PERIOD * 2

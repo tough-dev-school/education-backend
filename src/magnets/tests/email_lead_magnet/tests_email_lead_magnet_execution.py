@@ -16,11 +16,6 @@ def user(mixer):
     return mixer.blend('users.User', email='lead@magnet.tester')
 
 
-@pytest.fixture
-def send_mail(mocker):
-    return mocker.patch('app.tasks.send_mail.delay')
-
-
 def test_emaiL_is_sent(user, campaign):
     campaign.execute(user)
 

@@ -23,6 +23,7 @@ class OrderAdmin(ModelAdmin):
         'id',
         'created',
         'customer',
+        'giver',
         'item',
         'is_paid',
         'promocode',
@@ -54,6 +55,18 @@ class OrderAdmin(ModelAdmin):
         'shipped',
     ]
 
+    fieldsets = [
+        (None, {
+            'fields': ['user', 'price', 'paid', 'shipped'],
+        }),
+        (_('Item'), {
+            'fields': ['course', 'record', 'bundle'],
+        }),
+        (_('Gift'), {
+            'fields': ['giver', 'desired_shipment_date', 'gift_message'],
+        }),
+    ]
+
     def get_queryset(self, request):
         return super().get_queryset(request).select_related(
             'user',
@@ -63,6 +76,14 @@ class OrderAdmin(ModelAdmin):
 
     @field(short_description=_('User'), admin_order_field='user__id')
     def customer(self, obj):
+        return format_html(
+            '{name} &lt;<a href="mailto:{email}">{email}</a>&gt;',
+            name=str(obj.user),
+            email=obj.user.email,
+        )
+
+    @field(short_description=_('Giver'), admin_order_field='user__id')
+    def giver(self, obj):
         return format_html(
             '{name} &lt;<a href="mailto:{email}">{email}</a>&gt;',
             name=str(obj.user),

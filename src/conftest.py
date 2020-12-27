@@ -33,6 +33,11 @@ def another_user(mixer):
 
 
 @pytest.fixture
+def send_mail(mocker):
+    return mocker.patch('app.tasks.send_mail.delay')
+
+
+@pytest.fixture
 def read_fixture():
     """JSON fixture reader"""
 

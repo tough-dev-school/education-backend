@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-16 10:55+0300\n"
+"POT-Creation-Date: 2020-12-27 19:09+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,7 @@ msgid "Name"
 msgstr "Название"
 
 #: courses/admin/bundle.py:25 courses/admin/course.py:18
-#: courses/admin/courses/record.py:22
+#: courses/admin/courses/record.py:22 orders/models/order.py:22
 msgid "Price"
 msgstr "Цена"
 
@@ -46,13 +46,13 @@ msgstr "Товары"
 msgid "Access"
 msgstr "Доступы"
 
-#: courses/admin/courses/actions.py:9
+#: courses/admin/courses/actions.py:10
 #, fuzzy
 #| msgid "Postmark template_id"
 msgid "Email template id"
 msgstr "ID шаблона в постмарке"
 
-#: courses/admin/courses/actions.py:29
+#: courses/admin/courses/actions.py:34
 msgid "Send email to all purchased_users"
 msgstr "Отправить письмо всем купившим"
 
@@ -68,7 +68,7 @@ msgstr "Для чеков"
 msgid "Full name for letters"
 msgstr "Для писем"
 
-#: courses/models/bundle.py:16
+#: courses/models/bundle.py:16 orders/models/order.py:34
 msgid "Bundle"
 msgstr "Набор"
 
@@ -100,7 +100,7 @@ msgstr "ID шаблона приветственного письма"
 msgid "Will be sent upon purchase if set"
 msgstr "Если задать — письмо будет уходить вместе с каждой покупкой"
 
-#: courses/models/course.py:23
+#: courses/models/course.py:23 orders/models/order.py:32
 msgid "Course"
 msgstr "Курс"
 
@@ -116,7 +116,7 @@ msgstr "ID шаблона в постмарке"
 msgid "Leave it blank for the default template"
 msgstr "Если оставить пустым — будет дефолтным"
 
-#: courses/models/record.py:16
+#: courses/models/record.py:16 orders/models/order.py:33
 msgid "Record"
 msgstr "Запись"
 
@@ -172,35 +172,39 @@ msgstr "Одноразовый токен"
 msgid "Onetime tokens"
 msgstr "Одноразовые токены"
 
-#: orders/admin/orders.py:10 orders/admin/orders.py:76
+#: orders/admin/orders.py:10 orders/admin/orders.py:85
 msgid "Is paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders.py:64
+#: orders/admin/orders.py:65 orders/models/order.py:21
 msgid "User"
 msgstr "Юзер"
 
-#: orders/admin/orders.py:72
+#: orders/admin/orders.py:73 orders/models/order.py:36
+msgid "Giver"
+msgstr "Даритель"
+
+#: orders/admin/orders.py:81
 msgid "Item"
 msgstr "Товар"
 
-#: orders/admin/orders.py:79
+#: orders/admin/orders.py:88
 msgid "Paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders.py:81
+#: orders/admin/orders.py:90
 msgid "Not paid"
 msgstr "Не оплачен"
 
-#: orders/admin/orders.py:83
+#: orders/admin/orders.py:92
 msgid "Set paid"
 msgstr "Пометить оплаченным"
 
-#: orders/admin/orders.py:90
+#: orders/admin/orders.py:99
 msgid "Set not paid"
 msgstr "Пометить неоплаченынм"
 
-#: orders/admin/orders.py:96
+#: orders/admin/orders.py:105
 msgid "Ship again if paid"
 msgstr "Ещё раз выполнить (если заказ не оплачен — не выполнится)"
 
@@ -208,30 +212,38 @@ msgstr "Ещё раз выполнить (если заказ не оплаче�
 msgid "Order count"
 msgstr "Количество заказов"
 
-#: orders/models/order.py:25 orders/models/promocode.py:30
+#: orders/models/order.py:23 orders/models/promocode.py:30
 #: orders/models/promocode.py:36
 msgid "Promo Code"
 msgstr "Промо-код"
 
-#: orders/models/order.py:28
+#: orders/models/order.py:26
 msgid "Date when order got paid"
 msgstr "Когда оплачен"
 
-#: orders/models/order.py:30
+#: orders/models/order.py:28
 msgid "If set during creation, order automaticaly gets shipped"
 msgstr ""
 "Чтобы отметить заказ оплаченым, воспользуйтесь массовой операцией из списка "
 "заказво"
 
-#: orders/models/order.py:32
+#: orders/models/order.py:30
 msgid "Date when order was shipped"
 msgstr "Дата выполнения"
 
-#: orders/models/order.py:40
+#: orders/models/order.py:37
+msgid "Date when the gift should be shipped"
+msgstr "Когда подарить"
+
+#: orders/models/order.py:38
+msgid "Gift message"
+msgstr "Подарочное сообщение"
+
+#: orders/models/order.py:42
 msgid "Order"
 msgstr "Заказ"
 
-#: orders/models/order.py:41
+#: orders/models/order.py:43
 msgid "Orders"
 msgstr "Заказы"
 
