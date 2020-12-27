@@ -48,6 +48,7 @@ class Pigwidgeon:
         send_mail.delay(
             to=self.order.giver.email,
             template_id='gift-notification-for-giver',  # postmark
+            disable_antispam=True,
             ctx={
                 'item_name': str(self.order.item),
                 'receiver_name': str(self.order.user),
