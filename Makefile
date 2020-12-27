@@ -3,7 +3,7 @@ fetchdb:
 	cd src && ./manage.py anonymize_db
 
 runserver:
-	cd src && ./manage.py runserver
+	cd src && ./manage.py migrate && ./manage.py runserver
 
 lint:
 	flake8 src

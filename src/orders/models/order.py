@@ -18,8 +18,8 @@ class OrderQuerySet(DefaultQuerySet):
 class Order(TimestampedModel):
     objects = OrderQuerySet.as_manager()  # type: OrderQuerySet
 
-    user = models.ForeignKey('users.User', on_delete=models.PROTECT)
-    price = models.DecimalField(max_digits=9, decimal_places=2)
+    user = models.ForeignKey('users.User', verbose_name=_('User'), on_delete=models.PROTECT)
+    price = models.DecimalField(_('Price'), max_digits=9, decimal_places=2)
     promocode = models.ForeignKey('orders.PromoCode', verbose_name=_('Promo Code'), blank=True, null=True, on_delete=models.PROTECT)
 
     paid = models.DateTimeField(
@@ -29,13 +29,13 @@ class Order(TimestampedModel):
     )
     shipped = models.DateTimeField(_('Date when order was shipped'), null=True, blank=True)
 
-    course = ItemField('courses.Course', null=True, blank=True, on_delete=models.PROTECT)
-    record = ItemField('courses.Record', null=True, blank=True, on_delete=models.PROTECT)
-    bundle = ItemField('courses.Bundle', null=True, blank=True, on_delete=models.PROTECT)
+    course = ItemField(to='courses.Course', verbose_name=_('Course'), null=True, blank=True, on_delete=models.PROTECT)
+    record = ItemField(to='courses.Record', verbose_name=_('Record'), null=True, blank=True, on_delete=models.PROTECT)
+    bundle = ItemField(to='courses.Bundle', verbose_name=_('Bundle'), null=True, blank=True, on_delete=models.PROTECT)
 
-    giver = models.ForeignKey('users.User', null=True, on_delete=models.SET_NULL, related_name='created_gifts')
+    giver = models.ForeignKey('users.User', verbose_name=_('Giver'), null=True, blank=True, on_delete=models.SET_NULL, related_name='created_gifts')
     desired_shipment_date = models.DateTimeField(_('Date when the gift should be shipped'), null=True, blank=True)
-    gift_message = models.TextField(default='')
+    gift_message = models.TextField(_('Gift message'), default='', blank=True)
 
     class Meta:
         ordering = ['-id']
