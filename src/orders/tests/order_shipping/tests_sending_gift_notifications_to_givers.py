@@ -45,4 +45,4 @@ def test_email_context(order, send_mail):
     assert ctx['item_name'] == 'Запись курсов катанья и мытья'
     assert ctx['receiver_name'] == 'Kamaz Otkhodov'
     assert ctx['receiver_email'] == 'kamaz@gmail.com'
-    assert ctx['desired_shipment_date'] == '01 января'
+    assert ctx['desired_shipment_date'] == '01.01.2021'
