@@ -7,3 +7,6 @@ runserver:
 
 lint:
 	flake8 src
+
+test:
+	cd src && pytest -n 4 -x

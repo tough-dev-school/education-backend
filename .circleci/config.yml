@@ -47,9 +47,11 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - "venv"
+            - ".git"
             - "src"
+            - "venv"
             - ".circleci"
+            - "Makefile"
 
   test:
     <<: *defaults
@@ -64,7 +66,7 @@ jobs:
       - run:
           command: |
             . venv/bin/activate
-            cd src && py.test -x
+            make test
 
   deploy:
     <<: *defaults

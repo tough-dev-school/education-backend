@@ -1,4 +1,5 @@
 amqp==2.5.2
+apipkg==1.5
 appnope==0.1.0
 asgiref==3.3.1
 asn1crypto==1.0.1
@@ -30,6 +31,7 @@ django-ipware==3.0.2
 djangorestframework==3.12.2
 docutils==0.15.2
 entrypoints==0.3
+execnet==1.7.1
 Faker==0.9.1
 flake8==3.7.8
 flake8-bugbear==19.8.0
@@ -68,8 +70,11 @@ pyparsing==2.4.2
 pytest==6.2.1
 pytest-django==3.5.1
 pytest-env==0.6.2
+pytest-forked==1.3.0
 pytest-freezegun==0.3.0.post1
 pytest-mock==1.11.1
+pytest-randomly==3.5.0
+pytest-xdist==2.2.0
 python-dateutil==2.8.0
 pytz==2020.4
 redis==3.3.11
