@@ -50,7 +50,7 @@ class Pigwidgeon:
             template_id='gift-notification-for-giver',  # postmark
             disable_antispam=True,
             ctx={
-                'item_name': str(self.order.item),
+                'item_name': self.order.item.full_name,
                 'receiver_name': str(self.order.user),
                 'receiver_email': self.order.user.email,
                 'desired_shipment_date': self.order.desired_shipment_date.strftime('%d.%m.%Y'),

@@ -15,7 +15,7 @@ def ship(mocker):
 
 @pytest.fixture
 def record(mixer):
-    return mixer.blend('courses.Record', course__name_genitive='курсов катанья и мытья')
+    return mixer.blend('courses.Record', course__name_genitive='курсов катанья и мытья', full_name='Полная запись курса катанья и мытья')
 
 
 @pytest.fixture
