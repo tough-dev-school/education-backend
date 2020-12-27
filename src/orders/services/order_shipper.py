@@ -12,14 +12,19 @@ class Pigwidgeon:
         self.silent = silent
 
     def __call__(self):
-        self.ship()
-        self.mark_order_as_shipped()
+        if self.ship():
+            self.mark_order_as_shipped()
         self.send_notification_to_giver()
         self.send_happiness_message()
 
-    def ship(self):
+    def ship(self) -> bool:
+        """Ship the order. Returns true if order is shipped"""
         if self.order.desired_shipment_date is None:
             self.order.item.ship(to=self.order.user)
+
+            return True
+
+        return False
 
     def mark_order_as_shipped(self):
         self.order.shipped = timezone.now()
