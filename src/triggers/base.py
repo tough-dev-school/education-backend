@@ -35,7 +35,13 @@ class BaseTrigger(metaclass=ABCMeta):
         if self.is_sent():
             return False
 
-        return self.condition()
+        return all([
+            self.message_does_not_look_like_a_message_that_should_never_be_sent(),
+            self.condition(),  # defined in sub-class
+        ])
+
+    def message_does_not_look_like_a_message_that_should_never_be_sent(self) -> bool:
+        return self.order.giver is None
 
     def log_success(self):
         return TriggerLogEntry.objects.create(order=self.order, trigger=self.name)

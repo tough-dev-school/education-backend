@@ -52,6 +52,6 @@ class Pigwidgeon:
                 'item_name': str(self.order.item),
                 'receiver_name': str(self.order.user),
                 'receiver_email': self.order.user.email,
-                'desired_shipment_date': self.order.desired_shipment_date.strftime('%d.%m.%Y')
+                'desired_shipment_date': self.order.desired_shipment_date.strftime('%d.%m.%Y'),
             },
         )

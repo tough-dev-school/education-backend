@@ -17,7 +17,6 @@ class StartedPurchaseTrigger(BaseTrigger):
         """
         return all([
             self.order.paid is None,
-            self.order.giver is None,
             self._is_created_recently(),
             self._customer_has_no_paid_orders_in_last_month(),
         ])
