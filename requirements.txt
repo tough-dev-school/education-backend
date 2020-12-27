@@ -12,7 +12,7 @@ boto3==1.16.43
 botocore==1.19.43
 celery==4.4.2
 certifi==2020.12.5
-cffi==1.12.3
+cffi==1.14.4
 chardet==3.0.4
 cryptography==3.3.1
 decorator==4.4.0
