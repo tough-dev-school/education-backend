@@ -64,7 +64,7 @@ jobs:
       - run:
           command: |
             . venv/bin/activate
-            cd src && py.test -x
+            make test
 
   deploy:
     <<: *defaults
