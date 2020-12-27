@@ -40,7 +40,7 @@ class Pigwidgeon:
         send_happiness_message.delay(text='💰+{sum} ₽, {user}, {reason}'.format(
             sum=str(self.order.price).replace('.00', ''),
             user=str(self.order.user),
-            reason=str(self.order.item),
+            reason=str(self.order.item) if self.order.giver is None else f'{self.order.item} (подарок)',
         ))
 
     def send_notification_to_giver(self):

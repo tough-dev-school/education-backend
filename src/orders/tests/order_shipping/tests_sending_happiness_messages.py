@@ -19,6 +19,13 @@ def test(tg_message, order):
     tg_message.assert_called_once_with('💰+1500 ₽, Kamaz Otkhodov, Запись курсов катанья и мытья')
 
 
+def test_gift(tg_message, order, another_user):
+    order.setattr_and_save('giver', another_user)
+    order.set_paid()
+
+    tg_message.assert_called_once_with('💰+1500 ₽, Kamaz Otkhodov, Запись курсов катанья и мытья (подарок)')
+
+
 def test_not_sending_if_disabled(settings, tg_message, order):
     settings.SEND_HAPPINESS_MESSAGES = False
 
