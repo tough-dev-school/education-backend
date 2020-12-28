@@ -1,6 +1,5 @@
-import os
-
 import environ
+import os
 from celery.schedules import crontab
 
 root = environ.Path(__file__) - 2        # three folder back (/a/b/c/ - 3 = /)
@@ -170,8 +169,8 @@ SENTRY_DSN = env('SENTRY_DSN', cast=str, default='')
 
 if not DEBUG and len(SENTRY_DSN):
     import sentry_sdk
-    from sentry_sdk.integrations.django import DjangoIntegration
     from sentry_sdk.integrations.celery import CeleryIntegration
+    from sentry_sdk.integrations.django import DjangoIntegration
     from sentry_sdk.integrations.redis import RedisIntegration
 
     sentry_sdk.init(

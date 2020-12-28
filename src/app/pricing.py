@@ -1,6 +1,5 @@
-from decimal import Decimal
-
 from babel.numbers import format_decimal
+from decimal import Decimal
 
 
 def format_price(price: Decimal) -> str:

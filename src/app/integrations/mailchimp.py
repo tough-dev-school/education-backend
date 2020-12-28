@@ -1,9 +1,8 @@
 import hashlib
-from urllib.parse import urljoin
-
 import requests
 from django.conf import settings
 from requests.auth import HTTPBasicAuth
+from urllib.parse import urljoin
 
 from users.models import User
 

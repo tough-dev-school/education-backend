@@ -1,6 +1,5 @@
-import uuid
-
 import pytest
+import uuid
 
 pytestmark = [
     pytest.mark.django_db,

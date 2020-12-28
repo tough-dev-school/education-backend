@@ -36,7 +36,7 @@ Faker==0.9.1
 flake8==3.7.8
 flake8-bugbear==19.8.0
 flake8-commas==2.0.0
-flake8-isort==2.7.0
+flake8-isort==4.0.0
 flake8-print==3.1.0
 flower==0.9.3
 freezegun==0.3.12
@@ -45,7 +45,7 @@ importlib-metadata==0.23
 iniconfig==1.1.1
 ipython==7.8.0
 ipython-genutils==0.2.0
-isort==4.3.21
+isort==5.6.4
 jedi==0.15.1
 jmespath==0.10.0
 kombu==4.6.8
@@ -78,7 +78,7 @@ pytest-xdist==2.2.0
 python-dateutil==2.8.0
 pytz==2020.4
 redis==3.3.11
-requests==2.22.0
+requests==2.25.1
 requests-mock==1.7.0
 s3transfer==0.3.3
 sentry-sdk==0.14.4

@@ -1,8 +1,8 @@
-import inspect
-from copy import copy
 from typing import Generator, Optional
 
+import inspect
 from behaviors.behaviors import Timestamped
+from copy import copy
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models

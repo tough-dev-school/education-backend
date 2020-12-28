@@ -1,7 +1,6 @@
-from functools import partial
-
 import pytest
 from django.core import mail
+from functools import partial
 
 from app.mail.owl import TemplOwl
 from app.models import EmailLogEntry

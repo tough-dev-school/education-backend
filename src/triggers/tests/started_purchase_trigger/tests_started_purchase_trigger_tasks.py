@@ -1,6 +1,5 @@
-from datetime import datetime
-
 import pytest
+from datetime import datetime
 
 from triggers import tasks
 from triggers.started_purchase import StartedPurchaseTrigger

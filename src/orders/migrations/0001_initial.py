@@ -4,8 +4,8 @@ import django.db.models.deletion
 from django.conf import settings
 from django.db import migrations, models
 
-import orders.models
 import orders.fields
+import orders.models
 
 
 class Migration(migrations.Migration):

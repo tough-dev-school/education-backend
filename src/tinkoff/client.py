@@ -1,9 +1,8 @@
+import requests
 from collections import OrderedDict
+from django.conf import settings
 from hashlib import sha256
 from urllib.parse import urljoin
-
-import requests
-from django.conf import settings
 
 from app.banking import Bank
 from tinkoff.exceptions import TinkoffRequestException

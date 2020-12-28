@@ -1,5 +1,4 @@
 import re
-
 from django.contrib.humanize.templatetags.humanize import naturalday
 from django.db import models
 from django.template.defaultfilters import capfirst, time

@@ -1,5 +1,4 @@
 from abc import ABCMeta, abstractmethod
-
 from django.core.exceptions import ImproperlyConfigured
 
 from app.tasks import send_mail
