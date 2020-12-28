@@ -1,11 +1,10 @@
-from urllib.parse import urljoin
-
 from django.conf import settings
 from django.conf.urls import handler400, handler403, handler404, handler500, include
 from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import path
 from rest_framework import routers
+from urllib.parse import urljoin
 
 from app.views import HomePageView
 from courses.api.viewsets import BundleViewSet, CourseViewSet, RecordViewSet

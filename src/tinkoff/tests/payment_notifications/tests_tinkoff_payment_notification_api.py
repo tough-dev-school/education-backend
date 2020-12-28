@@ -1,6 +1,5 @@
-from decimal import Decimal
-
 import pytest
+from decimal import Decimal
 
 from tinkoff.exceptions import TinkoffPaymentNotificationInvalidToken
 from tinkoff.models import PaymentNotification

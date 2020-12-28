@@ -1,7 +1,6 @@
 from abc import ABCMeta, abstractmethod
-from urllib.parse import urljoin
-
 from django.conf import settings
+from urllib.parse import urljoin
 
 from orders.models import Order
 

@@ -1,5 +1,6 @@
-from datetime import datetime
 from typing import Optional, Union
+
+from datetime import datetime
 
 from orders.models import Order, PromoCode
 from users.models import User

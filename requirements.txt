@@ -78,7 +78,7 @@ pytest-xdist==2.2.0
 python-dateutil==2.8.0
 pytz==2020.4
 redis==3.3.11
-requests==2.22.0
+requests==2.25.1
 requests-mock==1.7.0
 s3transfer==0.3.3
 sentry-sdk==0.14.4

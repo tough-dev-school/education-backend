@@ -1,7 +1,7 @@
 from typing import Dict, List, Union
-from urllib.parse import quote, urljoin
 
 import requests
+from urllib.parse import quote, urljoin
 
 TIMEOUT = 10
 

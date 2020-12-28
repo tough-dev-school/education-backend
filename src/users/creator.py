@@ -1,5 +1,4 @@
 import uuid
-
 from rest_framework import serializers
 
 from app.tasks import subscribe_to_mailchimp

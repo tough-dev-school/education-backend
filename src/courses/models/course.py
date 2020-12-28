@@ -1,9 +1,9 @@
 from typing import Iterable
-from urllib.parse import urljoin
 
 from django.apps import apps
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
+from urllib.parse import urljoin
 
 from app.models import models
 from app.tasks import send_mail

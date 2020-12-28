@@ -1,6 +1,5 @@
 import hashlib
 import json
-
 from django.conf import settings
 
 from tinkoff.exceptions import TinkoffPaymentNotificationInvalidToken, TinkoffPaymentNotificationNoTokenPassed

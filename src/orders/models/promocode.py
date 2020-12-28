@@ -1,5 +1,4 @@
 from decimal import Decimal
-
 from django.db.models import Case, Count, When
 from django.utils.translation import gettext_lazy as _
 

@@ -1,10 +1,10 @@
-from datetime import datetime
 from typing import Dict, List, Union
-from urllib.parse import urljoin
 
 import jwt
 import requests
+from datetime import datetime
 from django.utils.functional import cached_property
+from urllib.parse import urljoin
 
 TIMEOUT = 10
 

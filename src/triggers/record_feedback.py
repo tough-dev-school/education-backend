@@ -1,5 +1,4 @@
 from datetime import timedelta
-
 from django.utils import timezone
 
 from triggers.base import BaseTrigger

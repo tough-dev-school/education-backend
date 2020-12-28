@@ -1,6 +1,5 @@
-from datetime import datetime
-
 import pytest
+from datetime import datetime
 
 pytestmark = [pytest.mark.django_db]
 

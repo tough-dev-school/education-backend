@@ -1,5 +1,4 @@
 from decimal import Decimal
-
 from django.apps import apps
 from django.utils.translation import gettext_lazy as _
 
