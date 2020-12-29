@@ -85,7 +85,7 @@ sentry-sdk==0.14.4
 six==1.12.0
 sqlparse==0.3.0
 testfixtures==6.10.0
-text-unidecode==1.2
+text-unidecode==1.3
 toml==0.10.2
 tornado==5.1.1
 tqdm==4.55.0
