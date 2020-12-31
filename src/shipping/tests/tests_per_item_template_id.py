@@ -12,7 +12,7 @@ def record(mixer):
 
 @pytest.fixture
 def shipment(user):
-    return lambda stuff: RecordShipment(user, stuff=stuff)
+    return lambda product: RecordShipment(user, product=product)
 
 
 @pytest.mark.parametrize('template_id, expected', [

@@ -30,4 +30,4 @@ def get(item):
 def ship(item, to):
     Shipment = get(item)
 
-    return Shipment(user=to, stuff=item)()
+    return Shipment(user=to, product=item)()
