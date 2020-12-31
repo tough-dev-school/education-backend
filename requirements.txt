@@ -33,7 +33,7 @@ docutils==0.15.2
 entrypoints==0.3
 execnet==1.7.1
 Faker==0.9.1
-flake8==3.7.8
+flake8==3.8.4
 flake8-bugbear==20.11.1
 flake8-commas==2.0.0
 flake8-isort==4.0.0
@@ -43,7 +43,7 @@ freezegun==1.0.0
 idna==2.10
 importlib-metadata==3.3.0
 iniconfig==1.1.1
-ipython==7.8.0
+ipython==7.19.0
 ipython-genutils==0.2.0
 isort==5.6.4
 jedi==0.15.1
@@ -61,9 +61,9 @@ pluggy==0.13.0
 prompt-toolkit==2.0.10
 ptyprocess==0.6.0
 py==1.10.0
-pycodestyle==2.5.0
-pycparser==2.19
-pyflakes==2.1.1
+pycodestyle==2.6.0
+pycparser==2.20
+pyflakes==2.2.0
 Pygments==2.7.3
 PyJWT==2.0.0
 pyparsing==2.4.7
