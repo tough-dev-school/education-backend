@@ -1,10 +1,14 @@
+from typing import Optional
+
 from decimal import Decimal
 from django.apps import apps
 from django.utils.translation import gettext_lazy as _
 
 from app.models import TimestampedModel, models
 from app.pricing import format_old_price, format_price
+from orders.models import Order
 from shipping import factory as ShippingFactory
+from users.models import User
 
 
 class Shippable(TimestampedModel):
@@ -32,8 +36,8 @@ class Shippable(TimestampedModel):
     def get_formatted_price_display(self):
         return format_old_price(self.old_price, self.price)
 
-    def ship(self, to):
-        return ShippingFactory.ship(self, to=to)
+    def ship(self, to: User, order: Optional[Order] = None):
+        return ShippingFactory.ship(self, to=to, order=order)
 
     def get_price(self, promocode=None) -> Decimal:
         promocode = apps.get_model('orders.PromoCode').objects.get_or_nothing(name=promocode)

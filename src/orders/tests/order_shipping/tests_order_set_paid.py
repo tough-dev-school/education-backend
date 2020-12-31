@@ -19,7 +19,7 @@ def test_works(order):
 def test_ships(order, record, user, ship):
     order.set_paid()
 
-    ship.assert_called_once_with(record, to=user)
+    ship.assert_called_once_with(record, to=user, order=order)
 
 
 def test_not_ships_if_order_is_already_paid(order, ship):

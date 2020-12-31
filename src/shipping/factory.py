@@ -27,7 +27,7 @@ def get(item):
     return klass
 
 
-def ship(item, to):
+def ship(item, to, order=None):
     Shipment = get(item)
 
-    return Shipment(user=to, stuff=item)()
+    return Shipment(user=to, product=item, order=order)()

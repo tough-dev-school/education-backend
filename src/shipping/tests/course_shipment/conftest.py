@@ -1,4 +1,5 @@
 import pytest
+from functools import partial
 
 from shipping.shipments import CourseShipment
 
@@ -16,7 +17,7 @@ def course(mixer):
 
 @pytest.fixture
 def shipment(user, course):
-    return CourseShipment(user, course)
+    return partial(CourseShipment, user=user, product=course)
 
 
 @pytest.fixture(autouse=True)
@@ -27,3 +28,19 @@ def invite_to_clickmeeting(mocker):
 @pytest.fixture(autouse=True)
 def invite_to_zoomus(mocker):
     return mocker.patch('app.tasks.invite_to_zoomus.delay')
+
+
+@pytest.fixture
+def giver(mixer):
+    return mixer.blend('users.User', first_name='Робин', last_name='Бетмен')
+
+
+@pytest.fixture
+def gifted_order(mixer, course, giver):
+    return mixer.blend(
+        'orders.Order',
+        course=course,
+        giver=giver,
+        desired_shipment_date='2025-01-05',
+        gift_message='Гори в аду!',
+    )

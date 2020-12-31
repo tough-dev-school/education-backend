@@ -6,11 +6,6 @@ from orders.models import Order
 pytestmark = [pytest.mark.django_db]
 
 
-@pytest.fixture
-def order(mixer):
-    return mixer.blend('orders.Order')
-
-
 @pytest.mark.parametrize('paid, is_present', [
     [None, False],
     [timezone.now(), True],

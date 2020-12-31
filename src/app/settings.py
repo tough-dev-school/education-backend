@@ -191,6 +191,10 @@ CELERYBEAT_SCHEDULE = {
         'task': 'triggers.tasks.check_for_record_feedback_triggers',
         'schedule': crontab(hour='*', minute=15),
     },
+    'ship_unshipped_orders': {
+        'task': 'orders.tasks.ship_unshipped_orders',
+        'schedule': crontab(hour='*', minute='*/2'),
+    },
 }
 
 

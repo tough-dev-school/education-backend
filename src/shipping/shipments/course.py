@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from typing import Optional
 
 from app.tasks import invite_to_clickmeeting, invite_to_zoomus, send_mail
 from courses.models import Course
@@ -6,19 +6,8 @@ from shipping import factory
 from shipping.shipments.base import BaseShipment
 
 
-class CourseTemplateContext(serializers.ModelSerializer):
-    class Meta:
-        model = Course
-        fields = [
-            'name',
-            'slug',
-            'name_genitive',
-        ]
-
-
 @factory.register(Course)
 class CourseShipment(BaseShipment):
-
     @property
     def course(self):
         return self.stuff_to_ship
@@ -43,13 +32,31 @@ class CourseShipment(BaseShipment):
             )
 
     def send_welcome_letter(self):
-        if self.course.welcome_letter_template_id is not None and len(self.course.welcome_letter_template_id):
+        if self.welcome_letter_template_id is not None:
             send_mail.delay(
                 to=self.user.email,
-                template_id=self.course.welcome_letter_template_id,
+                template_id=self.welcome_letter_template_id,
                 ctx=self.get_template_context(),
                 disable_antispam=True,
             )
 
     def get_template_context(self) -> dict:
-        return CourseTemplateContext().to_representation(self.course)
+        return {
+            'name': self.course.name,
+            'slug': self.course.slug,
+            'name_genitive': self.course.name_genitive,
+            **self.get_gift_template_context(),
+        }
+
+    @property
+    def welcome_letter_template_id(self) -> Optional[str]:
+        """Get special gift template letter id if order is a gift and it is present"""
+        template_id = self.course.welcome_letter_template_id
+
+        if self.order is not None and self.order.giver is not None:  # this is a gift
+            template_id = self.course.gift_welcome_letter_template_id or self.course.welcome_letter_template_id
+
+        if template_id is None or not len(template_id):  # fuck this null=True in CharFields
+            return None
+
+        return template_id
