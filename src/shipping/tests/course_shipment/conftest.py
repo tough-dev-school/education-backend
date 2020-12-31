@@ -31,5 +31,16 @@ def invite_to_zoomus(mocker):
 
 
 @pytest.fixture
-def gifted_order(mixer, course, another_user):
-    return mixer.blend('orders.Order', course=course, giver=another_user, desired_shipment_date='2025-01-05')
+def giver(mixer):
+    return mixer.blend('users.User', first_name='Робин', last_name='Бетмен')
+
+
+@pytest.fixture
+def gifted_order(mixer, course, giver):
+    return mixer.blend(
+        'orders.Order',
+        course=course,
+        giver=giver,
+        desired_shipment_date='2025-01-05',
+        gift_message='Гори в аду!',
+    )

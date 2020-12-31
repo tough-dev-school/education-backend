@@ -1,26 +1,13 @@
 from typing import Optional
 
-from rest_framework import serializers
-
 from app.tasks import invite_to_clickmeeting, invite_to_zoomus, send_mail
 from courses.models import Course
 from shipping import factory
 from shipping.shipments.base import BaseShipment
 
 
-class CourseTemplateContext(serializers.ModelSerializer):
-    class Meta:
-        model = Course
-        fields = [
-            'name',
-            'slug',
-            'name_genitive',
-        ]
-
-
 @factory.register(Course)
 class CourseShipment(BaseShipment):
-
     @property
     def course(self):
         return self.stuff_to_ship
@@ -54,7 +41,12 @@ class CourseShipment(BaseShipment):
             )
 
     def get_template_context(self) -> dict:
-        return CourseTemplateContext().to_representation(self.course)
+        return {
+            'name': self.course.name,
+            'slug': self.course.slug,
+            'name_genitive': self.course.name_genitive,
+            **self.get_gift_template_context(),
+        }
 
     @property
     def welcome_letter_template_id(self) -> Optional[str]:

@@ -21,3 +21,13 @@ class BaseShipment(metaclass=ABCMeta):
     @abstractmethod
     def ship(self):
         raise NotImplementedError()
+
+    def get_gift_template_context(self) -> dict:
+        """Return a template context used for gift letters"""
+        if self.order is None or self.order.giver is None:
+            return {}
+
+        return {
+            'giver_name': str(self.order.giver),
+            'gift_message': self.order.gift_message,
+        }
