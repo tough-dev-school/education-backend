@@ -32,7 +32,7 @@ djangorestframework==3.12.2
 docutils==0.15.2
 entrypoints==0.3
 execnet==1.7.1
-Faker==0.9.1
+Faker==3.0.1
 flake8==3.8.4
 flake8-bugbear==20.11.1
 flake8-commas==2.0.0
@@ -51,7 +51,7 @@ jmespath==0.10.0
 kombu==4.6.8
 mailjet-rest==1.3.3
 mccabe==0.6.1
-mixer==6.1.3
+mixer==7.0.2
 more-itertools==7.2.0
 packaging==19.2
 parso==0.8.1
@@ -85,7 +85,7 @@ sentry-sdk==0.19.5
 six==1.12.0
 sqlparse==0.3.0
 testfixtures==6.10.0
-text-unidecode==1.2
+text-unidecode==1.3
 toml==0.10.2
 tornado==5.1.1
 tqdm==4.55.0
