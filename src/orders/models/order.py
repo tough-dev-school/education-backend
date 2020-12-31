@@ -41,6 +41,7 @@ class Order(TimestampedModel):
     giver = models.ForeignKey('users.User', verbose_name=_('Giver'), null=True, blank=True, on_delete=models.SET_NULL, related_name='created_gifts')
     desired_shipment_date = models.DateTimeField(_('Date when the gift should be shipped'), null=True, blank=True)
     gift_message = models.TextField(_('Gift message'), default='', blank=True)
+    notification_to_giver_is_sent = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-id']

@@ -14,7 +14,9 @@ class Pigwidgeon:
     def __call__(self):
         if self.ship():
             self.mark_order_as_shipped()
-        self.send_notification_to_giver()
+
+        if not self.order.notification_to_giver_is_sent:
+            self.send_notification_to_giver()
 
         if not self.silent:
             self.send_happiness_message()
@@ -61,3 +63,6 @@ class Pigwidgeon:
                 'desired_shipment_date': self.order.desired_shipment_date.strftime('%d.%m.%Y'),
             },
         )
+
+        self.order.notification_to_giver_is_sent = True
+        self.order.save()
