@@ -14,4 +14,4 @@ def test_invalid_user(api):
 
 
 def test_anon(anon, api):
-    anon.get(f'/api/v2/users/10000050000/', expected_status_code=401)
+    anon.get('/api/v2/users/10000050000/', expected_status_code=401)

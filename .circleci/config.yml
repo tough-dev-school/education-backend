@@ -1,10 +1,10 @@
 version: 2.1
 orbs:
-  docker: circleci/docker@1.0.1
+  docker: circleci/docker@1.5.0
 
 defaults: &defaults
   docker:
-    - image: circleci/python:3.6-stretch
+    - image: circleci/python:3.8
       environment:
         - DATABASE_URL=sqlite:////tmp/prj.sqlite
         - CELERY_BACKEND=redis://redis:6379
@@ -28,6 +28,7 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
+            pip install --upgrade pip
             pip install -r requirements.txt
 
       - save_cache:
@@ -68,6 +69,15 @@ jobs:
             . venv/bin/activate
             make test
 
+  validate-docker-image:
+    executor: docker/machine
+    steps:
+      - checkout
+      - docker/check
+      - docker/build:
+          image: f213/pmdaily-backend
+          cache_from: f213/pmdaily-backend
+
   deploy:
     <<: *defaults
 
@@ -92,6 +102,13 @@ workflows:
       - test:
           requires:
             - build
+
+      -  validate-docker-image:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: master
 
       - docker/publish:
           image: f213/pmdaily-backend

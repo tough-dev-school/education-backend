@@ -30,7 +30,7 @@ class ZoomusClientHTTP:
             algorithm='HS256',
         )
 
-        return token.decode("utf-8")
+        return token
 
     def format_url(self, url: str) -> str:
         return urljoin(self.base_url, url.lstrip('/'))
