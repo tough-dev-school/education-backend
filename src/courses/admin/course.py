@@ -24,6 +24,7 @@ class CourseAdmin(ModelAdmin):
             'clickmeeting_room_url',
             'zoomus_webinar_id',
             'welcome_letter_template_id',
+            'gift_welcome_letter_template_id',
         ]}),
     ]
 

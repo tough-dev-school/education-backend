@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-27 19:09+0300\n"
+"POT-Creation-Date: 2020-12-31 15:11+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,19 +60,19 @@ msgstr "Отправить письмо всем купившим"
 msgid "Downloadable link"
 msgstr "Ссылка на скачиваие"
 
-#: courses/models/base.py:14
+#: courses/models/base.py:13
 msgid "Name for receipts"
 msgstr "Для чеков"
 
-#: courses/models/base.py:16
+#: courses/models/base.py:15
 msgid "Full name for letters"
 msgstr "Для писем"
 
-#: courses/models/bundle.py:16 orders/models/order.py:34
+#: courses/models/bundle.py:15 orders/models/order.py:34
 msgid "Bundle"
 msgstr "Набор"
 
-#: courses/models/bundle.py:17
+#: courses/models/bundle.py:16
 msgid "Bundles"
 msgstr "Наборы"
 
@@ -100,11 +100,19 @@ msgstr "ID шаблона приветственного письма"
 msgid "Will be sent upon purchase if set"
 msgstr "Если задать — письмо будет уходить вместе с каждой покупкой"
 
-#: courses/models/course.py:23 orders/models/order.py:32
+#: courses/models/course.py:20
+msgid "Special welcome letter template id for gifts"
+msgstr "ID шаблона для подарочного письма"
+
+#: courses/models/course.py:20
+msgid "If not set, common welcome letter will be used"
+msgstr "Если задать — для подарочных заказов будем использовать этот шаблон, а не предыдущий"
+
+#: courses/models/course.py:24 orders/models/order.py:32
 msgid "Course"
 msgstr "Курс"
 
-#: courses/models/course.py:24
+#: courses/models/course.py:25
 msgid "Courses"
 msgstr "Курсы"
 
@@ -164,47 +172,51 @@ msgstr "Включено"
 msgid "Renew"
 msgstr "Отметить как неиспользованную"
 
-#: onetime/models.py:29
+#: onetime/models.py:28
 msgid "Onetime token"
 msgstr "Одноразовый токен"
 
-#: onetime/models.py:30
+#: onetime/models.py:29
 msgid "Onetime tokens"
 msgstr "Одноразовые токены"
 
-#: orders/admin/orders.py:10 orders/admin/orders.py:85
+#: orders/admin/orders.py:10 orders/admin/orders.py:97
 msgid "Is paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders.py:65 orders/models/order.py:21
-msgid "User"
-msgstr "Юзер"
-
-#: orders/admin/orders.py:73 orders/models/order.py:36
-msgid "Giver"
-msgstr "Даритель"
-
-#: orders/admin/orders.py:81
+#: orders/admin/orders.py:62 orders/admin/orders.py:93
 msgid "Item"
 msgstr "Товар"
 
-#: orders/admin/orders.py:88
+#: orders/admin/orders.py:65
+msgid "Gift"
+msgstr "Подарок"
+
+#: orders/admin/orders.py:77 orders/models/order.py:21
+msgid "User"
+msgstr "Юзер"
+
+#: orders/admin/orders.py:85 orders/models/order.py:36
+msgid "Giver"
+msgstr "Даритель"
+
+#: orders/admin/orders.py:100
 msgid "Paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders.py:90
+#: orders/admin/orders.py:102
 msgid "Not paid"
 msgstr "Не оплачен"
 
-#: orders/admin/orders.py:92
+#: orders/admin/orders.py:104
 msgid "Set paid"
 msgstr "Пометить оплаченным"
 
-#: orders/admin/orders.py:99
+#: orders/admin/orders.py:111
 msgid "Set not paid"
 msgstr "Пометить неоплаченынм"
 
-#: orders/admin/orders.py:105
+#: orders/admin/orders.py:117
 msgid "Ship again if paid"
 msgstr "Ещё раз выполнить (если заказ не оплачен — не выполнится)"
 
@@ -212,8 +224,8 @@ msgstr "Ещё раз выполнить (если заказ не оплаче�
 msgid "Order count"
 msgstr "Количество заказов"
 
-#: orders/models/order.py:23 orders/models/promocode.py:30
-#: orders/models/promocode.py:36
+#: orders/models/order.py:23 orders/models/promocode.py:29
+#: orders/models/promocode.py:35
 msgid "Promo Code"
 msgstr "Промо-код"
 
@@ -247,19 +259,19 @@ msgstr "Заказ"
 msgid "Orders"
 msgstr "Заказы"
 
-#: orders/models/promocode.py:31
+#: orders/models/promocode.py:30
 msgid "Discount percent"
 msgstr "Процент скидки"
 
-#: orders/models/promocode.py:32
+#: orders/models/promocode.py:31
 msgid "Active"
 msgstr "Включено"
 
-#: orders/models/promocode.py:33
+#: orders/models/promocode.py:32
 msgid "Comment"
 msgstr "Комментарий"
 
-#: orders/models/promocode.py:37
+#: orders/models/promocode.py:36
 msgid "Promo Codes"
 msgstr "Промо-коды"
 
