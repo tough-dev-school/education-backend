@@ -1,5 +1,6 @@
 from typing import Iterable, Optional
 
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from app.models import DefaultQuerySet, TimestampedModel, models
@@ -13,6 +14,10 @@ class UnknownItemException(Exception):
 class OrderQuerySet(DefaultQuerySet):
     def paid(self, invert=False):
         return self.filter(paid__isnull=invert)
+
+    def to_ship(self):
+        """Paid orders that may be shipped right now"""
+        return self.paid().filter(shipped__isnull=True, desired_shipment_date__lte=timezone.now())
 
 
 class Order(TimestampedModel):

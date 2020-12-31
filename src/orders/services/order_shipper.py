@@ -15,11 +15,14 @@ class Pigwidgeon:
         if self.ship():
             self.mark_order_as_shipped()
         self.send_notification_to_giver()
-        self.send_happiness_message()
+
+        if not self.silent:
+            self.send_happiness_message()
 
     def ship(self) -> bool:
         """Ship the order. Returns true if order is shipped"""
-        if self.order.desired_shipment_date is None:
+        desired_date = self.order.desired_shipment_date
+        if desired_date is None or desired_date <= timezone.now():
             self.order.item.ship(to=self.order.user, order=self.order)
 
             return True
@@ -32,9 +35,6 @@ class Pigwidgeon:
 
     def send_happiness_message(self):
         if not settings.SEND_HAPPINESS_MESSAGES:
-            return
-
-        if self.silent:
             return
 
         send_happiness_message.delay(text='💰+{sum} ₽, {user}, {reason}'.format(
