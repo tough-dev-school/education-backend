@@ -20,7 +20,7 @@ class Pigwidgeon:
     def ship(self) -> bool:
         """Ship the order. Returns true if order is shipped"""
         if self.order.desired_shipment_date is None:
-            self.order.item.ship(to=self.order.user)
+            self.order.item.ship(to=self.order.user, order=self.order)
 
             return True
 

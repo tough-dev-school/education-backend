@@ -1,3 +1,5 @@
+from typing import Optional
+
 from rest_framework import serializers
 
 from app.tasks import invite_to_clickmeeting, invite_to_zoomus, send_mail
@@ -43,13 +45,26 @@ class CourseShipment(BaseShipment):
             )
 
     def send_welcome_letter(self):
-        if self.course.welcome_letter_template_id is not None and len(self.course.welcome_letter_template_id):
+        if self.welcome_letter_template_id is not None:
             send_mail.delay(
                 to=self.user.email,
-                template_id=self.course.welcome_letter_template_id,
+                template_id=self.welcome_letter_template_id,
                 ctx=self.get_template_context(),
                 disable_antispam=True,
             )
 
     def get_template_context(self) -> dict:
         return CourseTemplateContext().to_representation(self.course)
+
+    @property
+    def welcome_letter_template_id(self) -> Optional[str]:
+        """Get special gift template letter id if order is a gift and it is present"""
+        template_id = self.course.welcome_letter_template_id
+
+        if self.order is not None and self.order.giver is not None:  # this is a gift
+            template_id = self.course.gift_welcome_letter_template_id or self.course.welcome_letter_template_id
+
+        if template_id is None or not len(template_id):  # fuck this null=True in CharFields
+            return None
+
+        return template_id
