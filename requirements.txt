@@ -47,6 +47,7 @@ ptyprocess==0.6.0
 pycodestyle==2.6.0
 pyflakes==2.2.0
 Pygments==2.7.3
+PyJWT==2.0.0
 python-dotenv==0.15.0
 pytz==2020.4
 redis==3.5.3
