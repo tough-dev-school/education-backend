@@ -15,17 +15,19 @@ def product(mixer):
 
 
 @pytest.fixture
-def order(mixer, product):
+def order(mixer, product, another_user):
     return mixer.blend(
         'orders.Order',
         paid='2032-12-01 00:01:00',
         desired_shipment_date='2032-12-01 00:14:00',
         shipped=None,
         record=product,
+        giver=another_user,
+        notification_to_giver_is_sent=True,
     )
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture()
 def ship(mocker):
     return mocker.patch('shipping.factory.ship')
 
@@ -39,6 +41,12 @@ def test_works(order, ship, product):
     tasks.ship_unshipped_orders()
 
     ship.assert_called_once_with(product, to=order.user, order=order)
+
+
+def test_only_receiver_gets_notified_during_gift_shipment(order, send_mail):
+    tasks.ship_unshipped_orders()
+
+    send_mail.assert_called_once()
 
 
 def test_order_is_marked_as_shipped(order):
