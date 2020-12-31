@@ -4,7 +4,7 @@ orbs:
 
 defaults: &defaults
   docker:
-    - image: circleci/python:3.6-stretch
+    - image: circleci/python:3.8
       environment:
         - DATABASE_URL=sqlite:////tmp/prj.sqlite
         - CELERY_BACKEND=redis://redis:6379
@@ -28,6 +28,7 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
+            pip install --upgrade pip
             pip install -r requirements.txt
 
       - save_cache:
