@@ -15,5 +15,5 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RunPython(drop_old_contenttypes),
-        migrations.RunSQL('DROP TABLE onetime_token;'),
+        migrations.RunSQL('DROP TABLE IF EXISTS onetime_token;'),
     ]
