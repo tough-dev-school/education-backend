@@ -65,7 +65,6 @@ INSTALLED_APPS = [
     'users',
     'orders',
     'courses',
-    'onetime',
     'shipping',
     'tinkoff',
     'triggers',
