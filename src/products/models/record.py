@@ -2,11 +2,11 @@ from django.utils.translation import gettext_lazy as _
 
 from app.integrations.s3 import AppS3
 from app.models import models
-from courses.models.base import Shippable
+from products.models.base import Shippable
 
 
 class Record(Shippable):
-    course = models.ForeignKey('courses.Course', on_delete=models.CASCADE)
+    course = models.ForeignKey('products.Course', on_delete=models.CASCADE)
 
     s3_object_id = models.CharField(max_length=512)
     template_id = models.CharField(_('Postmark template_id'), max_length=256, blank=True, null=True, help_text=_('Leave it blank for the default template'))
@@ -15,6 +15,7 @@ class Record(Shippable):
         ordering = ['-id']
         verbose_name = _('Record')
         verbose_name_plural = _('Records')
+        db_table = 'courses_record'
 
     @property
     def name_genitive(self):

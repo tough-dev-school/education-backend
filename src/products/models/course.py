@@ -7,7 +7,7 @@ from urllib.parse import urljoin
 
 from app.models import models
 from app.tasks import send_mail
-from courses.models.base import Shippable
+from products.models.base import Shippable
 from users.models import User
 
 
@@ -23,9 +23,10 @@ class Course(Shippable):
         ordering = ['-id']
         verbose_name = _('Course')
         verbose_name_plural = _('Courses')
+        db_table = 'courses_course'
 
     def get_absolute_url(self) -> str:
-        return urljoin(settings.FRONTEND_URL, '/'.join(['courses', self.slug, '']))
+        return urljoin(settings.FRONTEND_URL, '/'.join(['products', self.slug, '']))
 
     def get_purchased_users(self) -> Iterable[User]:
         return User.objects.filter(

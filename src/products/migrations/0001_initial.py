@@ -23,6 +23,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'abstract': False,
+                'db_table': 'courses_course',
             },
         ),
         migrations.CreateModel(
@@ -34,10 +35,11 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=255)),
                 ('slug', models.SlugField()),
                 ('s3_object_id', models.CharField(max_length=512)),
-                ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.Course')),
+                ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.Course')),
             ],
             options={
                 'abstract': False,
+                'db_table': 'courses_record',
             },
         ),
     ]

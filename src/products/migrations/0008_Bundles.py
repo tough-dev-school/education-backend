@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('courses', '0007_L18N'),
+        ('products', '0007_L18N'),
     ]
 
     operations = [
@@ -20,13 +20,14 @@ class Migration(migrations.Migration):
                 ('name_receipt', models.CharField(help_text='«Доступ к записи курсов кройки и шитья»', max_length=255, verbose_name='Name for receipts')),
                 ('slug', models.SlugField()),
                 ('full_name', models.CharField(help_text='«Запись мастер-класса о TDD»', max_length=255, verbose_name='Full name for letters')),
-                ('courses', models.ManyToManyField(to='courses.Course')),
-                ('records', models.ManyToManyField(to='courses.Record')),
+                ('courses', models.ManyToManyField(to='products.Course')),
+                ('records', models.ManyToManyField(to='products.Record')),
             ],
             options={
                 'verbose_name': 'Bundle',
                 'verbose_name_plural': 'Bundles',
                 'ordering': ['-id'],
+                'db_table': 'courses_bundle',
             },
         ),
     ]
