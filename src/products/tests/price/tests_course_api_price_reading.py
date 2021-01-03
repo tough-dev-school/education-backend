@@ -5,7 +5,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def course(mixer):
-    return mixer.blend('courses.Course', price='500', old_price='500.95')
+    return mixer.blend('products.Course', price='500', old_price='500.95')
 
 
 def test_list(api, course):

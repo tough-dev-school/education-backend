@@ -9,6 +9,6 @@ def set_main_website(settings):
 
 
 def test(mixer):
-    course = mixer.blend('courses.Course', slug='tst-slug')
+    course = mixer.blend('products.Course', slug='tst-slug')
 
     assert course.get_absolute_url() == 'https://test.mocked/courses/tst-slug/'

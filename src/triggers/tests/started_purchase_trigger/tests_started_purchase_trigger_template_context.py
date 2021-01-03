@@ -10,12 +10,12 @@ def fix_frontend_url(settings):
 
 @pytest.fixture
 def record(mixer, course):
-    return mixer.blend('courses.Record', course=course)
+    return mixer.blend('products.Record', course=course)
 
 
 @pytest.fixture
 def bundle(mixer, course):
-    bundle = mixer.blend('courses.Bundle')
+    bundle = mixer.blend('products.Bundle')
     bundle.courses.add(course)
 
     return bundle

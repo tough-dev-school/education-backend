@@ -5,7 +5,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def record(mixer):
-    return mixer.blend('courses.Record')
+    return mixer.blend('products.Record')
 
 
 @pytest.mark.parametrize('field', [

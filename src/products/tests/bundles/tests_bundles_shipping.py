@@ -15,7 +15,7 @@ def ship_record(mocker):
 
 @pytest.fixture
 def another_record(mixer):
-    return mixer.blend('courses.Record')
+    return mixer.blend('products.Record')
 
 
 def test_shipping_course(bundle, user, course, ship_course):

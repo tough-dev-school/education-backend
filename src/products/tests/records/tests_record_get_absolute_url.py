@@ -10,10 +10,10 @@ def set_main_website(settings):
 
 @pytest.fixture
 def course(mixer):
-    return mixer.blend('courses.Course', slug='tst-slug')
+    return mixer.blend('products.Course', slug='tst-slug')
 
 
 def test(mixer, course):
-    record = mixer.blend('courses.Record', course=course)
+    record = mixer.blend('products.Record', course=course)
 
     assert record.get_absolute_url() == 'https://test.mocked/courses/tst-slug/'

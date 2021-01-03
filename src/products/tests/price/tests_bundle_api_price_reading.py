@@ -5,7 +5,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def bundle(mixer):
-    return mixer.blend('courses.Bundle', slug='pinetree-tickets', name='Флаг и билет на ёлку', price='500', old_price='500.95')
+    return mixer.blend('products.Bundle', slug='pinetree-tickets', name='Флаг и билет на ёлку', price='500', old_price='500.95')
 
 
 def test_list(api, bundle):

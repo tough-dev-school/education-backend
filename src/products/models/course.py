@@ -26,7 +26,7 @@ class Course(Shippable):
         db_table = 'courses_course'
 
     def get_absolute_url(self) -> str:
-        return urljoin(settings.FRONTEND_URL, '/'.join(['products', self.slug, '']))
+        return urljoin(settings.FRONTEND_URL, '/'.join(['courses', self.slug, '']))
 
     def get_purchased_users(self) -> Iterable[User]:
         return User.objects.filter(

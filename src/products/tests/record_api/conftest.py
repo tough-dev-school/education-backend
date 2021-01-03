@@ -5,7 +5,7 @@ from tinkoff.client import TinkoffBank
 
 @pytest.fixture(autouse=True)
 def record(mixer):
-    return mixer.blend('courses.Record', slug='home-video', price=1900)
+    return mixer.blend('products.Record', slug='home-video', price=1900)
 
 
 @pytest.fixture(autouse=True)
