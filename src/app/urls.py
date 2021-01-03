@@ -7,8 +7,8 @@ from rest_framework import routers
 from urllib.parse import urljoin
 
 from app.views import HomePageView
-from courses.api.viewsets import BundleViewSet, CourseViewSet, RecordViewSet
 from magnets.api.views import EmailLeadMagnetCampaignView
+from products.api.viewsets import BundleViewSet, CourseViewSet, RecordViewSet
 from tinkoff.api.views import TinkoffPaymentNotificationsView
 from users.api.views import UserView
 

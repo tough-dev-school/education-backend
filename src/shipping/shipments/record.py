@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from app.tasks import send_mail
-from courses.models import Record
+from products.models import Record
 from shipping import factory
 from shipping.shipments.base import BaseShipment
 

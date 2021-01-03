@@ -1,7 +1,7 @@
 from typing import Optional
 
 from app.tasks import invite_to_clickmeeting, invite_to_zoomus, send_mail
-from courses.models import Course
+from products.models import Course
 from shipping import factory
 from shipping.shipments.base import BaseShipment
 

@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('courses', '0014_CourseWelcomeLetter'),
+        ('products', '0014_CourseWelcomeLetter'),
         ('orders', '0009_Gifts'),
     ]
 
@@ -19,12 +19,12 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='order',
             name='bundle',
-            field=orders.fields.ItemField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='courses.bundle', verbose_name='Bundle'),
+            field=orders.fields.ItemField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='products.bundle', verbose_name='Bundle'),
         ),
         migrations.AlterField(
             model_name='order',
             name='course',
-            field=orders.fields.ItemField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='courses.course', verbose_name='Course'),
+            field=orders.fields.ItemField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='products.course', verbose_name='Course'),
         ),
         migrations.AlterField(
             model_name='order',
@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='order',
             name='record',
-            field=orders.fields.ItemField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='courses.record', verbose_name='Record'),
+            field=orders.fields.ItemField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='products.record', verbose_name='Record'),
         ),
         migrations.AlterField(
             model_name='order',

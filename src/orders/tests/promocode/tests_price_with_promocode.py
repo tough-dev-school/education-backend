@@ -5,7 +5,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def course(mixer):
-    return mixer.blend('courses.Course', price=100500)
+    return mixer.blend('products.Course', price=100500)
 
 
 @pytest.fixture(autouse=True)

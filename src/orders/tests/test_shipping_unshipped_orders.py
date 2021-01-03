@@ -11,7 +11,7 @@ pytestmark = [
 
 @pytest.fixture
 def product(mixer):
-    return mixer.blend('courses.Record')
+    return mixer.blend('products.Record')
 
 
 @pytest.fixture

@@ -12,17 +12,17 @@ def user(mixer):
 
 @pytest.fixture
 def course(mixer):
-    return mixer.blend('courses.Course', name='Курс кройки и шитья', full_name='Билет на курс кройки и шитья')
+    return mixer.blend('products.Course', name='Курс кройки и шитья', full_name='Билет на курс кройки и шитья')
 
 
 @pytest.fixture
 def record(mixer, course):
-    return mixer.blend('courses.Record', course=course)
+    return mixer.blend('products.Record', course=course)
 
 
 @pytest.fixture
 def bundle(mixer):
-    return mixer.blend('courses.Bundle')
+    return mixer.blend('products.Bundle')
 
 
 @pytest.fixture

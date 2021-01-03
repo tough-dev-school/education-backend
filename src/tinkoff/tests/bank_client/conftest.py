@@ -21,7 +21,7 @@ def absolute_host(settings):
 @pytest.fixture
 def record(mixer):
     return mixer.blend(
-        'courses.Record',
+        'products.Record',
         name='Пентакли и тентакли',
         name_receipt='Предоставление доступа к записи курса «Пентакли и Тентакли»',
     )

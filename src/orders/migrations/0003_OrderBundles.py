@@ -10,7 +10,7 @@ import orders.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('courses', '0008_Bundles'),
+        ('products', '0008_Bundles'),
         ('orders', '0002_L18N'),
     ]
 
@@ -18,6 +18,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='order',
             name='bundle',
-            field=orders.fields.ItemField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='courses.Bundle'),
+            field=orders.fields.ItemField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='products.Bundle'),
         ),
     ]
