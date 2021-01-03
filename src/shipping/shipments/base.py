@@ -2,8 +2,8 @@ from typing import Optional, Union
 
 from abc import ABCMeta, abstractmethod
 
-from products.models import Bundle, Course, Record
 from orders.models import Order
+from products.models import Bundle, Course, Record
 from users.models import User
 
 

@@ -3,12 +3,12 @@ from django.conf.urls import handler400, handler403, handler404, handler500, inc
 from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import path
-from products.api.viewsets import BundleViewSet, CourseViewSet, RecordViewSet
 from rest_framework import routers
 from urllib.parse import urljoin
 
 from app.views import HomePageView
 from magnets.api.views import EmailLeadMagnetCampaignView
+from products.api.viewsets import BundleViewSet, CourseViewSet, RecordViewSet
 from tinkoff.api.views import TinkoffPaymentNotificationsView
 from users.api.views import UserView
 
