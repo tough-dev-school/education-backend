@@ -1,8 +1,8 @@
 
 from app.permissions import AllowAny
-from courses.api import serializers
-from courses.models import Bundle, Course, Record
 from orders.api.base import PurchaseViewSet
+from products.api import serializers
+from products.models import Bundle, Course, Record
 
 
 class RecordViewSet(PurchaseViewSet):

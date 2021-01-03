@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('courses', '0002_CourseGenitiveName'),
+        ('products', '0002_CourseGenitiveName'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -27,8 +27,8 @@ class Migration(migrations.Migration):
                 ('price', models.DecimalField(decimal_places=2, max_digits=9)),
                 ('paid', models.DateTimeField('Date when order got paid', null=True, blank=True, help_text='If set during creation, order automaticaly gets shipped')),
                 ('shipped', models.DateTimeField('Date when order was shipped', null=True, blank=True)),
-                ('course', orders.fields.ItemField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='courses.Course')),
-                ('record', orders.fields.ItemField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='courses.Record')),
+                ('course', orders.fields.ItemField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='products.Course')),
+                ('record', orders.fields.ItemField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='products.Record')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
             ],
             options={

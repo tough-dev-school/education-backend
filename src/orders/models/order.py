@@ -34,9 +34,9 @@ class Order(TimestampedModel):
     )
     shipped = models.DateTimeField(_('Date when order was shipped'), null=True, blank=True)
 
-    course = ItemField(to='courses.Course', verbose_name=_('Course'), null=True, blank=True, on_delete=models.PROTECT)
-    record = ItemField(to='courses.Record', verbose_name=_('Record'), null=True, blank=True, on_delete=models.PROTECT)
-    bundle = ItemField(to='courses.Bundle', verbose_name=_('Bundle'), null=True, blank=True, on_delete=models.PROTECT)
+    course = ItemField(to='products.Course', verbose_name=_('Course'), null=True, blank=True, on_delete=models.PROTECT)
+    record = ItemField(to='products.Record', verbose_name=_('Record'), null=True, blank=True, on_delete=models.PROTECT)
+    bundle = ItemField(to='products.Bundle', verbose_name=_('Bundle'), null=True, blank=True, on_delete=models.PROTECT)
 
     giver = models.ForeignKey('users.User', verbose_name=_('Giver'), null=True, blank=True, on_delete=models.SET_NULL, related_name='created_gifts')
     desired_shipment_date = models.DateTimeField(_('Date when the gift should be shipped'), null=True, blank=True)

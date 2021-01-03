@@ -2,7 +2,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import StackedInline
-from courses.models import Record
+from products.models import Record
 
 
 class RecordAdmin(StackedInline):

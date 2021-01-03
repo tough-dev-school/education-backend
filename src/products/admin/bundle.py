@@ -1,7 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
-from courses.models import Bundle
+from products.models import Bundle
 
 
 @admin.register(Bundle)

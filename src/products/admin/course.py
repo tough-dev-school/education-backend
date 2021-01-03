@@ -1,9 +1,9 @@
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
-from courses.admin.courses import actions
-from courses.admin.courses.record import RecordAdmin
-from courses.models import Course
+from products.admin.courses import actions
+from products.admin.courses.record import RecordAdmin
+from products.models import Course
 
 
 @admin.register(Course)

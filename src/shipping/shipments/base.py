@@ -2,7 +2,7 @@ from typing import Optional, Union
 
 from abc import ABCMeta, abstractmethod
 
-from courses.models import Bundle, Course, Record
+from products.models import Bundle, Course, Record
 from orders.models import Order
 from users.models import User
 

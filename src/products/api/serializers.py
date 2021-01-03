@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from courses.models import Bundle, Course, Record
+from products.models import Bundle, Course, Record
 
 
 class ShippableSerializer(serializers.ModelSerializer):

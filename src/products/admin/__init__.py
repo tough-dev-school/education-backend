@@ -1,2 +1,2 @@
-import courses.admin.bundle  # noqa
-import courses.admin.course  # noqa
+import products.admin.bundle  # noqa
+import products.admin.course  # noqa

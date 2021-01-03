@@ -6,8 +6,8 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('courses', '0008_Bundles'),
-        ('courses', '0008_CustomTemplateId'),
+        ('products', '0008_Bundles'),
+        ('products', '0008_CustomTemplateId'),
     ]
 
     operations = [
