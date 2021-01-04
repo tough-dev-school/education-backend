@@ -41,7 +41,7 @@ flake8-print==4.0.0
 flower==0.9.7
 freezegun==1.0.0
 humanize==3.2.0
-idna==2.10
+idna==3.0
 importlib-metadata==3.3.0
 iniconfig==1.1.1
 ipython==7.19.0
