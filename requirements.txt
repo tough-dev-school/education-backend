@@ -1,4 +1,4 @@
-amqp==2.6.1
+amqp==5.0.2
 apipkg==1.5
 appnope==0.1.2
 asgiref==3.3.1
