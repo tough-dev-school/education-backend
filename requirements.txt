@@ -49,7 +49,7 @@ ipython-genutils==0.2.0
 isort==5.7.0
 jedi==0.18.0
 jmespath==0.10.0
-kombu==4.6.11
+kombu==5.0.2
 mailjet-rest==1.3.3
 mccabe==0.6.1
 mixer==7.0.6
