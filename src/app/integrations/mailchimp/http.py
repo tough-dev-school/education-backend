@@ -44,7 +44,7 @@ class MailchimpHTTP:
             raise MailChimpNotFound()
 
         if response.status_code != 200:
-            raise MailChimpWrongResponse()
+            raise MailChimpWrongResponse(f'{response.status_code}: {response.json()}')
 
         return response
 

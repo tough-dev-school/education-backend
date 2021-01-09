@@ -22,6 +22,11 @@ def mailchimp():
 
 
 @pytest.fixture
+def post(mocker):
+    return mocker.patch('app.integrations.mailchimp.http.MailchimpHTTP.post')
+
+
+@pytest.fixture
 def user(mixer):
     return mixer.blend('users.User', email='test@e.mail', first_name='Rulon', last_name='Oboev')
 
