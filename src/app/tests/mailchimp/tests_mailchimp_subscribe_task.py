@@ -1,22 +1,32 @@
 import pytest
 
 from app import tasks
+from app.integrations.mailchimp import MailchimpMember
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures('member_is_always_new'),
 ]
 
 
-def test_task(subscribe, user):
+@pytest.fixture
+def mass_subscribe(mocker):
+    return mocker.patch('app.integrations.mailchimp.client.AppMailchimp.mass_subscribe')
+
+
+def test_task(user, mass_subscribe):
     tasks.subscribe_to_mailchimp.delay(user.pk)
 
-    subscribe.assert_called_once_with(user)
+    mass_subscribe.assert_called_once_with(
+        list_id='123cba',
+        members=[
+            MailchimpMember(email='test@e.mail', first_name='Rulon', last_name='Oboev'),
+        ],
+    )
 
 
-def test_task_does_not_do_things_if_there_is_no_mailchimp_contact_list_id(subscribe, user, settings):
+def test_task_does_not_do_things_if_there_is_no_mailchimp_contact_list_id(user, mass_subscribe, settings):
     settings.MAILCHIMP_CONTACT_LIST_ID = None
 
     tasks.subscribe_to_mailchimp.delay(user.pk)
 
-    subscribe.assert_not_called()
+    mass_subscribe.assert_not_called()
