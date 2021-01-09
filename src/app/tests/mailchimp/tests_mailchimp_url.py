@@ -16,4 +16,4 @@ pytestmark = [pytest.mark.django_db]
     ],
 )
 def test_format_url(url, expected, mailchimp):
-    assert mailchimp.format_url(url) == expected
+    assert mailchimp.http.format_url(url) == expected
