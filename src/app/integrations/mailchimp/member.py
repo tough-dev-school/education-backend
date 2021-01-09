@@ -1,3 +1,4 @@
+import hashlib
 from dataclasses import dataclass
 
 from users.models import User
@@ -8,6 +9,10 @@ class MailchimpMember:
     email: str
     first_name: str
     last_name: str
+
+    @property
+    def subscriber_hash(self) -> str:
+        return hashlib.md5(self.email.lower().encode()).hexdigest()
 
     def to_mailchimp(self) -> dict:
         return {
