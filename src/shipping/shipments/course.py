@@ -1,6 +1,6 @@
 from typing import Optional
 
-from app.tasks import invite_to_clickmeeting, invite_to_zoomus, send_mail
+from app.tasks import invite_to_clickmeeting, invite_to_zoomus, send_mail, subscribe_to_mailchimp
 from products.models import Course
 from shipping import factory
 from shipping.shipments.base import BaseShipment
@@ -15,7 +15,16 @@ class CourseShipment(BaseShipment):
     def ship(self):
         self.invite_to_clickmeeting()
         self.invite_to_zoomus()
+        self.subscribe_to_mailchimp()
+
         self.send_welcome_letter()
+
+    def subscribe_to_mailchimp(self):
+        if self.course.mailchimp_list_id is not None:
+            subscribe_to_mailchimp.delay(
+                list_id=self.course.mailchimp_list_id,
+                user_id=self.user.pk,
+            )
 
     def invite_to_clickmeeting(self):
         if self.course.clickmeeting_room_url is not None:
