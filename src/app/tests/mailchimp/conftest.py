@@ -29,18 +29,3 @@ def post(mocker):
 @pytest.fixture
 def user(mixer):
     return mixer.blend('users.User', email='test@e.mail', first_name='Rulon', last_name='Oboev')
-
-
-@pytest.fixture
-def member_exists(mocker):
-    return mocker.patch('app.integrations.mailchimp.AppMailchimp.member_exists')
-
-
-@pytest.fixture
-def member_is_always_new(member_exists):
-    member_exists.return_value = False
-
-
-@pytest.fixture
-def subscribe(mocker):
-    return mocker.patch('app.integrations.mailchimp.AppMailchimp._subscribe')

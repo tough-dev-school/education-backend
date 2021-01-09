@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from users.models import User
+
 
 @dataclass
 class MailchimpMember:
@@ -15,3 +17,11 @@ class MailchimpMember:
                 'LNAME': self.last_name,
             },
         }
+
+    @classmethod
+    def from_django_user(cls, user: User):
+        return cls(
+            email=user.email,
+            first_name=user.first_name,
+            last_name=user.last_name,
+        )
