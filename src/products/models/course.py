@@ -18,6 +18,7 @@ class Course(Shippable):
 
     welcome_letter_template_id = models.CharField(_('Welcome letter template id'), max_length=255, blank=True, null=True, help_text=_('Will be sent upon purchase if set'))
     gift_welcome_letter_template_id = models.CharField(_('Special welcome letter template id for gifts'), max_length=255, blank=True, null=True, help_text=_('If not set, common welcome letter will be used'))
+    mailchimp_list_id = models.CharField(_('Mailchimp audience id'), max_length=32, blank=True, null=True, help_text=_('Get it from audience settings'))
 
     class Meta:
         ordering = ['-id']

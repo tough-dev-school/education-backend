@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-31 15:11+0300\n"
+"POT-Creation-Date: 2021-01-09 15:52+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,110 +28,6 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: courses/admin/bundle.py:19 courses/admin/course.py:12
-#: courses/admin/courses/record.py:16 magnets/models.py:17
-msgid "Name"
-msgstr "Название"
-
-#: courses/admin/bundle.py:25 courses/admin/course.py:18
-#: courses/admin/courses/record.py:22 orders/models/order.py:22
-msgid "Price"
-msgstr "Цена"
-
-#: courses/admin/bundle.py:29
-msgid "Items"
-msgstr "Товары"
-
-#: courses/admin/course.py:22 courses/admin/courses/record.py:26
-msgid "Access"
-msgstr "Доступы"
-
-#: courses/admin/courses/actions.py:10
-#, fuzzy
-#| msgid "Postmark template_id"
-msgid "Email template id"
-msgstr "ID шаблона в постмарке"
-
-#: courses/admin/courses/actions.py:34
-msgid "Send email to all purchased_users"
-msgstr "Отправить письмо всем купившим"
-
-#: courses/admin/courses/record.py:41
-msgid "Downloadable link"
-msgstr "Ссылка на скачиваие"
-
-#: courses/models/base.py:13
-msgid "Name for receipts"
-msgstr "Для чеков"
-
-#: courses/models/base.py:15
-msgid "Full name for letters"
-msgstr "Для писем"
-
-#: courses/models/bundle.py:15 orders/models/order.py:34
-msgid "Bundle"
-msgstr "Набор"
-
-#: courses/models/bundle.py:16
-msgid "Bundles"
-msgstr "Наборы"
-
-#: courses/models/course.py:15
-msgid "Genitive name"
-msgstr "В родительном падеже"
-
-#: courses/models/course.py:16
-msgid "Clickmeeting room URL"
-msgstr "Ссылка на ClickMeeting"
-
-#: courses/models/course.py:16 courses/models/course.py:17
-msgid "If set, every user who purcashes this course gets invited"
-msgstr "Купившие курс приглашаются автоматически"
-
-#: courses/models/course.py:17
-msgid "Zoom.us webinar ID"
-msgstr "ID вебинара в зуме"
-
-#: courses/models/course.py:19
-msgid "Welcome letter template id"
-msgstr "ID шаблона приветственного письма"
-
-#: courses/models/course.py:19
-msgid "Will be sent upon purchase if set"
-msgstr "Если задать — письмо будет уходить вместе с каждой покупкой"
-
-#: courses/models/course.py:20
-msgid "Special welcome letter template id for gifts"
-msgstr "ID шаблона для подарочного письма"
-
-#: courses/models/course.py:20
-msgid "If not set, common welcome letter will be used"
-msgstr "Если задать — для подарочных заказов будем использовать этот шаблон, а не предыдущий"
-
-#: courses/models/course.py:24 orders/models/order.py:32
-msgid "Course"
-msgstr "Курс"
-
-#: courses/models/course.py:25
-msgid "Courses"
-msgstr "Курсы"
-
-#: courses/models/record.py:12
-msgid "Postmark template_id"
-msgstr "ID шаблона в постмарке"
-
-#: courses/models/record.py:12
-msgid "Leave it blank for the default template"
-msgstr "Если оставить пустым — будет дефолтным"
-
-#: courses/models/record.py:16 orders/models/order.py:33
-msgid "Record"
-msgstr "Запись"
-
-#: courses/models/record.py:17
-msgid "Records"
-msgstr "Записи"
-
 #: magnets/admin.py:33
 msgid "Lead count"
 msgstr "Количество лидов"
@@ -139,6 +35,11 @@ msgstr "Количество лидов"
 #: magnets/apps.py:8
 msgid "Magnets"
 msgstr "Лид-магниты"
+
+#: magnets/models.py:17 products/admin/bundle.py:19 products/admin/course.py:12
+#: products/admin/courses/record.py:16
+msgid "Name"
+msgstr "Название"
 
 #: magnets/models.py:20
 msgid "Letter template id"
@@ -164,22 +65,6 @@ msgstr "Почтовая кампания"
 msgid "Email Lead Magnet Campaigns"
 msgstr "Почтовые кампании"
 
-#: onetime/admin.py:9
-msgid "Is active"
-msgstr "Включено"
-
-#: onetime/admin.py:48
-msgid "Renew"
-msgstr "Отметить как неиспользованную"
-
-#: onetime/models.py:28
-msgid "Onetime token"
-msgstr "Одноразовый токен"
-
-#: onetime/models.py:29
-msgid "Onetime tokens"
-msgstr "Одноразовые токены"
-
 #: orders/admin/orders.py:10 orders/admin/orders.py:97
 msgid "Is paid"
 msgstr "Оплачен"
@@ -192,11 +77,11 @@ msgstr "Товар"
 msgid "Gift"
 msgstr "Подарок"
 
-#: orders/admin/orders.py:77 orders/models/order.py:21
+#: orders/admin/orders.py:77 orders/models/order.py:26
 msgid "User"
 msgstr "Юзер"
 
-#: orders/admin/orders.py:85 orders/models/order.py:36
+#: orders/admin/orders.py:85 orders/models/order.py:41
 msgid "Giver"
 msgstr "Даритель"
 
@@ -224,38 +109,55 @@ msgstr "Ещё раз выполнить (если заказ не оплаче�
 msgid "Order count"
 msgstr "Количество заказов"
 
-#: orders/models/order.py:23 orders/models/promocode.py:29
+#: orders/models/order.py:27 products/admin/bundle.py:25
+#: products/admin/course.py:18 products/admin/courses/record.py:22
+msgid "Price"
+msgstr "Цена"
+
+#: orders/models/order.py:28 orders/models/promocode.py:29
 #: orders/models/promocode.py:35
 msgid "Promo Code"
 msgstr "Промо-код"
 
-#: orders/models/order.py:26
+#: orders/models/order.py:31
 msgid "Date when order got paid"
 msgstr "Когда оплачен"
 
-#: orders/models/order.py:28
+#: orders/models/order.py:33
 msgid "If set during creation, order automaticaly gets shipped"
 msgstr ""
 "Чтобы отметить заказ оплаченым, воспользуйтесь массовой операцией из списка "
 "заказво"
 
-#: orders/models/order.py:30
+#: orders/models/order.py:35
 msgid "Date when order was shipped"
 msgstr "Дата выполнения"
 
-#: orders/models/order.py:37
+#: orders/models/order.py:37 products/models/course.py:25
+msgid "Course"
+msgstr "Курс"
+
+#: orders/models/order.py:38 products/models/record.py:16
+msgid "Record"
+msgstr "Запись"
+
+#: orders/models/order.py:39 products/models/bundle.py:15
+msgid "Bundle"
+msgstr "Набор"
+
+#: orders/models/order.py:42
 msgid "Date when the gift should be shipped"
 msgstr "Когда подарить"
 
-#: orders/models/order.py:38
+#: orders/models/order.py:43
 msgid "Gift message"
 msgstr "Подарочное сообщение"
 
-#: orders/models/order.py:42
+#: orders/models/order.py:48
 msgid "Order"
 msgstr "Заказ"
 
-#: orders/models/order.py:43
+#: orders/models/order.py:49
 msgid "Orders"
 msgstr "Заказы"
 
@@ -274,6 +176,98 @@ msgstr "Комментарий"
 #: orders/models/promocode.py:36
 msgid "Promo Codes"
 msgstr "Промо-коды"
+
+#: products/admin/bundle.py:29
+msgid "Items"
+msgstr "Товары"
+
+#: products/admin/course.py:22 products/admin/courses/record.py:26
+msgid "Access"
+msgstr "Доступы"
+
+#: products/admin/courses/actions.py:10
+#, fuzzy
+#| msgid "Postmark template_id"
+msgid "Email template id"
+msgstr "ID шаблона в постмарке"
+
+#: products/admin/courses/actions.py:34
+msgid "Send email to all purchased_users"
+msgstr "Отправить письмо всем купившим"
+
+#: products/admin/courses/record.py:41
+msgid "Downloadable link"
+msgstr "Ссылка на скачиваие"
+
+#: products/models/base.py:17
+msgid "Name for receipts"
+msgstr "Для чеков"
+
+#: products/models/base.py:19
+msgid "Full name for letters"
+msgstr "Для писем"
+
+#: products/models/bundle.py:16
+msgid "Bundles"
+msgstr "Наборы"
+
+#: products/models/course.py:15
+msgid "Genitive name"
+msgstr "В родительном падеже"
+
+#: products/models/course.py:16
+msgid "Clickmeeting room URL"
+msgstr "Ссылка на ClickMeeting"
+
+#: products/models/course.py:16 products/models/course.py:17
+msgid "If set, every user who purcashes this course gets invited"
+msgstr "Купившие курс приглашаются автоматически"
+
+#: products/models/course.py:17
+msgid "Zoom.us webinar ID"
+msgstr "ID вебинара в зуме"
+
+#: products/models/course.py:19
+msgid "Welcome letter template id"
+msgstr "ID шаблона приветственного письма"
+
+#: products/models/course.py:19
+msgid "Will be sent upon purchase if set"
+msgstr "Если задать — письмо будет уходить вместе с каждой покупкой"
+
+#: products/models/course.py:20
+msgid "Special welcome letter template id for gifts"
+msgstr "ID шаблона для подарочного письма"
+
+#: products/models/course.py:20
+msgid "If not set, common welcome letter will be used"
+msgstr ""
+"Если задать — для подарочных заказов будем использовать этот шаблон, а не "
+"предыдущий"
+
+#: products/models/course.py:21
+msgid "Mailchimp audience id"
+msgstr "ID списка рассылки в Mailchimp"
+
+#: products/models/course.py:21
+msgid "Get it from audience settings"
+msgstr "Взять можно в audience -> settings в админке мейлчимпа"
+
+#: products/models/course.py:26
+msgid "Courses"
+msgstr "Курсы"
+
+#: products/models/record.py:12
+msgid "Postmark template_id"
+msgstr "ID шаблона в постмарке"
+
+#: products/models/record.py:12
+msgid "Leave it blank for the default template"
+msgstr "Если оставить пустым — будет дефолтным"
+
+#: products/models/record.py:17
+msgid "Records"
+msgstr "Записи"
 
 #: tinkoff/models.py:8
 msgid "Authorized"
@@ -306,6 +300,18 @@ msgstr "Юзеры"
 #: users/models.py:8
 msgid "Subscribed to newsletter"
 msgstr "Подписан на новости"
+
+#~ msgid "Is active"
+#~ msgstr "Включено"
+
+#~ msgid "Renew"
+#~ msgstr "Отметить как неиспользованную"
+
+#~ msgid "Onetime token"
+#~ msgstr "Одноразовый токен"
+
+#~ msgid "Onetime tokens"
+#~ msgstr "Одноразовые токены"
 
 #, fuzzy
 #~| msgid "Promo Code"
