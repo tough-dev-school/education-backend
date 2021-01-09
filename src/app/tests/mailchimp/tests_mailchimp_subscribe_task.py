@@ -1,7 +1,6 @@
 import pytest
 
 from app import tasks
-from app.integrations.mailchimp import MailchimpMember
 
 pytestmark = [
     pytest.mark.django_db,
@@ -13,24 +12,22 @@ def mass_subscribe(mocker):
     return mocker.patch('app.integrations.mailchimp.client.AppMailchimp.mass_subscribe')
 
 
-def test_task(user, mass_subscribe):
+def test_task(user, mass_subscribe, mailchimp_member):
     tasks.subscribe_to_mailchimp.delay(user.pk)
 
     mass_subscribe.assert_called_once_with(
         list_id='123cba',
-        members=[
-            MailchimpMember(email='test@e.mail', first_name='Rulon', last_name='Oboev'),
-        ],
+        members=[mailchimp_member],
     )
 
 
-def test_particular_list_id(user, mass_subscribe):
+def test_particular_list_id(user, mass_subscribe, mailchimp_member):
     tasks.subscribe_to_mailchimp.delay(user.pk, list_id='TESTING-LIST-ID')
 
     mass_subscribe.assert_called_once_with(
         list_id='TESTING-LIST-ID',
         members=[
-            MailchimpMember(email='test@e.mail', first_name='Rulon', last_name='Oboev'),
+            mailchimp_member,
         ],
     )
 
