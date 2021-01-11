@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Iterable, Optional
 
 from django.http import HttpResponseRedirect
 from rest_framework.decorators import action
@@ -17,6 +17,14 @@ from users.models import User
 
 class PurchaseViewSet(ReadOnlyAppViewSet):
     """Abstract viewset for purchasable items"""
+    @property
+    def item(self):
+        return self.get_object()
+
+    @property
+    def tags(self) -> Iterable[str]:
+        return [self.item.slug]
+
     @action(methods=['POST'], detail=True)
     def purchase(self, request, pk=None, **kwargs):
         """Direct order purchase"""
@@ -43,10 +51,9 @@ class PurchaseViewSet(ReadOnlyAppViewSet):
 
     @action(methods=['GET'], detail=True)
     def promocode(self, request, pk=None, **kwargs):
-        item = self.get_object()
         promocode = self._get_promocode(request)
 
-        price = promocode.apply(item.price) if promocode is not None else item.price
+        price = promocode.apply(self.item.price) if promocode is not None else self.item.price
 
         return Response({
             'price': price,
@@ -55,8 +62,13 @@ class PurchaseViewSet(ReadOnlyAppViewSet):
 
     def _create_order(self, data) -> Order:
         return OrderCreator(
-            user=self._create_user(data['name'], data['email'], subscribe=data.get('subscribe', False)),
-            item=self.get_object(),
+            user=self._create_user(
+                name=data['name'],
+                email=data['email'],
+                subscribe=data.get('subscribe', False),
+                tags=self.tags,
+            ),
+            item=self.item,
             promocode=data.get('promocode', None),
         )()
 
@@ -64,19 +76,30 @@ class PurchaseViewSet(ReadOnlyAppViewSet):
         do_subscribe = data.get('subscribe', False)
 
         return OrderCreator(
-            user=self._create_user(data['receiver_name'], data['receiver_email'], subscribe=do_subscribe),
-            giver=self._create_user(data['giver_name'], data['giver_email'], subscribe=do_subscribe),
-            item=self.get_object(),
+            user=self._create_user(
+                name=data['receiver_name'],
+                email=data['receiver_email'],
+                subscribe=do_subscribe,
+                tags=[*self.tags, 'gift_receiver'],
+            ),
+            giver=self._create_user(
+                name=data['giver_name'],
+                email=data['giver_email'],
+                subscribe=do_subscribe,
+                tags=[*self.tags, 'gift_giver'],
+            ),
+            item=self.item,
             desired_shipment_date=data['desired_shipment_date'],
             gift_message=data.get('gift_message', ''),
             promocode=data.get('promocode', None),
         )()
 
-    def _create_user(self, name: str, email: str, subscribe: bool = False) -> User:
+    def _create_user(self, name: str, email: str, subscribe: bool = False, tags: Optional[Iterable[str]] = None) -> User:
         return UserCreator(
             name=name,
             email=email,
             subscribe=subscribe,
+            tags=tags,
         )()
 
     def _get_promocode(self, request) -> Optional[PromoCode]:

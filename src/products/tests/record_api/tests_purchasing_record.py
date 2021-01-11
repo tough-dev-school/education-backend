@@ -49,6 +49,18 @@ def test_user_auto_subscription(api, wants_to_subscribe):
     assert placed.user.subscribed is wants_to_subscribe
 
 
+def test_subscription_tags(api, subscribe):
+    api.post('/api/v2/records/home-video/purchase/', {
+        'name': 'Забой Шахтёров',
+        'email': 'zaboy@gmail.com',
+        'subscribe': True,
+    }, format='multipart', expected_status_code=302)
+
+    placed = get_order()
+
+    subscribe.assert_called_once_with(user_id=placed.user.pk, tags=['home-video'])
+
+
 def test_by_default_user_is_not_subscribed(api):
     api.post('/api/v2/records/home-video/purchase/', {
         'name': 'Забой Шахтёров',
