@@ -12,6 +12,7 @@ def course(mixer):
         'products.Course',
         name='Кройка и шитьё',
         name_genitive='Кройки и шитья',
+        slug='sewing',
     )
 
 
