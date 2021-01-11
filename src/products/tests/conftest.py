@@ -11,3 +11,12 @@ def testcode(mixer):
 @pytest.fixture(autouse=True)
 def subscribe(mocker):
     return mocker.patch('app.tasks.subscribe_to_mailchimp.delay')
+
+
+@pytest.fixture
+def default_user_data():
+    """Data used during purchase tests. Shortcut just to save typing time"""
+    return {
+        'name': 'Забой Шахтёров',
+        'email': 'zaboy@gmail.com',
+    }
