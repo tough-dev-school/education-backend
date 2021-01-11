@@ -21,3 +21,15 @@ def bank(mocker):
             return 'https://bank.test/pay/'
 
     return mocker.patch.object(TinkoffBank, '__init__', return_value=None)
+
+
+@pytest.fixture
+def call_purchase(api, default_user_data):
+    return lambda **kwargs: api.post(
+        '/api/v2/records/home-video/purchase/',
+        {
+            **default_user_data,
+            **kwargs,
+        },
+        format='multipart', expected_status_code=302,
+    )
