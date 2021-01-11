@@ -28,7 +28,7 @@ class MailchimpHTTP:
     def format_url(self, url: str) -> str:
         return urljoin(self.base_url, url.lstrip('/'))
 
-    def request(self, url, method, payload: Optional[dict] = None):
+    def request(self, url, method, payload: Optional[dict] = None, expected_status_code: int = 200):
         requests_payload = dict()
         if payload is not None:
             requests_payload['json'] = payload
@@ -43,17 +43,18 @@ class MailchimpHTTP:
         if response.status_code == 404:
             raise MailChimpNotFound()
 
-        if response.status_code != 200:
-            raise MailChimpWrongResponse(f'{response.status_code}: {response.json()}')
+        if response.status_code != expected_status_code:
+            raise MailChimpWrongResponse(f'{response.status_code}: {self.get_json(response)}')
 
-        return response
+        return self.get_json(response)
 
-    def get(self, url: str):
-        response = self.request(url, method='GET')
+    def get(self, url: str, *args, **kwargs):
+        return self.request(url, method='GET', *args, **kwargs)
 
-        return response.json()
+    def post(self, url: str, payload: dict, *args, **kwargs):
+        return self.request(url, method='POST', payload=payload, *args, **kwargs)
 
-    def post(self, url: str, payload: dict):
-        response = self.request(url, method='POST', payload=payload)
-
-        return response.json()
+    @staticmethod
+    def get_json(response):
+        if len(response.text):
+            return response.json()

@@ -18,12 +18,8 @@ def get_order():
     ('', 1900),
     ('3V1L_H4XX0R', 1900),
 ])
-def test_purchasing_with_promocode(api, record, promocode, expected):
-    api.post(f'/api/v2/records/{record.slug}/purchase/', {
-        'name': 'Забой Шахтёров',
-        'email': 'zaboy@gmail.com',
-        'promocode': promocode,
-    }, format='multipart', expected_status_code=302)
+def test_purchasing_with_promocode(call_purchase, record, promocode, expected):
+    call_purchase(promocode=promocode)
 
     placed = get_order()
 
@@ -31,23 +27,16 @@ def test_purchasing_with_promocode(api, record, promocode, expected):
     assert placed.price == Decimal(expected)
 
 
-def test_promocode_is_stored(api, record, testcode):
-    api.post(f'/api/v2/records/{record.slug}/purchase/', {
-        'name': 'Забой Шахтёров',
-        'email': 'zaboy@gmail.com',
-        'promocode': 'TESTCODE',
-    }, format='multipart', expected_status_code=302)
+def test_promocode_is_stored(call_purchase, testcode):
+    call_purchase(promocode='TESTCODE')
 
     placed = get_order()
 
     assert placed.promocode == testcode
 
 
-def test_promocode_is_empty_when_no_promocode_supplied(api, record):
-    api.post(f'/api/v2/records/{record.slug}/purchase/', {
-        'name': 'Забой Шахтёров',
-        'email': 'zaboy@gmail.com',
-    }, format='multipart', expected_status_code=302)
+def test_promocode_is_empty_when_no_promocode_supplied(call_purchase, record):
+    call_purchase()
 
     placed = get_order()
 

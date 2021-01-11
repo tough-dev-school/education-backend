@@ -10,10 +10,22 @@ def subscribe(mocker):
     return mocker.patch('app.tasks.subscribe_to_mailchimp.delay')
 
 
-def test_user_is_subscribed_to_mailjet_by_default(subscribe):
+def test_user_is_subscribed_to_maichimp_by_default(subscribe):
     created = UserCreator(name='Рулон Обоев', email='rulon.oboev@gmail.com')()
 
-    subscribe.assert_called_once_with(created.id)
+    subscribe.assert_called_once_with(
+        user_id=created.id,
+        tags=None,
+    )
+
+
+def test_tags_are_passed(subscribe):
+    created = UserCreator(name='Рулон Обоев', email='rulon.oboev@gmail.com', tags=['aatag', 'bbtag'])()
+
+    subscribe.assert_called_once_with(
+        user_id=created.id,
+        tags=['aatag', 'bbtag'],
+    )
 
 
 def test_not_subscribed(subscribe):

@@ -24,7 +24,7 @@ def default_gift_data():
 
 
 def test_order(api, course, default_gift_data):
-    api.post(f'/api/v2/courses/{course.slug}/gift/', default_gift_data, format='multipart', expected_status_code=302)
+    api.post('/api/v2/courses/ruloning-oboev/gift/', default_gift_data, format='multipart', expected_status_code=302)
 
     placed = get_order()
 
@@ -48,17 +48,17 @@ def test_order(api, course, default_gift_data):
     'giver_email',
     'desired_shipment_date',
 ])
-def test_required_fields(api, required_field_name, default_gift_data, course):
+def test_required_fields(api, required_field_name, default_gift_data):
 
     del default_gift_data[required_field_name]
-    got = api.post(f'/api/v2/courses/{course.slug}/gift/', default_gift_data, format='multipart', expected_status_code=400)
+    got = api.post('/api/v2/courses/ruloning-oboev/gift/', default_gift_data, format='multipart', expected_status_code=400)
 
     assert required_field_name in got
 
 
-def test_gift_message(api, default_gift_data, course):
+def test_gift_message(api, default_gift_data):
     default_gift_data['gift_message'] = 'Гори в аду!'
-    api.post(f'/api/v2/courses/{course.slug}/gift/', default_gift_data, format='multipart', expected_status_code=302)
+    api.post('/api/v2/courses/ruloning-oboev/gift/', default_gift_data, format='multipart', expected_status_code=302)
 
     placed = get_order()
 

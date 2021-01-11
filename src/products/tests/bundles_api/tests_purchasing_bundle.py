@@ -13,11 +13,8 @@ def get_order():
     return Order.objects.last()
 
 
-def test_order(api, bundle):
-    api.post('/api/v2/bundles/pinetree-tickets/purchase/', {
-        'name': 'Забой Шахтёров',
-        'email': 'zaboy@gmail.com',
-    }, format='multipart', expected_status_code=302)
+def test_order(call_purchase, bundle):
+    call_purchase()
 
     placed = get_order()
 
@@ -25,11 +22,8 @@ def test_order(api, bundle):
     assert placed.price == Decimal('1900.00')
 
 
-def test_user(api, bundle):
-    api.post('/api/v2/bundles/pinetree-tickets/purchase/', {
-        'name': 'Забой Шахтёров',
-        'email': 'zaboy@gmail.com',
-    }, format='multipart', expected_status_code=302)
+def test_user(call_purchase, bundle):
+    call_purchase()
 
     placed = get_order()
 
@@ -39,45 +33,41 @@ def test_user(api, bundle):
 
 
 @pytest.mark.parametrize('wants_to_subscribe', [True, False])
-def test_user_auto_subscription(api, wants_to_subscribe):
-    api.post('/api/v2/bundles/pinetree-tickets/purchase/', {
-        'name': 'Забой Шахтёров',
-        'email': 'zaboy@gmail.com',
-        'subscribe': wants_to_subscribe,
-    }, format='multipart', expected_status_code=302)
+def test_user_auto_subscription(call_purchase, wants_to_subscribe):
+    call_purchase(subscribe=wants_to_subscribe)
 
     placed = get_order()
 
     assert placed.user.subscribed is wants_to_subscribe
 
 
-def test_by_default_user_is_not_subscribed(api):
-    api.post('/api/v2/bundles/pinetree-tickets/purchase/', {
-        'name': 'Забой Шахтёров',
-        'email': 'zaboy@gmail.com',
-    }, format='multipart', expected_status_code=302)
+def test_subscription_tags(call_purchase, subscribe):
+    call_purchase(subscribe=True)
+
+    placed = get_order()
+
+    subscribe.assert_called_once_with(user_id=placed.user.pk, tags=['pinetree-tickets'])
+
+
+def test_by_default_user_is_not_subscribed(call_purchase):
+    call_purchase()
 
     placed = get_order()
 
     assert placed.user.subscribed is False
 
 
-def test_redirect(api, bundle):
+def test_redirect(api, default_user_data):
     response = api.post('/api/v2/bundles/pinetree-tickets/purchase/', {
-        'name': 'Забой Шахтёров',
-        'email': 'zaboy@gmail.com',
+        **default_user_data,
     }, format='multipart', expected_status_code=302, as_response=True)
 
     assert response.status_code == 302
     assert response['Location'] == 'https://bank.test/pay/'
 
 
-def test_custom_success_url(api, bundle, bank):
-    api.post('/api/v2/bundles/pinetree-tickets/purchase/', {
-        'name': 'Забой Шахтёров',
-        'email': 'zaboy@gmail.com',
-        'success_url': 'https://ok.true/yes',
-    }, format='multipart', expected_status_code=302)
+def test_custom_success_url(call_purchase, bank):
+    call_purchase(success_url='https://ok.true/yes')
 
     assert bank.call_args[1]['success_url'] == 'https://ok.true/yes'
 

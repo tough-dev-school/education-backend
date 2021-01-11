@@ -11,10 +11,35 @@ def test_get_ok(mailchimp):
     assert mailchimp.http.get('test/endpoint') == {'ok': True}
 
 
+def test_custom_status_code(mailchimp):
+    mailchimp.http_mock.get('https://us05.api.mailchimp.com/3.0/test/endpoint', json={'ok': True}, status_code=204)
+
+    assert mailchimp.http.request(url='test/endpoint', method='GET', expected_status_code=204) == {'ok': True}
+
+
+def test_custom_status_code_fail(mailchimp):
+    mailchimp.http_mock.get('https://us05.api.mailchimp.com/3.0/test/endpoint', json={'ok': True}, status_code=200)
+
+    with pytest.raises(MailChimpWrongResponse):
+        mailchimp.http.request(method='GET', url='test/endpoint', expected_status_code=931)
+
+
+def test_get_no_content(mailchimp):
+    mailchimp.http_mock.get('https://us05.api.mailchimp.com/3.0/test/endpoint')
+
+    assert mailchimp.http.get('test/endpoint') is None
+
+
 def test_post_ok(mailchimp):
     mailchimp.http_mock.post('https://us05.api.mailchimp.com/3.0/test/endpoint', json={'ok': True})
 
     assert mailchimp.http.post('test/endpoint', payload=dict()) == {'ok': True}
+
+
+def test_post_no_content(mailchimp):
+    mailchimp.http_mock.post('https://us05.api.mailchimp.com/3.0/test/endpoint')
+
+    assert mailchimp.http.post('test/endpoint', payload=dict()) is None
 
 
 @pytest.mark.parametrize(('code', 'exception'), [

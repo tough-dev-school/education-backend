@@ -1,7 +1,7 @@
 import pytest
 import requests_mock
 
-from app.integrations.mailchimp import AppMailchimp
+from app.integrations.mailchimp import AppMailchimp, MailchimpMember
 
 pytestmark = [pytest.mark.django_db]
 
@@ -19,6 +19,11 @@ def mailchimp():
     with requests_mock.Mocker() as http_mock:
         client.http_mock = http_mock
         yield client
+
+
+@pytest.fixture
+def mailchimp_member(user):
+    return MailchimpMember.from_django_user(user)
 
 
 @pytest.fixture
