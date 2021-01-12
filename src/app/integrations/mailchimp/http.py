@@ -10,11 +10,11 @@ class MailchimpHTTPException(BaseException):
     pass
 
 
-class MailChimpWrongResponse(MailchimpHTTPException):
+class MailchimpWrongResponse(MailchimpHTTPException):
     pass
 
 
-class MailChimpNotFound(MailchimpHTTPException):
+class MailchimpNotFound(MailchimpHTTPException):
     pass
 
 
@@ -41,10 +41,10 @@ class MailchimpHTTP:
         )
 
         if response.status_code == 404:
-            raise MailChimpNotFound()
+            raise MailchimpNotFound()
 
         if response.status_code != expected_status_code:
-            raise MailChimpWrongResponse(f'{response.status_code}: {self.get_json(response)}')
+            raise MailchimpWrongResponse(f'{response.status_code}: {self.get_json(response)}')
 
         return self.get_json(response)
 

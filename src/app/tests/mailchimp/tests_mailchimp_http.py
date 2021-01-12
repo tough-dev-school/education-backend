@@ -1,6 +1,6 @@
 import pytest
 
-from app.integrations.mailchimp.http import MailChimpNotFound, MailChimpWrongResponse
+from app.integrations.mailchimp.http import MailchimpNotFound, MailchimpWrongResponse
 
 pytestmark = [pytest.mark.django_db]
 
@@ -20,7 +20,7 @@ def test_custom_status_code(mailchimp):
 def test_custom_status_code_fail(mailchimp):
     mailchimp.http_mock.get('https://us05.api.mailchimp.com/3.0/test/endpoint', json={'ok': True}, status_code=200)
 
-    with pytest.raises(MailChimpWrongResponse):
+    with pytest.raises(MailchimpWrongResponse):
         mailchimp.http.request(method='GET', url='test/endpoint', expected_status_code=931)
 
 
@@ -43,8 +43,8 @@ def test_post_no_content(mailchimp):
 
 
 @pytest.mark.parametrize(('code', 'exception'), [
-    (504, MailChimpWrongResponse),
-    (404, MailChimpNotFound),
+    (504, MailchimpWrongResponse),
+    (404, MailchimpNotFound),
 ])
 def test_get_wrong_status_codes(mailchimp, code, exception):
     mailchimp.http_mock.get('https://us05.api.mailchimp.com/3.0/test/endpoint', json={'ok': True}, status_code=code)
@@ -54,8 +54,8 @@ def test_get_wrong_status_codes(mailchimp, code, exception):
 
 
 @pytest.mark.parametrize(('code', 'exception'), [
-    (504, MailChimpWrongResponse),
-    (404, MailChimpNotFound),
+    (504, MailchimpWrongResponse),
+    (404, MailchimpNotFound),
 ])
 def test_post_wrong_status_codes(mailchimp, code, exception):
     mailchimp.http_mock.post('https://us05.api.mailchimp.com/3.0/test/endpoint', json={'ok': True}, status_code=code)
