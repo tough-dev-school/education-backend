@@ -5,17 +5,7 @@ from django.conf import settings
 from requests.auth import HTTPBasicAuth
 from urllib.parse import urljoin
 
-
-class MailchimpHTTPException(BaseException):
-    pass
-
-
-class MailchimpWrongResponse(MailchimpHTTPException):
-    pass
-
-
-class MailchimpNotFound(MailchimpHTTPException):
-    pass
+from app.integrations.mailchimp import exceptions
 
 
 class MailchimpHTTP:
@@ -41,10 +31,10 @@ class MailchimpHTTP:
         )
 
         if response.status_code == 404:
-            raise MailchimpNotFound()
+            raise exceptions.MailchimpNotFound(self.get_json(response))
 
         if response.status_code != expected_status_code:
-            raise MailchimpWrongResponse(f'{response.status_code}: {self.get_json(response)}')
+            raise exceptions.MailchimpWrongResponse(f'{response.status_code}: {self.get_json(response)}')
 
         return self.get_json(response)
 

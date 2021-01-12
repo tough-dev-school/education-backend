@@ -8,7 +8,7 @@ from requests.exceptions import RequestException
 from app.celery import celery
 from app.integrations import tg
 from app.integrations.clickmeeting import ClickMeetingClient, ClickMeetingHTTPException
-from app.integrations.mailchimp import AppMailchimp, MailchimpHTTPException
+from app.integrations.mailchimp import AppMailchimp, MailchimpException
 from app.integrations.mailjet import AppMailjet, AppMailjetWrongResponseException
 from app.integrations.zoomus import ZoomusClient, ZoomusHTTPException
 from app.mail.owl import TemplOwl
@@ -75,7 +75,7 @@ def subscribe_to_mailjet(user_id: int):
 
 
 @celery.task(
-    autoretry_for=[RequestException, MailchimpHTTPException],
+    autoretry_for=[RequestException, MailchimpException],
     retry_kwargs={
         'max_retries': 10,
         'countdown': 5,

@@ -1,6 +1,6 @@
 import pytest
 
-from app.integrations.mailchimp.http import MailchimpNotFound, MailchimpWrongResponse
+from app.integrations.mailchimp.exceptions import MailchimpNotFound, MailchimpWrongResponse
 
 pytestmark = [pytest.mark.django_db]
 

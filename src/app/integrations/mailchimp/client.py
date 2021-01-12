@@ -1,5 +1,6 @@
 from typing import Iterable, Optional
 
+from app.integrations.mailchimp import exceptions
 from app.integrations.mailchimp.http import MailchimpHTTP
 from app.integrations.mailchimp.member import MailchimpMember
 from users.models import User
@@ -32,13 +33,15 @@ class AppMailchimp:
                 'status': 'subscribed',
             })
 
-        return self.http.post(
+        response = self.http.post(
             url=f'lists/{list_id}',
             payload={
                 'members': member_list,
                 'update_existing': True,
             },
         )
+        if len(response['errors']):
+            raise exceptions.MailchimpSubscriptionFailed(', '.join([f'{err["email_address"]}: {err["error"]} ({err["error_code"]})' for err in response['errors']]))
 
     def set_tags(self, list_id: str, member: MailchimpMember, tags: Iterable[str]):
         self.http.post(
