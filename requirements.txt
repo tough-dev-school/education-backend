@@ -9,7 +9,7 @@ Babel==2.9.0
 backcall==0.2.0
 billiard==3.6.3.0
 boto3==1.16.51
-botocore==1.19.51
+botocore==1.19.52
 celery==4.4.7
 certifi==2020.12.5
 cffi==1.14.4
