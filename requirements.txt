@@ -82,7 +82,7 @@ pytz==2020.5
 redis==3.5.3
 requests==2.25.1
 requests-mock==1.8.0
-s3transfer==0.3.3
+s3transfer==0.3.4
 sentry-sdk==0.19.5
 six==1.15.0
 sqlparse==0.4.1
