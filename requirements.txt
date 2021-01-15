@@ -86,7 +86,7 @@ s3transfer==0.3.4
 sentry-sdk==0.19.5
 six==1.15.0
 sqlparse==0.4.1
-testfixtures==6.17.0
+testfixtures==6.17.1
 text-unidecode==1.3
 toml==0.10.2
 tornado==6.1
