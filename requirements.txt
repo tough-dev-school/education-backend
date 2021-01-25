@@ -60,7 +60,7 @@ pexpect==4.8.0
 pickleshare==0.7.5
 pluggy==0.13.1
 prometheus-client==0.8.0
-prompt-toolkit==3.0.11
+prompt-toolkit==3.0.14
 ptyprocess==0.7.0
 py==1.10.0
 pycodestyle==2.6.0
