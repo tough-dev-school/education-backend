@@ -207,10 +207,6 @@ EMAIL_ENABLED = env('EMAIL_ENABLED', cast=bool, default=False)
 
 EMAIL_BACKEND = env('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
 
-MAILJET_API_KEY = env('MAILJET_API_KEY', default='')
-MAILJET_SECRET_KEY = env('MAILJET_SECRET_KEY', default='')
-MAILJET_CONTACT_LIST_ID = env('MAILJET_CONTACT_LIST_ID', cast=int, default=None)
-
 MAILCHIMP_API_KEY = env('MAILCHIMP_API_KEY', default='')
 MAILCHIMP_CONTACT_LIST_ID = env('MAILCHIMP_CONTACT_LIST_ID', cast=str, default=None)
 
