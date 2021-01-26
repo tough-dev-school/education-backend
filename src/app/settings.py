@@ -155,6 +155,13 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'django.contrib.auth.backends.RemoteUserBackend',
 ]
+AXES_PROXY_COUNT = 2
+AXES_META_PRECEDENCE_ORDER = [
+    'AXES_META_PRECEDENCE_ORDER',
+    'HTTP_X_FORWARDED_FOR',
+    'REMOTE_ADDR',
+]
+
 HEALTH_CHECKS_ERROR_CODE = 503
 HEALTH_CHECKS = {
     'db': 'django_healthchecks.contrib.check_database',
@@ -207,10 +214,6 @@ AWS_S3_ENDPOINT_URL = env('AWS_S3_ENDPOINT_URL', default=None)
 EMAIL_ENABLED = env('EMAIL_ENABLED', cast=bool, default=False)
 
 EMAIL_BACKEND = env('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
-
-MAILJET_API_KEY = env('MAILJET_API_KEY', default='')
-MAILJET_SECRET_KEY = env('MAILJET_SECRET_KEY', default='')
-MAILJET_CONTACT_LIST_ID = env('MAILJET_CONTACT_LIST_ID', cast=int, default=None)
 
 MAILCHIMP_API_KEY = env('MAILCHIMP_API_KEY', default='')
 MAILCHIMP_CONTACT_LIST_ID = env('MAILCHIMP_CONTACT_LIST_ID', cast=str, default=None)
