@@ -92,7 +92,7 @@ jobs:
           name: Update image
           command: |
             ./d add-host-key --force
-            ./d update-image circle@borshev.com pmdaily f213/pmdaily-backend:${CIRCLE_SHA1}
+            ./d update-image circle@92.53.67.149 pmdaily f213/pmdaily-backend:${CIRCLE_SHA1}
 
 workflows:
   version: 2
