@@ -17,7 +17,7 @@ chardet==4.0.0
 cryptography==3.3.1
 decorator==4.4.2
 Django==3.1.5
-django-anymail==8.1
+django-anymail==8.2
 django-axes==5.10.0
 django-behaviors==0.5.1
 django-bulk-update==2.2.0
