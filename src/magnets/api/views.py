@@ -36,4 +36,4 @@ class EmailLeadMagnetCampaignView(AnonymousAPIView, ValidationMixin):
 
 class TestView(AnonymousAPIView):
     def get(self, request, *args, **kwargs):
-        return Response({'ip': get_client_ip(request)})
+        return Response({'ip': request.META['REMOTE_ADDR'], 'ipware': get_client_ip(request)})
