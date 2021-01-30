@@ -154,12 +154,6 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'django.contrib.auth.backends.RemoteUserBackend',
 ]
-AXES_PROXY_COUNT = 2
-AXES_META_PRECEDENCE_ORDER = [
-    'CF-CONNECTING-IP',
-    'HTTP_X_FORWARDED_FOR',
-    'REMOTE_ADDR',
-]
 
 HEALTH_CHECKS_ERROR_CODE = 503
 HEALTH_CHECKS = {
