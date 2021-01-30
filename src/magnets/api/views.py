@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404
-from ipware import get_client_ip
 from rest_framework.response import Response
 
 from app.views import AnonymousAPIView
@@ -32,8 +31,3 @@ class EmailLeadMagnetCampaignView(AnonymousAPIView, ValidationMixin):
             email=self.data['email'],
             campaign=self.get_object(),
         )()
-
-
-class TestView(AnonymousAPIView):
-    def get(self, request, *args, **kwargs):
-        return Response({'ip': request.META['REMOTE_ADDR'], 'ipware': get_client_ip(request)})
