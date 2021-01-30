@@ -17,7 +17,7 @@ def test(shipment, user, subscribe_to_mailchimp):
     subscribe_to_mailchimp.assert_called_once_with(
         list_id='100500',
         user_id=user.id,
-        tags=['sewing'],
+        tags=['sewing', 'sewing-purchased'],
     )
 
 

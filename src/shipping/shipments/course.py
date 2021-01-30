@@ -24,7 +24,7 @@ class CourseShipment(BaseShipment):
             subscribe_to_mailchimp.delay(
                 list_id=self.course.mailchimp_list_id,
                 user_id=self.user.pk,
-                tags=[self.course.slug],
+                tags=[self.course.slug, f'{self.course.slug}-purchased'],
             )
 
     def invite_to_clickmeeting(self):
