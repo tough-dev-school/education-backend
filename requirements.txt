@@ -44,7 +44,7 @@ humanize==3.2.0
 idna==2.10
 importlib-metadata==3.4.0
 iniconfig==1.1.1
-ipython==7.19.0
+ipython==7.20.0
 ipython-genutils==0.2.0
 isort==5.7.0
 jedi==0.18.0
