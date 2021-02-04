@@ -10,7 +10,7 @@ from app.viewsets import ReadOnlyAppViewSet
 from orders.api.validators import GiftValidator, PurchaseValidator
 from orders.models import Order, PromoCode
 from orders.services.order_creator import OrderCreator
-from tinkoff.client import TinkoffBank
+from tinkoff.bank import TinkoffBank
 from users.creator import UserCreator
 from users.models import User
 
