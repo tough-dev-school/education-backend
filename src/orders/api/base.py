@@ -69,8 +69,8 @@ class PurchaseViewSet(ReadOnlyAppViewSet):
                 tags=self.tags,
             ),
             item=self.item,
-            promocode=data.get('promocode', None),
-            desired_bank=data.get('desired_bank', None),
+            promocode=data.get('promocode'),
+            desired_bank=data.get('desired_bank'),
         )()
 
     def _create_gift(self, data) -> Order:
@@ -91,9 +91,9 @@ class PurchaseViewSet(ReadOnlyAppViewSet):
             ),
             item=self.item,
             desired_shipment_date=data['desired_shipment_date'],
-            gift_message=data.get('gift_message', ''),
-            desired_bank=data.get('desired_bank', None),
-            promocode=data.get('promocode', None),
+            gift_message=data.get('gift_message'),
+            desired_bank=data.get('desired_bank'),
+            promocode=data.get('promocode'),
         )()
 
     def _create_user(self, name: str, email: str, subscribe: bool = False, tags: Optional[Iterable[str]] = None) -> User:
