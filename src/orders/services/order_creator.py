@@ -15,6 +15,7 @@ class OrderCreator:
         giver: User = None,
         desired_shipment_date: Optional[Union[str, datetime]] = None,
         gift_message: str = '',
+        desired_bank: Optional[str] = None,
     ):
         self.item = item
         self.user = user
@@ -23,6 +24,7 @@ class OrderCreator:
         self.giver = giver
         self.desired_shipment_date = desired_shipment_date
         self.gift_message = gift_message
+        self.desired_bank = desired_bank if desired_bank is not None else ''
 
     def __call__(self) -> Order:
         order = self.create()
@@ -40,6 +42,7 @@ class OrderCreator:
             giver=self.giver,
             desired_shipment_date=self.desired_shipment_date,
             gift_message=self.gift_message,
+            desired_bank=self.desired_bank,
         )
 
     def _get_promocode(self, promocode_name: str) -> Optional[PromoCode]:
