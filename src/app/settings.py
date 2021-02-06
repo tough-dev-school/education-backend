@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'tinkoff',
     'triggers',
     'magnets',
+    'banking',
 
     'corsheaders',
     'hattori',
@@ -225,6 +226,10 @@ ZOOMUS_API_SECRET = env('ZOOMUS_API_SECRET', default=None, cast=str)
 
 TINKOFF_TERMINAL_KEY = env('TINKOFF_TERMINAL_KEY', default=None)
 TINKOFF_TERMINAL_PASSWORD = env('TINKOFF_TERMINAL_PASSWORD', default=None)
+TINKOFF_CREDIT_SHOP_ID = env('TINKOFF_CREDIT_SHOP_ID', default=None)
+TINKOFF_CREDIT_SHOWCASE_ID = env('TINKOFF_CREDIT_SHOWCASE_ID', default=None)
+
+TINKOFF_CREDIT_DEMO_MODE = env('TINKOFF_CREDIT_DEMO_MODE', default=DEBUG)
 
 SEND_HAPPINESS_MESSAGES = env('SEND_HAPPINESS_MESSAGES', cast=bool, default=False)
 

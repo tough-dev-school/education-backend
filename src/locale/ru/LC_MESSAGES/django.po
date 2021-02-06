@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-09 15:52+0300\n"
+"POT-Creation-Date: 2021-02-06 12:54+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -181,7 +181,7 @@ msgstr "Промо-коды"
 msgid "Items"
 msgstr "Товары"
 
-#: products/admin/course.py:22 products/admin/courses/record.py:26
+#: products/admin/course.py:23 products/admin/courses/record.py:26
 msgid "Access"
 msgstr "Доступы"
 
@@ -206,6 +206,14 @@ msgstr "Для чеков"
 #: products/models/base.py:19
 msgid "Full name for letters"
 msgstr "Для писем"
+
+#: products/models/base.py:27
+msgid "Fixed promo code for tinkoff credit"
+msgstr "Промо-код на рассрочку в Тинькофф"
+
+#: products/models/base.py:27
+msgid "Used in tinkoff credit only"
+msgstr "Пересылается в тинькофф, если покупатель оформляет рассрочку на курс. Если не заполнять — покупатель переплатит за кредит. Можно взять в админке Тинькофф"
 
 #: products/models/bundle.py:16
 msgid "Bundles"

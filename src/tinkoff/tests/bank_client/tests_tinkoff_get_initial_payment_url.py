@@ -5,7 +5,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def req(mocker):
-    yield mocker.patch('tinkoff.client.TinkoffBank.call', return_value={
+    yield mocker.patch('tinkoff.bank.TinkoffBank.call', return_value={
         'PaymentURL': 'https://mocked.in.fixture/',
     })
 
