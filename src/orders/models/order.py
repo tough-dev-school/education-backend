@@ -34,8 +34,6 @@ class Order(TimestampedModel):
     )
     shipped = models.DateTimeField(_('Date when order was shipped'), null=True, blank=True)
 
-    desired_bank = models.CharField(_('User-requested bank string'), blank=True, max_length=32)
-
     course = ItemField(to='products.Course', verbose_name=_('Course'), null=True, blank=True, on_delete=models.PROTECT)
     record = ItemField(to='products.Record', verbose_name=_('Record'), null=True, blank=True, on_delete=models.PROTECT)
     bundle = ItemField(to='products.Bundle', verbose_name=_('Bundle'), null=True, blank=True, on_delete=models.PROTECT)
