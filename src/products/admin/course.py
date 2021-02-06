@@ -18,6 +18,7 @@ class CourseAdmin(ModelAdmin):
         (_('Price'), {'fields': [
             'price',
             'old_price',
+            'tinkoff_credit_promo_code',
         ]}),
         (_('Access'), {'fields': [
             'slug',
