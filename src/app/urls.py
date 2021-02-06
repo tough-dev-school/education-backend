@@ -9,7 +9,7 @@ from urllib.parse import urljoin
 from app.views import HomePageView
 from magnets.api.views import EmailLeadMagnetCampaignView
 from products.api.viewsets import BundleViewSet, CourseViewSet, RecordViewSet
-from tinkoff.api.views import TinkoffPaymentNotificationsView
+from tinkoff.api.views import TinkoffCreditNotificationsView, TinkoffPaymentNotificationsView
 from users.api.views import UserView
 
 router = routers.SimpleRouter()
@@ -23,6 +23,7 @@ urlpatterns = [
     path('sentry-debug/', lambda request: 1 / 0),
     path('api/v2/users/<int:pk>/', UserView.as_view()),
     path('api/v2/banking/tinkoff-notifications/', TinkoffPaymentNotificationsView.as_view()),
+    path('api/v2/banking/tinkoff-credit-notifications/', TinkoffCreditNotificationsView.as_view()),
     path('api/v2/leads/email/<slug:slug>/', EmailLeadMagnetCampaignView.as_view()),
 
     path('api/v2/healthchecks/', include('django_healthchecks.urls')),

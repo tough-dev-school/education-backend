@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from tinkoff.models import PaymentNotification
+from tinkoff.models import CreditNotification, PaymentNotification
 from tinkoff.token_validator import TinkoffNotificationsTokenValidator
 
 
@@ -44,3 +44,29 @@ class PaymentNotificationSerializer(serializers.ModelSerializer):
         validator = TinkoffNotificationsTokenValidator(self.initial_data)
         if validator():
             return validated_data
+
+
+class CreditNotificationSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='order_id')
+    created_at = serializers.DateTimeField(source='bank_created')
+    middle_name = serializers.CharField(required=False, allow_null=True)
+
+    class Meta:
+        model = CreditNotification
+        fields = [
+            'id',
+            'status',
+            'created_at',
+            'first_payment',
+            'order_amount',
+            'credit_amount',
+            'product',
+            'term',
+            'monthly_payment',
+            'first_name',
+            'last_name',
+            'middle_name',
+            'phone',
+            'loan_number',
+            'email',
+        ]
