@@ -22,3 +22,10 @@ def test(select, desired, result):
 
 def test_default_bank(select):
     assert select() == TinkoffBank
+
+
+def test_choices(select):
+    assert select.__class__.get_bank_choices() == (
+        ('tinkoff_bank', 'TinkoffBank'),
+        ('tinkoff_credit', 'TinkoffCredit'),
+    )

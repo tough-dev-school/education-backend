@@ -10,6 +10,8 @@ class TinkoffCreditRequestException(Exception):
 
 class TinkoffCredit(Bank):
     def get_initial_payment_url(self) -> str:
+        """Send the request to tinkoff. Fails if called for the second time (Flex scope, sorry)
+        """
         result = self.call(
             url=self.get_create_order_url(),
             payload={
@@ -22,6 +24,8 @@ class TinkoffCredit(Bank):
                 'items': self.get_items(),
             },
         )
+
+        self.create_credit_request(result['id'])  # create a credit request id from tinkoff response
 
         return result['link']
 
@@ -63,3 +67,9 @@ class TinkoffCredit(Bank):
             return 'https://forma.tinkoff.ru/api/partners/v2/orders/create-demo'
 
         return 'https://loans.tinkoff.ru/api/partners/v1/lightweight/create'
+
+    def create_credit_request(self, tinkoff_request_id: str):
+        return self.order.credit_set.create(
+            bank='tinkoff_credit',
+            bank_request_id=tinkoff_request_id,
+        )

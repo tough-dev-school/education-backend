@@ -43,6 +43,7 @@ ALLOWED_HOSTS = [
     'localhost',
     'localhost:8000',
     'education.borshev.com',
+    'e339889f0f2c.ngrok.io',
     ABSOLUTE_HOST.replace('https://', ''),
 ]
 

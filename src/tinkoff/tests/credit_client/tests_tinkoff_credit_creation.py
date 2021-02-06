@@ -5,7 +5,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture(autouse=True)
 def api_call(mocker):
-    return mocker.patch('tinkoff.credit.TinkoffCredit.call', return_value={'link': '__mocked'})
+    return mocker.patch('tinkoff.credit.TinkoffCredit.call', return_value={'id': 'aaa-100500', 'link': '__mocked'})
 
 
 def test_items(tinkoff):
@@ -42,3 +42,12 @@ def test_return_value(tinkoff):
     url = tinkoff.get_initial_payment_url()
 
     assert url == '__mocked'
+
+
+def test_credit_request_is_created(tinkoff, order):
+    tinkoff.get_initial_payment_url()
+
+    credit = order.credit_set.filter(bank='tinkoff_credit').first()
+
+    assert credit.status == 'new'
+    assert credit.bank_request_id == 'aaa-100500'
