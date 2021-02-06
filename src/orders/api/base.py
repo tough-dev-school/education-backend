@@ -7,10 +7,10 @@ from rest_framework.response import Response
 
 from app.pricing import format_price
 from app.viewsets import ReadOnlyAppViewSet
+from banking.selector import BankSelector
 from orders.api.validators import GiftValidator, PurchaseValidator
 from orders.models import Order, PromoCode
 from orders.services.order_creator import OrderCreator
-from tinkoff.bank import TinkoffBank
 from users.creator import UserCreator
 from users.models import User
 
@@ -33,7 +33,7 @@ class PurchaseViewSet(ReadOnlyAppViewSet):
         PurchaseValidator.do(data)
 
         order = self._create_order(data=data)
-        payment_link = self.get_payment_link(order, success_url=data.get('success_url'))
+        payment_link = self.get_payment_link(order, data=data)
 
         return HttpResponseRedirect(redirect_to=payment_link)
 
@@ -45,7 +45,7 @@ class PurchaseViewSet(ReadOnlyAppViewSet):
         GiftValidator.do(data)
 
         order = self._create_gift(data=data)
-        payment_link = self.get_payment_link(order, success_url=data.get('success_url'))
+        payment_link = self.get_payment_link(order, data=data)
 
         return HttpResponseRedirect(redirect_to=payment_link)
 
@@ -110,7 +110,8 @@ class PurchaseViewSet(ReadOnlyAppViewSet):
 
         return PromoCode.objects.get_or_nothing(name=promocode_name)
 
-    def get_payment_link(self, order, success_url=None):
-        bank = TinkoffBank(order=order, success_url=success_url)
+    def get_payment_link(self, order: Order, data: dict):
+        Bank = BankSelector()(desired_bank=data.get('desired_bank'))
+        bank = Bank(order=order, success_url=data.get('success_url'))
 
         return bank.get_initial_payment_url()

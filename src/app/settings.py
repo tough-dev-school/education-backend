@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'tinkoff',
     'triggers',
     'magnets',
+    'banking',
 
     'corsheaders',
     'hattori',
