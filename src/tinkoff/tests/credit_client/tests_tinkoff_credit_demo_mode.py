@@ -4,7 +4,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.mark.parametrize(('demo_mode', 'url'), [
-    (False, 'https://loans.tinkoff.ru/api/partners/v1/lightweight/create'),
+    (False, 'https://forma.tinkoff.ru/api/partners/v2/orders/create'),
     (True, 'https://forma.tinkoff.ru/api/partners/v2/orders/create-demo'),
 ])
 def test_create_url(tinkoff, settings, demo_mode, url):

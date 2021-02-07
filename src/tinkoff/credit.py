@@ -62,4 +62,4 @@ class TinkoffCredit(Bank):
         if settings.TINKOFF_CREDIT_DEMO_MODE:
             return 'https://forma.tinkoff.ru/api/partners/v2/orders/create-demo'
 
-        return 'https://loans.tinkoff.ru/api/partners/v1/lightweight/create'
+        return 'https://forma.tinkoff.ru/api/partners/v2/orders/create'
