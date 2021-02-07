@@ -6,8 +6,8 @@ from tinkoff.models import CreditNotification
 pytestmark = [pytest.mark.django_db]
 
 
-def test(anon, notification):
-    anon.post('/api/v2/banking/tinkoff-credit-notifications/', notification, expected_status_code=200)
+def test(api, notification):
+    api.post('/api/v2/banking/tinkoff-credit-notifications/', notification, expected_status_code=200)
 
     created = CreditNotification.objects.last()
 
@@ -34,10 +34,10 @@ def test(anon, notification):
     'email',
     'phone',
 ])
-def test_null_fields(anon, notification, field):
+def test_null_fields(api, notification, field):
     notification[field] = None
 
-    anon.post('/api/v2/banking/tinkoff-credit-notifications/', notification, expected_status_code=200)
+    api.post('/api/v2/banking/tinkoff-credit-notifications/', notification, expected_status_code=200)
 
     assert CreditNotification.objects.exists()
 
@@ -49,9 +49,9 @@ def test_null_fields(anon, notification, field):
     'email',
     'phone',
 ])
-def test_empty_fields(anon, notification, field):
+def test_empty_fields(api, notification, field):
     notification[field] = ''
 
-    anon.post('/api/v2/banking/tinkoff-credit-notifications/', notification, expected_status_code=200)
+    api.post('/api/v2/banking/tinkoff-credit-notifications/', notification, expected_status_code=200)
 
     assert CreditNotification.objects.exists()

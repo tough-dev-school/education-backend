@@ -1,5 +1,7 @@
 import pytest
 
+from app.test.api_client import DRFClient
+
 pytestmark = [pytest.mark.django_db]
 
 
@@ -23,3 +25,8 @@ def notification():
         "loan_number": None,
         "email": "konstantin13@ip.biz",
     }
+
+
+@pytest.fixture
+def api():
+    return DRFClient(anon=True, HTTP_X_FORWARDED_FOR='91.194.226.100, 10.0.0.1')
