@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     'anymail',
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_recaptcha',
     'django_filters',
 
     'axes',
@@ -233,6 +234,9 @@ TINKOFF_CREDIT_DEMO_MODE = env('TINKOFF_CREDIT_DEMO_MODE', default=DEBUG)
 
 SEND_HAPPINESS_MESSAGES = env('SEND_HAPPINESS_MESSAGES', cast=bool, default=False)
 
+DRF_RECAPTCHA_SECRET_KEY = env('RECAPTCHA_SECRET_KEY', cast=str, default='')
+DRF_RECAPTCHA_DOMAIN = ABSOLUTE_HOST
+DRF_RECAPTCHA_TESTING = DRF_RECAPTCHA_TESTING_PASS = not env('RECAPTCHA_ENABLED', cast=bool, default=True)
 # Uncomment this lines to catch all runtime warnings as errors
 
 # import warnings  # noqa

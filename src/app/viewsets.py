@@ -1,3 +1,5 @@
+from typing import Optional
+
 from django.core.exceptions import ImproperlyConfigured
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.viewsets import ReadOnlyModelViewSet as _ReadOnlyModelViewSet
@@ -15,9 +17,14 @@ class ValidationMixin:
 
         return self.validator_class
 
-    def _validate(self, data):
+    def _validate(self, data, context: Optional[dict] = None):
         Validator = self.get_validator_class()
-        Validator.do(data)
+        Validator.do(data, context=self.get_validator_context())
+
+    def get_validator_context(self) -> dict:
+        return {
+            'request': self.request,
+        }
 
 
 class MultiSerializerMixin:
