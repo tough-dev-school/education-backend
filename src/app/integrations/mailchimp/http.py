@@ -19,7 +19,7 @@ class MailchimpHTTP:
         return urljoin(self.base_url, url.lstrip('/'))
 
     def request(self, url, method, payload: Optional[dict] = None, expected_status_code: int = 200):
-        requests_payload = dict()
+        requests_payload = {}
         if payload is not None:
             requests_payload['json'] = payload
 
@@ -46,5 +46,5 @@ class MailchimpHTTP:
 
     @staticmethod
     def get_json(response):
-        if len(response.text):
+        if response.text:
             return response.json()

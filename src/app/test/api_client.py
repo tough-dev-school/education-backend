@@ -24,7 +24,7 @@ class DRFClient(APIClient):
         )
 
     def _create_user(self, god_mode=True):
-        user_opts = dict()
+        user_opts = {}
         if god_mode:
             user_opts = {
                 'is_staff': False,

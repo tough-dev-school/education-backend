@@ -16,7 +16,7 @@ class TemplOwl:
         self.template_id = template_id
         self.subject = subject
         self.to = [to] if isinstance(to, str) else to
-        self.ctx = helpers.normalize_email_context(ctx) if ctx is not None else dict()
+        self.ctx = helpers.normalize_email_context(ctx) if ctx is not None else {}
 
         if not disable_antispam:
             self.remove_spammed_emails()

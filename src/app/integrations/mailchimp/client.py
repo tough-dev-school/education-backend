@@ -26,7 +26,7 @@ class AppMailchimp:
 
     def mass_subscribe(self, list_id: str, members: Iterable[MailchimpMember]):
 
-        member_list = list()
+        member_list = []
         for member in members:
             member_list.append({
                 **member.to_mailchimp(),
@@ -40,7 +40,7 @@ class AppMailchimp:
                 'update_existing': True,
             },
         )
-        if len(response['errors']):
+        if response['errors']:
             raise exceptions.MailchimpSubscriptionFailed(', '.join([f'{err["email_address"]}: {err["error"]} ({err["error_code"]})' for err in response['errors']]))
 
     def set_tags(self, list_id: str, member: MailchimpMember, tags: Iterable[str]):

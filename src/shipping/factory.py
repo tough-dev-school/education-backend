@@ -1,4 +1,4 @@
-_registry = dict()
+_registry = {}
 
 __all__ = [
     'register',
