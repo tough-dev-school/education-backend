@@ -52,7 +52,7 @@ jmespath==0.10.0
 kombu==4.6.11
 mccabe==0.6.1
 mixer==7.0.6
-more-itertools==8.6.0
+more-itertools==8.7.0
 packaging==20.8
 parso==0.8.1
 pexpect==4.8.0
