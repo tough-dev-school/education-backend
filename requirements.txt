@@ -32,7 +32,7 @@ djangorestframework==3.12.2
 docutils==0.16
 drf-recaptcha==2.0.4
 entrypoints==0.3
-execnet==1.7.1
+execnet==1.8.0
 Faker==4.0.0
 flake8==3.8.4
 flake8-bugbear==20.11.1
