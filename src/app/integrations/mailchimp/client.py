@@ -40,7 +40,7 @@ class AppMailchimp:
                 'update_existing': True,
             },
         )
-        if len(response['errors']):
+        if response['errors']:
             raise exceptions.MailchimpSubscriptionFailed(', '.join([f'{err["email_address"]}: {err["error"]} ({err["error_code"]})' for err in response['errors']]))
 
     def set_tags(self, list_id: str, member: MailchimpMember, tags: Iterable[str]):
