@@ -53,7 +53,7 @@ kombu==4.6.11
 mccabe==0.6.1
 mixer==7.0.6
 more-itertools==8.7.0
-packaging==20.8
+packaging==20.9
 parso==0.8.1
 pexpect==4.8.0
 pickleshare==0.7.5
