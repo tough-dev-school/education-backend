@@ -1,8 +1,8 @@
-# pmdaily-backend
+# Backend for [education.borshev.com](http://education.borshev.com/)
 
 [![CircleCI](https://circleci.com/gh/f213/education-backend.svg?style=svg&circle-token=8ce8cbe93d81d60af6b67c82a82563d93da0cb03)](https://circleci.com/gh/f213/education-backend)
 
-Backend that i use to sell [my courses](http://education.borshev.com)
+Django-based production project, integrated with Tinkoff, zoom.us, Mailchimp, Postmark, S3 and telegram. Frontend is built on tilda.cc.
 
 ## Configuration
 Configuration is stored in `src/app/.env`, for examples see `src/app/.env.ci`

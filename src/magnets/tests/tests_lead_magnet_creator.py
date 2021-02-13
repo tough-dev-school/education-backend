@@ -44,12 +44,6 @@ def test_nameless(creator):
     assert created.last_name == ''
 
 
-def test_user_is_subscribed(creator, subscribe):
-    creator(name='r00t', email='support@m1crosoft.com')()
-
-    subscribe.assert_called_once()
-
-
 def test_existing_user(creator, mixer):
     user = mixer.blend(User, first_name='Фёдор', last_name='Шаляпин', email='support@m1crosoft.com')
     creator(name='Фёдор Шаляпин', email='support@m1crosoft.com')()
@@ -57,6 +51,13 @@ def test_existing_user(creator, mixer):
     user.refresh_from_db()
 
     assert get_user() == user
+
+
+def test_user_is_subscribed_with_tags(creator, mixer, subscribe):
+    user = mixer.blend(User, first_name='Фёдор', last_name='Шаляпин', email='support@m1crosoft.com')
+    creator(name='r00t', email='support@m1crosoft.com')()
+
+    subscribe.assert_called_once_with(user_id=user.pk, tags=['eggs-lead-magnet'])
 
 
 def test_log_entry_is_created(creator, campaign):

@@ -24,6 +24,8 @@ class Shippable(TimestampedModel):
     price = models.DecimalField(max_digits=8, decimal_places=2)
     old_price = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
 
+    tinkoff_credit_promo_code = models.CharField(_('Fixed promo code for tinkoff credit'), max_length=64, blank=True, help_text=_('Used in tinkoff credit only'))
+
     class Meta:
         abstract = True
 

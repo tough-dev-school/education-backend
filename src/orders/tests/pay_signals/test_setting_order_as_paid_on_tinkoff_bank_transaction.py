@@ -8,7 +8,7 @@ pytestmark = [
 
 
 @pytest.fixture(autouse=True)
-def tinkoff_credentials(settings):
+def _tinkoff_credentials(settings):
     settings.TINKOFF_TERMINAL_KEY = 'testDEMO'
     settings.TINKOFF_TERMINAL_PASSWORD = 'Dfsfh56dgKl'
 
@@ -36,11 +36,6 @@ def bank_data():
     }
 
 
-@pytest.fixture
-def order(mixer):
-    return mixer.blend('orders.Order')
-
-
 def test_ok(anon, order, bank_data):
     anon.post(
         '/api/v2/banking/tinkoff-notifications/',
@@ -54,7 +49,7 @@ def test_ok(anon, order, bank_data):
 
 
 @pytest.mark.parametrize('status', ['AUTHORIZED', 'CANCELLED'])
-def test_wrong_stsatus(anon, order, bank_data, status):
+def test_wrong_status(anon, order, bank_data, status):
     anon.post(
         '/api/v2/banking/tinkoff-notifications/',
         bank_data(Status=status, OrderId=order.id),

@@ -21,7 +21,6 @@ class DRFClient(APIClient):
         token = Token.objects.create(user=self.user)
         self.credentials(
             HTTP_AUTHORIZATION=f'Token {token}',
-            HTTP_X_GM_CLIENT='testing',
         )
 
     def _create_user(self, god_mode=True):

@@ -4,7 +4,7 @@ from django.conf import settings
 from hashlib import sha256
 from urllib.parse import urljoin
 
-from app.banking import Bank
+from banking.base import Bank
 from tinkoff.exceptions import TinkoffRequestException
 
 

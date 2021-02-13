@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'tinkoff',
     'triggers',
     'magnets',
+    'banking',
 
     'corsheaders',
     'hattori',
@@ -100,6 +101,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.RemoteUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'app.middleware.real_ip.real_ip_middleware',
     'axes.middleware.AxesMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
@@ -157,7 +159,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 AXES_PROXY_COUNT = 2
 AXES_META_PRECEDENCE_ORDER = [
-    'AXES_META_PRECEDENCE_ORDER',
     'HTTP_X_FORWARDED_FOR',
     'REMOTE_ADDR',
 ]
@@ -231,6 +232,10 @@ ZOOMUS_API_SECRET = env('ZOOMUS_API_SECRET', default=None, cast=str)
 
 TINKOFF_TERMINAL_KEY = env('TINKOFF_TERMINAL_KEY', default=None)
 TINKOFF_TERMINAL_PASSWORD = env('TINKOFF_TERMINAL_PASSWORD', default=None)
+TINKOFF_CREDIT_SHOP_ID = env('TINKOFF_CREDIT_SHOP_ID', default=None)
+TINKOFF_CREDIT_SHOWCASE_ID = env('TINKOFF_CREDIT_SHOWCASE_ID', default=None)
+
+TINKOFF_CREDIT_DEMO_MODE = env('TINKOFF_CREDIT_DEMO_MODE', default=DEBUG)
 
 SEND_HAPPINESS_MESSAGES = env('SEND_HAPPINESS_MESSAGES', cast=bool, default=False)
 

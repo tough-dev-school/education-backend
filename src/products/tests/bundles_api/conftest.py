@@ -1,6 +1,6 @@
 import pytest
 
-from tinkoff.client import TinkoffBank
+from tinkoff.bank import TinkoffBank
 
 pytestmark = [pytest.mark.django_db]
 
