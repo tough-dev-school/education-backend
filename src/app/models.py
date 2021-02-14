@@ -1,5 +1,6 @@
 from typing import Generator, Optional
 
+import contextlib
 import inspect
 from behaviors.behaviors import Timestamped
 from copy import copy
@@ -211,10 +212,8 @@ class DefaultModel(models.Model):
         """Clears all used cached properties of instance."""
 
         for property_name in self._get_cached_property_names():
-            try:
+            with contextlib.suppress(KeyError):
                 del self.__dict__[property_name]
-            except KeyError:
-                pass
 
     def _get_cached_property_names(self):
         return [
