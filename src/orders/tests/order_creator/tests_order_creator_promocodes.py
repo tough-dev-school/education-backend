@@ -14,7 +14,7 @@ def testcode(mixer):
     return mixer.blend('orders.Promocode', name='TESTCODE', discount_percent=10)
 
 
-@pytest.mark.parametrize('promocode, expected', [
+@pytest.mark.parametrize(('promocode', 'expected'), [
     ('TESTCODE', 90450),
     ('', 100500),
     ('3V1l', 100500),

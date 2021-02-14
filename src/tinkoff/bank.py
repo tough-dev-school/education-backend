@@ -29,15 +29,15 @@ class TinkoffBank(Bank):
         """
         payload.update({'TerminalKey': settings.TINKOFF_TERMINAL_KEY})
 
-        r = requests.post(f'https://securepay.tinkoff.ru/v2/{method}/', json={
+        response = requests.post(f'https://securepay.tinkoff.ru/v2/{method}/', json={
             'Token': self._get_token(payload),
             **payload,
         })
 
-        if r.status_code != 200:
-            raise TinkoffRequestException(f'Incorrect HTTP-status code for {method}: {r.status_code}')
+        if response.status_code != 200:
+            raise TinkoffRequestException(f'Incorrect HTTP-status code for {method}: {response.status_code}')
 
-        parsed = r.json()
+        parsed = response.json()
 
         if not parsed['Success']:
             raise TinkoffRequestException(f'Non-success request for {method}: {parsed["ErrorCode"]}, {parsed["Message"]} ({parsed["Details"]}')
@@ -58,7 +58,7 @@ class TinkoffBank(Bank):
             'Quantity': 1,
             'Amount': self.price,
             'PaymentObject': 'service',
-            'Tax': "none",  # fuck
+            'Tax': 'none',  # fuck
         }]
 
     @staticmethod

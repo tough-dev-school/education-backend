@@ -4,7 +4,7 @@ from decimal import Decimal
 pytestmark = [pytest.mark.django_db]
 
 
-@pytest.mark.parametrize('discount_percent, expected', [
+@pytest.mark.parametrize(('discount_percent', 'expected'), [
     ('50', 50),
     ('25', 75),
     ('0', 100),

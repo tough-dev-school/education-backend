@@ -21,7 +21,7 @@ class ZoomusClientHTTP:
 
     @cached_property
     def token(self) -> str:
-        token = jwt.encode(
+        return jwt.encode(
             payload={
                 'iss': self.api_key,
                 'exp': datetime.utcnow().timestamp() + 3600 * 5,
@@ -29,8 +29,6 @@ class ZoomusClientHTTP:
             key=self.api_secret,
             algorithm='HS256',
         )
-
-        return token
 
     def format_url(self, url: str) -> str:
         return urljoin(self.base_url, url.lstrip('/'))
@@ -67,6 +65,6 @@ class ZoomusClientHTTP:
             headers=self.headers,
         )
         if response.status_code != 200:
-            raise ZoomusHTTPException(f"Non-ok HTTP response from zoom.us: {response.status_code}")
+            raise ZoomusHTTPException(f'Non-ok HTTP response from zoom.us: {response.status_code}')
 
         return response.json()

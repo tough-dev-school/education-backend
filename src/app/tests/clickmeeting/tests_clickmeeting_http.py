@@ -4,15 +4,15 @@ from app.integrations.clickmeeting import ClickMeetingHTTPException
 
 
 @pytest.mark.parametrize(
-    'url, expected',
+    ('url', 'expected'),
     [
-        ['/test/create', 'https://api.clickmeeting.com/v1/test/create'],
-        ['test/create', 'https://api.clickmeeting.com/v1/test/create'],
-        ['test/create/?par=val', 'https://api.clickmeeting.com/v1/test/create/?par=val'],
-        [
+        ('/test/create', 'https://api.clickmeeting.com/v1/test/create'),
+        ('test/create', 'https://api.clickmeeting.com/v1/test/create'),
+        ('test/create/?par=val', 'https://api.clickmeeting.com/v1/test/create/?par=val'),
+        (
             'test/create/?par=val&par1=val1',
             'https://api.clickmeeting.com/v1/test/create/?par=val&par1=val1',
-        ],
+        ),
     ],
 )
 def test_format_url(url, expected, client):

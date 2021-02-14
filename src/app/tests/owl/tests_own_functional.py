@@ -7,7 +7,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def adjust_settings(settings):
+def _enable_email(settings):
     settings.EMAIL_ENABLED = True
 
 
@@ -26,7 +26,6 @@ def test_sending(owl):
 
 
 @pytest.mark.parametrize('switch', [
-    # lambda settings: setattr(settings, 'DISABLE_NOTIFICATIONS', True),
     lambda settings: setattr(settings, 'EMAIL_ENABLED', False),
 ])
 def test_kill_switch(owl, switch, settings):

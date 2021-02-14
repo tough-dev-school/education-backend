@@ -6,7 +6,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def adjust_settings(settings):
+def _enable_email(settings):
     settings.EMAIL_ENABLED = True
 
 

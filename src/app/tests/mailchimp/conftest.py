@@ -7,7 +7,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def set_mailchimp_credentials(settings):
+def _set_mailchimp_credentials(settings):
     settings.MAILCHIMP_API_KEY = 'key-us05'
     settings.MAILCHIMP_CONTACT_LIST_ID = '123cba'
 

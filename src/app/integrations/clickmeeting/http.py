@@ -51,7 +51,7 @@ class ClickMeetingClientHTTP:
             headers=self.headers,
         )
         if response.status_code != 200:
-            raise ClickMeetingHTTPException(f"Non-ok HTTP response from ClickMeeting: {response.status_code}")
+            raise ClickMeetingHTTPException(f'Non-ok HTTP response from ClickMeeting: {response.status_code}')
 
         return response.json()
 
@@ -63,20 +63,20 @@ class ClickMeetingClientHTTP:
             if(type(params).__name__ == 'dict'):
                 for key, value in params.items():
                     if(base_key):
-                        new_base = quote("%s[%s]" % (base_key, key))
+                        new_base = quote(f'{base_key}[{key}]')
                         results += build_query_item(value, new_base)
                     else:
                         results += build_query_item(value, key)
             elif(type(params).__name__ == 'list'):
                 for value in params:
                     if(base_key):
-                        results += build_query_item(value, "%s[]" % (base_key))
+                        results += build_query_item(value, f'{base_key}[]')
                     else:
                         results += build_query_item(value)
             else:
                 quoted_item = quote(params)
                 if(base_key):
-                    results.append("%s=%s" % (base_key, quoted_item))
+                    results.append(f'{base_key}={quoted_item}')
                 else:
                     results.append(quoted_item)
             return results
