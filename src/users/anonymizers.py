@@ -24,7 +24,7 @@ class UserAnonimizer(BaseAnonymizer):
 
     def set_simple_password_for_all_remaining_users(self):
         print('Setting password «123» to all staff users:', end=' ')  # noqa T001
-        updated = list()
+        updated = []
         for user in User.objects.exclude(pk__in=self.get_query_set().values_list('pk')):
             user.set_password('123')
             user.save()

@@ -58,7 +58,7 @@ class ClickMeetingClientHTTP:
     def build_query(self, data):
         """This shit is copy-pasted from https://github.com/ClickMeeting/DevZone/blob/master/API/examples/Python"""
         def build_query_item(params, base_key=None):
-            results = list()
+            results = []
 
             if(type(params).__name__ == 'dict'):
                 for key, value in params.items():

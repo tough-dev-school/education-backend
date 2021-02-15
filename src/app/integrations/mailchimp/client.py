@@ -26,7 +26,7 @@ class AppMailchimp:
 
     def mass_subscribe(self, list_id: str, members: Iterable[MailchimpMember]):
 
-        member_list = list()
+        member_list = []
         for member in members:
             member_list.append({
                 **member.to_mailchimp(),

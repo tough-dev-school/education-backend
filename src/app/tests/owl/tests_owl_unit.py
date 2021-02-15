@@ -23,7 +23,7 @@ def test_to(to, expected):
 
 
 @pytest.mark.parametrize(('ctx', 'expected'), [
-    (None, dict()),
+    (None, {}),
     ({'a': None, 'b': 'c'}, {'b': 'c'}),
     ({'a': 'b'}, {'a': 'b'}),
 ])
