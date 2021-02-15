@@ -9,7 +9,7 @@ class Select2Widget(Select):
         """
         Adds a special class to the widget
         """
-        attrs = attrs or dict()
+        attrs = attrs or {}
         classes = attrs.get('class', '')
 
         if 'select2 ' not in classes:

@@ -170,7 +170,7 @@ STATIC_ROOT = env('STATIC_ROOT')
 
 SENTRY_DSN = env('SENTRY_DSN', cast=str, default='')
 
-if not DEBUG and len(SENTRY_DSN):
+if not DEBUG and SENTRY_DSN:
     import sentry_sdk
     from sentry_sdk.integrations.celery import CeleryIntegration
     from sentry_sdk.integrations.django import DjangoIntegration

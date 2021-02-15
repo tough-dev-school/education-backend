@@ -33,13 +33,13 @@ def test_get_no_content(mailchimp):
 def test_post_ok(mailchimp):
     mailchimp.http_mock.post('https://us05.api.mailchimp.com/3.0/test/endpoint', json={'ok': True})
 
-    assert mailchimp.http.post('test/endpoint', payload=dict()) == {'ok': True}
+    assert mailchimp.http.post('test/endpoint', payload={}) == {'ok': True}
 
 
 def test_post_no_content(mailchimp):
     mailchimp.http_mock.post('https://us05.api.mailchimp.com/3.0/test/endpoint')
 
-    assert mailchimp.http.post('test/endpoint', payload=dict()) is None
+    assert mailchimp.http.post('test/endpoint', payload={}) is None
 
 
 @pytest.mark.parametrize(('code', 'exception'), [
@@ -61,7 +61,7 @@ def test_post_wrong_status_codes(mailchimp, code, exception):
     mailchimp.http_mock.post('https://us05.api.mailchimp.com/3.0/test/endpoint', json={'ok': True}, status_code=code)
 
     with pytest.raises(exception):
-        mailchimp.http.post('test/endpoint', payload=dict())
+        mailchimp.http.post('test/endpoint', payload={})
 
 
 def test_post_payload(mailchimp):
