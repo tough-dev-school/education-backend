@@ -36,7 +36,7 @@ class Pigwidgeon:
         self.order.save()
 
     def send_happiness_message(self):
-        if not settings.SEND_HAPPINESS_MESSAGES:
+        if not settings.HAPPINESS_MESSAGES_CHAT_ID:
             return
 
         send_happiness_message.delay(text='💰+{sum} ₽, {user}, {reason}'.format(

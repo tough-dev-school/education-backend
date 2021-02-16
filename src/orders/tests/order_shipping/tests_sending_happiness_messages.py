@@ -5,7 +5,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture(autouse=True)
 def _enable_happiness_messages(settings):
-    settings.SEND_HAPPINESS_MESSAGES = True
+    settings.HAPPINESS_MESSAGES_CHAT_ID = 'aaa100500'
 
 
 @pytest.fixture
@@ -27,7 +27,7 @@ def test_gift(tg_message, order, another_user):
 
 
 def test_not_sending_if_disabled(settings, tg_message, order):
-    settings.SEND_HAPPINESS_MESSAGES = False
+    settings.HAPPINESS_MESSAGES_CHAT_ID = None
 
     order.set_paid()
 
