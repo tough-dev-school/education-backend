@@ -72,7 +72,7 @@ def test_not_shipping_orders_that_should_not_be_shipped(order, ship, change_orde
 
 
 def test_orders_are_shipped_silently(order, send_happiness_message, settings):
-    settings.SEND_HAPPINESS_MESSAGES = True
+    settings.HAPPINESS_MESSAGES_CHAT_ID = 'aaa100500'
 
     tasks.ship_unshipped_orders()
 
