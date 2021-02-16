@@ -6,8 +6,6 @@
 #
 apipkg==1.5
     # via execnet
-appnope==0.1.2
-    # via ipython
 astor==0.8.1
     # via flake8-simplify
 attrs==20.3.0
@@ -134,7 +132,7 @@ pycodestyle==2.6.0
     #   flake8-print
 pyflakes==2.2.0
     # via flake8
-pygments==2.7.4
+pygments==2.8.0
     # via ipython
 pyparsing==2.4.7
     # via packaging
