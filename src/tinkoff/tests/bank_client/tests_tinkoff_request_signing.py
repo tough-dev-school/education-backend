@@ -7,26 +7,26 @@ pytestmark = [pytest.mark.django_db]
 def reference_request():
     """From here: https://oplata.tinkoff.ru/landing/develop/documentation/request_sign"""
     return {
-        "TerminalKey": "TinkoffBankTest",
-        "Amount": "100000",
-        "OrderId": "TokenExample",
-        "Description": "test",
-        "DATA": {
-            "Phone": "+71234567890",
-            "Email": "a@test.com",
+        'TerminalKey': 'TinkoffBankTest',
+        'Amount': '100000',
+        'OrderId': 'TokenExample',
+        'Description': 'test',
+        'DATA': {
+            'Phone': '+71234567890',
+            'Email': 'a@test.com',
         },
-        "Receipt": {
-            "Email": "a@test.ru",
-            "Phone": "+79031234567",
-            "Taxation": "osn",
-            "Items": [
+        'Receipt': {
+            'Email': 'a@test.ru',
+            'Phone': '+79031234567',
+            'Taxation': 'osn',
+            'Items': [
                 {
-                    "Name": "Наименование товара 1",
-                    "Price": 10000,
-                    "Quantity": 1.00,
-                    "Amount": 10000,
-                    "Tax": "vat10",
-                    "Ean13": "0123456789",
+                    'Name': 'Наименование товара 1',
+                    'Price': 10000,
+                    'Quantity': 1.00,
+                    'Amount': 10000,
+                    'Tax': 'vat10',
+                    'Ean13': '0123456789',
                 },
             ],
         },

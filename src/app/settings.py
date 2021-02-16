@@ -236,10 +236,3 @@ SEND_HAPPINESS_MESSAGES = env('SEND_HAPPINESS_MESSAGES', cast=bool, default=Fals
 
 DRF_RECAPTCHA_SECRET_KEY = env('RECAPTCHA_SECRET_KEY', cast=str, default='')
 DRF_RECAPTCHA_TESTING = DRF_RECAPTCHA_TESTING_PASS = not env('RECAPTCHA_ENABLED', cast=bool, default=True)
-# Uncomment this lines to catch all runtime warnings as errors
-
-# import warnings  # noqa
-# warnings.filterwarnings(
-#     'error', r".*",
-#     RuntimeWarning, r".*"
-# )

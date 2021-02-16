@@ -19,7 +19,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: deps-{{ checksum "requirements.txt" }}
+          key: deps-{{ checksum "requirements.txt" }}-{{ checksum "dev-requirements.txt" }}
 
       - run:
           command: sudo apt-get --no-install-recommends install -y locales-all gettext
@@ -28,11 +28,11 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip install --upgrade pip
-            pip install -r requirements.txt
+            pip install --upgrade pip pip-tools
+            make install-dev-deps
 
       - save_cache:
-          key: deps-{{ checksum "requirements.txt" }}
+          key: deps-{{ checksum "requirements.txt" }}-{{ checksum "dev-requirements.txt" }}
           paths:
             - "venv"
 

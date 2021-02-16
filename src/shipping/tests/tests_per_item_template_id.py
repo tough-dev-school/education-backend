@@ -15,9 +15,9 @@ def shipment(user):
     return lambda product: RecordShipment(user, product=product)
 
 
-@pytest.mark.parametrize('template_id, expected', [
-    [None, 'purchased-record'],  # the default one
-    [100500, '100500'],
+@pytest.mark.parametrize(('template_id', 'expected'), [
+    (None, 'purchased-record'),  # the default one
+    (100500, '100500'),
 ])
 def test(record, shipment, template_id, expected):
     record = record(template_id=template_id)

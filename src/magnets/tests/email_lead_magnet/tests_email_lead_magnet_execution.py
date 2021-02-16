@@ -7,7 +7,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def enable_outgoing_email(settings):
+def _enable_outgoing_email(settings):
     settings.EMAIL_ENABLED = True
 
 

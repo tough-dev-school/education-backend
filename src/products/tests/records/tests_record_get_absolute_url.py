@@ -4,7 +4,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def set_main_website(settings):
+def _set_main_website(settings):
     settings.FRONTEND_URL = 'https://test.mocked'
 
 

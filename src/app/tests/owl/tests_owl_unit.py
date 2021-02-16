@@ -6,15 +6,15 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def freeze_sender(settings):
+def _freeze_sender(settings):
     settings.DEFAULT_FROM_EMAIL = 'Jesus Christ <me@christ.com>'
 
 
-@pytest.mark.parametrize('to, expected', [
-    ['test@test.org', ['test@test.org']],
-    [['test@test.org'], ['test@test.org']],
-    [None, []],
-    [[None], []],
+@pytest.mark.parametrize(('to', 'expected'), [
+    ('test@test.org', ['test@test.org']),
+    (['test@test.org'], ['test@test.org']),
+    (None, []),
+    ([None], []),
 ])
 def test_to(to, expected):
     owl = TemplOwl(to, 100500)
@@ -22,10 +22,10 @@ def test_to(to, expected):
     assert owl.to == expected
 
 
-@pytest.mark.parametrize('ctx, expected', [
-    [None, {}],
-    [{'a': None, 'b': 'c'}, {'b': 'c'}],
-    [{'a': 'b'}, {'a': 'b'}],
+@pytest.mark.parametrize(('ctx', 'expected'), [
+    (None, {}),
+    ({'a': None, 'b': 'c'}, {'b': 'c'}),
+    ({'a': 'b'}, {'a': 'b'}),
 ])
 def test_dict(ctx, expected):
     owl = TemplOwl('test@test.org', 100500, ctx=ctx)

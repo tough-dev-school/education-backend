@@ -13,7 +13,7 @@ def get_order():
     return Order.objects.last()
 
 
-@pytest.mark.parametrize('promocode, expected', [
+@pytest.mark.parametrize(('promocode', 'expected'), [
     ('TESTCODE', 1710),
     ('', 1900),
     ('3V1L_H4XX0R', 1900),

@@ -4,7 +4,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def fix_frontend_url(settings):
+def _freeze_frontend_url(settings):
     settings.FRONTEND_URL = 'https://frontend'
 
 

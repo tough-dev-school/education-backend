@@ -7,7 +7,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def set_api_key(settings):
+def _set_api_key(settings):
     settings.CLICKMEETING_API_KEY = 's3c3r37'
 
 

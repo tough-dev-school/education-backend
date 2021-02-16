@@ -6,9 +6,9 @@ pytestmark = [
 ]
 
 
-@pytest.mark.parametrize('change_order, should_be_sent', [
-    [lambda order: order.setattr_and_save('paid', None), False],
-    [lambda order: order.set_paid(), True],
+@pytest.mark.parametrize(('change_order', 'should_be_sent'), [
+    (lambda order: order.setattr_and_save('paid', None), False),
+    (lambda order: order.set_paid(), True),
 ])
 def test(trigger, change_order, should_be_sent, freezer):
     freezer.move_to('2032-12-04 16:00')

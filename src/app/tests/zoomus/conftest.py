@@ -7,7 +7,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def set_api_key(settings):
+def _set_api_key(settings):
     settings.ZOOMUS_API_KEY = 'k3y'
     settings.ZOOMUS_API_SECRET = 's3cr3t'
 

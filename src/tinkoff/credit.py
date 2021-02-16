@@ -28,13 +28,13 @@ class TinkoffCredit(Bank):
     def call(self, url: str, payload: dict) -> dict:
         """Query TinkoffCredit API
         """
-        r = requests.post(url, json=payload)
+        response = requests.post(url, json=payload)
 
-        if r.status_code != 200:
-            errors = r.json()['errors']
-            raise TinkoffCreditRequestException(f'Incorrect HTTP-status code for {url}: {r.status_code}, {errors}')
+        if response.status_code != 200:
+            errors = response.json()['errors']
+            raise TinkoffCreditRequestException(f'Incorrect HTTP-status code for {url}: {response.status_code}, {errors}')
 
-        return r.json()
+        return response.json()
 
     def get_items(self):
         return [{

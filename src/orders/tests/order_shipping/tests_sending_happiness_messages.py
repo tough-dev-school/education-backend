@@ -4,7 +4,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def enable_happiness_messages(settings):
+def _enable_happiness_messages(settings):
     settings.SEND_HAPPINESS_MESSAGES = True
 
 

@@ -10,7 +10,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def adjust_settings(settings):
+def _enable_email(settings):
     settings.EMAIL_ENABLED = True
 
 
@@ -39,9 +39,9 @@ def test_when_log_entry_already_exists_all_is_ok(owl):
     owl(disable_antispam=True).send()
 
 
-@pytest.mark.parametrize('disable_antispam, should_email_be_sent', [
-    [False, False],
-    [True, True],
+@pytest.mark.parametrize(('disable_antispam', 'should_email_be_sent'), [
+    (False, False),
+    (True, True),
 ])
 def test_mail_is_not_sent_when_log_entry_already_exists(owl, disable_antispam, should_email_be_sent):
     EmailLogEntry.objects.create(email='f@f213.in', template_id=100500)
@@ -51,9 +51,9 @@ def test_mail_is_not_sent_when_log_entry_already_exists(owl, disable_antispam, s
     assert (len(mail.outbox) == 1) is should_email_be_sent
 
 
-@pytest.mark.parametrize('disable_antispam, should_email_be_sent', [
-    [False, False],
-    [True, True],
+@pytest.mark.parametrize(('disable_antispam', 'should_email_be_sent'), [
+    (False, False),
+    (True, True),
 ])
 def test_antispam_arg_is_passed_via_task(disable_antispam, should_email_be_sent):
     EmailLogEntry.objects.create(email='f@f213.in', template_id=100500)

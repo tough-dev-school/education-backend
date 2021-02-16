@@ -18,7 +18,7 @@ def test_get_price(record):
     assert record.get_price() == Decimal('100500.00')
 
 
-@pytest.mark.parametrize('promocode, expected', [
+@pytest.mark.parametrize(('promocode', 'expected'), [
     ('TESTCODE', '90450'),
     ('testcode', '90450'),
     (None, '100500'),

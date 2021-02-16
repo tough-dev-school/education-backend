@@ -54,7 +54,7 @@ def test_success_response(anon, req):
 
 
 @pytest.mark.parametrize('card_id', ['', None])
-@pytest.mark.usefixtures('disable_token_validation')
+@pytest.mark.usefixtures('_disable_token_validation')
 def test_empty_card_id(anon, req, card_id):
     req['CardId'] = card_id
 
