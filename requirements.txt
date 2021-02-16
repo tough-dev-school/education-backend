@@ -30,7 +30,7 @@ chardet==4.0.0
     # via requests
 django-anymail==8.2
     # via -r requirements.in
-django-axes==5.12.0
+django-axes==5.13.0
     # via -r requirements.in
 django-behaviors==0.5.1
     # via -r requirements.in
