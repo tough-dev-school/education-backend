@@ -20,7 +20,6 @@ runserver:
 
 lint:
 	flake8 src
-	test -x `which circleci` && circleci config validate .circleci/config.yml
 
 test:
 	cd src && pytest -n 4 -x
