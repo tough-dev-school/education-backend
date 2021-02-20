@@ -122,6 +122,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
     'DEFAULT_PAGINATION_CLASS': 'app.pagination.AppPagination',
+    'EXCEPTION_HANDLER': 'app.sentry_exception_handler.sentry_exception_handler',
     'PAGE_SIZE': 20,
 }
 
