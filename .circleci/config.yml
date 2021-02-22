@@ -131,7 +131,7 @@ workflows:
       - sentry-release/sentry-release:
           context: sentry-release
           requires:
-            - docker/publish
+            - deploy
 
           filters:
             branches:
