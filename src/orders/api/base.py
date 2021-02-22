@@ -99,7 +99,7 @@ class PurchaseViewSet(ReadOnlyAppViewSet):
     def _create_user(self, name: str, email: str, subscribe: bool = False, tags: Optional[Iterable[str]] = None) -> User:
         return UserCreator(
             name=name,
-            email=email,
+            email=email.strip(),
             subscribe=subscribe,
             tags=tags,
         )()
