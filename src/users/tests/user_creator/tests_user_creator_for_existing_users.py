@@ -6,7 +6,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 def test_existing_user(user):
-    created = UserCreator(name='Камаз Отходов', email=user.email)()
+    created = UserCreator(name='Камаз Отходов', email='rulon.oboev@gmail.com')()
 
     created.refresh_from_db()
 
@@ -14,8 +14,17 @@ def test_existing_user(user):
 
 
 def test_two_users_with_same_email(user, mixer):
-    mixer.blend('users.User', email=user.email)
-    created = UserCreator(name='Камаз Отходов', email=user.email)()
+    mixer.blend('users.User', email='rulon.oboev@gmail.com')
+    created = UserCreator(name='Камаз Отходов', email='rulon.oboev@gmail.com')()
+
+    created.refresh_from_db()
+
+    assert created == user
+
+
+def test_two_users_with_same_email_case_is_case_insensitive(user, mixer):
+    mixer.blend('users.User', username='RULON.OBOEV@gmail.com', email='11@gmail.com')
+    created = UserCreator(name='Камаз Отходов', email='rulon.oboev@gmail.com')()
 
     created.refresh_from_db()
 
@@ -23,7 +32,7 @@ def test_two_users_with_same_email(user, mixer):
 
 
 def test_existing_user_name_does_not_change(user):
-    created = UserCreator(name='Камаз Отходов', email=user.email)()
+    created = UserCreator(name='Камаз Отходов', email='rulon.oboev@gmail.com')()
 
     created.refresh_from_db()
 
