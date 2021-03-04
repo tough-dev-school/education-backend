@@ -35,7 +35,7 @@ faker==4.0.0
     #   mixer
 flake8-absolute-import==1.0
     # via -r dev-requirements.in
-flake8-bugbear==20.11.1
+flake8-bugbear==21.3.1
     # via -r dev-requirements.in
 flake8-commas==2.0.0
     # via -r dev-requirements.in
