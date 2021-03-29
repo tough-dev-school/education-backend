@@ -68,7 +68,7 @@ django==3.1.7
     #   django-healthchecks
     #   djangorestframework
     #   drf-recaptcha
-djangorestframework==3.12.3
+djangorestframework==3.12.4
     # via
     #   -r requirements.in
     #   drf-recaptcha
