@@ -8,6 +8,7 @@ whitenoise
 
 djangorestframework>=3.11.0
 drf-recaptcha
+drf-jwt
 django-bulk-update
 django-filter
 django-anymail
