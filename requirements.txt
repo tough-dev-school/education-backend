@@ -26,8 +26,12 @@ certifi==2020.12.5
     # via
     #   requests
     #   sentry-sdk
+cffi==1.14.5
+    # via cryptography
 chardet==4.0.0
     # via requests
+cryptography==3.4.7
+    # via pyjwt
 django-anymail==8.2
     # via -r requirements.in
 django-axes==5.13.1
@@ -67,11 +71,15 @@ django==3.1.7
     #   django-hattori
     #   django-healthchecks
     #   djangorestframework
+    #   drf-jwt
     #   drf-recaptcha
 djangorestframework==3.12.4
     # via
     #   -r requirements.in
+    #   drf-jwt
     #   drf-recaptcha
+drf-jwt==1.19.0
+    # via -r requirements.in
 drf-recaptcha==2.0.4
     # via -r requirements.in
 faker==4.0.0
@@ -90,8 +98,12 @@ kombu==4.6.11
     # via celery
 prometheus-client==0.8.0
     # via flower
-pyjwt==2.0.1
-    # via -r requirements.in
+pycparser==2.20
+    # via cffi
+pyjwt[crypto]==2.0.1
+    # via
+    #   -r requirements.in
+    #   drf-jwt
 python-dateutil==2.8.1
     # via
     #   botocore

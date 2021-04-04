@@ -1,6 +1,7 @@
 import environ
 import os
 from celery.schedules import crontab
+from datetime import timedelta
 
 root = environ.Path(__file__) - 2        # three folder back (/a/b/c/ - 3 = /)
 env = environ.Env(DEBUG=(bool, False))  # set default values and casting
@@ -70,6 +71,7 @@ INSTALLED_APPS = [
     'triggers',
     'magnets',
     'banking',
+    'a12n',
 
     'corsheaders',
     'hattori',
@@ -116,6 +118,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ),
     'DEFAULT_RENDERER_CLASSES': [
         'app.renderers.AppJSONRenderer',
@@ -124,7 +127,17 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'app.pagination.AppPagination',
     'EXCEPTION_HANDLER': 'app.sentry_exception_handler.sentry_exception_handler',
     'PAGE_SIZE': 20,
+    'DEFAULT_THROTTLE_RATES': {
+        'anon-auth': '10/min',
+    },
 }
+DISABLE_THROTTLING = env('DISABLE_THROTTLING', cast=bool, default=env('DEBUG'))
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': timedelta(days=14),
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=21),
+    'JWT_ALLOW_REFRESH': True,
+}
+
 
 ROOT_URLCONF = 'app.urls'
 
