@@ -20,7 +20,7 @@ def _freeze_frontend_url(mocker):
 
 
 def test_token_is_created(anon, user):
-    anon.get('/api/v2/auth/passwordless-token-request/zer0c00l@h4xx.net/')
+    anon.get('/api/v2/auth/passwordless-token/request/zer0c00l@h4xx.net/')
 
     token = PasswordlessAuthToken.objects.last()
 
@@ -31,7 +31,7 @@ def test_token_is_created(anon, user):
 
 
 def test_email_is_sent(anon, send_mail):
-    anon.get('/api/v2/auth/passwordless-token-request/zer0c00l@h4xx.net/')
+    anon.get('/api/v2/auth/passwordless-token/request/zer0c00l@h4xx.net/')
 
     send_mail.assert_called_once_with(
         to='zer0c00l@h4xx.net',
@@ -48,7 +48,7 @@ def test_email_is_sent(anon, send_mail):
     ' ',
 ])
 def test_ev1l_user(anon, send_mail, email):
-    anon.get(f'/api/v2/auth/passwordless-token-request/{email}/')
+    anon.get(f'/api/v2/auth/passwordless-token/request/{email}/')
 
     assert PasswordlessAuthToken.objects.count() == 0
     send_mail.assert_not_called()
