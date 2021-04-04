@@ -6,7 +6,7 @@ from django.urls import path
 from rest_framework import routers
 from urllib.parse import urljoin
 
-from a12n.api.views import ObtainJSONWebTokenView, RefreshJSONWebTokenView
+from a12n.api.views import ObtainJSONWebTokenView, RefreshJSONWebTokenView, RequestPasswordLessToken
 from app.views import HomePageView
 from magnets.api.views import EmailLeadMagnetCampaignView
 from products.api.viewsets import BundleViewSet, CourseViewSet, RecordViewSet
@@ -28,6 +28,7 @@ urlpatterns = [
     path('api/v2/users/me/', SelfView.as_view()),
     path('api/v2/auth/token/', ObtainJSONWebTokenView.as_view()),
     path('api/v2/auth/token/refresh/', RefreshJSONWebTokenView.as_view()),
+    path('api/v2/auth/passwordless-token-request/<str:user_email>/', RequestPasswordLessToken.as_view()),
     path('api/v2/healthchecks/', include('django_healthchecks.urls')),
     path('api/v2/', include(router.urls)),
     path('', HomePageView.as_view()),
