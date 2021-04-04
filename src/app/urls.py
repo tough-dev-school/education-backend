@@ -1,4 +1,6 @@
 from django.conf import settings
+from users.api.views import SelfView
+
 from django.conf.urls import handler400, handler403, handler404, handler500, include
 from django.contrib import admin
 from django.shortcuts import redirect
@@ -23,7 +25,7 @@ urlpatterns = [
     path('api/v2/banking/tinkoff-notifications/', TinkoffPaymentNotificationsView.as_view()),
     path('api/v2/banking/tinkoff-credit-notifications/', TinkoffCreditNotificationsView.as_view()),
     path('api/v2/leads/email/<slug:slug>/', EmailLeadMagnetCampaignView.as_view()),
-
+    path('api/v2/users/me/', SelfView.as_view()),
     path('api/v2/healthchecks/', include('django_healthchecks.urls')),
     path('api/v2/', include(router.urls)),
     path('', HomePageView.as_view()),
