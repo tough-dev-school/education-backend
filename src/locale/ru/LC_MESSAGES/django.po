@@ -179,7 +179,7 @@ msgstr "Комментарий"
 
 #: orders/models/promocode.py:34
 msgid "Can not be used for courses not checked here"
-msgstr "Будет действовать только для курсов из списка."
+msgstr "Если тут выбрать хоть что-нибудь, то промо-код будет действовать только для этого курса"
 
 #: orders/models/promocode.py:38
 msgid "Promo Codes"
