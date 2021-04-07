@@ -13,6 +13,11 @@ def get_order():
     return Order.objects.last()
 
 
+@pytest.fixture
+def another_course(mixer):
+    return mixer.blend('products.Course', slug='kamazing-navoza', price=100500)
+
+
 @pytest.mark.parametrize(('promocode', 'expected'), [
     ('TESTCODE', 1710),
     ('', 1900),
@@ -25,6 +30,15 @@ def test_purchasing_with_promocode(call_purchase, course, promocode, expected):
 
     assert placed.item == course
     assert placed.price == Decimal(expected)
+
+
+def test_incompatible_promocode(call_purchase, another_course, testcode):
+    testcode.courses.add(another_course)
+
+    call_purchase(promocode='TESTCODE')
+    placed = get_order()
+
+    assert placed.price == Decimal('1900')
 
 
 def test_promocode_is_stored(call_purchase, course, testcode):

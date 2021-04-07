@@ -1,8 +1,11 @@
+from typing import Optional
+
 from decimal import Decimal
 from django.db.models import Case, Count, When
 from django.utils.translation import gettext_lazy as _
 
 from app.models import DefaultQuerySet, TimestampedModel, models
+from products.models import Course
 
 
 class PromoCodeQuerySet(DefaultQuerySet):
@@ -15,12 +18,12 @@ class PromoCodeQuerySet(DefaultQuerySet):
             output_field=models.IntegerField(),
         )))
 
-    def get_or_nothing(self, name):
-        try:
-            return self.active().get(name__iexact=name)
-
-        except PromoCode.DoesNotExist:
-            return None
+    def get_or_nothing(self, name: Optional[str]):
+        if name is not None:
+            try:
+                return self.active().get(name__iexact=name.strip())
+            except PromoCode.DoesNotExist:
+                return None
 
 
 class PromoCode(TimestampedModel):
@@ -31,9 +34,17 @@ class PromoCode(TimestampedModel):
     active = models.BooleanField(_('Active'), default=True)
     comment = models.TextField(_('Comment'), blank=True, null=True)
 
+    courses = models.ManyToManyField('products.Course', help_text=_('Can not be used for courses not checked here'))
+
     class Meta:
         verbose_name = _('Promo Code')
         verbose_name_plural = _('Promo Codes')
 
-    def apply(self, price: Decimal) -> Decimal:
-        return Decimal(price * (100 - self.discount_percent) / 100)
+    def compatible_with(self, course: Course) -> bool:
+        return self.courses.count() == 0 or course in self.courses.all()
+
+    def apply(self, course: Course) -> Decimal:
+        if not self.compatible_with(course):
+            return course.price
+
+        return Decimal(course.price * (100 - self.discount_percent) / 100)
