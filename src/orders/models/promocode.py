@@ -1,3 +1,5 @@
+from typing import Optional
+
 from decimal import Decimal
 from django.db.models import Case, Count, When
 from django.utils.translation import gettext_lazy as _
@@ -16,12 +18,12 @@ class PromoCodeQuerySet(DefaultQuerySet):
             output_field=models.IntegerField(),
         )))
 
-    def get_or_nothing(self, name):
-        try:
-            return self.active().get(name__iexact=name)
-
-        except PromoCode.DoesNotExist:
-            return None
+    def get_or_nothing(self, name: Optional[str]):
+        if name is not None:
+            try:
+                return self.active().get(name__iexact=name.strip())
+            except PromoCode.DoesNotExist:
+                return None
 
 
 class PromoCode(TimestampedModel):

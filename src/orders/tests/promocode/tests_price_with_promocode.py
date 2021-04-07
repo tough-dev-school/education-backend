@@ -9,6 +9,8 @@ pytestmark = [
 @pytest.mark.parametrize('code', [
     'TESTCODE',
     'testcode',
+    'testcode ',
+    ' testcode',
 ])
 def test(api, course, code):
     got = api.get(f'/api/v2/courses/{course.slug}/promocode/?promocode={code}')

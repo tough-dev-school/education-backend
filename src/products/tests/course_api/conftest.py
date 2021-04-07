@@ -10,8 +10,6 @@ def course(mixer):
     return mixer.blend('products.Course', slug='ruloning-oboev', price=1900)
 
 
-
-
 @pytest.fixture(autouse=True)
 def payment_url(mocker):
     return mocker.patch.object(TinkoffBank, 'get_initial_payment_url', return_value='https://bank.test/pay/')
