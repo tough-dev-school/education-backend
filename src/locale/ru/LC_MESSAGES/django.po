@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-06 12:54+0300\n"
+"POT-Creation-Date: 2021-04-07 23:54+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,7 +81,7 @@ msgstr "Подарок"
 msgid "User"
 msgstr "Юзер"
 
-#: orders/admin/orders.py:85 orders/models/order.py:41
+#: orders/admin/orders.py:85 orders/models/order.py:43
 msgid "Giver"
 msgstr "Даритель"
 
@@ -115,7 +115,7 @@ msgid "Price"
 msgstr "Цена"
 
 #: orders/models/order.py:28 orders/models/promocode.py:29
-#: orders/models/promocode.py:35
+#: orders/models/promocode.py:37
 msgid "Promo Code"
 msgstr "Промо-код"
 
@@ -133,31 +133,35 @@ msgstr ""
 msgid "Date when order was shipped"
 msgstr "Дата выполнения"
 
-#: orders/models/order.py:37 products/models/course.py:25
+#: orders/models/order.py:37
+msgid "User-requested bank string"
+msgstr ""
+
+#: orders/models/order.py:39 products/models/course.py:25
 msgid "Course"
 msgstr "Курс"
 
-#: orders/models/order.py:38 products/models/record.py:16
+#: orders/models/order.py:40 products/models/record.py:16
 msgid "Record"
 msgstr "Запись"
 
-#: orders/models/order.py:39 products/models/bundle.py:15
+#: orders/models/order.py:41 products/models/bundle.py:15
 msgid "Bundle"
 msgstr "Набор"
 
-#: orders/models/order.py:42
+#: orders/models/order.py:44
 msgid "Date when the gift should be shipped"
 msgstr "Когда подарить"
 
-#: orders/models/order.py:43
+#: orders/models/order.py:45
 msgid "Gift message"
 msgstr "Подарочное сообщение"
 
-#: orders/models/order.py:48
+#: orders/models/order.py:50
 msgid "Order"
 msgstr "Заказ"
 
-#: orders/models/order.py:49
+#: orders/models/order.py:51
 msgid "Orders"
 msgstr "Заказы"
 
@@ -173,7 +177,11 @@ msgstr "Включено"
 msgid "Comment"
 msgstr "Комментарий"
 
-#: orders/models/promocode.py:36
+#: orders/models/promocode.py:34
+msgid "Can not be used for courses not checked here"
+msgstr "Будет действовать только для курсов из списка."
+
+#: orders/models/promocode.py:38
 msgid "Promo Codes"
 msgstr "Промо-коды"
 
@@ -213,7 +221,10 @@ msgstr "Промо-код на рассрочку в Тинькофф"
 
 #: products/models/base.py:27
 msgid "Used in tinkoff credit only"
-msgstr "Пересылается в тинькофф, если покупатель оформляет рассрочку на курс. Если не заполнять — покупатель переплатит за кредит. Можно взять в админке Тинькофф"
+msgstr ""
+"Пересылается в тинькофф, если покупатель оформляет рассрочку на курс. Если "
+"не заполнять — покупатель переплатит за кредит. Можно взять в админке "
+"Тинькофф"
 
 #: products/models/bundle.py:16
 msgid "Bundles"
@@ -277,28 +288,40 @@ msgstr "Если оставить пустым — будет дефолтным
 msgid "Records"
 msgstr "Записи"
 
-#: tinkoff/models.py:8
+#: tinkoff/models.py:9
 msgid "Authorized"
 msgstr ""
 
-#: tinkoff/models.py:9
+#: tinkoff/models.py:10
 msgid "Confirmed"
 msgstr ""
 
-#: tinkoff/models.py:10
+#: tinkoff/models.py:11
 msgid "Reversed"
 msgstr ""
 
-#: tinkoff/models.py:11
+#: tinkoff/models.py:12
 msgid "Refunded"
 msgstr ""
 
-#: tinkoff/models.py:12
+#: tinkoff/models.py:13
 msgid "Partial refunded"
 msgstr ""
 
-#: tinkoff/models.py:13
+#: tinkoff/models.py:14 tinkoff/models.py:36
 msgid "Rejected"
+msgstr ""
+
+#: tinkoff/models.py:35
+msgid "Approved"
+msgstr ""
+
+#: tinkoff/models.py:37
+msgid "Canceled"
+msgstr ""
+
+#: tinkoff/models.py:38
+msgid "Signed"
 msgstr ""
 
 #: users/apps.py:7

@@ -3,6 +3,7 @@ from django.db.models import Case, Count, When
 from django.utils.translation import gettext_lazy as _
 
 from app.models import DefaultQuerySet, TimestampedModel, models
+from products.models import Course
 
 
 class PromoCodeQuerySet(DefaultQuerySet):
@@ -31,9 +32,14 @@ class PromoCode(TimestampedModel):
     active = models.BooleanField(_('Active'), default=True)
     comment = models.TextField(_('Comment'), blank=True, null=True)
 
+    courses = models.ManyToManyField('products.Course', help_text=_('Can not be used for courses not checked here'))
+
     class Meta:
         verbose_name = _('Promo Code')
         verbose_name_plural = _('Promo Codes')
+
+    def compatible_with(self, course: Course) -> bool:
+        return self.courses.count() == 0 or course in self.courses.all()
 
     def apply(self, price: Decimal) -> Decimal:
         return Decimal(price * (100 - self.discount_percent) / 100)
