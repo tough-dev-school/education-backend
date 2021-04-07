@@ -53,7 +53,7 @@ class PurchaseViewSet(ReadOnlyAppViewSet):
     def promocode(self, request, pk=None, **kwargs):
         promocode = self._get_promocode(request)
 
-        price = promocode.apply(self.item.price) if promocode is not None else self.item.price
+        price = promocode.apply(self.item) if promocode is not None else self.item.price
 
         return Response({
             'price': price,

@@ -14,21 +14,21 @@ def another_course(mixer):
 
 
 @pytest.fixture(autouse=True)
-def testcode(mixer):
-    return mixer.blend('orders.PromoCode', discount_percent=10, name='TESTCODE')
+def promocode(mixer):
+    return mixer.blend('orders.PromoCode')
 
 
-def test_true_if_no_courses_are_attached(testcode, course):
-    assert testcode.compatible_with(course) is True
+def test_true_if_no_courses_are_attached(promocode, course):
+    assert promocode.compatible_with(course) is True
 
 
-def test_false_if_some_courses_are_attached_but_given_is_not_attached(testcode, course, another_course):
-    testcode.courses.add(course)
+def test_false_if_some_courses_are_attached_but_given_is_not_attached(promocode, course, another_course):
+    promocode.courses.add(course)
 
-    assert testcode.compatible_with(another_course) is False
+    assert promocode.compatible_with(another_course) is False
 
 
-def test_true_if_course_is_attached(testcode, course):
-    testcode.courses.add(course)
+def test_true_if_course_is_attached(promocode, course):
+    promocode.courses.add(course)
 
-    assert testcode.compatible_with(course) is True
+    assert promocode.compatible_with(course) is True

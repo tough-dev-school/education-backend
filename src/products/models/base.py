@@ -45,7 +45,7 @@ class Shippable(TimestampedModel):
         promocode = apps.get_model('orders.PromoCode').objects.get_or_nothing(name=promocode)
 
         if promocode is not None:
-            return promocode.apply(self.price)
+            return promocode.apply(self)
 
         return self.price
 

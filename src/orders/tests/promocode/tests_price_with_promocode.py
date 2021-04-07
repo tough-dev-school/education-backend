@@ -3,11 +3,6 @@ import pytest
 pytestmark = [pytest.mark.django_db]
 
 
-@pytest.fixture
-def course(mixer):
-    return mixer.blend('products.Course', price=100500)
-
-
 @pytest.fixture(autouse=True)
 def testcode(mixer):
     return mixer.blend('orders.PromoCode', discount_percent=10, name='TESTCODE')

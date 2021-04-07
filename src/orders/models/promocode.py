@@ -41,5 +41,5 @@ class PromoCode(TimestampedModel):
     def compatible_with(self, course: Course) -> bool:
         return self.courses.count() == 0 or course in self.courses.all()
 
-    def apply(self, price: Decimal) -> Decimal:
-        return Decimal(price * (100 - self.discount_percent) / 100)
+    def apply(self, course: Course) -> Decimal:
+        return Decimal(course.price * (100 - self.discount_percent) / 100)
