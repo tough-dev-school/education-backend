@@ -4,16 +4,12 @@ from orders.models import PromoCode
 
 pytestmark = [
     pytest.mark.django_db,
+    pytest.mark.usefixtures('promocode'),
 ]
 
 
-@pytest.fixture(autouse=True)
-def promocode(mixer):
-    return mixer.blend(PromoCode, name='testcode')
-
-
 def get_annotated_promocode():
-    return PromoCode.objects.with_order_count().filter(name='testcode').first()
+    return PromoCode.objects.with_order_count().get_or_nothing('TESTCODE')
 
 
 @pytest.fixture

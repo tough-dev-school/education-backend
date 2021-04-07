@@ -3,21 +3,6 @@ import pytest
 pytestmark = [pytest.mark.django_db]
 
 
-@pytest.fixture
-def course(mixer):
-    return mixer.blend('products.Course', price=100500)
-
-
-@pytest.fixture
-def another_course(mixer):
-    return mixer.blend('products.Course', price=100500)
-
-
-@pytest.fixture(autouse=True)
-def promocode(mixer):
-    return mixer.blend('orders.PromoCode')
-
-
 def test_true_if_no_courses_are_attached(promocode, course):
     assert promocode.compatible_with(course) is True
 

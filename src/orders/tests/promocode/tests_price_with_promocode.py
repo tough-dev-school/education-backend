@@ -1,30 +1,36 @@
 import pytest
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [
+    pytest.mark.django_db,
+    pytest.mark.usefixtures('promocode'),
+]
 
 
-@pytest.fixture(autouse=True)
-def testcode(mixer):
-    return mixer.blend('orders.PromoCode', discount_percent=10, name='TESTCODE')
-
-
-@pytest.mark.parametrize('promocode', [
+@pytest.mark.parametrize('code', [
     'TESTCODE',
     'testcode',
 ])
-def test(api, course, promocode):
-    got = api.get(f'/api/v2/courses/{course.slug}/promocode/?promocode={promocode}')
+def test(api, course, code):
+    got = api.get(f'/api/v2/courses/{course.slug}/promocode/?promocode={code}')
 
     assert got['price'] == 90450
     assert got['formatted_price'] == '90 450'
 
 
-@pytest.mark.parametrize('promocode', [
+@pytest.mark.parametrize('code', [
     'EV1L',
     '',
 ])
-def test_bad_promocode(api, course, promocode):
-    got = api.get(f'/api/v2/courses/{course.slug}/promocode/?promocode={promocode}')
+def test_bad_promocode(api, course, code):
+    got = api.get(f'/api/v2/courses/{course.slug}/promocode/?promocode={code}')
+
+    assert got['price'] == 100500
+
+
+def test_incompatible_promocode(api, course, another_course, promocode):
+    promocode.courses.add(course)
+
+    got = api.get(f'/api/v2/courses/{another_course.slug}/promocode/?promocode=TESTCODE')
 
     assert got['price'] == 100500
 
