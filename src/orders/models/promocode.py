@@ -34,7 +34,7 @@ class PromoCode(TimestampedModel):
     active = models.BooleanField(_('Active'), default=True)
     comment = models.TextField(_('Comment'), blank=True, null=True)
 
-    courses = models.ManyToManyField('products.Course', help_text=_('Can not be used for courses not checked here'))
+    courses = models.ManyToManyField('products.Course', help_text=_('Can not be used for courses not checked here'), blank=True)
 
     class Meta:
         verbose_name = _('Promo Code')
