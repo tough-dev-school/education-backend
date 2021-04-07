@@ -42,4 +42,7 @@ class PromoCode(TimestampedModel):
         return self.courses.count() == 0 or course in self.courses.all()
 
     def apply(self, course: Course) -> Decimal:
+        if not self.compatible_with(course):
+            return course.price
+
         return Decimal(course.price * (100 - self.discount_percent) / 100)
