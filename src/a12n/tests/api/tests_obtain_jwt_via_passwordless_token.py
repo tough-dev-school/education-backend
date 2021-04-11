@@ -1,12 +1,14 @@
-import json
 import pytest
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [
+    pytest.mark.django_db,
+    pytest.mark.freeze_time('2032-12-01 15:30:45'),
+]
 
 
 @pytest.fixture(autouse=True)
 def token(user, mixer):
-    return mixer.blend('a12n.PasswordlessAuthToken', user=user, token='3149798e-c219-47f5-921f-8ae9a75b709b')
+    return mixer.blend('a12n.PasswordlessAuthToken', user=user, token='3149798e-c219-47f5-921f-8ae9a75b709b', expires='2032-12-05 15:30', used=None)
 
 
 @pytest.fixture
@@ -17,12 +19,20 @@ def get_token(api):
     return _get_token
 
 
-def _decode(response):
-    return json.loads(response.content.decode('utf-8', errors='ignore'))
-
-
 def test_invalid_token(get_token):
     get_token('1nvalid', expected_status_code=404)
+
+
+def test_expired_token(get_token, token):
+    token.setattr_and_save('expires', '1999-01-01')
+
+    get_token(token=str(token.token), expected_status_code=404)
+
+
+def test_expired_token(get_token, token):
+    token.setattr_and_save('used', '2025-01-02')
+
+    get_token(token=str(token.token), expected_status_code=404)
 
 
 def test_valid_token(get_token, token):

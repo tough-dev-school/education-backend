@@ -42,7 +42,7 @@ class ObtainJSONWebTokenViaPasswordlessToken(AnonymousAPIView):
     throttle_classes = [AuthAnonRateThrottle]
 
     def get(self, request, token):
-        token = get_object_or_404(PasswordlessAuthToken, token=token)
+        token = get_object_or_404(PasswordlessAuthToken.objects.valid(), token=token)
 
         return Response({
             'token': get_jwt(token.user),

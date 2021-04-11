@@ -27,7 +27,7 @@ def test_token_is_created(anon, user):
     assert token.user == user
     assert '-4' in str(token.token)
     assert token.expires == datetime(2049, 1, 5, 14, 45, 44)
-    assert token.used is False
+    assert token.used is None
 
 
 def test_email_is_sent(anon, send_mail):
