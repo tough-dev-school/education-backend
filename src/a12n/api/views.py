@@ -25,7 +25,6 @@ class RequestPasswordLessToken(AnonymousAPIView):
         user = User.objects.filter(email=user_email).first()
         if user is not None:
             token = PasswordlessAuthToken.objects.create(user=user)
-
             send_mail.delay(
                 to=user.email,
                 template_id='passwordless-token',
@@ -33,6 +32,7 @@ class RequestPasswordLessToken(AnonymousAPIView):
                     name=str(user),
                     action_url=token.get_absolute_url(),
                 ),
+                disable_antispam=True,
             )
 
         return Response({'ok': True})

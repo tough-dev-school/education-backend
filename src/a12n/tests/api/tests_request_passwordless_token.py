@@ -40,6 +40,7 @@ def test_email_is_sent(anon, send_mail):
             'name': 'Secret h4xx0r',
             'action_url': 'https://frontend/auth/__TOKEN__',
         },
+        disable_antispam=True,
     )
 
 
