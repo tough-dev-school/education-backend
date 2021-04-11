@@ -5,7 +5,7 @@ from orders.models import Order
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures('testcode'),
+    pytest.mark.usefixtures('testcode', 'bundle'),
 ]
 
 
@@ -27,7 +27,20 @@ def test_purchasing_with_promocode(call_purchase, bundle, promocode, expected):
     assert placed.price == Decimal(expected)
 
 
-def test_promocode_is_stored(call_purchase, bundle, testcode):
+def test_purchasing_with_promocode_attached_to_courses(call_purchase, mixer, testcode):
+    """We need this test just to write down that promocodes attaching
+    does not support products, other then courses, and it does not break
+    regular purchase
+    """
+    testcode.courses.add(mixer.blend('products.Course'))
+
+    call_purchase(promocode='TESTCODE')
+    placed = get_order()
+
+    assert placed.price == Decimal(1900)
+
+
+def test_promocode_is_stored(call_purchase, testcode):
     call_purchase(promocode='TESTCODE')
 
     placed = get_order()
@@ -35,7 +48,7 @@ def test_promocode_is_stored(call_purchase, bundle, testcode):
     assert placed.promocode == testcode
 
 
-def test_promocode_is_empty_when_no_promocode_supplied(call_purchase, bundle, default_user_data):
+def test_promocode_is_empty_when_no_promocode_supplied(call_purchase):
     call_purchase()
 
     placed = get_order()
