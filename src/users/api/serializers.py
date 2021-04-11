@@ -13,3 +13,12 @@ class UserSerializer(serializers.ModelSerializer):
             'last_name',
             'email',
         ]
+
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'first_name',
+            'last_name',
+        ]
