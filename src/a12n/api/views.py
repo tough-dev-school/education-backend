@@ -44,6 +44,8 @@ class ObtainJSONWebTokenViaPasswordlessToken(AnonymousAPIView):
     def get(self, request, token):
         token = get_object_or_404(PasswordlessAuthToken.objects.valid(), token=token)
 
+        token.mark_as_used()
+
         return Response({
             'token': get_jwt(token.user),
         })

@@ -7,6 +7,11 @@ pytestmark = [
 
 
 @pytest.fixture(autouse=True)
+def _enable_passwordless_token_expiration(settings):
+    settings.DANGEROUSLY_MAKE_ONE_TIME_PASSWORDLESS_TOKEN_MULTI_PASS = False
+
+
+@pytest.fixture(autouse=True)
 def token(user, mixer):
     return mixer.blend('a12n.PasswordlessAuthToken', user=user, token='3149798e-c219-47f5-921f-8ae9a75b709b', expires='2032-12-05 15:30', used=None)
 
@@ -39,6 +44,14 @@ def test_valid_token(get_token, token):
     got = get_token(token=str(token.token))
 
     assert len(got['token']) > 32  # every stuff that is long enough, may be a JWT token
+
+
+def test_token_is_marked_as_used(get_token, token):
+    get_token(token=str(token.token))
+
+    token.refresh_from_db()
+
+    assert token.used is not None
 
 
 @pytest.mark.parametrize(('extract_token', 'status_code'), [
