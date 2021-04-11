@@ -11,6 +11,8 @@ class UserSerializer(serializers.ModelSerializer):
             'username',
             'first_name',
             'last_name',
+            'first_name_en',
+            'last_name_en',
             'email',
         ]
 
@@ -21,4 +23,6 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         fields = [
             'first_name',
             'last_name',
+            'first_name_en',
+            'last_name_en',
         ]

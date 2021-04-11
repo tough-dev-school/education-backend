@@ -6,6 +6,8 @@ from app.models import models
 
 class User(AbstractUser):
     subscribed = models.BooleanField(_('Subscribed to newsletter'), default=False)
+    first_name_en = models.CharField(_('first name in english'), max_length=150, blank=True)
+    last_name_en = models.CharField(_('last name in english'), max_length=150, blank=True)
 
     @classmethod
     def parse_name(cls, name: str) -> dict:
