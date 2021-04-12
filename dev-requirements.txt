@@ -6,8 +6,6 @@
 #
 apipkg==1.5
     # via execnet
-appnope==0.1.2
-    # via ipython
 astor==0.8.1
     # via flake8-simplify
 attrs==20.3.0
@@ -17,8 +15,6 @@ attrs==20.3.0
     #   pytest
 backcall==0.2.0
     # via ipython
-backports.entry-points-selectable==1.0.2
-    # via pytest-randomly
 certifi==2020.12.5
     # via
     #   -c requirements.txt
@@ -96,6 +92,8 @@ idna==2.10
     # via
     #   -c requirements.txt
     #   requests
+importlib-metadata==3.10.0
+    # via pytest-randomly
 iniconfig==1.1.1
     # via pytest
 ipython-genutils==0.2.0
@@ -152,7 +150,7 @@ pytest-freezegun==0.4.2
     # via -r dev-requirements.in
 pytest-mock==3.5.1
     # via -r dev-requirements.in
-pytest-randomly==3.6.0
+pytest-randomly==3.7.0
     # via -r dev-requirements.in
 pytest-xdist==2.2.1
     # via -r dev-requirements.in
@@ -199,6 +197,8 @@ urllib3==1.26.3
     #   requests
 wcwidth==0.2.5
     # via prompt-toolkit
+zipp==3.4.1
+    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
