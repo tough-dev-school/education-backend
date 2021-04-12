@@ -18,20 +18,26 @@ def another_record(mixer):
     return mixer.blend('products.Record')
 
 
-def test_shipping_course(bundle, user, course, ship_course):
+def test_shipping_course(bundle, order, user, course, ship_course):
     bundle.courses.add(course)
 
-    bundle.ship(to=user)
+    bundle.ship(to=user, order=order)
 
-    ship_course.assert_called_once()
+    ship_course.assert_called_once_with(
+        to=user,
+        order=order,
+    )
 
 
-def test_shipping_record(bundle, user, record, ship_record):
+def test_shipping_record(bundle, order, user, record, ship_record):
     bundle.records.add(record)
 
-    bundle.ship(to=user)
+    bundle.ship(to=user, order=order)
 
-    ship_record.assert_called_once()
+    ship_record.assert_called_once_with(
+        to=user,
+        order=order,
+    )
 
 
 def test_shipping_empty(bundle, user, ship_record, ship_course):

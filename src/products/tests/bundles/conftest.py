@@ -16,3 +16,12 @@ def record(mixer):
 @pytest.fixture
 def bundle(mixer):
     return mixer.blend('products.Bundle')
+
+
+@pytest.fixture
+def order(mixer, bundle):
+    order = mixer.blend('orders.Order')
+    order.set_item(bundle)
+    order.save()
+
+    return order

@@ -19,9 +19,9 @@ class Bundle(Shippable):
     def get_absolute_url(self):
         return urljoin(settings.FRONTEND_URL, '/'.join(['bundles', self.slug, '']))
 
-    def ship(self, to):
+    def ship(self, *args, **kwargs):
         for record in self.records.iterator():
-            record.ship(to=to)
+            record.ship(*args, **kwargs)
 
         for course in self.courses.iterator():
-            course.ship(to=to)
+            course.ship(*args, **kwargs)
