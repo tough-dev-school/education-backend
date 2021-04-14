@@ -8,7 +8,6 @@ from urllib.parse import urljoin
 
 from a12n.api.views import (
     ObtainJSONWebTokenViaPasswordlessToken, ObtainJSONWebTokenView, RefreshJSONWebTokenView, RequestPasswordLessToken)
-from app.settings import AWS_S3_FILE_OVERWRITE
 from app.views import HomePageView
 from homework.api.views import QuestionView
 from magnets.api.views import EmailLeadMagnetCampaignView

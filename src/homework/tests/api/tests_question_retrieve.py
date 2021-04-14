@@ -1,6 +1,9 @@
 import pytest
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [
+    pytest.mark.django_db,
+    pytest.mark.usefixtures('purchase'),
+]
 
 
 def test_ok(api, question, course):
@@ -19,3 +22,13 @@ def test_markdown(api, question):
     got = api.get(f'/api/v2/homework/questions/{question.slug}/')
 
     assert '<em>should be rendered' in got['text']
+
+
+def test_401_for_not_purchased_users(api, question, purchase):
+    purchase.setattr_and_save('paid', None)
+
+    api.get(f'/api/v2/homework/questions/{question.slug}/', expected_status_code=403)
+
+
+def test_no_anon(anon, question):
+    anon.get(f'/api/v2/homework/questions/{question.slug}/', expected_status_code=401)
