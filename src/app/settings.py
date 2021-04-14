@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'magnets',
     'banking',
     'a12n',
+    'homework',
 
     'markdownx',
     'corsheaders',
