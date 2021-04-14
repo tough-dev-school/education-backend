@@ -59,6 +59,10 @@ django-ipware==3.0.2
     #   -r requirements.in
     #   django-axes
     #   drf-recaptcha
+django-markdownx==3.0.1
+    # via -r requirements.in
+django-storages==1.11.1
+    # via -r requirements.in
 django==3.1.7
     # via
     #   -r requirements.in
@@ -70,6 +74,8 @@ django==3.1.7
     #   django-filter
     #   django-hattori
     #   django-healthchecks
+    #   django-markdownx
+    #   django-storages
     #   djangorestframework
     #   drf-jwt
     #   drf-recaptcha
@@ -96,6 +102,10 @@ jmespath==0.10.0
     #   botocore
 kombu==4.6.11
     # via celery
+markdown==3.3.4
+    # via django-markdownx
+pillow==8.2.0
+    # via django-markdownx
 prometheus-client==0.8.0
     # via flower
 pycparser==2.20

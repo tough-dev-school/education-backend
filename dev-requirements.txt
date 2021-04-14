@@ -6,6 +6,8 @@
 #
 apipkg==1.5
     # via execnet
+appnope==0.1.2
+    # via ipython
 astor==0.8.1
     # via flake8-simplify
 attrs==20.3.0
