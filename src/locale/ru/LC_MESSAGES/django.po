@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-07 23:54+0300\n"
+"POT-Creation-Date: 2021-04-14 19:07+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,6 +28,27 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
+#: homework/models.py:11 magnets/models.py:17 products/admin/bundle.py:19
+#: products/admin/course.py:12 products/admin/courses/record.py:16
+msgid "Name"
+msgstr "Название"
+
+#: homework/models.py:16
+msgid "Homework"
+msgstr "Домашка"
+
+#: homework/models.py:17
+msgid "Homeworks"
+msgstr "Домашки"
+
+#: homework/models.py:28
+msgid "Homework answer"
+msgstr "Ответ на домашку"
+
+#: homework/models.py:29
+msgid "Homework answers"
+msgstr "Ответы на домашку"
+
 #: magnets/admin.py:33
 msgid "Lead count"
 msgstr "Количество лидов"
@@ -35,11 +56,6 @@ msgstr "Количество лидов"
 #: magnets/apps.py:8
 msgid "Magnets"
 msgstr "Лид-магниты"
-
-#: magnets/models.py:17 products/admin/bundle.py:19 products/admin/course.py:12
-#: products/admin/courses/record.py:16
-msgid "Name"
-msgstr "Название"
 
 #: magnets/models.py:20
 msgid "Letter template id"
@@ -114,8 +130,8 @@ msgstr "Количество заказов"
 msgid "Price"
 msgstr "Цена"
 
-#: orders/models/order.py:28 orders/models/promocode.py:29
-#: orders/models/promocode.py:37
+#: orders/models/order.py:28 orders/models/promocode.py:32
+#: orders/models/promocode.py:40
 msgid "Promo Code"
 msgstr "Промо-код"
 
@@ -165,23 +181,25 @@ msgstr "Заказ"
 msgid "Orders"
 msgstr "Заказы"
 
-#: orders/models/promocode.py:30
+#: orders/models/promocode.py:33
 msgid "Discount percent"
 msgstr "Процент скидки"
 
-#: orders/models/promocode.py:31
+#: orders/models/promocode.py:34
 msgid "Active"
 msgstr "Включено"
 
-#: orders/models/promocode.py:32
+#: orders/models/promocode.py:35
 msgid "Comment"
 msgstr "Комментарий"
 
-#: orders/models/promocode.py:34
+#: orders/models/promocode.py:37
 msgid "Can not be used for courses not checked here"
-msgstr "Если тут выбрать хоть что-нибудь, то промо-код будет действовать только для этого курса"
+msgstr ""
+"Если тут выбрать хоть что-нибудь, то промо-код будет действовать только для "
+"этого курса"
 
-#: orders/models/promocode.py:38
+#: orders/models/promocode.py:41
 msgid "Promo Codes"
 msgstr "Промо-коды"
 
@@ -331,6 +349,14 @@ msgstr "Юзеры"
 #: users/models.py:8
 msgid "Subscribed to newsletter"
 msgstr "Подписан на новости"
+
+#: users/models.py:9
+msgid "first name in english"
+msgstr ""
+
+#: users/models.py:10
+msgid "last name in english"
+msgstr ""
 
 #~ msgid "Is active"
 #~ msgstr "Включено"

@@ -26,3 +26,12 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             'first_name_en',
             'last_name_en',
         ]
+
+
+class UserNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'first_name',
+            'last_name',
+        ]
