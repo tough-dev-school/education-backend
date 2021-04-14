@@ -15,5 +15,10 @@ def question(mixer, course):
 
 
 @pytest.fixture
+def answer(mixer, question, api):
+    return mixer.blend('homework.Answer', question=question, author=api.user)
+
+
+@pytest.fixture
 def purchase(mixer, course, api):
     return mixer.blend('orders.Order', user=api.user, course=course, paid=timezone.now())
