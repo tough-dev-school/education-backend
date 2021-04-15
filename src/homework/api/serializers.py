@@ -31,3 +31,4 @@ class AnswerSerializer(serializers.ModelSerializer):
             'author',
             'text',
         ]
+
