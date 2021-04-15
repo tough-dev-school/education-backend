@@ -44,7 +44,7 @@ django-bulk-update==2.2.0
     #   django-hattori
 django-cors-headers==3.7.0
     # via -r requirements.in
-django-debug-toolbar==3.2
+django-debug-toolbar==3.2.1
     # via -r requirements.in
 django-environ==0.4.5
     # via -r requirements.in
