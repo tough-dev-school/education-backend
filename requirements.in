@@ -5,6 +5,7 @@ django-environ
 django-ipware
 django-debug-toolbar
 whitenoise
+psycopg2-binary
 
 djangorestframework>=3.11.0
 django-markdownx
@@ -28,3 +29,5 @@ PyJWT
 celery
 redis
 flower
+
+uwsgi

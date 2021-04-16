@@ -1,5 +1,6 @@
 import environ
 import os
+import os.path
 from celery.schedules import crontab
 from datetime import timedelta
 
@@ -40,6 +41,7 @@ ANONYMIZE_ENABLED = DEBUG
 
 ABSOLUTE_HOST = env('ABSOLUTE_HOST', cast=str, default='https://edu-app.borshev.com')
 ALLOWED_HOSTS = [
+    'education-backend.herokuapp.com',
     'edu-app.borshev.com',
     'localhost',
     'localhost:8000',
@@ -168,6 +170,8 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': env.db(),    # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
 }
+DATABASES['default']['CONN_MAX_AGE'] = 600
+
 AUTH_USER_MODEL = 'users.User'
 AUTHENTICATION_BACKENDS = [
     'axes.backends.AxesBackend',
@@ -183,7 +187,7 @@ HEALTH_CHECKS = {
 MEDIA_URL = env('MEDIA_URL', default='/media/')
 
 STATIC_URL = env('STATIC_URL', default='/static/')
-STATIC_ROOT = env('STATIC_ROOT')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 SENTRY_DSN = env('SENTRY_DSN', cast=str, default='')
 
@@ -198,7 +202,7 @@ if not DEBUG and SENTRY_DSN:
         integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration()],
     )
 
-BROKER_URL = env('CELERY_BACKEND')
+BROKER_URL = env('REDIS_URL')
 CELERY_ALWAYS_EAGER = env('CELERY_ALWAYS_EAGER', cast=bool, default=DEBUG)  # by default in debug mode we run all celery tasks in foregroud.
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_ENABLE_UTC = False

@@ -1,10 +1,8 @@
 from django.conf import settings
-from django.conf.urls import handler400, handler403, handler404, handler500, include
+from django.conf.urls import include
 from django.contrib import admin
-from django.shortcuts import redirect
 from django.urls import path
 from rest_framework import routers
-from urllib.parse import urljoin
 
 from a12n.api.views import (
     ObtainJSONWebTokenViaPasswordlessToken, ObtainJSONWebTokenView, RefreshJSONWebTokenView, RequestPasswordLessToken)
@@ -46,14 +44,3 @@ if settings.DEBUG:
     urlpatterns += [
         path('__debug__/', include(debug_toolbar.urls)),
     ]
-
-
-if not settings.DEBUG and not settings.CI:
-    """Redirect users from the errors to the frontend"""
-    def redir_to_the_frontend(error_code):
-        return lambda request, *args, **kwargs: redirect(urljoin(settings.FRONTEND_URL, f'/error/?code={error_code}'))
-
-    handler400 = redir_to_the_frontend(400)
-    handler403 = redir_to_the_frontend(403)
-    handler404 = redir_to_the_frontend(404)
-    handler500 = redir_to_the_frontend(500)

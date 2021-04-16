@@ -121,22 +121,3 @@ workflows:
             branches:
               only: master
 
-      - deploy:
-          requires:
-            - docker/publish
-          filters:
-            branches:
-              only: master
-
-      - sentry-release/sentry-release:
-          context: sentry-release
-          requires:
-            - deploy
-
-          filters:
-            branches:
-              only: master
-
-          sentry-org: f213
-          sentry-project: education-backend
-          sentry-environment: production
