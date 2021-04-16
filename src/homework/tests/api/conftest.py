@@ -11,7 +11,10 @@ def course(mixer):
 
 @pytest.fixture
 def question(mixer, course):
-    return mixer.blend('homework.Question', course=course)
+    question = mixer.blend('homework.Question')
+    question.courses.add(course)
+
+    return question
 
 
 @pytest.fixture

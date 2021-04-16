@@ -6,14 +6,11 @@ pytestmark = [
 ]
 
 
-def test_ok(api, question, course):
+def test_ok(api, question):
     got = api.get(f'/api/v2/homework/questions/{question.slug}/')
 
     assert got['slug'] == str(question.slug)
     assert got['name'] == question.name
-    assert got['course']['slug'] == str(course.slug)
-    assert got['course']['name'] == course.name
-    assert got['course']['full_name'] == course.full_name
 
 
 def test_markdown(api, question):

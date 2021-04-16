@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.generics import RetrieveAPIView, CreateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView
 
 from homework.api.permissions import ShouldHavePurchasedCoursePermission, ShouldHavePurchasedQuestionCoursePermission
 from homework.api.serializers import AnswerSerializer, QuestionSerializer
