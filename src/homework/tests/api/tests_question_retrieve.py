@@ -6,14 +6,11 @@ pytestmark = [
 ]
 
 
-def test_ok(api, question, course):
+def test_ok(api, question):
     got = api.get(f'/api/v2/homework/questions/{question.slug}/')
 
     assert got['slug'] == str(question.slug)
     assert got['name'] == question.name
-    assert got['course']['slug'] == str(course.slug)
-    assert got['course']['name'] == course.name
-    assert got['course']['full_name'] == course.full_name
 
 
 def test_markdown(api, question):
@@ -28,6 +25,13 @@ def test_401_for_not_purchased_users(api, question, purchase):
     purchase.setattr_and_save('paid', None)
 
     api.get(f'/api/v2/homework/questions/{question.slug}/', expected_status_code=403)
+
+
+def test_ok_if_user_has_not_purchased_but_permission_check_is_disabled(api, settings, question, purchase):
+    settings.DISABLE_HOMEWORK_PERMISSIONS_CHECKING = True
+    purchase.setattr_and_save('paid', None)
+
+    api.get(f'/api/v2/homework/questions/{question.slug}/', expected_status_code=200)
 
 
 def test_no_anon(anon, question):

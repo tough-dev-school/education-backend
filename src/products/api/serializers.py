@@ -23,16 +23,6 @@ class CourseSerializer(ShippableSerializer):
         model = Course
 
 
-class CourseListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Course
-        fields = [
-            'slug',
-            'name',
-            'full_name',
-        ]
-
-
 class RecordSerializer(ShippableSerializer):
     class Meta(ShippableSerializer.Meta):
         model = Record

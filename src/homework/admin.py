@@ -5,7 +5,7 @@ from homework.models import Question
 @admin.register(Question)
 class QuestionAdmin(ModelAdmin):
     fields = [
-        'course',
+        'courses',
         'name',
         'text',
     ]

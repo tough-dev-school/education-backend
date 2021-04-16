@@ -232,6 +232,8 @@ AWS_QUERYSTRING_AUTH = False
 MARKDOWNX_URLS_PATH = '/api/v2/markdownx/markdownify/'
 MARKDOWNX_UPLOAD_URLS_PATH = '/api/v2/markdownx/upload/'
 
+DISABLE_HOMEWORK_PERMISSIONS_CHECKING = env('DISABLE_HOMEWORK_PERMISSIONS_CHECKING', cast=bool, default=DEBUG)
+
 
 EMAIL_ENABLED = env('EMAIL_ENABLED', cast=bool, default=False)
 
