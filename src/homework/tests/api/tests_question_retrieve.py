@@ -21,7 +21,7 @@ def test_markdown(api, question):
     assert '<em>should be rendered' in got['text']
 
 
-def test_401_for_not_purchased_users(api, question, purchase):
+def test_403_for_not_purchased_users(api, question, purchase):
     purchase.setattr_and_save('paid', None)
 
     api.get(f'/api/v2/homework/questions/{question.slug}/', expected_status_code=403)

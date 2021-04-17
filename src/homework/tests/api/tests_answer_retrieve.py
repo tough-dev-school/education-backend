@@ -32,16 +32,14 @@ def test_parent_answer(api, question, answer, another_answer):
     assert got['parent'] == str(another_answer.slug)
 
 
-def test_wrong_question(api, mixer, answer):
-    another_question = mixer.blend('homework.Question')
-
+def test_wrong_question(api, another_question, answer):
     api.get(
         f'/api/v2/homework/questions/{another_question.slug}/answers/{answer.slug}/',
         expected_status_code=404,
     )
 
 
-def test_401_for_not_purchased_users(api, question, answer, purchase):
+def test_403_for_not_purchased_users(api, question, answer, purchase):
     purchase.setattr_and_save('paid', None)
 
     api.get(

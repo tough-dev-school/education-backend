@@ -30,3 +30,17 @@ class AnswerSerializer(serializers.ModelSerializer):
             'parent',
             'text',
         ]
+
+
+class AnswerCreateSerializer(serializers.ModelSerializer):
+    author = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    parent = serializers.SlugRelatedField(slug_field='slug', queryset=Answer.objects.all(), required=False)
+
+    class Meta:
+        model = Answer
+        fields = [
+            'author',
+            'question',
+            'parent',
+            'text',
+        ]

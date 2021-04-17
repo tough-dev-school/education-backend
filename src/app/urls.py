@@ -7,7 +7,7 @@ from rest_framework import routers
 from a12n.api.views import (
     ObtainJSONWebTokenViaPasswordlessToken, ObtainJSONWebTokenView, RefreshJSONWebTokenView, RequestPasswordLessToken)
 from app.views import HomePageView
-from homework.api.views import AnswerView, QuestionView
+from homework.api.views import AnswerCreateView, AnswerView, QuestionView
 from magnets.api.views import EmailLeadMagnetCampaignView
 from products.api.viewsets import BundleViewSet, CourseViewSet, RecordViewSet
 from tinkoff.api.views import TinkoffCreditNotificationsView, TinkoffPaymentNotificationsView
@@ -32,6 +32,7 @@ urlpatterns = [
     path('api/v2/auth/passwordless-token/<uuid:token>/', ObtainJSONWebTokenViaPasswordlessToken.as_view()),
     path('api/v2/homework/questions/<uuid:slug>/', QuestionView.as_view()),
     path('api/v2/homework/questions/<uuid:question_slug>/answers/<uuid:slug>/', AnswerView.as_view()),
+    path('api/v2/homework/questions/<uuid:question_slug>/answers/', AnswerCreateView.as_view()),
     path('api/v2/markdownx/', include('markdownx.urls')),
     path('api/v2/healthchecks/', include('django_healthchecks.urls')),
     path('api/v2/', include(router.urls)),
