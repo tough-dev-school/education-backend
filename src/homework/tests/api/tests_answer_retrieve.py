@@ -15,11 +15,21 @@ def test_ok(api, question, answer):
 
 
 def test_markdown(api, question, answer):
-    answer.setattr_and_save('text', '*should be rendered*')
+    answer.text = '*should be rendered*'
+    answer.save()
 
     got = api.get(f'/api/v2/homework/questions/{question.slug}/answers/{answer.slug}/')
 
     assert '<em>should be rendered' in got['text']
+
+
+def test_parent_answer(api, question, answer, another_answer):
+    answer.parent = another_answer
+    answer.save()
+
+    got = api.get(f'/api/v2/homework/questions/{question.slug}/answers/{answer.slug}/')
+
+    assert got['parent'] == str(another_answer.slug)
 
 
 def test_wrong_question(api, mixer, answer):
