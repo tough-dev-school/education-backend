@@ -6,8 +6,4 @@ __all__ = [
 ]
 
 
-@mixer.middleware('users.User')
-def make_username_truly_random(user):
-    user.username = str(uuid.uuid4())
-
-    return user
+mixer.register('users.User', username=lambda: str(uuid.uuid4()))
