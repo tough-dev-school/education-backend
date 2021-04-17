@@ -1,6 +1,5 @@
 class MailchimpException(BaseException):
     """Base mailchimp exception"""
-    pass
 
 
 class MailchimpHTTPException(MailchimpException):
