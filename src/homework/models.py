@@ -46,6 +46,9 @@ class Answer(TreeNode):
         verbose_name = _('Homework answer')
         verbose_name_plural = _('Homework answers')
         ordering = ['created']
+        permissions = [
+            ('see_all_answers', _('May see answers from every user')),
+        ]
 
     def save(self, *args, **kwargs):
         if self.pk:

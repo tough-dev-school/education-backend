@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Permission
 from django.utils.translation import gettext_lazy as _
 
 from app.models import models
@@ -31,3 +31,13 @@ class User(AbstractUser):
             return self.username
 
         return name.strip()
+
+    def add_perm(self, perm):
+        """Add permission to the user.
+        This is a shortcut method for testing, please do not use in production
+        """
+        [app_label, model, codename] = perm.split('.')
+
+        permission = Permission.objects.get_by_natural_key(codename, app_label, model)
+        if permission is not None:
+            self.user_permissions.add(permission)
