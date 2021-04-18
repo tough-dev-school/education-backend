@@ -18,7 +18,7 @@ LOCALE_PATHS = ['locale']
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
-FRONTEND_URL = 'https://education.borshev.com'
+FRONTEND_URL = 'https://education.borshev.com/lms/'
 
 USE_TZ = False
 TIME_ZONE = env('TIME_ZONE', cast=str, default='Europe/Moscow')

@@ -1,9 +1,7 @@
 from typing import Iterable
 
 from django.apps import apps
-from django.conf import settings
 from django.utils.translation import gettext_lazy as _
-from urllib.parse import urljoin
 
 from app.models import models
 from app.tasks import send_mail
@@ -25,9 +23,6 @@ class Course(Shippable):
         verbose_name = _('Course')
         verbose_name_plural = _('Courses')
         db_table = 'courses_course'
-
-    def get_absolute_url(self) -> str:
-        return urljoin(settings.FRONTEND_URL, '/'.join(['courses', self.slug, '']))
 
     def get_purchased_users(self) -> Iterable[User]:
         return User.objects.filter(

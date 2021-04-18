@@ -26,6 +26,3 @@ class Record(Shippable):
 
     def __str__(self):
         return f'Запись {self.name_genitive}'
-
-    def get_absolute_url(self):
-        return self.course.get_absolute_url()
