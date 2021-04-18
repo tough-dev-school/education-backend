@@ -45,6 +45,7 @@ class Answer(TreeNode):
     class Meta:
         verbose_name = _('Homework answer')
         verbose_name_plural = _('Homework answers')
+        ordering = ['created']
 
     def save(self, *args, **kwargs):
         if self.pk:

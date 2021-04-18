@@ -3,7 +3,7 @@ from markdownx.settings import MARKDOWNX_MARKDOWNIFY_FUNCTION
 from rest_framework import serializers
 
 
-class MarkdownXField(serializers.Field):
+class MarkdownXField(serializers.ReadOnlyField):
     """A field to render markdown"""
     def to_representation(self, obj):
         markdownify = import_string(MARKDOWNX_MARKDOWNIFY_FUNCTION)
