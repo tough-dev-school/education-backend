@@ -32,6 +32,16 @@ def test_parent_answer(api, question, answer, another_answer):
     assert got['parent'] == str(another_answer.slug)
 
 
+def test_answers_without_parents_do_not_have_this_field(api, question, answer):
+    """Just to document weird behaviour of our API: we hide the parent field when it is empty"""
+    answer.parent = None
+    answer.save()
+
+    got = api.get(f'/api/v2/homework/questions/{question.slug}/answers/{answer.slug}/')
+
+    assert 'parent' not in got
+
+
 def test_wrong_question(api, another_question, answer):
     api.get(
         f'/api/v2/homework/questions/{another_question.slug}/answers/{answer.slug}/',
