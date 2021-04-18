@@ -49,15 +49,17 @@ ALLOWED_HOSTS = [
     ABSOLUTE_HOST.replace('https://', ''),
 ]
 
-CORS_ORIGIN_WHITELIST = [
-    'https://pmdaily.ru',
+CORS_ALLOWED_ORIGINS = [
     'https://education.borshev.com',
+]
+CORS_ORIGIN_REGEX_WHITELIST = [
+    r'.*education-frontend.netlify.app.*',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'pmdaily.ru',
     'education.borshev.com',
     'borshev.com',
+    'education-frontend.netlify.app',
 ]
 
 
