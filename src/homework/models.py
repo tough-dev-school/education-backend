@@ -1,12 +1,13 @@
 import uuid
 from django.conf import settings
+from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from markdownx.models import MarkdownxField
 from tree_queries.models import TreeNode
 from urllib.parse import urljoin
 
-from app.models import TimestampedModel, models
+from app.models import DefaultQuerySet, TimestampedModel, models
 
 
 class Question(TimestampedModel):
@@ -24,7 +25,14 @@ class Question(TimestampedModel):
         return urljoin(settings.FRONTEND_URL, f'/homework/questions/{self.slug}/')
 
 
+class AnswerQuerySet(DefaultQuerySet):
+    def for_author(self, author):
+        return self.filter(Q(author=author) | Q(parent__author=author))
+
+
 class Answer(TreeNode):
+    objects: AnswerQuerySet = AnswerQuerySet.as_manager()
+
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     modified = models.DateTimeField(null=True, blank=True, db_index=True)
 
@@ -37,6 +45,10 @@ class Answer(TreeNode):
     class Meta:
         verbose_name = _('Homework answer')
         verbose_name_plural = _('Homework answers')
+        ordering = ['created']
+        permissions = [
+            ('see_all_answers', _('May see answers from every user')),
+        ]
 
     def save(self, *args, **kwargs):
         if self.pk:

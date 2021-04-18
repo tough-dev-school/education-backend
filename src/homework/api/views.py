@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveAPIView
 
 from homework.api.permissions import ShouldHavePurchasedCoursePermission, ShouldHavePurchasedQuestionCoursePermission
 from homework.api.serializers import AnswerCreateSerializer, AnswerSerializer, QuestionSerializer
@@ -28,10 +28,10 @@ class AnswerView(RetrieveAPIView):
         return super().get_queryset().filter(question=question)
 
 
-class AnswerCreateView(CreateAPIView):
+class AnswerCreateView(ListCreateAPIView):
     queryset = Answer.objects.all()
     permission_classes = [ShouldHavePurchasedQuestionCoursePermission]
-    serializer_class = AnswerCreateSerializer
+    serializer_class = AnswerSerializer
 
     def get_question(self):
         return get_object_or_404(Question, slug=self.kwargs['question_slug'])
@@ -41,3 +41,16 @@ class AnswerCreateView(CreateAPIView):
         request.data['question'] = self.get_question().pk
 
         return super().create(request, *args, **kwargs)
+
+    def get_serializer_class(self):
+        """Special serializer for submitting answers"""
+        if self.request.method == 'POST':
+            return AnswerCreateSerializer
+
+        return super().get_serializer_class()
+
+    def get_queryset(self):
+        if not self.request.user.has_perm('homework.see_all_answers'):
+            return super().get_queryset().for_author(self.request.user)
+
+        return super().get_queryset()
