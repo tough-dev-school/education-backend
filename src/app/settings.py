@@ -18,7 +18,7 @@ LOCALE_PATHS = ['locale']
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
-FRONTEND_URL = 'https://education.borshev.com'
+FRONTEND_URL = env('FRONTEND_URL', cast=str, default='https://education.borshev.com/lms/')
 
 USE_TZ = False
 TIME_ZONE = env('TIME_ZONE', cast=str, default='Europe/Moscow')
@@ -49,15 +49,17 @@ ALLOWED_HOSTS = [
     ABSOLUTE_HOST.replace('https://', ''),
 ]
 
-CORS_ORIGIN_WHITELIST = [
-    'https://pmdaily.ru',
+CORS_ALLOWED_ORIGINS = [
     'https://education.borshev.com',
+]
+CORS_ORIGIN_REGEX_WHITELIST = [
+    r'.*education-frontend.netlify.app.*',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'pmdaily.ru',
     'education.borshev.com',
     'borshev.com',
+    'education-frontend.netlify.app',
 ]
 
 
