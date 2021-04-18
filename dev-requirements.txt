@@ -113,7 +113,9 @@ mccabe==0.6.1
 mixer==7.0.6
     # via -r dev-requirements.in
 packaging==20.9
-    # via pytest
+    # via
+    #   -c requirements.txt
+    #   pytest
 parso==0.8.1
     # via jedi
 pexpect==4.8.0
@@ -139,7 +141,9 @@ pyflakes==2.2.0
 pygments==2.8.0
     # via ipython
 pyparsing==2.4.7
-    # via packaging
+    # via
+    #   -c requirements.txt
+    #   packaging
 pytest-deadfixtures==2.2.1
     # via -r dev-requirements.in
 pytest-django==4.2.0

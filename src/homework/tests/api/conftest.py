@@ -18,7 +18,20 @@ def question(mixer, course):
 
 
 @pytest.fixture
+def another_question(mixer, course):
+    another_question = mixer.blend('homework.Question')
+    another_question.courses.add(course)
+
+    return another_question
+
+
+@pytest.fixture
 def answer(mixer, question, api):
+    return mixer.blend('homework.Answer', question=question, author=api.user)
+
+
+@pytest.fixture
+def another_answer(mixer, question, api):
     return mixer.blend('homework.Answer', question=question, author=api.user)
 
 

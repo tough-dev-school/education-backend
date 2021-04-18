@@ -170,7 +170,8 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': env.db(),    # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
 }
-DATABASES['default']['CONN_MAX_AGE'] = 600
+if not DEBUG:
+    DATABASES['default']['CONN_MAX_AGE'] = 600
 
 AUTH_USER_MODEL = 'users.User'
 AUTHENTICATION_BACKENDS = [
@@ -235,6 +236,7 @@ AWS_QUERYSTRING_AUTH = False
 
 MARKDOWNX_URLS_PATH = '/api/v2/markdownx/markdownify/'
 MARKDOWNX_UPLOAD_URLS_PATH = '/api/v2/markdownx/upload/'
+MARKDOWNX_MARKDOWNIFY_FUNCTION = 'app.markdown.markdownify'
 
 DISABLE_HOMEWORK_PERMISSIONS_CHECKING = env('DISABLE_HOMEWORK_PERMISSIONS_CHECKING', cast=bool, default=DEBUG)
 

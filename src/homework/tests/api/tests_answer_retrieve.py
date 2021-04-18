@@ -15,23 +15,31 @@ def test_ok(api, question, answer):
 
 
 def test_markdown(api, question, answer):
-    answer.setattr_and_save('text', '*should be rendered*')
+    answer.text = '*should be rendered*'
+    answer.save()
 
     got = api.get(f'/api/v2/homework/questions/{question.slug}/answers/{answer.slug}/')
 
-    assert '<em>should be rendered' in got['text']
+    assert got['text'].startswith('<p><em>should be rendered'), f'"{got["text"]}" should start with "<p><em>should be rendered"'
 
 
-def test_wrong_question(api, mixer, answer):
-    another_question = mixer.blend('homework.Question')
+def test_parent_answer(api, question, answer, another_answer):
+    answer.parent = another_answer
+    answer.save()
 
+    got = api.get(f'/api/v2/homework/questions/{question.slug}/answers/{answer.slug}/')
+
+    assert got['parent'] == str(another_answer.slug)
+
+
+def test_wrong_question(api, another_question, answer):
     api.get(
         f'/api/v2/homework/questions/{another_question.slug}/answers/{answer.slug}/',
         expected_status_code=404,
     )
 
 
-def test_401_for_not_purchased_users(api, question, answer, purchase):
+def test_403_for_not_purchased_users(api, question, answer, purchase):
     purchase.setattr_and_save('paid', None)
 
     api.get(
