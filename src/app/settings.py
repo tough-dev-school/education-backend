@@ -236,6 +236,7 @@ AWS_QUERYSTRING_AUTH = False
 
 MARKDOWNX_URLS_PATH = '/api/v2/markdownx/markdownify/'
 MARKDOWNX_UPLOAD_URLS_PATH = '/api/v2/markdownx/upload/'
+MARKDOWNX_MARKDOWNIFY_FUNCTION = 'app.markdown.markdownify'
 
 DISABLE_HOMEWORK_PERMISSIONS_CHECKING = env('DISABLE_HOMEWORK_PERMISSIONS_CHECKING', cast=bool, default=DEBUG)
 

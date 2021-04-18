@@ -20,7 +20,7 @@ def test_markdown(api, question, answer):
 
     got = api.get(f'/api/v2/homework/questions/{question.slug}/answers/{answer.slug}/')
 
-    assert '<em>should be rendered' in got['text']
+    assert got['text'].startswith('<p><em>should be rendered'), f'"{got["text"]}" should start with "<p><em>should be rendered"'
 
 
 def test_parent_answer(api, question, answer, another_answer):

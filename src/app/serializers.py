@@ -1,10 +1,12 @@
-from markdownx.utils import markdownify
+from django.utils.module_loading import import_string
+from markdownx.settings import MARKDOWNX_MARKDOWNIFY_FUNCTION
 from rest_framework import serializers
 
 
 class MarkdownXField(serializers.Field):
     """A field to render markdown"""
     def to_representation(self, obj):
+        markdownify = import_string(MARKDOWNX_MARKDOWNIFY_FUNCTION)
         return markdownify(obj)
 
 
