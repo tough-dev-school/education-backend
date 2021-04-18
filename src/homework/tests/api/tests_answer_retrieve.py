@@ -9,6 +9,7 @@ pytestmark = [
 def test_ok(api, question, answer):
     got = api.get(f'/api/v2/homework/questions/{question.slug}/answers/{answer.slug}/')
 
+    assert 'created' in got
     assert got['slug'] == str(answer.slug)
     assert got['author']['first_name'] == api.user.first_name
     assert got['author']['last_name'] == api.user.last_name
