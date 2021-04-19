@@ -1,6 +1,9 @@
+from typing import Optional
+
+import contextlib
 import uuid
 from django.conf import settings
-from django.db.models import Q
+from django.db.models import Index, Q, UniqueConstraint
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from markdownx.models import MarkdownxField
@@ -55,3 +58,24 @@ class Answer(TreeNode):
             self.modified = timezone.now()
 
         return super().save(*args, **kwargs)
+
+
+class AnswerAccessLogEntryQuerySet(DefaultQuerySet):
+    def get_for_user_and_answer(self, answer, user) -> Optional[models.Model]:
+        with contextlib.suppress(self.model.DoesNotExist):
+            return self.get(answer=answer, user=user)
+
+
+class AnswerAccessLogEntry(TimestampedModel):
+    objects: AnswerAccessLogEntryQuerySet = AnswerAccessLogEntryQuerySet.as_manager()
+
+    answer = models.ForeignKey('homework.Answer', on_delete=models.CASCADE)
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE)
+
+    class Meta:
+        indexes = [
+            Index(fields=['answer', 'user']),
+        ]
+        constraints = [
+            UniqueConstraint(fields=['answer', 'user'], name='unique_user_and_answer'),
+        ]
