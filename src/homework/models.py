@@ -22,7 +22,7 @@ class Question(TimestampedModel):
         verbose_name_plural = _('Homeworks')
 
     def get_absolute_url(self):
-        return urljoin(settings.FRONTEND_URL, f'/homework/questions/{self.slug}/')
+        return urljoin(settings.FRONTEND_URL, f'homework/questions/{self.slug}/')
 
 
 class AnswerQuerySet(DefaultQuerySet):
