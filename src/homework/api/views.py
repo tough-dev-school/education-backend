@@ -3,7 +3,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveAPIView
 
 from homework.api.permissions import ShouldHavePurchasedCoursePermission, ShouldHavePurchasedQuestionCoursePermission
 from homework.api.serializers import AnswerCreateSerializer, AnswerSerializer, QuestionSerializer
-from homework.models import Answer, Question
+from homework.models import Answer, AnswerAccessLogEntry, Question
 
 
 class QuestionView(RetrieveAPIView):
@@ -26,6 +26,23 @@ class AnswerView(RetrieveAPIView):
         question = self.get_question()
 
         return super().get_queryset().filter(question=question)
+
+    def get_object(self):
+        """Write a log entry for each answer from another user that is retrieved
+        """
+        instance = super().get_object()
+
+        self.write_log_entry(answer=instance)
+
+        return instance
+
+    def write_log_entry(self, answer):
+        if not self.request.user.has_perm('homework.see_all_answers'):
+            if answer.author != self.request.user:
+                AnswerAccessLogEntry.objects.create(
+                    user=self.request.user,
+                    answer=answer,
+                )
 
 
 class AnswerCreateView(ListCreateAPIView):
@@ -51,6 +68,6 @@ class AnswerCreateView(ListCreateAPIView):
 
     def get_queryset(self):
         if not self.request.user.has_perm('homework.see_all_answers'):
-            return super().get_queryset().for_author(self.request.user)
+            return super().get_queryset().for_user(self.request.user)
 
         return super().get_queryset()
