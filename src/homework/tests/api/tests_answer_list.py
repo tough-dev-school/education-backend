@@ -11,6 +11,14 @@ def another_user(mixer):
     return mixer.blend('users.User')
 
 
+@pytest.fixture
+def answer_from_another_user(another_user, another_answer):
+    another_answer.author = another_user
+    another_answer.save()
+
+    return another_answer
+
+
 def test_ok(api, question, answer):
     got = api.get(f'/api/v2/homework/questions/{question.slug}/answers/')['results']
 
@@ -19,18 +27,24 @@ def test_ok(api, question, answer):
     assert got[0]['author']['last_name'] == api.user.last_name
 
 
-def test_answers_from_another_authors_are_excluded(api, question, answer, another_user):
-    answer.author = another_user
-    answer.save()
-
+@pytest.mark.usefixtures('answer_from_another_user')
+def test_answers_from_another_authors_are_excluded(api, question):
     got = api.get(f'/api/v2/homework/questions/{question.slug}/answers/')['results']
 
     assert len(got) == 0
 
 
-def test_users_with_permission_may_see_all_answers(api, question, answer, another_user):
-    answer.author = another_user
-    answer.save()
+@pytest.mark.usefixtures('answer_from_another_user')
+def test_answers_from_another_authors_are_included_if_already_seen(api, mixer, question, answer_from_another_user):
+    mixer.blend('homework.AnswerAccessLogEntry', user=api.user, answer=answer_from_another_user)
+
+    got = api.get(f'/api/v2/homework/questions/{question.slug}/answers/')['results']
+
+    assert len(got) == 1
+
+
+@pytest.mark.usefixtures('answer_from_another_user')
+def test_users_with_permission_may_see_all_answers(api, question):
     api.user.add_perm('homework.answer.see_all_answers')
 
     got = api.get(f'/api/v2/homework/questions/{question.slug}/answers/')['results']
@@ -38,10 +52,11 @@ def test_users_with_permission_may_see_all_answers(api, question, answer, anothe
     assert len(got) == 1
 
 
-def test_child_answers_from_another_authors_are_included(api, mixer, question, answer, another_user):
-    another_answer = mixer.blend('homework.Answer', author=another_user, parent=answer)
+def test_child_answers_from_another_authors_are_included(api, mixer, question, answer, answer_from_another_user):
+    answer_from_another_user.parent = answer
+    answer_from_another_user.save()
 
     got = api.get(f'/api/v2/homework/questions/{question.slug}/answers/')['results']
 
     assert len(got) == 2
-    assert got[1]['slug'] == str(another_answer.slug)
+    assert got[1]['slug'] == str(answer_from_another_user.slug)
