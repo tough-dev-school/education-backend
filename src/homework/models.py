@@ -20,6 +20,9 @@ class Question(TimestampedModel):
     class Meta:
         verbose_name = _('Homework')
         verbose_name_plural = _('Homeworks')
+        permissions = [
+            ('see_all_questions', _('May see questions for all homeworks')),
+        ]
 
     def get_absolute_url(self):
         return urljoin(settings.FRONTEND_URL, f'homework/questions/{self.slug}/')

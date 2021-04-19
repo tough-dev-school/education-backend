@@ -20,7 +20,7 @@ class ShouldHavePurchasedCoursePermission(permissions.BasePermission):
         return request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
-        return settings.DISABLE_HOMEWORK_PERMISSIONS_CHECKING or (request.user.id in get_all_purcased_user_ids(obj))
+        return request.user.has_perm('homework.see_all_questions') or settings.DISABLE_HOMEWORK_PERMISSIONS_CHECKING or (request.user.id in get_all_purcased_user_ids(obj))
 
 
 class ShouldHavePurchasedQuestionCoursePermission(permissions.BasePermission):
@@ -36,7 +36,7 @@ class ShouldHavePurchasedQuestionCoursePermission(permissions.BasePermission):
         return request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
-        return settings.DISABLE_HOMEWORK_PERMISSIONS_CHECKING or (request.user.id in get_all_purcased_user_ids(obj.question))
+        return request.user.has_perm('homework.see_all_questions') or settings.DISABLE_HOMEWORK_PERMISSIONS_CHECKING or (request.user.id in get_all_purcased_user_ids(obj.question))
 
     def get_question(self, slug):
         return get_object_or_404(Question, slug=slug)
