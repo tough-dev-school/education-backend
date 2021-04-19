@@ -58,9 +58,22 @@ def test_403_for_not_purchased_users(api, question, answer, purchase):
     )
 
 
-def test_ok_for_answers_of_another_authors(api, question, answer, mixer):
-    answer.author = mixer.blend('users.User')
-    answer.save()
+def test_ok_for_superusers_even_when_they_did_not_purchase_the_course(api, question, answer, purchase):
+    purchase.setattr_and_save('paid', None)
+
+    api.user.is_superuser = True
+    api.user.save()
+
+    api.get(
+        f'/api/v2/homework/questions/{question.slug}/answers/{answer.slug}/',
+        expected_status_code=200,
+    )
+
+
+def test_ok_for_users_with_permission_even_when_they_did_not_purchase_the_course(api, question, answer, purchase):
+    purchase.setattr_and_save('paid', None)
+
+    api.user.add_perm('homework.question.see_all_questions')
 
     api.get(
         f'/api/v2/homework/questions/{question.slug}/answers/{answer.slug}/',
@@ -70,7 +83,18 @@ def test_ok_for_answers_of_another_authors(api, question, answer, mixer):
 
 def test_configurable_permissions_checking(api, question, answer, purchase, settings):
     purchase.setattr_and_save('paid', None)
+
     settings.DISABLE_HOMEWORK_PERMISSIONS_CHECKING = True
+
+    api.get(
+        f'/api/v2/homework/questions/{question.slug}/answers/{answer.slug}/',
+        expected_status_code=200,
+    )
+
+
+def test_ok_for_answers_of_another_authors(api, question, answer, mixer):
+    answer.author = mixer.blend('users.User')
+    answer.save()
 
     api.get(
         f'/api/v2/homework/questions/{question.slug}/answers/{answer.slug}/',

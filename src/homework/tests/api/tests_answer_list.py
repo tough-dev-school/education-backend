@@ -7,14 +7,6 @@ pytestmark = [
 
 
 @pytest.fixture
-def api(api):
-    api.user.is_superuser = False
-    api.user.save()
-
-    return api
-
-
-@pytest.fixture
 def another_user(mixer):
     return mixer.blend('users.User')
 
