@@ -44,6 +44,7 @@ class AnswerView(RetrieveAPIView):
                     answer=answer,
                 )
 
+
 class AnswerCreateView(ListCreateAPIView):
     queryset = Answer.objects.all()
     permission_classes = [ShouldHavePurchasedQuestionCoursePermission]
@@ -67,6 +68,6 @@ class AnswerCreateView(ListCreateAPIView):
 
     def get_queryset(self):
         if not self.request.user.has_perm('homework.see_all_answers'):
-            return super().get_queryset().for_author(self.request.user)
+            return super().get_queryset().for_user(self.request.user)
 
         return super().get_queryset()

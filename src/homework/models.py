@@ -29,8 +29,10 @@ class Question(TimestampedModel):
 
 
 class AnswerQuerySet(DefaultQuerySet):
-    def for_author(self, author):
-        return self.filter(Q(author=author) | Q(parent__author=author))
+    def for_user(self, user):
+        return self.filter(
+            Q(author=user) | Q(parent__author=user) | Q(answeraccesslogentry__user=user),
+        )
 
 
 class Answer(TreeNode):
