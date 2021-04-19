@@ -25,6 +25,7 @@ class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
         fields = [
+            'created',
             'slug',
             'author',
             'parent',
