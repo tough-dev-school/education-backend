@@ -36,6 +36,17 @@ def test_without_parent(api, question):
     assert created.parent is None
 
 
+def test_empty_parent(api, question):
+    api.post(f'/api/v2/homework/questions/{question.slug}/answers/', {
+        'parent': None,
+        'text': 'Верните деньги!',
+    })
+
+    created = get_answer()
+
+    assert created.parent is None
+
+
 def test_403_for_not_purchased_users(api, question, purchase):
     purchase.setattr_and_save('paid', None)
 
