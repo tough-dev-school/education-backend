@@ -64,6 +64,17 @@ class Answer(TreeNode):
 
         return super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return urljoin(settings.FRONTEND_URL, f'homework/questions/{self.question.slug}/#{self.slug}')
+
+    def __str__(self):
+        LENGTH = 30
+        text = self.text[:LENGTH]
+        if len(text) == LENGTH:
+            text += '...'
+
+        return text
+
 
 class AnswerAccessLogEntryQuerySet(DefaultQuerySet):
     def get_for_user_and_answer(self, answer, user) -> Optional[models.Model]:
