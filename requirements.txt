@@ -157,7 +157,7 @@ tornado==6.1
     # via flower
 tqdm==4.56.2
     # via django-hattori
-urllib3==1.26.3
+urllib3==1.26.4
     # via
     #   botocore
     #   requests
