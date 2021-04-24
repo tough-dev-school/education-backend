@@ -6,6 +6,8 @@
 #
 apipkg==1.5
     # via execnet
+appnope==0.1.2
+    # via ipython
 astor==0.8.1
     # via flake8-simplify
 attrs==20.3.0
@@ -195,7 +197,7 @@ toml==0.10.2
     # via pytest
 traitlets==5.0.5
     # via ipython
-urllib3==1.26.3
+urllib3==1.26.4
     # via
     #   -c requirements.txt
     #   requests

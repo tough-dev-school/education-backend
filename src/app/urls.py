@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
@@ -21,7 +20,6 @@ router.register('bundles', BundleViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('sentry-debug/', lambda request: 1 / 0),
     path('api/v2/banking/tinkoff-notifications/', TinkoffPaymentNotificationsView.as_view()),
     path('api/v2/banking/tinkoff-credit-notifications/', TinkoffCreditNotificationsView.as_view()),
     path('api/v2/leads/email/<slug:slug>/', EmailLeadMagnetCampaignView.as_view()),
@@ -38,10 +36,3 @@ urlpatterns = [
     path('api/v2/', include(router.urls)),
     path('', HomePageView.as_view()),
 ]
-
-
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns += [
-        path('__debug__/', include(debug_toolbar.urls)),
-    ]

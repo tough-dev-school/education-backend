@@ -46,8 +46,6 @@ django-bulk-update==2.2.0
     #   django-hattori
 django-cors-headers==3.7.0
     # via -r requirements.in
-django-debug-toolbar==3.2.1
-    # via -r requirements.in
 django-environ==0.4.5
     # via -r requirements.in
 django-filter==2.4.0
@@ -63,6 +61,8 @@ django-ipware==3.0.2
     #   drf-recaptcha
 django-markdownx==3.0.1
     # via -r requirements.in
+django-split-settings==1.0.1
+    # via -r requirements.in
 django-storages==1.11.1
     # via -r requirements.in
 django-tree-queries==0.4.3
@@ -74,7 +74,6 @@ django==3.1.8
     #   django-axes
     #   django-bulk-update
     #   django-cors-headers
-    #   django-debug-toolbar
     #   django-filter
     #   django-hattori
     #   django-healthchecks
@@ -151,16 +150,14 @@ six==1.15.0
     #   django-healthchecks
     #   python-dateutil
 sqlparse==0.4.1
-    # via
-    #   django
-    #   django-debug-toolbar
+    # via django
 text-unidecode==1.3
     # via faker
 tornado==6.1
     # via flower
 tqdm==4.56.2
     # via django-hattori
-urllib3==1.26.3
+urllib3==1.26.4
     # via
     #   botocore
     #   requests
