@@ -13,7 +13,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'app.middleware.real_ip.real_ip_middleware',
     'axes.middleware.AxesMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 if not env('DEBUG') and not env('CI', cast=bool, default=False):

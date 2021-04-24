@@ -3,7 +3,6 @@ django-behaviors
 django-cors-headers
 django-environ
 django-ipware
-django-debug-toolbar
 django-split-settings
 whitenoise
 psycopg2-binary
