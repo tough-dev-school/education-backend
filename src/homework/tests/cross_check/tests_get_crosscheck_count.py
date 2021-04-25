@@ -3,41 +3,27 @@ import pytest
 pytestmark = [pytest.mark.django_db]
 
 
-def get_crosscheck_count(user, dispatcher):
-    user = dispatcher.get_users_with_cross_check_count().filter(id=user.pk).first()
+def get_crosscheck_count(answer, dispatcher):
+    answer = dispatcher.get_answers_with_crosscheck_count().filter(id=answer.pk).first()
 
-    return user.crosscheck_count
+    return answer.crosscheck_count
 
 
-def test_no_crosschecks(user, dispatcher, answers):
+def test_no_crosschecks(dispatcher, answers):
     dispatcher = dispatcher(answers=answers)
 
-    assert get_crosscheck_count(user, dispatcher) == 0
+    assert get_crosscheck_count(answers[0], dispatcher) == 0
 
 
-def test_no_crosschecks_from_non_dispatched_answers(mixer, user, dispatcher, answers):
-    mixer.blend('homework.AnswerCrossCheck', answer=answers[1], checker=user)
-    dispatcher = dispatcher(answers=answers[:1])
-
-    assert get_crosscheck_count(user, dispatcher) == 0
-
-
-def test_no_crosschecks_from_other_answers(mixer, user, dispatcher, answers):
-    mixer.blend('homework.AnswerCrossCheck', checker=user)
-    dispatcher = dispatcher(answers=answers)
-
-    assert get_crosscheck_count(user, dispatcher) == 0
-
-
-def test_no_crosschecks_from_other_users(mixer, user, dispatcher, answers):
+def test_no_crosschecks_from_non_dispatched_users(dispatcher, mixer, answers):
     mixer.blend('homework.AnswerCrossCheck', answer=answers[1])
-    dispatcher = dispatcher(answers=answers)
+    dispatcher = dispatcher(answers)
 
-    assert get_crosscheck_count(user, dispatcher) == 0
+    assert get_crosscheck_count(answers[1], dispatcher) == 0
 
 
-def test_single_cross_check(mixer, user, dispatcher, answers):
-    mixer.blend('homework.AnswerCrossCheck', checker=user, answer=answers[1])
-    dispatcher = dispatcher(answers=answers)
+def test_crosschecks(dispatcher, mixer, answers):
+    mixer.blend('homework.AnswerCrossCheck', answer=answers[1], checker=answers[0].author)
+    dispatcher = dispatcher(answers)
 
-    assert get_crosscheck_count(user, dispatcher) == 1
+    assert get_crosscheck_count(answers[1], dispatcher) == 1

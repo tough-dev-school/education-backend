@@ -10,7 +10,5 @@ class Command(BaseCommand):
 
         AnswerCrossCheck.objects.all().delete()
 
-        for i in range(0, 3):
-            dispatcher = AnswerCrossCheckDispatcher(answers=question.answer_set.all())
-            print('Iter', i)
-            dispatcher()
+        dispatcher = AnswerCrossCheckDispatcher(answers=question.answer_set.all())
+        dispatcher()
