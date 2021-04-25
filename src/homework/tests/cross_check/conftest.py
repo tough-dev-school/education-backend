@@ -1,6 +1,6 @@
 import pytest
 
-from homework.services import AnswerCrossCheckDispatcher, QuestionAnswerCrossCheckDispatcher
+from homework.services import AnswerCrossCheckDispatcher, QuestionCrossCheckDispatcher
 
 pytestmark = [pytest.mark.django_db]
 
@@ -12,7 +12,7 @@ def dispatcher():
 
 @pytest.fixture
 def question_dispatcher(question):
-    return QuestionAnswerCrossCheckDispatcher(question=question, answers_per_user=1)
+    return QuestionCrossCheckDispatcher(question=question, answers_per_user=1)
 
 
 @pytest.fixture

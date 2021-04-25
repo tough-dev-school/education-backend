@@ -31,8 +31,8 @@ class Question(TimestampedModel):
         return urljoin(settings.FRONTEND_URL, f'homework/questions/{self.slug}/')
 
     def dispatch_crosscheck(self, *args, **kwargs):
-        from homework.services import QuestionAnswerCrossCheckDispatcher
-        dispatcher = QuestionAnswerCrossCheckDispatcher(question=self, *args, **kwargs)
+        from homework.services import QuestionCrossCheckDispatcher
+        dispatcher = QuestionCrossCheckDispatcher(question=self, *args, **kwargs)
 
         dispatcher()
 

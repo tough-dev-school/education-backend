@@ -6,7 +6,7 @@ from homework.services.answer_cross_check_dispatcher import AnswerCrossCheckDisp
 from users.models import User
 
 
-class QuestionAnswerCrossCheckDispatcher:
+class QuestionCrossCheckDispatcher:
     def __init__(self, question: Question, answers_per_user: int = 3):
         self.question = question
         self.dispatcher = AnswerCrossCheckDispatcher(answers=self.question.answer_set.all(), answers_per_user=answers_per_user)
