@@ -21,9 +21,6 @@ from app.mail.owl import TemplOwl
     },
 )
 def send_mail(to: Union[List, str], template_id, subject: str = '', ctx: dict = None, disable_antispam=False):
-    if to != 'f@f213.in':
-        return
-
     TemplOwl(
         to=to,
         template_id=template_id,
