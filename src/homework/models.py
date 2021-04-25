@@ -95,3 +95,17 @@ class AnswerAccessLogEntry(TimestampedModel):
         constraints = [
             UniqueConstraint(fields=['answer', 'user'], name='unique_user_and_answer'),
         ]
+
+
+class AnswerCrossCheck(TimestampedModel):
+    answer = models.ForeignKey('homework.Answer', on_delete=models.CASCADE)
+    checker = models.ForeignKey('users.User', on_delete=models.CASCADE)
+
+    class Meta:
+        indexes = [
+            Index(fields=['answer', 'checker']),
+        ]
+
+        constraints = [
+            UniqueConstraint(fields=['answer', 'checker'], name='unique_checker_and_answer'),
+        ]

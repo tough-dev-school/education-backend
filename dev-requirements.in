@@ -8,6 +8,7 @@ pytest-env
 pytest-freezegun
 pytest-mock
 pytest-randomly
+pytest-repeat
 pytest-xdist
 
 
