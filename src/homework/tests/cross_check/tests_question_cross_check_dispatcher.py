@@ -24,6 +24,7 @@ def test_email_is_sent(question_dispatcher, send_mail, mocker, answers):
     send_mail.assert_has_calls([mocker.call(
         to=answers[0].author.email,
         template_id='new-answers-to-check',
+        disable_antispam=True,
         ctx={
             'answers': [{
                 'url': mocker.ANY,

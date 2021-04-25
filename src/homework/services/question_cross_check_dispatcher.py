@@ -26,6 +26,7 @@ class QuestionCrossCheckDispatcher:
                 to=user.email,
                 template_id='new-answers-to-check',
                 ctx=self.build_notification_context(user_checks_list),
+                disable_antispam=True,
             )
 
     def get_users_to_notify(self) -> Iterable[User]:
