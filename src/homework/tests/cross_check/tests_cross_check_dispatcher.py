@@ -6,8 +6,8 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def dispatcher(dispatcher, answers, user, another_user):
-    return dispatcher(answers=answers, users=[user, another_user])
+def dispatcher(dispatcher, answers):
+    return dispatcher(answers=answers)
 
 
 @pytest.mark.repeat(10)

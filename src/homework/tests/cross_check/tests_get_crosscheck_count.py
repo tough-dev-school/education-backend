@@ -10,34 +10,34 @@ def get_crosscheck_count(user, dispatcher):
 
 
 def test_no_crosschecks(user, dispatcher, answers):
-    dispatcher = dispatcher(answers=answers, users=[user])
+    dispatcher = dispatcher(answers=answers)
 
     assert get_crosscheck_count(user, dispatcher) == 0
 
 
 def test_no_crosschecks_from_non_dispatched_answers(mixer, user, dispatcher, answers):
-    mixer.blend('homework.AnswerCrossCheck', answer=answers[0], checker=user)
-    dispatcher = dispatcher(answers=answers[1:], users=[user])
+    mixer.blend('homework.AnswerCrossCheck', answer=answers[1], checker=user)
+    dispatcher = dispatcher(answers=answers[:1])
 
     assert get_crosscheck_count(user, dispatcher) == 0
 
 
 def test_no_crosschecks_from_other_answers(mixer, user, dispatcher, answers):
     mixer.blend('homework.AnswerCrossCheck', checker=user)
-    dispatcher = dispatcher(answers=answers, users=[user])
+    dispatcher = dispatcher(answers=answers)
 
     assert get_crosscheck_count(user, dispatcher) == 0
 
 
 def test_no_crosschecks_from_other_users(mixer, user, dispatcher, answers):
     mixer.blend('homework.AnswerCrossCheck', answer=answers[1])
-    dispatcher = dispatcher(answers=answers, users=[user])
+    dispatcher = dispatcher(answers=answers)
 
     assert get_crosscheck_count(user, dispatcher) == 0
 
 
 def test_single_cross_check(mixer, user, dispatcher, answers):
     mixer.blend('homework.AnswerCrossCheck', checker=user, answer=answers[1])
-    dispatcher = dispatcher(answers=answers, users=[user])
+    dispatcher = dispatcher(answers=answers)
 
     assert get_crosscheck_count(user, dispatcher) == 1

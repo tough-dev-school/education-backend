@@ -11,5 +11,8 @@ def dispatcher():
 
 
 @pytest.fixture
-def answers(mixer):
-    return mixer.cycle(2).blend('homework.Answer')
+def answers(mixer, user, another_user):
+    return [
+        mixer.blend('homework.Answer', author=user),
+        mixer.blend('homework.Answer', author=another_user),
+    ]
