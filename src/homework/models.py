@@ -34,7 +34,7 @@ class Question(TimestampedModel):
         from homework.services import QuestionCrossCheckDispatcher
         dispatcher = QuestionCrossCheckDispatcher(question=self, *args, **kwargs)
 
-        dispatcher()
+        return dispatcher()
 
 
 class AnswerQuerySet(DefaultQuerySet):

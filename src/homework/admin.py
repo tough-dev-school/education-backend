@@ -1,4 +1,6 @@
-from app.admin import ModelAdmin, admin
+from django.utils.translation import gettext_lazy as _
+
+from app.admin import ModelAdmin, action, admin
 from homework.models import Answer, Question
 
 
@@ -13,9 +15,20 @@ class QuestionAdmin(ModelAdmin):
         'name',
         'text',
     ]
+    actions = [
+        'dispatch_crosscheck',
+    ]
 
     def courses_list(self, obj=None):
         return ', '.join([course.name for course in obj.courses.all()])
+
+    @action(short_description=_('Dispatch crosscheck'))
+    def dispatch_crosscheck(self, request, queryset):
+        count = 0
+        for question in queryset.iterator():
+            count += question.dispatch_crosscheck()
+
+        self.message_user(request, f'{count} users will check {queryset.count()} questions')
 
 
 @admin.register(Answer)

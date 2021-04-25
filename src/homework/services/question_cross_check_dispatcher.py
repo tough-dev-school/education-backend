@@ -12,9 +12,11 @@ class QuestionCrossCheckDispatcher:
         self.dispatcher = AnswerCrossCheckDispatcher(answers=self.question.answer_set.all(), answers_per_user=answers_per_user)
         self.checks: List[AnswerCrossCheck] = list()
 
-    def __call__(self):
+    def __call__(self) -> int:
         self.dispatch_cross_checks()
         self.notify_users()
+
+        return self.get_users_to_notify().count()
 
     def dispatch_cross_checks(self):
         self.checks = self.dispatcher()
