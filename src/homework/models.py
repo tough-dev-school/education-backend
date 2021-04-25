@@ -30,6 +30,12 @@ class Question(TimestampedModel):
     def get_absolute_url(self):
         return urljoin(settings.FRONTEND_URL, f'homework/questions/{self.slug}/')
 
+    def dispatch_crosscheck(self, *args, **kwargs):
+        from homework.services import QuestionAnswerCrossCheckDispatcher
+        dispatcher = QuestionAnswerCrossCheckDispatcher(question=self, *args, **kwargs)
+
+        dispatcher()
+
 
 class AnswerQuerySet(DefaultQuerySet):
     def for_user(self, user):
