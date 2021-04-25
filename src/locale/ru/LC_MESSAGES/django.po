@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-14 19:07+0300\n"
+"POT-Creation-Date: 2021-04-25 23:21+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,26 +28,38 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: homework/models.py:11 magnets/models.py:17 products/admin/bundle.py:19
+#: homework/admin.py:25
+msgid "Dispatch crosscheck"
+msgstr "Запустить p2p-проверку домашки"
+
+#: homework/models.py:19 magnets/models.py:17 products/admin/bundle.py:19
 #: products/admin/course.py:12 products/admin/courses/record.py:16
 msgid "Name"
 msgstr "Название"
 
-#: homework/models.py:16
+#: homework/models.py:24
 msgid "Homework"
 msgstr "Домашка"
 
-#: homework/models.py:17
+#: homework/models.py:25
 msgid "Homeworks"
 msgstr "Домашки"
 
-#: homework/models.py:28
+#: homework/models.py:27
+msgid "May see questions for all homeworks"
+msgstr ""
+
+#: homework/models.py:60
 msgid "Homework answer"
 msgstr "Ответ на домашку"
 
-#: homework/models.py:29
+#: homework/models.py:61
 msgid "Homework answers"
 msgstr "Ответы на домашку"
+
+#: homework/models.py:64
+msgid "May see answers from every user"
+msgstr ""
 
 #: magnets/admin.py:33
 msgid "Lead count"
@@ -153,7 +165,7 @@ msgstr "Дата выполнения"
 msgid "User-requested bank string"
 msgstr ""
 
-#: orders/models/order.py:39 products/models/course.py:25
+#: orders/models/order.py:39 products/models/course.py:23
 msgid "Course"
 msgstr "Курс"
 
@@ -161,7 +173,7 @@ msgstr "Курс"
 msgid "Record"
 msgstr "Запись"
 
-#: orders/models/order.py:41 products/models/bundle.py:15
+#: orders/models/order.py:41 products/models/bundle.py:13
 msgid "Bundle"
 msgstr "Набор"
 
@@ -244,53 +256,53 @@ msgstr ""
 "не заполнять — покупатель переплатит за кредит. Можно взять в админке "
 "Тинькофф"
 
-#: products/models/bundle.py:16
+#: products/models/bundle.py:14
 msgid "Bundles"
 msgstr "Наборы"
 
-#: products/models/course.py:15
+#: products/models/course.py:13
 msgid "Genitive name"
 msgstr "В родительном падеже"
 
-#: products/models/course.py:16
+#: products/models/course.py:14
 msgid "Clickmeeting room URL"
 msgstr "Ссылка на ClickMeeting"
 
-#: products/models/course.py:16 products/models/course.py:17
+#: products/models/course.py:14 products/models/course.py:15
 msgid "If set, every user who purcashes this course gets invited"
 msgstr "Купившие курс приглашаются автоматически"
 
-#: products/models/course.py:17
+#: products/models/course.py:15
 msgid "Zoom.us webinar ID"
 msgstr "ID вебинара в зуме"
 
-#: products/models/course.py:19
+#: products/models/course.py:17
 msgid "Welcome letter template id"
 msgstr "ID шаблона приветственного письма"
 
-#: products/models/course.py:19
+#: products/models/course.py:17
 msgid "Will be sent upon purchase if set"
 msgstr "Если задать — письмо будет уходить вместе с каждой покупкой"
 
-#: products/models/course.py:20
+#: products/models/course.py:18
 msgid "Special welcome letter template id for gifts"
 msgstr "ID шаблона для подарочного письма"
 
-#: products/models/course.py:20
+#: products/models/course.py:18
 msgid "If not set, common welcome letter will be used"
 msgstr ""
 "Если задать — для подарочных заказов будем использовать этот шаблон, а не "
 "предыдущий"
 
-#: products/models/course.py:21
+#: products/models/course.py:19
 msgid "Mailchimp audience id"
 msgstr "ID списка рассылки в Mailchimp"
 
-#: products/models/course.py:21
+#: products/models/course.py:19
 msgid "Get it from audience settings"
 msgstr "Взять можно в audience -> settings в админке мейлчимпа"
 
-#: products/models/course.py:26
+#: products/models/course.py:24
 msgid "Courses"
 msgstr "Курсы"
 

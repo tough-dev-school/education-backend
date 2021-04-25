@@ -30,6 +30,12 @@ class Question(TimestampedModel):
     def get_absolute_url(self):
         return urljoin(settings.FRONTEND_URL, f'homework/questions/{self.slug}/')
 
+    def dispatch_crosscheck(self, *args, **kwargs):
+        from homework.services import QuestionCrossCheckDispatcher
+        dispatcher = QuestionCrossCheckDispatcher(question=self, *args, **kwargs)
+
+        return dispatcher()
+
 
 class AnswerQuerySet(DefaultQuerySet):
     def for_user(self, user):
@@ -94,4 +100,18 @@ class AnswerAccessLogEntry(TimestampedModel):
         ]
         constraints = [
             UniqueConstraint(fields=['answer', 'user'], name='unique_user_and_answer'),
+        ]
+
+
+class AnswerCrossCheck(TimestampedModel):
+    answer = models.ForeignKey('homework.Answer', on_delete=models.CASCADE)
+    checker = models.ForeignKey('users.User', on_delete=models.CASCADE)
+
+    class Meta:
+        indexes = [
+            Index(fields=['answer', 'checker']),
+        ]
+
+        constraints = [
+            UniqueConstraint(fields=['answer', 'checker'], name='unique_checker_and_answer'),
         ]
