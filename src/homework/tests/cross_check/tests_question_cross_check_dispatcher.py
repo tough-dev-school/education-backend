@@ -5,7 +5,7 @@ from homework.models import AnswerCrossCheck
 pytestmark = [pytest.mark.django_db]
 
 
-def test_cross_checks_are_created(question_dispatcher):
+def test_crosschecks_are_created(question_dispatcher):
     question_dispatcher()
 
     assert AnswerCrossCheck.objects.count() == 2
