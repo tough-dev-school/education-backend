@@ -18,6 +18,7 @@ class QuestionAdmin(ModelAdmin):
     actions = [
         'dispatch_crosscheck',
     ]
+    save_as = True
 
     def courses_list(self, obj=None):
         return ', '.join([course.name for course in obj.courses.all()])
