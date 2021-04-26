@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 import random
 from django.db import transaction
@@ -20,25 +20,27 @@ class AnswerCrossCheckDispatcher:
 
     @transaction.atomic
     def __call__(self) -> List[AnswerCrossCheck]:
-        cross_checks = list()
+        crosschecks = list()
         for user in self.users.iterator():
             for _ in range(0, self.answers_per_user):
                 answer = self.get_answer_to_check(user)
-                cross_checks.append(
+                crosschecks.append(
                     self.give_answer_to_user(answer, user),
                 )
 
-        return cross_checks
+        return crosschecks
 
-    def get_answer_to_check(self, user: User) -> Answer:
+    def get_answer_to_check(self, user: User) -> Optional[Answer]:
         valid_answers = list(
             self.get_answers_with_crosscheck_count()
             .annotate(already_checking=Count('answercrosscheck', filter=Q(answercrosscheck__checker_id=user.id)))
             .exclude(already_checking__gte=1)
             .exclude(author=user)
+            .exclude(do_not_crosscheck=True)
             .order_by('crosscheck_count'))
 
-        return random.choices(valid_answers, weights=[len(valid_answers) - answer.crosscheck_count for answer in valid_answers])[0]
+        if len(valid_answers) >= 1:
+            return random.choices(valid_answers, weights=[len(valid_answers) - answer.crosscheck_count for answer in valid_answers])[0]
 
     def give_answer_to_user(self, answer: Answer, user: User):
         return AnswerCrossCheck.objects.create(answer=answer, checker=user)

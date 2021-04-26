@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-25 23:21+0300\n"
+"POT-Creation-Date: 2021-04-26 13:15+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,15 +49,19 @@ msgstr "Домашки"
 msgid "May see questions for all homeworks"
 msgstr ""
 
-#: homework/models.py:60
+#: homework/models.py:56
+msgid "Exclude from cross-checking"
+msgstr "Исключить из p2p-проверки"
+
+#: homework/models.py:61
 msgid "Homework answer"
 msgstr "Ответ на домашку"
 
-#: homework/models.py:61
+#: homework/models.py:62
 msgid "Homework answers"
 msgstr "Ответы на домашку"
 
-#: homework/models.py:64
+#: homework/models.py:65
 msgid "May see answers from every user"
 msgstr ""
 

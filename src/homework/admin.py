@@ -40,6 +40,7 @@ class AnswerAdmin(ModelAdmin):
     list_display = [
         'question',
         'author',
+        'do_not_crosscheck',
         'short_text',
     ]
     fields = [
@@ -48,6 +49,10 @@ class AnswerAdmin(ModelAdmin):
         'text',
     ]
     readonly_fields = fields
+
+    list_editable = [
+        'do_not_crosscheck',
+    ]
 
     def short_text(self, obj=None):
         return str(obj)

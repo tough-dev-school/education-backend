@@ -2,23 +2,26 @@ from typing import Iterable, List
 
 from app.tasks import send_mail
 from homework.models import AnswerCrossCheck, Question
-from homework.services.answer_cross_check_dispatcher import AnswerCrossCheckDispatcher
+from homework.services.answer_crosscheck_dispatcher import AnswerCrossCheckDispatcher
 from users.models import User
 
 
 class QuestionCrossCheckDispatcher:
     def __init__(self, question: Question, answers_per_user: int = 3):
         self.question = question
-        self.dispatcher = AnswerCrossCheckDispatcher(answers=self.question.answer_set.all(), answers_per_user=answers_per_user)
+        self.dispatcher = AnswerCrossCheckDispatcher(
+            answers=self.question.answer_set.all(),
+            answers_per_user=answers_per_user,
+        )
         self.checks: List[AnswerCrossCheck] = list()
 
     def __call__(self) -> int:
-        self.dispatch_cross_checks()
+        self.dispatch_crosschecks()
         self.notify_users()
 
         return self.get_users_to_notify().count()
 
-    def dispatch_cross_checks(self):
+    def dispatch_crosschecks(self):
         self.checks = self.dispatcher()
 
     def notify_users(self):
