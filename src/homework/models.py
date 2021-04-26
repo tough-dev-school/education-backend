@@ -4,10 +4,8 @@ import contextlib
 import uuid
 from django.conf import settings
 from django.db.models import Index, Q, UniqueConstraint
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from markdownx.models import MarkdownxField
-from tree_queries.models import TreeNode
 from urllib.parse import urljoin
 
 from app.models import DefaultQuerySet, TimestampedModel, models
@@ -45,11 +43,12 @@ class AnswerQuerySet(DefaultQuerySet):
         )
 
 
-class Answer(TreeNode):
+class Answer(TimestampedModel):
     objects: AnswerQuerySet = AnswerQuerySet.as_manager()
 
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     modified = models.DateTimeField(null=True, blank=True, db_index=True)
+    parent = models.ForeignKey(blank=True, null=True, on_delete=models.CASCADE, related_name='children', to='homework.answer', verbose_name='parent')
 
     slug = models.UUIDField(db_index=True, unique=True, default=uuid.uuid4)
     question = models.ForeignKey('homework.Question', on_delete=models.CASCADE)
@@ -65,12 +64,6 @@ class Answer(TreeNode):
         permissions = [
             ('see_all_answers', _('May see answers from every user')),
         ]
-
-    def save(self, *args, **kwargs):
-        if self.pk:
-            self.modified = timezone.now()
-
-        return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return urljoin(settings.FRONTEND_URL, f'homework/questions/{self.question.slug}/#{self.slug}')

@@ -6,7 +6,6 @@ django-ipware
 django-split-settings
 whitenoise
 psycopg2-binary
-django_tree_queries
 
 djangorestframework>=3.11.0
 django-storages
