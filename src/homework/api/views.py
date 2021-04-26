@@ -67,7 +67,9 @@ class AnswerCreateView(ListCreateAPIView):
         return super().get_serializer_class()
 
     def get_queryset(self):
-        if not self.request.user.has_perm('homework.see_all_answers'):
-            return super().get_queryset().for_user(self.request.user)
+        queryset = super().get_queryset().filter(question=self.get_question())
 
-        return super().get_queryset()
+        if not self.request.user.has_perm('homework.see_all_answers'):
+            return queryset.for_user(self.request.user)
+
+        return queryset

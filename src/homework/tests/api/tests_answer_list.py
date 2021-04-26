@@ -28,6 +28,22 @@ def test_ok(api, question, answer):
     assert got[0]['author']['last_name'] == api.user.last_name
 
 
+@pytest.mark.usefixtures('answer')
+def test_answers_from_other_questions_are_excluded(api, another_question):
+    got = api.get(f'/api/v2/homework/questions/{another_question.slug}/answers/')['results']
+
+    assert len(got) == 0
+
+
+@pytest.mark.usefixtures('answer', 'answer_from_another_user')
+def test_answers_from_other_questions_are_excluded_even_if_user_has_the_permission(api, another_question):
+    api.user.add_perm('homework.answer.see_all_answers')
+
+    got = api.get(f'/api/v2/homework/questions/{another_question.slug}/answers/')['results']
+
+    assert len(got) == 0
+
+
 @pytest.mark.usefixtures('answer_from_another_user')
 def test_answers_from_another_authors_are_excluded(api, question):
     got = api.get(f'/api/v2/homework/questions/{question.slug}/answers/')['results']
@@ -35,7 +51,6 @@ def test_answers_from_another_authors_are_excluded(api, question):
     assert len(got) == 0
 
 
-@pytest.mark.usefixtures('answer_from_another_user')
 def test_answers_from_another_authors_are_included_if_already_seen(api, mixer, question, answer_from_another_user):
     mixer.blend('homework.AnswerAccessLogEntry', user=api.user, answer=answer_from_another_user)
 
