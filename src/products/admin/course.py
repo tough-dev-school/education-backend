@@ -14,6 +14,7 @@ class CourseAdmin(ModelAdmin):
             'name_genitive',
             'name_receipt',
             'full_name',
+            'group',
         ]}),
         (_('Price'), {'fields': [
             'price',
@@ -32,8 +33,13 @@ class CourseAdmin(ModelAdmin):
 
     list_display = [
         'id',
+        'group',
         'name',
         'slug',
+    ]
+
+    list_filter = [
+        'group',
     ]
 
     list_display_links = [

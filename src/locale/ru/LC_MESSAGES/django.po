@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-26 13:15+0300\n"
+"POT-Creation-Date: 2021-04-26 21:32+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,24 +28,32 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: homework/admin.py:25
+#: homework/admin.py:26
 msgid "Dispatch crosscheck"
 msgstr "Запустить p2p-проверку домашки"
 
-#: homework/models.py:19 magnets/models.py:17 products/admin/bundle.py:19
+#: homework/admin.py:59
+msgid "Text"
+msgstr ""
+
+#: homework/admin.py:63 orders/models/order.py:39 products/models/course.py:23
+msgid "Course"
+msgstr "Курс"
+
+#: homework/models.py:18 magnets/models.py:17 products/admin/bundle.py:19
 #: products/admin/course.py:12 products/admin/courses/record.py:16
 msgid "Name"
 msgstr "Название"
 
-#: homework/models.py:24
+#: homework/models.py:23
 msgid "Homework"
 msgstr "Домашка"
 
-#: homework/models.py:25
+#: homework/models.py:24
 msgid "Homeworks"
 msgstr "Домашки"
 
-#: homework/models.py:27
+#: homework/models.py:26
 msgid "May see questions for all homeworks"
 msgstr ""
 
@@ -141,8 +149,8 @@ msgstr "Ещё раз выполнить (если заказ не оплаче�
 msgid "Order count"
 msgstr "Количество заказов"
 
-#: orders/models/order.py:27 products/admin/bundle.py:25
-#: products/admin/course.py:18 products/admin/courses/record.py:22
+#: orders/models/order.py:27 products/admin/bundle.py:26
+#: products/admin/course.py:19 products/admin/courses/record.py:23
 msgid "Price"
 msgstr "Цена"
 
@@ -168,10 +176,6 @@ msgstr "Дата выполнения"
 #: orders/models/order.py:37
 msgid "User-requested bank string"
 msgstr ""
-
-#: orders/models/order.py:39 products/models/course.py:23
-msgid "Course"
-msgstr "Курс"
 
 #: orders/models/order.py:40 products/models/record.py:16
 msgid "Record"
@@ -219,11 +223,11 @@ msgstr ""
 msgid "Promo Codes"
 msgstr "Промо-коды"
 
-#: products/admin/bundle.py:29
+#: products/admin/bundle.py:30
 msgid "Items"
 msgstr "Товары"
 
-#: products/admin/course.py:23 products/admin/courses/record.py:26
+#: products/admin/course.py:24 products/admin/courses/record.py:27
 msgid "Access"
 msgstr "Доступы"
 
@@ -237,7 +241,7 @@ msgstr "ID шаблона в постмарке"
 msgid "Send email to all purchased_users"
 msgstr "Отправить письмо всем купившим"
 
-#: products/admin/courses/record.py:41
+#: products/admin/courses/record.py:42
 msgid "Downloadable link"
 msgstr "Ссылка на скачиваие"
 
@@ -309,6 +313,14 @@ msgstr "Взять можно в audience -> settings в админке мейл
 #: products/models/course.py:24
 msgid "Courses"
 msgstr "Курсы"
+
+#: products/models/group.py:10
+msgid "Analytical group"
+msgstr "Группа товаров (аналитика)"
+
+#: products/models/group.py:11
+msgid "Analytical groups"
+msgstr "Группы товаров (аналитика)"
 
 #: products/models/record.py:12
 msgid "Postmark template_id"

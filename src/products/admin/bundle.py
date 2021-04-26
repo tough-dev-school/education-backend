@@ -21,6 +21,7 @@ class BundleAdmin(ModelAdmin):
             'slug',
             'name_receipt',
             'full_name',
+            'group',
         ]}),
         (_('Price'), {'fields': [
             'price',

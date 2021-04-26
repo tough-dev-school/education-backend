@@ -17,6 +17,7 @@ class RecordAdmin(StackedInline):
             'name',
             'name_receipt',
             'full_name',
+            'group',
             'template_id',
         ]}),
         (_('Price'), {'fields': [

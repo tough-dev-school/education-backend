@@ -26,6 +26,8 @@ class Shippable(TimestampedModel):
 
     tinkoff_credit_promo_code = models.CharField(_('Fixed promo code for tinkoff credit'), max_length=64, blank=True, help_text=_('Used in tinkoff credit only'))
 
+    group = models.ForeignKey('products.Group', verbose_name=_('Analytical group'), null=True, blank=True, on_delete=models.SET_NULL)
+
     class Meta:
         abstract = True
 
