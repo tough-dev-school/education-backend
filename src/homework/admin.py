@@ -1,6 +1,6 @@
 from django.utils.translation import gettext_lazy as _
 
-from app.admin import ModelAdmin, action, admin
+from app.admin import ModelAdmin, action, admin, field
 from homework.models import Answer, Question
 
 
@@ -39,6 +39,7 @@ class AnswerAdmin(ModelAdmin):
     ]
     list_display = [
         'question',
+        'course',
         'author',
         'do_not_crosscheck',
         'short_text',
@@ -54,5 +55,14 @@ class AnswerAdmin(ModelAdmin):
         'do_not_crosscheck',
     ]
 
+    @field(short_description=_('Text'))
     def short_text(self, obj=None):
         return str(obj)
+
+    @field(short_description=_('Course'))
+    def course(self, obj=None):
+        course = obj.get_purchased_course()
+        if course is None:
+            return '—'
+
+        return str(course)

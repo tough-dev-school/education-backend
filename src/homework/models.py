@@ -11,6 +11,7 @@ from tree_queries.models import TreeNode
 from urllib.parse import urljoin
 
 from app.models import DefaultQuerySet, TimestampedModel, models
+from orders.models import Order
 
 
 class Question(TimestampedModel):
@@ -73,6 +74,12 @@ class Answer(TreeNode):
 
     def get_absolute_url(self):
         return urljoin(settings.FRONTEND_URL, f'homework/questions/{self.question.slug}/#{self.slug}')
+
+    def get_purchased_course(self):
+        latest_purchase = Order.objects.paid().filter(user=self.author, course__in=self.question.courses.all()).order_by('-paid').first()
+
+        if latest_purchase:
+            return latest_purchase.course
 
     def __str__(self):
         LENGTH = 30
