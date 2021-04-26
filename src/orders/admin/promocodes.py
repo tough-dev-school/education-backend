@@ -1,6 +1,8 @@
+from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
-from app.admin import ModelAdmin, admin
+from app.admin import ModelAdmin, admin, field
 from orders.models import PromoCode
 
 
@@ -25,8 +27,11 @@ class PromoCodeAdmin(ModelAdmin):
         return super().get_queryset(request) \
             .with_order_count()
 
+    @mark_safe
+    @field(short_description=_('Order count'), admin_order_field='order_count')
     def order_count(self, obj=None):
-        return obj.order_count if obj and hasattr(obj, 'order_count') and obj.order_count else '—'
+        if hasattr(obj, 'order_count') and obj.order_count:
+            orders_url = reverse('admin:orders_order_changelist')
+            return f'<a href="{orders_url}?is_paid=t&promocode_id={obj.id}">{obj.order_count}</a>'
 
-    order_count.short_description = _('Order count')
-    order_count.admin_order_field = 'order_count'
+        return '—'
