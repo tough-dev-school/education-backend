@@ -1,3 +1,5 @@
+from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, action, admin, field
@@ -42,7 +44,7 @@ class AnswerAdmin(ModelAdmin):
         'created',
         'question',
         'course',
-        'author',
+        '_author',
         'do_not_crosscheck',
         'crosscheck_count',
     ]
@@ -71,3 +73,9 @@ class AnswerAdmin(ModelAdmin):
     @field(short_description=_('Crosschecking people'), admin_order_field='crosscheck_count')
     def crosscheck_count(self, obj=None):
         return obj.crosscheck_count or '—'
+
+    @mark_safe
+    @field(short_description=_('Author'), admin_order_field='auhor')
+    def _author(self, obj=None):
+        author_url = reverse('admin:users_user_change', args=[obj.author_id])
+        return f'<a taget="_blank" href="{author_url}">{obj.author}</a>'
