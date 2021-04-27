@@ -85,4 +85,4 @@ class AnswerAdmin(ModelAdmin):
     @field(short_description=_('Author'), admin_order_field='auhor')
     def _author(self, obj=None):
         author_url = reverse('admin:users_user_change', args=[obj.author_id])
-        return f'<a taget="_blank" href="{author_url}">{obj.author}</a>'
+        return f'<a href="{author_url}">{obj.author}</a>'
