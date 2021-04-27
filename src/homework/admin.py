@@ -59,6 +59,13 @@ class AnswerAdmin(ModelAdmin):
         'do_not_crosscheck',
     ]
 
+    search_fields = [
+        'author__first_name',
+        'author__last_name',
+        'author__email',
+        'text',
+    ]
+
     def get_queryset(self, request):
         return super().get_queryset(request).with_crosscheck_count()
 
