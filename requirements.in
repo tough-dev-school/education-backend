@@ -20,6 +20,7 @@ django-hattori
 django-healthchecks
 
 django-markdownx
+cmarkgfm
 bleach
 
 sentry-sdk

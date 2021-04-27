@@ -1,28 +1,14 @@
 import bleach
-from bleach.sanitizer import ALLOWED_ATTRIBUTES, ALLOWED_TAGS
-from markdown import markdown
-from markdownx.settings import MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS, MARKDOWNX_MARKDOWN_EXTENSIONS
+import cmarkgfm
+from django.conf import settings
 
 
 def markdownify(content):
-    html = markdown(
-        text=content,
-        extensions=MARKDOWNX_MARKDOWN_EXTENSIONS,
-        extension_configs=MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS,
-        output_format='html5',
-    )
+    html = cmarkgfm.github_flavored_markdown_to_html(content)
 
     return bleach.clean(
         text=html,
-        tags=[
-            *ALLOWED_TAGS,
-            'p',
-            'img',
-        ],
-        attributes={
-            **ALLOWED_ATTRIBUTES,
-            'img': {
-                'src',
-            },
-        },
+        tags=settings.BLEACH_ALLOWED_TAGS,
+        attributes=settings.BLEACH_ALLOWED_ATTRIBUTES,
+        strip_comments=False,
     )
