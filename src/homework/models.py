@@ -3,7 +3,7 @@ from typing import Optional
 import contextlib
 import uuid
 from django.conf import settings
-from django.db.models import Index, Q, UniqueConstraint
+from django.db.models import Count, Index, Q, UniqueConstraint
 from django.utils.translation import gettext_lazy as _
 from markdownx.models import MarkdownxField
 from urllib.parse import urljoin
@@ -41,6 +41,9 @@ class AnswerQuerySet(DefaultQuerySet):
         return self.filter(
             Q(author=user) | Q(parent__author=user) | Q(answeraccesslogentry__user=user),
         )
+
+    def with_crosscheck_count(self):
+        return self.annotate(crosscheck_count=Count('answercrosscheck'))
 
 
 class Answer(TimestampedModel):

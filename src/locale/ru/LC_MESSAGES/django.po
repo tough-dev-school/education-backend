@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-26 21:32+0300\n"
+"POT-Creation-Date: 2021-04-27 16:07+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,13 +32,17 @@ msgstr "Нет"
 msgid "Dispatch crosscheck"
 msgstr "Запустить p2p-проверку домашки"
 
-#: homework/admin.py:59
+#: homework/admin.py:64
 msgid "Text"
 msgstr ""
 
-#: homework/admin.py:63 orders/models/order.py:39 products/models/course.py:23
+#: homework/admin.py:68 orders/models/order.py:39 products/models/course.py:23
 msgid "Course"
 msgstr "Курс"
+
+#: homework/admin.py:76
+msgid "Crosschecking people"
+msgstr "Учеников проверяет"
 
 #: homework/models.py:18 magnets/models.py:17 products/admin/bundle.py:19
 #: products/admin/course.py:12 products/admin/courses/record.py:16
@@ -57,19 +61,19 @@ msgstr "Домашки"
 msgid "May see questions for all homeworks"
 msgstr ""
 
-#: homework/models.py:56
+#: homework/models.py:59
 msgid "Exclude from cross-checking"
 msgstr "Исключить из p2p-проверки"
 
-#: homework/models.py:61
+#: homework/models.py:64
 msgid "Homework answer"
 msgstr "Ответ на домашку"
 
-#: homework/models.py:62
+#: homework/models.py:65
 msgid "Homework answers"
 msgstr "Ответы на домашку"
 
-#: homework/models.py:65
+#: homework/models.py:68
 msgid "May see answers from every user"
 msgstr ""
 
@@ -264,6 +268,10 @@ msgstr ""
 "не заполнять — покупатель переплатит за кредит. Можно взять в админке "
 "Тинькофф"
 
+#: products/models/base.py:29 products/models/group.py:10
+msgid "Analytical group"
+msgstr "Группа товаров (аналитика)"
+
 #: products/models/bundle.py:14
 msgid "Bundles"
 msgstr "Наборы"
@@ -313,10 +321,6 @@ msgstr "Взять можно в audience -> settings в админке мейл
 #: products/models/course.py:24
 msgid "Courses"
 msgstr "Курсы"
-
-#: products/models/group.py:10
-msgid "Analytical group"
-msgstr "Группа товаров (аналитика)"
 
 #: products/models/group.py:11
 msgid "Analytical groups"
