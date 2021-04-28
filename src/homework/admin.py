@@ -3,6 +3,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, action, admin, field
+from app.admin.filters import BooleanFilter
 from homework.models import Answer, Question
 
 
@@ -34,9 +35,21 @@ class QuestionAdmin(ModelAdmin):
         self.message_user(request, f'{count} users will check {queryset.count()} questions')
 
 
+class IsRootFilter(BooleanFilter):
+    title = _('Is root answer')
+    parameter_name = 'is_root'
+
+    def t(self, request, queryset):
+        return queryset.filter(parent__isnull=True)
+
+    def f(self, request, queryset):
+        return queryset.filter(parent__isnull=False)
+
+
 @admin.register(Answer)
 class AnswerAdmin(ModelAdmin):
     list_filter = [
+        IsRootFilter,
         'question',
         'question__courses',
     ]
@@ -67,7 +80,8 @@ class AnswerAdmin(ModelAdmin):
     ]
 
     def get_queryset(self, request):
-        return super().get_queryset(request).with_crosscheck_count()
+        return super().get_queryset(request).with_crosscheck_count() \
+            .select_related('author', 'question')
 
     @field(short_description=_('Course'))
     def course(self, obj=None):
