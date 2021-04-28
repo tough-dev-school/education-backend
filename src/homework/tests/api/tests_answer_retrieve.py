@@ -16,6 +16,11 @@ def test_ok(api, answer):
     assert got['descendants'] == []
 
 
+def test_query_count_for_answer_without_descendants(api, answer, django_assert_num_queries):
+    with django_assert_num_queries(7):
+        api.get(f'/api/v2/homework/answers/{answer.slug}/')
+
+
 def test_markdown(api, answer):
     answer.text = '*should be rendered*'
     answer.save()

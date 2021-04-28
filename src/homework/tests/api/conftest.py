@@ -46,10 +46,5 @@ def another_answer(mixer, question, api):
 
 
 @pytest.fixture
-def child_of_another_answer(mixer, question, another_answer, api):
-    return mixer.blend('homework.Answer', question=question, author=api.user, parent=another_answer)
-
-
-@pytest.fixture
 def purchase(mixer, course, api):
     return mixer.blend('orders.Order', user=api.user, course=course, paid=timezone.now())
