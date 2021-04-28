@@ -22,10 +22,3 @@ class SoftField(serializers.ReadOnlyField):
 
         except AttributeError:
             return
-
-
-class RecursiveField(serializers.Serializer):
-    """Stackoverflowed from https://stackoverflow.com/a/27236783"""
-    def to_representation(self, value):
-        serializer = self.parent.parent.__class__(value, context=self.context)
-        return serializer.data
