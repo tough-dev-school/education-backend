@@ -4,6 +4,7 @@ django-cors-headers
 django-environ
 django-ipware
 django-split-settings
+django-tree-queries
 whitenoise
 psycopg2-binary
 

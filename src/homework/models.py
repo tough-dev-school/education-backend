@@ -4,8 +4,10 @@ import contextlib
 import uuid
 from django.conf import settings
 from django.db.models import Count, Index, Q, UniqueConstraint
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from markdownx.models import MarkdownxField
+from tree_queries.models import TreeNode, TreeQuerySet
 from urllib.parse import urljoin
 
 from app.models import DefaultQuerySet, TimestampedModel, models
@@ -36,7 +38,7 @@ class Question(TimestampedModel):
         return dispatcher()
 
 
-class AnswerQuerySet(DefaultQuerySet):
+class AnswerQuerySet(TreeQuerySet):
     def for_user(self, user):
         return self.filter(
             Q(author=user) | Q(parent__author=user) | Q(answeraccesslogentry__user=user),
@@ -46,12 +48,11 @@ class AnswerQuerySet(DefaultQuerySet):
         return self.annotate(crosscheck_count=Count('answercrosscheck'))
 
 
-class Answer(TimestampedModel):
+class Answer(TreeNode):
     objects: AnswerQuerySet = AnswerQuerySet.as_manager()
 
     created = models.DateTimeField(auto_now_add=True, db_index=True)
-    modified = models.DateTimeField(null=True, blank=True, db_index=True)
-    parent = models.ForeignKey(blank=True, null=True, on_delete=models.CASCADE, related_name='children', to='homework.answer', verbose_name='parent')
+    modified = models.DateTimeField(auto_now=True, db_index=True)
 
     slug = models.UUIDField(db_index=True, unique=True, default=uuid.uuid4)
     question = models.ForeignKey('homework.Question', on_delete=models.CASCADE)
