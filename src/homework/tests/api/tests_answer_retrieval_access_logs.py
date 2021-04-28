@@ -34,8 +34,8 @@ def api(api):
     return api
 
 
-def test_log_entry_is_created(api, question, answer):
-    api.get(f'/api/v2/homework/questions/{question.slug}/answers/{answer.slug}/')
+def test_log_entry_is_created(api, answer):
+    api.get(f'/api/v2/homework/answers/{answer.slug}/')
 
     entry = get_log_entry()
 
@@ -43,27 +43,27 @@ def test_log_entry_is_created(api, question, answer):
     assert entry.answer == answer
 
 
-def test_log_entry_is_not_created_when_requesting_own_answers(api, question, answer):
+def test_log_entry_is_not_created_when_requesting_own_answers(api, answer):
     answer.author = api.user
     answer.save()
 
-    api.get(f'/api/v2/homework/questions/{question.slug}/answers/{answer.slug}/')
+    api.get(f'/api/v2/homework/answers/{answer.slug}/')
 
     assert get_log_entry() is None
 
 
-def test_log_entry_is_not_created_for_users_with_permission(api, question, answer):
+def test_log_entry_is_not_created_for_users_with_permission(api, answer):
     api.user.add_perm('homework.answer.see_all_answers')
 
-    api.get(f'/api/v2/homework/questions/{question.slug}/answers/{answer.slug}/')
+    api.get(f'/api/v2/homework/answers/{answer.slug}/')
 
     assert get_log_entry() is None
 
 
-def test_log_entry_is_not_created_for_superusers(api, question, answer):
+def test_log_entry_is_not_created_for_superusers(api, answer):
     api.user.is_superuser = True
     api.user.save()
 
-    api.get(f'/api/v2/homework/questions/{question.slug}/answers/{answer.slug}/')
+    api.get(f'/api/v2/homework/answers/{answer.slug}/')
 
     assert get_log_entry() is None
