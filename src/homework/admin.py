@@ -80,7 +80,8 @@ class AnswerAdmin(ModelAdmin):
     ]
 
     def get_queryset(self, request):
-        return super().get_queryset(request).with_crosscheck_count()
+        return super().get_queryset(request).with_crosscheck_count() \
+            .select_related('author', 'question')
 
     @field(short_description=_('Course'))
     def course(self, obj=None):
