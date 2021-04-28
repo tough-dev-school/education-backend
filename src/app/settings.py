@@ -19,6 +19,7 @@ include(
     'conf/api.py',
     'conf/auth.py',
     'conf/boilerplate.py',
+    'conf/cache.py',
     'conf/celery.py',
     'conf/db.py',
     'conf/email.py',

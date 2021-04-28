@@ -4,7 +4,6 @@ import contextlib
 import uuid
 from django.conf import settings
 from django.db.models import Count, Index, Q, UniqueConstraint
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from markdownx.models import MarkdownxField
 from tree_queries.models import TreeNode, TreeQuerySet
@@ -39,6 +38,9 @@ class Question(TimestampedModel):
 
 
 class AnswerQuerySet(TreeQuerySet):
+    def for_viewset(self):
+        return self.with_tree_fields().select_related('author', 'question')
+
     def for_user(self, user):
         return self.filter(
             Q(author=user) | Q(parent__author=user) | Q(answeraccesslogentry__user=user),
@@ -77,6 +79,9 @@ class Answer(TreeNode):
 
         if latest_purchase:
             return latest_purchase.course
+
+    def get_first_level_descendants(self):
+        return self.descendants().filter(parent=self.id)
 
     def __str__(self):
         LENGTH = 30

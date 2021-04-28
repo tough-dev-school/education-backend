@@ -7,11 +7,6 @@ pytestmark = [
 
 
 @pytest.fixture
-def another_user(mixer):
-    return mixer.blend('users.User')
-
-
-@pytest.fixture
 def answer_from_another_user(another_user, another_answer):
     another_answer.author = another_user
     another_answer.save()

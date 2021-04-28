@@ -5,6 +5,8 @@ django-environ
 django-ipware
 django-split-settings
 django-tree-queries
+django-cachalot
+django_redis
 whitenoise
 psycopg2-binary
 

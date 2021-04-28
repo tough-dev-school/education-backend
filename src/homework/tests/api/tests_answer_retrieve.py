@@ -13,6 +13,12 @@ def test_ok(api, answer):
     assert got['slug'] == str(answer.slug)
     assert got['author']['first_name'] == api.user.first_name
     assert got['author']['last_name'] == api.user.last_name
+    assert got['descendants'] == []
+
+
+def test_query_count_for_answer_without_descendants(api, answer, django_assert_num_queries):
+    with django_assert_num_queries(7):
+        api.get(f'/api/v2/homework/answers/{answer.slug}/')
 
 
 def test_markdown(api, answer):
