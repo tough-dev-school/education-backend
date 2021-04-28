@@ -13,22 +13,37 @@ class RecordAdmin(StackedInline):
     ]
 
     fieldsets = [
-        (_('Name'), {'fields': [
-            'name',
-            'name_receipt',
-            'full_name',
-            'group',
-            'template_id',
-        ]}),
-        (_('Price'), {'fields': [
-            'price',
-            'old_price',
-        ]}),
-        (_('Access'), {'fields': [
-            'slug',
-            'downloadable',
-            's3_object_id',
-        ]}),
+        (
+            _('Name'),
+            {
+                'fields': [
+                    'name',
+                    'name_receipt',
+                    'full_name',
+                    'group',
+                    'template_id',
+                ],
+            },
+        ),
+        (
+            _('Price'),
+            {
+                'fields': [
+                    'price',
+                    'old_price',
+                ],
+            },
+        ),
+        (
+            _('Access'),
+            {
+                'fields': [
+                    'slug',
+                    'downloadable',
+                    's3_object_id',
+                ],
+            },
+        ),
     ]
 
     extra = 0

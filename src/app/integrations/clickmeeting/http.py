@@ -55,9 +55,9 @@ class ClickMeetingClientHTTP:
 
         return response.json()
 
-    def build_query(self, data):
+    def build_query(self, data):  # noqa: CCR001
         """This shit is copy-pasted from https://github.com/ClickMeeting/DevZone/blob/master/API/examples/Python"""
-        def build_query_item(params, base_key=None):
+        def build_query_item(params, base_key=None):  # noqa: CCR001
             results = []
 
             if(type(params).__name__ == 'dict'):

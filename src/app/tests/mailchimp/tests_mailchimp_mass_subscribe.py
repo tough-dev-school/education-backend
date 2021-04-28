@@ -19,14 +19,16 @@ def test_single_member(mailchimp, post, mailchimp_member):
     post.assert_called_once_with(
         url='lists/test1-list-id',
         payload={
-            'members': [{
-                'email_address': 'test@e.mail',
-                'merge_fields': {
-                    'FNAME': 'Rulon',
-                    'LNAME': 'Oboev',
+            'members': [
+                {
+                    'email_address': 'test@e.mail',
+                    'merge_fields': {
+                        'FNAME': 'Rulon',
+                        'LNAME': 'Oboev',
+                    },
+                    'status': 'subscribed',
                 },
-                'status': 'subscribed',
-            }],
+            ],
             'update_existing': True,
         },
     )

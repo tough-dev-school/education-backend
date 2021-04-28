@@ -39,11 +39,10 @@ class Pigwidgeon:
         if not settings.HAPPINESS_MESSAGES_CHAT_ID:
             return
 
-        send_happiness_message.delay(text='💰+{sum} ₽, {user}, {reason}'.format(
-            sum=str(self.order.price).replace('.00', ''),
-            user=str(self.order.user),
-            reason=str(self.order.item) if self.order.giver is None else f'{self.order.item} (подарок)',
-        ))
+        sum = str(self.order.price).replace('.00', '')
+        reason = str(self.order.item) if self.order.giver is None else f'{self.order.item} (подарок)'
+
+        send_happiness_message.delay(text=f'💰+{sum} ₽, {self.order.user}, {reason}')
 
     def send_notification_to_giver(self):
         if self.order.giver is None:

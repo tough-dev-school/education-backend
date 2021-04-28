@@ -26,8 +26,9 @@ class EmailLeadMagnetCampaignView(AnonymousAPIView, ValidationMixin):
         return get_object_or_404(EmailLeadMagnetCampaign, slug=self.kwargs['slug'])
 
     def create_lead(self):
-        return LeadCreator(
+        lead_creator = LeadCreator(
             name=self.data.get('name'),
             email=self.data['email'],
             campaign=self.get_object(),
-        )()
+        )
+        return lead_creator()

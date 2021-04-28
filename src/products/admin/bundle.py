@@ -16,20 +16,35 @@ class BundleAdmin(ModelAdmin):
         'slug',
     ]
     fieldsets = [
-        (_('Name'), {'fields': [
-            'name',
-            'slug',
-            'name_receipt',
-            'full_name',
-            'group',
-        ]}),
-        (_('Price'), {'fields': [
-            'price',
-            'old_price',
-        ]}),
-        (_('Items'), {'fields': [
-            'records',
-        ]}),
+        (
+            _('Name'),
+            {
+                'fields': [
+                    'name',
+                    'slug',
+                    'name_receipt',
+                    'full_name',
+                    'group',
+                ],
+            },
+        ),
+        (
+            _('Price'),
+            {
+                'fields': [
+                    'price',
+                    'old_price',
+                ],
+            },
+        ),
+        (
+            _('Items'),
+            {
+                'fields': [
+                    'records',
+                ],
+            },
+        ),
     ]
 
     prepopulated_fields = {

@@ -61,7 +61,7 @@ class PurchaseViewSet(ReadOnlyAppViewSet):
         })
 
     def _create_order(self, data) -> Order:
-        return OrderCreator(
+        creator = OrderCreator(
             user=self._create_user(
                 name=data['name'],
                 email=data['email'],
@@ -71,12 +71,13 @@ class PurchaseViewSet(ReadOnlyAppViewSet):
             item=self.item,
             promocode=data.get('promocode'),
             desired_bank=data.get('desired_bank'),
-        )()
+        )
+        return creator()
 
     def _create_gift(self, data) -> Order:
         do_subscribe = data.get('subscribe', False)
 
-        return OrderCreator(
+        order_creator = OrderCreator(
             user=self._create_user(
                 name=data['receiver_name'],
                 email=data['receiver_email'],
@@ -94,7 +95,9 @@ class PurchaseViewSet(ReadOnlyAppViewSet):
             gift_message=data.get('gift_message'),
             desired_bank=data.get('desired_bank'),
             promocode=data.get('promocode'),
-        )()
+        )
+
+        return order_creator()
 
     def _create_user(self, name: str, email: str, subscribe: bool = False, tags: Optional[Iterable[str]] = None) -> User:
         return UserCreator(

@@ -30,9 +30,12 @@ class PasswordLessUserCreationForm(forms.ModelForm):
 class UserAdmin(BaseUserAdmin):
     add_form = PasswordLessUserCreationForm
     add_fieldsets = (
-        (None, {
-            'fields': ['email'],
-        }),
+        (
+            None,
+            {
+                'fields': ['email'],
+            },
+        ),
     )
 
 

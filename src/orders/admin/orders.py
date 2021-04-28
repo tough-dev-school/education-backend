@@ -56,15 +56,24 @@ class OrderAdmin(ModelAdmin):
     ]
 
     fieldsets = [
-        (None, {
-            'fields': ['user', 'price', 'paid', 'shipped'],
-        }),
-        (_('Item'), {
-            'fields': ['course', 'record', 'bundle'],
-        }),
-        (_('Gift'), {
-            'fields': ['giver', 'desired_shipment_date', 'gift_message'],
-        }),
+        (
+            None,
+            {
+                'fields': ['user', 'price', 'paid', 'shipped'],
+            },
+        ),
+        (
+            _('Item'),
+            {
+                'fields': ['course', 'record', 'bundle'],
+            },
+        ),
+        (
+            _('Gift'),
+            {
+                'fields': ['giver', 'desired_shipment_date', 'gift_message'],
+            },
+        ),
     ]
 
     def get_queryset(self, request):

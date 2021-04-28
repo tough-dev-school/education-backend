@@ -87,7 +87,7 @@ class Order(TimestampedModel):
             setattr(self, foreign_key, item)
             return
 
-        raise UnknownItemException('There is not foreignKey for {}'.format(item.__class__))
+        raise UnknownItemException(f'There is no foreignKey for {item.__class__}')
 
     def set_paid(self, silent=False):
         from orders.services.order_is_paid_setter import Griphook

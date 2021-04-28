@@ -37,11 +37,13 @@ class TinkoffCredit(Bank):
         return response.json()
 
     def get_items(self):
-        return [{
-            'name': self.order.item.name_receipt,
-            'price': self.price,  # tinkoff-credit accepts rubles
-            'quantity': 1,
-        }]
+        return [
+            {
+                'name': self.order.item.name_receipt,
+                'price': self.price,  # tinkoff-credit accepts rubles
+                'quantity': 1,
+            },
+        ]
 
     def get_user(self):
         return {

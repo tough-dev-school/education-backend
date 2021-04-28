@@ -1,10 +1,9 @@
-from typing import Generator, Optional
+from typing import Optional
 
 import contextlib
-import inspect
 from behaviors.behaviors import Timestamped
 from copy import copy
-from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import F
@@ -146,30 +145,6 @@ class DefaultModel(models.Model):
             return True
         except models.FieldDoesNotExist:
             return False
-
-    @classmethod
-    def list_fields(cls, include_parents=True) -> Generator:
-        """
-        Shortcut to list all field names.
-
-        Accepts parameter `include_parents=False` with which returnes only fields defined in current model.
-        This behaviour is little different from django's — its _meta.get_fields(include_parents=False) returns
-        fields taken from inherited models, and we do not
-        """
-        if include_parents:
-            return (field.name for field in cls._meta.get_fields(include_parents=True) if not isinstance(field, GenericRelation))
-
-        else:
-            parent_fields = set()
-
-            for parent in inspect.getmro(cls):
-                if issubclass(parent, models.Model) and hasattr(parent, '_meta'):  # if it is a django model
-                    if not issubclass(parent, cls):  # ignore the lowest model in tree
-                        for field in parent._meta.get_fields(include_parents=False):
-                            if not isinstance(field, GenericRelation):
-                                parent_fields.update([field.name])
-
-            return (field.name for field in cls._meta.get_fields(include_parents=False) if field.name not in parent_fields)
 
     def update_from_kwargs(self, **kwargs):
         """

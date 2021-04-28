@@ -9,26 +9,41 @@ from products.models import Course
 @admin.register(Course)
 class CourseAdmin(ModelAdmin):
     fieldsets = [
-        (_('Name'), {'fields': [
-            'name',
-            'name_genitive',
-            'name_receipt',
-            'full_name',
-            'group',
-        ]}),
-        (_('Price'), {'fields': [
-            'price',
-            'old_price',
-            'tinkoff_credit_promo_code',
-        ]}),
-        (_('Access'), {'fields': [
-            'slug',
-            'clickmeeting_room_url',
-            'zoomus_webinar_id',
-            'welcome_letter_template_id',
-            'gift_welcome_letter_template_id',
-            'mailchimp_list_id',
-        ]}),
+        (
+            _('Name'),
+            {
+                'fields': [
+                    'name',
+                    'name_genitive',
+                    'name_receipt',
+                    'full_name',
+                    'group',
+                ],
+            },
+        ),
+        (
+            _('Price'),
+            {
+                'fields': [
+                    'price',
+                    'old_price',
+                    'tinkoff_credit_promo_code',
+                ],
+            },
+        ),
+        (
+            _('Access'),
+            {
+                'fields': [
+                    'slug',
+                    'clickmeeting_room_url',
+                    'zoomus_webinar_id',
+                    'welcome_letter_template_id',
+                    'gift_welcome_letter_template_id',
+                    'mailchimp_list_id',
+                ],
+            },
+        ),
     ]
 
     list_display = [

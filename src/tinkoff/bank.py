@@ -52,14 +52,16 @@ class TinkoffBank(Bank):
         }
 
     def get_items(self):
-        return [{
-            'Name': self.order.item.name_receipt,
-            'Price': self.price,
-            'Quantity': 1,
-            'Amount': self.price,
-            'PaymentObject': 'service',
-            'Tax': 'none',  # fuck
-        }]
+        return [
+            {
+                'Name': self.order.item.name_receipt,
+                'Price': self.price,
+                'Quantity': 1,
+                'Amount': self.price,
+                'PaymentObject': 'service',
+                'Tax': 'none',  # fuck
+            },
+        ]
 
     @staticmethod
     def _get_token(request: dict) -> str:
