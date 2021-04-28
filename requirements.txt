@@ -48,6 +48,8 @@ django-bulk-update==2.2.0
     # via
     #   -r requirements.in
     #   django-hattori
+django-cachalot==2.3.5
+    # via -r requirements.in
 django-cors-headers==3.7.0
     # via -r requirements.in
 django-environ==0.4.5
@@ -65,6 +67,8 @@ django-ipware==3.0.2
     #   drf-recaptcha
 django-markdownx==3.0.1
     # via -r requirements.in
+django-redis==4.12.1
+    # via -r requirements.in
 django-split-settings==1.0.1
     # via -r requirements.in
 django-storages==1.11.1
@@ -77,11 +81,13 @@ django==3.1.8
     #   django-anymail
     #   django-axes
     #   django-bulk-update
+    #   django-cachalot
     #   django-cors-headers
     #   django-filter
     #   django-hattori
     #   django-healthchecks
     #   django-markdownx
+    #   django-redis
     #   django-storages
     #   djangorestframework
     #   drf-jwt
@@ -138,7 +144,9 @@ pytz==2021.1
     #   django
     #   flower
 redis==3.5.3
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   django-redis
 requests==2.25.1
     # via
     #   django-anymail
