@@ -25,7 +25,7 @@ class ShouldHavePurchasedCoursePermission(permissions.BasePermission):
 
 class ShouldHavePurchasedQuestionCoursePermission(permissions.BasePermission):
     def has_permission(self, request, view):
-        if settings.DISABLE_HOMEWORK_PERMISSIONS_CHECKING:
+        if settings.DISABLE_HOMEWORK_PERMISSIONS_CHECKING or request.user.has_perm('homework.see_all_questions'):
             return True
 
         if request.method == 'POST':

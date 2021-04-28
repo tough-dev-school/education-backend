@@ -8,6 +8,11 @@ pytestmark = [
 ]
 
 
+@pytest.fixture
+def _no_purchase(purchase):
+    purchase.setattr_and_save('paid', None)
+
+
 def get_answer():
     return Answer.objects.last()
 
@@ -47,9 +52,28 @@ def test_empty_parent(api, question):
     assert created.parent is None
 
 
-def test_403_for_not_purchased_users(api, question, purchase):
-    purchase.setattr_and_save('paid', None)
+@pytest.mark.usefixtures('_no_purchase')
+def test_403_for_not_purchased_users(api, question):
 
     api.post(f'/api/v2/homework/questions/{question.slug}/answers/', {
         'text': 'Верните деньги!',
     }, expected_status_code=403)
+
+
+@pytest.mark.usefixtures('_no_purchase')
+def test_ok_for_users_with_permission(api, question):
+    api.user.add_perm('homework.question.see_all_questions')
+
+    api.post(f'/api/v2/homework/questions/{question.slug}/answers/', {
+        'text': 'Верните деньги!',
+    }, expected_status_code=201)
+
+
+@pytest.mark.usefixtures('_no_purchase')
+def test_ok_for_userpusers(api, question):
+    api.user.is_superuser = True
+    api.user.save()
+
+    api.post(f'/api/v2/homework/questions/{question.slug}/answers/', {
+        'text': 'Верните деньги!',
+    }, expected_status_code=201)
