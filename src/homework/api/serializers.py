@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from app.serializers import MarkdownXField, SoftField
+from app.serializers import MarkdownXField, RecursiveField, SoftField
 from homework.models import Answer, Question
 from users.api.serializers import UserNameSerializer
 
@@ -30,6 +30,24 @@ class AnswerSerializer(serializers.ModelSerializer):
             'author',
             'parent',
             'text',
+        ]
+
+
+class AnswerRetrieveSerializer(serializers.ModelSerializer):
+    author = UserNameSerializer()
+    text = MarkdownXField()
+    parent = SoftField(source='parent.slug')
+    descendants = RecursiveField(many=True, source='get_first_level_descendants')
+
+    class Meta:
+        model = Answer
+        fields = [
+            'created',
+            'slug',
+            'author',
+            'parent',
+            'text',
+            'descendants',
         ]
 
 

@@ -2,7 +2,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView
 
 from homework.api.permissions import ShouldHavePurchasedCoursePermission, ShouldHavePurchasedQuestionCoursePermission
-from homework.api.serializers import AnswerCreateSerializer, AnswerSerializer, QuestionSerializer
+from homework.api.serializers import (
+    AnswerCreateSerializer, AnswerRetrieveSerializer, AnswerSerializer, QuestionSerializer)
 from homework.models import Answer, AnswerAccessLogEntry, Question
 
 
@@ -14,8 +15,8 @@ class QuestionView(RetrieveAPIView):
 
 
 class AnswerView(RetrieveAPIView):
-    queryset = Answer.objects.all()
-    serializer_class = AnswerSerializer
+    queryset = Answer.objects.for_viewset()
+    serializer_class = AnswerRetrieveSerializer
     lookup_field = 'slug'
     permission_classes = [ShouldHavePurchasedQuestionCoursePermission]
 

@@ -39,6 +39,9 @@ class Question(TimestampedModel):
 
 
 class AnswerQuerySet(TreeQuerySet):
+    def for_viewset(self):
+        return self.with_tree_fields().select_related('author')
+
     def for_user(self, user):
         return self.filter(
             Q(author=user) | Q(parent__author=user) | Q(answeraccesslogentry__user=user),
@@ -77,6 +80,9 @@ class Answer(TreeNode):
 
         if latest_purchase:
             return latest_purchase.course
+
+    def get_first_level_descendants(self):
+        return self.descendants().filter(parent=self.id)
 
     def __str__(self):
         LENGTH = 30
