@@ -17,10 +17,10 @@ pytestmark = [
     ('a<hr>b', '<p>a<!-- raw HTML omitted -->b</p>'),
     ('> а хули ты?', '<blockquote>\n<p>а хули ты?</p>\n</blockquote>'),
 ])
-def test_markdown_gets_sanitized(api, question, answer, text, expected):
+def test_markdown_gets_sanitized(api, answer, text, expected):
     answer.text = text
     answer.save()
 
-    got = api.get(f'/api/v2/homework/questions/{question.slug}/answers/{answer.slug}/')
+    got = api.get(f'/api/v2/homework/answers/{answer.slug}/')
 
     assert got['text'].strip() == expected

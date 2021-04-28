@@ -29,7 +29,7 @@ urlpatterns = [
     path('api/v2/auth/passwordless-token/request/<str:user_email>/', RequestPasswordLessToken.as_view()),
     path('api/v2/auth/passwordless-token/<uuid:token>/', ObtainJSONWebTokenViaPasswordlessToken.as_view()),
     path('api/v2/homework/questions/<uuid:slug>/', QuestionView.as_view()),
-    path('api/v2/homework/questions/<uuid:question_slug>/answers/<uuid:slug>/', AnswerView.as_view()),
+    path('api/v2/homework/answers/<uuid:slug>/', AnswerView.as_view()),
     path('api/v2/homework/questions/<uuid:question_slug>/answers/', AnswerCreateView.as_view()),
     path('api/v2/markdownx/', include('markdownx.urls')),
     path('api/v2/healthchecks/', include('django_healthchecks.urls')),

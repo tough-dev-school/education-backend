@@ -19,14 +19,6 @@ class AnswerView(RetrieveAPIView):
     lookup_field = 'slug'
     permission_classes = [ShouldHavePurchasedQuestionCoursePermission]
 
-    def get_question(self):
-        return get_object_or_404(Question, slug=self.kwargs['question_slug'])
-
-    def get_queryset(self):
-        question = self.get_question()
-
-        return super().get_queryset().filter(question=question)
-
     def get_object(self):
         """Write a log entry for each answer from another user that is retrieved
         """
