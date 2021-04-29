@@ -38,12 +38,14 @@ class AnswerRetrieveSerializer(serializers.ModelSerializer):
     text = MarkdownXField()
     parent = SoftField(source='parent.slug')
     descendants = serializers.SerializerMethodField()
+    question = serializers.CharField(source='question.slug')
 
     class Meta:
         model = Answer
         fields = [
             'created',
             'slug',
+            'question',
             'author',
             'parent',
             'text',

@@ -6,13 +6,14 @@ pytestmark = [
 ]
 
 
-def test_ok(api, answer):
+def test_ok(api, answer, question):
     got = api.get(f'/api/v2/homework/answers/{answer.slug}/')
 
     assert 'created' in got
     assert got['slug'] == str(answer.slug)
     assert got['author']['first_name'] == api.user.first_name
     assert got['author']['last_name'] == api.user.last_name
+    assert got['question'] == str(question.slug)
     assert got['descendants'] == []
 
 
