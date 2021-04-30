@@ -43,6 +43,11 @@ def test_log_entry_is_created(api, answer):
     assert entry.answer == answer
 
 
+def test_terrible_things_does_not_happen_when_there_already_is_a_log_entry_created(api, answer):
+    for _ in range(0, 2):
+        api.get(f'/api/v2/homework/answers/{answer.slug}/', expected_status_code=200)
+
+
 def test_log_entry_is_not_created_when_requesting_own_answers(api, answer):
     answer.author = api.user
     answer.save()

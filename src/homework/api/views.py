@@ -32,7 +32,7 @@ class AnswerView(RetrieveAPIView):
     def write_log_entry(self, answer):
         if not self.request.user.has_perm('homework.see_all_answers'):
             if answer.author != self.request.user:
-                AnswerAccessLogEntry.objects.create(
+                AnswerAccessLogEntry.objects.get_or_create(
                     user=self.request.user,
                     answer=answer,
                 )
