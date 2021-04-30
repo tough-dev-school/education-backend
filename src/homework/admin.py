@@ -64,9 +64,17 @@ class AnswerAdmin(ModelAdmin):
     fields = [
         'created',
         'author',
+        'parent',
         'text',
     ]
-    readonly_fields = fields
+    readonly_fields = [
+        'created',
+        'author',
+        'text',
+    ]
+    raw_id_fields = [
+        'parent',
+    ]
 
     list_editable = [
         'do_not_crosscheck',
