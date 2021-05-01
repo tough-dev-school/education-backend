@@ -3,6 +3,7 @@
 ipython
 
 pytest-django>=3.9
+pytest-cov
 pytest-deadfixtures
 pytest-env
 pytest-freezegun

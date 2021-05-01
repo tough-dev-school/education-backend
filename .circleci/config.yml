@@ -2,7 +2,7 @@ version: 2.1
 
 defaults: &defaults
   docker:
-    - image: cimg/python:3.8.6
+    - image: cimg/python:3.8.9
       environment:
         - DATABASE_URL=postgres://postgres:password@postgres:5432/circle_test
         - REDIS_URL=redis://redis:6379
@@ -31,8 +31,8 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip install --upgrade pip pip-tools
-            make install-dev-deps
+            pip install --upgrade pip pip-tools wheel
+            pip-sync requirements.txt dev-requirements.txt
 
       - save_cache:
           key: deps-{{ checksum "requirements.txt" }}-{{ checksum "dev-requirements.txt" }}
@@ -68,9 +68,22 @@ jobs:
           command: sudo apt update && sudo apt --no-install-recommends install -y locales-all
 
       - run:
+          name: Install Codeclimate helper
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+
+      - run:
+          name: Run tests
           command: |
             . venv/bin/activate
-            make test
+            make coverage
+
+      - run:
+          name: Upload test coverage to codeclimate
+          command: |
+            cd src && ../cc-test-reporter after-build -t coverage.py
+
 workflows:
   version: 2
   continuous-delivery:
