@@ -18,7 +18,7 @@ def test_ok(api, answer, question):
 
 
 def test_query_count_for_answer_without_descendants(api, answer, django_assert_num_queries):
-    with django_assert_num_queries(7):
+    with django_assert_num_queries(9):
         api.get(f'/api/v2/homework/answers/{answer.slug}/')
 
 
