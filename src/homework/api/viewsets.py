@@ -1,3 +1,5 @@
+from rest_framework.exceptions import MethodNotAllowed
+
 from app.viewsets import AppViewSet
 from homework.api.filtersets import AnswerFilterSet
 from homework.api.permissions import (
@@ -19,6 +21,9 @@ class AnswerViewSet(AppViewSet):
         MayDeleteAnswerOnlyForLimitedTime,
     ]
     filterset_class = AnswerFilterSet
+
+    def update(self, request, **kwargs):
+        raise MethodNotAllowed(request.method)
 
     def get_queryset(self):
         queryset = super().get_queryset()
