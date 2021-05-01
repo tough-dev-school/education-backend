@@ -1,0 +1,49 @@
+version: 2
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "02:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: boto3
+    versions:
+    - "> 1.16.63"
+  - dependency-name: botocore
+    versions:
+    - "> 1.19.63"
+  - dependency-name: flake8-pie
+    versions:
+    - 0.7.4
+  - dependency-name: flake8-bugbear
+    versions:
+    - 21.3.1
+  - dependency-name: ipython
+    versions:
+    - 7.20.0
+    - 7.21.0
+  - dependency-name: sentry-sdk
+    versions:
+    - 0.20.1
+  - dependency-name: faker
+    versions:
+    - 5.8.0
+    - 6.0.0
+    - 6.1.1
+  - dependency-name: execnet
+    versions:
+    - 1.8.0
+  - dependency-name: packaging
+    versions:
+    - "20.9"
+  - dependency-name: cryptography
+    versions:
+    - 3.4.1
+    - 3.4.2
+  - dependency-name: amqp
+    versions:
+    - 5.0.5
+  - dependency-name: django-cors-headers
+    versions:
+    - 3.7.0
