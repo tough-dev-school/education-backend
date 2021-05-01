@@ -1,8 +1,9 @@
 from app.conf.environ import env
 
-CACHES = {
-    'default': env.cache('REDIS_URL'),
-}
+if not env('NO_CACHE', cast=bool, default=False):
+    CACHES = {
+        'default': env.cache('REDIS_URL'),
+    }
 
 CACHALOT_UNCACHABLE_TABLES = [
     'django_migrations',
