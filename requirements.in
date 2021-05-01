@@ -19,6 +19,7 @@ django-filter
 django-anymail
 django-axes
 django-hattori
+django-debug-toolbar
 
 django-healthchecks
 
