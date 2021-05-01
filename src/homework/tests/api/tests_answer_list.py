@@ -19,6 +19,7 @@ def test_ok(api, question, answer):
 
     assert 'created' in got[0]
     assert got[0]['slug'] == str(answer.slug)
+    assert got[0]['author']['uuid'] == str(api.user.uuid)
     assert got[0]['author']['first_name'] == api.user.first_name
     assert got[0]['author']['last_name'] == api.user.last_name
 

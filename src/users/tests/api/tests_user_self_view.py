@@ -7,6 +7,7 @@ def test_ok(api):
     got = api.get('/api/v2/users/me/')
 
     assert got['id'] == api.user.pk
+    assert got['uuid'] == str(api.user.uuid)
     assert got['username'] == api.user.username
     assert got['first_name'] == api.user.first_name
     assert got['last_name'] == api.user.last_name

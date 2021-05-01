@@ -8,6 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'id',
+            'uuid',
             'username',
             'first_name',
             'last_name',
@@ -28,10 +29,11 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         ]
 
 
-class UserNameSerializer(serializers.ModelSerializer):
+class UserSafeSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
+            'uuid',
             'first_name',
             'last_name',
         ]

@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from app.serializers import MarkdownXField, SoftField
 from homework.models import Answer, Question
-from users.api.serializers import UserNameSerializer
+from users.api.serializers import UserSafeSerializer
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -18,7 +18,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 
 class AnswerTreeSerializer(serializers.ModelSerializer):
-    author = UserNameSerializer()
+    author = UserSafeSerializer()
     text = MarkdownXField()
     parent = SoftField(source='parent.slug')
     descendants = serializers.SerializerMethodField()
