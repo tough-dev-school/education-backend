@@ -1,3 +1,4 @@
+import debug_toolbar
 from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
@@ -34,5 +35,6 @@ urlpatterns = [
     path('api/v2/markdownx/', include('markdownx.urls')),
     path('api/v2/healthchecks/', include('django_healthchecks.urls')),
     path('api/v2/', include(router.urls)),
+    path('__debug__/', include(debug_toolbar.urls)),
     path('', HomePageView.as_view()),
 ]
