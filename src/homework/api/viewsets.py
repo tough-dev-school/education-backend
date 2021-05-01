@@ -1,6 +1,7 @@
 from app.viewsets import AppViewSet
 from homework.api.filtersets import AnswerFilterSet
-from homework.api.permissions import ShouldBeAnswerAuthorOrReadOnly, ShouldHavePurchasedQuestionCoursePermission
+from homework.api.permissions import (
+    MayDeleteAnswerOnlyForLimitedTime, ShouldBeAnswerAuthorOrReadOnly, ShouldHavePurchasedQuestionCoursePermission)
 from homework.api.serializers import AnswerCreateSerializer, AnswerTreeSerializer
 from homework.models import Answer, AnswerAccessLogEntry
 
@@ -12,7 +13,11 @@ class AnswerViewSet(AppViewSet):
         'create': AnswerCreateSerializer,
     }
     lookup_field = 'slug'
-    permission_classes = [ShouldHavePurchasedQuestionCoursePermission & ShouldBeAnswerAuthorOrReadOnly]
+    permission_classes = [
+        ShouldHavePurchasedQuestionCoursePermission &
+        ShouldBeAnswerAuthorOrReadOnly &
+        MayDeleteAnswerOnlyForLimitedTime,
+    ]
     filterset_class = AnswerFilterSet
 
     def get_queryset(self):

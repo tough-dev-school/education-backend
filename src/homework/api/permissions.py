@@ -1,6 +1,8 @@
 from typing import FrozenSet
 
+from datetime import timedelta
 from django.conf import settings
+from django.utils import timezone
 from rest_framework import permissions
 
 from homework.models import Question
@@ -34,6 +36,20 @@ class ShouldBeAnswerAuthorOrReadOnly(permissions.BasePermission):
             return True
 
         if request.method == 'DELETE' and request.user.has_perm('homework.delete_answer'):
+            return True
+
+        return False
+
+
+class MayDeleteAnswerOnlyForLimitedTime(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method != 'DELETE':
+            return True
+
+        if request.user.has_perm('homework.delete_answer'):
+            return True
+
+        if timezone.now() - obj.created < timedelta(minutes=30):
             return True
 
         return False
