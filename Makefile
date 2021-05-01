@@ -25,4 +25,4 @@ test:
 	cd src && pytest -n 4 -x
 
 coverage:
-	cd src && pytest --cov-report=xml -n4 -x
+	cd src && pytest --cov-report=xml --cov=. -n4 -x
