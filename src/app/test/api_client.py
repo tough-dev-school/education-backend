@@ -67,7 +67,7 @@ class DRFClient(APIClient):
 
         content = self._decode(response)
 
-        assert response.status_code == expected, content
+        assert response.status_code == expected, f'Got {response.status_code} instead of {expected}. Content is "{content}"'
 
         return content
 
