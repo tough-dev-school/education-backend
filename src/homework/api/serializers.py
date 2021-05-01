@@ -17,23 +17,7 @@ class QuestionSerializer(serializers.ModelSerializer):
         ]
 
 
-class AnswerSerializer(serializers.ModelSerializer):
-    author = UserNameSerializer()
-    text = MarkdownXField()
-    parent = SoftField(source='parent.slug')
-
-    class Meta:
-        model = Answer
-        fields = [
-            'created',
-            'slug',
-            'author',
-            'parent',
-            'text',
-        ]
-
-
-class AnswerRetrieveSerializer(serializers.ModelSerializer):
+class AnswerTreeSerializer(serializers.ModelSerializer):
     author = UserNameSerializer()
     text = MarkdownXField()
     parent = SoftField(source='parent.slug')
@@ -58,7 +42,7 @@ class AnswerRetrieveSerializer(serializers.ModelSerializer):
         if not user.has_perm('homework.see_all_answers'):
             queryset = queryset.for_user(user)
 
-        serializer = AnswerRetrieveSerializer(
+        serializer = AnswerTreeSerializer(
             queryset,
             many=True,
             context=self.context,
@@ -70,6 +54,7 @@ class AnswerRetrieveSerializer(serializers.ModelSerializer):
 class AnswerCreateSerializer(serializers.ModelSerializer):
     author = serializers.HiddenField(default=serializers.CurrentUserDefault())
     parent = serializers.SlugRelatedField(slug_field='slug', queryset=Answer.objects.all(), required=False, allow_null=True)
+    question = serializers.SlugRelatedField(slug_field='slug', queryset=Question.objects.all())
 
     class Meta:
         model = Answer

@@ -3,6 +3,9 @@ from app.conf.environ import env
 DISABLE_THROTTLING = env('DISABLE_THROTTLING', cast=bool, default=env('DEBUG'))
 
 REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ],
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),

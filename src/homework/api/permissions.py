@@ -1,7 +1,8 @@
 from typing import FrozenSet
 
+from datetime import timedelta
 from django.conf import settings
-from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from rest_framework import permissions
 
 from homework.models import Question
@@ -16,27 +17,39 @@ def get_all_purcased_user_ids(question: Question) -> FrozenSet[int]:
 
 
 class ShouldHavePurchasedCoursePermission(permissions.BasePermission):
-    def has_permission(self, request, view):
-        return request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
         return request.user.has_perm('homework.see_all_questions') or settings.DISABLE_HOMEWORK_PERMISSIONS_CHECKING or (request.user.id in get_all_purcased_user_ids(obj))
 
 
 class ShouldHavePurchasedQuestionCoursePermission(permissions.BasePermission):
-    def has_permission(self, request, view):
-        if settings.DISABLE_HOMEWORK_PERMISSIONS_CHECKING or request.user.has_perm('homework.see_all_questions'):
-            return True
-
-        if request.method == 'POST':
-            question = self.get_question(view.kwargs['question_slug'])
-
-            return request.user.id in get_all_purcased_user_ids(question)
-
-        return request.user.is_authenticated
-
     def has_object_permission(self, request, view, obj):
         return request.user.has_perm('homework.see_all_questions') or settings.DISABLE_HOMEWORK_PERMISSIONS_CHECKING or (request.user.id in get_all_purcased_user_ids(obj.question))
 
-    def get_question(self, slug):
-        return get_object_or_404(Question, slug=slug)
+
+class ShouldBeAnswerAuthorOrReadOnly(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        if obj.author == request.user:
+            return True
+
+        if request.method == 'DELETE' and request.user.has_perm('homework.delete_answer'):
+            return True
+
+        return False
+
+
+class MayDeleteAnswerOnlyForLimitedTime(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method != 'DELETE':
+            return True
+
+        if request.user.has_perm('homework.delete_answer'):
+            return True
+
+        if timezone.now() - obj.created < timedelta(minutes=30):
+            return True
+
+        return False
