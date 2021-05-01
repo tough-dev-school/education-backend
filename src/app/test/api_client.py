@@ -73,7 +73,14 @@ class DRFClient(APIClient):
 
     def _decode(self, response):
         content = response.content.decode('utf-8', errors='ignore')
-        if 'application/json' in response._headers['content-type'][1]:
+        if self.is_json(response):
             return json.loads(content)
         else:
             return content
+
+    @staticmethod
+    def is_json(response) -> bool:
+        if response.has_header('content-type'):
+            return 'json' in response.get('content-type')
+
+        return False
