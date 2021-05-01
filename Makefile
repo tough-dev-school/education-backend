@@ -23,3 +23,6 @@ lint:
 
 test:
 	cd src && pytest -n 4 -x
+
+coverage:
+	cd src && pytest --cov-report=xml -n4 -x

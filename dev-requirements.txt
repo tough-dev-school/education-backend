@@ -28,6 +28,8 @@ chardet==4.0.0
     #   requests
 cognitive-complexity==1.2.0
     # via flake8-cognitive-complexity
+coverage==5.5
+    # via pytest-cov
 decorator==4.4.2
     # via ipython
 eradicate==2.0.0
@@ -163,6 +165,8 @@ pyparsing==2.4.7
     # via
     #   -c requirements.txt
     #   packaging
+pytest-cov==2.11.1
+    # via -r dev-requirements.in
 pytest-deadfixtures==2.2.1
     # via -r dev-requirements.in
 pytest-django==4.2.0
@@ -183,6 +187,7 @@ pytest-xdist==2.2.1
     # via -r dev-requirements.in
 pytest==6.2.2
     # via
+    #   pytest-cov
     #   pytest-deadfixtures
     #   pytest-django
     #   pytest-env
