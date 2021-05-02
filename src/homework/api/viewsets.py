@@ -14,6 +14,7 @@ class AnswerViewSet(AppViewSet):
     serializer_action_classes = {
         'create': AnswerCreateSerializer,
     }
+
     lookup_field = 'slug'
     permission_classes = [
         ShouldHavePurchasedQuestionCoursePermission &
@@ -28,8 +29,19 @@ class AnswerViewSet(AppViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
 
+        queryset = self.limit_queryset_to_user(queryset)
+
+        return self.limit_queryset_for_list(queryset)
+
+    def limit_queryset_to_user(self, queryset):
         if not self.request.user.has_perm('homework.see_all_answers') and self.action != 'retrieve':
             return queryset.for_user(self.request.user)
+
+        return queryset
+
+    def limit_queryset_for_list(self, queryset):
+        if self.action == 'list':
+            return queryset.root_only()
 
         return queryset
 

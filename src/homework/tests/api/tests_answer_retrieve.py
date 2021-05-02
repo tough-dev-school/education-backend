@@ -32,11 +32,11 @@ def test_markdown(api, answer):
     assert got['text'].startswith('<p><em>should be rendered'), f'"{got["text"]}" should start with "<p><em>should be rendered"'
 
 
-def test_non_root_answers_get_404(api, answer, another_answer):
+def test_non_root_answers_are_ok(api, answer, another_answer):
     answer.parent = another_answer
     answer.save()
 
-    api.get(f'/api/v2/homework/answers/{answer.slug}/', expected_status_code=404)
+    api.get(f'/api/v2/homework/answers/{answer.slug}/', expected_status_code=200)
 
 
 def test_answers_without_parents_do_not_have_this_field(api, question, answer):
