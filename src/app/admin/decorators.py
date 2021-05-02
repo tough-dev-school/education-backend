@@ -16,7 +16,7 @@ def action(short_description=None):
     return decorator
 
 
-def field(short_description=None, admin_order_field=None):
+def field(short_description=None, admin_order_field=None, boolean=None):
     def decorator(fn):
         @wraps(fn)
         def decorated(*args, **kwargs):
@@ -28,6 +28,9 @@ def field(short_description=None, admin_order_field=None):
 
         if admin_order_field is not None:
             decorated.admin_order_field = admin_order_field
+
+        if boolean is not None:
+            decorated.boolean = boolean
 
         return decorated
 

@@ -118,6 +118,7 @@ class AnswerCrossCheckAdmin(ModelAdmin):
         'checker',
         'author',
         'view',
+        'checked',
     ]
     list_display = fields
     readonly_fields = [
@@ -152,3 +153,7 @@ class AnswerCrossCheckAdmin(ModelAdmin):
     @mark_safe
     def view(self, obj=None):
         return f'<a href={obj.answer.get_absolute_url()}>Смотреть на сайте</a>'
+
+    @field(short_description=_('Is checked'), boolean=True)
+    def checked(self, obj):
+        return obj.is_checked()

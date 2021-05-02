@@ -142,3 +142,6 @@ class AnswerCrossCheck(TimestampedModel):
         constraints = [
             UniqueConstraint(fields=['answer', 'checker'], name='unique_checker_and_answer'),
         ]
+
+    def is_checked(self):
+        return self.answer.descendants().filter(author=self.checker).exists()
