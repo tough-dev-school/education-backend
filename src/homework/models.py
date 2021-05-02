@@ -74,8 +74,22 @@ class Answer(TreeNode):
             ('see_all_answers', _('May see answers from every user')),
         ]
 
+    def get_root_answer(self):
+        ancesorts = self.ancestors()
+        if ancesorts.count():
+            return ancesorts[0]
+
+        return self
+
     def get_absolute_url(self):
-        return urljoin(settings.FRONTEND_URL, f'homework/questions/{self.question.slug}/#{self.slug}')
+        root = self.get_root_answer()
+
+        url = urljoin(settings.FRONTEND_URL, f'homework/answers/{root.slug}/')
+
+        if root != self:
+            url = f'{url}#{self.slug}'  # append hash with current answer id
+
+        return url
 
     def get_purchased_course(self):
         latest_purchase = Order.objects.paid().filter(user=self.author, course__in=self.question.courses.all()).order_by('-paid').first()
