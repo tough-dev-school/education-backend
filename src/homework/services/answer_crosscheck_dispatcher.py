@@ -15,6 +15,7 @@ class AnswerCrossCheckDispatcher:
     """
     def __init__(self, answers: List[Answer], answers_per_user: int = 3):
         self.answers = Answer.objects.filter(pk__in=[answer.pk for answer in answers])
+        print(self.answers.values_list('author'))
         self.users = User.objects.filter(pk__in=[answer.author_id for answer in answers])
         self.answers_per_user = answers_per_user
 
