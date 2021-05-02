@@ -124,6 +124,9 @@ class AnswerCrossCheckAdmin(ModelAdmin):
     readonly_fields = [
         'question',
         'course',
+        'checked',
+        'author',
+        'view',
     ]
     list_filter = [
         'answer__question',
