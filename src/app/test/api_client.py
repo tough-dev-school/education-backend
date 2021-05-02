@@ -18,7 +18,7 @@ class DRFClient(APIClient):
         self.user = user or self._create_user(god_mode)
         self.god_mode = god_mode
 
-        token = Token.objects.create(user=self.user)
+        token = Token.objects.get_or_create(user=self.user)[0]
         self.credentials(
             HTTP_AUTHORIZATION=f'Token {token}',
         )
