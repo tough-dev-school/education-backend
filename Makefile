@@ -26,3 +26,6 @@ test:
 
 coverage:
 	cd src && pytest --cov-report=xml --cov=. -n4 -x
+
+checkmigrations:
+	cd src && ./manage.py makemigrations --check --no-input --dry-run
