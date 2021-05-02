@@ -29,6 +29,11 @@ def _allow_course_access(mixer, users, course):
         order.set_paid()
 
 
+@pytest.fixture(autouse=True)
+def _allow_email_sending(settings):
+    settings.EMAIL_ENABLED = True
+
+
 @pytest.fixture
 def submit_answer(api):
     def _submit(author, answer, question):
