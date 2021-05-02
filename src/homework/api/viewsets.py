@@ -9,7 +9,7 @@ from homework.models import Answer, AnswerAccessLogEntry
 
 
 class AnswerViewSet(AppViewSet):
-    queryset = Answer.objects.with_tree_fields()
+    queryset = Answer.objects.for_viewset()
     serializer_class = AnswerTreeSerializer
     serializer_action_classes = {
         'create': AnswerCreateSerializer,

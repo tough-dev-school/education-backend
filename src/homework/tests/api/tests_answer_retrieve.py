@@ -19,7 +19,7 @@ def test_ok(api, answer, question):
 
 
 def test_query_count_for_answer_without_descendants(api, answer, django_assert_num_queries):
-    with django_assert_num_queries(9):
+    with django_assert_num_queries(7):
         api.get(f'/api/v2/homework/answers/{answer.slug}/')
 
 
@@ -32,13 +32,11 @@ def test_markdown(api, answer):
     assert got['text'].startswith('<p><em>should be rendered'), f'"{got["text"]}" should start with "<p><em>should be rendered"'
 
 
-def test_parent_answer(api, answer, another_answer):
+def test_non_root_answers_get_404(api, answer, another_answer):
     answer.parent = another_answer
     answer.save()
 
-    got = api.get(f'/api/v2/homework/answers/{answer.slug}/')
-
-    assert got['parent'] == str(another_answer.slug)
+    api.get(f'/api/v2/homework/answers/{answer.slug}/', expected_status_code=404)
 
 
 def test_answers_without_parents_do_not_have_this_field(api, question, answer):

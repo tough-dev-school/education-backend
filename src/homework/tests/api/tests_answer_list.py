@@ -31,6 +31,15 @@ def test_answers_from_other_questions_are_excluded(api, another_question):
     assert len(got) == 0
 
 
+def test_non_root_answers_are_excluded(api, question, answer, answer_from_another_user):
+    answer.parent = answer_from_another_user
+    answer.save()
+
+    got = api.get(f'/api/v2/homework/answers/?question={question.slug}')['results']
+
+    assert len(got) == 0
+
+
 @pytest.mark.usefixtures('answer', 'answer_from_another_user')
 def test_answers_from_other_questions_are_excluded_even_if_user_has_the_permission(api, another_question):
     api.user.add_perm('homework.answer.see_all_answers')
@@ -62,13 +71,3 @@ def test_users_with_permission_may_see_all_answers(api, question):
     got = api.get(f'/api/v2/homework/answers/?question={question.slug}')['results']
 
     assert len(got) == 1
-
-
-def test_child_answers_from_another_authors_are_included(api, mixer, question, answer, answer_from_another_user):
-    answer_from_another_user.parent = answer
-    answer_from_another_user.save()
-
-    got = api.get(f'/api/v2/homework/answers/?question={question.slug}')['results']
-
-    assert len(got) == 2
-    assert got[1]['slug'] == str(answer_from_another_user.slug)

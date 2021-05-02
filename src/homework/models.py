@@ -39,7 +39,7 @@ class Question(TimestampedModel):
 
 class AnswerQuerySet(TreeQuerySet):
     def for_viewset(self):
-        return self.with_tree_fields().select_related('author', 'question')
+        return self.with_tree_fields().select_related('author', 'question').root_only()
 
     def for_user(self, user):
         return self.filter(
