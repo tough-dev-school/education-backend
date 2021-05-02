@@ -49,6 +49,9 @@ class AnswerQuerySet(TreeQuerySet):
     def with_crosscheck_count(self):
         return self.annotate(crosscheck_count=Count('answercrosscheck'))
 
+    def root_only(self):
+        return self.filter(parent__isnull=True)
+
 
 class Answer(TreeNode):
     objects: AnswerQuerySet = AnswerQuerySet.as_manager()

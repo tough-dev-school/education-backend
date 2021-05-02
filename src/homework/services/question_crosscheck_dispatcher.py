@@ -9,10 +9,12 @@ from users.models import User
 class QuestionCrossCheckDispatcher:
     def __init__(self, question: Question, answers_per_user: int = 3):
         self.question = question
+
         self.dispatcher = AnswerCrossCheckDispatcher(
-            answers=self.question.answer_set.all(),
+            answers=self.get_answers_to_check(),
             answers_per_user=answers_per_user,
         )
+
         self.checks: List[AnswerCrossCheck] = list()
 
     def __call__(self) -> int:
@@ -39,6 +41,11 @@ class QuestionCrossCheckDispatcher:
 
     def get_checks_for_user(self, user: User) -> List[AnswerCrossCheck]:
         return [check for check in self.checks if check.checker == user]
+
+    def get_answers_to_check(self):
+        return self.question.answer_set.root_only().exclude(
+            do_not_crosscheck=True,
+        )
 
     @staticmethod
     def build_notification_context(checks: List[AnswerCrossCheck]):
