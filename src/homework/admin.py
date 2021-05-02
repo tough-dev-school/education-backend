@@ -4,7 +4,8 @@ from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, action, admin, field
 from app.admin.filters import BooleanFilter
-from homework.models import Answer, Question
+from homework import tasks
+from homework.models import Answer, AnswerCrossCheck, Question
 
 
 @admin.register(Question)
@@ -28,11 +29,10 @@ class QuestionAdmin(ModelAdmin):
 
     @action(short_description=_('Dispatch crosscheck'))
     def dispatch_crosscheck(self, request, queryset):
-        count = 0
         for question in queryset.iterator():
-            count += question.dispatch_crosscheck()
+            tasks.disptach_crosscheck.delay(question_id=question.id)
 
-        self.message_user(request, f'{count} users will check {queryset.count()} questions')
+        self.message_user(request, f'Crosscheck dispatched for {queryset.count()} questions')
 
 
 class IsRootFilter(BooleanFilter):
@@ -108,3 +108,52 @@ class AnswerAdmin(ModelAdmin):
     def _author(self, obj=None):
         author_url = reverse('admin:users_user_change', args=[obj.author_id])
         return f'<a href="{author_url}">{obj.author}</a>'
+
+
+@admin.register(AnswerCrossCheck)
+class AnswerCrossCheckAdmin(ModelAdmin):
+    fields = [
+        'course',
+        'question',
+        'checker',
+        'author',
+        'view',
+        'checked',
+    ]
+    list_display = fields
+    readonly_fields = [
+        'question',
+        'course',
+    ]
+    list_filter = [
+        'answer__question',
+        'answer__question__courses',
+    ]
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('answer', 'answer__question', 'answer__author')
+
+    @field(short_description=_('Course'))
+    def course(self, obj=None):
+        course = obj.answer.get_purchased_course()
+        if course is None:
+            return '—'
+
+        return str(course)
+
+    @field(short_description=_('Question'), admin_order_field='answer__question')
+    def question(self, obj=None):
+        return str(obj.answer.question)
+
+    @field(short_description=_('Author'), admin_order_field='answer__author')
+    def author(self, obj=None):
+        return str(obj.answer.author)
+
+    @field(short_description=_('View'))
+    @mark_safe
+    def view(self, obj=None):
+        return f'<a href={obj.answer.get_absolute_url()}>Смотреть на сайте</a>'
+
+    @field(short_description=_('Is checked'), boolean=True)
+    def checked(self, obj):
+        return obj.is_checked()

@@ -49,6 +49,9 @@ class AnswerQuerySet(TreeQuerySet):
     def with_crosscheck_count(self):
         return self.annotate(crosscheck_count=Count('answercrosscheck'))
 
+    def root_only(self):
+        return self.filter(parent__isnull=True)
+
 
 class Answer(TreeNode):
     objects: AnswerQuerySet = AnswerQuerySet.as_manager()
@@ -71,8 +74,22 @@ class Answer(TreeNode):
             ('see_all_answers', _('May see answers from every user')),
         ]
 
+    def get_root_answer(self):
+        ancesorts = self.ancestors()
+        if ancesorts.count():
+            return ancesorts[0]
+
+        return self
+
     def get_absolute_url(self):
-        return urljoin(settings.FRONTEND_URL, f'homework/questions/{self.question.slug}/#{self.slug}')
+        root = self.get_root_answer()
+
+        url = urljoin(settings.FRONTEND_URL, f'homework/answers/{root.slug}/')
+
+        if root != self:
+            url = f'{url}#{self.slug}'  # append hash with current answer id
+
+        return url
 
     def get_purchased_course(self):
         latest_purchase = Order.objects.paid().filter(user=self.author, course__in=self.question.courses.all()).order_by('-paid').first()
@@ -125,3 +142,6 @@ class AnswerCrossCheck(TimestampedModel):
         constraints = [
             UniqueConstraint(fields=['answer', 'checker'], name='unique_checker_and_answer'),
         ]
+
+    def is_checked(self):
+        return self.answer.descendants().filter(author=self.checker).exists()

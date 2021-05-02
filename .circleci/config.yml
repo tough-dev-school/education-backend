@@ -48,6 +48,12 @@ jobs:
             . venv/bin/activate
             make lint
 
+      - run:
+          name: Check for forgotten migrations
+          command: |
+            . venv/bin/activate
+            make checkmigrations
+
       - persist_to_workspace:
           root: .
           paths:
