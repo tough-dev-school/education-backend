@@ -1,5 +1,6 @@
 import pytest
 
+from homework import tasks
 from homework.models import AnswerCrossCheck
 
 pytestmark = [pytest.mark.django_db]
@@ -13,6 +14,12 @@ def test_crosschecks_are_created(question_dispatcher):
 
 def test_question_method_does_the_same(question):
     question.dispatch_crosscheck(answers_per_user=1)
+
+    assert AnswerCrossCheck.objects.count() == 2
+
+
+def test_task_does_the_same(question):
+    tasks.disptach_crosscheck.delay(question_id=question.pk, answers_per_user=1)
 
     assert AnswerCrossCheck.objects.count() == 2
 

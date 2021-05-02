@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, action, admin, field
 from app.admin.filters import BooleanFilter
+from homework import tasks
 from homework.models import Answer, Question
 
 
@@ -28,11 +29,10 @@ class QuestionAdmin(ModelAdmin):
 
     @action(short_description=_('Dispatch crosscheck'))
     def dispatch_crosscheck(self, request, queryset):
-        count = 0
         for question in queryset.iterator():
-            count += question.dispatch_crosscheck()
+            tasks.disptach_crosscheck.delay(question_id=question.id)
 
-        self.message_user(request, f'{count} users will check {queryset.count()} questions')
+        self.message_user(request, f'Crosscheck dispatched for {queryset.count()} questions')
 
 
 class IsRootFilter(BooleanFilter):
