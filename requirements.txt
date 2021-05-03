@@ -6,7 +6,7 @@
 #
 amqp==2.6.1
     # via kombu
-asgiref==3.3.1
+asgiref==3.3.4
     # via django
 babel==2.9.1
     # via -r requirements.in
@@ -77,7 +77,7 @@ django-storages==1.11.1
     # via -r requirements.in
 django-tree-queries==0.4.3
     # via -r requirements.in
-django==3.1.8
+django==3.2
     # via
     #   -r requirements.in
     #   django-anymail
