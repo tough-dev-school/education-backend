@@ -14,9 +14,9 @@ billiard==3.6.3.0
     # via celery
 bleach==3.3.0
     # via -r requirements.in
-boto3==1.16.63
+boto3==1.17.64
     # via -r requirements.in
-botocore==1.19.63
+botocore==1.20.64
     # via
     #   boto3
     #   s3transfer
@@ -154,7 +154,7 @@ requests==2.25.1
     # via
     #   django-anymail
     #   django-healthchecks
-s3transfer==0.3.4
+s3transfer==0.4.2
     # via boto3
 sentry-sdk==1.0.0
     # via -r requirements.in
