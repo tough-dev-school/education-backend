@@ -1,10 +1,12 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_jwt import views as jwt
 
 from a12n.api.throttling import AuthAnonRateThrottle
 from a12n.models import PasswordlessAuthToken
 from a12n.utils import get_jwt
+from app.permissions import SuperUserOnly
 from app.tasks import send_mail
 from app.views import AnonymousAPIView
 from users.models import User
@@ -48,4 +50,15 @@ class ObtainJSONWebTokenViaPasswordlessToken(AnonymousAPIView):
 
         return Response({
             'token': get_jwt(token.user),
+        })
+
+
+class ObtainJSONWebTokenViaUserId(APIView):
+    permission_classes = [SuperUserOnly]
+
+    def get(self, request, user_id):
+        user = get_object_or_404(User, pk=user_id)
+
+        return Response({
+            'token': get_jwt(user),
         })

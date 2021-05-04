@@ -1,4 +1,3 @@
-import json
 import pytest
 
 pytestmark = pytest.mark.django_db
@@ -13,10 +12,6 @@ def get_token(api):
         }, format='json', expected_status_code=expected_status_code)
 
     return _get_token
-
-
-def _decode(response):
-    return json.loads(response.content.decode('utf-8', errors='ignore'))
 
 
 def test_getting_token_ok(api, get_token):

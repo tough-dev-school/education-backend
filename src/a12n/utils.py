@@ -1,3 +1,4 @@
+import jwt
 from rest_framework_jwt.settings import api_settings
 
 
@@ -9,3 +10,7 @@ def get_jwt(user) -> str:
     payload = jwt_payload_handler(user)
 
     return jwt_encode_handler(payload)
+
+
+def decode_jwt_without_validation(token: str) -> dict:
+    return jwt.decode(token, options={'verify_signature': False}, algorithms=['HS256'])

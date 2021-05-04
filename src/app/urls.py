@@ -4,8 +4,7 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework import routers
 
-from a12n.api.views import (
-    ObtainJSONWebTokenViaPasswordlessToken, ObtainJSONWebTokenView, RefreshJSONWebTokenView, RequestPasswordLessToken)
+from a12n.api import views as a12n
 from app.views import HomePageView
 from homework.api.views import QuestionView
 from homework.api.viewsets import AnswerViewSet
@@ -27,10 +26,11 @@ urlpatterns = [
     path('api/v2/banking/tinkoff-credit-notifications/', TinkoffCreditNotificationsView.as_view()),
     path('api/v2/leads/email/<slug:slug>/', EmailLeadMagnetCampaignView.as_view()),
     path('api/v2/users/me/', SelfView.as_view()),
-    path('api/v2/auth/token/', ObtainJSONWebTokenView.as_view()),
-    path('api/v2/auth/token/refresh/', RefreshJSONWebTokenView.as_view()),
-    path('api/v2/auth/passwordless-token/request/<str:user_email>/', RequestPasswordLessToken.as_view()),
-    path('api/v2/auth/passwordless-token/<uuid:token>/', ObtainJSONWebTokenViaPasswordlessToken.as_view()),
+    path('api/v2/auth/token/', a12n.ObtainJSONWebTokenView.as_view()),
+    path('api/v2/auth/token/refresh/', a12n.RefreshJSONWebTokenView.as_view()),
+    path('api/v2/auth/passwordless-token/request/<str:user_email>/', a12n.RequestPasswordLessToken.as_view()),
+    path('api/v2/auth/passwordless-token/<uuid:token>/', a12n.ObtainJSONWebTokenViaPasswordlessToken.as_view()),
+    path('api/v2/auth/as/<int:user_id>/', a12n.ObtainJSONWebTokenViaUserId.as_view()),
     path('api/v2/homework/questions/<uuid:slug>/', QuestionView.as_view()),
     path('api/v2/markdownx/', include('markdownx.urls')),
     path('api/v2/healthchecks/', include('django_healthchecks.urls')),
