@@ -1,4 +1,5 @@
 from rest_framework.exceptions import MethodNotAllowed
+from rest_framework.permissions import IsAuthenticated
 
 from app.viewsets import AppViewSet
 from homework.api.filtersets import AnswerFilterSet
@@ -17,6 +18,7 @@ class AnswerViewSet(AppViewSet):
 
     lookup_field = 'slug'
     permission_classes = [
+        IsAuthenticated &
         ShouldHavePurchasedQuestionCoursePermission &
         ShouldBeAnswerAuthorOrReadOnly &
         MayDeleteAnswerOnlyForLimitedTime,

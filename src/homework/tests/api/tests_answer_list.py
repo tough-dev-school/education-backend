@@ -71,3 +71,7 @@ def test_users_with_permission_may_see_all_answers(api, question):
     got = api.get(f'/api/v2/homework/answers/?question={question.slug}')['results']
 
     assert len(got) == 1
+
+
+def test_no_anon(anon, question):
+    anon.get(f'/api/v2/homework/answers/?question={question.slug}', expected_status_code=401)
