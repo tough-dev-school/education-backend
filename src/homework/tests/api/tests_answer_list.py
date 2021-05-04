@@ -64,6 +64,14 @@ def test_answers_from_another_authors_are_included_if_already_seen(api, mixer, q
     assert len(got) == 1
 
 
+def test_access_log_entries_from_another_users_do_not_break_the_select(api, mixer, question, answer):
+    mixer.cycle(5).blend('homework.AnswerAccessLogEntry', question=question, answer=answer)
+
+    got = api.get(f'/api/v2/homework/answers/?question={question.slug}')['results']
+
+    assert len(got) == 1
+
+
 @pytest.mark.usefixtures('answer_from_another_user')
 def test_users_with_permission_may_see_all_answers(api, question):
     api.user.add_perm('homework.answer.see_all_answers')
