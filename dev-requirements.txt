@@ -177,7 +177,7 @@ pytest-forked==1.3.0
     # via pytest-xdist
 pytest-freezegun==0.4.2
     # via -r dev-requirements.in
-pytest-mock==3.6.0
+pytest-mock==3.6.1
     # via -r dev-requirements.in
 pytest-randomly==3.7.0
     # via -r dev-requirements.in
