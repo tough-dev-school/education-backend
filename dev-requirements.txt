@@ -118,7 +118,7 @@ iniconfig==1.1.1
     # via pytest
 ipython-genutils==0.2.0
     # via traitlets
-ipython==7.23.0
+ipython==7.23.1
     # via -r dev-requirements.in
 isort==5.7.0
     # via flake8-isort
