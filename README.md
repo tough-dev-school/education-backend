@@ -1,8 +1,8 @@
 # Backend for [education.borshev.com](http://education.borshev.com/)
 
-[![CircleCI](https://circleci.com/gh/f213/education-backend.svg?style=svg&circle-token=8ce8cbe93d81d60af6b67c82a82563d93da0cb03)](https://circleci.com/gh/f213/education-backend)
+[![CircleCI](https://circleci.com/gh/f213/education-backend.svg?style=svg&circle-token=8ce8cbe93d81d60af6b67c82a82563d93da0cb03)](https://circleci.com/gh/f213/education-backend) ![](https://heroku-badge.herokuapp.com/?app=education-backend&svg=1) [![Maintainability](https://api.codeclimate.com/v1/badges/fe9fb0b64052a426f355/maintainability)](https://codeclimate.com/github/f213/education-backend/maintainability)[![Test Coverage](https://api.codeclimate.com/v1/badges/fe9fb0b64052a426f355/test_coverage)](https://codeclimate.com/github/f213/education-backend/test_coverage) 
 
-Django-based production project, integrated with Tinkoff, zoom.us, Mailchimp, Postmark, S3 and telegram. Frontend is built on tilda.cc.
+Django-based production project, integrated with Tinkoff, zoom.us, Mailchimp, Postmark, S3 and telegram. Frontend is built on vue.js in the [sehttp://github.com/f213/education-frontendate repo](url).
 
 ## Configuration
 Configuration is stored in `src/app/.env`, for examples see `src/app/.env.ci`
