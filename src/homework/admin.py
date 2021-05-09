@@ -24,7 +24,7 @@ class QuestionAdmin(ModelAdmin):
     ]
     save_as = True
 
-    def courses_list(self, obj=None):
+    def courses_list(self, obj):
         return ', '.join([course.name for course in obj.courses.all()])
 
     @action(short_description=_('Dispatch crosscheck'))
@@ -92,7 +92,7 @@ class AnswerAdmin(ModelAdmin):
             .select_related('author', 'question')
 
     @field(short_description=_('Course'))
-    def course(self, obj=None):
+    def course(self, obj):
         course = obj.get_purchased_course()
         if course is None:
             return '—'
@@ -100,12 +100,12 @@ class AnswerAdmin(ModelAdmin):
         return str(course)
 
     @field(short_description=_('Crosschecking people'), admin_order_field='crosscheck_count')
-    def crosscheck_count(self, obj=None):
+    def crosscheck_count(self, obj):
         return obj.crosscheck_count or '—'
 
     @mark_safe
-    @field(short_description=_('Author'), admin_order_field='auhor')
-    def _author(self, obj=None):
+    @field(short_description=_('Author'), admin_order_field='author')
+    def _author(self, obj):
         author_url = reverse('admin:users_user_change', args=[obj.author_id])
         return f'<a href="{author_url}">{obj.author}</a>'
 
@@ -137,7 +137,7 @@ class AnswerCrossCheckAdmin(ModelAdmin):
         return super().get_queryset(request).select_related('answer', 'answer__question', 'answer__author')
 
     @field(short_description=_('Course'))
-    def course(self, obj=None):
+    def course(self, obj):
         course = obj.answer.get_purchased_course()
         if course is None:
             return '—'
@@ -145,16 +145,16 @@ class AnswerCrossCheckAdmin(ModelAdmin):
         return str(course)
 
     @field(short_description=_('Question'), admin_order_field='answer__question')
-    def question(self, obj=None):
+    def question(self, obj):
         return str(obj.answer.question)
 
     @field(short_description=_('Author'), admin_order_field='answer__author')
-    def author(self, obj=None):
+    def author(self, obj):
         return str(obj.answer.author)
 
     @field(short_description=_('View'))
     @mark_safe
-    def view(self, obj=None):
+    def view(self, obj):
         return f'<a href={obj.answer.get_absolute_url()}>Смотреть на сайте</a>'
 
     @field(short_description=_('Is checked'), boolean=True)
