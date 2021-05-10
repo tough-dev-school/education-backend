@@ -14,9 +14,9 @@ billiard==3.6.3.0
     # via celery
 bleach==3.3.0
     # via -r requirements.in
-boto3==1.17.68
+boto3==1.17.69
     # via -r requirements.in
-botocore==1.20.68
+botocore==1.20.69
     # via
     #   boto3
     #   s3transfer
