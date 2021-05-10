@@ -58,7 +58,7 @@ def test_html_is_stripped(notifier, answer):
     assert context['answer_title'] == 'Роисся вперде!'
 
 
-def test_is_author_flag(notifier, answer):
+def test_is_root_answer_author_flag(notifier, answer):
     context = notifier(answer).get_notification_context(answer.author)
 
-    assert context['is_author'] == 1
+    assert context['is_root_answer_author'] == 1

@@ -1,3 +1,4 @@
+from app.tasks import send_mail
 from homework.models import Answer
 from users.models import User
 
@@ -5,6 +6,18 @@ from users.models import User
 class NewAnswerNotifier:
     def __init__(self, answer: Answer):
         self.answer = answer
+
+    def __call__(self):
+        for user_to_notify in self.get_users_to_notify().iterator():
+            self.send_mail_to_user(user_to_notify)
+
+    def send_mail_to_user(self, user: User):
+        send_mail.delay(
+            to=user.email,
+            template_id='new-answer-notification',
+            ctx=self.get_notification_context(user),
+            disable_antispam=True,
+        )
 
     def get_users_to_notify(self):
         answer_ancestors = self.answer.ancestors(include_self=False)
@@ -21,6 +34,6 @@ class NewAnswerNotifier:
         }
 
         if user == self.answer.get_root_answer().author:
-            context['is_author'] = 1
+            context['is_root_answer_author'] = 1
 
         return context
