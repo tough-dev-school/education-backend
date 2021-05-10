@@ -32,7 +32,7 @@ def _freeze_absolute_url(settings):
 
 def test_default(notifier, answer, user):
     notifier = notifier(answer)
-    assert notifier.get_template_context(user) == dict(
+    assert notifier.get_notification_context(user) == dict(
         discussion_url='https://frontend/lms/homework/answers/f593d1a9-120c-4c92-bed0-9f037537d4f4/',
         discussion_name='Вторая домашка',
         answer_title='Сарынь на кичку!',
@@ -44,7 +44,7 @@ def test_root_answer(notifier, answer, another_answer):
     answer.parent = another_answer
     answer.save()
 
-    context = notifier(answer).get_template_context(answer.author)
+    context = notifier(answer).get_notification_context(answer.author)
 
     assert context['discussion_url'] == 'https://frontend/lms/homework/answers/16a973e4-40f1-4887-a502-beeb5677ab42/#f593d1a9-120c-4c92-bed0-9f037537d4f4', 'Should be the link to the first answer with anchor to the current'
 
@@ -53,12 +53,12 @@ def test_html_is_stripped(notifier, answer):
     answer.text = '# Роисся вперде!'
     answer.save()
 
-    context = notifier(answer).get_template_context(answer.author)
+    context = notifier(answer).get_notification_context(answer.author)
 
     assert context['answer_title'] == 'Роисся вперде!'
 
 
 def test_is_author_flag(notifier, answer):
-    context = notifier(answer).get_template_context(answer.author)
+    context = notifier(answer).get_notification_context(answer.author)
 
     assert context['is_author'] == 1

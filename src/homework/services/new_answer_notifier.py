@@ -12,7 +12,7 @@ class NewAnswerNotifier:
 
         return User.objects.filter(pk__in=user_ids).exclude(pk=self.answer.author_id)
 
-    def get_template_context(self, user):
+    def get_notification_context(self, user):
         context = {
             'discussion_name': str(self.answer.question),
             'discussion_url': self.answer.get_absolute_url(),
