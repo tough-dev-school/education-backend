@@ -12,9 +12,15 @@ class NewAnswerNotifier:
 
         return User.objects.filter(pk__in=user_ids).exclude(pk=self.answer.author_id)
 
-    def get_template_context(self):
-        return {
+    def get_template_context(self, user):
+        context = {
             'discussion_name': str(self.answer.question),
             'discussion_url': self.answer.get_absolute_url(),
             'answer_title': str(self.answer),
+            'author_name': str(self.answer.author),
         }
+
+        if user == self.answer.get_root_answer().author:
+            context['is_author'] = 1
+
+        return context
