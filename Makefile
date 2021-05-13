@@ -19,7 +19,7 @@ server:
 	cd src && ./manage.py migrate && ./manage.py runserver
 
 worker:
-	cd src && celery -A app worker -E --purg
+	cd src && celery -A app worker -E --purge
 
 lint:
 	flake8 src
