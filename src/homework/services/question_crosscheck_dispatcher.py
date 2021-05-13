@@ -32,7 +32,7 @@ class QuestionCrossCheckDispatcher:
             send_mail.delay(
                 to=user.email,
                 template_id='new-answers-to-check',
-                ctx=self.build_notification_context(user_checks_list),
+                ctx=self.get_notification_context(user_checks_list),
                 disable_antispam=True,
             )
 
@@ -48,7 +48,7 @@ class QuestionCrossCheckDispatcher:
         )
 
     @staticmethod
-    def build_notification_context(checks: List[AnswerCrossCheck]):
+    def get_notification_context(checks: List[AnswerCrossCheck]):
         answers = list()
 
         for check in checks:

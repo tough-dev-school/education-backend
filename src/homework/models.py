@@ -1,6 +1,7 @@
 from typing import Optional
 
 import contextlib
+import textwrap
 import uuid
 from django.conf import settings
 from django.db.models import Count, Index, Q, UniqueConstraint
@@ -10,6 +11,7 @@ from markdownx.models import MarkdownxField
 from tree_queries.models import TreeNode, TreeQuerySet
 from urllib.parse import urljoin
 
+from app.markdown import markdownify, remove_html
 from app.models import DefaultQuerySet, TimestampedModel, models
 from orders.models import Order
 
@@ -103,13 +105,9 @@ class Answer(TreeNode):
     def get_first_level_descendants(self):
         return self.descendants().filter(parent=self.id)
 
-    def __str__(self):
-        LENGTH = 30
-        text = self.text[:LENGTH]
-        if len(text) == LENGTH:
-            text += '...'
-
-        return text
+    def __str__(self) -> str:
+        text = remove_html(markdownify(self.text))
+        return textwrap.shorten(text, width=40)
 
 
 class AnswerAccessLogEntryQuerySet(DefaultQuerySet):

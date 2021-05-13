@@ -30,7 +30,7 @@ class User(AbstractUser):
         name = self.first_name + ' ' + self.last_name
 
         if len(name) < 3:
-            return self.username
+            return 'Anonymous'
 
         return name.strip()
 

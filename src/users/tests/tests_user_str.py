@@ -17,4 +17,4 @@ def test(mixer, first_name, last_name, expected):
 def test_username_is_used_by_default(mixer):
     user = mixer.blend('users.User', first_name='', last_name='')
 
-    assert str(user) == user.username
+    assert str(user) == 'Anonymous'

@@ -12,3 +12,7 @@ def markdownify(content):
         attributes=settings.BLEACH_ALLOWED_ATTRIBUTES,
         strip_comments=False,
     )
+
+
+def remove_html(html):
+    return bleach.clean(text=html, tags=[], strip=True)
