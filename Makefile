@@ -15,8 +15,11 @@ fetchdb:
 	scp borshev.com:/srv/pmdaily/storage/pmdaily.sqlite storage/
 	cd src && ./manage.py anonymize_db
 
-runserver:
+server:
 	cd src && ./manage.py migrate && ./manage.py runserver
+
+worker:
+	cd src && celery -A app worker -E --purg
 
 lint:
 	flake8 src
