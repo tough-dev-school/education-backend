@@ -47,5 +47,7 @@ class NewAnswerNotifier:
 
         if user == self.answer.get_root_answer().author:
             context['is_root_answer_author'] = 1
+        else:
+            context['is_non_root_answer_author'] = 1
 
         return context

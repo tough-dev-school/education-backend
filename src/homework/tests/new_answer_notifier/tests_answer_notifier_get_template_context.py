@@ -37,6 +37,7 @@ def test_default(notifier, answer, user):
         discussion_name='Вторая домашка',
         answer_title='Сарынь на кичку!',
         author_name='Петрович Львов',
+        is_non_root_answer_author=1,
     )
 
 
