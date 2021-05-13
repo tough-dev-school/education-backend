@@ -9,9 +9,25 @@ def test_answer_author_is_not_in_the_list(notifier, answer):
     assert answer.author not in notifier.get_users_to_notify()
 
 
+def test_non_parent_non_sibling_answer_author_is_not_in_the_list(notifier, another_answer, answer):
+    notifier = notifier(answer)
+
+    assert another_answer.author not in notifier.get_users_to_notify()
+
+
 def test_parent_answer_author_is_in_the_list(notifier, answer, another_answer):
     answer.parent = another_answer
     answer.save()
+
+    notifier = notifier(answer)
+
+    assert another_answer.author in notifier.get_users_to_notify()
+
+
+def test_sibling_answer_author_is_in_the_list(notifier, answer, another_answer, mixer):
+    answer.parent = another_answer.parent = mixer.blend('homework.Answer')
+    answer.save()
+    another_answer.save()
 
     notifier = notifier(answer)
 
