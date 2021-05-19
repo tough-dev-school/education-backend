@@ -100,7 +100,7 @@ djangorestframework==3.12.4
     #   -r requirements.in
     #   drf-jwt
     #   drf-recaptcha
-drf-jwt==1.19.0
+drf-jwt==1.19.1
     # via -r requirements.in
 drf-recaptcha==2.0.4
     # via -r requirements.in
