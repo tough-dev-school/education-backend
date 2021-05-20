@@ -40,7 +40,7 @@ cryptography==3.4.7
     # via pyjwt
 django-anymail==8.2
     # via -r requirements.in
-django-axes==5.15.0
+django-axes==5.16.0
     # via -r requirements.in
 django-behaviors==0.5.1
     # via -r requirements.in
