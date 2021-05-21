@@ -6,6 +6,11 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
+def root_answer(mixer, user):
+    return mixer.blend('homework.Answer', author=user)
+
+
+@pytest.fixture
 def answer_one(mixer, user):
     return mixer.blend('homework.Answer', author=user)
 
@@ -16,8 +21,8 @@ def answer_two(mixer, user):
 
 
 @pytest.fixture
-def another_user(mixer):
-    return mixer.blend('users.User')
+def child_of_answer_two(mixer, answer_two):
+    return mixer.blend('homework.Answer', parent=answer_two)
 
 
 @pytest.fixture
@@ -29,7 +34,7 @@ def answers(user):
     return Answer.objects.for_user(user)
 
 
-def test_present_by_default(answer_one, answer_two, user):
+def test_personal_root_answers_are_included(answer_one, answer_two, user):
     assert answer_one in answers(user)
     assert answer_two in answers(user)
 
@@ -66,3 +71,27 @@ def test_child_answers_from_another_users_are_included(answer_one, answer_two, a
 
     assert answer_one in answers(user)
     assert answer_two in answers(user)
+
+
+def test_sibling_answers_are_included(answer_one, answer_two, root_answer, user, another_user):
+    answer_one.parent = root_answer
+    answer_one.save()
+
+    answer_two.parent = root_answer
+    answer_two.author = another_user
+    answer_two.save()
+
+    assert answer_one in answers(user)
+    assert answer_two in answers(user)
+
+
+def test_children_of_sibling_answers_are_included(answer_one, answer_two, root_answer, user, another_user, child_of_answer_two):
+
+    answer_one.parent = root_answer
+    answer_one.save()
+
+    answer_two.parent = root_answer
+    answer_two.author = another_user
+    answer_two.save()
+
+    assert child_of_answer_two in answers(user)

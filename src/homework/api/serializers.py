@@ -37,11 +37,7 @@ class AnswerTreeSerializer(serializers.ModelSerializer):
         ]
 
     def get_descendants(self, obj):
-        user = self.context['request'].user
         queryset = obj.get_first_level_descendants()
-        if not user.has_perm('homework.see_all_answers'):
-            queryset = queryset.for_user(user)
-
         serializer = AnswerTreeSerializer(
             queryset,
             many=True,

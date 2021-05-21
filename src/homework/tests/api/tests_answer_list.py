@@ -37,7 +37,8 @@ def test_non_root_answers_are_excluded(api, question, answer, answer_from_anothe
 
     got = api.get(f'/api/v2/homework/answers/?question={question.slug}')['results']
 
-    assert len(got) == 0
+    assert len(got) == 1  # only answer_from_another_user
+    assert got[0]['slug'] == str(answer_from_another_user.slug)
 
 
 @pytest.mark.usefixtures('answer', 'answer_from_another_user')
