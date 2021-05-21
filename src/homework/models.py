@@ -50,12 +50,13 @@ class AnswerQuerySet(TreeQuerySet):
         ).filter(Q(author=user) | Q(access_log_entries_for_this_user__user=user))
 
     def for_user(self, user):
+        """Return all child answers of any answers that have ever been accessed by given user"""
         accessed_answers = self.accessed_by(user)
 
-        roots_of_accessed = [str(answer.tree_path[0]) for answer in accessed_answers.iterator()]
+        roots_of_accessed_answers = [str(answer.tree_path[0]) for answer in accessed_answers.iterator()]
 
-        if len(roots_of_accessed) > 0:
-            return self.with_tree_fields().extra(where=[f'tree_path[1] in ({",".join(roots_of_accessed)})'])
+        if len(roots_of_accessed_answers) > 0:
+            return self.with_tree_fields().extra(where=[f'tree_path[1] in ({",".join(roots_of_accessed_answers)})'])
         else:
             return self.none()
 
