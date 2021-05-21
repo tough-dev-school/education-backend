@@ -1,9 +1,9 @@
 from django.apps import AppConfig
 
 
-class ShippingConfig(AppConfig):
-    name = 'shipping'
+class StudyingConfig(AppConfig):
+    name = 'studying'
 
     def ready(self):
         """Register all shipping algorithms for the factory"""
-        import shipping.shipments  # noqa
+        import studying.shipments  # noqa

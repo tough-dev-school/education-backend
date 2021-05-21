@@ -3,7 +3,7 @@ INSTALLED_APPS = [
     'users',
     'orders',
     'products',
-    'shipping',
+    'studying',
     'tinkoff',
     'triggers',
     'magnets',

@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from app.models import TimestampedModel, models
 from app.pricing import format_old_price, format_price
 from orders.models import Order
-from shipping import factory as ShippingFactory
+from studying import factory as ShippingFactory
 from users.models import User
 
 
