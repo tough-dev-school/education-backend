@@ -61,7 +61,7 @@ def test_notifying_another_commenter(reply, answer, another_user, commenter, get
         'text': 'Мне тоже!',
     }, as_user=another_user)
 
-    assert get_notified_users() == [answer.author.email, answer.author.email, commenter.email]
+    assert set(get_notified_users()) == {answer.author.email, answer.author.email, commenter.email}
 
 
 def test_disabling_feature_disables_sending(reply, answer, settings, get_notified_users):
