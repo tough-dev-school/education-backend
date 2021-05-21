@@ -1,5 +1,3 @@
-from typing import List
-
 from app.tasks import send_mail
 from homework.models import Answer
 from users.models import User
@@ -22,20 +20,12 @@ class NewAnswerNotifier:
         )
 
     def get_users_to_notify(self):
-        authors = self.get_ancestor_author_ids() + self.get_sibling_author_ids()
+        """Get all users that have ever written an answer to the root of the disqussion"""
+        authors = self.answer.get_root_answer().descendants(include_self=True).values_list('author', flat=True)
+
+        authors = list(authors)  # have to execute this query cuz django-tree-queries fails to compile it
 
         return User.objects.filter(pk__in=authors).exclude(pk=self.answer.author_id).iterator()
-
-    def get_ancestor_author_ids(self) -> List[int]:
-        answer_ancestors = self.answer.ancestors(include_self=False)
-
-        return list(answer_ancestors.values_list('author', flat=True))  # have to execute this query cuz django-tree-query fails to compile it
-
-    def get_sibling_author_ids(self) -> List[int]:
-        if self.answer.parent is None:
-            return []
-
-        return list(Answer.objects.filter(parent=self.answer.parent).values_list('author', flat=True))
 
     def get_notification_context(self, user):
         context = {
