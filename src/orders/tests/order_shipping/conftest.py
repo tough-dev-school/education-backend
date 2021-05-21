@@ -10,7 +10,7 @@ def user(mixer):
 
 @pytest.fixture(autouse=True)
 def ship(mocker):
-    return mocker.patch('shipping.factory.ship')
+    return mocker.patch('studying.factory.ship')
 
 
 @pytest.fixture
