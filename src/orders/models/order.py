@@ -90,10 +90,18 @@ class Order(TimestampedModel):
         raise UnknownItemException(f'There is no foreignKey for {item.__class__}')
 
     def set_paid(self, silent=False):
-        from orders.services.order_is_paid_setter import Griphook
-        Griphook(self, silent=silent)()
+        from orders.services import OrderIsPaidSetter
+        OrderIsPaidSetter(self, silent=silent)()
+
+    def set_not_paid(self):
+        from orders.services import OrderIsPaidUnsetter
+        OrderIsPaidUnsetter(self)()
 
     def ship(self, silent: bool = False):
         """Ship the order. Better call it asynchronously"""
-        from orders.services.order_shipper import OrderShipper
+        from orders.services import OrderShipper
         OrderShipper(self, silent=silent)()
+
+    def unship(self):
+        from orders.services import OrderUnshipper
+        OrderUnshipper(self)()

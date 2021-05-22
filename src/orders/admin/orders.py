@@ -119,7 +119,8 @@ class OrderAdmin(ModelAdmin):
 
     @action(short_description=_('Set not paid'))
     def set_not_paid(self, request, queryset):
-        queryset.update(shipped=None, paid=None)
+        for order in queryset.iterator():
+            order.set_not_paid()
 
         self.message_user(request, f'{queryset.count()} orders set as not paid')
 

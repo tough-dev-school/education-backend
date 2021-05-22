@@ -1,6 +1,6 @@
 import pytest
 
-from orders.services.order_creator import OrderCreator
+from orders.services import OrderCreator
 
 pytestmark = [pytest.mark.django_db]
 
