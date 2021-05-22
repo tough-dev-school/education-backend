@@ -3,8 +3,8 @@ from django.utils import timezone
 from orders.models import Order
 
 
-class Griphook:
-    """Called to mark order as paid"""
+class OrderIsPaidSetter:
+    """Mark order as paid"""
     def __init__(self, order: Order, silent=False):
         self.order = order
         self.silent = silent

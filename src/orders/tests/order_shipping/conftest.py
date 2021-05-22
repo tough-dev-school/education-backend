@@ -13,6 +13,11 @@ def ship(mocker):
     return mocker.patch('studying.factory.ship')
 
 
+@pytest.fixture(autouse=True)
+def unship(mocker):
+    return mocker.patch('studying.factory.unship')
+
+
 @pytest.fixture
 def record(mixer):
     return mixer.blend('products.Record', course__name_genitive='курсов катанья и мытья', full_name='Полная запись курса катанья и мытья')

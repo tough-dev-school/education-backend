@@ -19,6 +19,9 @@ class CourseShipment(BaseShipment):
 
         self.send_welcome_letter()
 
+    def unship(self, order):
+        """Not implemented yet"""
+
     def subscribe_to_mailchimp(self):
         if self.course.mailchimp_list_id is not None:
             subscribe_to_mailchimp.delay(
