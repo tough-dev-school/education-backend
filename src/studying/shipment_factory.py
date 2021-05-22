@@ -36,4 +36,4 @@ def ship(item, to, order=None):
 def unship(order):
     Shipment = get(order.item)
 
-    return Shipment.unship(order)
+    return Shipment(user=order.user, product=order.item, order=order).unship()

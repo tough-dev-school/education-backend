@@ -28,8 +28,8 @@ class RecordShipment(BaseShipment):
     def ship(self):
         self.send_record_link()
 
-    def unship(self, order):
-        """Not implemented yet"""
+    def unship(self):
+        """No need to unship records"""
 
     def get_template_context(self) -> dict:
         return RecordTemplateContext().to_representation(self.record)

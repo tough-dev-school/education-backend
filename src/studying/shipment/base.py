@@ -23,7 +23,7 @@ class BaseShipment(metaclass=ABCMeta):
         raise NotImplementedError()
 
     @abstractmethod
-    def unship(self, order: Order):
+    def unship(self):
         raise NotImplementedError()
 
     def get_gift_template_context(self) -> dict:

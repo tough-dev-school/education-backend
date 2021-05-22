@@ -17,6 +17,7 @@ def test_order(call_purchase, course):
 
     assert placed.item == course
     assert placed.price == Decimal('1900.00')
+    assert not hasattr(placed, 'study')  # Study record is not created yet, because order is not paid
 
 
 def test_user(call_purchase, course):

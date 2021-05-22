@@ -3,6 +3,7 @@ from typing import Optional
 from app.tasks import invite_to_clickmeeting, invite_to_zoomus, send_mail, subscribe_to_mailchimp
 from products.models import Course
 from studying import shipment_factory as factory
+from studying.models import Study
 from studying.shipment.base import BaseShipment
 
 
@@ -16,11 +17,19 @@ class CourseShipment(BaseShipment):
         self.invite_to_clickmeeting()
         self.invite_to_zoomus()
         self.subscribe_to_mailchimp()
+        self.create_study_model()
 
         self.send_welcome_letter()
 
-    def unship(self, order):
-        """Not implemented yet"""
+    def unship(self):
+        Study.objects.get(order=self.order).delete()
+
+    def create_study_model(self):
+        Study.objects.get_or_create(
+            course=self.course,
+            student=self.user,
+            defaults=dict(order=self.order),
+        )
 
     def subscribe_to_mailchimp(self):
         if self.course.mailchimp_list_id is not None:

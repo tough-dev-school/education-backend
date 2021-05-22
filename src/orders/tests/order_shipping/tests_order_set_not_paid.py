@@ -1,5 +1,4 @@
 import pytest
-from datetime import datetime
 
 pytestmark = [
     pytest.mark.django_db,
@@ -9,8 +8,7 @@ pytestmark = [
 
 @pytest.fixture
 def order(order):
-    order.paid = datetime(2032, 12, 1, 15, 30)
-    order.save()
+    order.set_paid()
 
     return order
 
@@ -21,9 +19,10 @@ def test_works(order):
 
     assert order.paid is None
     assert order.shipped is None
+    assert not hasattr(order, 'study'), 'Study record should be deleted at this point'
 
 
-def test_unships(order, record, user, unship):
+def test_unships(order, unship):
     order.set_not_paid()
 
     unship.assert_called_once_with(order=order)
@@ -38,7 +37,7 @@ def test_not_unships_if_order_is_already_paid(order, unship):
 
 
 def test_empty_item_does_not_break_things(order, unship):
-    order.setattr_and_save('record', None)
+    order.setattr_and_save('course', None)
 
     order.set_not_paid()
 
