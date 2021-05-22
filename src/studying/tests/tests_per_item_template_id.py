@@ -1,6 +1,6 @@
 import pytest
 
-from studying.shipments import RecordShipment
+from studying.shipment import RecordShipment
 
 pytestmark = [pytest.mark.django_db]
 

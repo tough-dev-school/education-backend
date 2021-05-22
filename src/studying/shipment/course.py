@@ -2,8 +2,8 @@ from typing import Optional
 
 from app.tasks import invite_to_clickmeeting, invite_to_zoomus, send_mail, subscribe_to_mailchimp
 from products.models import Course
-from studying import factory
-from studying.shipments.base import BaseShipment
+from studying import shipment_factory as factory
+from studying.shipment.base import BaseShipment
 
 
 @factory.register(Course)
