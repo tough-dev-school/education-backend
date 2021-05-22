@@ -28,7 +28,6 @@ class RecordShipment(BaseShipment):
     def ship(self):
         self.send_record_link()
 
-    @classmethod
     def unship(self, order):
         """Not implemented yet"""
 

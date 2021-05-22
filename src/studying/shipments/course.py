@@ -19,7 +19,6 @@ class CourseShipment(BaseShipment):
 
         self.send_welcome_letter()
 
-    @classmethod
     def unship(self, order):
         """Not implemented yet"""
 

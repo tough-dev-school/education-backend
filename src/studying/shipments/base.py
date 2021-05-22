@@ -1,6 +1,6 @@
 from typing import Optional, Union
 
-from abc import ABCMeta, abstractclassmethod, abstractmethod
+from abc import ABCMeta, abstractmethod
 
 from orders.models import Order
 from products.models import Bundle, Course, Record
@@ -22,7 +22,7 @@ class BaseShipment(metaclass=ABCMeta):
     def ship(self):
         raise NotImplementedError()
 
-    @abstractclassmethod
+    @abstractmethod
     def unship(self, order: Order):
         raise NotImplementedError()
 
