@@ -1,3 +1,5 @@
+from typing import Generator
+
 from django.utils.translation import gettext_lazy as _
 
 from app.models import models
@@ -14,16 +16,14 @@ class Bundle(Shippable):
         verbose_name_plural = _('Bundles')
         db_table = 'courses_bundle'
 
-    def ship(self, *args, **kwargs):
-        for record in self.records.iterator():
-            record.ship(*args, **kwargs)
+    def iterate_bundled_items(self) -> Generator[Shippable, None, None]:
+        yield from self.records.iterator()
+        yield from self.courses.iterator()
 
-        for course in self.courses.iterator():
-            course.ship(*args, **kwargs)
+    def ship(self, *args, **kwargs):
+        for item in self.iterate_bundled_items():
+            item.ship(*args, **kwargs)
 
     def unship(self, *args, **kwargs):
-        for record in self.records.iterator():
-            record.unship(*args, **kwargs)
-
-        for course in self.courses.iterator():
-            course.unship(*args, **kwargs)
+        for item in self.iterate_bundled_items():
+            item.unship(*args, **kwargs)
