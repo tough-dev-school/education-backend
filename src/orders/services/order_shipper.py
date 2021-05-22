@@ -5,7 +5,7 @@ from app.tasks import send_happiness_message, send_mail
 from orders.models import Order
 
 
-class Pigwidgeon:
+class OrderShipper:
     """Ship the order (actualy calls item ship() method)"""
     def __init__(self, order: Order, silent: bool = False):
         self.order = order

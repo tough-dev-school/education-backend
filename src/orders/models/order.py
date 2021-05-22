@@ -95,5 +95,5 @@ class Order(TimestampedModel):
 
     def ship(self, silent: bool = False):
         """Ship the order. Better call it asynchronously"""
-        from orders.services.order_shipper import Pigwidgeon
-        Pigwidgeon(self, silent=silent)()
+        from orders.services.order_shipper import OrderShipper
+        OrderShipper(self, silent=silent)()

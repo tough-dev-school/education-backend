@@ -43,6 +43,9 @@ class Shippable(TimestampedModel):
     def ship(self, to: User, order: Optional[Order] = None):
         return ShippingFactory.ship(self, to=to, order=order)
 
+    def unship(self, order: Order):
+        return ShippingFactory.unship(order=order)
+
     def get_price(self, promocode=None) -> Decimal:
         promocode = apps.get_model('orders.PromoCode').objects.get_or_nothing(name=promocode)
 

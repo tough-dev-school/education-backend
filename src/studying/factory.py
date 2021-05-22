@@ -31,3 +31,9 @@ def ship(item, to, order=None):
     Shipment = get(item)
 
     return Shipment(user=to, product=item, order=order)()
+
+
+def unship(order):
+    Shipment = get(order.item)
+
+    return Shipment.unship(order)

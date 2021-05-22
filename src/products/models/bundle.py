@@ -20,3 +20,10 @@ class Bundle(Shippable):
 
         for course in self.courses.iterator():
             course.ship(*args, **kwargs)
+
+    def unship(self, *args, **kwargs):
+        for record in self.records.iterator():
+            record.unship(*args, **kwargs)
+
+        for course in self.courses.iterator():
+            course.unship(*args, **kwargs)
