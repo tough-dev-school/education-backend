@@ -17,8 +17,13 @@ def course(mixer):
 
 
 @pytest.fixture
-def shipment(user, course):
-    return partial(CourseShipment, user=user, product=course)
+def order(mixer, course):
+    return mixer.blend('orders.Order', course=course)
+
+
+@pytest.fixture
+def shipment(user, course, order):
+    return partial(CourseShipment, user=user, product=course, order=order)
 
 
 @pytest.fixture(autouse=True)

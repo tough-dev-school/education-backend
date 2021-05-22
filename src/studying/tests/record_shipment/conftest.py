@@ -16,5 +16,10 @@ def record(mixer, course):
 
 
 @pytest.fixture
-def shipment(user, record):
-    return RecordShipment(user, record)
+def order(mixer, record):
+    return mixer.blend('orders.Order', record=record)
+
+
+@pytest.fixture
+def shipment(user, record, order):
+    return RecordShipment(user=user, product=record, order=order)

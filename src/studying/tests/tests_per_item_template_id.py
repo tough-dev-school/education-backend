@@ -11,8 +11,14 @@ def record(mixer):
 
 
 @pytest.fixture
-def shipment(user):
-    return lambda product: RecordShipment(user, product=product)
+def shipment(user, mixer):
+    def _shipment(product):
+        order = mixer.blend('orders.Order')
+        order.set_item(product)
+
+        return RecordShipment(user=user, product=product, order=order)
+
+    return _shipment
 
 
 @pytest.mark.parametrize(('template_id', 'expected'), [

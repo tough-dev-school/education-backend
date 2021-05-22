@@ -66,7 +66,7 @@ class CourseShipment(BaseShipment):
         """Get special gift template letter id if order is a gift and it is present"""
         template_id = self.course.welcome_letter_template_id
 
-        if self.order is not None and self.order.giver is not None:  # this is a gift
+        if self.order.giver is not None:  # this is a gift
             template_id = self.course.gift_welcome_letter_template_id or self.course.welcome_letter_template_id
 
         if template_id is None or not len(template_id):  # fuck this null=True in CharFields
