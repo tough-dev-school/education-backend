@@ -8,24 +8,24 @@ def user(mixer):
     return mixer.blend('users.User', first_name='Kamaz', last_name='Otkhodov', email='kamaz@gmail.com')
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def ship(mocker):
-    return mocker.patch('studying.factory.ship')
+    return mocker.patch('studying.shipment_factory.ship')
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def unship(mocker):
-    return mocker.patch('studying.factory.unship')
+    return mocker.patch('studying.shipment_factory.unship')
 
 
 @pytest.fixture
-def record(mixer):
-    return mixer.blend('products.Record', course__name_genitive='курсов катанья и мытья', full_name='Полная запись курса катанья и мытья')
+def course(mixer):
+    return mixer.blend('products.Course', name_genitive='курсов катанья и мытья', name='Запись курсов катанья и мытья', full_name='Полная запись курса катанья и мытья')
 
 
 @pytest.fixture
-def order(mixer, record, user):
+def order(mixer, course, user):
     order = mixer.blend('orders.Order', user=user, price=1500)
-    order.set_item(record)
+    order.set_item(course)
 
     return order

@@ -6,4 +6,4 @@ class StudyingConfig(AppConfig):
 
     def ready(self):
         """Register all shipping algorithms for the factory"""
-        import studying.shipments  # noqa
+        import studying.shipment  # noqa

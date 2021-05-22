@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from app.models import TimestampedModel, models
 from app.pricing import format_old_price, format_price
 from orders.models import Order
-from studying import factory as ShippingFactory
+from studying import shipment_factory as ShipmentFactory
 from users.models import User
 
 
@@ -41,10 +41,10 @@ class Shippable(TimestampedModel):
         return format_old_price(self.old_price, self.price)
 
     def ship(self, to: User, order: Optional[Order] = None):
-        return ShippingFactory.ship(self, to=to, order=order)
+        return ShipmentFactory.ship(self, to=to, order=order)
 
     def unship(self, order: Order):
-        return ShippingFactory.unship(order=order)
+        return ShipmentFactory.unship(order=order)
 
     def get_price(self, promocode=None) -> Decimal:
         promocode = apps.get_model('orders.PromoCode').objects.get_or_nothing(name=promocode)

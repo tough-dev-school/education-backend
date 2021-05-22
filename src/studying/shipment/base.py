@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import Union
 
 from abc import ABCMeta, abstractmethod
 
@@ -10,7 +10,7 @@ from users.models import User
 class BaseShipment(metaclass=ABCMeta):
     template_id = None
 
-    def __init__(self, user: User, product: Union[Course, Record, Bundle], order: Optional[Order] = None):
+    def __init__(self, *, user: User, product: Union[Course, Record, Bundle], order: Order):
         self.stuff_to_ship = product
         self.user = user
         self.order = order
@@ -23,7 +23,7 @@ class BaseShipment(metaclass=ABCMeta):
         raise NotImplementedError()
 
     @abstractmethod
-    def unship(self, order: Order):
+    def unship(self):
         raise NotImplementedError()
 
     def get_gift_template_context(self) -> dict:

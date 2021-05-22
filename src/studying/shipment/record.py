@@ -2,8 +2,8 @@ from rest_framework import serializers
 
 from app.tasks import send_mail
 from products.models import Record
-from studying import factory
-from studying.shipments.base import BaseShipment
+from studying import shipment_factory as factory
+from studying.shipment.base import BaseShipment
 
 
 class RecordTemplateContext(serializers.ModelSerializer):
@@ -28,8 +28,8 @@ class RecordShipment(BaseShipment):
     def ship(self):
         self.send_record_link()
 
-    def unship(self, order):
-        """Not implemented yet"""
+    def unship(self):
+        """No need to unship records"""
 
     def get_template_context(self) -> dict:
         return RecordTemplateContext().to_representation(self.record)

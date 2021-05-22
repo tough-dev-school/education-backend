@@ -29,7 +29,7 @@ def order(mixer, product, another_user):
 
 @pytest.fixture()
 def ship(mocker):
-    return mocker.patch('studying.factory.ship')
+    return mocker.patch('studying.shipment_factory.ship')
 
 
 @pytest.fixture(autouse=True)

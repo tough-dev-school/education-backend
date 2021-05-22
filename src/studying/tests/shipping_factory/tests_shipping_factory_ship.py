@@ -1,18 +1,18 @@
 import pytest
 
-from studying import factory
+from studying import shipment_factory as factory
 
 pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
 def ship_record(mocker):
-    return mocker.patch('studying.shipments.RecordShipment.ship')
+    return mocker.patch('studying.shipment.RecordShipment.ship')
 
 
 @pytest.fixture
 def ship_course(mocker):
-    return mocker.patch('studying.shipments.CourseShipment.ship')
+    return mocker.patch('studying.shipment.CourseShipment.ship')
 
 
 def test_record(record, ship_record, user):

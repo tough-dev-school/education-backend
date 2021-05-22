@@ -2,8 +2,9 @@ from typing import Optional
 
 from app.tasks import invite_to_clickmeeting, invite_to_zoomus, send_mail, subscribe_to_mailchimp
 from products.models import Course
-from studying import factory
-from studying.shipments.base import BaseShipment
+from studying import shipment_factory as factory
+from studying.models import Study
+from studying.shipment.base import BaseShipment
 
 
 @factory.register(Course)
@@ -16,11 +17,19 @@ class CourseShipment(BaseShipment):
         self.invite_to_clickmeeting()
         self.invite_to_zoomus()
         self.subscribe_to_mailchimp()
+        self.create_study_model()
 
         self.send_welcome_letter()
 
-    def unship(self, order):
-        """Not implemented yet"""
+    def unship(self):
+        Study.objects.get(order=self.order).delete()
+
+    def create_study_model(self):
+        Study.objects.get_or_create(
+            course=self.course,
+            student=self.user,
+            defaults=dict(order=self.order),
+        )
 
     def subscribe_to_mailchimp(self):
         if self.course.mailchimp_list_id is not None:
@@ -66,7 +75,7 @@ class CourseShipment(BaseShipment):
         """Get special gift template letter id if order is a gift and it is present"""
         template_id = self.course.welcome_letter_template_id
 
-        if self.order is not None and self.order.giver is not None:  # this is a gift
+        if self.order.giver is not None:  # this is a gift
             template_id = self.course.gift_welcome_letter_template_id or self.course.welcome_letter_template_id
 
         if template_id is None or not len(template_id):  # fuck this null=True in CharFields

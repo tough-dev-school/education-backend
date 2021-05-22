@@ -14,12 +14,13 @@ def test_works(order):
     order.refresh_from_db()
 
     assert order.paid == datetime(2032, 12, 1, 15, 30)
+    assert order.study is not None
 
 
-def test_ships(order, record, user, ship):
+def test_ships(order, course, user, ship):
     order.set_paid()
 
-    ship.assert_called_once_with(record, to=user, order=order)
+    ship.assert_called_once_with(course, to=user, order=order)
 
 
 def test_not_ships_if_order_is_already_paid(order, ship):
@@ -55,7 +56,7 @@ def test_shipment_date(order):
 
 
 def test_empty_item_does_not_break_things(order, ship):
-    order.setattr_and_save('record', None)
+    order.setattr_and_save('course', None)
 
     order.set_paid()
 

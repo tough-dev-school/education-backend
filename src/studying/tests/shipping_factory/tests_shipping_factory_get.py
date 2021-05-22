@@ -1,7 +1,7 @@
 import pytest
 
-from studying import factory
-from studying.shipments import CourseShipment, RecordShipment
+from studying import shipment_factory as factory
+from studying.shipment import CourseShipment, RecordShipment
 
 pytestmark = [pytest.mark.django_db]
 

@@ -1,7 +1,7 @@
 import pytest
 from functools import partial
 
-from studying.shipments import CourseShipment
+from studying.shipment import CourseShipment
 
 pytestmark = [pytest.mark.django_db]
 
@@ -17,8 +17,13 @@ def course(mixer):
 
 
 @pytest.fixture
-def shipment(user, course):
-    return partial(CourseShipment, user=user, product=course)
+def order(mixer, course):
+    return mixer.blend('orders.Order', course=course)
+
+
+@pytest.fixture
+def shipment(user, course, order):
+    return partial(CourseShipment, user=user, product=course, order=order)
 
 
 @pytest.fixture(autouse=True)
