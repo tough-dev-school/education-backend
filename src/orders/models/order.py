@@ -81,6 +81,9 @@ class Order(TimestampedModel):
             setattr(self, field.name, None)
 
     def set_item(self, item):
+        if self.shipped is not None:  # some denormalization happens during shipping, so please do not break it!
+            raise ValueError('Cannot change item for shipped order!')
+
         foreign_key = self.__class__.get_item_foreignkey(item)
         if foreign_key is not None:
             self.reset_items()
