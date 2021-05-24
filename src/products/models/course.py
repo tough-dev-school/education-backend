@@ -26,7 +26,7 @@ class Course(Shippable):
 
     def get_purchased_users(self) -> Iterable[User]:
         return User.objects.filter(
-            id__in=apps.get_model('orders.Order').objects.filter(course=self).paid().values_list('user_id'),
+            pk__in=apps.get_model('studying.Study').objects.filter(course=self).values_list('student', flat=True),
         )
 
     def send_email_to_all_purchased_users(self, template_id: str):

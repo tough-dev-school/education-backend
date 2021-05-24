@@ -1,5 +1,4 @@
 import pytest
-from django.utils import timezone
 
 pytestmark = [pytest.mark.django_db]
 
@@ -47,4 +46,7 @@ def another_answer(mixer, question, api):
 
 @pytest.fixture
 def purchase(mixer, course, api):
-    return mixer.blend('orders.Order', user=api.user, course=course, paid=timezone.now())
+    order = mixer.blend('orders.Order', user=api.user, course=course)
+    order.set_paid()
+
+    return order

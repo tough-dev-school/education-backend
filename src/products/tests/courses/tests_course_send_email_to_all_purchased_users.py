@@ -1,5 +1,4 @@
 import pytest
-from django.utils import timezone
 
 pytestmark = [pytest.mark.django_db]
 
@@ -11,7 +10,11 @@ def course(mixer):
 
 @pytest.fixture(autouse=True)
 def order(mixer, course, user):
-    return mixer.blend('orders.Order', user=user, course=course, paid=timezone.now())
+    order = mixer.blend('orders.Order', user=user)
+    order.set_item(course)
+    order.set_paid()
+
+    return order
 
 
 def test_sending_mail(course, user, send_mail):
@@ -21,7 +24,7 @@ def test_sending_mail(course, user, send_mail):
 
 
 def test_non_purchased(course, user, send_mail, order):
-    order.setattr_and_save('paid', None)
+    order.set_not_paid()
 
     course.send_email_to_all_purchased_users(template_id='100500')
 

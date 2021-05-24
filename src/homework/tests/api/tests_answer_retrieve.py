@@ -50,7 +50,7 @@ def test_answers_without_parents_do_not_have_this_field(api, question, answer):
 
 
 def test_403_for_not_purchased_users(api, answer, purchase):
-    purchase.setattr_and_save('paid', None)
+    purchase.set_not_paid()
 
     api.get(
         f'/api/v2/homework/answers/{answer.slug}/',
@@ -59,7 +59,7 @@ def test_403_for_not_purchased_users(api, answer, purchase):
 
 
 def test_ok_for_superusers_even_when_they_did_not_purchase_the_course(api, answer, purchase):
-    purchase.setattr_and_save('paid', None)
+    purchase.set_not_paid()
 
     api.user.is_superuser = True
     api.user.save()
@@ -71,7 +71,7 @@ def test_ok_for_superusers_even_when_they_did_not_purchase_the_course(api, answe
 
 
 def test_ok_for_users_with_permission_even_when_they_did_not_purchase_the_course(api, answer, purchase):
-    purchase.setattr_and_save('paid', None)
+    purchase.set_not_paid()
 
     api.user.add_perm('homework.question.see_all_questions')
 
@@ -82,7 +82,7 @@ def test_ok_for_users_with_permission_even_when_they_did_not_purchase_the_course
 
 
 def test_configurable_permissions_checking(api, answer, purchase, settings):
-    purchase.setattr_and_save('paid', None)
+    purchase.set_not_paid()
 
     settings.DISABLE_HOMEWORK_PERMISSIONS_CHECKING = True
 
