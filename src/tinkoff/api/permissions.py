@@ -11,4 +11,4 @@ class TinkoffCreditNetmaskPermission(permissions.BasePermission):
     def has_permission(self, request, *args, **kwargs):
         sender_ip = IPv4Address(request.META['REMOTE_ADDR'])
 
-        return sender_ip in IPv4Network('91.194.226.00/23')
+        return sender_ip in IPv4Network('91.194.226.0/23')
