@@ -202,7 +202,7 @@ python-dateutil==2.8.1
     #   -c requirements.txt
     #   faker
     #   freezegun
-requests-mock==1.9.2
+requests-mock==1.9.3
     # via -r dev-requirements.in
 requests==2.25.1
     # via
