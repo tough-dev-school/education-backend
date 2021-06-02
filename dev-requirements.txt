@@ -6,8 +6,6 @@
 #
 apipkg==1.5
     # via execnet
-appnope==0.1.2
-    # via ipython
 astor==0.8.1
     # via flake8-simplify
 attrs==20.3.0
@@ -120,7 +118,7 @@ iniconfig==1.1.1
     # via pytest
 ipython-genutils==0.2.0
     # via traitlets
-ipython==7.23.1
+ipython==7.24.0
     # via -r dev-requirements.in
 isort==5.7.0
     # via flake8-isort
