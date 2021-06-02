@@ -19,6 +19,16 @@ class FixtureRegistry:
         return method
 
 
+class CycleFixtureFactory:
+    def __init__(self, factory, count: int):
+        self.factory = factory
+        self.count = count
+
+    def __getattr__(self, name):
+        if hasattr(self.factory, name):
+            return lambda *args, **kwargs: [getattr(self.factory, name)(*args, **kwargs) for _ in range(0, self.count)]
+
+
 class FixtureFactory:
     def __init__(self):
         self.mixer = mixer
@@ -27,3 +37,10 @@ class FixtureFactory:
     def __getattr__(self, name):
         method = self.registry.get(name)
         return partial(method, self)
+
+    def cycle(self, count) -> CycleFixtureFactory:
+        """
+        Run given method X times:
+            factory.cycle(5).order()  # gives 5 orders
+        """
+        return CycleFixtureFactory(self, count)

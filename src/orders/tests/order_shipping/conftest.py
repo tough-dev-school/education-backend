@@ -24,8 +24,8 @@ def course(mixer):
 
 
 @pytest.fixture
-def order(mixer, course, user):
-    order = mixer.blend('orders.Order', user=user, price=1500)
+def order(factory, course, user):
+    order = factory.order(user=user, price=1500)
     order.set_item(course)
 
     return order

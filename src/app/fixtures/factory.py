@@ -11,4 +11,4 @@ def mixer():
 
 @pytest.fixture
 def factory():
-    return FixtureFactory
+    return FixtureFactory()

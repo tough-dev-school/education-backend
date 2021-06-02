@@ -6,8 +6,8 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def another_order(mixer, user, course):
-    return mixer.blend('orders.Order', user=user, course=course)
+def another_order(factory, user, course):
+    return factory.order(user=user, item=course)
 
 
 def test_study_record_is_created(shipment, user, order, course):

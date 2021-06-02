@@ -4,8 +4,8 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def another_order(mixer):
-    return mixer.blend('orders.Order')
+def another_order(factory):
+    return factory.order()
 
 
 def test_is_sent(test_trigger, mixer, order):

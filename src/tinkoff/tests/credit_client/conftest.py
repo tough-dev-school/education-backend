@@ -29,8 +29,8 @@ def record(mixer):
 
 
 @pytest.fixture
-def order(mixer, user, record):
-    return mixer.blend('orders.Order', user=user, record=record, price='100500')
+def order(factory, user, record):
+    return factory.order(user=user, item=record, price='100500')
 
 
 @pytest.fixture

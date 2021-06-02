@@ -17,8 +17,8 @@ def course(mixer):
 
 
 @pytest.fixture
-def order(mixer, course):
-    return mixer.blend('orders.Order', course=course)
+def order(factory, course):
+    return factory.order(item=course)
 
 
 @pytest.fixture
@@ -42,10 +42,9 @@ def giver(mixer):
 
 
 @pytest.fixture
-def gifted_order(mixer, course, giver):
-    return mixer.blend(
-        'orders.Order',
-        course=course,
+def gifted_order(factory, course, giver):
+    return factory.order(
+        item=course,
         giver=giver,
         desired_shipment_date='2025-01-05',
         gift_message='Гори в аду!',

@@ -2,5 +2,5 @@ import pytest
 
 
 @pytest.fixture
-def order(mixer):
-    return mixer.blend('orders.Order')
+def order(factory):
+    return factory.order()

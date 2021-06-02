@@ -22,9 +22,9 @@ def users(mixer):
 
 
 @pytest.fixture(autouse=True)
-def _allow_course_access(mixer, users, course):
+def _allow_course_access(factory, users, course):
     for user in users:
-        order = mixer.blend('orders.Order', user=user)
+        order = factory.order(user=user)
         order.set_item(course)
         order.set_paid()
 
