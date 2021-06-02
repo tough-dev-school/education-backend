@@ -45,8 +45,8 @@ def another_answer(mixer, question, api):
 
 
 @pytest.fixture
-def purchase(mixer, course, api):
-    order = mixer.blend('orders.Order', user=api.user, course=course)
+def purchase(factory, course, api):
+    order = factory.order(user=api.user, item=course)
     order.set_paid()
 
     return order

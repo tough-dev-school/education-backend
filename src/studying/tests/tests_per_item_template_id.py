@@ -11,10 +11,9 @@ def record(mixer):
 
 
 @pytest.fixture
-def shipment(user, mixer):
+def shipment(user, factory):
     def _shipment(product):
-        order = mixer.blend('orders.Order')
-        order.set_item(product)
+        order = factory.order(item=product)
 
         return RecordShipment(user=user, product=product, order=order)
 

@@ -23,24 +23,24 @@ def test_zero():
     assert promocode.order_count == 0
 
 
-def test_two(mixer, promocode):
-    mixer.cycle(2).blend('orders.Order', promocode=promocode, paid='2032-12-01 12:30')
+def test_two(factory, promocode):
+    factory.cycle(2).order(promocode=promocode, is_paid=True)
 
     promocode = get_annotated_promocode()
 
     assert promocode.order_count == 2
 
 
-def test_another_promocode(mixer, another_promocode):
-    mixer.cycle(2).blend('orders.Order', promocode=another_promocode, paid='2032-12-01 12:30')
+def test_another_promocode(factory, another_promocode):
+    factory.cycle(2).order(promocode=another_promocode, is_paid=True)
 
     promocode = get_annotated_promocode()
 
     assert promocode.order_count == 0
 
 
-def test_not_paid_orders(mixer, promocode):
-    mixer.cycle(2).blend('orders.Order', promocode=promocode, paid=None)
+def test_not_paid_orders(factory, promocode):
+    factory.cycle(2).order(promocode=promocode, is_paid=False)
 
     promocode = get_annotated_promocode()
 

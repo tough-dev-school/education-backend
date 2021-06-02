@@ -25,10 +25,10 @@ lint:
 	flake8 src
 
 test:
-	cd src && pytest -n 4 -x
+	cd src && pytest -n 4 --ff -x && pytest --dead-fixtures
 
 coverage:
-	cd src && pytest --cov-report=xml --cov=. -n4 -x
+	cd src && pytest --dead-fixtures && pytest --cov-report=xml --cov=. -n4 -x
 
 checkmigrations:
 	cd src && ./manage.py makemigrations --check --no-input --dry-run

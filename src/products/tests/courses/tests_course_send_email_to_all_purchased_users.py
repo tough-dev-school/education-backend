@@ -9,8 +9,8 @@ def course(mixer):
 
 
 @pytest.fixture(autouse=True)
-def order(mixer, course, user):
-    order = mixer.blend('orders.Order', user=user)
+def order(factory, course, user):
+    order = factory.order(user=user)
     order.set_item(course)
     order.set_paid()
 

@@ -7,8 +7,8 @@ pytestmark = [
 
 
 @pytest.fixture
-def another_order(mixer, user):
-    return mixer.blend('orders.Order', user=user, paid='2032-12-01 15:20')
+def another_order(factory, user):
+    return factory.order(user=user, paid='2032-12-01 15:20')
 
 
 @pytest.mark.usefixtures('another_order')

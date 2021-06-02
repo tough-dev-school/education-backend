@@ -19,9 +19,8 @@ def bundle(mixer):
 
 
 @pytest.fixture
-def order(mixer, bundle):
-    order = mixer.blend('orders.Order')
-    order.set_item(bundle)
+def order(factory, bundle):
+    order = factory.order(item=bundle)
     order.save()
 
     return order

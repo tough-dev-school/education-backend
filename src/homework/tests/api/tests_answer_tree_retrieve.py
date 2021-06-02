@@ -30,18 +30,6 @@ def even_another_user(mixer):
     return mixer.blend('users.User')
 
 
-@pytest.fixture
-def _very_huge_tree_of_answers(answer, mixer):
-    previous_answer = answer
-    for _ in range(0, 100):
-        previous_answer = mixer.blend(
-            'homework.Answer',
-            question=previous_answer.question,
-            parent=previous_answer,
-            author=previous_answer.author,
-        )
-
-
 def test_no_descendants_by_default(api, answer):
     got = api.get(f'/api/v2/homework/answers/{answer.slug}/')
 

@@ -9,21 +9,16 @@ def course(mixer):
 
 
 @pytest.fixture
-def another_course(mixer):
-    return mixer.blend('products.Course')
-
-
-@pytest.fixture
-def order(mixer, course, user):
-    order = mixer.blend('orders.Order', user=user, course=course)
+def order(factory, course, user):
+    order = factory.order(user=user, item=course)
     order.set_paid()
 
     return order
 
 
 @pytest.fixture
-def another_order(mixer, user):
-    order = mixer.blend('orders.Order', user=user)
+def another_order(factory, user):
+    order = factory.order(user=user)
     order.set_paid()
 
     return order

@@ -15,9 +15,8 @@ def product(mixer):
 
 
 @pytest.fixture
-def order(mixer, product, another_user):
-    return mixer.blend(
-        'orders.Order',
+def order(factory, product, another_user):
+    return factory.order(
         paid='2032-12-01 00:01:00',
         desired_shipment_date='2032-12-01 00:14:00',
         shipped=None,

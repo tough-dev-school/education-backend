@@ -28,13 +28,13 @@ def answer(mixer, user, question):
 
 
 @pytest.fixture(autouse=True)
-def purchase(mixer, course, user):
-    return mixer.blend('orders.Order', user=user, course=course, paid=datetime(2032, 12, 1, 15, 30))
+def purchase(factory, course, user):
+    return factory.order(user=user, item=course, paid=datetime(2032, 12, 1, 15, 30))
 
 
 @pytest.fixture
-def latest_purchase(mixer, another_course, user):
-    return mixer.blend('orders.Order', user=user, course=another_course, paid=datetime(2035, 12, 1, 15, 30))
+def latest_purchase(factory, another_course, user):
+    return factory.order(user=user, item=another_course, paid=datetime(2035, 12, 1, 15, 30))
 
 
 def test_single_course(answer, course):
