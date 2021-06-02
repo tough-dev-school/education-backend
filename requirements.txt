@@ -174,8 +174,9 @@ tornado==6.1
     # via flower
 tqdm==4.56.2
     # via django-hattori
-urllib3==1.26.4
+urllib3==1.26.5
     # via
+    #   -r requirements.in
     #   botocore
     #   requests
     #   sentry-sdk

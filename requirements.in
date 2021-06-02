@@ -32,6 +32,7 @@ sentry-sdk
 babel
 boto3
 PyJWT
+urllib3>=1.26.5
 
 celery
 redis
