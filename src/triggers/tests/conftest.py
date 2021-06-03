@@ -27,11 +27,7 @@ def bundle(mixer):
 
 @pytest.fixture
 def order(factory, user, course):
-    order = factory.order(user=user, giver=None)
-
-    order.set_item(course)
-
-    return order
+    return factory.order(user=user, giver=None, item=course)
 
 
 @pytest.fixture
