@@ -10,6 +10,7 @@ INSTALLED_APPS = [
     'banking',
     'a12n',
     'homework',
+    'diplomas',
 
     'markdownx',
     'corsheaders',

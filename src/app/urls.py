@@ -6,6 +6,7 @@ from rest_framework import routers
 
 from a12n.api import views as a12n
 from app.views import HomePageView
+from diplomas.api.viewsets import DiplomaViewSet
 from homework.api.views import QuestionView
 from homework.api.viewsets import AnswerViewSet
 from magnets.api.views import EmailLeadMagnetCampaignView
@@ -18,6 +19,7 @@ router.register('courses', CourseViewSet)
 router.register('records', RecordViewSet)
 router.register('bundles', BundleViewSet)
 router.register('homework/answers', AnswerViewSet)
+router.register('diplomas', DiplomaViewSet)
 
 
 urlpatterns = [

@@ -4,9 +4,9 @@ from django.http import HttpResponseRedirect
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from app.pricing import format_price
-from app.viewsets import ReadOnlyAppViewSet
 from banking.selector import BankSelector
 from orders.api.validators import GiftValidator, PurchaseValidator
 from orders.models import Order, PromoCode
@@ -15,7 +15,7 @@ from users.creator import UserCreator
 from users.models import User
 
 
-class PurchaseViewSet(ReadOnlyAppViewSet):
+class PurchaseViewSet(ReadOnlyModelViewSet):
     """Abstract viewset for purchasable items"""
     @property
     def item(self):

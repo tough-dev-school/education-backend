@@ -46,3 +46,11 @@ class PurchaseSerializer(serializers.Serializer):
     def _validate(cls, input: dict):
         instance = cls(data=input)
         instance.is_valid(raise_exception=True)
+
+
+class CourseSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = [
+            'name',
+        ]
