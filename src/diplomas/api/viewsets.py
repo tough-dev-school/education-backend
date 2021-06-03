@@ -1,4 +1,6 @@
 
+from rest_framework.exceptions import MethodNotAllowed
+
 from app.viewsets import AppViewSet
 from diplomas.api.permissions import DiplomaPermission
 from diplomas.api.serializers import DiplomaCreateSerializer, DiplomaSerializer
@@ -22,3 +24,9 @@ class DiplomaViewSet(AppViewSet):
             queryset = queryset.for_user(self.request.user)
 
         return queryset
+
+    def update(self, request, **kwargs):
+        raise MethodNotAllowed(request.method)
+
+    def destroy(self, request, **kwargs):
+        raise MethodNotAllowed(request.method)
