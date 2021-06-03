@@ -20,7 +20,6 @@ include(
     'conf/auth.py',
     'conf/boilerplate.py',
     'conf/cache.py',
-    'conf/celery.py',
     'conf/db.py',
     'conf/debug_toolbar.py',
     'conf/email.py',
