@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-27 16:07+0300\n"
+"POT-Creation-Date: 2021-06-03 16:35+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,54 +28,95 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: homework/admin.py:26
-msgid "Dispatch crosscheck"
-msgstr "Запустить p2p-проверку домашки"
+#: diplomas/admin.py:14
+msgid "Student"
+msgstr "Студент"
 
-#: homework/admin.py:64
-msgid "Text"
-msgstr ""
-
-#: homework/admin.py:68 orders/models/order.py:39 products/models/course.py:23
+#: diplomas/admin.py:18 homework/admin.py:94 homework/admin.py:139
+#: orders/models/order.py:39 products/models/course.py:23
 msgid "Course"
 msgstr "Курс"
 
-#: homework/admin.py:76
+#: diplomas/models.py:17
+msgid "Russian"
+msgstr "Русский"
+
+#: diplomas/models.py:18
+msgid "English"
+msgstr "Английский"
+
+#: diplomas/models.py:36
+msgid "May access diplomas of all students"
+msgstr "Видит все дипломы"
+
+#: diplomas/models.py:39
+msgid "Diploma"
+msgstr "Диплом"
+
+#: diplomas/models.py:40
+msgid "Diplomas"
+msgstr "Дипломы"
+
+#: homework/admin.py:30
+msgid "Dispatch crosscheck"
+msgstr "Запустить p2p-проверку домашки"
+
+#: homework/admin.py:39
+msgid "Is root answer"
+msgstr "Первый ответ"
+
+#: homework/admin.py:102
 msgid "Crosschecking people"
 msgstr "Учеников проверяет"
 
-#: homework/models.py:18 magnets/models.py:17 products/admin/bundle.py:19
-#: products/admin/course.py:12 products/admin/courses/record.py:16
+#: homework/admin.py:107 homework/admin.py:151
+msgid "Author"
+msgstr ""
+
+#: homework/admin.py:147
+msgid "Question"
+msgstr "Вопрос"
+
+#: homework/admin.py:155
+msgid "View"
+msgstr ""
+
+#: homework/admin.py:160
+msgid "Is checked"
+msgstr ""
+
+#: homework/models.py:22 magnets/models.py:17 products/admin/bundle.py:20
+#: products/admin/course.py:13 products/admin/courses/record.py:17
 msgid "Name"
 msgstr "Название"
 
-#: homework/models.py:23
+#: homework/models.py:27
 msgid "Homework"
 msgstr "Домашка"
 
-#: homework/models.py:24
+#: homework/models.py:28
 msgid "Homeworks"
 msgstr "Домашки"
 
-#: homework/models.py:26
+#: homework/models.py:30
 msgid "May see questions for all homeworks"
-msgstr ""
+msgstr "Видит все вопросы домашки"
 
-#: homework/models.py:59
+#: homework/models.py:79
 msgid "Exclude from cross-checking"
 msgstr "Исключить из p2p-проверки"
 
-#: homework/models.py:64
+#: homework/models.py:84
 msgid "Homework answer"
 msgstr "Ответ на домашку"
 
-#: homework/models.py:65
+#: homework/models.py:85
 msgid "Homework answers"
 msgstr "Ответы на домашку"
 
-#: homework/models.py:68
+#: homework/models.py:88
 msgid "May see answers from every user"
-msgstr ""
+msgstr "Видит все ответы на домашку"
 
 #: magnets/admin.py:33
 msgid "Lead count"
@@ -109,43 +150,43 @@ msgstr "Почтовая кампания"
 msgid "Email Lead Magnet Campaigns"
 msgstr "Почтовые кампании"
 
-#: orders/admin/orders.py:10 orders/admin/orders.py:97
+#: orders/admin/orders.py:10 orders/admin/orders.py:106
 msgid "Is paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders.py:62 orders/admin/orders.py:93
+#: orders/admin/orders.py:66 orders/admin/orders.py:102
 msgid "Item"
 msgstr "Товар"
 
-#: orders/admin/orders.py:65
+#: orders/admin/orders.py:72
 msgid "Gift"
 msgstr "Подарок"
 
-#: orders/admin/orders.py:77 orders/models/order.py:26
+#: orders/admin/orders.py:86 orders/models/order.py:26
 msgid "User"
 msgstr "Юзер"
 
-#: orders/admin/orders.py:85 orders/models/order.py:43
+#: orders/admin/orders.py:94 orders/models/order.py:43
 msgid "Giver"
 msgstr "Даритель"
 
-#: orders/admin/orders.py:100
+#: orders/admin/orders.py:109
 msgid "Paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders.py:102
+#: orders/admin/orders.py:111
 msgid "Not paid"
 msgstr "Не оплачен"
 
-#: orders/admin/orders.py:104
+#: orders/admin/orders.py:113
 msgid "Set paid"
 msgstr "Пометить оплаченным"
 
-#: orders/admin/orders.py:111
+#: orders/admin/orders.py:120
 msgid "Set not paid"
 msgstr "Пометить неоплаченынм"
 
-#: orders/admin/orders.py:117
+#: orders/admin/orders.py:127
 msgid "Ship again if paid"
 msgstr "Ещё раз выполнить (если заказ не оплачен — не выполнится)"
 
@@ -153,8 +194,8 @@ msgstr "Ещё раз выполнить (если заказ не оплаче�
 msgid "Order count"
 msgstr "Количество заказов"
 
-#: orders/models/order.py:27 products/admin/bundle.py:26
-#: products/admin/course.py:19 products/admin/courses/record.py:23
+#: orders/models/order.py:27 products/admin/bundle.py:32
+#: products/admin/course.py:25 products/admin/courses/record.py:29
 msgid "Price"
 msgstr "Цена"
 
@@ -185,7 +226,7 @@ msgstr ""
 msgid "Record"
 msgstr "Запись"
 
-#: orders/models/order.py:41 products/models/bundle.py:13
+#: orders/models/order.py:41 products/models/bundle.py:15
 msgid "Bundle"
 msgstr "Набор"
 
@@ -227,11 +268,11 @@ msgstr ""
 msgid "Promo Codes"
 msgstr "Промо-коды"
 
-#: products/admin/bundle.py:30
+#: products/admin/bundle.py:41
 msgid "Items"
 msgstr "Товары"
 
-#: products/admin/course.py:24 products/admin/courses/record.py:27
+#: products/admin/course.py:35 products/admin/courses/record.py:38
 msgid "Access"
 msgstr "Доступы"
 
@@ -245,7 +286,7 @@ msgstr "ID шаблона в постмарке"
 msgid "Send email to all purchased_users"
 msgstr "Отправить письмо всем купившим"
 
-#: products/admin/courses/record.py:42
+#: products/admin/courses/record.py:57
 msgid "Downloadable link"
 msgstr "Ссылка на скачиваие"
 
@@ -272,7 +313,7 @@ msgstr ""
 msgid "Analytical group"
 msgstr "Группа товаров (аналитика)"
 
-#: products/models/bundle.py:14
+#: products/models/bundle.py:16
 msgid "Bundles"
 msgstr "Наборы"
 
@@ -378,15 +419,15 @@ msgstr ""
 msgid "Users"
 msgstr "Юзеры"
 
-#: users/models.py:8
+#: users/models.py:9
 msgid "Subscribed to newsletter"
 msgstr "Подписан на новости"
 
-#: users/models.py:9
+#: users/models.py:10
 msgid "first name in english"
 msgstr ""
 
-#: users/models.py:10
+#: users/models.py:11
 msgid "last name in english"
 msgstr ""
 
