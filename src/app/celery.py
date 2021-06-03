@@ -31,7 +31,7 @@ celery.conf.update(
         },
         'ship_unshipped_orders': {
             'task': 'orders.tasks.ship_unshipped_orders',
-            'schedule': crontab(hour='*', minute='*/2'),
+            'schedule': crontab(hour='*', minute=0),
         },
     },
 )
