@@ -2,11 +2,11 @@ from celery.schedules import crontab
 
 from app.conf.environ import env
 
-BROKER_URL = env('CLOUDAMQP_URL')
-CELERY_ALWAYS_EAGER = env('CELERY_ALWAYS_EAGER', cast=bool, default=env('DEBUG'))  # by default in debug mode we run all celery tasks in foregroud.
-CELERY_TIMEZONE = env('TIME_ZONE', cast=str, default='Europe/Moscow')
-CELERY_ENABLE_UTC = False
-CELERYBEAT_SCHEDULE = {
+broker_url = env('CLOUDAMQP_URL')
+task_always_eager = env('CELERY_ALWAYS_EAGER', cast=bool, default=env('DEBUG'))  # by default in debug mode we run all celery tasks in foregroud.
+timezone = env('TIME_ZONE', cast=str, default='Europe/Moscow')
+enable_utc = False
+beat_schedule = {
     'run_started_purchase_trigger': {
         'task': 'triggers.tasks.check_for_started_purchase_triggers',
         'schedule': crontab(hour='*', minute=15),

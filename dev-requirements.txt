@@ -146,8 +146,10 @@ pickleshare==0.7.5
     # via ipython
 pluggy==0.13.1
     # via pytest
-prompt-toolkit==3.0.16
-    # via ipython
+prompt-toolkit==3.0.18
+    # via
+    #   -c requirements.txt
+    #   ipython
 ptyprocess==0.7.0
     # via pexpect
 py==1.10.0
@@ -237,7 +239,9 @@ urllib3==1.26.5
     #   -c requirements.txt
     #   requests
 wcwidth==0.2.5
-    # via prompt-toolkit
+    # via
+    #   -c requirements.txt
+    #   prompt-toolkit
 zipp==3.4.1
     # via importlib-metadata
 
