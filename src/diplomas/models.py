@@ -1,6 +1,7 @@
 import uuid
 from django.utils.translation import gettext_lazy as _
 
+from app.files import RandomFileName
 from app.models import DefaultQuerySet, TimestampedModel, models
 
 
@@ -22,7 +23,7 @@ class Diploma(TimestampedModel):
     study = models.ForeignKey('studying.Study', on_delete=models.CASCADE)
     slug = models.UUIDField(db_index=True, unique=True, default=uuid.uuid4)
     language = models.CharField(max_length=3, choices=Languages.choices, db_index=True)
-    image = models.ImageField()
+    image = models.ImageField(upload_to=RandomFileName('diplomas'))
 
     class Meta:
         constraints = [
