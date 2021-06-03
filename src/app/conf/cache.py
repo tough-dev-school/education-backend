@@ -2,7 +2,7 @@ from app.conf.environ import env
 
 if not env('NO_CACHE', cast=bool, default=False):
     CACHES = {
-        'default': env.cache('REDIS_URL'),
+        'default': env.cache('REDISCLOUD_URL'),
     }
 
 CACHALOT_UNCACHABLE_TABLES = [

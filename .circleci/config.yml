@@ -5,7 +5,7 @@ defaults: &defaults
     - image: cimg/python:3.9.5
       environment:
         - DATABASE_URL=postgres://postgres:password@postgres:5432/circle_test
-        - REDIS_URL=redis://redis:6379
+        - REDISCLOUD_URL=redis://redis:6379
         - CLOUDAMQP_URL=amqp://guest:guest@rabbitmq/
 
     - image: circleci/redis:6.0-alpine
