@@ -11,13 +11,14 @@ class DiplomaAdmin(ModelAdmin):
         'course',
     ]
     fields = [
+        'slug',
         'student',
         'course',
         'language',
         'image',
     ]
 
-    readonly_fields = ['course', 'student']
+    readonly_fields = ['slug', 'course', 'student']
 
     @field(short_description=_('Student'), admin_order_field='study__student')
     def student(self, diploma):

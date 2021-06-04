@@ -22,3 +22,4 @@ CORS_ORIGIN_REGEX_WHITELIST = [
 ]
 
 FRONTEND_URL = env('FRONTEND_URL', cast=str, default='https://education.borshev.com/lms/')
+DIPLOMA_FRONTEND_URL = env('DIPLOMA_FRONTEND_URL', cast=str, default='https://certificates.borshev.com/')

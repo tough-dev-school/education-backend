@@ -1,5 +1,7 @@
 import shortuuid
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
+from urllib.parse import urljoin
 
 from app.files import RandomFileName
 from app.models import DefaultQuerySet, TimestampedModel, models
@@ -42,3 +44,6 @@ class Diploma(TimestampedModel):
 
     def get_other_languages(self) -> DiplomaQuerySet:
         return self.__class__.objects.filter(study=self.study).exclude(pk=self.pk)
+
+    def get_absolute_url(self) -> str:
+        return urljoin(settings.DIPLOMA_FRONTEND_URL, f'/{self.slug}/')
