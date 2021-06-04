@@ -1,4 +1,4 @@
-import uuid
+import shortuuid
 from django.utils.translation import gettext_lazy as _
 
 from app.files import RandomFileName
@@ -21,7 +21,7 @@ class Diploma(TimestampedModel):
     objects: DiplomaQuerySet = DiplomaQuerySet.as_manager()
 
     study = models.ForeignKey('studying.Study', on_delete=models.CASCADE)
-    slug = models.UUIDField(db_index=True, unique=True, default=uuid.uuid4)
+    slug = models.CharField(max_length=32, db_index=True, unique=True, default=shortuuid.uuid)
     language = models.CharField(max_length=3, choices=Languages.choices, db_index=True)
     image = models.ImageField(upload_to=RandomFileName('diplomas'))
 
