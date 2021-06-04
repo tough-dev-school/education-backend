@@ -39,3 +39,6 @@ class Diploma(TimestampedModel):
 
         verbose_name = _('Diploma')
         verbose_name_plural = _('Diplomas')
+
+    def get_other_languages(self) -> DiplomaQuerySet:
+        return self.__class__.objects.filter(study=self.study).exclude(pk=self.pk)

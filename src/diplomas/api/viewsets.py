@@ -2,17 +2,18 @@
 from rest_framework.exceptions import MethodNotAllowed
 
 from app.viewsets import AppViewSet
+from diplomas.api import serializers
 from diplomas.api.permissions import DiplomaPermission
-from diplomas.api.serializers import DiplomaCreateSerializer, DiplomaSerializer
 from diplomas.models import Diploma
 
 
 class DiplomaViewSet(AppViewSet):
     queryset = Diploma.objects.for_viewset()
     lookup_field = 'slug'
-    serializer_class = DiplomaSerializer
+    serializer_class = serializers.DiplomaSerializer
     serializer_action_classes = {
-        'create': DiplomaCreateSerializer,
+        'create': serializers.DiplomaCreateSerializer,
+        'retrieve': serializers.DiplomaRetrieveSerializer,
     }
     permission_classes = [DiplomaPermission]
 

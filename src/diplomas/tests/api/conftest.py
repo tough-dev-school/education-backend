@@ -15,4 +15,4 @@ def api(api):
 
 @pytest.fixture
 def diploma(factory):
-    return factory.diploma()
+    return factory.diploma(language='EN')
