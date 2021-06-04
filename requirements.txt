@@ -79,6 +79,8 @@ django-ipware==3.0.2
     #   drf-recaptcha
 django-markdownx==3.0.1
     # via -r requirements.in
+django-redis==5.0.0
+    # via -r requirements.in
 django-split-settings==1.0.1
     # via -r requirements.in
 django-storages==1.11.1
@@ -103,8 +105,6 @@ django==3.2.4
     #   djangorestframework
     #   drf-jwt
     #   drf-recaptcha
-django_redis==5.0.0
-    # via -r requirements.in
 djangorestframework==3.12.4
     # via
     #   -r requirements.in
@@ -162,6 +162,8 @@ requests==2.25.1
 s3transfer==0.4.2
     # via boto3
 sentry-sdk==1.1.0
+    # via -r requirements.in
+shortuuid==1.0.1
     # via -r requirements.in
 six==1.15.0
     # via

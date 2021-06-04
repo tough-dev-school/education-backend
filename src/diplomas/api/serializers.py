@@ -22,6 +22,26 @@ class DiplomaSerializer(serializers.ModelSerializer):
         ]
 
 
+class DiplomaRetrieveSerializer(serializers.ModelSerializer):
+    student = UserSafeSerializer(source='study.student')
+    course = CourseSimpleSerializer(source='study.course')
+    other_languages = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Diploma
+        fields = [
+            'course',
+            'slug',
+            'language',
+            'image',
+            'student',
+            'other_languages',
+        ]
+
+    def get_other_languages(self, diploma):
+        return DiplomaSerializer(diploma.get_other_languages(), many=True).data
+
+
 class DiplomaCreateSerializer(serializers.ModelSerializer):
     student = serializers.IntegerField(source='study.student_id')
     course = serializers.IntegerField(source='study.course_id')
