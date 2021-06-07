@@ -5,6 +5,7 @@ from urllib.parse import urljoin
 
 from app.files import RandomFileName
 from app.models import DefaultQuerySet, TimestampedModel, models
+from app.tasks import send_mail
 
 
 class DiplomaQuerySet(DefaultQuerySet):
@@ -47,3 +48,13 @@ class Diploma(TimestampedModel):
 
     def get_absolute_url(self) -> str:
         return urljoin(settings.DIPLOMA_FRONTEND_URL, f'/{self.slug}/')
+
+    def send_to_student(self):
+        send_mail.delay(
+            to=self.study.student.email,
+            template_id='new-diploma',
+            ctx=dict(
+                course_name=self.study.course.full_name,
+                diploma_url=self.get_absolute_url(),
+            ),
+        )
