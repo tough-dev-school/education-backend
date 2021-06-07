@@ -17,6 +17,16 @@ class DiplomaAdmin(ModelAdmin):
         'language',
         'image',
     ]
+    list_filter = [
+        'language',
+        'study__course',
+    ]
+
+    search_fields = [
+        'study__student__first_name',
+        'study__student__last_name',
+        'study__student__email',
+    ]
 
     readonly_fields = ['slug', 'course', 'student']
 
