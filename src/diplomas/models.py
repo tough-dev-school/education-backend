@@ -57,4 +57,5 @@ class Diploma(TimestampedModel):
                 course_name=self.study.course.full_name,
                 diploma_url=self.get_absolute_url(),
             ),
+            disable_antispam=True,
         )
