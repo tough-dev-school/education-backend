@@ -26,7 +26,7 @@ chardet==4.0.0
     #   requests
 cognitive-complexity==1.2.0
     # via flake8-cognitive-complexity
-coverage[toml]==5.5
+coverage==5.5
     # via pytest-cov
 decorator==4.4.2
     # via ipython
@@ -167,7 +167,7 @@ pyparsing==2.4.7
     # via
     #   -c requirements.txt
     #   packaging
-pytest-cov==2.12.0
+pytest-cov==2.12.1
     # via -r dev-requirements.in
 pytest-deadfixtures==2.2.1
     # via -r dev-requirements.in
@@ -224,8 +224,8 @@ text-unidecode==1.3
     #   faker
 toml==0.10.2
     # via
-    #   coverage
     #   pytest
+    #   pytest-cov
 traitlets==5.0.5
     # via
     #   ipython
