@@ -7,7 +7,9 @@ services:
       - 5672:5672
 
   postgres:
-    image: f213/dev-postgres
+    image: postgres:13.3-alpine
+    environment:
+      - POSTGRES_PASSWORD=secret
     ports:
      - 5432:5432
     volumes:
