@@ -73,3 +73,5 @@ class CourseAdmin(ModelAdmin):
     actions = [
         actions.send_email_to_all_purchased_users,
     ]
+
+    save_as = True
