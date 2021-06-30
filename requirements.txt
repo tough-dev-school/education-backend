@@ -32,25 +32,43 @@ cffi==1.14.5
     #   cryptography
 chardet==4.0.0
     # via requests
-click-didyoumean==0.0.3
-    # via celery
-click-plugins==1.1.1
-    # via celery
-click-repl==0.2.0
-    # via celery
 click==7.1.2
     # via
     #   celery
     #   click-didyoumean
     #   click-plugins
     #   click-repl
+click-didyoumean==0.0.3
+    # via celery
+click-plugins==1.1.1
+    # via celery
+click-repl==0.2.0
+    # via celery
 cmarkgfm==0.5.3
     # via -r requirements.in
 cryptography==3.4.7
     # via pyjwt
+django==3.2.4
+    # via
+    #   -r requirements.in
+    #   django-anymail
+    #   django-axes
+    #   django-bulk-update
+    #   django-cachalot
+    #   django-cors-headers
+    #   django-debug-toolbar
+    #   django-filter
+    #   django-hattori
+    #   django-healthchecks
+    #   django-markdownx
+    #   django-redis
+    #   django-storages
+    #   djangorestframework
+    #   drf-jwt
+    #   drf-recaptcha
 django-anymail==8.4
     # via -r requirements.in
-django-axes==5.18.0
+django-axes==5.20.0
     # via -r requirements.in
 django-behaviors==0.5.1
     # via -r requirements.in
@@ -87,24 +105,6 @@ django-storages==1.11.1
     # via -r requirements.in
 django-tree-queries==0.5.1
     # via -r requirements.in
-django==3.2.4
-    # via
-    #   -r requirements.in
-    #   django-anymail
-    #   django-axes
-    #   django-bulk-update
-    #   django-cachalot
-    #   django-cors-headers
-    #   django-debug-toolbar
-    #   django-filter
-    #   django-hattori
-    #   django-healthchecks
-    #   django-markdownx
-    #   django-redis
-    #   django-storages
-    #   djangorestframework
-    #   drf-jwt
-    #   drf-recaptcha
 djangorestframework==3.12.4
     # via
     #   -r requirements.in
