@@ -130,7 +130,7 @@ packaging==20.9
     # via bleach
 pillow==8.2.0
     # via django-markdownx
-prompt-toolkit==3.0.18
+prompt-toolkit==3.0.19
     # via click-repl
 psycopg2-binary==2.8.6
     # via -r requirements.in
