@@ -112,7 +112,7 @@ idna==2.10
     # via
     #   -c requirements.txt
     #   requests
-importlib-metadata==3.10.0
+importlib-metadata==3.10.1
     # via pytest-randomly
 iniconfig==1.1.1
     # via pytest
