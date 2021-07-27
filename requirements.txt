@@ -32,7 +32,7 @@ cffi==1.14.6
     #   cryptography
 chardet==4.0.0
     # via requests
-click==7.1.2
+click==8.0.1
     # via
     #   celery
     #   click-didyoumean
