@@ -22,7 +22,7 @@ botocore==1.20.80
     #   s3transfer
 celery==5.1.2
     # via -r requirements.in
-certifi==2020.12.5
+certifi==2021.5.30
     # via
     #   requests
     #   sentry-sdk
