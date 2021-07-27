@@ -167,7 +167,7 @@ pyparsing==2.4.7
     # via
     #   -c requirements.txt
     #   packaging
-pytest==6.2.2
+pytest==6.2.4
     # via
     #   pytest-cov
     #   pytest-deadfixtures
