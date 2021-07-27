@@ -120,7 +120,7 @@ ipython==7.25.0
     # via -r dev-requirements.in
 ipython-genutils==0.2.0
     # via traitlets
-isort==5.7.0
+isort==5.9.2
     # via flake8-isort
 jedi==0.18.0
     # via
