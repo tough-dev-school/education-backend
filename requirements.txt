@@ -128,7 +128,7 @@ markdown==3.3.4
     # via django-markdownx
 packaging==20.9
     # via bleach
-pillow==8.2.0
+pillow==8.3.1
     # via django-markdownx
 prompt-toolkit==3.0.19
     # via click-repl
