@@ -126,7 +126,7 @@ kombu==5.1.0
     # via celery
 markdown==3.3.4
     # via django-markdownx
-packaging==20.9
+packaging==21.0
     # via bleach
 pillow==8.3.1
     # via django-markdownx
