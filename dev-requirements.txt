@@ -8,7 +8,7 @@ apipkg==1.5
     # via execnet
 astor==0.8.1
     # via flake8-simplify
-attrs==20.3.0
+attrs==21.2.0
     # via
     #   flake8-bugbear
     #   flake8-eradicate
