@@ -7,7 +7,7 @@ defaults: &defaults
         - DATABASE_URL=postgres://postgres:password@postgres:5432/circle_test
         - REDISCLOUD_URL=redis://redis:6379
 
-    - image: circleci/redis:6.0-alpine
+    - image: circleci/redis:6.2-alpine
       name: redis
 
     - image: circleci/postgres:13.3-ram
