@@ -210,7 +210,7 @@ requests==2.26.0
     #   requests-mock
 requests-mock==1.9.3
     # via -r dev-requirements.in
-six==1.15.0
+six==1.16.0
     # via
     #   -c requirements.txt
     #   flake8-print
