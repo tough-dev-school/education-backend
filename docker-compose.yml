@@ -2,7 +2,7 @@ version: '2'
 
 services:
   rabbitmq:
-    image: rabbitmq:3.8-alpine
+    image: rabbitmq:3.9-alpine
     ports:
       - 5672:5672
 
