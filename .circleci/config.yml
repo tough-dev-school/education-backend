@@ -2,7 +2,7 @@ version: 2.1
 
 defaults: &defaults
   docker:
-    - image: cimg/python:3.9.5
+    - image: cimg/python:3.9.6
       environment:
         - DATABASE_URL=postgres://postgres:password@postgres:5432/circle_test
         - REDISCLOUD_URL=redis://redis:6379
