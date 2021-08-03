@@ -114,7 +114,7 @@ drf-jwt==1.19.1
     # via -r requirements.in
 drf-recaptcha==2.0.4
     # via -r requirements.in
-faker==4.0.0
+faker==8.11.0
     # via django-hattori
 idna==3.2
     # via requests
