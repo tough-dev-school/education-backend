@@ -7,7 +7,7 @@ services:
       - 5672:5672
 
   postgres:
-    image: postgres:13.3-alpine
+    image: postgres:13.4-alpine
     environment:
       - POSTGRES_PASSWORD=secret
     ports:
