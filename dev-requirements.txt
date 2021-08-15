@@ -161,7 +161,7 @@ pycodestyle==2.6.0
     #   flake8-todo
 pyflakes==2.2.0
     # via flake8
-pygments==2.9.0
+pygments==2.10.0
     # via ipython
 pyparsing==2.4.7
     # via
