@@ -10,7 +10,7 @@ defaults: &defaults
     - image: circleci/redis:6.2-alpine
       name: redis
 
-    - image: circleci/postgres:13.3-ram
+    - image: circleci/postgres:13.4-ram
       name: postgres
       environment:
         - POSTGRES_PASSWORD=password
