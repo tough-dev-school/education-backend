@@ -130,7 +130,7 @@ matplotlib-inline==0.1.2
     # via ipython
 mccabe==0.6.1
     # via flake8
-mixer==7.0.6
+mixer==7.1.2
     # via -r dev-requirements.in
 packaging==21.0
     # via
