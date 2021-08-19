@@ -38,7 +38,7 @@ faker==4.0.0
     # via
     #   -c requirements.txt
     #   mixer
-flake8==3.8.4
+flake8==3.9.2
     # via
     #   flake8-absolute-import
     #   flake8-bugbear
