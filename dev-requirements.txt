@@ -154,7 +154,7 @@ py==1.10.0
     # via
     #   pytest
     #   pytest-forked
-pycodestyle==2.6.0
+pycodestyle==2.7.0
     # via
     #   flake8
     #   flake8-print
