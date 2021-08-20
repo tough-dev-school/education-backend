@@ -5,7 +5,7 @@ from homework.api.views import QuestionView
 from homework.api.viewsets import AnswerViewSet
 
 router = SimpleRouter()
-router.register('answers/', AnswerViewSet)
+router.register('answers', AnswerViewSet)
 
 urlpatterns = [
     path('questions/<uuid:slug>/', QuestionView.as_view()),
