@@ -2,12 +2,14 @@ version: '2'
 
 services:
   rabbitmq:
-    image: rabbitmq:3.8-alpine
+    image: rabbitmq:3.9-alpine
     ports:
       - 5672:5672
 
   postgres:
-    image: f213/dev-postgres
+    image: postgres:13.4-alpine
+    environment:
+      - POSTGRES_PASSWORD=secret
     ports:
      - 5432:5432
     volumes:

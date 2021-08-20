@@ -6,8 +6,6 @@
 #
 apipkg==1.5
     # via execnet
-appnope==0.1.2
-    # via ipython
 astor==0.8.1
     # via flake8-simplify
 attrs==20.3.0
@@ -28,18 +26,36 @@ chardet==4.0.0
     #   requests
 cognitive-complexity==1.2.0
     # via flake8-cognitive-complexity
-coverage[toml]==5.5
+coverage==5.5
     # via pytest-cov
 decorator==4.4.2
     # via ipython
 eradicate==2.0.0
     # via flake8-eradicate
-execnet==1.8.0
+execnet==1.9.0
     # via pytest-xdist
 faker==4.0.0
     # via
     #   -c requirements.txt
     #   mixer
+flake8==3.8.4
+    # via
+    #   flake8-absolute-import
+    #   flake8-bugbear
+    #   flake8-commas
+    #   flake8-django
+    #   flake8-eradicate
+    #   flake8-isort
+    #   flake8-multiline-containers
+    #   flake8-mutable
+    #   flake8-pep3101
+    #   flake8-print
+    #   flake8-printf-formatting
+    #   flake8-pytest
+    #   flake8-quotes
+    #   flake8-simplify
+    #   flake8-use-fstring
+    #   flake8-walrus
 flake8-absolute-import==1.0
     # via -r dev-requirements.in
 flake8-bugbear==21.4.3
@@ -50,7 +66,7 @@ flake8-commas==2.0.0
     # via -r dev-requirements.in
 flake8-django==1.1.2
     # via -r dev-requirements.in
-flake8-eradicate==1.0.0
+flake8-eradicate==1.1.0
     # via -r dev-requirements.in
 flake8-fixme==1.1.1
     # via -r dev-requirements.in
@@ -72,9 +88,9 @@ flake8-print==4.0.0
     # via -r dev-requirements.in
 flake8-printf-formatting==1.1.2
     # via -r dev-requirements.in
-flake8-pytest-style==1.4.2
-    # via -r dev-requirements.in
 flake8-pytest==1.3
+    # via -r dev-requirements.in
+flake8-pytest-style==1.5.0
     # via -r dev-requirements.in
 flake8-quotes==3.2.0
     # via -r dev-requirements.in
@@ -88,41 +104,23 @@ flake8-variables-names==0.0.4
     # via -r dev-requirements.in
 flake8-walrus==1.1.0
     # via -r dev-requirements.in
-flake8==3.8.4
-    # via
-    #   flake8-absolute-import
-    #   flake8-bugbear
-    #   flake8-commas
-    #   flake8-django
-    #   flake8-eradicate
-    #   flake8-isort
-    #   flake8-multiline-containers
-    #   flake8-mutable
-    #   flake8-pep3101
-    #   flake8-print
-    #   flake8-printf-formatting
-    #   flake8-pytest
-    #   flake8-quotes
-    #   flake8-simplify
-    #   flake8-use-fstring
-    #   flake8-walrus
 freezegun==1.1.0
     # via
     #   -r dev-requirements.in
     #   pytest-freezegun
-idna==2.10
+idna==3.2
     # via
     #   -c requirements.txt
     #   requests
-importlib-metadata==3.10.0
+importlib-metadata==3.10.1
     # via pytest-randomly
 iniconfig==1.1.1
     # via pytest
+ipython==7.26.0
+    # via -r dev-requirements.in
 ipython-genutils==0.2.0
     # via traitlets
-ipython==7.24.1
-    # via -r dev-requirements.in
-isort==5.7.0
+isort==5.9.3
     # via flake8-isort
 jedi==0.18.0
     # via
@@ -138,7 +136,7 @@ packaging==20.9
     # via
     #   -c requirements.txt
     #   pytest
-parso==0.8.1
+parso==0.8.2
     # via jedi
 pexpect==4.8.0
     # via ipython
@@ -146,7 +144,7 @@ pickleshare==0.7.5
     # via ipython
 pluggy==0.13.1
     # via pytest
-prompt-toolkit==3.0.18
+prompt-toolkit==3.0.19
     # via
     #   -c requirements.txt
     #   ipython
@@ -163,33 +161,13 @@ pycodestyle==2.6.0
     #   flake8-todo
 pyflakes==2.2.0
     # via flake8
-pygments==2.8.0
+pygments==2.10.0
     # via ipython
 pyparsing==2.4.7
     # via
     #   -c requirements.txt
     #   packaging
-pytest-cov==2.12.0
-    # via -r dev-requirements.in
-pytest-deadfixtures==2.2.1
-    # via -r dev-requirements.in
-pytest-django==4.3.0
-    # via -r dev-requirements.in
-pytest-env==0.6.2
-    # via -r dev-requirements.in
-pytest-forked==1.3.0
-    # via pytest-xdist
-pytest-freezegun==0.4.2
-    # via -r dev-requirements.in
-pytest-mock==3.6.1
-    # via -r dev-requirements.in
-pytest-randomly==3.8.0
-    # via -r dev-requirements.in
-pytest-repeat==0.9.1
-    # via -r dev-requirements.in
-pytest-xdist==2.2.1
-    # via -r dev-requirements.in
-pytest==6.2.2
+pytest==6.2.4
     # via
     #   pytest-cov
     #   pytest-deadfixtures
@@ -201,24 +179,44 @@ pytest==6.2.2
     #   pytest-randomly
     #   pytest-repeat
     #   pytest-xdist
-python-dateutil==2.8.1
+pytest-cov==2.12.1
+    # via -r dev-requirements.in
+pytest-deadfixtures==2.2.1
+    # via -r dev-requirements.in
+pytest-django==4.4.0
+    # via -r dev-requirements.in
+pytest-env==0.6.2
+    # via -r dev-requirements.in
+pytest-forked==1.3.0
+    # via pytest-xdist
+pytest-freezegun==0.4.2
+    # via -r dev-requirements.in
+pytest-mock==3.6.1
+    # via -r dev-requirements.in
+pytest-randomly==3.10.1
+    # via -r dev-requirements.in
+pytest-repeat==0.9.1
+    # via -r dev-requirements.in
+pytest-xdist==2.3.0
+    # via -r dev-requirements.in
+python-dateutil==2.8.2
     # via
     #   -c requirements.txt
     #   faker
     #   freezegun
-requests-mock==1.9.2
-    # via -r dev-requirements.in
-requests==2.25.1
+requests==2.26.0
     # via
     #   -c requirements.txt
     #   requests-mock
-six==1.15.0
+requests-mock==1.9.3
+    # via -r dev-requirements.in
+six==1.16.0
     # via
     #   -c requirements.txt
     #   flake8-print
     #   python-dateutil
     #   requests-mock
-testfixtures==6.17.1
+testfixtures==6.18.0
     # via flake8-isort
 text-unidecode==1.3
     # via
@@ -226,15 +224,15 @@ text-unidecode==1.3
     #   faker
 toml==0.10.2
     # via
-    #   coverage
     #   pytest
+    #   pytest-cov
 traitlets==5.0.5
     # via
     #   ipython
     #   matplotlib-inline
 typing-extensions==3.10.0.0
     # via flake8-pie
-urllib3==1.26.5
+urllib3==1.26.6
     # via
     #   -c requirements.txt
     #   requests
@@ -242,7 +240,7 @@ wcwidth==0.2.5
     # via
     #   -c requirements.txt
     #   prompt-toolkit
-zipp==3.4.1
+zipp==3.5.0
     # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:

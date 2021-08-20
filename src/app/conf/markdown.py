@@ -11,6 +11,7 @@ BLEACH_ALLOWED_TAGS = [
     'img',
     'br',
     'hr',
+    'pre',
     'h1',
     'h2',
     'h3',
