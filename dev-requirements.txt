@@ -226,7 +226,7 @@ toml==0.10.2
     # via
     #   pytest
     #   pytest-cov
-traitlets==5.0.5
+traitlets==5.1.0
     # via
     #   ipython
     #   matplotlib-inline
