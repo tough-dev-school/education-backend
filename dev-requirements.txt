@@ -230,7 +230,7 @@ traitlets==5.0.5
     # via
     #   ipython
     #   matplotlib-inline
-typing-extensions==3.10.0.1
+typing-extensions==3.10.0.2
     # via flake8-pie
 urllib3==1.26.6
     # via
