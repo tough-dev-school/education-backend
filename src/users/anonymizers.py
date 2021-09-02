@@ -10,6 +10,8 @@ class UserAnonimizer(BaseAnonymizer):
         ('last_name', faker.last_name),
         ('email', faker.email),
         ('username', faker.ssn),
+        ('date_joined', faker.date),
+        ('subscribed', faker.pybool),
     ]
 
     def run(self, *args, **kwargs):
