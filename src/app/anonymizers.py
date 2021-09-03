@@ -1,5 +1,6 @@
 from axes.models import AccessAttempt, AccessLog
 from django.contrib.admin.models import LogEntry as DjangoAdminLogEntry
+from django.contrib.sessions.models import Session as DjangoSession
 from hattori.base import BaseAnonymizer, faker
 from rest_framework.authtoken.models import Token
 
@@ -40,3 +41,7 @@ class AxesAccessAttemtAnonmizer(Cleanup, BaseAnonymizer):
 
 class DjangoAdminLogAnonymizer(Cleanup, BaseAnonymizer):
     model = DjangoAdminLogEntry
+
+
+class DjangoSessionAnonymizer(Cleanup, BaseAnonymizer):
+    model = DjangoSession

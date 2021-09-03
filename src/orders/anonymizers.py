@@ -8,6 +8,10 @@ class OrderAnonymizer(BaseAnonymizer):
     model = Order
 
     attributes = [
+        ('created', faker.date),
+        ('modified', faker.date),
+        ('paid', faker.date),
+        ('shipped', faker.date),
         ('gift_message', faker.paragraph),
         ('price', lambda: faker.pydecimal(left_digits=5, right_digits=2, positive=True)),
     ]
