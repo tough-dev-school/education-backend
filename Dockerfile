@@ -46,13 +46,9 @@ COPY src /src
 RUN mkdir /var/lib/django-db
 VOLUME /var/lib/django-db
 
-RUN cp app/.env.ci app/env
-
 ENV NO_CACHE=On
-
 RUN ./manage.py compilemessages
 RUN ./manage.py collectstatic --noinput
-
 ENV NO_CACHE=Off
 
 HEALTHCHECK CMD wget -q -O /dev/null http://localhost:8000/api/v2/healthchecks/db/ --header "Host: edu-app.borshev.com" || exit 1
