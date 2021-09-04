@@ -36,14 +36,13 @@ RUN wget -O uwsgi-${_UWSGI_VERSION}.tar.gz https://github.com/unbit/uwsgi/archiv
 
 RUN pip install --no-cache-dir --upgrade pip
 
-COPY requirements.txt /
-RUN pip install --no-cache-dir -r /requirements.txt
+COPY dev-requirements.txt requirements.txt /
 
-VOLUME /src
+RUN pip install --no-cache-dir -r requirements.txt -r /dev-requirements.txt
+
 WORKDIR /src
 COPY src /src
 
-VOLUME /srv
 RUN mkdir /var/lib/django-db
 VOLUME /var/lib/django-db
 
