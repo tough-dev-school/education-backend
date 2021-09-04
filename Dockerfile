@@ -46,6 +46,8 @@ COPY src /src
 RUN mkdir /var/lib/django-db
 VOLUME /var/lib/django-db
 
+RUN cp app/.env.ci app/env
+
 RUN ./manage.py compilemessages
 RUN ./manage.py collectstatic --noinput
 
