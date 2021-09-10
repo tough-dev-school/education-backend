@@ -172,7 +172,7 @@ six==1.16.0
     #   django-hattori
     #   django-healthchecks
     #   python-dateutil
-sqlparse==0.4.1
+sqlparse==0.4.2
     # via
     #   django
     #   django-debug-toolbar
