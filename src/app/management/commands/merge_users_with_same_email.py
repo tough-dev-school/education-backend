@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
-    help = 'Clean antispam logs for outgoing email and marketing triggers'
+    help = 'Merge users with same email'
 
     def handle(self, *args, **kwargs):
         data = defaultdict(list)
