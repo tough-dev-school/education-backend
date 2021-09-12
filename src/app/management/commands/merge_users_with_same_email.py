@@ -1,5 +1,4 @@
 from collections import defaultdict
-
 from django.apps import apps
 from django.core.management.base import BaseCommand
 
@@ -18,9 +17,9 @@ class Command(BaseCommand):
                 users = user_model.objects.filter(id__in=ids).order_by('date_joined').all()
                 self.stdout.write(f'{users.count()} users with email {email} will be merged..')
                 result_user = users[0]
-                subscribed = any([u.subscribed for u in users])
+                subscribed = any(u.subscribed for u in users)
                 result_user.subscribed = subscribed
                 result_user.save()
-                for u in users[1:]:
-                    u.delete()
+                for item in users[1:]:
+                    item.delete()
                 self.stdout.write(self.style.SUCCESS('Done!'))
