@@ -40,3 +40,12 @@ def test_existing_user_name_does_not_change(user):
     assert created.last_name == user.last_name
     assert created.first_name != 'Камаз'
     assert created.last_name != 'Отходов'
+
+
+@pytest.mark.parametrize('email', ['Rulon.oboev@gmail.com', 'RULON.OBOEV@GMAIL.COM'])
+def test_users_with_same_email_case_insensitive(user, email):
+    created = UserCreator(name='Рулон Обоев', email=email)()
+
+    created.refresh_from_db()
+
+    assert created == user

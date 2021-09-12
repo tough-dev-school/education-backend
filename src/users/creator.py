@@ -24,10 +24,11 @@ class UserCreator:
     def __init__(self, name: str, email: str, subscribe: Optional[bool] = True, tags: Optional[Iterable[str]] = None):
         self.do_subscribe = subscribe
         self.subscribe_tags = tags
+        self.email = email.lower()
 
         self.data = {
-            'email': email,
-            'username': email or str(uuid.uuid4()),
+            'email': self.email,
+            'username': self.email or str(uuid.uuid4()),
             'subscribed': subscribe,
             **User.parse_name(name),
         }

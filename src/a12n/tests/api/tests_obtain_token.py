@@ -14,8 +14,12 @@ def get_token(api):
     return _get_token
 
 
-def test_getting_token_ok(api, get_token):
+def test_getting_token_case_insensitive_ok(api, get_token):
     got = get_token(api.user.username, api.password)
+
+    assert 'token' in got
+
+    got = get_token(api.user.username.upper(), api.password)
 
     assert 'token' in got
 

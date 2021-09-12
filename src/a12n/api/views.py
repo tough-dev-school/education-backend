@@ -12,7 +12,20 @@ from app.views import AnonymousAPIView
 from users.models import User
 
 
-class ObtainJSONWebTokenView(jwt.ObtainJSONWebTokenView):
+class CustomJSONWebTokenSerializer(jwt.JSONWebTokenSerializer):
+    def validate(self, data):
+        username = data.get(self.username_field)
+        if username:
+            # let's make our validator case insensitive for username
+            data[self.username_field] = username.lower()
+        return super(CustomJSONWebTokenSerializer, self).validate(data)
+
+
+class CustomObtainJSONWebTokenView(jwt.BaseJSONWebTokenAPIView):
+    serializer_class = CustomJSONWebTokenSerializer
+
+
+class ObtainJSONWebTokenView(CustomObtainJSONWebTokenView):
     throttle_classes = [AuthAnonRateThrottle]
 
 
@@ -24,7 +37,7 @@ class RequestPasswordLessToken(AnonymousAPIView):
     throttle_classes = [AuthAnonRateThrottle]
 
     def get(self, request, user_email: str):
-        user = User.objects.filter(email=user_email).first()
+        user = User.objects.filter(email=user_email.lower()).first()
         if user is not None:
             token = PasswordlessAuthToken.objects.create(user=user)
             send_mail.delay(

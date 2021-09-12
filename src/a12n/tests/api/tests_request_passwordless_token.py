@@ -19,8 +19,9 @@ def _freeze_frontend_url(mocker):
     mocker.patch('a12n.models.PasswordlessAuthToken.get_absolute_url', return_value='https://frontend/auth/__TOKEN__')
 
 
-def test_token_is_created(anon, user):
-    anon.get('/api/v2/auth/passwordless-token/request/zer0c00l@h4xx.net/')
+@pytest.mark.parametrize('email', ['zer0c00l@h4xx.net', 'ZER0C00L@H4XX.NET'])
+def test_token_is_created(anon, user, email):
+    anon.get(f'/api/v2/auth/passwordless-token/request/{email}/')
 
     token = PasswordlessAuthToken.objects.last()
 
