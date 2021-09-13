@@ -13,6 +13,7 @@ def test_ok(api):
     assert got['last_name'] == api.user.last_name
     assert got['first_name_en'] == api.user.first_name_en
     assert got['last_name_en'] == api.user.last_name_en
+    assert got['gender'] == api.user.gender
 
 
 def test_anon(anon):
@@ -45,6 +46,16 @@ def test_edit_user_data_in_english(api):
     assert api.user.last_name_en == 'OfWaste'
 
 
+def test_edit_gender(api):
+    api.user.gender = 'male'
+    api.user.save()
+
+    api.patch('/api/v2/users/me/', {'gender': 'female'})
+
+    api.user.refresh_from_db()
+    assert api.user.gender == 'female'
+
+
 def test_edit_user_data_response(api):
     got = api.patch('/api/v2/users/me/', {
         'first_name': 'Kamaz',
@@ -53,5 +64,6 @@ def test_edit_user_data_response(api):
 
     assert got['id'] == api.user.id
     assert got['username'] == api.user.username
+    assert got['gender'] == api.user.gender
     assert got['first_name'] == 'Kamaz'
     assert got['last_name'] == 'Otkhodov'
