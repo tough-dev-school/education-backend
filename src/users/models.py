@@ -1,15 +1,22 @@
 import uuid
 from django.contrib.auth.models import AbstractUser, Permission
+from django.db.models import TextChoices
 from django.utils.translation import gettext_lazy as _
 
 from app.models import models
 
 
 class User(AbstractUser):
+    class GENDERS(TextChoices):
+        MALE = 'male', _('Male')
+        FEMALE = 'female', _('Female')
+
     subscribed = models.BooleanField(_('Subscribed to newsletter'), default=False)
     first_name_en = models.CharField(_('first name in english'), max_length=150, blank=True)
     last_name_en = models.CharField(_('last name in english'), max_length=150, blank=True)
     uuid = models.UUIDField(db_index=True, unique=True, default=uuid.uuid4)
+
+    gender = models.CharField(_('Gender'), max_length=12, choices=GENDERS.choices, blank=True)
 
     @classmethod
     def parse_name(cls, name: str) -> dict:
