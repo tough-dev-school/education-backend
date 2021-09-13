@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-03 16:35+0300\n"
+"POT-Creation-Date: 2021-09-13 13:26+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,32 +28,38 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: diplomas/admin.py:14
+#: diplomas/admin.py:36
 msgid "Student"
 msgstr "Студент"
 
-#: diplomas/admin.py:18 homework/admin.py:94 homework/admin.py:139
+#: diplomas/admin.py:40 homework/admin.py:94 homework/admin.py:139
 #: orders/models/order.py:39 products/models/course.py:23
 msgid "Course"
 msgstr "Курс"
 
-#: diplomas/models.py:17
+#: diplomas/admin.py:44
+#, fuzzy
+#| msgid "May access diplomas of all students"
+msgid "Send diploma to student"
+msgstr "Видит все дипломы"
+
+#: diplomas/models.py:21
 msgid "Russian"
 msgstr "Русский"
 
-#: diplomas/models.py:18
+#: diplomas/models.py:22
 msgid "English"
 msgstr "Английский"
 
-#: diplomas/models.py:36
+#: diplomas/models.py:40
 msgid "May access diplomas of all students"
 msgstr "Видит все дипломы"
 
-#: diplomas/models.py:39
+#: diplomas/models.py:43
 msgid "Diploma"
 msgstr "Диплом"
 
-#: diplomas/models.py:40
+#: diplomas/models.py:44
 msgid "Diplomas"
 msgstr "Дипломы"
 
@@ -415,21 +421,45 @@ msgstr ""
 msgid "Signed"
 msgstr ""
 
+#: users/admin.py:44
+msgid "Personal info"
+msgstr "Персональные данные"
+
+#: users/admin.py:45
+msgid "Name in english"
+msgstr "Имя на английском"
+
+#: users/admin.py:46
+msgid "Permissions"
+msgstr "Пермишены"
+
+#: users/admin.py:49
+msgid "Important dates"
+msgstr "Даты"
+
 #: users/apps.py:7
 msgid "Users"
 msgstr "Юзеры"
 
-#: users/models.py:9
+#: users/models.py:11
+msgid "Male"
+msgstr "Мужчина"
+
+#: users/models.py:12
+msgid "Female"
+msgstr "Женщина"
+
+#: users/models.py:14
 msgid "Subscribed to newsletter"
 msgstr "Подписан на новости"
 
-#: users/models.py:10
+#: users/models.py:15
 msgid "first name in english"
-msgstr ""
+msgstr "Имя на английском"
 
-#: users/models.py:11
+#: users/models.py:16
 msgid "last name in english"
-msgstr ""
+msgstr "Фамилия на английском"
 
 #~ msgid "Is active"
 #~ msgstr "Включено"

@@ -38,6 +38,7 @@ class UserAdmin(BaseUserAdmin):
             },
         ),
     )
+    list_display = ('email', 'first_name', 'last_name', 'gender')
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'gender')}),
@@ -47,6 +48,8 @@ class UserAdmin(BaseUserAdmin):
         }),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
+    list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups', 'order__study__course')
+    list_editable = ('gender',)
 
 
 @admin.register(Group)
