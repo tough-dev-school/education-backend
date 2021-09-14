@@ -8,12 +8,10 @@ from users.models import User
 
 @celery.task(
     acks_late=True,
-    rate_limit='1/s',
+    rate_limit='3/s',
     autoretry_for=[RequestException],
-    retry_kwargs={
-        'max_retries': 20,
-        'countdown': 3,
-    },
+    retry_backoff=True,
+    max_retries=20,
 )
 def generate_diploma(student_id: int, course_id: int, language: str, with_homework: bool):
     generator = DiplomaGenerator(
