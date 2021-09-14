@@ -47,6 +47,5 @@ def generate_deplomas_for_all_purchased_users(modeladmin, request, queryset):
             templates_count += 1
             for user in course.get_purchased_users().iterator():
                 diploma_template.generate_diploma(user)
-                purchased_users_count += 1
 
     modeladmin.message_user(request, f'Stared generation of {templates_count} diplomas for {purchased_users_count} customers of {course_count} courses')
