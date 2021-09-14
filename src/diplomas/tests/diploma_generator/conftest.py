@@ -1,5 +1,5 @@
 import pytest
-import requests_mock
+from functools import partial
 
 from diplomas.services import DiplomaGenerator
 
@@ -26,11 +26,4 @@ def template(mixer, course):
 
 @pytest.fixture
 def generator(course, student):
-    with requests_mock.Mocker() as http_mock:
-        def create_generator_instance(student=student, course=course, **kwargs):
-            instance = DiplomaGenerator(student=student, course=course, **kwargs)
-            instance.http_mock = http_mock
-
-            return instance
-
-        yield create_generator_instance
+    return partial(DiplomaGenerator, course=course, student=student)
