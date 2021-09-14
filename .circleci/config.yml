@@ -25,7 +25,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: deps-v2-{{ checksum "requirements.txt" }}-{{ checksum "dev-requirements.txt" }}
+          key: deps-v3-{{ checksum "requirements.txt" }}-{{ checksum "dev-requirements.txt" }}
 
       - run:
           command: sudo apt update && sudo apt --no-install-recommends install -y locales-all
@@ -38,7 +38,7 @@ jobs:
             pip-sync requirements.txt dev-requirements.txt
 
       - save_cache:
-          key: deps-v2-{{ checksum "requirements.txt" }}-{{ checksum "dev-requirements.txt" }}
+          key: deps-v3-{{ checksum "requirements.txt" }}-{{ checksum "dev-requirements.txt" }}
           paths:
             - "venv"
 
