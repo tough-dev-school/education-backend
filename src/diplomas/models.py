@@ -8,6 +8,11 @@ from app.models import DefaultQuerySet, TimestampedModel, models
 from app.tasks import send_mail
 
 
+class Languages(models.TextChoices):
+    RU = 'RU', _('Russian')
+    EN = 'EN', _('English')
+
+
 class DiplomaQuerySet(DefaultQuerySet):
     def for_viewset(self):
         return self.select_related('study', 'study__student', 'study__course')
@@ -17,9 +22,6 @@ class DiplomaQuerySet(DefaultQuerySet):
 
 
 class Diploma(TimestampedModel):
-    class Languages(models.TextChoices):
-        RU = 'RU', _('Russian')
-        EN = 'EN', _('English')
 
     objects: DiplomaQuerySet = DiplomaQuerySet.as_manager()
 
@@ -59,3 +61,22 @@ class Diploma(TimestampedModel):
             ),
             disable_antispam=True,
         )
+
+
+class DiplomaTemplate(TimestampedModel):
+    course = models.ForeignKey('products.Course', on_delete=models.CASCADE)
+    slug = models.CharField(max_length=32, help_text=_('Check out https://is.gd/eutOYr for available templates'))
+    with_homework = models.BooleanField(_('With homework'))
+    language = models.CharField(max_length=3, choices=Languages.choices, db_index=True)
+
+    class Meta:
+        verbose_name = _('Diploma template')
+        verbose_name_plural = _('Diploma templates')
+
+        constraints = [
+            models.UniqueConstraint(fields=['course', 'with_homework', 'language'], name='single diploma per course option'),
+        ]
+
+        indexes = [
+            models.Index(fields=['course', 'with_homework', 'language']),
+        ]

@@ -1,7 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, action, admin, field
-from diplomas.models import Diploma
+from diplomas.models import Diploma, DiplomaTemplate
 
 
 @admin.register(Diploma)
@@ -47,3 +47,19 @@ class DiplomaAdmin(ModelAdmin):
             diploma.send_to_student()
 
         self.message_user(request, f'Diplomas sent to {queryset.count()} students')
+
+
+@admin.register(DiplomaTemplate)
+class DiplomaTemplateAdmin(ModelAdmin):
+    fields = list_display = [
+        'course',
+        'language',
+        'with_homework',
+        'slug',
+    ]
+
+    list_editable = [
+        'slug',
+        'language',
+        'with_homework',
+    ]
