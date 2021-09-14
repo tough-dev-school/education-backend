@@ -72,6 +72,7 @@ class CourseAdmin(ModelAdmin):
 
     actions = [
         actions.send_email_to_all_purchased_users,
+        actions.generate_deplomas_for_all_purchased_users,
     ]
 
     save_as = True

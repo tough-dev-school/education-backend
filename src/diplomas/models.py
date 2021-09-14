@@ -6,6 +6,7 @@ from urllib.parse import urljoin
 from app.files import RandomFileName
 from app.models import DefaultQuerySet, TimestampedModel, models
 from app.tasks import send_mail
+from users.models import User
 
 
 class Languages(models.TextChoices):
@@ -80,3 +81,13 @@ class DiplomaTemplate(TimestampedModel):
         indexes = [
             models.Index(fields=['course', 'with_homework', 'language']),
         ]
+
+    def generate_diploma(self, student: User):
+        from diplomas.tasks import generate_diploma
+
+        generate_diploma.delay(
+            student_id=student.pk,
+            course_id=self.course.pk,
+            with_homework=self.with_homework,
+            language=self.language,
+        )

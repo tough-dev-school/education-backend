@@ -6,6 +6,7 @@ from users.models import User
 
 @celery.task(
     acks_late=True,
+    rate_limit='2/s',
 )
 def generate_diploma(student_id: int, course_id: int, language: str, with_homework: bool):
     generator = DiplomaGenerator(

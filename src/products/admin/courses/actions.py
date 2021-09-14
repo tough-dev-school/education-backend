@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.admin import action
 from django.contrib.admin.helpers import ActionForm
 from django.utils.translation import gettext_lazy as _
 
@@ -18,6 +19,7 @@ class CourseActionForm(ActionForm):
         }
 
 
+@action(description=_('Send email to all purchased_users'))
 def send_email_to_all_purchased_users(modeladmin, request, queryset):
     course_count = 0
     purchased_users_count = 0
@@ -31,4 +33,20 @@ def send_email_to_all_purchased_users(modeladmin, request, queryset):
     modeladmin.message_user(request, f'Sending letter to {purchased_users_count} customers of {course_count} courses')
 
 
-send_email_to_all_purchased_users.short_description = _('Send email to all purchased_users')
+@action(description=_('Generate diplomas'))
+def generate_deplomas_for_all_purchased_users(modeladmin, request, queryset):
+    course_count = 0
+    purchased_users_count = 0
+    templates_count = 0
+
+    for course in queryset.iterator():
+        course_count += 1
+        purchased_users_count += course.get_purchased_users().count()
+
+        for diploma_template in course.diplomatemplate_set.iterator():
+            templates_count += 1
+            for user in course.get_purchased_users().iterator():
+                diploma_template.generate_diploma(user)
+                purchased_users_count += 1
+
+    modeladmin.message_user(request, f'Stared generation of {templates_count} diplomas for {purchased_users_count} customers of {course_count} courses')
