@@ -1,3 +1,5 @@
+from requests.exceptions import RequestException
+
 from app.celery import celery
 from diplomas.services import DiplomaGenerator
 from products.models import Course
@@ -6,7 +8,12 @@ from users.models import User
 
 @celery.task(
     acks_late=True,
-    rate_limit='2/s',
+    rate_limit='1/s',
+    autoretry_for=[RequestException],
+    retry_kwargs={
+        'max_retries': 20,
+        'countdown': 3,
+    },
 )
 def generate_diploma(student_id: int, course_id: int, language: str, with_homework: bool):
     generator = DiplomaGenerator(
