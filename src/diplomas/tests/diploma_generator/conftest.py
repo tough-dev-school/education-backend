@@ -1,0 +1,36 @@
+import pytest
+import requests_mock
+
+from diplomas.services import DiplomaGenerator
+
+
+@pytest.fixture
+def student(mixer):
+    return mixer.blend('users.User', first_name='Овир', last_name='Кривомазов', gender='male')
+
+
+@pytest.fixture
+def course(mixer):
+    return mixer.blend('products.Course')
+
+
+@pytest.fixture(autouse=True)
+def order(factory, course, student):
+    return factory.order(user=student, item=course, is_paid=True)
+
+
+@pytest.fixture
+def template(mixer, course):
+    return mixer.blend('diplomas.DiplomaTemplate', slug='test-template', course=course, language='ru', with_homework=True)
+
+
+@pytest.fixture
+def generator(course, student):
+    with requests_mock.Mocker() as http_mock:
+        def create_generator_instance(student=student, course=course, **kwargs):
+            instance = DiplomaGenerator(student=student, course=course, **kwargs)
+            instance.http_mock = http_mock
+
+            return instance
+
+        yield create_generator_instance

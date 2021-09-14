@@ -1,0 +1,72 @@
+import requests
+from dataclasses import dataclass
+from django.conf import settings
+from django.core.files.base import ContentFile
+from urllib.parse import urljoin
+
+from diplomas.models import Diploma, DiplomaTemplate
+from products.models import Course
+from studying.models import Study
+from users.models import User
+
+
+class WrongDiplomaServiceResponse(requests.exceptions.HTTPError):
+    pass
+
+
+@dataclass
+class DiplomaGenerator:
+    course: Course
+    student: User
+    language: str
+    with_homework: bool
+
+    def __call__(self) -> Diploma:
+        image = self.fetch_image()
+
+        diploma = self.create_diploma()
+
+        diploma.image.save(name='diploma.png', content=image)
+
+        return diploma
+
+    @property
+    def study(self) -> Study:
+        return Study.objects.get(student=self.student, course=self.course)
+
+    @property
+    def template(self) -> DiplomaTemplate:
+        return DiplomaTemplate.objects.get(
+            course=self.course,
+            language=self.language,
+            with_homework=self.with_homework,
+        )
+
+    def create_diploma(self) -> Diploma:
+        return Diploma.objects.create(
+            study=self.study,
+            language=self.language,
+        )
+
+    def fetch_image(self) -> ContentFile:
+        response = requests.get(
+            url=self.get_external_service_url(),
+            params=self.get_template_context(),
+            headers={
+                'Authorization': f'Bearer {settings.DIPLOMA_GENERATOR_TOKEN}',
+            },
+        )
+
+        if response.status_code != 200:
+            raise WrongDiplomaServiceResponse('Got %d status code :(', response.status_code)
+
+        return ContentFile(response.content)
+
+    def get_external_service_url(self) -> str:
+        return urljoin(settings.DIPLOMA_GENERATOR_HOST, f'/{self.template.slug}.png')
+
+    def get_template_context(self) -> dict:
+        return {
+            'name': str(self.student),
+            'sex': self.student.gender[:1],
+        }
