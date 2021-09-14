@@ -111,7 +111,7 @@ workflows:
           after_checkout:
             - run:
                 command: mv src/app/.env.ci src/app/.env
-          # cache_from: ghcr.io/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}
+          cache_from: ghcr.io/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}
           registry: ghcr.io
           docker-username: GITHUB_USERNAME
           docker-password: GITHUB_TOKEN
