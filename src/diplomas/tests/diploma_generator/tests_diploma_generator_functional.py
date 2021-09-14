@@ -33,8 +33,29 @@ def test_service(generator, student, course):
     assert diploma.study.course == course
 
 
+def test_diploma_is_regenrated_when_it_already_exists(generator, student, course):
+    generator = generator(language='ru', with_homework=True)
+
+    diploma = generator()
+    diploma = generator()
+
+    assert diploma.image.read() == b'TYPICAL MAC USER JPG'
+    assert diploma.study.student == student
+    assert diploma.study.course == course
+
+
 def test_task(student, course):
     generate_diploma.delay(student_id=student.id, course_id=course.id, language='ru', with_homework=True)
+
+    diploma = Diploma.objects.get(study__student=student, study__course=course)
+
+    assert diploma.image.read() == b'TYPICAL MAC USER JPG'
+    assert diploma.study.student == student
+    assert diploma.study.course == course
+
+
+def test_template_interface(template, student, course):
+    template.generate_diploma(student)
 
     diploma = Diploma.objects.get(study__student=student, study__course=course)
 

@@ -43,10 +43,10 @@ class DiplomaGenerator:
         )
 
     def create_diploma(self) -> Diploma:
-        return Diploma.objects.create(
+        return Diploma.objects.get_or_create(
             study=self.study,
             language=self.language,
-        )
+        )[0]
 
     def fetch_image(self) -> ContentFile:
         response = requests.get(
@@ -58,7 +58,7 @@ class DiplomaGenerator:
         )
 
         if response.status_code != 200:
-            raise WrongDiplomaServiceResponse('Got %d status code :(', response.status_code)
+            raise WrongDiplomaServiceResponse(f'Got {response.status_code} status code: {response.text}')
 
         return ContentFile(response.content)
 
