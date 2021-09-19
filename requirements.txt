@@ -68,7 +68,7 @@ django==3.2.7
     #   drf-recaptcha
 django-anymail==8.4
     # via -r requirements.in
-django-axes==5.24.0
+django-axes==5.25.0
     # via -r requirements.in
 django-behaviors==0.5.1
     # via -r requirements.in
