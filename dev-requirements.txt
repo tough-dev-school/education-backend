@@ -94,7 +94,7 @@ flake8-pytest-style==1.5.0
     # via -r dev-requirements.in
 flake8-quotes==3.3.0
     # via -r dev-requirements.in
-flake8-simplify==0.14.1
+flake8-simplify==0.14.2
     # via -r dev-requirements.in
 flake8-todo==0.7
     # via -r dev-requirements.in
