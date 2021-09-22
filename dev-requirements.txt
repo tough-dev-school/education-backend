@@ -232,7 +232,7 @@ traitlets==5.1.0
     #   matplotlib-inline
 typing-extensions==3.10.0.2
     # via flake8-pie
-urllib3==1.26.6
+urllib3==1.26.7
     # via
     #   -c requirements.txt
     #   requests
