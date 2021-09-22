@@ -4,7 +4,7 @@ from app.conf.environ import env
 
 AUTH_USER_MODEL = 'users.User'
 
-AXES_ENABLED = env('AXES_ENABLED', cast=bool, default=False)
+AXES_ENABLED = env('AXES_ENABLED', cast=bool, default=True)
 
 AUTHENTICATION_BACKENDS = [
     'axes.backends.AxesBackend',
