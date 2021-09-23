@@ -1,6 +1,9 @@
 import pytest
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [
+    pytest.mark.django_db,
+    pytest.mark.usefixtures('order'),
+]
 
 
 def test_study_object(generator, order):

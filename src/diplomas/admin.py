@@ -29,6 +29,7 @@ class DiplomaAdmin(ModelAdmin):
     ]
     actions = [
         'send_to_student',
+        'regenerate',
     ]
 
     readonly_fields = ['slug', 'course', 'student']
@@ -47,6 +48,14 @@ class DiplomaAdmin(ModelAdmin):
             diploma.send_to_student()
 
         self.message_user(request, f'Diplomas sent to {queryset.count()} students')
+
+    @action(short_description=_('Regenerate'))
+    def regenerate(self, request, queryset):
+        templates_count = 0
+        for diploma in queryset.iterator():
+            templates_count += diploma.regenerate()
+
+        self.message_user(request, f'Started regeneration for {templates_count} diplomas of {queryset.count()} students')
 
 
 @admin.register(DiplomaTemplate)

@@ -6,7 +6,7 @@ from diplomas.tasks import generate_diploma
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures('template'),
+    pytest.mark.usefixtures('template', 'order'),
 ]
 
 

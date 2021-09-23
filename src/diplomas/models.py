@@ -63,6 +63,15 @@ class Diploma(TimestampedModel):
             disable_antispam=True,
         )
 
+    def regenerate(self) -> int:
+        """Regenerate diploma for self and all other diplomas that match given course"""
+        count = 0
+        for template in DiplomaTemplate.objects.filter(course=self.study.course):
+            template.generate_diploma(student=self.study.student)
+            count += 1
+
+        return count
+
 
 class DiplomaTemplate(TimestampedModel):
     course = models.ForeignKey('products.Course', on_delete=models.CASCADE)

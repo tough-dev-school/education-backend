@@ -7,7 +7,7 @@ services:
       - 5672:5672
 
   postgres:
-    image: postgres:13.4-alpine
+    image: ghcr.io/f213/education-dev-db
     environment:
       - POSTGRES_PASSWORD=secret
     ports:

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 21:29+0300\n"
+"POT-Creation-Date: 2021-09-23 22:28+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,52 +28,52 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: diplomas/admin.py:36
+#: diplomas/admin.py:37
 msgid "Student"
 msgstr "Студент"
 
-#: diplomas/admin.py:40 homework/admin.py:94 homework/admin.py:139
+#: diplomas/admin.py:41 homework/admin.py:94 homework/admin.py:139
 #: orders/models/order.py:39 products/models/course.py:23
 msgid "Course"
 msgstr "Курс"
 
-#: diplomas/admin.py:44
+#: diplomas/admin.py:45
 msgid "Send diploma to student"
 msgstr "Отправить студенту"
 
-#: diplomas/models.py:14
+#: diplomas/admin.py:52
+msgid "Regenerate"
+msgstr "Перегенерировать"
+
+#: diplomas/models.py:13
 msgid "Russian"
 msgstr "Русский"
 
-#: diplomas/models.py:15
+#: diplomas/models.py:14
 msgid "English"
 msgstr "Английский"
 
-#: diplomas/models.py:44
+#: diplomas/models.py:43
 msgid "May access diplomas of all students"
 msgstr "Видит все дипломы"
 
-#: diplomas/models.py:47
+#: diplomas/models.py:46
 msgid "Diploma"
 msgstr "Диплом"
 
-#: diplomas/models.py:48
+#: diplomas/models.py:47
 msgid "Diplomas"
 msgstr "Дипломы"
 
-#: diplomas/models.py:70
+#: diplomas/models.py:78
 msgid "Check out https://is.gd/eutOYr for available templates"
 msgstr ""
 
-#: diplomas/models.py:71
-msgid "With homework"
-msgstr "С домашкой?"
-
-#: diplomas/models.py:75
+#: diplomas/models.py:82
 msgid "Diploma template"
 msgstr "Шаблон диплома"
 
-#: diplomas/models.py:76
+#: diplomas/models.py:83
 msgid "Diploma templates"
 msgstr "Шаблоны дипломов"
 
@@ -482,6 +482,9 @@ msgstr "Фамилия на английском"
 #: users/models.py:19
 msgid "Gender"
 msgstr ""
+
+#~ msgid "With homework"
+#~ msgstr "С домашкой?"
 
 #~ msgid "Is active"
 #~ msgstr "Включено"
