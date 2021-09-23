@@ -19,7 +19,6 @@ class DiplomaGenerator:
     course: Course
     student: User
     language: str
-    with_homework: bool
 
     def __call__(self) -> Diploma:
         image = self.fetch_image()
@@ -39,7 +38,6 @@ class DiplomaGenerator:
         return DiplomaTemplate.objects.get(
             course=self.course,
             language=self.language,
-            with_homework=self.with_homework,
         )
 
     def create_diploma(self) -> Diploma:

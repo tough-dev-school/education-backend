@@ -14,14 +14,14 @@ def course(mixer):
     return mixer.blend('products.Course')
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def order(factory, course, student):
     return factory.order(user=student, item=course, is_paid=True)
 
 
 @pytest.fixture
 def template(mixer, course):
-    return mixer.blend('diplomas.DiplomaTemplate', slug='test-template', course=course, language='ru', with_homework=True)
+    return mixer.blend('diplomas.DiplomaTemplate', slug='test-template', course=course, language='ru')
 
 
 @pytest.fixture
