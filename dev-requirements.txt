@@ -80,7 +80,7 @@ flake8-mutable==1.2.0
     # via -r dev-requirements.in
 flake8-pep3101==1.3.0
     # via -r dev-requirements.in
-flake8-pie==0.13.0
+flake8-pie==0.15.0
     # via -r dev-requirements.in
 flake8-plugin-utils==1.3.2
     # via flake8-pytest-style
