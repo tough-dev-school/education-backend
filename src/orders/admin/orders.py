@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, action, admin, field
 from app.admin.filters import BooleanFilter
+from diplomas.models import DiplomaTemplate
 from orders.models import Order
 
 
@@ -49,6 +50,7 @@ class OrderAdmin(ModelAdmin):
         'set_paid',
         'set_not_paid',
         'ship_again_if_paid',
+        'generate_diplomas',
     ]
     readonly_fields = [
         'paid',
@@ -135,3 +137,15 @@ class OrderAdmin(ModelAdmin):
 
         if shipped_count:
             self.message_user(request, f'{shipped_count} orders shipped again')
+
+    @action(short_description=_('Generate diplomas'))
+    def generate_diplomas(self, request, queryset):
+        templates_count = 0
+
+        for order in queryset.iterator():
+            for template in DiplomaTemplate.objects.filter(course=order.course):
+                template.generate_diploma(student=order.user)
+                templates_count += 1
+
+        if templates_count:
+            self.message_user(request, f'{templates_count} diplomas generation started')

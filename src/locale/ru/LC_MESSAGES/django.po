@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-23 22:28+0300\n"
+"POT-Creation-Date: 2021-09-23 22:32+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -170,45 +170,49 @@ msgstr "Почтовая кампания"
 msgid "Email Lead Magnet Campaigns"
 msgstr "Почтовые кампании"
 
-#: orders/admin/orders.py:10 orders/admin/orders.py:106
+#: orders/admin/orders.py:11 orders/admin/orders.py:108
 msgid "Is paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders.py:66 orders/admin/orders.py:102
+#: orders/admin/orders.py:68 orders/admin/orders.py:104
 msgid "Item"
 msgstr "Товар"
 
-#: orders/admin/orders.py:72
+#: orders/admin/orders.py:74
 msgid "Gift"
 msgstr "Подарок"
 
-#: orders/admin/orders.py:86 orders/models/order.py:26
+#: orders/admin/orders.py:88 orders/models/order.py:26
 msgid "User"
 msgstr "Юзер"
 
-#: orders/admin/orders.py:94 orders/models/order.py:43
+#: orders/admin/orders.py:96 orders/models/order.py:43
 msgid "Giver"
 msgstr "Даритель"
 
-#: orders/admin/orders.py:109
+#: orders/admin/orders.py:111
 msgid "Paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders.py:111
+#: orders/admin/orders.py:113
 msgid "Not paid"
 msgstr "Не оплачен"
 
-#: orders/admin/orders.py:113
+#: orders/admin/orders.py:115
 msgid "Set paid"
 msgstr "Пометить оплаченным"
 
-#: orders/admin/orders.py:120
+#: orders/admin/orders.py:122
 msgid "Set not paid"
 msgstr "Пометить неоплаченынм"
 
-#: orders/admin/orders.py:127
+#: orders/admin/orders.py:129
 msgid "Ship again if paid"
 msgstr "Ещё раз выполнить (если заказ не оплачен — не выполнится)"
+
+#: orders/admin/orders.py:141 products/admin/courses/actions.py:36
+msgid "Generate diplomas"
+msgstr "Сгенерировать дипломы"
 
 #: orders/admin/promocodes.py:31
 msgid "Order count"
@@ -305,10 +309,6 @@ msgstr "ID шаблона в постмарке"
 #: products/admin/courses/actions.py:22
 msgid "Send email to all purchased_users"
 msgstr "Отправить письмо всем купившим"
-
-#: products/admin/courses/actions.py:36
-msgid "Generate diplomas"
-msgstr "Сгенерировать дипломы"
 
 #: products/admin/courses/record.py:57
 msgid "Downloadable link"
