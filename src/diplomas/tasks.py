@@ -13,12 +13,11 @@ from users.models import User
     retry_backoff=True,
     max_retries=20,
 )
-def generate_diploma(student_id: int, course_id: int, language: str, with_homework: bool):
+def generate_diploma(student_id: int, course_id: int, language: str):
     generator = DiplomaGenerator(
         student=User.objects.get(pk=student_id),
         course=Course.objects.get(pk=course_id),
         language=language,
-        with_homework=with_homework,
     )
 
     generator()

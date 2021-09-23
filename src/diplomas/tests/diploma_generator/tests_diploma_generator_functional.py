@@ -24,7 +24,7 @@ def _mock_response():
 
 
 def test_service(generator, student, course):
-    generator = generator(language='ru', with_homework=True)
+    generator = generator(language='ru')
 
     diploma = generator()
 
@@ -34,7 +34,7 @@ def test_service(generator, student, course):
 
 
 def test_diploma_is_regenrated_when_it_already_exists(generator, student, course):
-    generator = generator(language='ru', with_homework=True)
+    generator = generator(language='ru')
 
     diploma = generator()
     diploma = generator()
@@ -45,7 +45,7 @@ def test_diploma_is_regenrated_when_it_already_exists(generator, student, course
 
 
 def test_task(student, course):
-    generate_diploma.delay(student_id=student.id, course_id=course.id, language='ru', with_homework=True)
+    generate_diploma.delay(student_id=student.id, course_id=course.id, language='ru')
 
     diploma = Diploma.objects.get(study__student=student, study__course=course)
 

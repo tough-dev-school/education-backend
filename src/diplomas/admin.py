@@ -54,12 +54,10 @@ class DiplomaTemplateAdmin(ModelAdmin):
     fields = list_display = [
         'course',
         'language',
-        'with_homework',
         'slug',
     ]
 
     list_editable = [
         'slug',
         'language',
-        'with_homework',
     ]

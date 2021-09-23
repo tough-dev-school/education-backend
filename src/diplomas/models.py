@@ -67,7 +67,6 @@ class Diploma(TimestampedModel):
 class DiplomaTemplate(TimestampedModel):
     course = models.ForeignKey('products.Course', on_delete=models.CASCADE)
     slug = models.CharField(max_length=32, help_text=_('Check out https://is.gd/eutOYr for available templates'))
-    with_homework = models.BooleanField(_('With homework'))
     language = models.CharField(max_length=3, choices=Languages.choices, db_index=True)
 
     class Meta:
@@ -75,11 +74,11 @@ class DiplomaTemplate(TimestampedModel):
         verbose_name_plural = _('Diploma templates')
 
         constraints = [
-            models.UniqueConstraint(fields=['course', 'with_homework', 'language'], name='single diploma per course option'),
+            models.UniqueConstraint(fields=['course', 'language'], name='single diploma per course option'),
         ]
 
         indexes = [
-            models.Index(fields=['course', 'with_homework', 'language']),
+            models.Index(fields=['course', 'language']),
         ]
 
     def generate_diploma(self, student: User):
@@ -88,6 +87,5 @@ class DiplomaTemplate(TimestampedModel):
         generate_diploma.delay(
             student_id=student.pk,
             course_id=self.course.pk,
-            with_homework=self.with_homework,
             language=self.language,
         )
