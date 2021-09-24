@@ -18,7 +18,7 @@ def test(trigger, send_mail):
 
 
 def test_only_once(trigger, send_mail):
-    for _ in range(0, 2):
+    for _ in range(2):
         trigger()
 
     send_mail.assert_called_once()

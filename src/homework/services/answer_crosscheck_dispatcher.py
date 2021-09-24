@@ -22,7 +22,7 @@ class AnswerCrossCheckDispatcher:
     def __call__(self) -> List[AnswerCrossCheck]:
         crosschecks = list()
         for user in self.users.iterator():
-            for _ in range(0, self.answers_per_user):
+            for _ in range(self.answers_per_user):
                 answer = self.get_answer_to_check(user)
                 crosschecks.append(
                     self.give_answer_to_user(answer, user),
