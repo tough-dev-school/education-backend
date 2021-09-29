@@ -240,7 +240,7 @@ wcwidth==0.2.5
     # via
     #   -c requirements.txt
     #   prompt-toolkit
-zipp==3.5.1
+zipp==3.6.0
     # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
