@@ -146,7 +146,7 @@ python-dateutil==2.8.2
     # via
     #   botocore
     #   faker
-pytz==2021.1
+pytz==2021.3
     # via
     #   babel
     #   celery
