@@ -101,7 +101,7 @@ django-redis==5.0.0
     # via -r requirements.in
 django-split-settings==1.1.0
     # via -r requirements.in
-django-storages==1.11.1
+django-storages==1.12
     # via -r requirements.in
 django-tree-queries==0.6.0
     # via -r requirements.in
