@@ -108,7 +108,7 @@ freezegun==1.1.0
     # via
     #   -r dev-requirements.in
     #   pytest-freezegun
-idna==3.2
+idna==3.3
     # via
     #   -c requirements.txt
     #   requests

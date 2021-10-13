@@ -116,7 +116,7 @@ drf-recaptcha==2.0.4
     # via -r requirements.in
 faker==4.0.0
     # via django-hattori
-idna==3.2
+idna==3.3
     # via requests
 jmespath==0.10.0
     # via
