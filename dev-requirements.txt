@@ -62,7 +62,7 @@ flake8-bugbear==21.9.2
     # via -r dev-requirements.in
 flake8-cognitive-complexity==0.1.0
     # via -r dev-requirements.in
-flake8-commas==2.0.0
+flake8-commas==2.1.0
     # via -r dev-requirements.in
 flake8-django==1.1.2
     # via -r dev-requirements.in
