@@ -2,6 +2,7 @@ from typing import Iterable, Optional
 
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation import pgettext_lazy
 
 from app.models import DefaultQuerySet, TimestampedModel, models
 from orders.fields import ItemField
@@ -47,8 +48,8 @@ class Order(TimestampedModel):
 
     class Meta:
         ordering = ['-id']
-        verbose_name = _('Order')
-        verbose_name_plural = _('Orders')
+        verbose_name = pgettext_lazy('orders', 'Order')
+        verbose_name_plural = pgettext_lazy('orders', 'Orders')
 
     def __str__(self):
         return f'Order #{self.pk}'
