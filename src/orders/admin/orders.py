@@ -38,6 +38,7 @@ class OrderAdmin(ModelAdmin):
         OrderPaidFilter,
     ]
     search_fields = [
+        'id',
         'course__name',
         'record__course__name',
         'user__first_name',
@@ -85,14 +86,6 @@ class OrderAdmin(ModelAdmin):
 
     @field(short_description=_('User'), admin_order_field='user__id')
     def customer(self, obj):
-        return format_html(
-            '{name} &lt;<a href="mailto:{email}">{email}</a>&gt;',
-            name=str(obj.user),
-            email=obj.user.email,
-        )
-
-    @field(short_description=_('Giver'), admin_order_field='user__id')
-    def giver(self, obj):
         return format_html(
             '{name} &lt;<a href="mailto:{email}">{email}</a>&gt;',
             name=str(obj.user),
