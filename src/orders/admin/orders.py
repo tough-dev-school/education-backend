@@ -34,8 +34,8 @@ class OrderAdmin(ModelAdmin):
     ]
 
     list_filter = [
-        'course',
         OrderPaidFilter,
+        'course',
     ]
     search_fields = [
         'id',
