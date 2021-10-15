@@ -24,7 +24,6 @@ class OrderAdmin(ModelAdmin):
         'id',
         'created',
         'customer',
-        'giver',
         'item',
         'is_paid',
         'promocode',
@@ -36,7 +35,6 @@ class OrderAdmin(ModelAdmin):
 
     list_filter = [
         'course',
-        'record',
         OrderPaidFilter,
     ]
     search_fields = [
@@ -73,7 +71,7 @@ class OrderAdmin(ModelAdmin):
         (
             _('Gift'),
             {
-                'fields': ['giver', 'desired_shipment_date', 'gift_message'],
+                'fields': ['desired_shipment_date', 'gift_message'],
             },
         ),
     ]
