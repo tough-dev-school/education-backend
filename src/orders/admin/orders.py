@@ -69,12 +69,6 @@ class OrderAdmin(ModelAdmin):
                 'fields': ['course', 'record', 'bundle'],
             },
         ),
-        (
-            _('Gift'),
-            {
-                'fields': ['desired_shipment_date', 'gift_message'],
-            },
-        ),
     ]
 
     def get_queryset(self, request):
