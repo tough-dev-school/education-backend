@@ -15,13 +15,22 @@ def test():
     assert created.email == 'rulon.oboev@gmail.com'
 
 
+def test_first_name_only():
+    created = UserCreator(name='Рулон', email='rulon.oboev@gmail.com')()
+
+    created.refresh_from_db()
+
+    assert created.first_name == 'Рулон'
+    assert created.last_name == ''
+
+
 def test_default_username():
     created = UserCreator(name='Ведро Помоев', email='vedro.pomoev@gmail.com')()
 
     assert created.username == 'vedro.pomoev@gmail.com'
 
 
-@pytest.mark.parametrize('name', ['', None])
+@pytest.mark.parametrize('name', ['', ' ', None])
 def test_empty_name(name):
     created = UserCreator(name=name, email='rulon.oboev@gmail.com')()
 

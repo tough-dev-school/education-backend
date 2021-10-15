@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-23 22:32+0300\n"
+"POT-Creation-Date: 2021-10-15 18:33+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,7 +33,7 @@ msgid "Student"
 msgstr "Студент"
 
 #: diplomas/admin.py:41 homework/admin.py:94 homework/admin.py:139
-#: orders/models/order.py:39 products/models/course.py:23
+#: orders/models/order.py:40 products/models/course.py:23
 msgid "Course"
 msgstr "Курс"
 
@@ -170,47 +170,43 @@ msgstr "Почтовая кампания"
 msgid "Email Lead Magnet Campaigns"
 msgstr "Почтовые кампании"
 
-#: orders/admin/orders.py:11 orders/admin/orders.py:108
+#: orders/admin/orders.py:11 orders/admin/orders.py:99
 msgid "Is paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders.py:68 orders/admin/orders.py:104
+#: orders/admin/orders.py:67 orders/admin/orders.py:95
 msgid "Item"
 msgstr "Товар"
 
-#: orders/admin/orders.py:74
+#: orders/admin/orders.py:73
 msgid "Gift"
 msgstr "Подарок"
 
-#: orders/admin/orders.py:88 orders/models/order.py:26
+#: orders/admin/orders.py:87 orders/models/order.py:27
 msgid "User"
 msgstr "Юзер"
 
-#: orders/admin/orders.py:96 orders/models/order.py:43
-msgid "Giver"
-msgstr "Даритель"
-
-#: orders/admin/orders.py:111
+#: orders/admin/orders.py:102
 msgid "Paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders.py:113
+#: orders/admin/orders.py:104
 msgid "Not paid"
 msgstr "Не оплачен"
 
-#: orders/admin/orders.py:115
+#: orders/admin/orders.py:106
 msgid "Set paid"
 msgstr "Пометить оплаченным"
 
-#: orders/admin/orders.py:122
+#: orders/admin/orders.py:113
 msgid "Set not paid"
 msgstr "Пометить неоплаченынм"
 
-#: orders/admin/orders.py:129
+#: orders/admin/orders.py:120
 msgid "Ship again if paid"
 msgstr "Ещё раз выполнить (если заказ не оплачен — не выполнится)"
 
-#: orders/admin/orders.py:141 products/admin/courses/actions.py:36
+#: orders/admin/orders.py:132 products/admin/courses/actions.py:36
 msgid "Generate diplomas"
 msgstr "Сгенерировать дипломы"
 
@@ -218,55 +214,61 @@ msgstr "Сгенерировать дипломы"
 msgid "Order count"
 msgstr "Количество заказов"
 
-#: orders/models/order.py:27 products/admin/bundle.py:32
+#: orders/models/order.py:28 products/admin/bundle.py:32
 #: products/admin/course.py:25 products/admin/courses/record.py:29
 msgid "Price"
 msgstr "Цена"
 
-#: orders/models/order.py:28 orders/models/promocode.py:32
+#: orders/models/order.py:29 orders/models/promocode.py:32
 #: orders/models/promocode.py:40
 msgid "Promo Code"
 msgstr "Промо-код"
 
-#: orders/models/order.py:31
+#: orders/models/order.py:32
 msgid "Date when order got paid"
 msgstr "Когда оплачен"
 
-#: orders/models/order.py:33
+#: orders/models/order.py:34
 msgid "If set during creation, order automaticaly gets shipped"
 msgstr ""
 "Чтобы отметить заказ оплаченым, воспользуйтесь массовой операцией из списка "
 "заказво"
 
-#: orders/models/order.py:35
+#: orders/models/order.py:36
 msgid "Date when order was shipped"
 msgstr "Дата выполнения"
 
-#: orders/models/order.py:37
+#: orders/models/order.py:38
 msgid "User-requested bank string"
-msgstr ""
+msgstr "Банк"
 
-#: orders/models/order.py:40 products/models/record.py:16
+#: orders/models/order.py:41 products/models/record.py:16
 msgid "Record"
 msgstr "Запись"
 
-#: orders/models/order.py:41 products/models/bundle.py:15
+#: orders/models/order.py:42 products/models/bundle.py:15
 msgid "Bundle"
 msgstr "Набор"
 
 #: orders/models/order.py:44
+msgid "Giver"
+msgstr "Даритель"
+
+#: orders/models/order.py:45
 msgid "Date when the gift should be shipped"
 msgstr "Когда подарить"
 
-#: orders/models/order.py:45
+#: orders/models/order.py:46
 msgid "Gift message"
 msgstr "Подарочное сообщение"
 
-#: orders/models/order.py:50
+#: orders/models/order.py:51
+msgctxt "orders"
 msgid "Order"
 msgstr "Заказ"
 
-#: orders/models/order.py:51
+#: orders/models/order.py:52
+msgctxt "orders"
 msgid "Orders"
 msgstr "Заказы"
 
@@ -439,19 +441,19 @@ msgstr ""
 msgid "Signed"
 msgstr ""
 
-#: users/admin.py:44
+#: users/admin.py:48
 msgid "Personal info"
 msgstr "Персональные данные"
 
-#: users/admin.py:45
+#: users/admin.py:49
 msgid "Name in english"
 msgstr "Имя на английском"
 
-#: users/admin.py:46
+#: users/admin.py:50
 msgid "Permissions"
 msgstr "Пермишены"
 
-#: users/admin.py:49
+#: users/admin.py:53
 msgid "Important dates"
 msgstr "Даты"
 

@@ -13,18 +13,22 @@ admin.site.unregister(Group)
 
 class PasswordLessUserCreationForm(forms.ModelForm):
     email = forms.CharField()
+    first_name = forms.CharField()
+    last_name = forms.CharField()
 
     class Meta:
         model = User
         fields = [
             'email',
+            'first_name',
+            'last_name',
         ]
 
     def save_m2m(self, *args, **kwargs):
         pass
 
     def save(self, commit=True):
-        return UserCreator(name='', email=self.cleaned_data['email'])()
+        return UserCreator(name=f"{self.cleaned_data['first_name']} {self.cleaned_data['last_name']}", email=self.cleaned_data['email'])()
 
 
 @admin.register(User)
@@ -34,7 +38,7 @@ class UserAdmin(BaseUserAdmin):
         (
             None,
             {
-                'fields': ['email'],
+                'fields': ['email', 'first_name', 'last_name'],
             },
         ),
     )

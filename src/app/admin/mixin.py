@@ -5,12 +5,13 @@ from django.template.defaultfilters import capfirst, time
 from django.utils import timezone
 from django.utils.html import format_html
 
-from app.admin.widgets import Select2Widget
+from app.admin.widgets import Select2Widget, TextInputWithoutAutocomplete
 
 
 class AppAdminMixin:
     formfield_overrides = {
         models.ForeignKey: {'widget': Select2Widget},
+        models.DecimalField: {'widget': TextInputWithoutAutocomplete},
     }
     exclude = [
         'modified',

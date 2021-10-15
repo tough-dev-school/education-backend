@@ -1,4 +1,14 @@
-from django.forms.widgets import Select
+from django.forms.widgets import Select, TextInput
+
+
+class TextInputWithoutAutocomplete(TextInput):
+    def __init__(self, attrs=None):
+        if attrs is None:
+            attrs = dict()
+
+        attrs['autocomplete'] = 'off'
+
+        super().__init__(attrs)
 
 
 class Select2Widget(Select):
