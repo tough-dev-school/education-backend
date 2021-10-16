@@ -42,7 +42,7 @@ class PromoCode(TimestampedModel):
         verbose_name = _('Promo Code')
         verbose_name_plural = _('Promo Codes')
         constraints = [
-            CheckConstraint(check=Q(discount_percent__isnull=False) | Q(discount_value__isnull=False), name='percent or value must be set')
+            CheckConstraint(check=Q(discount_percent__isnull=False) | Q(discount_value__isnull=False), name='percent or value must be set'),
         ]
 
     def clean(self):

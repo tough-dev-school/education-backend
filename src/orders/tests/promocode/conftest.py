@@ -14,4 +14,3 @@ def another_course(mixer):
 @pytest.fixture
 def ten_percent_promocode(mixer):
     return mixer.blend('orders.PromoCode', discount_percent=10, name='TESTCODE')
-
