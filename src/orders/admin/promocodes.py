@@ -12,14 +12,17 @@ class PromoCodeAdmin(ModelAdmin):
         'id',
         'name',
         'discount_percent',
+        'discount_value',
         'order_count',
         'comment',
         'active',
     ]
 
     list_editable = [
-        'name',
-        'discount_percent',
+        'active',
+    ]
+
+    list_filter = [
         'active',
     ]
 

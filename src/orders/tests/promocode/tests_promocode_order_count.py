@@ -4,7 +4,7 @@ from orders.models import PromoCode
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures('promocode'),
+    pytest.mark.usefixtures('ten_percent_promocode'),
 ]
 
 
@@ -14,7 +14,7 @@ def get_annotated_promocode():
 
 @pytest.fixture
 def another_promocode(mixer):
-    return mixer.blend(PromoCode)
+    return mixer.blend(PromoCode, discount_percent=15)
 
 
 def test_zero():
@@ -23,8 +23,8 @@ def test_zero():
     assert promocode.order_count == 0
 
 
-def test_two(factory, promocode):
-    factory.cycle(2).order(promocode=promocode, is_paid=True)
+def test_two(factory, ten_percent_promocode):
+    factory.cycle(2).order(promocode=ten_percent_promocode, is_paid=True)
 
     promocode = get_annotated_promocode()
 
@@ -39,8 +39,8 @@ def test_another_promocode(factory, another_promocode):
     assert promocode.order_count == 0
 
 
-def test_not_paid_orders(factory, promocode):
-    factory.cycle(2).order(promocode=promocode, is_paid=False)
+def test_not_paid_orders(factory, ten_percent_promocode):
+    factory.cycle(2).order(promocode=ten_percent_promocode, is_paid=False)
 
     promocode = get_annotated_promocode()
 

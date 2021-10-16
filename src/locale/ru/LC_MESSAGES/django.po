@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-15 18:33+0300\n"
+"POT-Creation-Date: 2021-10-17 00:24+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -170,47 +170,43 @@ msgstr "Почтовая кампания"
 msgid "Email Lead Magnet Campaigns"
 msgstr "Почтовые кампании"
 
-#: orders/admin/orders.py:11 orders/admin/orders.py:99
+#: orders/admin/orders.py:11 orders/admin/orders.py:93
 msgid "Is paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders.py:67 orders/admin/orders.py:95
+#: orders/admin/orders.py:67 orders/admin/orders.py:89
 msgid "Item"
 msgstr "Товар"
 
-#: orders/admin/orders.py:73
-msgid "Gift"
-msgstr "Подарок"
-
-#: orders/admin/orders.py:87 orders/models/order.py:27
+#: orders/admin/orders.py:81 orders/models/order.py:27
 msgid "User"
 msgstr "Юзер"
 
-#: orders/admin/orders.py:102
+#: orders/admin/orders.py:96
 msgid "Paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders.py:104
+#: orders/admin/orders.py:98
 msgid "Not paid"
 msgstr "Не оплачен"
 
-#: orders/admin/orders.py:106
+#: orders/admin/orders.py:100
 msgid "Set paid"
 msgstr "Пометить оплаченным"
 
-#: orders/admin/orders.py:113
+#: orders/admin/orders.py:107
 msgid "Set not paid"
 msgstr "Пометить неоплаченынм"
 
-#: orders/admin/orders.py:120
+#: orders/admin/orders.py:114
 msgid "Ship again if paid"
 msgstr "Ещё раз выполнить (если заказ не оплачен — не выполнится)"
 
-#: orders/admin/orders.py:132 products/admin/courses/actions.py:36
+#: orders/admin/orders.py:126 products/admin/courses/actions.py:36
 msgid "Generate diplomas"
 msgstr "Сгенерировать дипломы"
 
-#: orders/admin/promocodes.py:31
+#: orders/admin/promocodes.py:33
 msgid "Order count"
 msgstr "Количество заказов"
 
@@ -219,8 +215,8 @@ msgstr "Количество заказов"
 msgid "Price"
 msgstr "Цена"
 
-#: orders/models/order.py:29 orders/models/promocode.py:32
-#: orders/models/promocode.py:40
+#: orders/models/order.py:29 orders/models/promocode.py:33
+#: orders/models/promocode.py:42
 msgid "Promo Code"
 msgstr "Промо-код"
 
@@ -272,27 +268,39 @@ msgctxt "orders"
 msgid "Orders"
 msgstr "Заказы"
 
-#: orders/models/promocode.py:33
+#: orders/models/promocode.py:34
 msgid "Discount percent"
 msgstr "Процент скидки"
 
-#: orders/models/promocode.py:34
+#: orders/models/promocode.py:35
+msgid "Discount amount"
+msgstr "Скидка в деньгах"
+
+#: orders/models/promocode.py:35
+msgid "Takes precedence over percent"
+msgstr "Если задать — процент не будет работать"
+
+#: orders/models/promocode.py:36
 msgid "Active"
 msgstr "Включено"
 
-#: orders/models/promocode.py:35
+#: orders/models/promocode.py:37
 msgid "Comment"
 msgstr "Комментарий"
 
-#: orders/models/promocode.py:37
+#: orders/models/promocode.py:39
 msgid "Can not be used for courses not checked here"
 msgstr ""
 "Если тут выбрать хоть что-нибудь, то промо-код будет действовать только для "
 "этого курса"
 
-#: orders/models/promocode.py:41
+#: orders/models/promocode.py:43
 msgid "Promo Codes"
 msgstr "Промо-коды"
+
+#: orders/models/promocode.py:50
+msgid "Percent or value must be set"
+msgstr ""
 
 #: products/admin/bundle.py:41
 msgid "Items"
@@ -484,6 +492,9 @@ msgstr "Фамилия на английском"
 #: users/models.py:19
 msgid "Gender"
 msgstr ""
+
+#~ msgid "Gift"
+#~ msgstr "Подарок"
 
 #~ msgid "With homework"
 #~ msgstr "С домашкой?"
