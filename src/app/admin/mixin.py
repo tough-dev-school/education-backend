@@ -12,6 +12,7 @@ class AppAdminMixin:
     formfield_overrides = {
         models.ForeignKey: {'widget': Select2Widget},
         models.DecimalField: {'widget': TextInputWithoutAutocomplete},
+        models.IntegerField: {'widget': TextInputWithoutAutocomplete},
     }
     exclude = [
         'modified',
