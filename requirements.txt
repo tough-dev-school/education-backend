@@ -82,7 +82,7 @@ django-cors-headers==3.10.0
     # via -r requirements.in
 django-debug-toolbar==3.2.2
     # via -r requirements.in
-django-environ==0.7.0
+django-environ==0.8.0
     # via -r requirements.in
 django-filter==2.4.0
     # via -r requirements.in
