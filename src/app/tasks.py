@@ -63,6 +63,7 @@ def invite_to_zoomus(webinar_id: str, user_id: int):
         'max_retries': 10,
         'countdown': 5,
     },
+    rate_limit='1/s',
 )
 def subscribe_to_mailchimp(user_id: int, list_id=None, tags=None):
     if list_id is None:
