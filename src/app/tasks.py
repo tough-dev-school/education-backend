@@ -3,6 +3,7 @@ from typing import List, Union
 from anymail.exceptions import AnymailRequestsAPIError
 from django.apps import apps
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from requests.exceptions import RequestException
 
 from app.celery import celery
@@ -57,7 +58,7 @@ def invite_to_zoomus(webinar_id: str, user_id: int):
 
 
 @celery.task(
-    autoretry_for=[RequestException, MailchimpException],
+    autoretry_for=[RequestException, MailchimpException, ObjectDoesNotExist],
     retry_kwargs={
         'max_retries': 10,
         'countdown': 5,
