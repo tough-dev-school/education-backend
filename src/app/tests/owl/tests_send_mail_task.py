@@ -12,12 +12,12 @@ def _enable_email(settings):
 
 @pytest.fixture
 def owl(mocker):
-    return mocker.patch('app.tasks.TemplOwl')
+    return mocker.patch('app.tasks.mail.TemplOwl')
 
 
 @pytest.fixture
 def send(mocker):
-    return mocker.patch('app.tasks.TemplOwl.send')
+    return mocker.patch('app.tasks.mail.TemplOwl.send')
 
 
 ARGS = dict(
