@@ -1,6 +1,7 @@
 from typing import Optional
 
-from app.tasks import invite_to_clickmeeting, invite_to_zoomus, send_mail, subscribe_to_mailchimp, unsubscribe_from_mailchimp
+from app.tasks import (
+    invite_to_clickmeeting, invite_to_zoomus, send_mail, subscribe_to_mailchimp, unsubscribe_from_mailchimp)
 from products.models import Course
 from studying import shipment_factory as factory
 from studying.models import Study
