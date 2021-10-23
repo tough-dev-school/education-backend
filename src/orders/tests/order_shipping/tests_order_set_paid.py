@@ -55,6 +55,27 @@ def test_shipment_date(order):
     assert order.shipped == datetime(2032, 12, 1, 15, 30)
 
 
+def test_unpaid_date_is_reset(order):
+    order.unpaid = datetime(2032, 12, 1, 15, 13)
+    order.save()
+
+    order.set_paid()
+    order.refresh_from_db()
+
+    assert order.unpaid is None
+
+
+def test_unpaid_date_is_not_reset_when_order_is_not_paid(order):
+    order.paid = datetime(2032, 12, 1, 12, 13)
+    order.unpaid = datetime(2032, 12, 1, 15, 13)
+    order.save()
+
+    order.set_paid()
+    order.refresh_from_db()
+
+    assert order.unpaid == datetime(2032, 12, 1, 15, 13), 'unpaid has not been changed'
+
+
 def test_empty_item_does_not_break_things(order, ship):
     order.setattr_and_save('course', None)
 

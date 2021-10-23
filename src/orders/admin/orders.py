@@ -54,13 +54,14 @@ class OrderAdmin(ModelAdmin):
     readonly_fields = [
         'paid',
         'shipped',
+        'unpaid',
     ]
 
     fieldsets = [
         (
             None,
             {
-                'fields': ['user', 'price', 'paid', 'shipped'],
+                'fields': ['user', 'price', 'paid', 'shipped', 'unpaid'],
             },
         ),
         (

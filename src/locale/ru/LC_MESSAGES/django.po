@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-17 00:24+0300\n"
+"POT-Creation-Date: 2021-10-23 23:32+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,7 +33,7 @@ msgid "Student"
 msgstr "Студент"
 
 #: diplomas/admin.py:41 homework/admin.py:94 homework/admin.py:139
-#: orders/models/order.py:40 products/models/course.py:23
+#: orders/models/order.py:41 products/models/course.py:23
 msgid "Course"
 msgstr "Курс"
 
@@ -206,7 +206,7 @@ msgstr "Ещё раз выполнить (если заказ не оплаче�
 msgid "Generate diplomas"
 msgstr "Сгенерировать дипломы"
 
-#: orders/admin/promocodes.py:33
+#: orders/admin/promocodes.py:34
 msgid "Order count"
 msgstr "Количество заказов"
 
@@ -231,39 +231,43 @@ msgstr ""
 "заказво"
 
 #: orders/models/order.py:36
+msgid "Date when order got unpaid"
+msgstr "Когда вернули деньги"
+
+#: orders/models/order.py:37
 msgid "Date when order was shipped"
 msgstr "Дата выполнения"
 
-#: orders/models/order.py:38
+#: orders/models/order.py:39
 msgid "User-requested bank string"
 msgstr "Банк"
 
-#: orders/models/order.py:41 products/models/record.py:16
+#: orders/models/order.py:42 products/models/record.py:16
 msgid "Record"
 msgstr "Запись"
 
-#: orders/models/order.py:42 products/models/bundle.py:15
+#: orders/models/order.py:43 products/models/bundle.py:15
 msgid "Bundle"
 msgstr "Набор"
 
-#: orders/models/order.py:44
+#: orders/models/order.py:45
 msgid "Giver"
 msgstr "Даритель"
 
-#: orders/models/order.py:45
+#: orders/models/order.py:46
 msgid "Date when the gift should be shipped"
 msgstr "Когда подарить"
 
-#: orders/models/order.py:46
+#: orders/models/order.py:47
 msgid "Gift message"
 msgstr "Подарочное сообщение"
 
-#: orders/models/order.py:51
+#: orders/models/order.py:52
 msgctxt "orders"
 msgid "Order"
 msgstr "Заказ"
 
-#: orders/models/order.py:52
+#: orders/models/order.py:53
 msgctxt "orders"
 msgid "Orders"
 msgstr "Заказы"
