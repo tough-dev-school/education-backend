@@ -10,7 +10,7 @@ def err_response(read_fixture):
     return read_fixture('app/tests/mailchimp/.fixtures/err_response')
 
 
-@pytest.mark.parametrize('status', ['subscribed', 'ubsubscribed'])
+@pytest.mark.parametrize('status', ['subscribed', 'unsubscribed'])
 def test_single_member(mailchimp, post, mailchimp_member, status):
     mailchimp.mass_update_subscription(
         list_id='test1-list-id',

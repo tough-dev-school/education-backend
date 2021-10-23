@@ -16,6 +16,10 @@ class AppMailchimp:
         if tags is not None:
             self.set_tags(list_id=list_id, members=[member], tags=tags)
 
+    def unsubscribe_django_user(self, list_id: str, user: User):
+        member = MailchimpMember.from_django_user(user)
+        self.mass_update_subscription(list_id=list_id, members=[member], status='unsubscribed')
+
     def mass_update_subscription(self, *, list_id: str, members: Iterable[MailchimpMember], status: Literal['subscribed', 'unsubscribed']):
         response = self.http.post(
             url=f'lists/{list_id}',
