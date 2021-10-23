@@ -33,6 +33,7 @@ class Order(TimestampedModel):
         null=True, blank=True,
         help_text=_('If set during creation, order automaticaly gets shipped'),
     )
+    unpaid = models.DateTimeField(_('Date when order got unpaid'), null=True, blank=True)
     shipped = models.DateTimeField(_('Date when order was shipped'), null=True, blank=True)
 
     desired_bank = models.CharField(_('User-requested bank string'), blank=True, max_length=32)

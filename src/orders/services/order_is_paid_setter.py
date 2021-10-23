@@ -16,6 +16,8 @@ class OrderIsPaidSetter:
 
     def mark_order_as_paid(self):
         self.order.paid = timezone.now()
+        if not self.is_already_paid:  # reset unpayment date if order is not paid yet
+            self.order.unpaid = None
         self.order.save()
 
     def ship(self):
