@@ -6,7 +6,7 @@ pytestmark = [pytest.mark.django_db]
 def test(mailchimp, mailchimp_member, post):
     mailchimp.set_tags(
         list_id='100500',
-        member=mailchimp_member,
+        members=[mailchimp_member],
         tags=['aatag', 'bbtag'],
     )
 
