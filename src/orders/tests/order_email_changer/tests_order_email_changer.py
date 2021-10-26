@@ -1,0 +1,63 @@
+import pytest
+
+pytestmark = [pytest.mark.django_db]
+
+
+def test_user_is_changed(email_changer, user, order):
+    changer = email_changer(order, email=user.email)
+
+    changer()
+    order.refresh_from_db()
+
+    assert order.user == user
+    assert order.user.first_name == 'Kamaz'
+    assert order.user.last_name == 'Otkhodov'
+
+
+def test_initial_user_name_is_not_changed_during_email_change(email_changer, user, order):
+    changer = email_changer(order, email=user.email)
+
+    changer()
+    user.refresh_from_db()
+
+    assert user.first_name == 'Kamaz'
+    assert user.last_name == 'Otkhodov'
+
+
+def test_user_is_created_if_email_does_not_exist(email_changer, order):
+    changer = email_changer(order, email='circus@gmail.com')
+
+    changer()
+    order.refresh_from_db()
+
+    assert order.user.email == 'circus@gmail.com'
+    assert order.user.first_name == ''
+    assert order.user.last_name == ''
+
+
+def test_order_not_reshipped_when_it_is_not_paid(email_changer, order, ship, unship):
+    order.paid = None
+    changer = email_changer(order, email='circus@gmail.com')
+
+    changer()
+
+    ship.assert_not_called()
+    unship.assert_not_called()
+
+
+def test_order_is_reshipped_when_it_was_paid(email_changer, paid_order, ship, unship, user):
+    changer = email_changer(paid_order, email=user.email)
+
+    changer()
+
+    ship.assert_called_once_with(paid_order.course, to=user, order=paid_order), 'should be reshipped to the new user'
+    unship.assert_called_once_with(order=paid_order)
+
+
+def test_reshipping_with_ununshippable_item(email_changer, factory, record):
+    order = factory.order(item=record, is_paid=True)
+    changer = email_changer(order, email='circus@gmail.com')
+
+    changer()
+
+    assert order.user.email == 'circus@gmail.com', 'should not break things'
