@@ -2,20 +2,9 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, action, admin, field
-from app.admin.filters import BooleanFilter
 from diplomas.models import DiplomaTemplate
+from orders.admin.orders.filters import OrderPaidFilter
 from orders.models import Order
-
-
-class OrderPaidFilter(BooleanFilter):
-    title = _('Is paid')
-    parameter_name = 'is_paid'
-
-    def t(self, request, queryset):
-        return queryset.paid()
-
-    def f(self, request, queryset):
-        return queryset.paid(invert=True)
 
 
 @admin.register(Order)
