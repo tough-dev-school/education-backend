@@ -75,6 +75,11 @@ jobs:
           cp src/app/.env.ci src/app/.env
           make coverage
 
+      - name: Upload code coverage to codeclimate
+        uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TEST_REPORTER_ID }}
+
   build-docker-image:
     needs: test
     runs-on: ubuntu-latest
