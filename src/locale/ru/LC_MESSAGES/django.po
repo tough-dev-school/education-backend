@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-23 23:32+0300\n"
+"POT-Creation-Date: 2021-10-27 16:36+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -170,41 +170,46 @@ msgstr "Почтовая кампания"
 msgid "Email Lead Magnet Campaigns"
 msgstr "Почтовые кампании"
 
-#: orders/admin/orders.py:11 orders/admin/orders.py:93
-msgid "Is paid"
-msgstr "Оплачен"
-
-#: orders/admin/orders.py:67 orders/admin/orders.py:89
+#: orders/admin/orders/admin.py:59 orders/admin/orders/admin.py:81
 msgid "Item"
 msgstr "Товар"
 
-#: orders/admin/orders.py:81 orders/models/order.py:27
+#: orders/admin/orders/admin.py:73 orders/models/order.py:27
 msgid "User"
 msgstr "Юзер"
 
-#: orders/admin/orders.py:96
+#: orders/admin/orders/admin.py:85 orders/admin/orders/filters.py:7
+msgid "Is paid"
+msgstr "Оплачен"
+
+#: orders/admin/orders/admin.py:88
 msgid "Paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders.py:98
+#: orders/admin/orders/admin.py:90
 msgid "Not paid"
 msgstr "Не оплачен"
 
-#: orders/admin/orders.py:100
+#: orders/admin/orders/admin.py:92
 msgid "Set paid"
 msgstr "Пометить оплаченным"
 
-#: orders/admin/orders.py:107
+#: orders/admin/orders/admin.py:99
 msgid "Set not paid"
 msgstr "Пометить неоплаченынм"
 
-#: orders/admin/orders.py:114
+#: orders/admin/orders/admin.py:106
 msgid "Ship again if paid"
 msgstr "Ещё раз выполнить (если заказ не оплачен — не выполнится)"
 
-#: orders/admin/orders.py:126 products/admin/courses/actions.py:36
+#: orders/admin/orders/admin.py:118 products/admin/courses/actions.py:36
 msgid "Generate diplomas"
 msgstr "Сгенерировать дипломы"
+
+#: orders/admin/orders/forms.py:9
+msgid "If changed user, receives welcome letter one more time"
+msgstr ""
+"Если поменять, студент получит ещё одно письмо «спасибо за покупку»"
 
 #: orders/admin/promocodes.py:34
 msgid "Order count"

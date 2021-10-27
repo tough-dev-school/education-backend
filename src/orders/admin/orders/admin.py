@@ -4,11 +4,13 @@ from django.utils.translation import gettext_lazy as _
 from app.admin import ModelAdmin, action, admin, field
 from diplomas.models import DiplomaTemplate
 from orders.admin.orders.filters import OrderPaidFilter
+from orders.admin.orders.forms import OrderChangeForm
 from orders.models import Order
 
 
 @admin.register(Order)
 class OrderAdmin(ModelAdmin):
+    form = OrderChangeForm
     list_display = [
         'id',
         'created',
@@ -50,7 +52,7 @@ class OrderAdmin(ModelAdmin):
         (
             None,
             {
-                'fields': ['user', 'price', 'paid', 'shipped', 'unpaid'],
+                'fields': ['user', 'price', 'email', 'paid', 'shipped', 'unpaid'],
             },
         ),
         (
