@@ -16,6 +16,11 @@ def user(mixer):
 
 
 @pytest.fixture
+def nameless_user(mixer):
+    return mixer.blend('users.User', first_name='', last_name='')
+
+
+@pytest.fixture
 def ship(mocker):
     return mocker.patch('studying.shipment_factory.ship')
 
@@ -26,10 +31,5 @@ def unship(mocker):
 
 
 @pytest.fixture
-def order(factory, course):
-    return factory.order(course=course)
-
-
-@pytest.fixture
-def paid_order(factory, course):
-    return factory.order(course=course, is_paid=True)
+def order(factory, nameless_user, course):
+    return factory.order(user=nameless_user, course=course)
