@@ -5,17 +5,22 @@ from django.template.defaultfilters import capfirst, time
 from django.utils import timezone
 from django.utils.html import format_html
 
-from app.admin.widgets import TextInputWithoutAutocomplete
+from app.admin.widgets import AppNumberInput
 
 
 class AppAdminMixin:
     formfield_overrides = {
-        models.DecimalField: {'widget': TextInputWithoutAutocomplete},
-        models.IntegerField: {'widget': TextInputWithoutAutocomplete},
+        models.DecimalField: {'widget': AppNumberInput},
+        models.IntegerField: {'widget': AppNumberInput},
     }
     exclude = [
         'modified',
     ]
+
+    class Media:
+        css = {
+            'all': ['admin.css'],
+        }
 
     def _link(self, href, text):
         return format_html(f'<a href="{href}">{text}</a>')
