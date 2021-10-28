@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-28 16:25+0300\n"
+"POT-Creation-Date: 2021-10-28 17:07+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: diplomas/admin.py:37
+#: diplomas/admin.py:37 users/models.py:60
 msgid "Student"
 msgstr "Студент"
 
@@ -465,21 +465,13 @@ msgstr ""
 msgid "Signed"
 msgstr ""
 
-#: users/admin.py:48
+#: users/admin.py:51
 msgid "Personal info"
 msgstr "Персональные данные"
 
-#: users/admin.py:49
+#: users/admin.py:52
 msgid "Name in english"
 msgstr "Имя на английском"
-
-#: users/admin.py:50
-msgid "Permissions"
-msgstr "Пермишены"
-
-#: users/admin.py:53
-msgid "Important dates"
-msgstr "Даты"
 
 #: users/apps.py:7
 msgid "Users"
@@ -507,7 +499,17 @@ msgstr "Фамилия на английском"
 
 #: users/models.py:19
 msgid "Gender"
-msgstr ""
+msgstr "Пол"
+
+#: users/models.py:61
+msgid "Students"
+msgstr "Студенты"
+
+#~ msgid "Permissions"
+#~ msgstr "Пермишены"
+
+#~ msgid "Important dates"
+#~ msgstr "Даты"
 
 #~ msgid "Gift"
 #~ msgstr "Подарок"

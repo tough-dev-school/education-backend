@@ -106,7 +106,7 @@ class AnswerAdmin(ModelAdmin):
     @mark_safe
     @field(short_description=_('Author'), admin_order_field='author')
     def _author(self, obj):
-        author_url = reverse('admin:users_user_change', args=[obj.author_id])
+        author_url = reverse('admin:users_student_change', args=[obj.author_id])
         return f'<a href="{author_url}">{obj.author}</a>'
 
 
