@@ -2,7 +2,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
-from app.admin import ModelAdmin, admin, field
+from app.admin import ModelAdmin, admin
 from app.admin.filters import BooleanFilter
 from homework import tasks
 from homework.models import Answer, AnswerCrossCheck, Question
@@ -91,7 +91,7 @@ class AnswerAdmin(ModelAdmin):
         return super().get_queryset(request).with_crosscheck_count() \
             .select_related('author', 'question')
 
-    @field(short_description=_('Course'))
+    @admin.display(description=_('Course'))
     def course(self, obj):
         course = obj.get_purchased_course()
         if course is None:
@@ -99,12 +99,12 @@ class AnswerAdmin(ModelAdmin):
 
         return str(course)
 
-    @field(short_description=_('Crosschecking people'), admin_order_field='crosscheck_count')
+    @admin.display(description=_('Crosschecking people'), ordering='crosscheck_count')
     def crosscheck_count(self, obj):
         return obj.crosscheck_count or '—'
 
     @mark_safe
-    @field(short_description=_('Author'), admin_order_field='author')
+    @admin.display(description=_('Author'), ordering='author')
     def _author(self, obj):
         author_url = reverse('admin:users_student_change', args=[obj.author_id])
         return f'<a href="{author_url}">{obj.author}</a>'
@@ -136,7 +136,7 @@ class AnswerCrossCheckAdmin(ModelAdmin):
     def get_queryset(self, request):
         return super().get_queryset(request).select_related('answer', 'answer__question', 'answer__author')
 
-    @field(short_description=_('Course'))
+    @admin.display(description=_('Course'))
     def course(self, obj):
         course = obj.answer.get_purchased_course()
         if course is None:
@@ -144,19 +144,19 @@ class AnswerCrossCheckAdmin(ModelAdmin):
 
         return str(course)
 
-    @field(short_description=_('Question'), admin_order_field='answer__question')
+    @admin.display(description=_('Question'), ordering='answer__question')
     def question(self, obj):
         return str(obj.answer.question)
 
-    @field(short_description=_('Author'), admin_order_field='answer__author')
+    @admin.display(description=_('Author'), ordering='answer__author')
     def author(self, obj):
         return str(obj.answer.author)
 
-    @field(short_description=_('View'))
+    @admin.display(description=_('View'))
     @mark_safe
     def view(self, obj):
         return f'<a href={obj.answer.get_absolute_url()}>Смотреть на сайте</a>'
 
-    @field(short_description=_('Is checked'), boolean=True)
+    @admin.display(description=_('Is checked'), boolean=True)
     def checked(self, obj):
         return obj.is_checked()

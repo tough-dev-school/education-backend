@@ -1,7 +1,7 @@
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from app.admin import ModelAdmin, admin, field
+from app.admin import ModelAdmin, admin
 from diplomas.models import DiplomaTemplate
 from orders.admin.orders.filters import OrderPaidFilter
 from orders.admin.orders.forms import OrderAddForm, OrderChangeForm
@@ -71,7 +71,7 @@ class OrderAdmin(ModelAdmin):
             'course',
         )
 
-    @field(short_description=_('User'), admin_order_field='user__id')
+    @admin.display(description=_('User'), ordering='user__id')
     def customer(self, obj):
         return format_html(
             '{name} &lt;<a href="mailto:{email}">{email}</a>&gt;',
@@ -79,11 +79,11 @@ class OrderAdmin(ModelAdmin):
             email=obj.user.email,
         )
 
-    @field(short_description=_('Item'))
+    @admin.display(description=_('Item'))
     def item(self, obj):
         return obj.item.name if obj.item is not None else '—'
 
-    @field(short_description=_('Is paid'), admin_order_field='paid')
+    @admin.display(description=_('Is paid'), ordering='paid')
     def is_paid(self, obj):
         if obj.paid is not None:
             return _('Paid')
