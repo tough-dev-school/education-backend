@@ -1,23 +1,18 @@
 from django import forms
-from django.contrib.auth.admin import GroupAdmin as BaseGroupAdmin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.models import Group
 from django.utils.translation import gettext_lazy as _
 
-from app.admin import admin
+from app.admin import ModelAdmin, admin
 from users.creator import UserCreator
-from users.models import User
-
-admin.site.unregister(Group)
+from users.models import Student
 
 
 class PasswordLessUserCreationForm(forms.ModelForm):
-    email = forms.CharField()
-    first_name = forms.CharField()
-    last_name = forms.CharField()
+    email = forms.CharField(label=_('Email'))
+    first_name = forms.CharField(label=_('first name'), required=False)
+    last_name = forms.CharField(label=_('last name'), required=False)
 
     class Meta:
-        model = User
+        model = Student
         fields = [
             'email',
             'first_name',
@@ -31,8 +26,9 @@ class PasswordLessUserCreationForm(forms.ModelForm):
         return UserCreator(name=f"{self.cleaned_data['first_name']} {self.cleaned_data['last_name']}", email=self.cleaned_data['email'])()
 
 
-@admin.register(User)
-class UserAdmin(BaseUserAdmin):
+@admin.register(Student)
+class StudentAdmin(ModelAdmin):
+    """Basic admin for students"""
     add_form = PasswordLessUserCreationForm
     add_fieldsets = (
         (
@@ -44,18 +40,9 @@ class UserAdmin(BaseUserAdmin):
     )
     list_display = ('email', 'first_name', 'last_name', 'gender')
     fieldsets = (
-        (None, {'fields': ('username', 'password')}),
+        (None, {'fields': ('username',)}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'gender')}),
         (_('Name in english'), {'fields': ('first_name_en', 'last_name_en')}),
-        (_('Permissions'), {
-            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
-        }),
-        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups', 'order__study__course')
     list_editable = ('gender',)
-
-
-@admin.register(Group)
-class GroupAdmin(BaseGroupAdmin):
-    pass

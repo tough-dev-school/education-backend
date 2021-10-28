@@ -1,6 +1,6 @@
 from django.utils.translation import gettext_lazy as _
 
-from app.admin import ModelAdmin, action, admin, field
+from app.admin import ModelAdmin, admin
 from diplomas.models import Diploma, DiplomaTemplate
 
 
@@ -34,22 +34,22 @@ class DiplomaAdmin(ModelAdmin):
 
     readonly_fields = ['slug', 'course', 'student']
 
-    @field(short_description=_('Student'), admin_order_field='study__student')
+    @admin.display(description=_('Student'), ordering='study__student')
     def student(self, diploma):
         return diploma.study.student
 
-    @field(short_description=_('Course'), admin_order_field='study__course')
+    @admin.display(description=_('Course'), ordering='study__course')
     def course(self, diploma):
         return diploma.study.course
 
-    @action(short_description=_('Send diploma to student'))
+    @admin.action(description=_('Send diploma to student'))
     def send_to_student(self, request, queryset):
         for diploma in queryset.iterator():
             diploma.send_to_student()
 
         self.message_user(request, f'Diplomas sent to {queryset.count()} students')
 
-    @action(short_description=_('Regenerate'))
+    @admin.action(description=_('Regenerate'))
     def regenerate(self, request, queryset):
         templates_count = 0
         for diploma in queryset.iterator():

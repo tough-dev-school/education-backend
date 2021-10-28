@@ -50,3 +50,12 @@ class User(AbstractUser):
         permission = Permission.objects.get_by_natural_key(codename, app_label, model)
         if permission is not None:
             self.user_permissions.add(permission)
+
+
+class Student(User):
+    """Proxy model used for not-trusted administration of the user accounts
+    """
+    class Meta:
+        proxy = True
+        verbose_name = _('Student')
+        verbose_name_plural = _('Students')

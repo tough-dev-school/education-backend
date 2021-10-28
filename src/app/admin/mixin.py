@@ -31,6 +31,13 @@ class AppAdminMixin:
         defaults.update(kwargs)
         return super().get_form(request, obj, **defaults)
 
+    def get_fieldsets(self, request, obj=None):
+        """Use special fieldset during object creation
+        """
+        if not obj and hasattr(self, 'add_fieldsets') and self.add_fieldsets is not None:
+            return self.add_fieldsets
+        return super().get_fieldsets(request, obj)
+
     def _link(self, href, text):
         return format_html(f'<a href="{href}">{text}</a>')
 
