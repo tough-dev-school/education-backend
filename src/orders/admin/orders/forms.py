@@ -43,3 +43,11 @@ class OrderChangeForm(forms.ModelForm):
         if self.initial['email'] != self.cleaned_data['email']:
             email_changer = OrderEmailChanger(order=order, email=self.cleaned_data['email'])
             email_changer()
+
+
+class OrderAddForm(forms.ModelForm):
+    email = forms.CharField(required=False, widget=forms.HiddenInput)
+
+    class Meta:
+        model = Order
+        fields = '__all__'

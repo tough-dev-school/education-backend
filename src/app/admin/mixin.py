@@ -22,6 +22,15 @@ class AppAdminMixin:
             'all': ['admin.css'],
         }
 
+    def get_form(self, request, obj=None, **kwargs):
+        """Use special form during object creation
+        """
+        defaults = {}
+        if obj is None and hasattr(self, 'add_form') and self.add_form is not None:
+            defaults['form'] = self.add_form
+        defaults.update(kwargs)
+        return super().get_form(request, obj, **defaults)
+
     def _link(self, href, text):
         return format_html(f'<a href="{href}">{text}</a>')
 
