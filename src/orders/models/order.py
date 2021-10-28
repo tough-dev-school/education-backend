@@ -52,6 +52,11 @@ class Order(TimestampedModel):
         verbose_name = pgettext_lazy('orders', 'Order')
         verbose_name_plural = pgettext_lazy('orders', 'Orders')
 
+        permissions = [
+            ('pay_order', _('May mark orders as paid')),
+            ('unpay_order', _('May mark orders as unpaid')),
+        ]
+
     def __str__(self):
         return f'Order #{self.pk}'
 

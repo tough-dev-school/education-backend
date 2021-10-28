@@ -1,7 +1,7 @@
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from app.admin import ModelAdmin, action, admin, field
+from app.admin import ModelAdmin, admin, field
 from diplomas.models import DiplomaTemplate
 from orders.admin.orders.filters import OrderPaidFilter
 from orders.admin.orders.forms import OrderAddForm, OrderChangeForm
@@ -90,21 +90,21 @@ class OrderAdmin(ModelAdmin):
 
         return _('Not paid')
 
-    @action(short_description=_('Set paid'))
+    @admin.action(description=_('Set paid'), permissions=['pay'])
     def set_paid(self, request, queryset):
         for order in queryset.iterator():
             order.set_paid()
 
         self.message_user(request, f'{queryset.count()} orders set as paid')
 
-    @action(short_description=_('Set not paid'))
+    @admin.action(description=_('Set not paid'), permissions=['unpay'])
     def set_not_paid(self, request, queryset):
         for order in queryset.iterator():
             order.set_not_paid()
 
         self.message_user(request, f'{queryset.count()} orders set as not paid')
 
-    @action(short_description=_('Ship again if paid'))
+    @admin.action(description=_('Ship again if paid'))
     def ship_again_if_paid(self, request, queryset):
         shipped_count = 0
 
@@ -116,7 +116,7 @@ class OrderAdmin(ModelAdmin):
         if shipped_count:
             self.message_user(request, f'{shipped_count} orders shipped again')
 
-    @action(short_description=_('Generate diplomas'))
+    @admin.action(description=_('Generate diplomas'))
     def generate_diplomas(self, request, queryset):
         templates_count = 0
 
@@ -127,3 +127,9 @@ class OrderAdmin(ModelAdmin):
 
         if templates_count:
             self.message_user(request, f'{templates_count} diplomas generation started')
+
+    def has_pay_permission(self, request):
+        return request.user.has_perm('orders.pay_order')
+
+    def has_unpay_permission(self, request):
+        return request.user.has_perm('orders.unpay_order')
