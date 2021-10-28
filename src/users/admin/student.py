@@ -1,16 +1,9 @@
 from django import forms
-from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
 from users.creator import UserCreator
-from users.models import Student, User
-
-
-@admin.register(User)
-class AppUserAdmin(UserAdmin):
-    """Register stock django form to use it for user administrations
-    """
+from users.models import Student
 
 
 class PasswordLessUserCreationForm(forms.ModelForm):
