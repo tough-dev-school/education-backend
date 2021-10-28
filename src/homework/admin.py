@@ -2,7 +2,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
-from app.admin import ModelAdmin, action, admin, field
+from app.admin import ModelAdmin, admin, field
 from app.admin.filters import BooleanFilter
 from homework import tasks
 from homework.models import Answer, AnswerCrossCheck, Question
@@ -27,7 +27,7 @@ class QuestionAdmin(ModelAdmin):
     def courses_list(self, obj):
         return ', '.join([course.name for course in obj.courses.all()])
 
-    @action(short_description=_('Dispatch crosscheck'))
+    @admin.action(description=_('Dispatch crosscheck'))
     def dispatch_crosscheck(self, request, queryset):
         for question in queryset.iterator():
             tasks.disptach_crosscheck.delay(question_id=question.id)
