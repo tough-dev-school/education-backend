@@ -3,7 +3,7 @@ from django.utils import timezone
 from orders.models import Order
 
 
-class OrderIsPaidSetter:
+class OrderPaidSetter:
     """Mark order as paid"""
     def __init__(self, order: Order, silent=False):
         self.order = order
