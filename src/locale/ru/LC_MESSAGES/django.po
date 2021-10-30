@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-28 17:07+0300\n"
+"POT-Creation-Date: 2021-10-30 13:13+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -170,41 +170,45 @@ msgstr "Почтовая кампания"
 msgid "Email Lead Magnet Campaigns"
 msgstr "Почтовые кампании"
 
-#: orders/admin/orders/admin.py:60 orders/admin/orders/admin.py:82
-msgid "Item"
-msgstr "Товар"
-
-#: orders/admin/orders/admin.py:74 orders/models/order.py:27
-msgid "User"
-msgstr "Юзер"
-
-#: orders/admin/orders/admin.py:86 orders/admin/orders/filters.py:7
-msgid "Is paid"
-msgstr "Оплачен"
-
-#: orders/admin/orders/admin.py:89
-msgid "Paid"
-msgstr "Оплачен"
-
-#: orders/admin/orders/admin.py:91
-msgid "Not paid"
-msgstr "Не оплачен"
-
-#: orders/admin/orders/admin.py:93
+#: orders/admin/orders/actions.py:7
 msgid "Set paid"
 msgstr "Пометить оплаченным"
 
-#: orders/admin/orders/admin.py:100
+#: orders/admin/orders/actions.py:15
 msgid "Set not paid"
 msgstr "Вернуть"
 
-#: orders/admin/orders/admin.py:107
+#: orders/admin/orders/actions.py:23
+msgid "Ship without payments"
+msgstr "Допустить до уроков без оплаты"
+
+#: orders/admin/orders/actions.py:34
 msgid "Ship again if paid"
 msgstr "Ещё раз выполнить (если заказ не оплачен — не выполнится)"
 
-#: orders/admin/orders/admin.py:119 products/admin/courses/actions.py:36
+#: orders/admin/orders/actions.py:47 products/admin/courses/actions.py:36
 msgid "Generate diplomas"
 msgstr "Сгенерировать дипломы"
+
+#: orders/admin/orders/admin.py:61 orders/admin/orders/admin.py:83
+msgid "Item"
+msgstr "Товар"
+
+#: orders/admin/orders/admin.py:75 orders/models/order.py:27
+msgid "User"
+msgstr "Юзер"
+
+#: orders/admin/orders/admin.py:87 orders/admin/orders/filters.py:7
+msgid "Is paid"
+msgstr "Оплачен"
+
+#: orders/admin/orders/admin.py:90
+msgid "Paid"
+msgstr "Оплачен"
+
+#: orders/admin/orders/admin.py:92
+msgid "Not paid"
+msgstr "Не оплачен"
 
 #: orders/admin/orders/forms.py:9
 msgid "If changed user, receives welcome letter one more time"
@@ -465,11 +469,27 @@ msgstr ""
 msgid "Signed"
 msgstr ""
 
-#: users/admin.py:51
+#: users/admin/student.py:10
+msgid "Email"
+msgstr ""
+
+#: users/admin/student.py:11
+#, fuzzy
+#| msgid "first name in english"
+msgid "first name"
+msgstr "Имя на английском"
+
+#: users/admin/student.py:12
+#, fuzzy
+#| msgid "last name in english"
+msgid "last name"
+msgstr "Фамилия на английском"
+
+#: users/admin/student.py:44
 msgid "Personal info"
 msgstr "Персональные данные"
 
-#: users/admin.py:52
+#: users/admin/student.py:45
 msgid "Name in english"
 msgstr "Имя на английском"
 

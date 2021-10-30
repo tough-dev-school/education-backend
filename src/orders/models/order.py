@@ -111,6 +111,13 @@ class Order(TimestampedModel):
         from orders.services import OrderShipper
         OrderShipper(self, silent=silent)()
 
+    def ship_without_payment(self) -> bool:
+        if self.paid is None:
+            self.ship(silent=True)
+            return True
+
+        return False
+
     def unship(self):
         from orders.services import OrderUnshipper
         OrderUnshipper(self)()

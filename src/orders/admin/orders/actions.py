@@ -1,4 +1,4 @@
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from app.admin import admin
 from diplomas.models import DiplomaTemplate
@@ -18,6 +18,17 @@ def set_not_paid(modeladmin, request, queryset):
         order.set_not_paid()
 
     modeladmin.message_user(request, f'{queryset.count()} orders set as not paid')
+
+
+@admin.action(description=_('Ship without payments'), permissions=['pay'])
+def ship_without_payment(modeladmin, request, queryset):
+    shipped_count = 0
+
+    for order in queryset.iterator():
+        if order.ship_without_payment():
+            shipped_count += 1
+
+    modeladmin.message_user(request, f'{shipped_count} orders shipped')
 
 
 @admin.action(description=_('Ship again if paid'))
