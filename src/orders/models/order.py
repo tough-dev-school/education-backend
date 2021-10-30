@@ -16,6 +16,9 @@ class OrderQuerySet(DefaultQuerySet):
     def paid(self, invert=False):
         return self.filter(paid__isnull=invert)
 
+    def shipped_without_payment(self):
+        return self.paid(invert=True).filter(shipped__isnull=False)
+
     def to_ship(self):
         """Paid orders that may be shipped right now"""
         return self.paid().filter(shipped__isnull=True, desired_shipment_date__lte=timezone.now())

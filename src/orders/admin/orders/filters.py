@@ -1,14 +1,32 @@
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation import pgettext_lazy
 
-from app.admin.filters import BooleanFilter
+from app.admin import admin
+from orders.models.order import OrderQuerySet
 
 
-class OrderPaidFilter(BooleanFilter):
-    title = _('Is paid')
-    parameter_name = 'is_paid'
+class OrderStatusFilter(admin.SimpleListFilter):
+    title = pgettext_lazy('orders', 'status')
+    parameter_name = 'status'
 
-    def t(self, request, queryset):
-        return queryset.paid()
+    def lookups(self, *args, **kwargs):
+        return [
+            ('not_paid', _('Not paid')),
+            ('paid', _('Paid')),
+            ('shipped_without_payment', _('Shipped without payment')),
+        ]
 
-    def f(self, request, queryset):
-        return queryset.paid(invert=True)
+    def queryset(self, request, queryset: OrderQuerySet):
+        value = self.value()
+
+        if not value:
+            return
+
+        if value == 'not_paid':
+            return queryset.paid(invert=True).filter(shipped__isnull=True)
+
+        if value == 'paid':
+            return queryset.paid()
+
+        if value == 'shipped_without_payment':
+            return queryset.shipped_without_payment()

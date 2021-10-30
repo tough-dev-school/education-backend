@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
 from orders.admin.orders import actions
-from orders.admin.orders.filters import OrderPaidFilter
+from orders.admin.orders.filters import OrderStatusFilter
 from orders.admin.orders.forms import OrderAddForm, OrderChangeForm
 from orders.models import Order
 
@@ -26,7 +26,7 @@ class OrderAdmin(ModelAdmin):
     ]
 
     list_filter = [
-        OrderPaidFilter,
+        OrderStatusFilter,
         'course',
     ]
     search_fields = [
@@ -85,9 +85,12 @@ class OrderAdmin(ModelAdmin):
         return obj.item.name if obj.item is not None else '—'
 
     @admin.display(description=_('Is paid'), ordering='paid')
-    def is_paid(self, obj):
+    def is_paid(self, obj: Order):
         if obj.paid is not None:
             return _('Paid')
+
+        if obj.shipped is not None:
+            return _('Shipped without payment')
 
         return _('Not paid')
 
