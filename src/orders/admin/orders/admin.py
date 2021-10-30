@@ -2,7 +2,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
-from diplomas.models import DiplomaTemplate
+from orders.admin.orders import actions
 from orders.admin.orders.filters import OrderPaidFilter
 from orders.admin.orders.forms import OrderAddForm, OrderChangeForm
 from orders.models import Order
@@ -38,10 +38,10 @@ class OrderAdmin(ModelAdmin):
         'user__email',
     ]
     actions = [
-        'set_paid',
-        'set_not_paid',
-        'ship_again_if_paid',
-        'generate_diplomas',
+        actions.set_paid,
+        actions.set_not_paid,
+        actions.ship_again_if_paid,
+        actions.generate_diplomas,
     ]
     readonly_fields = [
         'paid',
@@ -89,44 +89,6 @@ class OrderAdmin(ModelAdmin):
             return _('Paid')
 
         return _('Not paid')
-
-    @admin.action(description=_('Set paid'), permissions=['pay'])
-    def set_paid(self, request, queryset):
-        for order in queryset.iterator():
-            order.set_paid()
-
-        self.message_user(request, f'{queryset.count()} orders set as paid')
-
-    @admin.action(description=_('Set not paid'), permissions=['unpay'])
-    def set_not_paid(self, request, queryset):
-        for order in queryset.iterator():
-            order.set_not_paid()
-
-        self.message_user(request, f'{queryset.count()} orders set as not paid')
-
-    @admin.action(description=_('Ship again if paid'))
-    def ship_again_if_paid(self, request, queryset):
-        shipped_count = 0
-
-        for order in queryset.iterator():
-            if order.paid is not None:
-                order.ship(silent=True)
-                shipped_count += 1
-
-        if shipped_count:
-            self.message_user(request, f'{shipped_count} orders shipped again')
-
-    @admin.action(description=_('Generate diplomas'))
-    def generate_diplomas(self, request, queryset):
-        templates_count = 0
-
-        for order in queryset.iterator():
-            for template in DiplomaTemplate.objects.filter(course=order.course):
-                template.generate_diploma(student=order.user)
-                templates_count += 1
-
-        if templates_count:
-            self.message_user(request, f'{templates_count} diplomas generation started')
 
     def has_pay_permission(self, request):
         return request.user.has_perm('orders.pay_order')
