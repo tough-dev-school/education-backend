@@ -100,12 +100,12 @@ class Order(TimestampedModel):
         raise UnknownItemException(f'There is no foreignKey for {item.__class__}')
 
     def set_paid(self, silent=False):
-        from orders.services import OrderIsPaidSetter
-        OrderIsPaidSetter(self, silent=silent)()
+        from orders.services import OrderPaidSetter
+        OrderPaidSetter(self, silent=silent)()
 
     def set_not_paid(self):
-        from orders.services import OrderIsUnpaidSetter
-        OrderIsUnpaidSetter(self)()
+        from orders.services import OrderUnpaidSetter
+        OrderUnpaidSetter(self)()
 
     def ship(self, silent: bool = False):
         from orders.services import OrderShipper
