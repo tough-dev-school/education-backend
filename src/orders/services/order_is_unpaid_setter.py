@@ -3,7 +3,7 @@ from django.utils import timezone
 from orders.models import Order
 
 
-class OrderIsPaidUnsetter:
+class OrderIsUnpaidSetter:
     """Mark order as not paid"""
     def __init__(self, order: Order):
         self.order = order

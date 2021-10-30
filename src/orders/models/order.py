@@ -104,11 +104,10 @@ class Order(TimestampedModel):
         OrderIsPaidSetter(self, silent=silent)()
 
     def set_not_paid(self):
-        from orders.services import OrderIsPaidUnsetter
-        OrderIsPaidUnsetter(self)()
+        from orders.services import OrderIsUnpaidSetter
+        OrderIsUnpaidSetter(self)()
 
     def ship(self, silent: bool = False):
-        """Ship the order. Better call it asynchronously"""
         from orders.services import OrderShipper
         OrderShipper(self, silent=silent)()
 
