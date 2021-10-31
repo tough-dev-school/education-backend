@@ -103,7 +103,7 @@ django-split-settings==1.1.0
     # via -r requirements.in
 django-storages==1.12.3
     # via -r requirements.in
-django-tree-queries==0.6.0
+django-tree-queries==0.7.0
     # via -r requirements.in
 djangorestframework==3.12.4
     # via
