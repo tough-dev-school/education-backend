@@ -122,7 +122,7 @@ jmespath==0.10.0
     # via
     #   boto3
     #   botocore
-kombu==5.1.0
+kombu==5.2.0
     # via celery
 markdown==3.3.4
     # via django-markdownx
