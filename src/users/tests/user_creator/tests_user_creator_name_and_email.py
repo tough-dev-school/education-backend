@@ -51,3 +51,9 @@ def test_empty_email():
     assert created.last_name == 'Обоев'
     assert created.email == ''
     assert len(created.username) > 0
+
+
+def test_user_creates_with_lowercased_email():
+    user = UserCreator(name='Kazan Parohodov', email='KAZAN.Parohodov@GMAIL.COM')()
+    assert user.email == 'kazan.parohodov@gmail.com'
+    assert user.username == 'kazan.parohodov@gmail.com'

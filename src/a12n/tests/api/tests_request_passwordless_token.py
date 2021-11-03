@@ -53,3 +53,14 @@ def test_ev1l_user(anon, send_mail, email):
 
     assert PasswordlessAuthToken.objects.count() == 0
     send_mail.assert_not_called()
+
+
+@pytest.mark.parametrize('email', [
+    'zer0c00l@h4xx.net',
+    'ZER0C00L@H4XX.net',
+])
+def test_email_case_insensitive(user, anon, send_mail, email):
+    anon.get(f'/api/v2/auth/passwordless-token/request/{email}/')
+    token = PasswordlessAuthToken.objects.last()
+
+    assert token.user == user
