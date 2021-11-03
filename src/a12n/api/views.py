@@ -1,3 +1,5 @@
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -12,7 +14,27 @@ from app.views import AnonymousAPIView
 from users.models import User
 
 
-class ObtainJSONWebTokenView(jwt.ObtainJSONWebTokenView):
+class IEmailJSONWebTokenSerializer(jwt.JSONWebTokenSerializer):
+
+    def validate(self, data):
+        """Lower username, if it is an email.
+        Enables case-insensitive email login
+        """
+        username = data.get(self.username_field)
+        try:
+            validate_email(username)
+        except ValidationError:
+            pass
+        else:
+            data[self.username_field] = username.lower()
+        return super(IEmailJSONWebTokenSerializer, self).validate(data)
+
+
+class CustomObtainJSONWebTokenView(jwt.BaseJSONWebTokenAPIView):
+    serializer_class = IEmailJSONWebTokenSerializer
+
+
+class ObtainJSONWebTokenView(CustomObtainJSONWebTokenView):
     throttle_classes = [AuthAnonRateThrottle]
 
 
