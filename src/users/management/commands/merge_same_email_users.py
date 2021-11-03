@@ -39,7 +39,7 @@ class Command(BaseCommand):
         UserClass = apps.get_model('users.User')  # noqa
         return UserClass.objects\
             .filter(is_active=True)\
-            .filter(email_contains='@')\
+            .filter(email__contains='@')\
             .annotate(email_lower=fn.Lower('email'))
 
     def duplicate_email_query(self):
