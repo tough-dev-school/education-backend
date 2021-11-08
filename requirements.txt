@@ -163,7 +163,7 @@ s3transfer==0.5.0
     # via boto3
 sentry-sdk==1.4.3
     # via -r requirements.in
-shortuuid==1.0.1
+shortuuid==1.0.2
     # via -r requirements.in
 six==1.16.0
     # via
