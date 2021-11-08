@@ -25,8 +25,7 @@ class UserCreator:
         self.do_subscribe = subscribe
         self.subscribe_tags = tags
 
-        if email is not None:
-            email = email.lower()
+        email = email.lower()
 
         self.data = {
             'email': email,

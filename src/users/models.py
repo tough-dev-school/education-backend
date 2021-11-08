@@ -11,7 +11,7 @@ class LowercasedEmailField(models.EmailField):
         """Lowercase email when filter.
         This will ensure that user cannot access his accounts with non-lowercased email version,
         making only one, lowercased email account, valid"""
-        value = super(LowercasedEmailField, self).get_prep_value(value)
+        value = super().get_prep_value(value)
         if value is not None:
             value = value.lower()
         return value

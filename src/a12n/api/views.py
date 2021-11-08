@@ -27,7 +27,7 @@ class IEmailJSONWebTokenSerializer(jwt.JSONWebTokenSerializer):
             pass
         else:
             data[self.username_field] = username.lower()
-        return super(IEmailJSONWebTokenSerializer, self).validate(data)
+        return super().validate(data)
 
 
 class CustomObtainJSONWebTokenView(jwt.BaseJSONWebTokenAPIView):
