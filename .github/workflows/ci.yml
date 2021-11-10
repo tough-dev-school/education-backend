@@ -16,7 +16,7 @@ jobs:
         with:
           path: |
             venv
-          key: ${{ runner.os }}-venv-v1-${{ hashFiles('**/*requirements.txt') }}
+          key: ${{ runner.os }}-venv-v2-${{ hashFiles('**/*requirements.txt') }}
 
       - name: Install dependencies
         if: steps.cache-primes.outputs.cache-hit != 'true'
@@ -61,7 +61,7 @@ jobs:
         with:
           path: |
             venv
-          key: ${{ runner.os }}-venv-v1-${{ hashFiles('**/*requirements.txt') }}
+          key: ${{ runner.os }}-venv-v2-${{ hashFiles('**/*requirements.txt') }}
 
       - name: Install locale stuff
         run: sudo apt-get --no-install-recommends install -y locales-all gettext
