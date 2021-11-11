@@ -37,23 +37,23 @@ class Command(BaseCommand):
         Order.objects.filter(giver=source).update(giver=target)
 
         # Merging possibly overlapping relations, leaving as is on collision
-        try:
-            with atomic():
-                AnswerAccessLogEntry.objects.filter(user=source).update(user=target)  # UC answer user
-        except IntegrityError as e:
-            self.stdout.write(f'integrity error on updating "{source}" AnswerAccessLogEntry: {e}')
-
-        try:
-            with atomic():
-                AnswerCrossCheck.objects.filter(checker=source).update(checker=target)  # UC answer checker
-        except IntegrityError as e:
-            self.stdout.write(f'integrity error on updating "{source}" AnswerCrossCheck: {e}')
-
-        try:
-            with atomic():
-                Study.objects.filter(student=source).update(student=target)  # UC student course
-        except IntegrityError as e:
-            self.stdout.write(f'integrity error on updating "{source}" Study: {e}')
+        # try:
+        #     with atomic():
+        #         AnswerAccessLogEntry.objects.filter(user=source).update(user=target)  # UC answer user
+        # except IntegrityError as e:
+        #     self.stdout.write(f'integrity error on updating "{source}" AnswerAccessLogEntry: {e}')
+        #
+        # try:
+        #     with atomic():
+        #         AnswerCrossCheck.objects.filter(checker=source).update(checker=target)  # UC answer checker
+        # except IntegrityError as e:
+        #     self.stdout.write(f'integrity error on updating "{source}" AnswerCrossCheck: {e}')
+        #
+        # try:
+        #     with atomic():
+        #         Study.objects.filter(student=source).update(student=target)  # UC student course
+        # except IntegrityError as e:
+        #     self.stdout.write(f'integrity error on updating "{source}" Study: {e}')
 
         # We will lowercase username as well as email,
         # but for username, we need to keep it unique.
