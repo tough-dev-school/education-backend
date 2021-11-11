@@ -81,12 +81,11 @@ class Command(BaseCommand):
 
     @atomic
     def handle(self, *args, **options):
-        # all emails
-        q = User.objects\
+        active_users_emails = User.objects\
             .filter(is_active=True)\
             .annotate(lower_email=fn.Lower('email'))\
             .values('lower_email')\
             .distinct()
 
-        for row in q:
+        for row in active_users_emails:
             self.handle_single_email(row['lower_email'])
