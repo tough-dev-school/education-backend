@@ -6,17 +6,6 @@ from django.utils.translation import gettext_lazy as _
 from app.models import models
 
 
-class LowercasedEmailField(models.EmailField):
-    def get_prep_value(self, value):
-        """Lowercase email when filter.
-        This will ensure that user cannot access his accounts with non-lowercased email version,
-        making only one, lowercased email account, valid"""
-        value = super().get_prep_value(value)
-        if value is not None:
-            value = value.lower()
-        return value
-
-
 class User(AbstractUser):
     class GENDERS(TextChoices):
         MALE = 'male', _('Male')
@@ -26,7 +15,7 @@ class User(AbstractUser):
     first_name_en = models.CharField(_('first name in english'), max_length=150, blank=True)
     last_name_en = models.CharField(_('last name in english'), max_length=150, blank=True)
     uuid = models.UUIDField(db_index=True, unique=True, default=uuid.uuid4)
-    email = LowercasedEmailField(_('email address'), blank=True)
+    email = models.EmailField(_('email address'), blank=True)
 
     gender = models.CharField(_('Gender'), max_length=12, choices=GENDERS.choices, blank=True)
 

@@ -1,13 +1,10 @@
 from django.core.management.base import BaseCommand
-from django.db import IntegrityError
-from django.db.models import functions as fn
 from django.db.transaction import atomic
 
 from a12n.models import PasswordlessAuthToken
-from homework.models import Answer, AnswerAccessLogEntry, AnswerCrossCheck
+from homework.models import Answer
 from magnets.models import LeadCampaignLogEntry
 from orders.models import Order
-from studying.models import Study
 from users.models import User
 
 
@@ -36,25 +33,6 @@ class Command(BaseCommand):
         Order.objects.filter(user=source).update(user=target)
         Order.objects.filter(giver=source).update(giver=target)
 
-        # Merging possibly overlapping relations, leaving as is on collision
-        # try:
-        #     with atomic():
-        #         AnswerAccessLogEntry.objects.filter(user=source).update(user=target)  # UC answer user
-        # except IntegrityError as e:
-        #     self.stdout.write(f'integrity error on updating "{source}" AnswerAccessLogEntry: {e}')
-        #
-        # try:
-        #     with atomic():
-        #         AnswerCrossCheck.objects.filter(checker=source).update(checker=target)  # UC answer checker
-        # except IntegrityError as e:
-        #     self.stdout.write(f'integrity error on updating "{source}" AnswerCrossCheck: {e}')
-        #
-        # try:
-        #     with atomic():
-        #         Study.objects.filter(student=source).update(student=target)  # UC student course
-        # except IntegrityError as e:
-        #     self.stdout.write(f'integrity error on updating "{source}" Study: {e}')
-
         # We will lowercase username as well as email,
         # but for username, we need to keep it unique.
         # So we replace username of deprecated users (which is their email) with their uuid
@@ -81,11 +59,6 @@ class Command(BaseCommand):
 
     @atomic
     def handle(self, *args, **options):
-        active_users_emails = User.objects\
-            .filter(is_active=True)\
-            .annotate(lower_email=fn.Lower('email'))\
-            .values('lower_email')\
-            .distinct()
-
-        for row in active_users_emails:
-            self.handle_single_email(row['lower_email'])
+        for user in User.objects.all():
+            self.handle_single_email(user.email)
+        self.stdout.write('DONE!')

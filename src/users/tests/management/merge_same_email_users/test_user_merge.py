@@ -57,12 +57,9 @@ def test_target_user_preserves_non_empty_property(bob_a, bob_b, command, prop_na
 @pytest.mark.parametrize('model,rel_name', [
     ('a12n.PasswordlessAuthToken', 'user'),
     ('homework.Answer', 'author'),
-    # ('homework.AnswerAccessLogEntry', 'user'),
-    # ('homework.AnswerCrossCheck', 'checker'),
     ('magnets.LeadCampaignLogEntry', 'user'),
     ('orders.Order', 'user'),
-    ('orders.Order', 'giver'),
-    # ('studying.Study', 'student')
+    ('orders.Order', 'giver')
 ])
 def test_source_user_relation_merged_into_target_user(bob_a, bob_b, command, model, rel_name):
     bob_a_rel = mixer.blend(model, **{rel_name: bob_a})
@@ -104,22 +101,3 @@ def test_source_user_preserves_duplicated_relation_study(bob_a, bob_b, command):
 
     rel_a.refresh_from_db()
     assert rel_a.student == bob_a
-
-
-# @pytest.mark.parametrize('rel_model,rel_name,constraints', [
-#     ('studying.Study', 'student', {'course': 'products.Course'}),
-#     ('homework.AnswerCrossCheck', 'checker', {'answer': 'homework.Answer'}),
-#     ('homework.AnswerAccessLogEntry', 'user', {'answer': 'homework.Answer'}),
-# ])
-# def test_source_user_preserves_duplicated_relations(bob_a, bob_b, command, rel_model, rel_name, constraints):
-#     """Parametrized version of 3 tests above, written for comparison"""
-#     for k, v in constraints.items():
-#         constraints[k] = mixer.blend(v)
-#
-#     rel_a = mixer.blend(rel_model, **{rel_name: bob_a}, **constraints)
-#     mixer.blend(rel_model, **{rel_name: bob_b}, **constraints)
-#
-#     command.merge_user(source=bob_a, target=bob_b)
-#
-#     rel_a.refresh_from_db()
-#     assert getattr(rel_a, rel_name) == bob_a

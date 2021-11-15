@@ -30,11 +30,8 @@ class IEmailJSONWebTokenSerializer(jwt.JSONWebTokenSerializer):
         return super().validate(data)
 
 
-class CustomObtainJSONWebTokenView(jwt.BaseJSONWebTokenAPIView):
+class ObtainJSONWebTokenView(jwt.BaseJSONWebTokenAPIView):
     serializer_class = IEmailJSONWebTokenSerializer
-
-
-class ObtainJSONWebTokenView(CustomObtainJSONWebTokenView):
     throttle_classes = [AuthAnonRateThrottle]
 
 
@@ -46,7 +43,7 @@ class RequestPasswordLessToken(AnonymousAPIView):
     throttle_classes = [AuthAnonRateThrottle]
 
     def get(self, request, user_email: str):
-        user = User.objects.filter(email=user_email).first()
+        user = User.objects.filter(email=user_email.lower()).first()
         if user is not None:
             token = PasswordlessAuthToken.objects.create(user=user)
             send_mail.delay(
