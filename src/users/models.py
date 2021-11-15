@@ -15,7 +15,6 @@ class User(AbstractUser):
     first_name_en = models.CharField(_('first name in english'), max_length=150, blank=True)
     last_name_en = models.CharField(_('last name in english'), max_length=150, blank=True)
     uuid = models.UUIDField(db_index=True, unique=True, default=uuid.uuid4)
-    email = models.EmailField(_('email address'), blank=True)
 
     gender = models.CharField(_('Gender'), max_length=12, choices=GENDERS.choices, blank=True)
 
