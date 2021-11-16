@@ -22,25 +22,30 @@ def test_getting_token_ok(api, get_token):
     assert 'token' in got
 
 
-def test_getting_token_case_insensitive_email(get_token):
+def test_getting_token_by_email(user, api, get_token):
     user = UserCreator(name='lol bar', email='lolbar@example.com')()
     user.set_password('123456')
     user.save()
 
     got = get_token('lolbar@example.com', '123456')
+
     assert 'token' in got
 
-    got2 = get_token('LOLBAR@EXAMPLE.Com', '123456')
-    assert 'token' in got2
+
+def test_getting_token_case_sensitive_email(get_token):
+    user = UserCreator(name='lol bar', email='lolbar@example.com')()
+    user.set_password('123456')
+    user.save()
+
+    got2 = get_token('LOLBAR@EXAMPLE.Com', '123456', expected_status_code=400)
+
+    assert 'non_field_errors' in got2
 
 
 def test_getting_token_case_sensitive_username(get_token, mixer):
     user = mixer.blend('users.User', username='Jimbo', email='jimbo@example.com')
     user.set_password('123456')
     user.save()
-
-    got = get_token('Jimbo', '123456')
-    assert 'token' in got
 
     got2 = get_token('jimbo', '123456', expected_status_code=400)
     assert 'non_field_errors' in got2
