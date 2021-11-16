@@ -124,7 +124,7 @@ jmespath==0.10.0
     #   botocore
 kombu==5.2.2
     # via celery
-markdown==3.3.4
+markdown==3.3.5
     # via django-markdownx
 packaging==21.2
     # via bleach
