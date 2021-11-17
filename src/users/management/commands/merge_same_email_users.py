@@ -16,8 +16,6 @@ class Command(BaseCommand):
         Some relations, which have unique constraint on user,
         might be duplicated as result of merge. Such relations are left untouched with source user.
         """
-        self.stdout.write(f'merging "{source}" into "{target}"')
-
         # merging user properties
         target.first_name = target.first_name or source.first_name
         target.last_name = target.last_name or source.last_name
@@ -39,13 +37,12 @@ class Command(BaseCommand):
         source.username = source.uuid
         source.is_active = False  # disable user instead of physically delete it
         source.save()
-        self.stdout.write(f'merged "{source}" into "{target}"')
+        self.stdout.write(f'merged "{source.email}" into "{target.email}"')
 
     def handle_single_email(self, email):
         """Merges all users with sa me email (case insensitive),
         into last registered user, in order of join date.
         """
-        self.stdout.write(f'handling {email}')
         same_users = User.objects.filter(is_active=True).filter(email__iexact=email).order_by('-date_joined')
         target, sources = same_users[0], same_users[1:]
 
@@ -55,7 +52,6 @@ class Command(BaseCommand):
         target.username = target.username.lower()
         target.email = target.email.lower()
         target.save()
-        self.stdout.write(f'handled {email}')
 
     @atomic
     def handle(self, *args, **options):
