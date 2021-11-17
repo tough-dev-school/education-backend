@@ -55,6 +55,6 @@ class Command(BaseCommand):
 
     @atomic
     def handle(self, *args, **options):
-        for user in User.objects.all():
+        for user in User.objects.filter(is_active=True):
             self.handle_single_email(user.email)
         self.stdout.write('DONE!')
