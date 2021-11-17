@@ -41,7 +41,7 @@ class UserCreator:
         return self.resulting_user
 
     def get(self):
-        return User.objects.filter(email=self.data['email']).first()
+        return User.objects.filter(is_active=True).filter(email=self.data['email']).first()
 
     def create(self):
         serializer = UserCreateSerializer(data=self.data)
