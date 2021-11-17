@@ -35,6 +35,7 @@ class Command(BaseCommand):
         # but for username, we need to keep it unique.
         # So we replace username of deprecated users (which is their email) with their uuid
         source.username = source.uuid
+        source.email = source.email.lower()
         source.is_active = False  # disable user instead of physically delete it
         source.save()
         self.stdout.write(f'merged "{source.email}" into "{target.email}"')

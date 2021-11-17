@@ -16,6 +16,12 @@ def test_merged_user_changes_username_to_uuid(bob_a, bob_b, command):
     assert bob_a.username == bob_a.uuid
 
 
+def test_merged_user_has_email_lowered(bob_a, bob_b, command):
+    command.merge_user(source=bob_a, target=bob_b)
+
+    assert bob_a.email == bob_a.email.lower()
+
+
 @pytest.mark.parametrize('prop_name,prop_value,empty_value', [
     ('first_name', 'Боб', ''),
     ('last_name', 'Бобов', ''),
