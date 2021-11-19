@@ -22,7 +22,7 @@ def test_command_handles_every_user_email(bob_a, bob_b, bob_c, handle_single_ema
     handle_single_email_mock.assert_has_calls((
         mocker.call('boB@EXAMPLE.com'),
         mocker.call('Bob@Example.Com'),
-        mocker.call('BOB@EXAMPLE.COM')
+        mocker.call('BOB@EXAMPLE.COM'),
     ), any_order=True)
 
 

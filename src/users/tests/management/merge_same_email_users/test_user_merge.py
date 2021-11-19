@@ -22,13 +22,13 @@ def test_merged_user_has_email_lowered(bob_a, bob_b, command):
     assert bob_a.email == bob_a.email.lower()
 
 
-@pytest.mark.parametrize('prop_name,prop_value,empty_value', [
+@pytest.mark.parametrize(('prop_name', 'prop_value', 'empty_value'), [
     ('first_name', 'Боб', ''),
     ('last_name', 'Бобов', ''),
     ('first_name_en', 'Bob', ''),
     ('last_name_en', 'McBob', ''),
     ('subscribed', True, False),
-    ('gender', 'male', '')
+    ('gender', 'male', ''),
 ])
 def test_target_user_populates_empty_property(bob_a, bob_b, command, prop_name, prop_value, empty_value):
     setattr(bob_a, prop_name, prop_value)
@@ -41,13 +41,13 @@ def test_target_user_populates_empty_property(bob_a, bob_b, command, prop_name, 
     assert getattr(bob_b, prop_name) == prop_value
 
 
-@pytest.mark.parametrize('prop_name,prop_value,empty_value', [
+@pytest.mark.parametrize(('prop_name', 'prop_value', 'empty_value'), [
     ('first_name', 'Боб', ''),
     ('last_name', 'Бобов', ''),
     ('first_name_en', 'Bob', ''),
     ('last_name_en', 'McBob', ''),
     ('subscribed', True, False),
-    ('gender', 'male', '')
+    ('gender', 'male', ''),
 ])
 def test_target_user_preserves_non_empty_property(bob_a, bob_b, command, prop_name, prop_value, empty_value):
     setattr(bob_a, prop_name, empty_value)
@@ -60,12 +60,12 @@ def test_target_user_preserves_non_empty_property(bob_a, bob_b, command, prop_na
     assert getattr(bob_b, prop_name) == prop_value
 
 
-@pytest.mark.parametrize('model,rel_name', [
+@pytest.mark.parametrize(('model', 'rel_name'), [
     ('a12n.PasswordlessAuthToken', 'user'),
     ('homework.Answer', 'author'),
     ('magnets.LeadCampaignLogEntry', 'user'),
     ('orders.Order', 'user'),
-    ('orders.Order', 'giver')
+    ('orders.Order', 'giver'),
 ])
 def test_source_user_relation_merged_into_target_user(bob_a, bob_b, command, model, rel_name):
     bob_a_rel = mixer.blend(model, **{rel_name: bob_a})

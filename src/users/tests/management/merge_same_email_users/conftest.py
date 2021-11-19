@@ -1,6 +1,5 @@
-from datetime import datetime
-
 import pytest
+from datetime import datetime
 
 from users.management.commands import merge_same_email_users
 from users.models import User

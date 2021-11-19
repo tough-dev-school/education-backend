@@ -37,5 +37,5 @@ def test_three_users_merge_into_latest(bob_a, bob_b, bob_c, command, mocker: Moc
 
     command.merge_user.assert_has_calls((
         mocker.call(bob_b, bob_c),
-        mocker.call(bob_a, bob_c)
+        mocker.call(bob_a, bob_c),
     ))
