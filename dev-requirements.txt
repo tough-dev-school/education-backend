@@ -112,7 +112,7 @@ idna==3.3
     # via
     #   -c requirements.txt
     #   requests
-importlib-metadata==4.8.1
+importlib-metadata==4.8.2
     # via pytest-randomly
 iniconfig==1.1.1
     # via pytest
@@ -120,9 +120,9 @@ ipython==7.29.0
     # via -r dev-requirements.in
 ipython-genutils==0.2.0
     # via traitlets
-isort==5.10.0
+isort==5.10.1
     # via flake8-isort
-jedi==0.18.0
+jedi==0.18.1
     # via
     #   -r dev-requirements.in
     #   ipython
@@ -132,7 +132,7 @@ mccabe==0.6.1
     # via flake8
 mixer==7.0.6
     # via -r dev-requirements.in
-packaging==21.2
+packaging==21.3
     # via
     #   -c requirements.txt
     #   pytest
@@ -193,7 +193,7 @@ pytest-freezegun==0.4.2
     # via -r dev-requirements.in
 pytest-mock==3.6.1
     # via -r dev-requirements.in
-pytest-randomly==3.10.1
+pytest-randomly==3.10.2
     # via -r dev-requirements.in
 pytest-repeat==0.9.1
     # via -r dev-requirements.in
