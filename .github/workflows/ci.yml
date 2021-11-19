@@ -1,6 +1,8 @@
 ---
 name: CI
-on: push
+on:
+  - push
+  - pull_request
 
 jobs:
   build:
@@ -10,13 +12,13 @@ jobs:
 
       - uses: actions/setup-python@v2
         with:
-          python-version: "3.9.x"
+          python-version: "3.9.7"
 
       - uses: actions/cache@v2
         with:
           path: |
             venv
-          key: ${{ runner.os }}-venv-v1-${{ hashFiles('**/*requirements.txt') }}
+          key: ${{ runner.os }}-venv-v2-${{ hashFiles('**/*requirements.txt') }}
 
       - name: Install dependencies
         if: steps.cache-primes.outputs.cache-hit != 'true'
@@ -55,13 +57,13 @@ jobs:
 
       - uses: actions/setup-python@v2
         with:
-          python-version: "3.9.x"
+          python-version: "3.9.7"
 
       - uses: actions/cache@v2
         with:
           path: |
             venv
-          key: ${{ runner.os }}-venv-v1-${{ hashFiles('**/*requirements.txt') }}
+          key: ${{ runner.os }}-venv-v2-${{ hashFiles('**/*requirements.txt') }}
 
       - name: Install locale stuff
         run: sudo apt-get --no-install-recommends install -y locales-all gettext
