@@ -61,7 +61,7 @@ def test_email_case_sensitive(user, anon):
     assert PasswordlessAuthToken.objects.count() == 0
 
 
-def test_disabled_user_does_not_involved(user, anon, mixer):
+def test_disabled_user_with_the_same_email_does_not_break_authentication(user, anon, mixer):
     mixer.blend('users.User', email=user.email, is_active=False)
 
     anon.get('/api/v2/auth/passwordless-token/request/zer0c00l@h4xx.net/')
