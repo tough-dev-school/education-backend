@@ -40,3 +40,18 @@ def test_existing_user_name_does_not_change(user):
     assert created.last_name == user.last_name
     assert created.first_name != 'Камаз'
     assert created.last_name != 'Отходов'
+
+
+def test_user_with_another_email_case_is_the_same(user):
+    created = UserCreator(name='Камаз Отходов', email='RuLoN.oBoEV@gmAil.cOm')()
+    assert created == user
+
+
+def test_user_creates_if_existing_inactive(user):
+    user.is_active = False
+    user.username = user.uuid  # should differ from email to be able to create new account
+    user.save()
+
+    created = UserCreator(name='Камаз Отходов', email=user.email)()
+
+    assert created != user

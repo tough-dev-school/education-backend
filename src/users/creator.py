@@ -25,6 +25,8 @@ class UserCreator:
         self.do_subscribe = subscribe
         self.subscribe_tags = tags
 
+        email = email.lower()
+
         self.data = {
             'email': email,
             'username': email or str(uuid.uuid4()),
@@ -39,7 +41,7 @@ class UserCreator:
         return self.resulting_user
 
     def get(self):
-        return User.objects.filter(email=self.data['email']).first()
+        return User.objects.filter(is_active=True).filter(email=self.data['email']).first()
 
     def create(self):
         serializer = UserCreateSerializer(data=self.data)

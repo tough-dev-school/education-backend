@@ -53,3 +53,17 @@ def test_ev1l_user(anon, send_mail, email):
 
     assert PasswordlessAuthToken.objects.count() == 0
     send_mail.assert_not_called()
+
+
+def test_email_case_sensitive(user, anon):
+    anon.get('/api/v2/auth/passwordless-token/request/ZER0C00L@h4xx.net/')
+
+    assert PasswordlessAuthToken.objects.count() == 0
+
+
+def test_disabled_user_with_the_same_email_does_not_break_authentication(user, anon, mixer):
+    mixer.blend('users.User', email=user.email, is_active=False)
+
+    anon.get('/api/v2/auth/passwordless-token/request/zer0c00l@h4xx.net/')
+
+    assert PasswordlessAuthToken.objects.last().user == user

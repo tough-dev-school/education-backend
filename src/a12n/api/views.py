@@ -24,7 +24,7 @@ class RequestPasswordLessToken(AnonymousAPIView):
     throttle_classes = [AuthAnonRateThrottle]
 
     def get(self, request, user_email: str):
-        user = User.objects.filter(email=user_email).first()
+        user = User.objects.filter(is_active=True).filter(email=user_email).first()
         if user is not None:
             token = PasswordlessAuthToken.objects.create(user=user)
             send_mail.delay(
