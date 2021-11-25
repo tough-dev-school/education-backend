@@ -13,6 +13,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'app.middleware.real_ip.real_ip_middleware',
+    'django_currentuser.middleware.ThreadLocalUserMiddleware',
     'axes.middleware.AxesMiddleware',
 ]
 
