@@ -56,7 +56,6 @@ django==3.2.9
     #   django-bulk-update
     #   django-cachalot
     #   django-cors-headers
-    #   django-currentuser
     #   django-debug-toolbar
     #   django-filter
     #   django-hattori
@@ -80,8 +79,6 @@ django-bulk-update==2.2.0
 django-cachalot==2.4.4
     # via -r requirements.in
 django-cors-headers==3.10.0
-    # via -r requirements.in
-django-currentuser==0.5.3
     # via -r requirements.in
 django-debug-toolbar==3.2.2
     # via -r requirements.in

@@ -7,7 +7,6 @@ django-split-settings
 django-tree-queries
 django-cachalot
 django_redis
-django-currentuser
 whitenoise
 psycopg2-binary
 shortuuid

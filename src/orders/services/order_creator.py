@@ -1,8 +1,8 @@
 from typing import Optional, Union
 
 from datetime import datetime
-from django_currentuser.middleware import get_current_authenticated_user
 
+from app.current_user import get_current_user
 from orders.models import Order, PromoCode
 from users.models import User
 
@@ -38,7 +38,7 @@ class OrderCreator:
     def create(self):
         return Order.objects.create(
             user=self.user,
-            author=get_current_authenticated_user() or self.user,
+            author=get_current_user() or self.user,
             price=self.price,
             promocode=self.promocode,
             giver=self.giver,
