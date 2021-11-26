@@ -38,6 +38,7 @@ class DiplomaGenerator:
         return DiplomaTemplate.objects.get(
             course=self.course,
             language=self.language,
+            homework_accepted=False,
         )
 
     def create_diploma(self) -> Diploma:
