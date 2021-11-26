@@ -2,7 +2,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from orders.models import Order
-from orders.services import OrderEmailChanger
+from orders.services import OrderCreator, OrderEmailChanger
 
 
 class OrderChangeForm(forms.ModelForm):
@@ -47,7 +47,23 @@ class OrderChangeForm(forms.ModelForm):
 
 class OrderAddForm(forms.ModelForm):
     email = forms.CharField(required=False, widget=forms.HiddenInput)
+    author = forms.CharField(required=False, widget=forms.HiddenInput)
+    paid = forms.CharField(required=False, widget=forms.HiddenInput)
+    shipped = forms.CharField(required=False, widget=forms.HiddenInput)
+    unpaid = forms.CharField(required=False, widget=forms.HiddenInput)
 
     class Meta:
         model = Order
         fields = '__all__'
+
+    def save(self, commit=True):
+        order_creator = OrderCreator(
+            user=self.cleaned_data['user'],
+            item=self.cleaned_data['course'] or self.cleaned_data['bundle'] or self.cleaned_data['record'],
+            price=self.cleaned_data['price'],
+        )
+
+        return order_creator()
+
+    def save_m2m(self, *args, **kwargs):
+        """For some weird reason django requires this method to be present"""
