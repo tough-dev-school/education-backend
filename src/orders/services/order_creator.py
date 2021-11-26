@@ -1,6 +1,7 @@
 from typing import Optional, Union
 
 from datetime import datetime
+from decimal import Decimal
 
 from app.current_user import get_current_user
 from orders.models import Order, PromoCode
@@ -12,6 +13,7 @@ class OrderCreator:
         self,
         user: User,
         item,
+        price: Optional[Decimal] = None,
         promocode: Optional[str] = None,
         giver: User = None,
         desired_shipment_date: Optional[Union[str, datetime]] = None,
@@ -20,7 +22,7 @@ class OrderCreator:
     ):
         self.item = item
         self.user = user
-        self.price = item.get_price(promocode=promocode)
+        self.price = price or item.get_price(promocode=promocode)
         self.promocode = self._get_promocode(promocode)
         self.giver = giver
         self.desired_shipment_date = desired_shipment_date

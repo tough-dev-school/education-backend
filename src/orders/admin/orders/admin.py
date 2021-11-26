@@ -45,6 +45,7 @@ class OrderAdmin(ModelAdmin):
         actions.generate_diplomas,
     ]
     readonly_fields = [
+        'author',
         'paid',
         'shipped',
         'unpaid',
@@ -54,7 +55,7 @@ class OrderAdmin(ModelAdmin):
         (
             None,
             {
-                'fields': ['user', 'price', 'email', 'paid', 'shipped', 'unpaid'],
+                'fields': ['user', 'price', 'email', 'author', 'paid', 'shipped', 'unpaid'],
             },
         ),
         (

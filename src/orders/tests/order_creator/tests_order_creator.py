@@ -42,3 +42,11 @@ def test_course_manual(create, user, course):
 
     assert order.price == 100500
     assert order.item == course
+
+
+def test_forced_price(create, user, course):
+    order = create(user=user, item=course, price=200500)
+
+    order.refresh_from_db()
+
+    assert order.price == 200500
