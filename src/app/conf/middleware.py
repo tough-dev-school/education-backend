@@ -13,6 +13,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'app.middleware.real_ip.real_ip_middleware',
+    'app.middleware.set_user_from_non_django_authentication.JWTAuthMiddleware',
+    'app.middleware.set_user_from_non_django_authentication.TokenAuthMiddleware',
+    'app.middleware.global_current_user.set_global_user',
     'axes.middleware.AxesMiddleware',
 ]
 

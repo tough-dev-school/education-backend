@@ -1,6 +1,7 @@
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
+from app.current_user import get_current_user
 from users.api.serializers import UserSerializer, UserUpdateSerializer
 from users.models import User
 
@@ -27,7 +28,8 @@ class SelfView(GenericAPIView):
         )
 
     def get_object(self) -> User:
-        return self.get_queryset().get(pk=self.request.user.pk)
+        user = get_current_user()
+        return self.get_queryset().get(pk=user.pk)
 
     def get_queryset(self):
         return User.objects.filter(is_active=True)

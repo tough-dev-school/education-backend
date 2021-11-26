@@ -27,6 +27,7 @@ class OrderQuerySet(DefaultQuerySet):
 class Order(TimestampedModel):
     objects = OrderQuerySet.as_manager()  # type: OrderQuerySet
 
+    author = models.ForeignKey('users.User', related_name='created_orders', verbose_name=_('Order author'), on_delete=models.PROTECT)
     user = models.ForeignKey('users.Student', verbose_name=_('User'), on_delete=models.PROTECT)
     price = models.DecimalField(_('Price'), max_digits=9, decimal_places=2)
     promocode = models.ForeignKey('orders.PromoCode', verbose_name=_('Promo Code'), blank=True, null=True, on_delete=models.PROTECT)
