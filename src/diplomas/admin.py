@@ -56,9 +56,11 @@ class DiplomaTemplateAdmin(ModelAdmin):
         'course',
         'language',
         'slug',
+        'homework_accepted',
     ]
 
     list_editable = [
         'slug',
         'language',
+        'homework_accepted',
     ]
