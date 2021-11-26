@@ -52,13 +52,3 @@ def test_task(student, course):
     assert diploma.image.read() == b'TYPICAL MAC USER JPG'
     assert diploma.study.student == student
     assert diploma.study.course == course
-
-
-def test_template_interface(template, student, course):
-    template.generate_diploma(student)
-
-    diploma = Diploma.objects.get(study__student=student, study__course=course)
-
-    assert diploma.image.read() == b'TYPICAL MAC USER JPG'
-    assert diploma.study.student == student
-    assert diploma.study.course == course

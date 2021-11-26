@@ -42,7 +42,6 @@ class OrderAdmin(ModelAdmin):
         actions.ship_without_payment,
         actions.set_not_paid,
         actions.ship_again_if_paid,
-        actions.generate_diplomas,
     ]
     readonly_fields = [
         'author',

@@ -49,14 +49,6 @@ class DiplomaAdmin(ModelAdmin):
 
         self.message_user(request, f'Diplomas sent to {queryset.count()} students')
 
-    @admin.action(description=_('Regenerate'))
-    def regenerate(self, request, queryset):
-        templates_count = 0
-        for diploma in queryset.iterator():
-            templates_count += diploma.regenerate()
-
-        self.message_user(request, f'Started regeneration for {templates_count} diplomas of {queryset.count()} students')
-
 
 @admin.register(DiplomaTemplate)
 class DiplomaTemplateAdmin(ModelAdmin):
