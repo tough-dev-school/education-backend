@@ -43,8 +43,8 @@ class User(AbstractUser):
 
         return name.strip()
 
-    def get_printable_name(self, language: Union[Literal['ru'], Literal['en']]) -> Optional[str]:
-        if language == 'ru':
+    def get_printable_name(self, language: Union[Literal['ru'], Literal['en'], Literal['RU'], Literal['EN']]) -> Optional[str]:
+        if language.lower() == 'ru':
             name = f'{self.first_name} {self.last_name}'
         else:
             name = f'{self.first_name_en} {self.last_name_en}'
