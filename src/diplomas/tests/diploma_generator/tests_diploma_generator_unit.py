@@ -1,8 +1,10 @@
 import pytest
 
+from diplomas.models import DiplomaTemplate
+
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures('order'),
+    pytest.mark.usefixtures('order', 'template'),
 ]
 
 
@@ -36,7 +38,23 @@ def test_user_name(generator):
     assert template_context['name'] == 'Авраам Линкольн'
 
 
-@pytest.mark.usefixtures('template')
+def test_bad_language(generator):
+    generator = generator(language='en')
+
+    with pytest.raises(DiplomaTemplate.DoesNotExist):
+        generator.get_external_service_url()
+
+
+def test_no_template_for_homework(generator, order):
+    order.study.homework_accepted = True
+    order.study.save()
+
+    generator = generator(language='ru')
+
+    with pytest.raises(DiplomaTemplate.DoesNotExist):
+        generator.get_external_service_url()
+
+
 def test_external_service_url(generator, settings):
     settings.DIPLOMA_GENERATOR_HOST = 'https://secret.generator.com/'
 

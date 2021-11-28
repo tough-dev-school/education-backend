@@ -8,6 +8,8 @@ class Study(TimestampedModel):
     course = models.ForeignKey('products.Course', on_delete=models.CASCADE)
     order = models.OneToOneField('orders.Order', on_delete=models.CASCADE)
 
+    homework_accepted = models.BooleanField(default=False)
+
     class Meta:
         indexes = [
             Index(fields=['student', 'course']),

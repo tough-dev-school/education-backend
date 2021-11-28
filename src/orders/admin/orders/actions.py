@@ -1,7 +1,8 @@
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import admin
-from diplomas.models import DiplomaTemplate
+from orders import tasks
+from studying.models import Study
 
 
 @admin.action(description=_('Set paid'), permissions=['pay'])
@@ -45,13 +46,26 @@ def ship_again_if_paid(modeladmin, request, queryset):
 
 
 @admin.action(description=_('Generate diplomas'))
-def generate_diplomas(modeladmin, request, queryset):
-    templates_count = 0
+def generate_diplams(modeladmin, request, queryset):
+    order_ids = queryset.values_list('order_id', flat=True)
+    tasks.generate_diploma.chunk(order_ids, 10).apply_async()
 
-    for order in queryset.iterator():
-        for template in DiplomaTemplate.objects.filter(course=order.course):
-            template.generate_diploma(student=order.user)
-            templates_count += 1
+    modeladmin.message_user(f'Started generation of {len(order_ids)} diplomas')
 
-    if templates_count:
-        modeladmin.message_user(request, f'{templates_count} diplomas generation started')
+
+@admin.action(description=_('Accept homework'))
+def accept_homework(modeladmin, request, queryset):
+    studies = Study.objects.filter(order__in=queryset)
+
+    studies.update(homework_accepted=True)
+
+    modeladmin.message_user(request, f'{studies.count()} homeworks accepted')
+
+
+@admin.action(description=_('Disaccept homework'))
+def disaccept_homework(modeladmin, request, queryset):
+    studies = Study.objects.filter(order__in=queryset)
+
+    studies.update(homework_accepted=True)
+
+    modeladmin.message_user(request, f'{studies.count()} homeworks disaccepted')
