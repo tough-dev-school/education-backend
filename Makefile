@@ -22,6 +22,7 @@ worker:
 	cd src && celery -A app worker -E --purge
 
 lint:
+	cd src && ./manage.py makemigrations --check --no-input --dry-run
 	flake8 src
 
 test:
@@ -30,5 +31,3 @@ test:
 coverage:
 	cd src && pytest --dead-fixtures && pytest --cov-report=xml --cov=. -n4 -x
 
-checkmigrations:
-	cd src && ./manage.py makemigrations --check --no-input --dry-run

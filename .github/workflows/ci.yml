@@ -29,6 +29,7 @@ jobs:
           . venv/bin/activate
           pip install --upgrade pip pip-tools
           pip-sync requirements.txt dev-requirements.txt
+
       - name: Run the linter
         run: |
           . venv/bin/activate
