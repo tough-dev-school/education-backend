@@ -1,3 +1,5 @@
+from typing import Literal, Optional, Union
+
 import uuid
 from django.contrib.auth.models import AbstractUser, Permission
 from django.db.models import TextChoices
@@ -33,13 +35,24 @@ class User(AbstractUser):
 
         return {'first_name': parts[0], 'last_name': ' '.join(parts[1:])}
 
-    def __str__(self):
-        name = self.first_name + ' ' + self.last_name
+    def __str__(self) -> str:
+        name = f'{self.first_name} {self.last_name}'
 
         if len(name) < 3:
             return 'Anonymous'
 
         return name.strip()
+
+    def get_printable_name(self, lang: Union[Literal['ru'], Literal['en']]) -> Optional[str]:
+        if lang == 'ru':
+            name = f'{self.first_name} {self.last_name}'
+        else:
+            name = f'{self.first_name_en} {self.last_name_en}'
+
+        name = name.strip()
+
+        if len(name) > 3:
+            return name
 
     def add_perm(self, perm):
         """Add permission to the user.
