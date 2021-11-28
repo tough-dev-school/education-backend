@@ -53,3 +53,13 @@ def test_task(diploma_generator, order, student, course):
         course=course,
         language='ru',
     )
+
+
+@pytest.mark.parametrize('name_field', ['first_name', 'last_name'])
+def test_student_without_name_does_not_get_a_diploma(diploma_generator, order, student, name_field):
+    setattr(student, name_field, '')  # reset a part of students name
+    student.save()
+
+    tasks.generate_diploma.delay(order_id=order.id)
+
+    diploma_generator.assert_not_called()
