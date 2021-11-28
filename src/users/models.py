@@ -54,6 +54,12 @@ class User(AbstractUser):
         if len(name) > 3:
             return name
 
+    def get_printable_gender(self) -> str:
+        if self.gender and len(self.gender):
+            return self.gender
+
+        return 'male'  # sorry, flex scope
+
     def add_perm(self, perm):
         """Add permission to the user.
         This is a shortcut method for testing, please do not use in production

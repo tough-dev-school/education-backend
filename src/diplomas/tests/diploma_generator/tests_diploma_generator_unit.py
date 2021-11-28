@@ -15,7 +15,8 @@ def test_study_object(generator, order):
 
 
 @pytest.mark.parametrize(('gender', 'expected'), [
-    ('', ''),
+    ('', 'm'),
+    (None, 'm'),
     ('female', 'f'),
     ('male', 'm'),
 ])
