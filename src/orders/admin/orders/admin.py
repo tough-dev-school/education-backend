@@ -44,6 +44,7 @@ class OrderAdmin(ModelAdmin):
         actions.ship_again_if_paid,
         actions.accept_homework,
         actions.disaccept_homework,
+        actions.generate_diplams,
     ]
     readonly_fields = [
         'author',

@@ -1,7 +1,8 @@
 from django.utils.translation import gettext_lazy as _
-from studying.models import Study
 
 from app.admin import admin
+from orders import tasks
+from studying.models import Study
 
 
 @admin.action(description=_('Set paid'), permissions=['pay'])
@@ -42,6 +43,14 @@ def ship_again_if_paid(modeladmin, request, queryset):
 
     if shipped_count:
         modeladmin.message_user(request, f'{shipped_count} orders shipped again')
+
+
+@admin.action(description=_('Generate diplomas'))
+def generate_diplams(modeladmin, request, queryset):
+    order_ids = queryset.values_list('order_id', flat=True)
+    tasks.generate_diploma.chunk(order_ids, 10).apply_async()
+
+    modeladmin.message_user(f'Started generation of {len(order_ids)} diplomas')
 
 
 @admin.action(description=_('Accept homework'))
