@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-26 23:15+0300\n"
+"POT-Creation-Date: 2021-11-28 18:58+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -170,43 +170,51 @@ msgstr "Почтовая кампания"
 msgid "Email Lead Magnet Campaigns"
 msgstr "Почтовые кампании"
 
-#: orders/admin/orders/actions.py:6
+#: orders/admin/orders/actions.py:7
 msgid "Set paid"
 msgstr "Пометить оплаченным"
 
-#: orders/admin/orders/actions.py:14
+#: orders/admin/orders/actions.py:15
 msgid "Set not paid"
 msgstr "Вернуть"
 
-#: orders/admin/orders/actions.py:22
+#: orders/admin/orders/actions.py:23
 msgid "Ship without payments"
 msgstr "Допустить до уроков без оплаты"
 
-#: orders/admin/orders/actions.py:33
+#: orders/admin/orders/actions.py:34
 msgid "Ship again if paid"
 msgstr "Ещё раз выполнить (если заказ не оплачен — не выполнится)"
 
-#: orders/admin/orders/admin.py:61 orders/admin/orders/admin.py:83
+#: orders/admin/orders/actions.py:47
+msgid "Accept homework"
+msgstr "Засчитать домашку"
+
+#: orders/admin/orders/actions.py:56
+msgid "Disaccept homework"
+msgstr "Не засчитать домашку"
+
+#: orders/admin/orders/admin.py:63 orders/admin/orders/admin.py:85
 msgid "Item"
 msgstr "Товар"
 
-#: orders/admin/orders/admin.py:75 orders/models/order.py:31
+#: orders/admin/orders/admin.py:77 orders/models/order.py:31
 msgid "User"
 msgstr "Юзер"
 
-#: orders/admin/orders/admin.py:87
+#: orders/admin/orders/admin.py:89
 msgid "Is paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders/admin.py:90 orders/admin/orders/filters.py:15
+#: orders/admin/orders/admin.py:92 orders/admin/orders/filters.py:15
 msgid "Paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders/admin.py:93 orders/admin/orders/filters.py:16
+#: orders/admin/orders/admin.py:95 orders/admin/orders/filters.py:16
 msgid "Shipped without payment"
 msgstr "Ждем денег"
 
-#: orders/admin/orders/admin.py:95 orders/admin/orders/filters.py:14
+#: orders/admin/orders/admin.py:97 orders/admin/orders/filters.py:14
 msgid "Not paid"
 msgstr "Не оплачен"
 
@@ -551,9 +559,6 @@ msgstr "Студенты"
 
 #~ msgid "Gift"
 #~ msgstr "Подарок"
-
-#~ msgid "With homework"
-#~ msgstr "С домашкой?"
 
 #~ msgid "Is active"
 #~ msgstr "Включено"

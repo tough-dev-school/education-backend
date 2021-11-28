@@ -1,4 +1,5 @@
 from django.utils.translation import gettext_lazy as _
+from studying.models import Study
 
 from app.admin import admin
 
@@ -41,3 +42,21 @@ def ship_again_if_paid(modeladmin, request, queryset):
 
     if shipped_count:
         modeladmin.message_user(request, f'{shipped_count} orders shipped again')
+
+
+@admin.action(description=_('Accept homework'))
+def accept_homework(modeladmin, request, queryset):
+    studies = Study.objects.filter(order__in=queryset)
+
+    studies.update(homework_accepted=True)
+
+    modeladmin.message_user(request, f'{studies.count()} homeworks accepted')
+
+
+@admin.action(description=_('Disaccept homework'))
+def disaccept_homework(modeladmin, request, queryset):
+    studies = Study.objects.filter(order__in=queryset)
+
+    studies.update(homework_accepted=True)
+
+    modeladmin.message_user(request, f'{studies.count()} homeworks disaccepted')
