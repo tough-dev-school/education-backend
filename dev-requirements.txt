@@ -118,7 +118,7 @@ importlib-metadata==4.8.2
     #   pytest-randomly
 iniconfig==1.1.1
     # via pytest
-ipython==7.29.0
+ipython==7.30.0
     # via -r dev-requirements.in
 isort==5.10.1
     # via flake8-isort
@@ -144,7 +144,7 @@ pickleshare==0.7.5
     # via ipython
 pluggy==0.13.1
     # via pytest
-prompt-toolkit==3.0.22
+prompt-toolkit==3.0.23
     # via
     #   -c requirements.txt
     #   ipython
