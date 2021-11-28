@@ -28,7 +28,7 @@ def test_sex(generator, gender, expected):
     assert template_context['sex'] == expected
 
 
-def test_user_name(generator):
+def test_user_name_ru(generator):
     generator = generator(language='ru')
     generator.student.first_name = 'Авраам'
     generator.student.last_name = 'Линкольн'
@@ -36,6 +36,16 @@ def test_user_name(generator):
     template_context = generator.get_template_context()
 
     assert template_context['name'] == 'Авраам Линкольн'
+
+
+def test_user_name_en(generator):
+    generator = generator(language='en')
+    generator.student.first_name_en = 'Abraham'
+    generator.student.last_name_en = 'Lincoln'
+
+    template_context = generator.get_template_context()
+
+    assert template_context['name'] == 'Abraham Lincoln'
 
 
 def test_bad_language(generator):
