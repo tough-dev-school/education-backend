@@ -66,6 +66,6 @@ class DiplomaGenerator:
 
     def get_template_context(self) -> dict:
         return {
-            'name': str(self.student),
+            'name': self.student.get_printable_name(language=self.language),
             'sex': self.student.gender[:1],
         }

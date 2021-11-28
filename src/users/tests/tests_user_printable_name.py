@@ -14,7 +14,7 @@ pytestmark = [pytest.mark.django_db]
 def test_russian(mixer, first_name, last_name, expected):
     user = mixer.blend('users.User', first_name=first_name, last_name=last_name)
 
-    assert user.get_printable_name(lang='ru') == expected
+    assert user.get_printable_name(language='ru') == expected
 
 
 @pytest.mark.parametrize(('first_name_en', 'last_name_en', 'expected'), [
@@ -27,4 +27,4 @@ def test_russian(mixer, first_name, last_name, expected):
 def test_english(mixer, first_name_en, last_name_en, expected):
     user = mixer.blend('users.User', first_name_en=first_name_en, last_name_en=last_name_en)
 
-    assert user.get_printable_name(lang='en') == expected
+    assert user.get_printable_name(language='en') == expected
