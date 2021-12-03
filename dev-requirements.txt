@@ -20,7 +20,7 @@ certifi==2020.12.5
     # via
     #   -c requirements.txt
     #   requests
-charset-normalizer==2.0.8
+charset-normalizer==2.0.9
     # via
     #   -c requirements.txt
     #   requests
