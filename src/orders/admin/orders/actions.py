@@ -1,5 +1,5 @@
-from django.utils.translation import gettext_lazy as _
 from celery import group
+from django.utils.translation import gettext_lazy as _
 
 from app.admin import admin
 from orders import tasks
