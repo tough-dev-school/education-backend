@@ -1,8 +1,8 @@
 from django.utils.functional import cached_property
 
 from orders.models import Order
-from users.creator import UserCreator
 from users.models import User
+from users.services import UserCreator
 
 
 class OrderEmailChanger:

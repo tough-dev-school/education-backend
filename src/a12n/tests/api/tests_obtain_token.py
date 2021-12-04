@@ -1,6 +1,6 @@
 import pytest
 
-from users.creator import UserCreator
+from users.services import UserCreator
 
 pytestmark = pytest.mark.django_db
 

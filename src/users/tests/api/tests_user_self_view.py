@@ -36,13 +36,13 @@ def test_edit_user_data(api):
 
 def test_edit_user_data_in_english(api):
     api.patch('/api/v2/users/me/', {
-        'first_name_en': 'Kamaz',
+        'first_name_en': 'Bigtruck',
         'last_name_en': 'OfWaste',
     })
 
     api.user.refresh_from_db()
 
-    assert api.user.first_name_en == 'Kamaz'
+    assert api.user.first_name_en == 'Bigtruck'
     assert api.user.last_name_en == 'OfWaste'
 
 
