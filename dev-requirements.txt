@@ -20,7 +20,7 @@ certifi==2020.12.5
     # via
     #   -c requirements.txt
     #   requests
-charset-normalizer==2.0.8
+charset-normalizer==2.0.9
     # via
     #   -c requirements.txt
     #   requests
@@ -58,7 +58,7 @@ flake8==3.8.4
     #   flake8-walrus
 flake8-absolute-import==1.0
     # via -r dev-requirements.in
-flake8-bugbear==21.9.2
+flake8-bugbear==21.11.29
     # via -r dev-requirements.in
 flake8-cognitive-complexity==0.1.0
     # via -r dev-requirements.in
@@ -118,7 +118,7 @@ importlib-metadata==4.8.2
     #   pytest-randomly
 iniconfig==1.1.1
     # via pytest
-ipython==7.30.0
+ipython==7.30.1
     # via -r dev-requirements.in
 isort==5.10.1
     # via flake8-isort
@@ -136,7 +136,7 @@ packaging==21.3
     # via
     #   -c requirements.txt
     #   pytest
-parso==0.8.2
+parso==0.8.3
     # via jedi
 pexpect==4.8.0
     # via ipython
@@ -183,7 +183,7 @@ pytest-cov==2.12.1
     # via -r dev-requirements.in
 pytest-deadfixtures==2.2.1
     # via -r dev-requirements.in
-pytest-django==4.4.0
+pytest-django==4.5.1
     # via -r dev-requirements.in
 pytest-env==0.6.2
     # via -r dev-requirements.in
@@ -193,7 +193,7 @@ pytest-freezegun==0.4.2
     # via -r dev-requirements.in
 pytest-mock==3.6.1
     # via -r dev-requirements.in
-pytest-randomly==3.10.2
+pytest-randomly==3.10.3
     # via -r dev-requirements.in
 pytest-repeat==0.9.1
     # via -r dev-requirements.in

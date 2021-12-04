@@ -30,7 +30,7 @@ cffi==1.15.0
     # via
     #   cmarkgfm
     #   cryptography
-charset-normalizer==2.0.8
+charset-normalizer==2.0.9
     # via requests
 click==7.1.2
     # via
@@ -97,7 +97,7 @@ django-ipware==3.0.7
     #   drf-recaptcha
 django-markdownx==3.0.1
     # via -r requirements.in
-django-redis==5.0.0
+django-redis==5.1.0
     # via -r requirements.in
 django-split-settings==1.1.0
     # via -r requirements.in
@@ -112,7 +112,7 @@ djangorestframework==3.12.4
     #   drf-recaptcha
 drf-jwt==1.19.1
     # via -r requirements.in
-drf-recaptcha==2.0.4
+drf-recaptcha==2.0.5
     # via -r requirements.in
 faker==4.0.0
     # via django-hattori
