@@ -2,8 +2,9 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
 from app.current_user import get_current_user
-from users.api.serializers import UserSerializer, UserUpdateSerializer
+from users.api.serializers import UserSerializer
 from users.models import User
+from users.services import UserUpdater
 
 
 class SelfView(GenericAPIView):
@@ -16,13 +17,14 @@ class SelfView(GenericAPIView):
         return Response(serializer.data)
 
     def patch(self, request):
-        user = self.get_object()
 
-        serializer = UserUpdateSerializer(user, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+        user_updater = UserUpdater(
+            user=self.get_object(),
+            user_data=request.data,
+        )
 
-        user.refresh_from_db()
+        user = user_updater()
+
         return Response(
             self.get_serializer(user).data,
         )
