@@ -11,8 +11,8 @@ from banking.selector import BankSelector
 from orders.api.validators import GiftValidator, PurchaseValidator
 from orders.models import Order, PromoCode
 from orders.services.order_creator import OrderCreator
-from users.creator import UserCreator
 from users.models import User
+from users.services import UserCreator
 
 
 class PurchaseViewSet(ReadOnlyModelViewSet):
