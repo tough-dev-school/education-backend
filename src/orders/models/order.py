@@ -80,7 +80,7 @@ class Order(TimestampedModel):
     def _iterate_items(cls) -> Iterable[models.fields.Field]:
         for field in cls._meta.get_fields():
             if getattr(field, '_is_item', False):
-                yield field
+                yield field  # type: ignore
 
         return None
 
@@ -90,7 +90,7 @@ class Order(TimestampedModel):
         Given an item model, returns the ForeignKey to it"""
         for field in cls._iterate_items():
             if field.related_model == item.__class__:
-                return field.name
+                return field.name  # type: ignore
 
         return None
 

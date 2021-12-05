@@ -18,16 +18,17 @@ class OrderStatusFilter(admin.SimpleListFilter):
         ]
 
     def queryset(self, request, queryset: QuerySet[Order]):
+        """Types are ignored due to https://github.com/typeddjango/django-stubs/issues/353"""
         value = self.value()
 
         if not value:
             return
 
         if value == 'not_paid':
-            return queryset.paid(invert=True).filter(shipped__isnull=True)
+            return queryset.paid(invert=True).filter(shipped__isnull=True)  # type: ignore
 
         if value == 'paid':
-            return queryset.paid()
+            return queryset.paid()  # type: ignore
 
         if value == 'shipped_without_payment':
-            return queryset.shipped_without_payment()
+            return queryset.shipped_without_payment()  # type: ignore

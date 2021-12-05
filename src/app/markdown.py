@@ -1,5 +1,5 @@
 import bleach
-import cmarkgfm
+import cmarkgfm  # type: ignore
 from django.conf import settings
 
 

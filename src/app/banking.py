@@ -3,6 +3,7 @@ from django.conf import settings
 from urllib.parse import urljoin
 
 from orders.models import Order
+from users.models import User
 
 
 class Bank(metaclass=ABCMeta):
@@ -12,21 +13,21 @@ class Bank(metaclass=ABCMeta):
         self._fail_url = fail_url
 
     @abstractmethod
-    def get_initial_payment_url(self):
+    def get_initial_payment_url(self) -> str:
         raise NotImplementedError()
 
     @property
-    def success_url(self):
+    def success_url(self) -> str:
         return self._success_url or urljoin(settings.FRONTEND_URL, '/success/')
 
     @property
-    def fail_url(self):
+    def fail_url(self) -> str:
         return self._fail_url or urljoin(settings.FRONTEND_URL, '/error/?code=banking')
 
     @property
-    def price(self):
+    def price(self) -> int:
         return int(self.order.price * 100)
 
     @property
-    def user(self):
+    def user(self) -> User:
         return self.order.user

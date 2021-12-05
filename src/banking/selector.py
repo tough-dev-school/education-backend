@@ -1,10 +1,8 @@
-from typing import Optional, Type, TypeVar
+from typing import Optional, Type
 
 from app.banking import Bank
 from tinkoff.bank import TinkoffBank
 from tinkoff.credit import TinkoffCredit
-
-BaseBank = TypeVar('BaseBank', bound=Bank)
 
 
 class BankSelector:
@@ -14,7 +12,7 @@ class BankSelector:
     }
     default = 'tinkoff_bank'
 
-    def __call__(self, desired_bank: Optional[str] = None) -> Type[BaseBank]:
+    def __call__(self, desired_bank: Optional[str] = None) -> Type[Bank]:
         desired_bank = desired_bank or self.default
 
         try:

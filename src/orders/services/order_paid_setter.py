@@ -7,9 +7,9 @@ from orders.models import Order
 
 class OrderPaidSetter:
     """Mark order as paid"""
-    def __init__(self, order: Order, silent: Optional[bool] = False):
+    def __init__(self, order: Order, silent: Optional[bool] = None):
         self.order = order
-        self.silent: bool = silent
+        self.silent: bool = silent or False
         self.is_already_paid = (order.paid is not None)
         self.is_already_shipped = (order.shipped is not None)
 
