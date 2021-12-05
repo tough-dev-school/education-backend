@@ -1,3 +1,5 @@
+from typing import Optional
+
 from django.conf import settings
 from django.utils import timezone
 
@@ -7,7 +9,7 @@ from orders.models import Order
 
 class OrderShipper:
     """Ship the order (actualy calls item ship() method)"""
-    def __init__(self, order: Order, silent: bool = False):
+    def __init__(self, order: Order, silent: Optional[bool] = False):
         self.order = order
         self.silent = silent
 

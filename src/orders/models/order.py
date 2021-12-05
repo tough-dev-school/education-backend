@@ -111,7 +111,7 @@ class Order(TimestampedModel):
         from orders.services import OrderUnpaidSetter
         OrderUnpaidSetter(self)()
 
-    def ship(self, silent: bool = False):
+    def ship(self, silent: Optional[bool] = False) -> None:
         from orders.services import OrderShipper
         OrderShipper(self, silent=silent)()
 

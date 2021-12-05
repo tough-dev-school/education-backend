@@ -55,6 +55,25 @@ def test_shipment_date(order):
     assert order.shipped == datetime(2032, 12, 1, 15, 30)
 
 
+def test_order_is_not_shipped_again_if_already_shipped(order, ship):
+    order.shipped = datetime(2000, 11, 12, 1, 13)
+    order.save()
+
+    order.set_paid()
+
+    ship.assert_not_called()
+
+
+def test_shippment_date_is_not_reset(order, ship):
+    order.shipped = datetime(2000, 11, 12, 1, 13)
+    order.save()
+
+    order.set_paid()
+    order.refresh_from_db()
+
+    assert order.shipped == datetime(2000, 11, 12, 1, 13)
+
+
 def test_unpaid_date_is_reset(order):
     order.unpaid = datetime(2032, 12, 1, 15, 13)
     order.save()
