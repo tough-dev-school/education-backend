@@ -1,7 +1,7 @@
 from django.core.exceptions import ImproperlyConfigured
 from rest_framework import permissions
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from app.current_user import get_current_user
 from users.api.serializers import UserSerializer
@@ -9,7 +9,7 @@ from users.models import User
 from users.services import UserUpdater
 
 
-class SelfView(APIView):
+class SelfView(GenericAPIView):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
