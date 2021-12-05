@@ -1,18 +1,18 @@
 from django.db.models import Count
 from django.utils.translation import gettext_lazy as _
 
-from app.models import DefaultQuerySet, TimestampedModel, models
+from app.models import TimestampedModel, models
 from app.tasks import send_mail
 from users.models import User
 
 
-class EmailLeadCampaignQuerySet(DefaultQuerySet):
+class EmailLeadCampaignQuerySet(models.QuerySet):
     def with_lead_count(self):
         return self.annotate(lead_count=Count('leadcampaignlogentry'))
 
 
 class EmailLeadMagnetCampaign(TimestampedModel):
-    objects = EmailLeadCampaignQuerySet.as_manager()  # type: EmailLeadCampaignQuerySet
+    objects = models.Manager.from_queryset(EmailLeadCampaignQuerySet)()
 
     name = models.CharField(_('Name'), max_length=32)
     slug = models.SlugField(unique=True)

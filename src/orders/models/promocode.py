@@ -1,34 +1,35 @@
 from typing import Optional
 
+import contextlib
 from decimal import Decimal
 from django.core.exceptions import ValidationError
-from django.db.models import Case, CheckConstraint, Count, Q, When
+from django.db.models import Case, CheckConstraint, Count, Q, QuerySet, When
 from django.utils.translation import gettext_lazy as _
 
-from app.models import DefaultQuerySet, TimestampedModel, models
+from app.models import TimestampedModel, models
 from products.models import Course
 
 
-class PromoCodeQuerySet(DefaultQuerySet):
-    def active(self):
+class PromoCodeQuerySet(QuerySet):
+    def active(self) -> QuerySet['PromoCode']:
         return self.filter(active=True)
 
-    def with_order_count(self):
+    def with_order_count(self) -> QuerySet['PromoCode']:
         return self.annotate(order_count=Count(Case(
             When(order__paid__isnull=False, then=1),
             output_field=models.IntegerField(),
         )))
 
-    def get_or_nothing(self, name: Optional[str]):
+    def get_or_nothing(self, name: Optional[str]) -> Optional['PromoCode']:
         if name is not None:
-            try:
+            with contextlib.suppress(PromoCode.DoesNotExist):
                 return self.active().get(name__iexact=name.strip())
-            except PromoCode.DoesNotExist:
-                return None
+
+        return None
 
 
 class PromoCode(TimestampedModel):
-    objects = PromoCodeQuerySet.as_manager()
+    objects = models.Manager.from_queryset(PromoCodeQuerySet)()
 
     name = models.CharField(_('Promo Code'), max_length=32, unique=True, db_index=True)
     discount_percent = models.IntegerField(_('Discount percent'), null=True, blank=True)
@@ -45,7 +46,7 @@ class PromoCode(TimestampedModel):
             CheckConstraint(check=Q(discount_percent__isnull=False) | Q(discount_value__isnull=False), name='percent or value must be set'),
         ]
 
-    def clean(self):
+    def clean(self) -> None:
         if self.discount_percent is None and self.discount_value is None:
             raise ValidationError(_('Percent or value must be set'))
 
