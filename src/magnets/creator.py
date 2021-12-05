@@ -1,6 +1,6 @@
 from magnets.models import EmailLeadMagnetCampaign, LeadCampaignLogEntry
-from users.creator import UserCreator
 from users.models import User
+from users.services import UserCreator
 
 
 class LeadCreator:

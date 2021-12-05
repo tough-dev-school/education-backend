@@ -2,8 +2,8 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
-from users.creator import UserCreator
 from users.models import Student
+from users.services import UserCreator
 
 
 class PasswordLessUserCreationForm(forms.ModelForm):
