@@ -1,3 +1,4 @@
+from celery import group
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import admin
@@ -47,10 +48,12 @@ def ship_again_if_paid(modeladmin, request, queryset):
 
 @admin.action(description=_('Generate diplomas'))
 def generate_diplams(modeladmin, request, queryset):
-    order_ids = queryset.values_list('order_id', flat=True)
-    tasks.generate_diploma.chunk(order_ids, 10).apply_async()
+    order_ids = queryset.values_list('id', flat=True)
 
-    modeladmin.message_user(f'Started generation of {len(order_ids)} diplomas')
+    generate_diplams = group([tasks.generate_diploma.s(order_id=order_id) for order_id in queryset.values_list('id', flat=True)])
+    generate_diplams.skew(step=2).apply_async()
+
+    modeladmin.message_user(request, f'Started generation of {len(order_ids)} diplomas')
 
 
 @admin.action(description=_('Accept homework'))

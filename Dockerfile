@@ -10,7 +10,7 @@ ENV STATIC_ROOT /var/lib/django-static
 ENV DATABASE_URL sqlite:////var/lib/django-db/pmdaily.sqlite
 ENV CELERY_BACKEND redis://redis:6379/8
 
-ENV _UWSGI_VERSION 2.0.19.1
+ENV _UWSGI_VERSION 2.0.20
 ENV DOCKERIZE_VERSION v0.6.1
 
 EXPOSE 8000
