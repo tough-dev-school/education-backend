@@ -1,7 +1,7 @@
-from axes.models import AccessAttempt, AccessLog
+from axes.models import AccessAttempt, AccessLog  # type: ignore
 from django.contrib.admin.models import LogEntry as DjangoAdminLogEntry
 from django.contrib.sessions.models import Session as DjangoSession
-from hattori.base import BaseAnonymizer, faker
+from hattori.base import BaseAnonymizer, faker  # type: ignore
 from rest_framework.authtoken.models import Token
 
 from app.models import EmailLogEntry

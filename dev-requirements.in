@@ -41,3 +41,14 @@ flake8-todo
 flake8-variables-names
 flake8-walrus
 flake8-use-fstring
+
+mypy
+boto3-stubs
+django-stubs
+djangorestframework-stubs
+django-filter-stubs
+types-babel
+types-bleach
+types-freezegun
+types-Markdown
+types-requests

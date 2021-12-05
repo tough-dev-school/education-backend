@@ -1,4 +1,4 @@
-from ipware import get_client_ip
+from ipware import get_client_ip  # type: ignore
 
 
 def real_ip_middleware(get_response):

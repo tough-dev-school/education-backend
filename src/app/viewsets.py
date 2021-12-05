@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Dict, Optional
 
 from django.core.exceptions import ImproperlyConfigured
 from rest_framework.viewsets import ModelViewSet
@@ -21,9 +21,9 @@ class ValidationMixin:
         Validator = self.get_validator_class()
         Validator.do(data, context=self.get_validator_context())
 
-    def get_validator_context(self) -> dict:
+    def get_validator_context(self) -> Dict[str, Any]:
         return {
-            'request': self.request,
+            'request': self.request,  # type: ignore
         }
 
 

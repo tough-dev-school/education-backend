@@ -1,10 +1,11 @@
-from typing import Callable
+from typing import Callable, Optional
 
 import contextlib
 from django.contrib.auth.middleware import get_user
 from django.utils.functional import SimpleLazyObject
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.exceptions import APIException
+from rest_framework.request import Request
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from users.models import User
@@ -22,22 +23,27 @@ class UserMiddleware:
 
         return self.get_response(request)
 
-    def get_user(self) -> User:
+    @staticmethod
+    def get_user(request: Request) -> Optional[User]:
         raise NotImplementedError('Please implement in subclass')
 
 
 class JWTAuthMiddleware(UserMiddleware):
     @staticmethod
-    def get_user(request) -> User:
+    def get_user(request: Request) -> Optional[User]:
         json_auth = JSONWebTokenAuthentication()
 
         with contextlib.suppress(APIException, TypeError):
             return json_auth.authenticate(request)[0]
 
+        return None
+
 
 class TokenAuthMiddleware(UserMiddleware):
     @staticmethod
-    def get_user(request) -> User:
+    def get_user(request: Request) -> Optional[User]:
         token_authentication = TokenAuthentication()
         with contextlib.suppress(APIException, TypeError):
-            return token_authentication.authenticate(request)[0]
+            return token_authentication.authenticate(request)[0]  # type: ignore
+
+        return None

@@ -43,5 +43,5 @@ class AppMailchimp:
 
 
 __all__ = [
-    AppMailchimp,
+    'AppMailchimp',
 ]
