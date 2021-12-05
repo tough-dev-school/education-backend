@@ -8,7 +8,7 @@ from django.db.models import Count, Index, Q, UniqueConstraint
 from django.db.models.query_utils import FilteredRelation
 from django.utils.translation import gettext_lazy as _
 from markdownx.models import MarkdownxField
-from tree_queries.models import TreeNode, TreeQuerySet
+from tree_queries.models import TreeNode, TreeQuerySet  # type: ignore
 from urllib.parse import urljoin
 
 from app.markdown import markdownify, remove_html
@@ -30,12 +30,12 @@ class Question(TimestampedModel):
             ('see_all_questions', _('May see questions for all homeworks')),
         ]
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return urljoin(settings.FRONTEND_URL, f'homework/questions/{self.slug}/')
 
-    def dispatch_crosscheck(self, *args, **kwargs):
+    def dispatch_crosscheck(self, **kwargs) -> int:
         from homework.services import QuestionCrossCheckDispatcher
-        dispatcher = QuestionCrossCheckDispatcher(question=self, *args, **kwargs)
+        dispatcher = QuestionCrossCheckDispatcher(question=self, **kwargs)
 
         return dispatcher()
 
@@ -120,13 +120,15 @@ class Answer(TreeNode):
 
 
 class AnswerAccessLogEntryQuerySet(DefaultQuerySet):
-    def get_for_user_and_answer(self, answer, user) -> Optional[models.Model]:
+    def get_for_user_and_answer(self, answer, user) -> Optional['AnswerAccessLogEntry']:
         with contextlib.suppress(self.model.DoesNotExist):
             return self.get(answer=answer, user=user)
 
+        return None
+
 
 class AnswerAccessLogEntry(TimestampedModel):
-    objects: AnswerAccessLogEntryQuerySet = AnswerAccessLogEntryQuerySet.as_manager()
+    objects = AnswerAccessLogEntryQuerySet.as_manager()
 
     answer = models.ForeignKey('homework.Answer', on_delete=models.CASCADE)
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)

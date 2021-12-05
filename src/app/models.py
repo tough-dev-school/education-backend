@@ -1,7 +1,7 @@
 from typing import Optional
 
 import contextlib
-from behaviors.behaviors import Timestamped
+from behaviors.behaviors import Timestamped  # type: ignore
 from copy import copy
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -50,7 +50,7 @@ class DefaultQuerySet(models.QuerySet):
         manager._built_with_as_manager = True
         return manager
 
-    as_manager.queryset_only = True
+    as_manager.queryset_only = True  # type: ignore
 
     def __getattr__(self, name):
         if self.Q is not None and hasattr(self.Q, name):
@@ -183,7 +183,9 @@ class DefaultModel(models.Model):
                 if field.related_model == Model:
                     return field.name
 
-    def clear_cached_properties(self):
+        return None
+
+    def clear_cached_properties(self) -> None:
         """Clears all used cached properties of instance."""
 
         for property_name in self._get_cached_property_names():
@@ -197,7 +199,7 @@ class DefaultModel(models.Model):
             if type(getattr(self.__class__, func_name)) is cached_property
         ]
 
-    def __str__(self):
+    def __str__(self) -> str:
         if hasattr(self, 'name'):
             return str(self.name)
 

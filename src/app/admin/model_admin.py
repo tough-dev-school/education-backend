@@ -3,7 +3,7 @@ from django.contrib import admin
 from app.admin.mixin import AppAdminMixin
 
 
-class ModelAdmin(AppAdminMixin, admin.ModelAdmin):
+class ModelAdmin(AppAdminMixin, admin.ModelAdmin):  # type: ignore
     pass
 
 
@@ -13,3 +13,11 @@ class StackedInline(AppAdminMixin, admin.StackedInline):
 
 class TabularInline(AppAdminMixin, admin.TabularInline):
     pass
+
+
+__all__ = [
+    'admin',
+    'ModelAdmin',
+    'StackedInline',
+    'TabularInline',
+]
