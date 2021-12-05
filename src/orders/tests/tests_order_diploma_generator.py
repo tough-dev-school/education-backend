@@ -23,7 +23,7 @@ def order(factory, course, student):
 
 @pytest.fixture(autouse=True)
 def template(mixer, course):
-    return mixer.blend('diplomas.DiplomaTemplate', slug='test-template', course=course, language='ru', homework_accepted=False)
+    return mixer.blend('diplomas.DiplomaTemplate', slug='test-template', course=course, language='RU', homework_accepted=False)
 
 
 @pytest.fixture
@@ -31,7 +31,7 @@ def diploma_generator(mocker):
     return mocker.patch('orders.services.order_diploma_generator.generate_diploma.delay')
 
 
-@pytest.mark.parametrize('language', ['ru', 'en'])
+@pytest.mark.parametrize('language', ['RU', 'EN'])
 def test_single_language(diploma_generator, order, student, course, template, language):
     template.language = language
     template.save()
@@ -39,8 +39,8 @@ def test_single_language(diploma_generator, order, student, course, template, la
     OrderDiplomaGenerator(order=order)()
 
     diploma_generator.assert_called_once_with(
-        student=student,
-        course=course,
+        student_id=student.id,
+        course_id=course.id,
         language=language,
     )
 
@@ -49,16 +49,14 @@ def test_task(diploma_generator, order, student, course):
     tasks.generate_diploma.delay(order_id=order.id)
 
     diploma_generator.assert_called_once_with(
-        student=student,
-        course=course,
-        language='ru',
+        student_id=student.id,
+        course_id=course.id,
+        language='RU',
     )
 
 
-@pytest.mark.parametrize('name_field', ['first_name', 'last_name'])
-def test_student_without_name_does_not_get_a_diploma(diploma_generator, order, student, name_field):
-    setattr(student, name_field, '')  # reset a part of students name
-    student.save()
+def test_student_without_a_name_does_not_get_the_diploma(diploma_generator, order, mocker):
+    mocker.patch('users.models.User.get_printable_name', return_value=None)
 
     tasks.generate_diploma.delay(order_id=order.id)
 

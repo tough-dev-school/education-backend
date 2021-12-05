@@ -14,15 +14,13 @@ class OrderDiplomaGenerator:
     order: Order
 
     def __call__(self):
-        if not self.order_is_suitable_for_diploma_generation():
-            return
-
         for language in self.get_available_languages():
-            generate_diploma.delay(
-                student=self.student,
-                course=self.course,
-                language=language,
-            )
+            if self.order_is_suitable_for_diploma_generation(language=language):
+                generate_diploma.delay(
+                    student_id=self.student.id,
+                    course_id=self.course.id,
+                    language=language,
+                )
 
     @cached_property
     def student(self) -> User:
@@ -35,8 +33,5 @@ class OrderDiplomaGenerator:
     def get_available_languages(self) -> List[str]:
         return [template.language for template in DiplomaTemplate.objects.filter(course=self.course)]
 
-    def order_is_suitable_for_diploma_generation(self) -> bool:
-        return all([
-            self.student.first_name != '',
-            self.student.last_name != '',
-        ])
+    def order_is_suitable_for_diploma_generation(self, language) -> bool:
+        return self.student.get_printable_name(language=language) is not None
