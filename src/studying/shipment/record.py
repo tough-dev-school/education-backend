@@ -53,6 +53,3 @@ class RecordShipment(BaseShipment):
             return template_id
 
         return self.template_id
-
-    def get_template_context(self) -> dict:
-        return RecordTemplateContext().to_representation(self.record)

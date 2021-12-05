@@ -1,3 +1,4 @@
+# type: ignore
 from typing import List, Union
 
 from django.conf import settings

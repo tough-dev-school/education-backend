@@ -1,11 +1,11 @@
 from django.http import HttpResponse
+from rest_framework.views import APIView
 
-from app.views import AnonymousAPIView
 from tinkoff.api.permissions import TinkoffCreditNetmaskPermission
 from tinkoff.api.serializers import CreditNotificationSerializer, PaymentNotificationSerializer
 
 
-class TinkoffPaymentNotificationsView(AnonymousAPIView):
+class TinkoffPaymentNotificationsView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = PaymentNotificationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -14,7 +14,7 @@ class TinkoffPaymentNotificationsView(AnonymousAPIView):
         return HttpResponse('OK')
 
 
-class TinkoffCreditNotificationsView(AnonymousAPIView):
+class TinkoffCreditNotificationsView(APIView):
     permission_classes = [TinkoffCreditNetmaskPermission]
 
     def post(self, request, *args, **kwargs):

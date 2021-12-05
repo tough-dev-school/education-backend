@@ -1,5 +1,5 @@
 import uuid
-from mixer.backend.django import mixer  # type: ignore
+from mixer.backend.django import mixer
 
 mixer.register('users.User', username=lambda: str(uuid.uuid4()))
 

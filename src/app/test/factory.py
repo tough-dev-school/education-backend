@@ -1,7 +1,7 @@
 from typing import Callable, Dict
 
 from functools import partial
-from mixer.backend.django import mixer  # type: ignore
+from mixer.backend.django import mixer
 
 
 def register(method):

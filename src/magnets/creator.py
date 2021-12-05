@@ -1,12 +1,14 @@
+from typing import Optional
+
 from magnets.models import EmailLeadMagnetCampaign, LeadCampaignLogEntry
 from users.models import User
 from users.services import UserCreator
 
 
 class LeadCreator:
-    def __init__(self, campaign: EmailLeadMagnetCampaign, email: str, name: str = None):
+    def __init__(self, campaign: EmailLeadMagnetCampaign, email: str, name: Optional[str] = None):
         self.data = {
-            'name': name,
+            'name': name or '',
             'email': email,
         }
 

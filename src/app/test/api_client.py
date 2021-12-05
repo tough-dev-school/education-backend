@@ -1,7 +1,7 @@
 import json
 import random
 import string
-from mixer.backend.django import mixer  # type: ignore
+from mixer.backend.django import mixer
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
 

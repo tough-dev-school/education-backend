@@ -20,7 +20,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 class AnswerTreeSerializer(serializers.ModelSerializer):
     author = UserSafeSerializer()
     text = MarkdownXField()
-    parent = SoftField(source='parent.slug')
+    parent = SoftField(source='parent.slug')  # type: ignore
     descendants = serializers.SerializerMethodField()
     question = serializers.CharField(source='question.slug')
 
@@ -49,7 +49,7 @@ class AnswerTreeSerializer(serializers.ModelSerializer):
 
 class AnswerCreateSerializer(serializers.ModelSerializer):
     author = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    parent = serializers.SlugRelatedField(slug_field='slug', queryset=Answer.objects.all(), required=False, allow_null=True)
+    parent = serializers.SlugRelatedField(slug_field='slug', queryset=Answer.objects.all(), required=False, allow_null=True)  # type: ignore
     question = serializers.SlugRelatedField(slug_field='slug', queryset=Question.objects.all())
 
     class Meta:

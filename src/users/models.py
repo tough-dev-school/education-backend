@@ -1,4 +1,4 @@
-from typing import Literal, Optional, Union
+from typing import Optional
 
 import uuid
 from django.contrib.auth.models import AbstractUser, Permission
@@ -6,6 +6,7 @@ from django.db.models import TextChoices
 from django.utils.translation import gettext_lazy as _
 
 from app.models import models
+from app.types import Language
 
 
 class User(AbstractUser):
@@ -43,7 +44,7 @@ class User(AbstractUser):
 
         return name.strip()
 
-    def get_printable_name(self, language: Union[Literal['ru'], Literal['en'], Literal['RU'], Literal['EN']]) -> Optional[str]:
+    def get_printable_name(self, language: Language) -> Optional[str]:
         if language.lower() == 'ru':
             name = f'{self.first_name} {self.last_name}'
         else:

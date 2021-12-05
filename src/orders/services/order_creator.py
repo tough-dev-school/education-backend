@@ -15,7 +15,7 @@ class OrderCreator:
         item,
         price: Optional[Decimal] = None,
         promocode: Optional[str] = None,
-        giver: User = None,
+        giver: Optional[User] = None,
         desired_shipment_date: Optional[Union[str, datetime]] = None,
         gift_message: Optional[str] = None,
         desired_bank: Optional[str] = None,

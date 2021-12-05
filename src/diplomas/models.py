@@ -1,4 +1,4 @@
-import shortuuid  # type: ignore
+import shortuuid
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from urllib.parse import urljoin
