@@ -76,7 +76,7 @@ django-bulk-update==2.2.0
     # via
     #   -r requirements.in
     #   django-hattori
-django-cachalot==2.4.4
+django-cachalot==2.4.5
     # via -r requirements.in
 django-cors-headers==3.10.1
     # via -r requirements.in
