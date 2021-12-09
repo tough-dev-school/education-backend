@@ -1,7 +1,9 @@
+from celery import group
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
 from diplomas.models import Diploma, DiplomaTemplate
+from orders import tasks
 
 
 @admin.register(Diploma)
@@ -48,6 +50,15 @@ class DiplomaAdmin(ModelAdmin):
             diploma.send_to_student()
 
         self.message_user(request, f'Diplomas sent to {queryset.count()} students')
+
+    @admin.action(description=_('Regenerate diploma'))
+    def regenerate(self, request, queryset):
+        order_ids = queryset.values_list('study__order_id', flat=True).distinct()
+
+        generate_diplams = group([tasks.generate_diploma.s(order_id=order_id) for order_id in order_ids])
+        generate_diplams.skew(step=2).apply_async()
+
+        self.message_user(request, f'Started generation of {len(order_ids)} diplomas')
 
 
 @admin.register(DiplomaTemplate)
