@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-28 18:58+0300\n"
+"POT-Creation-Date: 2021-12-09 19:40+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,18 +28,30 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: diplomas/admin.py:37 users/models.py:60
+#: diplomas/admin.py:44 users/models.py:79
 msgid "Student"
 msgstr "Студент"
 
-#: diplomas/admin.py:41 homework/admin.py:94 homework/admin.py:139
+#: diplomas/admin.py:48 homework/admin.py:94 homework/admin.py:139
 #: orders/models/order.py:45 products/models/course.py:23
 msgid "Course"
 msgstr "Курс"
 
-#: diplomas/admin.py:45
+#: diplomas/admin.py:52 homework/models.py:27
+msgid "Homework"
+msgstr "Домашка"
+
+#: diplomas/admin.py:56
+msgid "Date"
+msgstr "Дата"
+
+#: diplomas/admin.py:60
 msgid "Send diploma to student"
 msgstr "Отправить студенту"
+
+#: diplomas/admin.py:67
+msgid "Regenerate diploma"
+msgstr "Перегенерировать"
 
 #: diplomas/models.py:12
 msgid "Russian"
@@ -61,19 +73,19 @@ msgstr "Диплом"
 msgid "Diplomas"
 msgstr "Дипломы"
 
-#: diplomas/models.py:68
+#: diplomas/models.py:71
 msgid "Check out https://is.gd/eutOYr for available templates"
 msgstr "Шаблоны искать в https://is.gd/eutOYr"
 
-#: diplomas/models.py:70
+#: diplomas/models.py:73
 msgid "This template is for students that have completed the homework"
 msgstr "Для тех, кто сдал домашку"
 
-#: diplomas/models.py:73
+#: diplomas/models.py:76
 msgid "Diploma template"
 msgstr "Шаблон диплома"
 
-#: diplomas/models.py:74
+#: diplomas/models.py:77
 msgid "Diploma templates"
 msgstr "Шаблоны дипломов"
 
@@ -109,10 +121,6 @@ msgstr ""
 #: products/admin/course.py:13 products/admin/courses/record.py:17
 msgid "Name"
 msgstr "Название"
-
-#: homework/models.py:27
-msgid "Homework"
-msgstr "Домашка"
 
 #: homework/models.py:28
 msgid "Homeworks"
@@ -170,51 +178,55 @@ msgstr "Почтовая кампания"
 msgid "Email Lead Magnet Campaigns"
 msgstr "Почтовые кампании"
 
-#: orders/admin/orders/actions.py:7
+#: orders/admin/orders/actions.py:9
 msgid "Set paid"
 msgstr "Пометить оплаченным"
 
-#: orders/admin/orders/actions.py:15
+#: orders/admin/orders/actions.py:17
 msgid "Set not paid"
 msgstr "Вернуть"
 
-#: orders/admin/orders/actions.py:23
+#: orders/admin/orders/actions.py:25
 msgid "Ship without payments"
 msgstr "Допустить до уроков без оплаты"
 
-#: orders/admin/orders/actions.py:34
+#: orders/admin/orders/actions.py:36
 msgid "Ship again if paid"
 msgstr "Ещё раз выполнить (если заказ не оплачен — не выполнится)"
 
-#: orders/admin/orders/actions.py:47
+#: orders/admin/orders/actions.py:49 products/admin/courses/actions.py:36
+msgid "Generate diplomas"
+msgstr "Сгенерировать дипломы"
+
+#: orders/admin/orders/actions.py:59
 msgid "Accept homework"
 msgstr "Засчитать домашку"
 
-#: orders/admin/orders/actions.py:56
+#: orders/admin/orders/actions.py:68
 msgid "Disaccept homework"
 msgstr "Не засчитать домашку"
 
-#: orders/admin/orders/admin.py:63 orders/admin/orders/admin.py:85
+#: orders/admin/orders/admin.py:64 orders/admin/orders/admin.py:86
 msgid "Item"
 msgstr "Товар"
 
-#: orders/admin/orders/admin.py:77 orders/models/order.py:31
+#: orders/admin/orders/admin.py:78 orders/models/order.py:31
 msgid "User"
 msgstr "Юзер"
 
-#: orders/admin/orders/admin.py:89
+#: orders/admin/orders/admin.py:90
 msgid "Is paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders/admin.py:92 orders/admin/orders/filters.py:15
+#: orders/admin/orders/admin.py:93 orders/admin/orders/filters.py:15
 msgid "Paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders/admin.py:95 orders/admin/orders/filters.py:16
+#: orders/admin/orders/admin.py:96 orders/admin/orders/filters.py:16
 msgid "Shipped without payment"
 msgstr "Ждем денег"
 
-#: orders/admin/orders/admin.py:97 orders/admin/orders/filters.py:14
+#: orders/admin/orders/admin.py:98 orders/admin/orders/filters.py:14
 msgid "Not paid"
 msgstr "Не оплачен"
 
@@ -358,10 +370,6 @@ msgstr "ID шаблона в постмарке"
 #: products/admin/courses/actions.py:22
 msgid "Send email to all purchased_users"
 msgstr "Отправить письмо всем купившим"
-
-#: products/admin/courses/actions.py:36
-msgid "Generate diplomas"
-msgstr "Сгенерировать дипломы"
 
 #: products/admin/courses/record.py:57
 msgid "Downloadable link"
@@ -520,31 +528,31 @@ msgstr "Имя на английском"
 msgid "Users"
 msgstr "Юзеры"
 
-#: users/models.py:11
+#: users/models.py:13
 msgid "Male"
 msgstr "Мужчина"
 
-#: users/models.py:12
+#: users/models.py:14
 msgid "Female"
 msgstr "Женщина"
 
-#: users/models.py:14
+#: users/models.py:16
 msgid "Subscribed to newsletter"
 msgstr "Подписан на новости"
 
-#: users/models.py:15
+#: users/models.py:17
 msgid "first name in english"
 msgstr "Имя на английском"
 
-#: users/models.py:16
+#: users/models.py:18
 msgid "last name in english"
 msgstr "Фамилия на английском"
 
-#: users/models.py:19
+#: users/models.py:21
 msgid "Gender"
 msgstr "Пол"
 
-#: users/models.py:61
+#: users/models.py:80
 msgid "Students"
 msgstr "Студенты"
 
