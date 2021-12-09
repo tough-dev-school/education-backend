@@ -3,7 +3,7 @@ from app.integrations.mailchimp.exceptions import MailchimpException
 from app.integrations.mailchimp.member import MailchimpMember
 
 __all__ = [
-    AppMailchimp,
-    MailchimpMember,
-    MailchimpException,
+    'AppMailchimp',
+    'MailchimpException',
+    'MailchimpMember',
 ]

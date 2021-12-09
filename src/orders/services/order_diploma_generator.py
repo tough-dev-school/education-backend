@@ -6,6 +6,7 @@ from django.utils.functional import cached_property
 from diplomas.models import DiplomaTemplate
 from diplomas.tasks import generate_diploma
 from orders.models import Order
+from products.models import Course
 from users.models import User
 
 
@@ -27,7 +28,7 @@ class OrderDiplomaGenerator:
         return self.order.user
 
     @cached_property
-    def course(self) -> User:
+    def course(self) -> Course:
         return self.order.study.course
 
     def get_available_languages(self) -> List[str]:

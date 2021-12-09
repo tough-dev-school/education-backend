@@ -8,7 +8,7 @@ from users.models import User
 
 
 class BaseShipment(metaclass=ABCMeta):
-    template_id = None
+    template_id: str = ''
 
     def __init__(self, *, user: User, product: Union[Course, Record, Bundle], order: Order):
         self.stuff_to_ship = product

@@ -20,6 +20,6 @@ def normalize_email_context(ctx: dict) -> dict:
     return {key: value for key, value in normalized.items() if value is not None}
 
 
-__all__ = [
-    normalize_email_context,
+__ALL__ = [
+    'normalize_email_context',
 ]

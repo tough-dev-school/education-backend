@@ -4,16 +4,17 @@ import contextlib
 import textwrap
 import uuid
 from django.conf import settings
-from django.db.models import Count, Index, Q, UniqueConstraint
+from django.db.models import Count, Index, Q, QuerySet, UniqueConstraint
 from django.db.models.query_utils import FilteredRelation
 from django.utils.translation import gettext_lazy as _
 from markdownx.models import MarkdownxField
-from tree_queries.models import TreeNode, TreeQuerySet
+from tree_queries.models import TreeNode, TreeQuerySet  # type: ignore
 from urllib.parse import urljoin
 
 from app.markdown import markdownify, remove_html
-from app.models import DefaultQuerySet, TimestampedModel, models
+from app.models import TimestampedModel, models
 from orders.models import Order
+from products.models import Course
 
 
 class Question(TimestampedModel):
@@ -30,21 +31,21 @@ class Question(TimestampedModel):
             ('see_all_questions', _('May see questions for all homeworks')),
         ]
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return urljoin(settings.FRONTEND_URL, f'homework/questions/{self.slug}/')
 
-    def dispatch_crosscheck(self, *args, **kwargs):
+    def dispatch_crosscheck(self, **kwargs) -> int:
         from homework.services import QuestionCrossCheckDispatcher
-        dispatcher = QuestionCrossCheckDispatcher(question=self, *args, **kwargs)
+        dispatcher = QuestionCrossCheckDispatcher(question=self, **kwargs)
 
         return dispatcher()
 
 
 class AnswerQuerySet(TreeQuerySet):
-    def for_viewset(self):
+    def for_viewset(self) -> QuerySet['Answer']:
         return self.with_tree_fields().select_related('author', 'question')
 
-    def accessed_by(self, user):
+    def accessed_by(self, user) -> QuerySet['Answer']:
         return self.with_tree_fields().annotate(
             access_log_entries_for_this_user=FilteredRelation('answeraccesslogentry', condition=Q(answeraccesslogentry__user=user)),
         ).filter(Q(author=user) | Q(access_log_entries_for_this_user__user=user))
@@ -68,7 +69,7 @@ class AnswerQuerySet(TreeQuerySet):
 
 
 class Answer(TreeNode):
-    objects: AnswerQuerySet = AnswerQuerySet.as_manager()
+    objects = models.Manager.from_queryset(AnswerQuerySet)()
 
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     modified = models.DateTimeField(auto_now=True, db_index=True)
@@ -88,14 +89,14 @@ class Answer(TreeNode):
             ('see_all_answers', _('May see answers from every user')),
         ]
 
-    def get_root_answer(self):
+    def get_root_answer(self) -> 'Answer':
         ancesorts = self.ancestors()
         if ancesorts.count():
             return ancesorts[0]
 
         return self
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         root = self.get_root_answer()
 
         url = urljoin(settings.FRONTEND_URL, f'homework/answers/{root.slug}/')
@@ -105,11 +106,13 @@ class Answer(TreeNode):
 
         return url
 
-    def get_purchased_course(self):
+    def get_purchased_course(self) -> Optional[Course]:
         latest_purchase = Order.objects.paid().filter(user=self.author, course__in=self.question.courses.all()).order_by('-paid').first()
 
         if latest_purchase:
             return latest_purchase.course
+
+        return None
 
     def get_first_level_descendants(self):
         return self.descendants().filter(parent=self.id)
@@ -119,14 +122,16 @@ class Answer(TreeNode):
         return textwrap.shorten(text, width=40)
 
 
-class AnswerAccessLogEntryQuerySet(DefaultQuerySet):
-    def get_for_user_and_answer(self, answer, user) -> Optional[models.Model]:
+class AnswerAccessLogEntryQuerySet(QuerySet):
+    def get_for_user_and_answer(self, answer, user) -> Optional['AnswerAccessLogEntry']:
         with contextlib.suppress(self.model.DoesNotExist):
             return self.get(answer=answer, user=user)
 
+        return None
+
 
 class AnswerAccessLogEntry(TimestampedModel):
-    objects: AnswerAccessLogEntryQuerySet = AnswerAccessLogEntryQuerySet.as_manager()
+    objects = models.Manager.from_queryset(AnswerAccessLogEntryQuerySet)()
 
     answer = models.ForeignKey('homework.Answer', on_delete=models.CASCADE)
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
@@ -153,5 +158,5 @@ class AnswerCrossCheck(TimestampedModel):
             UniqueConstraint(fields=['answer', 'checker'], name='unique_checker_and_answer'),
         ]
 
-    def is_checked(self):
+    def is_checked(self) -> bool:
         return self.answer.descendants().filter(author=self.checker).exists()

@@ -21,10 +21,10 @@ class ZoomusClient:
         )
 
     def invite(self, webinar_id, user: User):
-        user = ZoomusUser(user)
+        zoomus_user = ZoomusUser(user)
 
         return self.http.post(
             url=f'v2/webinars/{webinar_id}/registrants/',
-            data=dict(user),
+            data=dict(zoomus_user),
             expected_status_code=201,
         )

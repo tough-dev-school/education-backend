@@ -1,4 +1,4 @@
-from typing import Iterable, List
+from django.db.models import QuerySet
 
 from app.tasks import send_mail
 from homework.models import AnswerCrossCheck, Question
@@ -15,7 +15,7 @@ class QuestionCrossCheckDispatcher:
             answers_per_user=answers_per_user,
         )
 
-        self.checks: List[AnswerCrossCheck] = list()
+        self.checks: list[AnswerCrossCheck] = list()
 
     def __call__(self) -> int:
         self.dispatch_crosschecks()
@@ -36,10 +36,10 @@ class QuestionCrossCheckDispatcher:
                 disable_antispam=True,
             )
 
-    def get_users_to_notify(self) -> Iterable[User]:
+    def get_users_to_notify(self) -> QuerySet[User]:
         return User.objects.filter(pk__in=[check.checker_id for check in self.checks])
 
-    def get_checks_for_user(self, user: User) -> List[AnswerCrossCheck]:
+    def get_checks_for_user(self, user: User) -> list[AnswerCrossCheck]:
         return [check for check in self.checks if check.checker == user]
 
     def get_answers_to_check(self):
@@ -48,7 +48,7 @@ class QuestionCrossCheckDispatcher:
         )
 
     @staticmethod
-    def get_notification_context(checks: List[AnswerCrossCheck]):
+    def get_notification_context(checks: list[AnswerCrossCheck]):
         answers = list()
 
         for check in checks:

@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from urllib.parse import urljoin
 
 from app.files import RandomFileName
-from app.models import DefaultQuerySet, TimestampedModel, models
+from app.models import TimestampedModel, models
 from app.tasks import send_mail
 
 
@@ -13,7 +13,7 @@ class Languages(models.TextChoices):
     EN = 'EN', _('English')
 
 
-class DiplomaQuerySet(DefaultQuerySet):
+class DiplomaQuerySet(models.QuerySet):
     def for_viewset(self):
         return self.select_related('study', 'study__student', 'study__course')
 
@@ -22,8 +22,7 @@ class DiplomaQuerySet(DefaultQuerySet):
 
 
 class Diploma(TimestampedModel):
-
-    objects: DiplomaQuerySet = DiplomaQuerySet.as_manager()
+    objects = models.Manager.from_queryset(DiplomaQuerySet)()
 
     study = models.ForeignKey('studying.Study', on_delete=models.CASCADE)
     slug = models.CharField(max_length=32, db_index=True, unique=True, default=shortuuid.uuid)

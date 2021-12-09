@@ -1,6 +1,5 @@
-from typing import Iterable
-
 from django.apps import apps
+from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
 from app.models import models
@@ -24,7 +23,7 @@ class Course(Shippable):
         verbose_name_plural = _('Courses')
         db_table = 'courses_course'
 
-    def get_purchased_users(self) -> Iterable[User]:
+    def get_purchased_users(self) -> QuerySet[User]:
         return User.objects.filter(
             pk__in=apps.get_model('studying.Study').objects.filter(course=self).values_list('student', flat=True),
         )

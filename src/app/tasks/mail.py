@@ -1,9 +1,9 @@
-from typing import List, Union
+from typing import List, Optional, Union
 
-from anymail.exceptions import AnymailRequestsAPIError
+from anymail.exceptions import AnymailRequestsAPIError  # type: ignore
 
 from app.celery import celery
-from app.mail.owl import TemplOwl
+from app.mail.owl import TemplOwl  # type: ignore
 
 
 @celery.task(
@@ -13,7 +13,7 @@ from app.mail.owl import TemplOwl
         'countdown': 5,
     },
 )
-def send_mail(to: Union[List, str], template_id, subject: str = '', ctx: dict = None, disable_antispam=False):
+def send_mail(to: Union[List, str], template_id, subject: str = '', ctx: Optional[dict] = None, disable_antispam=False):
     TemplOwl(
         to=to,
         template_id=template_id,

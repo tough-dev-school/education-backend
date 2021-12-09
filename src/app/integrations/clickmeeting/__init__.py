@@ -3,8 +3,8 @@ from app.integrations.clickmeeting.client import (
 from app.integrations.clickmeeting.http import ClickMeetingHTTPException
 
 __all__ = [
-    ClickMeetingClient,
-    ClickMeetingHTTPException,
-    ClickMeetingNonOkResponseException,
-    ClickMeetingRoomNotFoundException,
+    'ClickMeetingClient',
+    'ClickMeetingHTTPException',
+    'ClickMeetingNonOkResponseException',
+    'ClickMeetingRoomNotFoundException',
 ]

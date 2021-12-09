@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from urllib.parse import urljoin
 
+from app.types import Language
 from diplomas.models import Diploma, DiplomaTemplate
 from products.models import Course
 from studying.models import Study
@@ -18,7 +19,7 @@ class WrongDiplomaServiceResponse(requests.exceptions.HTTPError):
 class DiplomaGenerator:
     course: Course
     student: User
-    language: str
+    language: Language
 
     def __call__(self) -> Diploma:
         image = self.fetch_image()

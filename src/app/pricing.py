@@ -9,14 +9,14 @@ def format_price(price: Decimal) -> str:
     return '0'
 
 
-def format_old_price(old_price: Decimal, price: Decimal) -> str:
-    price = format_price(price)
-    old_price = format_price(old_price)
+def format_old_price(old_price: Decimal, new_price: Decimal) -> str:
+    formatted_new_price = format_price(new_price)
+    formatted_old_price = format_price(old_price)
 
-    if old_price == '0':
-        return f'{price} ₽'
+    if formatted_old_price == '0':
+        return f'{formatted_new_price} ₽'
 
-    old_price = ''.join([f'{digit}\u0336' for digit in old_price])
-    old_price = old_price.replace('\xa0\u0336', '')
+    formatted_old_price = ''.join([f'{digit}\u0336' for digit in formatted_old_price])
+    formatted_old_price = formatted_old_price.replace('\xa0\u0336', '')
 
-    return f'{old_price} {price} ₽'
+    return f'{formatted_old_price} {formatted_new_price} ₽'

@@ -27,8 +27,6 @@ class EmailLeadMagnetCampaignAdmin(ModelAdmin):
         return super().get_queryset(request) \
             .with_lead_count()
 
+    @admin.display(description=_('Lead count'), ordering='lead_count')
     def lead_count(self, obj=None):
         return obj.lead_count if obj and hasattr(obj, 'lead_count') and obj.lead_count else '—'
-
-    lead_count.short_description = _('Lead count')
-    lead_count.admin_order_field = 'lead_count'

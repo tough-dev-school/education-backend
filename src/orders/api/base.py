@@ -30,7 +30,7 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
         """Direct order purchase"""
         data = request.POST
 
-        PurchaseValidator.do(data)
+        PurchaseValidator.do(data, context={'request': self.request})
 
         order = self._create_order(data=data)
         payment_link = self.get_payment_link(order, data=data)
@@ -42,7 +42,7 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
         """Purchase as a gift"""
         data = request.POST
 
-        GiftValidator.do(data)
+        GiftValidator.do(data, context={'request': self.request})
 
         order = self._create_gift(data=data)
         payment_link = self.get_payment_link(order, data=data)

@@ -24,6 +24,7 @@ worker:
 lint:
 	cd src && ./manage.py makemigrations --check --no-input --dry-run
 	flake8 src
+	cd src && mypy
 
 test:
 	cd src && pytest -n 4 --ff -x && pytest --dead-fixtures

@@ -4,8 +4,8 @@ from products.models.group import Group
 from products.models.record import Record
 
 __all__ = [
-    Bundle,
-    Course,
-    Group,
-    Record,
+    'Bundle',
+    'Course',
+    'Group',
+    'Record',
 ]

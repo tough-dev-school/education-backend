@@ -2,7 +2,7 @@ import pytest
 from django.core import mail
 from functools import partial
 
-from app.mail.owl import TemplOwl
+from app.mail.owl import TemplOwl  # type: ignore
 from app.models import EmailLogEntry
 from app.tasks import send_mail
 

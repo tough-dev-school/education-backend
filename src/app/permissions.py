@@ -7,7 +7,7 @@ class SuperUserOnly(BasePermission):
 
 
 __all__ = [
-    AllowAny,
-    IsAuthenticated,
-    SuperUserOnly,
+    'AllowAny',
+    'IsAuthenticated',
+    'SuperUserOnly',
 ]

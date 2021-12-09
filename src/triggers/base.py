@@ -2,25 +2,29 @@ from abc import ABCMeta, abstractmethod
 from django.core.exceptions import ImproperlyConfigured
 
 from app.tasks import send_mail
+from orders.models import Order
 from triggers.helpers import lower_first
 from triggers.models import TriggerLogEntry
 
 
 class BaseTrigger(metaclass=ABCMeta):
-    name = None
+    name: str = ''
+    template_id: str = ''
 
-    def __init__(self, order):
+    def __init__(self, order: Order):
         if self.name is None:
             raise ImproperlyConfigured('Please set the name property')
 
         self.order = order
 
-    def __call__(self):
+    def __call__(self) -> bool:
         if not self.should_be_sent():
             return False
 
         self.send()
         self.log_success()
+
+        return True
 
     @abstractmethod
     def condition(self) -> bool:
@@ -42,17 +46,17 @@ class BaseTrigger(metaclass=ABCMeta):
     def message_does_not_look_like_a_message_that_should_never_be_sent(self) -> bool:
         return self.order.giver is None
 
-    def log_success(self):
+    def log_success(self) -> TriggerLogEntry:
         return TriggerLogEntry.objects.create(order=self.order, trigger=self.name)
 
-    def send(self):
+    def send(self) -> None:
         send_mail.delay(
             template_id=self.template_id,
             to=self.order.user.email,
             ctx=self.get_template_context(),
         )
 
-    def get_template_context(self):
+    def get_template_context(self) -> dict[str, str]:
         return {
             'item': self.order.item.full_name,
             'item_lower': lower_first(self.order.item.full_name),

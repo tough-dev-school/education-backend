@@ -1,7 +1,7 @@
 import pytest
 from django.core import mail
 
-from app.mail.owl import TemplOwl
+from app.mail.owl import TemplOwl  # type: ignore
 
 pytestmark = [pytest.mark.django_db]
 

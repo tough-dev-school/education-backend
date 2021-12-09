@@ -28,6 +28,6 @@ DRF_RECAPTCHA_SECRET_KEY = env('RECAPTCHA_SECRET_KEY', cast=str, default='')
 DRF_RECAPTCHA_TESTING = DRF_RECAPTCHA_TESTING_PASS = not env('RECAPTCHA_ENABLED', cast=bool, default=True)
 
 if env('DEBUG'):
-    REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'].append('rest_framework.authentication.SessionAuthentication')
+    REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'].append('rest_framework.authentication.SessionAuthentication')  # type: ignore
 
-    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append('rest_framework.renderers.BrowsableAPIRenderer')
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append('rest_framework.renderers.BrowsableAPIRenderer')  # type: ignore

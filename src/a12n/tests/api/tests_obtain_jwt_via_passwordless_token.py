@@ -34,12 +34,6 @@ def test_expired_token(get_token, token):
     get_token(token=str(token.token), expected_status_code=404)
 
 
-def test_expired_token(get_token, token):
-    token.setattr_and_save('used', '2025-01-02')
-
-    get_token(token=str(token.token), expected_status_code=404)
-
-
 def test_valid_token(get_token, token):
     got = get_token(token=str(token.token))
 

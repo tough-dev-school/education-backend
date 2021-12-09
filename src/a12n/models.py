@@ -4,20 +4,20 @@ from django.conf import settings
 from django.utils import timezone
 from urllib.parse import urljoin
 
-from app.models import DefaultQuerySet, TimestampedModel, models
+from app.models import TimestampedModel, models
 
 
 def default_expiration():
     return timezone.now() + timedelta(hours=2)
 
 
-class PasswordlessAuthTokenQuerySet(DefaultQuerySet):
+class PasswordlessAuthTokenQuerySet(models.QuerySet):
     def valid(self):
         return self.filter(expires__gt=timezone.now(), used__isnull=True)
 
 
 class PasswordlessAuthToken(TimestampedModel):
-    objects = PasswordlessAuthTokenQuerySet.as_manager()
+    objects = models.Manager.from_queryset(PasswordlessAuthTokenQuerySet)()
 
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
     token = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True)

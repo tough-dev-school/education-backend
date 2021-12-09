@@ -10,7 +10,6 @@ pytestmark = [pytest.mark.django_db]
     ('Камаз Отходов', {'first_name': 'Камаз', 'last_name': 'Отходов'}),
     ('Камаз Отходов Петрович', {'first_name': 'Камаз', 'last_name': 'Отходов Петрович'}),
     ('', {'first_name': ''}),
-    (None, {}),
 ])
 def test(name, parsed):
     assert User.parse_name(name) == parsed

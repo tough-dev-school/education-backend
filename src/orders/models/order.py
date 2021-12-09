@@ -1,10 +1,11 @@
 from typing import Iterable, Optional
 
+from django.db.models import QuerySet
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
-from app.models import DefaultQuerySet, TimestampedModel, models
+from app.models import TimestampedModel, models
 from orders.fields import ItemField
 
 
@@ -12,20 +13,20 @@ class UnknownItemException(Exception):
     pass
 
 
-class OrderQuerySet(DefaultQuerySet):
-    def paid(self, invert=False):
+class OrderQuerySet(QuerySet):
+    def paid(self, invert: Optional[bool] = False) -> QuerySet['Order']:
         return self.filter(paid__isnull=invert)
 
-    def shipped_without_payment(self):
+    def shipped_without_payment(self) -> QuerySet['Order']:
         return self.paid(invert=True).filter(shipped__isnull=False)
 
-    def to_ship(self):
+    def to_ship(self) -> QuerySet['Order']:
         """Paid orders that may be shipped right now"""
         return self.paid().filter(shipped__isnull=True, desired_shipment_date__lte=timezone.now())
 
 
 class Order(TimestampedModel):
-    objects = OrderQuerySet.as_manager()  # type: OrderQuerySet
+    objects = models.Manager.from_queryset(OrderQuerySet)()
 
     author = models.ForeignKey('users.User', related_name='created_orders', verbose_name=_('Order author'), on_delete=models.PROTECT, editable=False)
     user = models.ForeignKey('users.Student', verbose_name=_('User'), on_delete=models.PROTECT)
@@ -61,7 +62,7 @@ class Order(TimestampedModel):
             ('unpay_order', _('May mark orders as unpaid')),
         ]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Order #{self.pk}'
 
     @property
@@ -73,11 +74,15 @@ class Order(TimestampedModel):
                 if getattr(self, f'{field.name}_id', None) is not None:
                     return getattr(self, field.name)
 
+        return None
+
     @classmethod
     def _iterate_items(cls) -> Iterable[models.fields.Field]:
         for field in cls._meta.get_fields():
             if getattr(field, '_is_item', False):
-                yield field
+                yield field  # type: ignore
+
+        return None
 
     @classmethod
     def get_item_foreignkey(cls, item) -> Optional[models.fields.Field]:
@@ -85,9 +90,11 @@ class Order(TimestampedModel):
         Given an item model, returns the ForeignKey to it"""
         for field in cls._iterate_items():
             if field.related_model == item.__class__:
-                return field.name
+                return field.name  # type: ignore
 
-    def reset_items(self):
+        return None
+
+    def reset_items(self) -> None:
         for field in self._iterate_items():
             setattr(self, field.name, None)
 

@@ -15,7 +15,7 @@ class OrderCreator:
         item,
         price: Optional[Decimal] = None,
         promocode: Optional[str] = None,
-        giver: User = None,
+        giver: Optional[User] = None,
         desired_shipment_date: Optional[Union[str, datetime]] = None,
         gift_message: Optional[str] = None,
         desired_bank: Optional[str] = None,
@@ -37,7 +37,7 @@ class OrderCreator:
 
         return order
 
-    def create(self):
+    def create(self) -> Order:
         return Order.objects.create(
             user=self.user,
             author=get_current_user() or self.user,
@@ -49,5 +49,8 @@ class OrderCreator:
             desired_bank=self.desired_bank,
         )
 
-    def _get_promocode(self, promocode_name: str) -> Optional[PromoCode]:
-        return PromoCode.objects.get_or_nothing(name=promocode_name)
+    def _get_promocode(self, promocode_name: Optional[str] = None) -> Optional[PromoCode]:
+        if promocode_name is not None:
+            return PromoCode.objects.get_or_nothing(name=promocode_name)
+
+        return None

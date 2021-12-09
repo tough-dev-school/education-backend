@@ -21,7 +21,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 class UserCreator:
     """Service object for creating a user"""
-    def __init__(self, name: str, email: str, subscribe: Optional[bool] = True, tags: Optional[Iterable[str]] = None):
+    def __init__(self, email: str, name: Optional[str] = None, subscribe: Optional[bool] = True, tags: Optional[Iterable[str]] = None):
         self.do_subscribe = subscribe
         self.subscribe_tags = tags
 
@@ -31,7 +31,7 @@ class UserCreator:
             'email': email,
             'username': email or str(uuid.uuid4()),
             'subscribed': subscribe,
-            **User.parse_name(name),
+            **User.parse_name(name or ''),
         }
 
     def __call__(self) -> User:
