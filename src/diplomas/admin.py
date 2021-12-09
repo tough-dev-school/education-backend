@@ -1,3 +1,4 @@
+import datetime
 from celery import group
 from django.utils.translation import gettext_lazy as _
 
@@ -9,7 +10,7 @@ from orders import tasks
 @admin.register(Diploma)
 class DiplomaAdmin(ModelAdmin):
     list_display = [
-        'created',
+        'date',
         'student',
         'course',
         'language',
@@ -51,6 +52,10 @@ class DiplomaAdmin(ModelAdmin):
     @admin.display(description=_('Homework'), ordering='study__homework_accepted', boolean=True)
     def homework_accepted(self, diploma: Diploma) -> bool:
         return diploma.study.homework_accepted
+
+    @admin.display(description=_('Date'), ordering='modified')
+    def date(self, diploma: Diploma) -> datetime.datetime:
+        return diploma.modified or diploma.created
 
     @admin.action(description=_('Send diploma to student'))
     def send_to_student(self, request, queryset):

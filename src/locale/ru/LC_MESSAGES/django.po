@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-09 19:06+0300\n"
+"POT-Creation-Date: 2021-12-09 19:40+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,24 +28,28 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: diplomas/admin.py:43 users/models.py:79
+#: diplomas/admin.py:44 users/models.py:79
 msgid "Student"
 msgstr "Студент"
 
-#: diplomas/admin.py:47 homework/admin.py:94 homework/admin.py:139
+#: diplomas/admin.py:48 homework/admin.py:94 homework/admin.py:139
 #: orders/models/order.py:45 products/models/course.py:23
 msgid "Course"
 msgstr "Курс"
 
-#: diplomas/admin.py:51 homework/models.py:27
+#: diplomas/admin.py:52 homework/models.py:27
 msgid "Homework"
 msgstr "Домашка"
 
-#: diplomas/admin.py:55
+#: diplomas/admin.py:56
+msgid "Date"
+msgstr "Дата"
+
+#: diplomas/admin.py:60
 msgid "Send diploma to student"
 msgstr "Отправить студенту"
 
-#: diplomas/admin.py:62
+#: diplomas/admin.py:67
 msgid "Regenerate diploma"
 msgstr "Перегенерировать"
 
