@@ -48,7 +48,7 @@ cmarkgfm==0.6.0
     # via -r requirements.in
 cryptography==3.4.8
     # via pyjwt
-django==3.2.9
+django==3.2.10
     # via
     #   -r requirements.in
     #   django-anymail
@@ -76,7 +76,7 @@ django-bulk-update==2.2.0
     # via
     #   -r requirements.in
     #   django-hattori
-django-cachalot==2.4.4
+django-cachalot==2.4.5
     # via -r requirements.in
 django-cors-headers==3.10.1
     # via -r requirements.in
@@ -132,7 +132,7 @@ packaging==21.3
     # via bleach
 pillow==8.4.0
     # via django-markdownx
-prompt-toolkit==3.0.23
+prompt-toolkit==3.0.24
     # via click-repl
 psycopg2-binary==2.9.2
     # via -r requirements.in
