@@ -9,8 +9,11 @@ from orders import tasks
 @admin.register(Diploma)
 class DiplomaAdmin(ModelAdmin):
     list_display = [
+        'created',
         'student',
         'course',
+        'language',
+        'homework_accepted',
     ]
     fields = [
         'slug',
@@ -35,14 +38,19 @@ class DiplomaAdmin(ModelAdmin):
     ]
 
     readonly_fields = ['slug', 'course', 'student']
+    list_select_related = ['study', 'study__student', 'study__course']
 
     @admin.display(description=_('Student'), ordering='study__student')
-    def student(self, diploma):
+    def student(self, diploma: Diploma):
         return diploma.study.student
 
     @admin.display(description=_('Course'), ordering='study__course')
-    def course(self, diploma):
+    def course(self, diploma: Diploma):
         return diploma.study.course
+
+    @admin.display(description=_('Homework'), ordering='study__homework_accepted', boolean=True)
+    def homework_accepted(self, diploma: Diploma) -> bool:
+        return diploma.study.homework_accepted
 
     @admin.action(description=_('Send diploma to student'))
     def send_to_student(self, request, queryset):
