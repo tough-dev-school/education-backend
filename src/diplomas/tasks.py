@@ -10,8 +10,7 @@ from users.models import User
     acks_late=True,
     rate_limit='3/s',
     autoretry_for=[RequestException],
-    retry_backoff=True,
-    max_retries=20,
+    max_retries=40,
 )
 def generate_diploma(student_id: int, course_id: int, language: str):
     generator = DiplomaGenerator(
