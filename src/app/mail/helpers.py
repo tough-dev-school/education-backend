@@ -12,6 +12,8 @@ def normalize_single_value(value: Optional[Union[dict, list]]) -> Optional[Union
     if value in [{}, []] or value is None:
         return None
 
+    return value
+
 
 def normalize_email_context(ctx: dict) -> dict:
     """Recursively strip values that are not suitable for mail providers"""
