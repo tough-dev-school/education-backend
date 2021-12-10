@@ -7,20 +7,20 @@ from users.models import User
 
 
 class AppMailchimp:
-    def __init__(self):
+    def __init__(self) -> None:
         self.http = MailchimpHTTP()
 
-    def subscribe_django_user(self, list_id: str, user: User, tags: Optional[Iterable] = None):
+    def subscribe_django_user(self, list_id: str, user: User, tags: Optional[Iterable] = None) -> None:
         member = MailchimpMember.from_django_user(user)
         self.mass_update_subscription(list_id=list_id, members=[member], status='subscribed')
         if tags is not None:
             self.set_tags(list_id=list_id, members=[member], tags=tags)
 
-    def unsubscribe_django_user(self, list_id: str, user: User):
+    def unsubscribe_django_user(self, list_id: str, user: User) -> None:
         member = MailchimpMember.from_django_user(user)
         self.mass_update_subscription(list_id=list_id, members=[member], status='unsubscribed')
 
-    def mass_update_subscription(self, *, list_id: str, members: Iterable[MailchimpMember], status: Literal['subscribed', 'unsubscribed']):
+    def mass_update_subscription(self, *, list_id: str, members: Iterable[MailchimpMember], status: Literal['subscribed', 'unsubscribed']) -> None:
         response = self.http.post(
             url=f'lists/{list_id}',
             payload={
@@ -31,7 +31,7 @@ class AppMailchimp:
         if len(response['errors']) > 0:
             raise exceptions.MailchimpSubscriptionFailed(', '.join([f'{err["email_address"]}: {err["error"]} ({err["error_code"]})' for err in response['errors']]))
 
-    def set_tags(self, *, list_id: str, members: Iterable[MailchimpMember], tags: Iterable[str]):
+    def set_tags(self, *, list_id: str, members: Iterable[MailchimpMember], tags: Iterable[str]) -> None:
         for member in members:
             self.http.post(
                 url=f'/lists/{list_id}/members/{member.subscriber_hash}/tags',

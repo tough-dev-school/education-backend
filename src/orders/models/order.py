@@ -7,6 +7,7 @@ from django.utils.translation import pgettext_lazy
 
 from app.models import TimestampedModel, models
 from orders.fields import ItemField
+from products.models import Product
 
 
 class UnknownItemException(Exception):
@@ -43,9 +44,9 @@ class Order(TimestampedModel):
 
     desired_bank = models.CharField(_('User-requested bank string'), blank=True, max_length=32)
 
-    course = ItemField(to='products.Course', verbose_name=_('Course'), null=True, blank=True, on_delete=models.PROTECT)
-    record = ItemField(to='products.Record', verbose_name=_('Record'), null=True, blank=True, on_delete=models.PROTECT)
-    bundle = ItemField(to='products.Bundle', verbose_name=_('Bundle'), null=True, blank=True, on_delete=models.PROTECT)
+    course = ItemField(to='products.Course', verbose_name=_('Course'), null=True, blank=True, on_delete=models.PROTECT)  # type: ignore
+    record = ItemField(to='products.Record', verbose_name=_('Record'), null=True, blank=True, on_delete=models.PROTECT)  # type: ignore
+    bundle = ItemField(to='products.Bundle', verbose_name=_('Bundle'), null=True, blank=True, on_delete=models.PROTECT)  # type: ignore
 
     giver = models.ForeignKey('users.User', verbose_name=_('Giver'), null=True, blank=True, on_delete=models.SET_NULL, related_name='created_gifts')
     desired_shipment_date = models.DateTimeField(_('Date when the gift should be shipped'), null=True, blank=True)
@@ -81,18 +82,18 @@ class Order(TimestampedModel):
                 yield field  # type: ignore
 
     @classmethod
-    def get_item_foreignkey(cls, item) -> Optional[models.fields.Field]:
+    def get_item_foreignkey(cls, item: Product) -> Optional[str]:
         """
         Given an item model, returns the ForeignKey to it"""
         for field in cls._iterate_items():
             if field.related_model == item.__class__:
-                return field.name  # type: ignore
+                return field.name
 
     def reset_items(self) -> None:
         for field in self._iterate_items():
             setattr(self, field.name, None)
 
-    def set_item(self, item):
+    def set_item(self, item: Product) -> None:
         if self.shipped is not None:  # some denormalization happens during shipping, so please do not break it!
             raise ValueError('Cannot change item for shipped order!')
 
@@ -104,11 +105,11 @@ class Order(TimestampedModel):
 
         raise UnknownItemException(f'There is no foreignKey for {item.__class__}')
 
-    def set_paid(self, silent=False):
+    def set_paid(self, silent: Optional[bool] = False) -> None:
         from orders.services import OrderPaidSetter
         OrderPaidSetter(self, silent=silent)()
 
-    def set_not_paid(self):
+    def set_not_paid(self) -> None:
         from orders.services import OrderUnpaidSetter
         OrderUnpaidSetter(self)()
 

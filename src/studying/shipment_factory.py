@@ -1,4 +1,12 @@
-_registry = {}
+from typing import TYPE_CHECKING, Type
+
+if TYPE_CHECKING:
+    from orders.models import Order
+    from products.models import Product, ProductType
+    from studying.shipment.base import BaseShipment
+    from users.models import User
+
+_registry: dict['Product', Type['BaseShipment']] = {}
 
 __all__ = [
     'register',
@@ -10,7 +18,7 @@ class ShipmentAlgorithmNotFound(Exception):
     pass
 
 
-def register(model):
+def register(model: 'ProductType'):
     def decorator(klass):
         _registry[model] = klass
 
@@ -19,21 +27,21 @@ def register(model):
     return decorator
 
 
-def get(item):
-    klass = _registry.get(item.__class__)
+def get(item: 'Product') -> Type['BaseShipment']:
+    klass = _registry.get(item.__class__)  # type: ignore
     if not klass:
         raise ShipmentAlgorithmNotFound(f'Shipment alogorithm for {item} ({item.__class__}) not found.')
 
     return klass
 
 
-def ship(item, to, order=None):
+def ship(item, to: 'User', order: 'Order') -> None:
     Shipment = get(item)
 
-    return Shipment(user=to, product=item, order=order)()
+    Shipment(user=to, product=item, order=order)()
 
 
-def unship(order):
+def unship(order: 'Order') -> None:
     Shipment = get(order.item)
 
-    return Shipment(user=order.user, product=order.item, order=order).unship()
+    Shipment(user=order.user, product=order.item, order=order).unship()

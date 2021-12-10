@@ -14,13 +14,13 @@ class ZoomusRoomNotFoundException(Exception):
 
 
 class ZoomusClient:
-    def __init__(self):
+    def __init__(self) -> None:
         self.http = ZoomusClientHTTP(
             api_key=settings.ZOOMUS_API_KEY,
             api_secret=settings.ZOOMUS_API_SECRET,
         )
 
-    def invite(self, webinar_id, user: User):
+    def invite(self, webinar_id: str, user: User) -> dict:
         zoomus_user = ZoomusUser(user)
 
         return self.http.post(

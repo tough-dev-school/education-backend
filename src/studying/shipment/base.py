@@ -15,15 +15,15 @@ class BaseShipment(metaclass=ABCMeta):
         self.user = user
         self.order = order
 
-    def __call__(self):
+    def __call__(self) -> None:
         self.ship()
 
     @abstractmethod
-    def ship(self):
+    def ship(self) -> None:
         raise NotImplementedError()
 
     @abstractmethod
-    def unship(self):
+    def unship(self) -> None:
         raise NotImplementedError()
 
     def get_gift_template_context(self) -> dict:

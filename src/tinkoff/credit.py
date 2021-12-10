@@ -1,3 +1,5 @@
+from typing import Union
+
 import requests
 from django.conf import settings
 
@@ -36,7 +38,7 @@ class TinkoffCredit(Bank):
 
         return response.json()
 
-    def get_items(self):
+    def get_items(self) -> list[dict[str, Union[str, int]]]:
         return [
             {
                 'name': self.order.item.name_receipt,
@@ -45,7 +47,7 @@ class TinkoffCredit(Bank):
             },
         ]
 
-    def get_user(self):
+    def get_user(self) -> dict:
         return {
             'contact': {
                 'fio': {
@@ -57,10 +59,10 @@ class TinkoffCredit(Bank):
         }
 
     @property
-    def price(self):
-        return super().price / 100
+    def price(self) -> int:
+        return super().price / 100  # type: ignore
 
-    def get_create_order_url(self):
+    def get_create_order_url(self) -> str:
         if settings.TINKOFF_CREDIT_DEMO_MODE:
             return 'https://forma.tinkoff.ru/api/partners/v2/orders/create-demo'
 

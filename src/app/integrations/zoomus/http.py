@@ -1,5 +1,3 @@
-from typing import Dict, List, Union
-
 import jwt
 import requests
 from datetime import datetime
@@ -39,7 +37,7 @@ class ZoomusClientHTTP:
             'Authorization': f'Bearer {self.token}',
         }
 
-    def post(self, url: str, data: dict, expected_status_code=200) -> Union[List, Dict]:
+    def post(self, url: str, data: dict, expected_status_code=200) -> dict:
         response = requests.post(
             self.format_url(url),
             timeout=TIMEOUT,

@@ -22,31 +22,31 @@ class RecordShipment(BaseShipment):
     template_id = 'purchased-record'
 
     @property
-    def record(self):
+    def record(self) -> Record:
         return self.stuff_to_ship
 
-    def ship(self):
+    def ship(self) -> None:
         self.send_record_link()
 
-    def unship(self):
+    def unship(self) -> None:
         """No need to unship records"""
 
     def get_template_context(self) -> dict:
         return RecordTemplateContext().to_representation(self.record)
 
-    def send_record_link(self):
+    def send_record_link(self) -> None:
         """Send email, convinience method for subclasses
 
         The mail is not sent by default, you have to call it manualy!
         """
-        return send_mail.delay(
+        send_mail.delay(
             to=self.user.email,
             template_id=self.get_template_id(),
             ctx=self.get_template_context(),
             disable_antispam=True,
         )
 
-    def get_template_id(self):
+    def get_template_id(self) -> str:
         template_id = self.record.get_template_id()
 
         if template_id is not None:

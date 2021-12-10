@@ -28,7 +28,7 @@ class UserUpdater:
 
         return user
 
-    def update(self, user):
+    def update(self, user: User) -> None:
         serializer = UserUpdateSerializer(instance=user, data=self.user_data, partial=True)
         serializer.is_valid(raise_exception=True)
 

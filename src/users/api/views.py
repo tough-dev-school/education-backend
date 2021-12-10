@@ -1,4 +1,5 @@
 from django.core.exceptions import ImproperlyConfigured
+from django.db.models import QuerySet
 from rest_framework import permissions
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
@@ -39,5 +40,5 @@ class SelfView(GenericAPIView):
 
         raise ImproperlyConfigured('This code should not be ran')
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[User]:
         return User.objects.filter(is_active=True)

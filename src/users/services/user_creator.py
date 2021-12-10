@@ -40,18 +40,18 @@ class UserCreator:
         self.after_creation()
         return self.resulting_user
 
-    def get(self):
+    def get(self) -> Optional[User]:
         return User.objects.filter(is_active=True).filter(email=self.data['email']).first()
 
-    def create(self):
+    def create(self) -> User:
         serializer = UserCreateSerializer(data=self.data)
         serializer.is_valid(raise_exception=True)
 
         serializer.save()
 
-        return serializer.instance
+        return serializer.instance  # type: ignore
 
-    def after_creation(self):
+    def after_creation(self) -> None:
         if self.do_subscribe:
             if self.resulting_user.email and len(self.resulting_user.email):
                 subscribe_to_mailchimp.delay(user_id=self.resulting_user.pk, tags=self.subscribe_tags)
