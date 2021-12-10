@@ -70,8 +70,6 @@ class DefaultModel(models.Model):
                 if field.related_model == Model:
                     return field.name
 
-        return None
-
     def clear_cached_properties(self) -> None:
         """Clears all used cached properties of instance."""
 
@@ -79,7 +77,7 @@ class DefaultModel(models.Model):
             with contextlib.suppress(KeyError):
                 del self.__dict__[property_name]
 
-    def _get_cached_property_names(self):
+    def _get_cached_property_names(self) -> list[str]:
         return [
             func_name
             for func_name in dir(self.__class__)

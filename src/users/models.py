@@ -52,8 +52,6 @@ class User(AbstractUser):
         if len(name) > 3:
             return name
 
-        return None
-
     def get_printable_gender(self) -> str:
         if self.gender and len(self.gender):
             return self.gender

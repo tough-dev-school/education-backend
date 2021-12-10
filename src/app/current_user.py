@@ -12,8 +12,6 @@ def get_current_user() -> Optional[User]:
     if user is not None and user.is_authenticated:
         return user
 
-    return None
-
 
 def set_current_user(user: User):
     setattr(_thread_locals, _thread_key(), user)

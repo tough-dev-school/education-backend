@@ -1,5 +1,3 @@
-from typing import Dict, List, Union
-
 import requests
 from urllib.parse import quote, urljoin
 
@@ -25,7 +23,7 @@ class ClickMeetingClientHTTP:
             'Content-Type': 'application/x-www-form-urlencoded',
         }
 
-    def post(self, url: str, data: dict) -> Union[List, Dict]:
+    def post(self, url: str, data: dict) -> dict:
         response = requests.post(
             self.format_url(url),
             timeout=TIMEOUT,
@@ -44,7 +42,7 @@ class ClickMeetingClientHTTP:
 
         return json
 
-    def get(self, url):
+    def get(self, url: str) -> dict:
         response = requests.get(
             self.format_url(url),
             timeout=TIMEOUT,
@@ -55,9 +53,9 @@ class ClickMeetingClientHTTP:
 
         return response.json()
 
-    def build_query(self, data):  # noqa: CCR001
+    def build_query(self, data: dict) -> str:  # noqa: CCR001
         """This shit is copy-pasted from https://github.com/ClickMeeting/DevZone/blob/master/API/examples/Python"""
-        def build_query_item(params, base_key=None):  # noqa: CCR001
+        def build_query_item(params, base_key=None) -> list[str]:  # noqa: CCR001
             results = []
 
             if(type(params).__name__ == 'dict'):

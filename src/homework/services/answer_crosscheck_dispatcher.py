@@ -13,7 +13,7 @@ class AnswerCrossCheckDispatcher:
     for each of them, making sure each answer has a user to check
     and number of answers if equal for each user
     """
-    def __init__(self, answers: list[Answer], answers_per_user: int = 3):
+    def __init__(self, answers: QuerySet[Answer], answers_per_user: int = 3):
         self.answers = Answer.objects.filter(pk__in=[answer.pk for answer in answers])
         self.users = User.objects.filter(pk__in=[answer.author_id for answer in answers])
         self.answers_per_user = answers_per_user
@@ -42,8 +42,6 @@ class AnswerCrossCheckDispatcher:
 
         if len(valid_answers) >= 1:
             return random.choices(valid_answers, weights=[len(valid_answers) - answer.crosscheck_count for answer in valid_answers])[0]
-
-        return None
 
     def give_answer_to_user(self, answer: Answer, user: User) -> AnswerCrossCheck:
         return AnswerCrossCheck.objects.create(answer=answer, checker=user)

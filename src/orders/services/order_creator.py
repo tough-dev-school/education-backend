@@ -52,5 +52,3 @@ class OrderCreator:
     def _get_promocode(self, promocode_name: Optional[str] = None) -> Optional[PromoCode]:
         if promocode_name is not None:
             return PromoCode.objects.get_or_nothing(name=promocode_name)
-
-        return None

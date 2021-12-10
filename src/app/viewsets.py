@@ -1,8 +1,10 @@
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Protocol, Type
 
 from django.core.exceptions import ImproperlyConfigured
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.viewsets import ReadOnlyModelViewSet as _ReadOnlyModelViewSet
+
+from app.validators import Validator
 
 __all__ = [
     'AppViewSet',
@@ -10,8 +12,12 @@ __all__ = [
 ]
 
 
-class ValidationMixin:
-    def get_validator_class(self):
+class ViewsetWithValidationProtocol(Protocol):
+    validator_class: Optional[Type[Validator]]
+
+
+class ValidationMixin(ViewsetWithValidationProtocol):
+    def get_validator_class(self) -> Type[Validator]:
         if self.validator_class is None:
             raise ImproperlyConfigured('Please set validator_class class variable')
 

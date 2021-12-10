@@ -1,3 +1,5 @@
+from typing import Any
+
 import requests
 from collections import OrderedDict
 from django.conf import settings
@@ -10,7 +12,7 @@ from tinkoff.exceptions import TinkoffRequestException
 
 class TinkoffBank(Bank):
 
-    def get_initial_payment_url(self):
+    def get_initial_payment_url(self) -> str:
         return self.Init()['PaymentURL']
 
     def Init(self) -> dict:
@@ -44,14 +46,14 @@ class TinkoffBank(Bank):
 
         return parsed
 
-    def get_receipt(self):
+    def get_receipt(self) -> dict[str, Any]:
         return {
             'Email': self.user.email,
             'Taxation': 'usn_income',
             'Items': self.get_items(),
         }
 
-    def get_items(self):
+    def get_items(self) -> list[dict[str, Any]]:
         return [
             {
                 'Name': self.order.item.name_receipt,
@@ -77,5 +79,5 @@ class TinkoffBank(Bank):
         return sha256(''.join(str(value) for value in sorted_request.values()).encode()).hexdigest().upper()
 
     @staticmethod
-    def get_notification_url():
+    def get_notification_url() -> str:
         return urljoin(settings.ABSOLUTE_HOST, '/api/v2/banking/tinkoff-notifications/')

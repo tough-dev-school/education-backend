@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from decimal import Decimal
 from django.apps import apps
@@ -6,9 +6,11 @@ from django.utils.translation import gettext_lazy as _
 
 from app.models import TimestampedModel, models
 from app.pricing import format_old_price, format_price
-from orders.models import Order
 from studying import shipment_factory as ShipmentFactory
 from users.models import User
+
+if TYPE_CHECKING:
+    from orders.models import Order
 
 
 class Shippable(TimestampedModel):
@@ -40,10 +42,10 @@ class Shippable(TimestampedModel):
     def get_formatted_price_display(self):
         return format_old_price(self.old_price, self.price)
 
-    def ship(self, to: User, order: Optional[Order] = None):
+    def ship(self, to: User, order: 'Order'):
         return ShipmentFactory.ship(self, to=to, order=order)
 
-    def unship(self, order: Order):
+    def unship(self, order: 'Order'):
         return ShipmentFactory.unship(order=order)
 
     def get_price(self, promocode=None) -> Decimal:
@@ -54,10 +56,10 @@ class Shippable(TimestampedModel):
 
         return self.price
 
-    def get_template_id(self):
+    def get_template_id(self) -> Optional[str]:
         """Get custom per-item template_id"""
         if not hasattr(self, 'template_id'):
-            return
+            return None
 
         if self.template_id is not None and len(self.template_id):
             return self.template_id

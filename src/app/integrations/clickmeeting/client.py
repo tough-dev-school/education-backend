@@ -1,3 +1,5 @@
+from typing import Optional
+
 from django.conf import settings
 
 from app.integrations.clickmeeting.http import ClickMeetingClientHTTP
@@ -12,13 +14,13 @@ class ClickMeetingRoomNotFoundException(Exception):
 
 
 class ClickMeetingClient:
-    def __init__(self):
+    def __init__(self) -> None:
         self.http = ClickMeetingClientHTTP(
             base_url='https://api.clickmeeting.com/v1/',
             api_key=settings.CLICKMEETING_API_KEY,
         )
 
-    def invite(self, room_url: str, *args):
+    def invite(self, room_url: str, *args) -> None:
         conference = self.get_conference(room_url=room_url)
         if conference is None:
             raise ClickMeetingRoomNotFoundException(f'Room {room_url} not found')
@@ -31,7 +33,7 @@ class ClickMeetingClient:
         if response['status'] != 'OK':
             raise ClickMeetingNonOkResponseException(f'Non-OK response from ClickMeeting during invitation: {response["status"]}')
 
-    def get_conference(self, **kwargs):
+    def get_conference(self, **kwargs) -> Optional[dict]:
         response = self.http.get('conferences/')
 
         for conference in response['active_conferences']:

@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 import requests
 from django.conf import settings
@@ -18,7 +18,7 @@ class MailchimpHTTP:
     def format_url(self, url: str) -> str:
         return urljoin(self.base_url, url.lstrip('/'))
 
-    def request(self, url, *, method: str, payload: Optional[dict] = None, expected_status_code: int = 200):
+    def request(self, url, *, method: str, payload: Optional[dict] = None, expected_status_code: int = 200) -> Union[list, dict]:
         requests_payload = dict()
         if payload is not None:
             requests_payload['json'] = payload
@@ -45,6 +45,6 @@ class MailchimpHTTP:
         return self.request(url, method='POST', payload=payload, **kwargs)
 
     @staticmethod
-    def get_json(response):
+    def get_json(response: requests.Response) -> Union[list, dict]:
         if response.text:
             return response.json()

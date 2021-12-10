@@ -14,7 +14,7 @@ class CourseShipment(BaseShipment):
     def course(self):
         return self.stuff_to_ship
 
-    def ship(self):
+    def ship(self) -> None:
         self.invite_to_clickmeeting()
         self.invite_to_zoomus()
         self.subscribe_to_mailchimp()
@@ -22,21 +22,21 @@ class CourseShipment(BaseShipment):
 
         self.send_welcome_letter()
 
-    def unship(self):
+    def unship(self) -> None:
         self.remove_study_model()
         self.unsubscribe_from_mailchimp()
 
-    def create_study_model(self):
+    def create_study_model(self) -> None:
         Study.objects.get_or_create(
             course=self.course,
             student=self.user,
             defaults=dict(order=self.order),
         )
 
-    def remove_study_model(self):
+    def remove_study_model(self) -> None:
         Study.objects.get(order=self.order).delete()
 
-    def subscribe_to_mailchimp(self):
+    def subscribe_to_mailchimp(self) -> None:
         if self.course.mailchimp_list_id is not None:
             subscribe_to_mailchimp.delay(
                 list_id=self.course.mailchimp_list_id,
@@ -44,28 +44,28 @@ class CourseShipment(BaseShipment):
                 tags=[self.course.slug, f'{self.course.slug}-purchased'],
             )
 
-    def unsubscribe_from_mailchimp(self):
+    def unsubscribe_from_mailchimp(self) -> None:
         if self.course.mailchimp_list_id is not None:
             unsubscribe_from_mailchimp.delay(
                 list_id=self.course.mailchimp_list_id,
                 user_id=self.user.pk,
             )
 
-    def invite_to_clickmeeting(self):
+    def invite_to_clickmeeting(self) -> None:
         if self.course.clickmeeting_room_url is not None:
             invite_to_clickmeeting.delay(
                 room_url=self.course.clickmeeting_room_url,
                 email=self.user.email,
             )
 
-    def invite_to_zoomus(self):
+    def invite_to_zoomus(self) -> None:
         if self.course.zoomus_webinar_id is not None and len(self.course.zoomus_webinar_id):
             invite_to_zoomus.delay(
                 webinar_id=self.course.zoomus_webinar_id,
                 user_id=self.user.id,
             )
 
-    def send_welcome_letter(self):
+    def send_welcome_letter(self) -> None:
         if self.welcome_letter_template_id is not None:
             send_mail.delay(
                 to=self.user.email,

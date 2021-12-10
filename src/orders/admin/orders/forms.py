@@ -36,7 +36,7 @@ class OrderChangeForm(forms.ModelForm):
 
         return order
 
-    def call_services(self, order):
+    def call_services(self, order: Order) -> None:
         self._change_email_if_required(order)
 
     def _change_email_if_required(self, order: Order):
