@@ -36,8 +36,6 @@ class JWTAuthMiddleware(UserMiddleware):
         with contextlib.suppress(APIException, TypeError):
             return json_auth.authenticate(request)[0]
 
-        return None
-
 
 class TokenAuthMiddleware(UserMiddleware):
     @staticmethod
@@ -45,5 +43,3 @@ class TokenAuthMiddleware(UserMiddleware):
         token_authentication = TokenAuthentication()
         with contextlib.suppress(APIException, TypeError):
             return token_authentication.authenticate(request)[0]  # type: ignore
-
-        return None

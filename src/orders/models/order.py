@@ -74,15 +74,11 @@ class Order(TimestampedModel):
                 if getattr(self, f'{field.name}_id', None) is not None:
                     return getattr(self, field.name)
 
-        return None
-
     @classmethod
     def _iterate_items(cls) -> Iterable[models.fields.Field]:
         for field in cls._meta.get_fields():
             if getattr(field, '_is_item', False):
                 yield field  # type: ignore
-
-        return None
 
     @classmethod
     def get_item_foreignkey(cls, item) -> Optional[models.fields.Field]:
@@ -91,8 +87,6 @@ class Order(TimestampedModel):
         for field in cls._iterate_items():
             if field.related_model == item.__class__:
                 return field.name  # type: ignore
-
-        return None
 
     def reset_items(self) -> None:
         for field in self._iterate_items():

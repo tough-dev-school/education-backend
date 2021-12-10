@@ -25,8 +25,6 @@ class PromoCodeQuerySet(QuerySet):
             with contextlib.suppress(PromoCode.DoesNotExist):
                 return self.active().get(name__iexact=name.strip())
 
-        return None
-
 
 class PromoCode(TimestampedModel):
     objects = models.Manager.from_queryset(PromoCodeQuerySet)()

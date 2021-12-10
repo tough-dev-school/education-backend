@@ -1,4 +1,7 @@
-def normalize_single_value(value):
+from typing import Optional, Union
+
+
+def normalize_single_value(value: Optional[Union[dict, list]]) -> Optional[Union[dict, list]]:
     """Returns Noner if value is not suitable"""
     if isinstance(value, dict):
         value = normalize_email_context(value)
@@ -9,8 +12,6 @@ def normalize_single_value(value):
     if value in [{}, []] or value is None:
         return None
 
-    return value
-
 
 def normalize_email_context(ctx: dict) -> dict:
     """Recursively strip values that are not suitable for mail providers"""
@@ -20,6 +21,6 @@ def normalize_email_context(ctx: dict) -> dict:
     return {key: value for key, value in normalized.items() if value is not None}
 
 
-__ALL__ = [
+__all__ = [
     'normalize_email_context',
 ]

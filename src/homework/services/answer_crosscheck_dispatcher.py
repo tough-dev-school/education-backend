@@ -43,8 +43,6 @@ class AnswerCrossCheckDispatcher:
         if len(valid_answers) >= 1:
             return random.choices(valid_answers, weights=[len(valid_answers) - answer.crosscheck_count for answer in valid_answers])[0]
 
-        return None
-
     def give_answer_to_user(self, answer: Answer, user: User) -> AnswerCrossCheck:
         return AnswerCrossCheck.objects.create(answer=answer, checker=user)
 
