@@ -4,6 +4,7 @@ ABSOLUTE_HOST = env('ABSOLUTE_HOST', cast=str, default='https://app.tough-dev.sc
 ALLOWED_HOSTS = [
     'localhost',
     'localhost:8000',
+    'education-backend.herokuapp.com',  # used in netlify proxy
     ABSOLUTE_HOST.replace('https://', ''),
 ]
 
