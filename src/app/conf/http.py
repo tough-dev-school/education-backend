@@ -21,5 +21,5 @@ CORS_ORIGIN_REGEX_WHITELIST = [
     r'.*education-frontend.netlify.app.*',
 ]
 
-FRONTEND_URL = env('FRONTEND_URL', cast=str, default='https://lms.tough-dev.school/lms/')
+FRONTEND_URL = env('FRONTEND_URL', cast=str, default='https://lms.tough-dev.school/')
 DIPLOMA_FRONTEND_URL = env('DIPLOMA_FRONTEND_URL', cast=str, default='https://cert.tough-dev.school/')
