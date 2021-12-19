@@ -11,5 +11,3 @@ class IsRootFilter(BooleanFilter):
 
     def f(self, request, queryset):
         return queryset.filter(parent__isnull=False)
-
-
