@@ -44,9 +44,10 @@ def test_course_manual(create, user, course):
     assert order.item == course
 
 
-def test_forced_price(create, user, course):
-    order = create(user=user, item=course, price=200500)
+@pytest.mark.parametrize('price', [0, 200500])
+def test_forced_price(create, user, course, price):
+    order = create(user=user, item=course, price=price)
 
     order.refresh_from_db()
 
-    assert order.price == 200500
+    assert order.price == price
