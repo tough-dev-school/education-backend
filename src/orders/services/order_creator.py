@@ -22,7 +22,7 @@ class OrderCreator:
     ):
         self.item = item
         self.user = user
-        self.price = price or item.get_price(promocode=promocode)
+        self.price = price if price is not None else item.get_price(promocode=promocode)
         self.promocode = self._get_promocode(promocode)
         self.giver = giver
         self.desired_shipment_date = desired_shipment_date
