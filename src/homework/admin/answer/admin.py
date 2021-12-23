@@ -3,47 +3,8 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
-from app.admin.filters import BooleanFilter
-from homework import tasks
-from homework.models import Answer, AnswerCrossCheck, Question
-
-
-@admin.register(Question)
-class QuestionAdmin(ModelAdmin):
-    list_display = [
-        'name',
-        'courses_list',
-    ]
-    fields = [
-        'courses',
-        'name',
-        'text',
-    ]
-    actions = [
-        'dispatch_crosscheck',
-    ]
-    save_as = True
-
-    def courses_list(self, obj):
-        return ', '.join([course.name for course in obj.courses.all()])
-
-    @admin.action(description=_('Dispatch crosscheck'))
-    def dispatch_crosscheck(self, request, queryset):
-        for question in queryset.iterator():
-            tasks.disptach_crosscheck.delay(question_id=question.id)
-
-        self.message_user(request, f'Crosscheck dispatched for {queryset.count()} questions')
-
-
-class IsRootFilter(BooleanFilter):
-    title = _('Is root answer')
-    parameter_name = 'is_root'
-
-    def t(self, request, queryset):
-        return queryset.filter(parent__isnull=True)
-
-    def f(self, request, queryset):
-        return queryset.filter(parent__isnull=False)
+from homework.admin.answer.filters import IsRootFilter
+from homework.models import Answer, AnswerCrossCheck
 
 
 @admin.register(Answer)
