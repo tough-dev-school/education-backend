@@ -1,2 +1,2 @@
-import homework.admin.question.admin
-import homework.admin.answer.admin
+import homework.admin.answer.admin  # noqa
+import homework.admin.question.admin  # noqa

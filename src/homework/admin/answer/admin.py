@@ -3,9 +3,8 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
-from homework.models import Answer, AnswerCrossCheck
 from homework.admin.answer.filters import IsRootFilter
-
+from homework.models import Answer, AnswerCrossCheck
 
 
 @admin.register(Answer)
