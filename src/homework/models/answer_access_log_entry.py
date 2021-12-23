@@ -1,6 +1,6 @@
-import contextlib
 from typing import Optional
 
+import contextlib
 from django.db.models import Index, QuerySet, UniqueConstraint
 
 from app.models import TimestampedModel, models

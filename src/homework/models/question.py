@@ -1,9 +1,8 @@
 import uuid
-from urllib.parse import urljoin
-
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from markdownx.models import MarkdownxField
+from urllib.parse import urljoin
 
 from app.models import TimestampedModel, models
 

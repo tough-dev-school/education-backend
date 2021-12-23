@@ -1,14 +1,14 @@
+from typing import Optional
+
 import textwrap
 import uuid
-from typing import Optional
-from urllib.parse import urljoin
-
 from django.conf import settings
 from django.db.models import Count, Q, QuerySet
 from django.db.models.query_utils import FilteredRelation
 from django.utils.translation import gettext_lazy as _
 from markdownx.models import MarkdownxField
 from tree_queries.models import TreeNode, TreeQuerySet
+from urllib.parse import urljoin
 
 from app.markdown import markdownify, remove_html
 from app.models import models
