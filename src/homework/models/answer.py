@@ -103,4 +103,4 @@ class Answer(TreeNode):
 
     def __str__(self) -> str:
         text = remove_html(markdownify(self.text))
-        return textwrap.shorten(text, width=40)``
+        return textwrap.shorten(text, width=40)
