@@ -1,7 +1,17 @@
-from django.db.models import Index, UniqueConstraint
+import contextlib
+from typing import Optional
+
+from django.db.models import Index, QuerySet, UniqueConstraint
 
 from app.models import TimestampedModel, models
-from homework.querysets import AnswerAccessLogEntryQuerySet
+
+
+class AnswerAccessLogEntryQuerySet(QuerySet):
+    def get_for_user_and_answer(self, answer, user) -> Optional['AnswerAccessLogEntry']:
+        with contextlib.suppress(self.model.DoesNotExist):
+            return self.get(answer=answer, user=user)
+
+        return None
 
 
 class AnswerAccessLogEntry(TimestampedModel):

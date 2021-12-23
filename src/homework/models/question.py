@@ -1,10 +1,12 @@
 import uuid
+from urllib.parse import urljoin
+
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from markdownx.models import MarkdownxField
-from urllib.parse import urljoin
 
 from app.models import TimestampedModel, models
+
 
 class Question(TimestampedModel):
     slug = models.UUIDField(db_index=True, unique=True, default=uuid.uuid4)
@@ -25,6 +27,7 @@ class Question(TimestampedModel):
 
     def dispatch_crosscheck(self, **kwargs) -> int:
         from homework.services import QuestionCrossCheckDispatcher
+
         dispatcher = QuestionCrossCheckDispatcher(question=self, **kwargs)
 
         return dispatcher()
