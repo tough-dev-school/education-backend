@@ -59,7 +59,7 @@ eradicate==2.0.0
     # via flake8-eradicate
 execnet==1.9.0
     # via pytest-xdist
-faker==4.0.0
+faker==10.0.0
     # via
     #   -c requirements.txt
     #   mixer
