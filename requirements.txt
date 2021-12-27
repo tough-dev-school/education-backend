@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements.in
 #
-amqp==5.0.6
+amqp==5.0.9
     # via kombu
 asgiref==3.4.1
     # via django
