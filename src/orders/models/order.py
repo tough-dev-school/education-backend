@@ -1,6 +1,7 @@
 from typing import Iterable, Optional
 
-from django.db.models import QuerySet
+from django.db.models import CheckConstraint, QuerySet
+from django.db.models.expressions import RawSQL
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
@@ -61,6 +62,13 @@ class Order(TimestampedModel):
         permissions = [
             ('pay_order', _('May mark orders as paid')),
             ('unpay_order', _('May mark orders as unpaid')),
+        ]
+
+        constraints = [
+            CheckConstraint(check=RawSQL(
+                sql="""(CAST(coalesce(course_id, \'0\') AS integer) +
+                        CAST(coalesce(bundle_id, \'0\') AS integer) + CAST(coalesce(record_id, \'0\') AS integer)) <= 1""",
+                params=[], output_field=models.BooleanField()), name='check_product_items'),
         ]
 
     def __str__(self) -> str:
