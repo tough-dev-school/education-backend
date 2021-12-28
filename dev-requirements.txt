@@ -290,7 +290,7 @@ types-markdown==3.3.9
     # via -r dev-requirements.in
 types-pillow==8.3.10
     # via -r dev-requirements.in
-types-pytz==2021.3.1
+types-pytz==2021.3.3
     # via django-stubs
 types-pyyaml==6.0.1
     # via django-stubs
