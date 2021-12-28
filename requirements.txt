@@ -80,7 +80,7 @@ django-cachalot==2.4.5
     # via -r requirements.in
 django-cors-headers==3.10.1
     # via -r requirements.in
-django-debug-toolbar==3.2.2
+django-debug-toolbar==3.2.4
     # via -r requirements.in
 django-environ==0.8.1
     # via -r requirements.in
