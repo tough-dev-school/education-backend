@@ -112,7 +112,7 @@ djangorestframework==3.12.4
     #   drf-recaptcha
 drf-jwt==1.19.1
     # via -r requirements.in
-drf-recaptcha==2.0.5
+drf-recaptcha==2.0.7
     # via -r requirements.in
 faker==4.0.0
     # via django-hattori
