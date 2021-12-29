@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements.in
 #
-amqp==5.0.6
+amqp==5.0.9
     # via kombu
 asgiref==3.4.1
     # via django
@@ -80,7 +80,7 @@ django-cachalot==2.4.5
     # via -r requirements.in
 django-cors-headers==3.10.1
     # via -r requirements.in
-django-debug-toolbar==3.2.2
+django-debug-toolbar==3.2.4
     # via -r requirements.in
 django-environ==0.8.1
     # via -r requirements.in
@@ -112,7 +112,7 @@ djangorestframework==3.12.4
     #   drf-recaptcha
 drf-jwt==1.19.1
     # via -r requirements.in
-drf-recaptcha==2.0.5
+drf-recaptcha==2.0.7
     # via -r requirements.in
 faker==4.0.0
     # via django-hattori
@@ -163,7 +163,7 @@ requests==2.26.0
     #   django-healthchecks
 s3transfer==0.5.0
     # via boto3
-sentry-sdk==1.5.0
+sentry-sdk==1.5.1
     # via -r requirements.in
 shortuuid==1.0.8
     # via -r requirements.in
