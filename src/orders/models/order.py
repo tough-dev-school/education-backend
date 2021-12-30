@@ -1,6 +1,6 @@
 from typing import Iterable, Optional
 
-from django.db.models import QuerySet
+from django.db.models import QuerySet, CheckConstraint, Q
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
@@ -61,6 +61,10 @@ class Order(TimestampedModel):
         permissions = [
             ('pay_order', _('May mark orders as paid')),
             ('unpay_order', _('May mark orders as unpaid')),
+        ]
+
+        constraints = [
+            CheckConstraint(check=Q(course__isnull=True, record__isnull=True, bundle__isnull=False) | Q(course__isnull=False, record__isnull=True, bundle__isnull=True) | Q(course__isnull=True, record__isnull=False, bundle__isnull=True) | Q(course__isnull=True, record__isnull=True, bundle__isnull=True), name='you_can_attach_only_one_or_zero_product')  # noqa
         ]
 
     def __str__(self) -> str:
