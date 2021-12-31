@@ -26,7 +26,7 @@ def student(mixer):
     return mixer.blend('users.User', first_name='Омон', last_name='Кривомазов', gender='male')
 
 
-def test_order_constraints_check_product_items(student, record, course, bundle):
+def test_order_constraints_check_product_with_two_items(student, record, course):
     with pytest.raises(IntegrityError):
         Order.objects.create(
             price=100,
@@ -36,6 +36,8 @@ def test_order_constraints_check_product_items(student, record, course, bundle):
             user=student,
         )
 
+
+def test_order_constraints_check_product_with_three_items(student, course, record, bundle):
     with pytest.raises(IntegrityError):
         Order.objects.create(
             price=100,
