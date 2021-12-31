@@ -1,6 +1,6 @@
 from typing import Iterable, Optional
 
-from django.db.models import QuerySet, CheckConstraint, Q
+from django.db.models import CheckConstraint, Q, QuerySet
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
