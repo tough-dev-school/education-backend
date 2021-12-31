@@ -17,7 +17,7 @@ def course(mixer):
 
 
 @pytest.fixture
-def course(mixer):
+def bundle(mixer):
     return mixer.blend('products.Bundle')
 
 
