@@ -15,18 +15,31 @@ def record(mixer):
 def course(mixer):
     return mixer.blend('products.Course')
 
+@pytest.fixture
+def course(mixer):
+    return mixer.blend('products.Bundle')
 
 @pytest.fixture
 def student(mixer):
     return mixer.blend('users.User', first_name='Омон', last_name='Кривомазов', gender='male')
 
 
-def test_order_constraints_check_product_items(student, record, course):
+def test_order_constraints_check_product_items(student, record, course, bundle):
     with pytest.raises(IntegrityError):
         Order.objects.create(
             price=100,
             record=record,
             course=course,
+            author=student,
+            user=student,
+        )
+
+    with pytest.raises(IntegrityError):
+        Order.objects.create(
+            price=100,
+            record=record,
+            course=course,
+            bundle=bundle,
             author=student,
             user=student,
         )
