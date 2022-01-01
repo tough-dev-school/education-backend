@@ -28,7 +28,7 @@ def only_one_or_zero_is_set(*fields: str) -> Q:
         constraints.append(constraint)
 
     all_fields_can_empty_constraint = Q(
-        **{f'{empty_field}__isnull': True for empty_field in fields},
+        **{f'{field}__isnull': True for field in fields},
     )
 
     constraints.append(all_fields_can_empty_constraint)
