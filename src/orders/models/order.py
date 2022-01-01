@@ -1,9 +1,11 @@
 from typing import Iterable, Optional
 
+import operator
 from django.db.models import CheckConstraint, Q, QuerySet
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
+from functools import reduce
 
 from app.models import TimestampedModel, models
 from orders.fields import ItemField
@@ -12,6 +14,26 @@ from products.models import Product
 
 class UnknownItemException(Exception):
     pass
+
+
+def only_one_or_zero_is_set(*fields: str) -> Q:
+    constraints = []
+    for field in fields:
+        constraint = Q(
+            **{
+                f'{field}__isnull': False,
+                **{f'{empty_field}__isnull': True for empty_field in fields if empty_field != field},
+            },
+        )
+        constraints.append(constraint)
+
+    all_fields_can_empty_constraint = Q(
+        **{f'{empty_field}__isnull': True for empty_field in fields},
+    )
+
+    constraints.append(all_fields_can_empty_constraint)
+
+    return Q(reduce(operator.or_, constraints))
 
 
 class OrderQuerySet(QuerySet):
@@ -64,7 +86,10 @@ class Order(TimestampedModel):
         ]
 
         constraints = [
-            CheckConstraint(check=Q(course__isnull=True, record__isnull=True, bundle__isnull=False) | Q(course__isnull=False, record__isnull=True, bundle__isnull=True) | Q(course__isnull=True, record__isnull=False, bundle__isnull=True) | Q(course__isnull=True, record__isnull=True, bundle__isnull=True), name='you_can_attach_only_one_or_zero_product')  # noqa
+            CheckConstraint(
+                check=only_one_or_zero_is_set('course', 'record', 'bundle'),
+                name='only_one_or_zero_item_type_is_allowed',
+            ),
         ]
 
     def __str__(self) -> str:
