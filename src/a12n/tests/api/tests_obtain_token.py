@@ -58,6 +58,7 @@ def test_getting_token_is_a_token(api, get_token):
     payload = decode_jwt_without_validation(got['token'])
 
     assert payload['iss'] == 'education-backend'
+    assert payload['user_public_id'] == str(api.user.uuid)
 
 
 def test_getting_token_with_incorrect_password(api, get_token):
