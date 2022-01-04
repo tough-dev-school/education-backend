@@ -1,11 +1,13 @@
 from typing import Optional
 
 import contextlib
+import operator
 from behaviors.behaviors import Timestamped  # type: ignore
 from copy import copy
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.functional import cached_property
+from functools import reduce
 
 __all__ = [
     'models',
@@ -109,3 +111,24 @@ class EmailLogEntry(TimestampedModel):
     class Meta:
         index_together = ['email', 'template_id']
         unique_together = ['email', 'template_id']
+
+
+def only_one_or_zero_is_set(*fields: str) -> models.Q:
+    """Generate a query for CheckConstraint that allows to set only one (or none of) given fields"""
+    constraints = []
+    for field in fields:
+        constraint = models.Q(
+            **{
+                f'{field}__isnull': False,
+                **{f'{empty_field}__isnull': True for empty_field in fields if empty_field != field},
+            },
+        )
+        constraints.append(constraint)
+
+    all_fields_can_empty_constraint = models.Q(
+        **{f'{field}__isnull': True for field in fields},
+    )
+
+    constraints.append(all_fields_can_empty_constraint)
+
+    return models.Q(reduce(operator.or_, constraints))

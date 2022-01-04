@@ -1,11 +1,11 @@
 from typing import Iterable, Optional
 
-from django.db.models import QuerySet
+from django.db.models import CheckConstraint, QuerySet
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
-from app.models import TimestampedModel, models
+from app.models import TimestampedModel, models, only_one_or_zero_is_set
 from orders.fields import ItemField
 from products.models import Product
 
@@ -61,6 +61,13 @@ class Order(TimestampedModel):
         permissions = [
             ('pay_order', _('May mark orders as paid')),
             ('unpay_order', _('May mark orders as unpaid')),
+        ]
+
+        constraints = [
+            CheckConstraint(
+                check=only_one_or_zero_is_set('course', 'record', 'bundle'),
+                name='only_one_or_zero_item_type_is_allowed',
+            ),
         ]
 
     def __str__(self) -> str:
