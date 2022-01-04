@@ -114,6 +114,7 @@ class EmailLogEntry(TimestampedModel):
 
 
 def only_one_or_zero_is_set(*fields: str) -> models.Q:
+  """Generate a query for CheckConstraint that allows to set only one (or none of) given fields"""
     constraints = []
     for field in fields:
         constraint = models.Q(
