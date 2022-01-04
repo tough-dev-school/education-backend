@@ -16,5 +16,11 @@ JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': timedelta(days=14),
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=21),
     'JWT_ALLOW_REFRESH': True,
+    'JWT_ISSUER': 'education-backend',
+    'JWT_ALGORITHM': 'RS256',
+    'JWT_PRIVATE_KEY': env.str('JWT_PRIVATE_KEY', multiline=True),
+    'JWT_PUBLIC_KEY': env.str('JWT_PUBLIC_KEY', multiline=True),
+    'JWT_PAYLOAD_HANDLER': 'a12n.jwt.payload_handler',
 }
+
 DANGEROUSLY_MAKE_ONE_TIME_PASSWORDLESS_TOKEN_MULTI_PASS = env('DANGEROUSLY_MAKE_ONE_TIME_PASSWORDLESS_TOKEN_MULTI_PASS', cast=bool, default=False)

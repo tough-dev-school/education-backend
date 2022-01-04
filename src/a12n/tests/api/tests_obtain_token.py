@@ -1,5 +1,6 @@
 import pytest
 
+from a12n.jwt import decode_jwt_without_validation
 from users.services import UserCreator
 
 pytestmark = pytest.mark.django_db
@@ -51,10 +52,13 @@ def test_getting_token_case_sensitive_username(get_token, mixer):
     assert 'non_field_errors' in got2
 
 
-def test_getting_token_is_token(api, get_token):
+def test_getting_token_is_a_token(api, get_token):
     got = get_token(api.user.username, api.password)
 
-    assert len(got['token']) > 32  # every stuff that is long enough, may be a JWT token
+    payload = decode_jwt_without_validation(got['token'])
+
+    assert payload['iss'] == 'education-backend'
+    assert payload['user_public_id'] == str(api.user.uuid)
 
 
 def test_getting_token_with_incorrect_password(api, get_token):
