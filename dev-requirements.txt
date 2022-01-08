@@ -4,6 +4,10 @@
 #
 #    pip-compile dev-requirements.in
 #
+anyio==3.4.0
+    # via
+    #   -c requirements.txt
+    #   httpcore
 appnope==0.1.2
     # via ipython
 asgiref==3.4.1
@@ -27,10 +31,13 @@ botocore-stubs==1.23.26
 certifi==2020.12.5
     # via
     #   -c requirements.txt
+    #   httpcore
+    #   httpx
     #   requests
 charset-normalizer==2.0.9
     # via
     #   -c requirements.txt
+    #   httpx
     #   requests
 cognitive-complexity==1.2.0
     # via flake8-cognitive-complexity
@@ -133,10 +140,24 @@ freezegun==1.1.0
     # via
     #   -r dev-requirements.in
     #   pytest-freezegun
+h11==0.12.0
+    # via
+    #   -c requirements.txt
+    #   httpcore
+httpcore==0.14.4
+    # via
+    #   -c requirements.txt
+    #   httpx
+httpx==0.21.2
+    # via
+    #   -c requirements.txt
+    #   pytest-httpx
 idna==3.3
     # via
     #   -c requirements.txt
+    #   anyio
     #   requests
+    #   rfc3986
 importlib-metadata==4.8.2
     # via
     #   -c requirements.txt
@@ -213,6 +234,7 @@ pytest==6.2.5
     #   pytest-env
     #   pytest-forked
     #   pytest-freezegun
+    #   pytest-httpx
     #   pytest-mock
     #   pytest-randomly
     #   pytest-repeat
@@ -228,6 +250,8 @@ pytest-env==0.6.2
 pytest-forked==1.3.0
     # via pytest-xdist
 pytest-freezegun==0.4.2
+    # via -r dev-requirements.in
+pytest-httpx==0.17.3
     # via -r dev-requirements.in
 pytest-mock==3.6.1
     # via -r dev-requirements.in
@@ -254,12 +278,22 @@ requests==2.26.0
     #   requests-mock
 requests-mock==1.9.3
     # via -r dev-requirements.in
+rfc3986[idna2008]==1.5.0
+    # via
+    #   -c requirements.txt
+    #   httpx
 six==1.16.0
     # via
     #   -c requirements.txt
     #   flake8-print
     #   python-dateutil
     #   requests-mock
+sniffio==1.2.0
+    # via
+    #   -c requirements.txt
+    #   anyio
+    #   httpcore
+    #   httpx
 sqlparse==0.4.2
     # via
     #   -c requirements.txt

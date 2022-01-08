@@ -11,6 +11,7 @@ INSTALLED_APPS = [
     'a12n',
     'homework',
     'diplomas',
+    'notion',
 
     'markdownx',
     'corsheaders',
