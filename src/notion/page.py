@@ -12,6 +12,8 @@ class NotionPage:
 
     @classmethod
     def from_api_response(cls, api_response: dict) -> 'NotionPage':
+        assert api_response['__version__'] == '3', 'This module works only with v3 API'
+
         return cls(
             id=api_response['cursor']['stack'][0][0]['id'],
             blocks=NotionBlockList.from_api_response(api_response['recordMap']['block']),
