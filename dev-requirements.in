@@ -11,6 +11,7 @@ pytest-mock
 pytest-randomly
 pytest-repeat
 pytest-xdist
+pytest-httpx
 
 
 freezegun

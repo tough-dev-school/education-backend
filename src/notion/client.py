@@ -1,4 +1,5 @@
 import httpx
+from collections.abc import Iterable
 from django.conf import settings
 
 from notion.block import NotionBlockList
@@ -11,6 +12,27 @@ class NotionError(Exception):
 
 
 class NotionClient:
+    def __init__(self) -> None:
+        self.attempted_blocks: list[BlockId] = list()
+
+    def fetch_page_recursively(self, page_id: str) -> NotionPage:
+        """Fetch page recursively enriching the block list"""
+        self.attempted_blocks = list()
+        page = self.fetch_page(page_id)
+
+        while True:
+            page_blocks = page.blocks.get_underlying_block_ids()
+
+            new_blocks_to_fetch = [block for block in page_blocks if block not in self.attempted_blocks]
+
+            if len(new_blocks_to_fetch) == 0:
+                break
+
+            self.attempted_blocks += new_blocks_to_fetch  # save blocks that we already have tried to fetch, to make sure we will not request them again even if notion does not return them
+            page.blocks += self.fetch_blocks(new_blocks_to_fetch)
+
+        return page
+
     def fetch_page(self, page_id: str) -> NotionPage:
         """Fetch notion page"""
         response = self.fetch(
@@ -26,7 +48,7 @@ class NotionClient:
 
         return NotionPage.from_api_response(response)
 
-    def fetch_blocks(self, blocks: list[BlockId]) -> NotionBlockList:
+    def fetch_blocks(self, blocks: Iterable[BlockId]) -> NotionBlockList:
         """Fetch a list of notion blocks"""
         response = self.fetch(
             resource='syncRecordValues',

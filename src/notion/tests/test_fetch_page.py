@@ -7,25 +7,6 @@ def _ok(httpx_mock: HTTPXMock):
     httpx_mock.add_response(
         url='https://www.notion.so/api/v3/loadCachedPageChunk',
         json={
-            '__version__': '3',
-            'cursor': {
-                'stack': [
-                    [
-                        {
-                            'table': 'block',
-                            'id': '0cb348b3-a2d2-4c05-bc94-4e2302fa553c',
-                            'index': 28,
-                        },
-                    ],
-                    [
-                        {
-                            'table': 'block',
-                            'id': '81217fb2-7f13-4dbb-8160-175fe69dfe76',
-                            'index': 0,
-                        },
-                    ],
-                ],
-            },
             'recordMap': {
                 '__version__': 3,
                 'block': {
