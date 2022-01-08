@@ -35,7 +35,7 @@ class NotionBlockList(UserList[NotionBlock]):
         return instance
 
     def get_underlying_block_ids(self) -> set[BlockId]:
-        block_ids: set[BlockId] = set()
+        block_ids: set[BlockId] = set(self.first_page_block.content) if self.first_page_block else set()
 
         for block in self.blocks_with_underliying_blocks():
             for block_id in block.content:
@@ -53,3 +53,10 @@ class NotionBlockList(UserList[NotionBlock]):
             if block.type != 'page':
                 if len(block.content) > 1:
                     yield block
+
+    @property
+    def first_page_block(self) -> Optional[NotionBlock]:
+        """We assume that first block with type == 'page' is the root block, that has some unlderlying blocks we should fetch"""
+        for block in self.data:
+            if block.type == 'page' and len(block.content) > 0:
+                return block
