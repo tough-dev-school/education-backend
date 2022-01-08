@@ -12,11 +12,13 @@ class NotionError(Exception):
 
 
 class NotionClient:
+    """Client for private notion.so API, inspired by https://github.com/splitbee/notion-api-worker
+    """
     def __init__(self) -> None:
         self.attempted_blocks: list[BlockId] = list()
 
     def fetch_page_recursively(self, page_id: str) -> NotionPage:
-        """Fetch page recursively enriching the block list"""
+        """Fetch page with all underliying non-page blocks"""
         self.attempted_blocks = list()
         page = self.fetch_page(page_id)
 
