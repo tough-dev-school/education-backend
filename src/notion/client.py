@@ -38,7 +38,7 @@ class NotionClient:
     def fetch_page(self, page_id: str) -> NotionPage:
         """Fetch notion page"""
         response = self.fetch(
-            resource='loadCachedPageChunk',
+            resource='loadPageChunk',
             request_body={
                 'page': {'id': self.id_to_uuid(page_id)},
                 'limit': 100,
