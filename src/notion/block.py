@@ -26,6 +26,14 @@ class NotionBlock:
 
 
 class NotionBlockList(UserList[NotionBlock]):
+    @classmethod
+    def from_api_response(cls, api_response: dict[str, dict]) -> 'NotionBlockList':
+        instance = cls()
+        for block_id, data in api_response.items():
+            instance.append(NotionBlock(id=block_id, data=data))
+
+        return instance
+
     def get_underlying_block_ids(self) -> set[BlockId]:
         block_ids: set[BlockId] = set()
 
