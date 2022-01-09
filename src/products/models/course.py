@@ -8,7 +8,14 @@ from products.models.base import Shippable
 from users.models import User
 
 
+class CourseQuerySet(QuerySet):
+    def for_lms(self) -> QuerySet['Course']:
+        return self.filter(display_in_lms=True)
+
+
 class Course(Shippable):
+    objects = models.Manager.from_queryset(CourseQuerySet)()
+
     name_genitive = models.CharField(_('Genitive name'), max_length=255, help_text='«мастер-класса о TDD». К примеру для записей.')
     clickmeeting_room_url = models.URLField(_('Clickmeeting room URL'), null=True, blank=True, help_text=_('If set, every user who purcashes this course gets invited'))
     zoomus_webinar_id = models.CharField(_('Zoom.us webinar ID'), max_length=255, null=True, blank=True, help_text=_('If set, every user who purcashes this course gets invited'))
@@ -16,6 +23,7 @@ class Course(Shippable):
     welcome_letter_template_id = models.CharField(_('Welcome letter template id'), max_length=255, blank=True, null=True, help_text=_('Will be sent upon purchase if set'))
     gift_welcome_letter_template_id = models.CharField(_('Special welcome letter template id for gifts'), max_length=255, blank=True, null=True, help_text=_('If not set, common welcome letter will be used'))
     mailchimp_list_id = models.CharField(_('Mailchimp audience id'), max_length=32, blank=True, null=True, help_text=_('Get it from audience settings'))
+    display_in_lms = models.BooleanField(_('Display in LMS'), default=True, help_text=_('If disabled will not be shown in LMS'))
 
     class Meta:
         ordering = ['-id']
