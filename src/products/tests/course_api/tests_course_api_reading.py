@@ -12,16 +12,6 @@ def course(mixer):
     'name',
     'slug',
 ])
-def test_list(api, course, field):
-    got = api.get('/api/v2/courses/')['results']
-
-    assert got[0][field] == getattr(course, field)
-
-
-@pytest.mark.parametrize('field', [
-    'name',
-    'slug',
-])
 def test_retrieve(api, course, field):
     got = api.get(f'/api/v2/courses/{course.slug}/')
 

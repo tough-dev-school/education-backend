@@ -1,8 +1,8 @@
-from typing import Iterable, Optional
+from typing import Optional
 
 from django.http import HttpResponseRedirect
 from rest_framework.decorators import action
-from rest_framework.exceptions import ValidationError
+from rest_framework.exceptions import MethodNotAllowed, ValidationError
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
@@ -17,13 +17,17 @@ from users.services import UserCreator
 
 class PurchaseViewSet(ReadOnlyModelViewSet):
     """Abstract viewset for purchasable items"""
+
+    def list(self, request, *args, **kwargs):
+        raise MethodNotAllowed('list')
+
     @property
     def item(self):
         return self.get_object()
 
     @property
-    def tags(self) -> Iterable[str]:
-        return [self.item.slug]
+    def tags(self) -> tuple[str]:
+        return (self.item.slug)
 
     @action(methods=['POST'], detail=True)
     def purchase(self, request, pk=None, **kwargs):
@@ -99,7 +103,7 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
 
         return order_creator()
 
-    def _create_user(self, name: str, email: str, subscribe: bool = False, tags: Optional[Iterable[str]] = None) -> User:
+    def _create_user(self, name: str, email: str, subscribe: bool = False, tags: Optional[tuple[str]] = None) -> User:
         return UserCreator(
             name=name,
             email=email.strip(),
