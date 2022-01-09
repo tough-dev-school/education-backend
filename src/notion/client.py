@@ -3,6 +3,7 @@ from collections.abc import Iterable
 from django.conf import settings
 
 from notion.block import NotionBlockList
+from notion.helpers import id_to_uuid
 from notion.page import NotionPage
 from notion.types import BlockId
 
@@ -40,7 +41,7 @@ class NotionClient:
         response = self.fetch(
             resource='loadPageChunk',
             request_body={
-                'page': {'id': self.id_to_uuid(page_id)},
+                'page': {'id': id_to_uuid(page_id)},
                 'limit': 100,
                 'cursor': {'stack': []},
                 'chunkNumber': 0,
@@ -75,8 +76,3 @@ class NotionClient:
             raise NotionError(f'HTTP Error {response.status_code} fetching notion resouce {resource}: {response.text}')
 
         return response.json()
-
-    @staticmethod
-    def id_to_uuid(id: str) -> str:
-        normalized = id.replace('-', '')
-        return f'{normalized[0:8]}-{normalized[8:12]}-{normalized[12:16]}-{normalized[16:20]}-{normalized[20:]}'
