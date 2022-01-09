@@ -1,5 +1,7 @@
+from typing import Optional
+
 from django.db.models import QuerySet
-from django.shortcuts import get_object_or_404
+from rest_framework.exceptions import NotFound
 from rest_framework.request import Request
 from rest_framework.response import Response
 
@@ -18,6 +20,9 @@ class NotionMaterialView(AuthenticatedAPIView):
     def get(self, request: Request, *args, **kwargs) -> Response:
         material = self.get_material()
 
+        if material is None:
+            raise NotFound()
+
         page = self.notion.fetch_page_recursively(material.page_id)
 
         return Response(
@@ -25,9 +30,10 @@ class NotionMaterialView(AuthenticatedAPIView):
             status=200,
         )
 
-    def get_material(self) -> Material:
+    def get_material(self) -> Optional[Material]:
         queryset = self.get_queryset()
-        return get_object_or_404(queryset, page_id=self.page_id)
+
+        return queryset.filter(page_id=self.page_id).first()
 
     def get_queryset(self) -> QuerySet[Material]:
         if self.request.user.is_superuser or self.request.user.has_perm('notion.see_all_materials'):
