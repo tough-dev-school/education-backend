@@ -44,7 +44,7 @@ def test_subscription_tags(call_purchase, subscribe):
 
     placed = get_order()
 
-    subscribe.assert_called_once_with(user_id=placed.user.pk, tags=['home-video'])
+    subscribe.assert_called_once_with(user_id=placed.user.pk, tags=('home-video'))
 
 
 def test_by_default_user_is_not_subscribed(call_purchase):

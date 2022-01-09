@@ -8,14 +8,6 @@ def record(mixer):
     return mixer.blend('products.Record', price='500', old_price='500.95')
 
 
-def test_list(api, record):
-    got = api.get('/api/v2/records/')['results']
-
-    assert got[0]['price'] == '500'
-    assert got[0]['old_price'] == '500,95'
-    assert got[0]['formatted_price'] == '5̶0̶0̶,̶9̶5̶ 500 ₽'
-
-
 def test_retrieve(api, record):
     got = api.get(f'/api/v2/records/{record.slug}/')
 
