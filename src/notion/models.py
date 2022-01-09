@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.db.models import QuerySet, UniqueConstraint
 from django.utils.translation import gettext_lazy as _
+from urllib.parse import urljoin
 
 from app.models import TimestampedModel, models
 
@@ -29,3 +31,6 @@ class Material(TimestampedModel):
 
     def __str__(self) -> str:
         return f'{self.course} - {self.title}'
+
+    def get_absolute_url(self) -> str:
+        return urljoin(settings.FRONTEND_URL, f'materials/{self.page_id}/')
