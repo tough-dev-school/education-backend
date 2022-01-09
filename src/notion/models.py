@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.db.models import QuerySet, UniqueConstraint
 from django.utils.translation import gettext_lazy as _
+from urllib.parse import urljoin
 
 from app.models import TimestampedModel, models
 
@@ -12,6 +14,7 @@ class MaterialQuerySet(QuerySet):
 class Material(TimestampedModel):
     objects = models.Manager.from_queryset(MaterialQuerySet)()
 
+    title = models.CharField(_('Page title'), max_length=128, blank=True, help_text=_('Will be fetched automatically if empty'))
     course = models.ForeignKey('products.Course', on_delete=models.CASCADE)
     page_id = models.CharField(_('Notion page id'), max_length=64, db_index=True, help_text=_('Paste it from notion address bar'))
     active = models.BooleanField(_('Active'), default=True)
@@ -25,3 +28,9 @@ class Material(TimestampedModel):
         permissions = [
             ('see_all_materials', _('May access materials from every course')),
         ]
+
+    def __str__(self) -> str:
+        return f'{self.course} - {self.title}'
+
+    def get_absolute_url(self) -> str:
+        return urljoin(settings.FRONTEND_URL, f'materials/{self.page_id}/')
