@@ -7,6 +7,7 @@ from rest_framework.response import Response
 
 from app.views import AuthenticatedAPIView
 from notion.api.serializers import NotionPageSerializer
+from notion.api.throttling import NotionThrottle
 from notion.client import NotionClient
 from notion.helpers import uuid_to_id
 from notion.models import Material
@@ -14,6 +15,8 @@ from studying.models import Study
 
 
 class NotionMaterialView(AuthenticatedAPIView):
+    throttle_classes = [NotionThrottle]
+
     @method_decorator(cache_page(60 * 5))
     def get(self, request: Request, *args, **kwargs) -> Response:
         material = self.get_material()
