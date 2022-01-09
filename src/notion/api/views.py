@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from app.views import AuthenticatedAPIView
 from notion.api.serializers import NotionPageSerializer
 from notion.client import NotionClient
-from notion.helpers import id_to_uuid
+from notion.helpers import uuid_to_id
 from notion.models import Material
 from studying.models import Study
 
@@ -39,4 +39,4 @@ class NotionMaterialView(AuthenticatedAPIView):
 
     @property
     def page_id(self) -> str:
-        return id_to_uuid(self.kwargs['page_id'])
+        return uuid_to_id(self.kwargs['page_id'])

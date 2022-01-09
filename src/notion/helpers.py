@@ -16,7 +16,11 @@ def page_url_to_id(page_url: str) -> BlockId:
     return page_id.split('-')[-1]
 
 
-def id_to_uuid(id: BlockId) -> str:
+def id_to_uuid(id: BlockId) -> BlockId:
     """Convert notion page id to UUID4"""
-    normalized = id.replace('-', '')
+    normalized = uuid_to_id(id)
     return f'{normalized[0:8]}-{normalized[8:12]}-{normalized[12:16]}-{normalized[16:20]}-{normalized[20:]}'
+
+
+def uuid_to_id(uuid: BlockId) -> BlockId:
+    return uuid.replace('-', '')
