@@ -84,6 +84,8 @@ django-bulk-update==2.2.0
     #   django-hattori
 django-cachalot==2.4.5
     # via -r requirements.in
+django-cache-memoize==0.1.10
+    # via -r requirements.in
 django-cors-headers==3.10.1
     # via -r requirements.in
 django-debug-toolbar==3.2.4

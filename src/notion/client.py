@@ -1,4 +1,5 @@
 import httpx
+from cache_memoize import cache_memoize  # type: ignore
 from collections.abc import Iterable
 from django.conf import settings
 
@@ -18,6 +19,7 @@ class NotionClient:
     def __init__(self) -> None:
         self.attempted_blocks: list[BlockId] = list()
 
+    @cache_memoize(5 * 60)
     def fetch_page_recursively(self, page_id: str) -> NotionPage:
         """Fetch page with all underliying non-page blocks"""
         self.attempted_blocks = list()
@@ -36,6 +38,7 @@ class NotionClient:
 
         return page
 
+    @cache_memoize(5 * 60)
     def fetch_page(self, page_id: str) -> NotionPage:
         """Fetch notion page"""
         response = self.fetch(
@@ -51,6 +54,7 @@ class NotionClient:
 
         return NotionPage.from_api_response(response)
 
+    @cache_memoize(5 * 60)
     def fetch_blocks(self, blocks: Iterable[BlockId]) -> NotionBlockList:
         """Fetch a list of notion blocks"""
         response = self.fetch(

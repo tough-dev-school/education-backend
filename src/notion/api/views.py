@@ -1,7 +1,5 @@
 from django.db.models import QuerySet
 from django.shortcuts import get_object_or_404
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from rest_framework.request import Request
 from rest_framework.response import Response
 
@@ -17,7 +15,6 @@ from studying.models import Study
 class NotionMaterialView(AuthenticatedAPIView):
     throttle_classes = [NotionThrottle]
 
-    @method_decorator(cache_page(60 * 5))
     def get(self, request: Request, *args, **kwargs) -> Response:
         material = self.get_material()
 
