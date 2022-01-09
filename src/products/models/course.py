@@ -25,7 +25,6 @@ class Course(Shippable):
     mailchimp_list_id = models.CharField(_('Mailchimp audience id'), max_length=32, blank=True, null=True, help_text=_('Get it from audience settings'))
     display_in_lms = models.BooleanField(_('Display in LMS'), default=True, help_text=_('If disabled will not be shown in LMS'))
 
-
     class Meta:
         ordering = ['-id']
         verbose_name = _('Course')
