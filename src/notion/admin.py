@@ -37,6 +37,7 @@ class NotionMaterialAdmin(ModelAdmin):
         'course',
         'page_id',
     ]
+    list_display_links = list_display
     list_filter = [
         'course',
     ]
