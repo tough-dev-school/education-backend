@@ -16,4 +16,4 @@ class PurchasedCoursesView(ListAPIView):
     def get_queryset(self) -> QuerySet[Course]:
         studies = Study.objects.filter(student=self.request.user)
 
-        return Course.objects.filter(id__in=studies.values('course'))
+        return Course.objects.for_lms().filter(id__in=studies.values('course'))
