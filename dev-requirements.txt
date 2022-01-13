@@ -47,7 +47,7 @@ coverage==5.5
     # via pytest-cov
 decorator==5.1.0
     # via ipython
-django==3.2.11
+django==4.0.1
     # via
     #   -c requirements.txt
     #   django-stubs
