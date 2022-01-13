@@ -52,7 +52,7 @@ click-repl==0.2.0
     # via celery
 cmarkgfm==0.6.0
     # via -r requirements.in
-cryptography==3.4.8
+cryptography==36.0.1
     # via pyjwt
 django==3.2.11
     # via
