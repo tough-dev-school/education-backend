@@ -1,9 +1,11 @@
 from typing import Optional
 
 import uuid
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Permission
 from django.db.models import TextChoices
 from django.utils.translation import gettext_lazy as _
+from urllib.parse import urljoin
 
 from app.models import models
 from app.types import Language
@@ -76,3 +78,6 @@ class Student(User):
         proxy = True
         verbose_name = _('Student')
         verbose_name_plural = _('Students')
+
+    def get_absolute_url(self) -> str:
+        return urljoin(settings.FRONTEND_URL, f'/auth/as/{self.pk}/')

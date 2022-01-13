@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-09 18:37+0300\n"
+"POT-Creation-Date: 2022-01-13 11:58+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: diplomas/admin.py:44 users/models.py:77
+#: diplomas/admin.py:44 users/models.py:79
 msgid "Student"
 msgstr "Студент"
 
@@ -180,35 +180,35 @@ msgstr "Почтовая кампания"
 msgid "Email Lead Magnet Campaigns"
 msgstr "Почтовые кампании"
 
-#: notion/models.py:15
+#: notion/models.py:17
 msgid "Page title"
 msgstr "Заголовок страницы"
 
-#: notion/models.py:15
+#: notion/models.py:17
 msgid "Will be fetched automatically if empty"
 msgstr "Если не указать — попробуем скачать из ноушена"
 
-#: notion/models.py:17
+#: notion/models.py:19
 msgid "Notion page id"
 msgstr "ID страницы в ноушене"
 
-#: notion/models.py:17
+#: notion/models.py:19
 msgid "Paste it from notion address bar"
 msgstr "Скопируйте адрес из строки браузера"
 
-#: notion/models.py:18 orders/models/promocode.py:35
+#: notion/models.py:20 orders/models/promocode.py:35
 msgid "Active"
 msgstr "Включено"
 
-#: notion/models.py:21
+#: notion/models.py:23
 msgid "Notion material"
 msgstr "Материал"
 
-#: notion/models.py:22
+#: notion/models.py:24
 msgid "Notion materials"
 msgstr "Материалы"
 
-#: notion/models.py:27
+#: notion/models.py:29
 msgid "May access materials from every course"
 msgstr "Видит страницы ноушена от всех курсов"
 
@@ -240,29 +240,33 @@ msgstr "Засчитать домашку"
 msgid "Disaccept homework"
 msgstr "Не засчитать домашку"
 
-#: orders/admin/orders/admin.py:64 orders/admin/orders/admin.py:86
+#: orders/admin/orders/admin.py:67 orders/admin/orders/admin.py:89
 msgid "Item"
 msgstr "Товар"
 
-#: orders/admin/orders/admin.py:78 orders/models/order.py:33
+#: orders/admin/orders/admin.py:81 orders/models/order.py:33
 msgid "User"
 msgstr "Юзер"
 
-#: orders/admin/orders/admin.py:90
+#: orders/admin/orders/admin.py:93
 msgid "Is paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders/admin.py:93 orders/admin/orders/filters.py:16
+#: orders/admin/orders/admin.py:96 orders/admin/orders/filters.py:16
 msgid "Paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders/admin.py:96 orders/admin/orders/filters.py:17
+#: orders/admin/orders/admin.py:99 orders/admin/orders/filters.py:17
 msgid "Shipped without payment"
 msgstr "Ждем денег"
 
-#: orders/admin/orders/admin.py:98 orders/admin/orders/filters.py:15
+#: orders/admin/orders/admin.py:101 orders/admin/orders/filters.py:15
 msgid "Not paid"
 msgstr "Не оплачен"
+
+#: orders/admin/orders/admin.py:103
+msgid "Login as customer"
+msgstr "Зайти от имени студента"
 
 #: orders/admin/orders/filters.py:10
 msgctxt "orders"
@@ -566,31 +570,31 @@ msgstr "Имя на английском"
 msgid "Users"
 msgstr "Юзеры"
 
-#: users/models.py:14
+#: users/models.py:16
 msgid "Male"
 msgstr "Мужчина"
 
-#: users/models.py:15
+#: users/models.py:17
 msgid "Female"
 msgstr "Женщина"
 
-#: users/models.py:17
+#: users/models.py:19
 msgid "Subscribed to newsletter"
 msgstr "Подписан на новости"
 
-#: users/models.py:18
+#: users/models.py:20
 msgid "first name in english"
 msgstr "Имя на английском"
 
-#: users/models.py:19
+#: users/models.py:21
 msgid "last name in english"
 msgstr "Фамилия на английском"
 
-#: users/models.py:22
+#: users/models.py:24
 msgid "Gender"
 msgstr "Пол"
 
-#: users/models.py:78
+#: users/models.py:80
 msgid "Students"
 msgstr "Студенты"
 
