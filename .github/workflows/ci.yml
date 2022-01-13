@@ -14,13 +14,13 @@ jobs:
 
       - uses: actions/setup-python@v2
         with:
-          python-version: "3.9.7"
+          python-version: "3.9.9"
 
       - uses: actions/cache@v2
         with:
           path: |
             venv
-          key: ${{ runner.os }}-venv-v2-${{ hashFiles('**/*requirements.txt') }}
+          key: ${{ runner.os }}-venv-v3-${{ hashFiles('**/*requirements.txt') }}
 
       - name: Install dependencies
         if: steps.cache-primes.outputs.cache-hit != 'true'
@@ -60,13 +60,13 @@ jobs:
 
       - uses: actions/setup-python@v2
         with:
-          python-version: "3.9.7"
+          python-version: "3.9.9"
 
       - uses: actions/cache@v2
         with:
           path: |
             venv
-          key: ${{ runner.os }}-venv-v2-${{ hashFiles('**/*requirements.txt') }}
+          key: ${{ runner.os }}-venv-v3-${{ hashFiles('**/*requirements.txt') }}
 
       - name: Install locale stuff
         run: sudo apt-get --no-install-recommends install -y locales-all gettext
