@@ -8,8 +8,6 @@ anyio==3.4.0
     # via
     #   -c requirements.txt
     #   httpcore
-appnope==0.1.2
-    # via ipython
 asgiref==3.4.1
     # via
     #   -c requirements.txt
@@ -49,7 +47,7 @@ coverage==5.5
     # via pytest-cov
 decorator==5.1.0
     # via ipython
-django==3.2.10
+django==3.2.11
     # via
     #   -c requirements.txt
     #   django-stubs
