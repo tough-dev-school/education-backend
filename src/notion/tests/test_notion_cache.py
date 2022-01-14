@@ -2,6 +2,10 @@ import pytest
 from django.core.cache import cache
 from pytest_httpx import HTTPXMock
 
+pytestmark = [
+    pytest.mark.single_thread,
+]
+
 
 @pytest.fixture
 def assert_all_responses_were_requested() -> bool:
@@ -38,21 +42,21 @@ def _ok(httpx_mock: HTTPXMock):
 
 
 def test_request_is_done_for_the_first_time(notion, httpx_mock: HTTPXMock):
-    notion.fetch_page('0cb348b3a2d24c05bc944e2302fa553')
+    notion.fetch_page('0cb348b3a2d24c05bc944e2302fa55')
 
     assert len(httpx_mock.get_requests()) == 1
 
 
 def test_request_is_cached(notion, httpx_mock: HTTPXMock):
-    notion.fetch_page('0cb348b3a2d24c05bc944e2302fa553')
-    notion.fetch_page('0cb348b3a2d24c05bc944e2302fa553')
+    notion.fetch_page('0cb348b3a2d24c05bc944e2302fa56')
+    notion.fetch_page('0cb348b3a2d24c05bc944e2302fa56')
 
     assert len(httpx_mock.get_requests()) == 1
 
 
 def test_request_is_cached_in_django_cache(notion, httpx_mock: HTTPXMock):
-    notion.fetch_page('0cb348b3a2d24c05bc944e2302fa553')
+    notion.fetch_page('0cb348b3a2d24c05bc944e2302fa57')
     cache.clear()
-    notion.fetch_page('0cb348b3a2d24c05bc944e2302fa553')
+    notion.fetch_page('0cb348b3a2d24c05bc944e2302fa57')
 
     assert len(httpx_mock.get_requests()) == 2

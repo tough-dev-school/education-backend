@@ -78,7 +78,7 @@ jobs:
         run: |
           . venv/bin/activate
           cp src/app/.env.ci src/app/.env
-          make coverage
+          make test
 
       - name: Upload code coverage to codeclimate
         uses: paambaati/codeclimate-action@v3.0.0
