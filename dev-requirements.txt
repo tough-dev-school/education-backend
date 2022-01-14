@@ -146,7 +146,7 @@ httpcore==0.14.4
     # via
     #   -c requirements.txt
     #   httpx
-httpx==0.21.2
+httpx==0.21.3
     # via
     #   -c requirements.txt
     #   pytest-httpx
