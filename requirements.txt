@@ -22,7 +22,7 @@ botocore==1.22.12
     # via
     #   boto3
     #   s3transfer
-celery==5.2.2
+celery==5.2.3
     # via -r requirements.in
 certifi==2020.12.5
     # via
