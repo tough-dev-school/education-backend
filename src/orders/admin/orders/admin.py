@@ -1,4 +1,5 @@
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
@@ -6,6 +7,7 @@ from orders.admin.orders import actions
 from orders.admin.orders.filters import OrderStatusFilter
 from orders.admin.orders.forms import OrderAddForm, OrderChangeForm
 from orders.models import Order
+from users.models import Student
 
 
 @admin.register(Order)
@@ -48,6 +50,7 @@ class OrderAdmin(ModelAdmin):
     ]
     readonly_fields = [
         'author',
+        'login_as',
         'paid',
         'shipped',
         'unpaid',
@@ -57,7 +60,7 @@ class OrderAdmin(ModelAdmin):
         (
             None,
             {
-                'fields': ['user', 'price', 'email', 'author', 'paid', 'shipped', 'unpaid'],
+                'fields': ['user', 'price', 'email', 'author', 'login_as', 'paid', 'shipped', 'unpaid'],
             },
         ),
         (
@@ -96,6 +99,16 @@ class OrderAdmin(ModelAdmin):
             return _('Shipped without payment')
 
         return _('Not paid')
+
+    @admin.display(description=_('Login as customer'))
+    @mark_safe
+    def login_as(self, obj: Order) -> str:
+        if obj.pk is None:
+            return '—'
+
+        login_as_url = Student.objects.get(pk=obj.user_id).get_absolute_url()
+
+        return f'<a href="{login_as_url}" target="_blank">Зайти от имени студента</a>'
 
     def has_pay_permission(self, request):
         return request.user.has_perm('orders.pay_order')

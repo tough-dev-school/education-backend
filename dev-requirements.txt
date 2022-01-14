@@ -8,8 +8,6 @@ anyio==3.4.0
     # via
     #   -c requirements.txt
     #   httpcore
-appnope==0.1.2
-    # via ipython
 asgiref==3.4.1
     # via
     #   -c requirements.txt
@@ -24,9 +22,9 @@ attrs==20.3.0
     #   pytest
 backcall==0.2.0
     # via ipython
-boto3-stubs==1.20.31
+boto3-stubs==1.20.35.post1
     # via -r dev-requirements.in
-botocore-stubs==1.23.26
+botocore-stubs==1.23.35.post1
     # via boto3-stubs
 certifi==2020.12.5
     # via
@@ -34,7 +32,7 @@ certifi==2020.12.5
     #   httpcore
     #   httpx
     #   requests
-charset-normalizer==2.0.9
+charset-normalizer==2.0.10
     # via
     #   -c requirements.txt
     #   httpx
@@ -47,9 +45,9 @@ coreschema==0.0.4
     # via coreapi
 coverage==5.5
     # via pytest-cov
-decorator==5.1.0
+decorator==5.1.1
     # via ipython
-django==3.2.10
+django==3.2.11
     # via
     #   -c requirements.txt
     #   django-stubs
@@ -126,7 +124,7 @@ flake8-pytest-style==1.5.1
     # via -r dev-requirements.in
 flake8-quotes==3.3.1
     # via -r dev-requirements.in
-flake8-simplify==0.14.2
+flake8-simplify==0.14.5
     # via -r dev-requirements.in
 flake8-todo==0.7
     # via -r dev-requirements.in
@@ -148,7 +146,7 @@ httpcore==0.14.4
     # via
     #   -c requirements.txt
     #   httpx
-httpx==0.21.2
+httpx==0.21.3
     # via
     #   -c requirements.txt
     #   pytest-httpx

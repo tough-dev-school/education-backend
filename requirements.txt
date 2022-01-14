@@ -22,7 +22,7 @@ botocore==1.22.12
     # via
     #   boto3
     #   s3transfer
-celery==5.2.2
+celery==5.2.3
     # via -r requirements.in
 certifi==2020.12.5
     # via
@@ -34,7 +34,7 @@ cffi==1.15.0
     # via
     #   cmarkgfm
     #   cryptography
-charset-normalizer==2.0.9
+charset-normalizer==2.0.10
     # via
     #   httpx
     #   requests
@@ -52,9 +52,9 @@ click-repl==0.2.0
     # via celery
 cmarkgfm==0.6.0
     # via -r requirements.in
-cryptography==3.4.8
+cryptography==36.0.1
     # via pyjwt
-django==3.2.10
+django==3.2.11
     # via
     #   -r requirements.in
     #   django-anymail
@@ -118,7 +118,7 @@ djangorestframework==3.12.4
     #   -r requirements.in
     #   drf-jwt
     #   drf-recaptcha
-drf-jwt==1.19.1
+drf-jwt==1.19.2
     # via -r requirements.in
 drf-recaptcha==2.0.7
     # via -r requirements.in
@@ -128,7 +128,7 @@ h11==0.12.0
     # via httpcore
 httpcore==0.14.4
     # via httpx
-httpx==0.21.2
+httpx==0.21.3
     # via -r requirements.in
 idna==3.3
     # via
@@ -141,17 +141,17 @@ jmespath==0.10.0
     # via
     #   boto3
     #   botocore
-kombu==5.2.2
+kombu==5.2.3
     # via celery
 markdown==3.3.6
     # via django-markdownx
 packaging==21.3
     # via bleach
-pillow==8.4.0
+pillow==9.0.0
     # via django-markdownx
 prompt-toolkit==3.0.24
     # via click-repl
-psycopg2-binary==2.9.2
+psycopg2-binary==2.9.3
     # via -r requirements.in
 pycparser==2.21
     # via cffi
