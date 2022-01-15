@@ -318,7 +318,7 @@ types-bleach==4.1.4
     # via -r dev-requirements.in
 types-freezegun==1.1.6
     # via -r dev-requirements.in
-types-markdown==3.3.10
+types-markdown==3.3.12
     # via -r dev-requirements.in
 types-pillow==8.3.11
     # via -r dev-requirements.in
