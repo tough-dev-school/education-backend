@@ -6,7 +6,7 @@
 #
 amqp==5.0.9
     # via kombu
-anyio==3.4.0
+anyio==3.5.0
     # via httpcore
 asgiref==3.4.1
     # via django
