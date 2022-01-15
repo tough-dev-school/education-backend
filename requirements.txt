@@ -50,7 +50,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.2.0
     # via celery
-cmarkgfm==0.6.0
+cmarkgfm==0.7.0
     # via -r requirements.in
 cryptography==36.0.1
     # via pyjwt
