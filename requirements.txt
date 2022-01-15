@@ -82,7 +82,7 @@ django-bulk-update==2.2.0
     # via
     #   -r requirements.in
     #   django-hattori
-django-cachalot==2.4.5
+django-cachalot==2.5.0
     # via -r requirements.in
 django-cache-memoize==0.1.10
     # via -r requirements.in
