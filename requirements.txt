@@ -105,7 +105,7 @@ django-ipware==3.0.7
     #   drf-recaptcha
 django-markdownx==3.0.1
     # via -r requirements.in
-django-redis==5.1.0
+django-redis==5.2.0
     # via -r requirements.in
 django-split-settings==1.1.0
     # via -r requirements.in
