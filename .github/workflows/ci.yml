@@ -74,11 +74,11 @@ jobs:
       - name: Run the tests
         env:
           DATABASE_URL: postgres://postgres:secret@localhost:5432/postgres
-          REDISCLOUD_URL: redis://localhost
+          REDISCLOUD_URL: redis://localhost:6379/5
         run: |
           . venv/bin/activate
           cp src/app/.env.ci src/app/.env
-          make coverage
+          make test
 
       - name: Upload code coverage to codeclimate
         uses: paambaati/codeclimate-action@v3.0.0

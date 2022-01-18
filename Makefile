@@ -27,8 +27,6 @@ lint:
 	cd src && mypy
 
 test:
-	cd src && pytest -n 4 --ff -x && pytest --dead-fixtures
-
-coverage:
-	cd src && pytest --dead-fixtures && pytest --cov-report=xml --cov=. -n4 -x
-
+	cd src && pytest -n 4 --ff -x --cov-report=xml --cov=. -m 'not single_thread'
+	cd src && pytest --ff -x --cov-report=xml --cov=. --cov-append -m 'single_thread'
+	cd src && pytest --dead-fixtures
