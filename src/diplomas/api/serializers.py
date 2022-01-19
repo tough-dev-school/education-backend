@@ -10,6 +10,7 @@ from users.api.serializers import UserSafeSerializer
 class DiplomaSerializer(serializers.ModelSerializer):
     student = UserSafeSerializer(source='study.student')
     course = CourseSimpleSerializer(source='study.course')
+    url = serializers.URLField(source='get_absolute_url')
 
     class Meta:
         model = Diploma
@@ -19,6 +20,7 @@ class DiplomaSerializer(serializers.ModelSerializer):
             'language',
             'image',
             'student',
+            'url',
         ]
 
 

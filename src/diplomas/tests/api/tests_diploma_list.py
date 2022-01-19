@@ -15,6 +15,7 @@ def test_ok(api, diploma):
 
     got = api.get('/api/v2/diplomas/')['results']
 
+    assert diploma.slug in got[0]['url']
     assert got[0]['slug'] == diploma.slug
     assert got[0]['student']['uuid'] == str(diploma.study.student.uuid)
     assert got[0]['course']['name'] == diploma.study.course.name
