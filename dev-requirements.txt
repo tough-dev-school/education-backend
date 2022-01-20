@@ -326,7 +326,7 @@ types-pytz==2021.3.4
     # via django-stubs
 types-pyyaml==6.0.3
     # via django-stubs
-types-requests==2.26.3
+types-requests==2.27.7
     # via -r dev-requirements.in
 typing-extensions==4.0.1
     # via
