@@ -253,7 +253,7 @@ pytest-httpx==0.18.0
     # via -r dev-requirements.in
 pytest-mock==3.6.1
     # via -r dev-requirements.in
-pytest-randomly==3.10.3
+pytest-randomly==3.11.0
     # via -r dev-requirements.in
 pytest-repeat==0.9.1
     # via -r dev-requirements.in
