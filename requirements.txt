@@ -174,7 +174,7 @@ redis==3.5.3
     # via
     #   -r requirements.in
     #   django-redis
-requests==2.26.0
+requests==2.27.1
     # via
     #   django-anymail
     #   django-healthchecks
