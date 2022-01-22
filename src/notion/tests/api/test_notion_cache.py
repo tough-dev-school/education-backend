@@ -5,6 +5,7 @@ from pytest_httpx import HTTPXMock
 pytestmark = [
     pytest.mark.django_db,
     pytest.mark.single_thread,
+    pytest.mark.repeat(3),
 ]
 
 

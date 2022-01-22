@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from app.views import AuthenticatedAPIView
 from notion.api.serializers import NotionPageSerializer
 from notion.api.throttling import NotionThrottle
-from notion.client import NotionClient
+from notion.cache import get_cached_page
 from notion.helpers import uuid_to_id
 from notion.models import Material
 from notion.page import NotionPage
@@ -27,7 +27,7 @@ class NotionMaterialView(AuthenticatedAPIView):
         if material is None:
             raise NotFound()
 
-        page = self.notion.fetch_page_recursively(material.page_id)
+        page = get_cached_page(material.page_id)
 
         return Response(
             data=NotionPageSerializer(page).data,
@@ -55,10 +55,6 @@ class NotionMaterialView(AuthenticatedAPIView):
             headers['last-modified'] = page.last_modified.strftime('%a, %d %b %Y %H:%M:%S %Z')
 
         return headers
-
-    @property
-    def notion(self) -> NotionClient:
-        return NotionClient()
 
     @property
     def page_id(self) -> str:
