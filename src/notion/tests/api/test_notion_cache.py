@@ -2,11 +2,22 @@ import pytest
 from django.core.cache import cache
 from pytest_httpx import HTTPXMock
 
+from app.test.api_client import DRFClient
+
 pytestmark = [
     pytest.mark.django_db,
     pytest.mark.single_thread,
     pytest.mark.repeat(3),
 ]
+
+
+@pytest.fixture
+def as_staff(mixer):
+    user = mixer.blend('users.User', is_superuser=False, is_staff=True)
+
+    user.add_perm('notion.material.see_all_materials')
+
+    return DRFClient(user=user)
 
 
 @pytest.fixture
@@ -67,3 +78,18 @@ def test_request_is_cached_in_django_cache(api, httpx_mock: HTTPXMock):
     api.get('/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/')
 
     assert len(httpx_mock.get_requests()) == 2
+
+
+def test_staff_request_returns_uncached_page(api, as_staff, httpx_mock: HTTPXMock):
+    api.get('/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/')
+    as_staff.get('/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/')
+
+    assert len(httpx_mock.get_requests()) == 2
+
+
+def test_staff_request_invalidates_cache(api, as_staff, httpx_mock: HTTPXMock):
+    api.get('/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/')
+    as_staff.get('/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/')
+    api.get('/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/')
+
+    assert len(httpx_mock.get_requests()) == 3
