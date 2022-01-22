@@ -345,7 +345,7 @@ wcwidth==0.2.5
     # via
     #   -c requirements.txt
     #   prompt-toolkit
-zipp==3.6.0
+zipp==3.7.0
     # via
     #   -c requirements.txt
     #   importlib-metadata
