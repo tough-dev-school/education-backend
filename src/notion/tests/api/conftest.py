@@ -50,6 +50,6 @@ def page() -> NotionPage:
     ]))
 
 
-@pytest.fixture(autouse=True)
-def fetch_page_recursively(mocker, page: NotionPage):
+@pytest.fixture
+def mock_notion_response(mocker, page: NotionPage):
     return mocker.patch('notion.client.NotionClient.fetch_page_recursively', return_value=page)

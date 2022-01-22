@@ -3,6 +3,7 @@ from django.core.cache import cache
 from pytest_httpx import HTTPXMock
 
 pytestmark = [
+    pytest.mark.django_db,
     pytest.mark.single_thread,
 ]
 
@@ -41,22 +42,27 @@ def _ok(httpx_mock: HTTPXMock):
     )
 
 
-def test_request_is_done_for_the_first_time(notion, httpx_mock: HTTPXMock):
-    notion.fetch_page('0cb348b3a2d24c05bc944e2302fa55')
+@pytest.fixture(autouse=True)
+def mock_blocks_fetching(mocker):
+    return mocker.patch('notion.block.NotionBlockList.get_underlying_block_ids', return_value=[])
+
+
+def test_request_is_done_for_the_first_time(api, httpx_mock: HTTPXMock):
+    api.get('/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/')
 
     assert len(httpx_mock.get_requests()) == 1
 
 
-def test_request_is_cached(notion, httpx_mock: HTTPXMock):
-    notion.fetch_page('0cb348b3a2d24c05bc944e2302fa56')
-    notion.fetch_page('0cb348b3a2d24c05bc944e2302fa56')
+def test_request_is_cached(api, httpx_mock: HTTPXMock):
+    api.get('/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/')
+    api.get('/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/')
 
     assert len(httpx_mock.get_requests()) == 1
 
 
-def test_request_is_cached_in_django_cache(notion, httpx_mock: HTTPXMock):
-    notion.fetch_page('0cb348b3a2d24c05bc944e2302fa57')
+def test_request_is_cached_in_django_cache(api, httpx_mock: HTTPXMock):
+    api.get('/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/')
     cache.clear()
-    notion.fetch_page('0cb348b3a2d24c05bc944e2302fa57')
+    api.get('/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/')
 
     assert len(httpx_mock.get_requests()) == 2
