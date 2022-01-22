@@ -1,6 +1,9 @@
 import pytest
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [
+    pytest.mark.django_db,
+    pytest.mark.usefixtures('mock_notion_response'),
+]
 
 
 def test_no_anon(anon):
@@ -8,10 +11,10 @@ def test_no_anon(anon):
 
 
 @pytest.mark.usefixtures('unpaid_order')
-def test_404_for_not_purchased_materials(api, fetch_page_recursively):
+def test_404_for_not_purchased_materials(api, mock_notion_response):
     api.get('/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/', expected_status_code=404)
 
-    fetch_page_recursively.assert_not_called()
+    mock_notion_response.assert_not_called()
 
 
 @pytest.mark.usefixtures('unpaid_order')

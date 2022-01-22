@@ -1,5 +1,4 @@
 import httpx
-from cache_memoize import cache_memoize  # type: ignore
 from collections.abc import Iterable
 from django.conf import settings
 
@@ -64,7 +63,6 @@ class NotionClient:
         return NotionBlockList.from_api_response(response['recordMap']['block'])
 
     @staticmethod
-    @cache_memoize(5 * 60)
     def fetch(resource: str, request_body: dict) -> dict:
         response = httpx.post(
             url=f'https://www.notion.so/api/v3/{resource}',

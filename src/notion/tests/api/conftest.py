@@ -45,11 +45,11 @@ def material(mixer, course):
 @pytest.fixture
 def page() -> NotionPage:
     return NotionPage(blocks=NotionBlockList([
-        NotionBlock(id='block-1', data={'block-name': 'block-1'}),
+        NotionBlock(id='block-1', data={'block-name': 'block-1', 'value': {'last_edited_time': 1642356660000}}),
         NotionBlock(id='block-2', data={'block-name': 'block-2'}),
     ]))
 
 
-@pytest.fixture(autouse=True)
-def fetch_page_recursively(mocker, page: NotionPage):
+@pytest.fixture
+def mock_notion_response(mocker, page: NotionPage):
     return mocker.patch('notion.client.NotionClient.fetch_page_recursively', return_value=page)

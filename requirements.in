@@ -21,7 +21,6 @@ django-anymail
 django-axes
 django-hattori
 django-debug-toolbar
-django-cache-memoize
 
 django-healthchecks
 

@@ -1,39 +1,4 @@
-import pytest
-
-from notion.block import NotionBlock, NotionBlockList
-
-
-@pytest.fixture
-def block_without_content() -> NotionBlock:
-    return NotionBlock(id='without_content', data={})
-
-
-@pytest.fixture
-def block_with_content() -> NotionBlock:
-    return NotionBlock(id='with_content', data={
-        'value': {
-            'content': ['a', 'b', 'c'],
-        },
-    })
-
-
-@pytest.fixture
-def another_block_with_content() -> NotionBlock:
-    return NotionBlock(id='another_with_content', data={
-        'value': {
-            'content': ['c', 'e', 'f'],
-        },
-    })
-
-
-@pytest.fixture
-def page_block() -> NotionBlock:
-    return NotionBlock(id='empty_page_block', data={
-        'value': {
-            'type': 'page',
-            'content': ['g', 'h', 'i'],
-        },
-    })
+from notion.block import NotionBlockList
 
 
 def test_no_content(block_without_content):

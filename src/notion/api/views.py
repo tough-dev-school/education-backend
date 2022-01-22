@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Optional
 
 from django.db.models import QuerySet
 from django.utils.decorators import method_decorator
@@ -10,9 +10,10 @@ from rest_framework.response import Response
 from app.views import AuthenticatedAPIView
 from notion.api.serializers import NotionPageSerializer
 from notion.api.throttling import NotionThrottle
-from notion.client import NotionClient
+from notion.cache import get_cached_page
 from notion.helpers import uuid_to_id
 from notion.models import Material
+from notion.page import NotionPage
 from studying.models import Study
 
 
@@ -26,11 +27,12 @@ class NotionMaterialView(AuthenticatedAPIView):
         if material is None:
             raise NotFound()
 
-        page = self.notion.fetch_page_recursively(material.page_id)
+        page = get_cached_page(material.page_id)
 
         return Response(
             data=NotionPageSerializer(page).data,
             status=200,
+            headers=self.get_headers(page),
         )
 
     def get_material(self) -> Optional[Material]:
@@ -45,9 +47,14 @@ class NotionMaterialView(AuthenticatedAPIView):
         available_courses = Study.objects.filter(student=self.request.user).values('course')
         return Material.objects.filter(active=True, course__in=available_courses)
 
-    @property
-    def notion(self) -> NotionClient:
-        return NotionClient()
+    @staticmethod
+    def get_headers(page: NotionPage) -> dict:
+        headers: dict[str, Any] = dict()
+
+        if page.last_modified is not None:
+            headers['last-modified'] = page.last_modified.strftime('%a, %d %b %Y %H:%M:%S %Z')
+
+        return headers
 
     @property
     def page_id(self) -> str:
