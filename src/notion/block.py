@@ -3,6 +3,7 @@ from typing import Any, Generator, Optional
 import contextlib
 from collections import UserList
 from dataclasses import dataclass
+from datetime import datetime
 
 from notion.types import BlockId
 
@@ -23,6 +24,11 @@ class NotionBlock:
     def type(self) -> Optional[str]:
         with contextlib.suppress(KeyError):
             return self.data['value']['type']
+
+    @property
+    def last_modified(self) -> Optional[datetime]:
+        with contextlib.suppress(KeyError):
+            return datetime.fromtimestamp(int(self.data['value']['last_edited_time']) / 1000)
 
 
 class NotionBlockList(UserList[NotionBlock]):
@@ -60,3 +66,14 @@ class NotionBlockList(UserList[NotionBlock]):
         for block in self.data:
             if block.type == 'page' and len(block.content) > 0:
                 return block
+
+    @property
+    def last_modified(self) -> Optional[datetime]:
+        blocks_with_last_modified = [block for block in self.data if block.last_modified is not None]
+
+        if len(blocks_with_last_modified) == 0:
+            return None
+
+        latest_block = max(blocks_with_last_modified, key=lambda block: block.last_modified)  # type: ignore
+        if latest_block is not None:
+            return latest_block.last_modified

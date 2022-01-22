@@ -1,4 +1,5 @@
 import pytest
+from datetime import datetime
 
 from notion.block import NotionBlock
 
@@ -19,3 +20,12 @@ def test_block_type(block, expected_type):
 ])
 def test_content(block, expected_content):
     assert NotionBlock(id='test', data=block).content == expected_content
+
+
+@pytest.mark.parametrize(('block', 'expected_last_modified'), [
+    ({}, None),
+    ({'value': {'test': 'zero'}}, None),
+    ({'value': {'last_edited_time': 1642356661000}}, datetime(2022, 1, 16, 21, 11, 1)),
+])
+def test_last_modified(block, expected_last_modified):
+    assert NotionBlock(id='test', data=block).last_modified == expected_last_modified
