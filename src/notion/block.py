@@ -1,6 +1,7 @@
 from typing import Any, Generator, Optional
 
 import contextlib
+import pytz
 from collections import UserList
 from dataclasses import dataclass
 from datetime import datetime
@@ -28,7 +29,8 @@ class NotionBlock:
     @property
     def last_modified(self) -> Optional[datetime]:
         with contextlib.suppress(KeyError):
-            return datetime.fromtimestamp(int(self.data['value']['last_edited_time']) / 1000)
+            last_modified = datetime.fromtimestamp(int(self.data['value']['last_edited_time']) / 1000)
+            return last_modified.replace(tzinfo=pytz.UTC)
 
 
 class NotionBlockList(UserList[NotionBlock]):

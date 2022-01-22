@@ -16,7 +16,7 @@ def test_both_formats_work(api, material_id, mock_notion_response):
 def test_last_modified_header(api, material):
     got = api.get(f'/api/v2/notion/materials/{material.page_id}/', as_response=True)
 
-    assert got.headers['Last-Modified'] == '2022-01-16 21:11:00'
+    assert got.headers['Last-Modified'] == 'Sun, 16 Jan 2022 21:11:00 UTC'
 
 
 def test_content_is_passed_from_notion_client(api, material):

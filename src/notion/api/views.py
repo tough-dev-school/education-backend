@@ -52,7 +52,7 @@ class NotionMaterialView(AuthenticatedAPIView):
         headers: dict[str, Any] = dict()
 
         if page.last_modified is not None:
-            headers['last-modified'] = page.last_modified
+            headers['last-modified'] = page.last_modified.strftime('%a, %d %b %Y %H:%M:%S %Z')
 
         return headers
 
