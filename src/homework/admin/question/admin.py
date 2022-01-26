@@ -27,6 +27,6 @@ class QuestionAdmin(ModelAdmin):
     @admin.action(description=_('Dispatch crosscheck'))
     def dispatch_crosscheck(self, request, queryset):
         for question in queryset.iterator():
-            tasks.disptach_crosscheck(question_id=question.id)
+            tasks.disptach_crosscheck.delay(question_id=question.id)
 
         self.message_user(request, f'Crosscheck dispatched for {queryset.count()} questions')

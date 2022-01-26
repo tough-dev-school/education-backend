@@ -1,6 +1,5 @@
 from django.db.models import QuerySet
 
-from app.tasks import send_mail
 from homework.models import Answer, AnswerCrossCheck, Question
 from homework.services.answer_crosscheck_dispatcher import AnswerCrossCheckDispatcher
 from users.models import User
@@ -18,8 +17,11 @@ class QuestionCrossCheckDispatcher:
         self.checks: list[AnswerCrossCheck] = list()
 
     def __call__(self) -> int:
+        print('Dispatching crosschecks...')  # NOQA: T001
         self.dispatch_crosschecks()
+        print('notifiing users...')  # NOQA: T001
         self.notify_users()
+        print('Done!')  # NOQA: T001
 
         return self.get_users_to_notify().count()
 
@@ -27,7 +29,9 @@ class QuestionCrossCheckDispatcher:
         self.checks = self.dispatcher()
 
     def notify_users(self) -> None:
+        from app.tasks import send_mail
         for user in self.get_users_to_notify():
+            print('nofiting user', user)  # NOQA: T001
             user_checks_list = self.get_checks_for_user(user)
             send_mail.delay(
                 to=user.email,
