@@ -22,7 +22,7 @@ attrs==20.3.0
     #   pytest
 backcall==0.2.0
     # via ipython
-boto3-stubs==1.20.41
+boto3-stubs==1.20.46.post1
     # via -r dev-requirements.in
 botocore-stubs==1.23.41
     # via boto3-stubs
