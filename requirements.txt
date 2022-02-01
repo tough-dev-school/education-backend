@@ -54,7 +54,7 @@ cmarkgfm==0.7.0
     # via -r requirements.in
 cryptography==36.0.1
     # via pyjwt
-django==3.2.11
+django==3.2.12
     # via
     #   -r requirements.in
     #   django-anymail
