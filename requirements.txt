@@ -168,7 +168,7 @@ pytz==2021.3
     #   babel
     #   celery
     #   django
-redis==3.5.3
+redis==4.1.4
     # via
     #   -r requirements.in
     #   django-redis
