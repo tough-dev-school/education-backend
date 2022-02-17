@@ -1,8 +1,6 @@
 from typing import Any, Optional
 
 from django.db.models import QuerySet
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_control
 from rest_framework.exceptions import NotFound
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -20,7 +18,6 @@ from studying.models import Study
 class NotionMaterialView(AuthenticatedAPIView):
     throttle_classes = [NotionThrottle]
 
-    @method_decorator(cache_control(private=True, max_age=3600))
     def get(self, request: Request, *args, **kwargs) -> Response:
         material = self.get_material()
 
