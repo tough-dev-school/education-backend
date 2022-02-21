@@ -34,7 +34,7 @@ cffi==1.15.0
     # via
     #   cmarkgfm
     #   cryptography
-charset-normalizer==2.0.11
+charset-normalizer==2.0.12
     # via
     #   httpx
     #   requests
