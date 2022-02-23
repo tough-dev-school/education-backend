@@ -133,7 +133,7 @@ idna==3.3
     #   anyio
     #   requests
     #   rfc3986
-importlib-metadata==4.10.1
+importlib-metadata==4.11.1
     # via markdown
 jmespath==0.10.0
     # via
