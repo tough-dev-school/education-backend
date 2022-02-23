@@ -251,7 +251,7 @@ pytest-freezegun==0.4.2
     # via -r dev-requirements.in
 pytest-httpx==0.20.0
     # via -r dev-requirements.in
-pytest-mock==3.6.1
+pytest-mock==3.7.0
     # via -r dev-requirements.in
 pytest-randomly==3.11.0
     # via -r dev-requirements.in
