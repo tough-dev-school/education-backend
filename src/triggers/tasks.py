@@ -16,7 +16,7 @@ def run_started_purchase_trigger(order_id):
 
 @celery.task
 def check_for_started_purchase_triggers():
-    for order in Order.objects.filter(paid__isnull=True, created__gte=timezone.now() - timedelta(days=3)).iterator():
+    for order in Order.objects.filter(paid__isnull=True, shipped__isnull=True, created__gte=timezone.now() - timedelta(days=3)).iterator():
         run_started_purchase_trigger.delay(order.pk)
 
 

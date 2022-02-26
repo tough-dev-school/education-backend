@@ -40,6 +40,14 @@ def test_not_running_trigger_for_paid_orders(order, run_trigger):
     run_trigger.assert_not_called()
 
 
+def test_not_running_trigger_for_shipped_orders(order, run_trigger):
+    order.ship_without_payment()
+
+    tasks.check_for_started_purchase_triggers()
+
+    run_trigger.assert_not_called()
+
+
 def test_not_running_trigger_for_old_orders(order, run_trigger, freezer):
     freezer.move_to('2038-12-01 15:30')  # far in the future
 
