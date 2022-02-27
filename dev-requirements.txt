@@ -88,7 +88,7 @@ flake8==3.8.4
     #   flake8-walrus
 flake8-absolute-import==1.0.0.1
     # via -r dev-requirements.in
-flake8-bugbear==21.11.29
+flake8-bugbear==22.1.11
     # via -r dev-requirements.in
 flake8-cognitive-complexity==0.1.0
     # via -r dev-requirements.in
