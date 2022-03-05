@@ -1,5 +1,4 @@
 import pytest
-import requests_mock
 
 from diplomas.models import Diploma
 from diplomas.tasks import generate_diploma
@@ -17,10 +16,8 @@ def _set_diploma_generator_url(settings):
 
 
 @pytest.fixture(autouse=True)
-def _mock_response():
-    with requests_mock.Mocker() as http_mock:
-        http_mock.get('https://secret.generator.com/test-template.png?name=%D0%9E%D0%B2%D0%B8%D1%80+%D0%9A%D1%80%D0%B8%D0%B2%D0%BE%D0%BC%D0%B0%D0%B7%D0%BE%D0%B2&sex=m', content=b'TYPICAL MAC USER JPG')
-        yield
+def _mock_response(httpx_mock):
+    httpx_mock.add_response(content=b'TYPICAL MAC USER JPG')
 
 
 def test_service(generator, student, course):

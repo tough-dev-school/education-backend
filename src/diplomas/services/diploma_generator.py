@@ -1,4 +1,4 @@
-import requests
+import httpx
 from dataclasses import dataclass
 from django.conf import settings
 from django.core.files.base import ContentFile
@@ -11,7 +11,7 @@ from studying.models import Study
 from users.models import User
 
 
-class WrongDiplomaServiceResponse(requests.exceptions.HTTPError):
+class WrongDiplomaServiceResponse(httpx.HTTPError):
     pass
 
 
@@ -49,7 +49,7 @@ class DiplomaGenerator:
         )[0]
 
     def fetch_image(self) -> ContentFile:
-        response = requests.get(
+        response = httpx.get(
             url=self.get_external_service_url(),
             params=self.get_template_context(),
             headers={
