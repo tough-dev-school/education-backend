@@ -10,6 +10,7 @@ django_redis
 whitenoise
 psycopg2-binary
 shortuuid
+retry
 
 djangorestframework>=3.11.0
 django-storages

@@ -5,14 +5,7 @@ from diplomas.tasks import generate_diploma
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures('template', 'order'),
 ]
-
-
-@pytest.fixture(autouse=True)
-def _set_diploma_generator_url(settings):
-    settings.DIPLOMA_GENERATOR_HOST = 'https://secret.generator.com/'
-    settings.DIPLOMA_GENERATOR_TOKEN = 'zeroc00l'
 
 
 @pytest.fixture(autouse=True)

@@ -2,6 +2,7 @@ import httpx
 from dataclasses import dataclass
 from django.conf import settings
 from django.core.files.base import ContentFile
+from retry import retry
 from urllib.parse import urljoin
 
 from app.types import Language
@@ -48,6 +49,7 @@ class DiplomaGenerator:
             language=self.language,
         )[0]
 
+    @retry(WrongDiplomaServiceResponse, tries=6, delay=1, backoff=2)
     def fetch_image(self) -> ContentFile:
         response = httpx.get(
             url=self.get_external_service_url(),
