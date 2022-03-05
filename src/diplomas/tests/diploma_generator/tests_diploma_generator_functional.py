@@ -36,12 +36,13 @@ def test_service(generator, student, course):
 def test_diploma_is_regenrated_when_it_already_exists(generator, student, course):
     generator = generator(language='ru')
 
-    diploma = generator()
-    diploma = generator()
+    first_diploma = generator()
+    second_diploma = generator()
 
-    assert diploma.image.read() == b'TYPICAL MAC USER JPG'
-    assert diploma.study.student == student
-    assert diploma.study.course == course
+    assert second_diploma.slug == first_diploma.slug, 'slug should remain the same'
+    assert second_diploma.image.read() == b'TYPICAL MAC USER JPG'
+    assert second_diploma.study.student == student
+    assert second_diploma.study.course == course
 
 
 def test_task(student, course):
