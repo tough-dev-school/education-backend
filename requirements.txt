@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements.in
 #
-amqp==5.0.9
+amqp==5.1.0
     # via kombu
 anyio==3.5.0
     # via httpcore
