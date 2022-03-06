@@ -162,7 +162,7 @@ importlib-metadata==4.11.2
     #   pytest-randomly
 iniconfig==1.1.1
     # via pytest
-ipython==7.31.1
+ipython==7.32.0
     # via -r dev-requirements.in
 isort==5.10.1
     # via flake8-isort
