@@ -49,7 +49,7 @@ class DiplomaGenerator:
             language=self.language,
         )[0]
 
-    @retry(WrongDiplomaServiceResponse, tries=6, delay=1, backoff=2)
+    @retry((httpx.HTTPError, WrongDiplomaServiceResponse), tries=6, delay=1, backoff=2)
     def fetch_image(self) -> ContentFile:
         response = httpx.get(
             url=self.get_external_service_url(),
