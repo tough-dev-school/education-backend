@@ -12,11 +12,12 @@ from users.models import User
 
 @dataclass
 class DiplomaRegenerator:
-    user: User
+    student: User
 
     def __call__(self) -> None:
-        self.regenerate_diplomas()
-        self.notify()
+        if self.diplomas.count():
+            self.regenerate_diplomas()
+            self.notify()
 
     def regenerate_diplomas(self) -> None:
         for diploma in self.diplomas.iterator():
@@ -24,14 +25,14 @@ class DiplomaRegenerator:
 
     def notify(self) -> None:
         send_mail.delay(
-            to=self.user.email,
+            to=self.student.email,
             template_id='diplomas_regenerated',
             disable_antispam=True,
         )
 
     @property
     def diplomas(self) -> QuerySet[Diploma]:
-        return Diploma.objects.filter(study__student=self.user).select_related('study')
+        return Diploma.objects.filter(study__student=self.student).select_related('study')
 
     def regenerate(self, diploma: Diploma) -> Diploma:
         return DiplomaGenerator(

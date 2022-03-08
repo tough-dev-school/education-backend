@@ -1,5 +1,6 @@
 import pytest
 
+from diplomas import tasks
 from diplomas.services import DiplomaRegenerator
 
 pytestmark = [pytest.mark.django_db]
@@ -25,6 +26,11 @@ def diploma_en(mixer, order):
     return mixer.blend('diplomas.Diploma', study=order.study, language='en')
 
 
+@pytest.fixture
+def send_mail(mocker):
+    return mocker.patch('app.tasks.mail.TemplOwl.send')
+
+
 def test_diplomas_are_regenerated(student, course, diploma_generator, mocker):
     DiplomaRegenerator(student)()
 
@@ -32,15 +38,22 @@ def test_diplomas_are_regenerated(student, course, diploma_generator, mocker):
     diploma_generator.asert_has_calls(mocker.call(course=course, student=student, language='en'))
 
 
-def test_no_diplomas_are_generated_when_there_are_no_diploams_for_user(another_user, diploma_generator):
+def test_task(student, course, diploma_generator, mocker):
+    tasks.regenerate_diplomas.delay(student_id=student.id)
+
+    diploma_generator.asert_has_calls(mocker.call(course=course, student=student, language='ru'))
+    diploma_generator.asert_has_calls(mocker.call(course=course, student=student, language='en'))
+
+
+def test_emai_is_sent(send_mail, student):
+    DiplomaRegenerator(student)()
+
+    send_mail.assert_called_once()
+
+
+def test_no_diplomas_are_generated_when_there_are_no_diploams_for_user(another_user, diploma_generator, send_mail):
     DiplomaRegenerator(another_user)()
 
     diploma_generator.assert_not_called()
 
-
-def test_emai_is_sent(mocker, student):
-    send_mail = mocker.patch('app.tasks.mail.TemplOwl.send')
-
-    DiplomaRegenerator(student)()
-
-    send_mail.assert_called_once()
+    send_mail.assert_not_called()
