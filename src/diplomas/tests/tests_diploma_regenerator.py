@@ -1,6 +1,7 @@
 import pytest
 
 from diplomas import tasks
+from diplomas.models import DiplomaTemplate
 from diplomas.services import DiplomaRegenerator
 
 pytestmark = [pytest.mark.django_db]
@@ -12,8 +13,8 @@ def diploma_generator(mocker):
 
 
 @pytest.fixture(autouse=True)
-def _disable_actual_generator_call(mocker):
-    mocker.patch('diplomas.services.diploma_generator.DiplomaGenerator.__call__')
+def run_diploma_generation(mocker):
+    return mocker.patch('diplomas.services.diploma_generator.DiplomaGenerator.__call__')
 
 
 @pytest.fixture(autouse=True)
@@ -43,6 +44,14 @@ def test_task(student, course, diploma_generator, mocker):
 
     diploma_generator.asert_has_calls(mocker.call(course=course, student=student, language='ru'))
     diploma_generator.asert_has_calls(mocker.call(course=course, student=student, language='en'))
+
+
+def test_sky_does_not_fall_if_there_is_no_template_for_generated_diploma(student, run_diploma_generation, send_mail):
+    run_diploma_generation.side_effect = DiplomaTemplate.DoesNotExist
+
+    DiplomaRegenerator(student)()
+
+    send_mail.assert_not_called()
 
 
 def test_emai_is_sent(send_mail, student):
