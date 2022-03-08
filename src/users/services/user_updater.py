@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from diplomas.tasks import regenerate_diplomas
 from users.models import User
 
 
@@ -26,6 +27,8 @@ class UserUpdater:
         self.update(user)
         user.refresh_from_db()
 
+        self.after_update()
+
         return user
 
     def update(self, user: User) -> None:
@@ -33,3 +36,9 @@ class UserUpdater:
         serializer.is_valid(raise_exception=True)
 
         serializer.save()
+
+    def after_update(self) -> None:
+        self.regenerate_diplomas()
+
+    def regenerate_diplomas(self) -> None:
+        regenerate_diplomas.delay(student_id=self.user.id)

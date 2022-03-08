@@ -4,7 +4,6 @@ from diplomas.models import DiplomaTemplate
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures('order', 'template'),
 ]
 
 

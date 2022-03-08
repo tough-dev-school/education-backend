@@ -1,7 +1,8 @@
-import requests
+import httpx
 from dataclasses import dataclass
 from django.conf import settings
 from django.core.files.base import ContentFile
+from retry import retry
 from urllib.parse import urljoin
 
 from app.types import Language
@@ -11,7 +12,7 @@ from studying.models import Study
 from users.models import User
 
 
-class WrongDiplomaServiceResponse(requests.exceptions.HTTPError):
+class WrongDiplomaServiceResponse(httpx.HTTPError):
     pass
 
 
@@ -48,8 +49,9 @@ class DiplomaGenerator:
             language=self.language,
         )[0]
 
+    @retry(WrongDiplomaServiceResponse, tries=6, delay=1, backoff=2)
     def fetch_image(self) -> ContentFile:
-        response = requests.get(
+        response = httpx.get(
             url=self.get_external_service_url(),
             params=self.get_template_context(),
             headers={

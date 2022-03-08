@@ -67,3 +67,14 @@ def test_edit_user_data_response(api):
     assert got['gender'] == api.user.gender
     assert got['first_name'] == 'Kamaz'
     assert got['last_name'] == 'Otkhodov'
+
+
+def test_user_update_triggers_diploma_regeneration(api, mocker):
+    diploma_regenerator = mocker.patch('diplomas.tasks.regenerate_diplomas.delay')
+
+    api.patch('/api/v2/users/me/', {
+        'first_name': 'Kamaz',
+        'last_name': 'Otkhodov',
+    })
+
+    diploma_regenerator.assert_called_once()
