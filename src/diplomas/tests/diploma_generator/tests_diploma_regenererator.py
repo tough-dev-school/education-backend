@@ -5,7 +5,7 @@ from diplomas.services import DiplomaRegenerator
 pytestmark = [pytest.mark.django_db]
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def diploma_generator(mocker):
     return mocker.patch('diplomas.services.diploma_generator.DiplomaGenerator.__init__', return_value=None)
 
@@ -36,3 +36,11 @@ def test_no_diplomas_are_generated_when_there_are_no_diploams_for_user(another_u
     DiplomaRegenerator(another_user)()
 
     diploma_generator.assert_not_called()
+
+
+def test_emai_is_sent(mocker, student):
+    send_mail = mocker.patch('app.tasks.mail.TemplOwl.send')
+
+    DiplomaRegenerator(student)()
+
+    send_mail.assert_called_once()
