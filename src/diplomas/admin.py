@@ -53,7 +53,7 @@ class DiplomaAdmin(ModelAdmin):
     def homework_accepted(self, diploma: Diploma) -> bool:
         return diploma.study.homework_accepted
 
-    @admin.display(description=_('Date'), ordering='modified')
+    @admin.display(description=_('Date'), ordering='created')
     def date(self, diploma: Diploma) -> datetime.datetime:
         return diploma.modified or diploma.created
 
