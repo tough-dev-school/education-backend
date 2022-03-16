@@ -1,4 +1,5 @@
 from datetime import timedelta
+from typing import Optional
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
@@ -34,6 +35,13 @@ class Message(TimestampedModel):
         return timezone.now() - previous_message_progress.created > timedelta(minutes=self.delay)
 
 
+class ProgressQuerySet(models.QuerySet):
+    def get_last_progress(self, chain: Chain, study: Study) -> Optional['Progress']:
+        return Progress.objects.filter(study=study, message__chain=chain).order_by('-created').first()
+
+
 class Progress(TimestampedModel):
+    objects = models.Manager.from_queryset(ProgressQuerySet)()
+
     study = models.ForeignKey('studying.Study', on_delete=models.CASCADE)
     message = models.ForeignKey('chains.Message', on_delete=models.CASCADE)

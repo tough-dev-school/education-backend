@@ -6,26 +6,7 @@ pytestmark = [
 ]
 
 
-@pytest.fixture
-def chain(mixer):
-    return mixer.blend('chains.Chain')
-
-
-@pytest.fixture
-def parent_message(mixer):
-    return mixer.blend('chains.Message', parent=None)
-
-
-@pytest.fixture(autouse=True)
-def progress(parent_message, mixer, study):
-    return mixer.blend('chains.Progress', message=parent_message, study=study)
-
-
-@pytest.fixture
-def message(mixer, parent_message):
-    return mixer.blend('chains.Message', parent=parent_message, delay=3)
-
-
+@pytest.mark.usefixtures('progress')
 def test_time_has_not_passed(message, study):
     assert message.time_to_send(to=study) is False
 
@@ -47,6 +28,7 @@ def test_time_has_not_passed_for_root_messages(message, study, progress, freezer
     assert message.time_to_send(to=study) is False
 
 
+@pytest.mark.usefixtures('progress')
 def test_time_has_passed(message, freezer, study):
     freezer.move_to('2032-12-01 15:35:00')
 

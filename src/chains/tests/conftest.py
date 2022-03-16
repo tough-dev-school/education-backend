@@ -11,3 +11,23 @@ def course(mixer):
 @pytest.fixture
 def study(mixer, course, user):
     return mixer.blend('studying.Study', course=course, user=user)
+
+
+@pytest.fixture
+def chain(mixer):
+    return mixer.blend('chains.Chain')
+
+
+@pytest.fixture
+def parent_message(mixer, chain):
+    return mixer.blend('chains.Message', parent=None, chain=chain)
+
+
+@pytest.fixture
+def progress(parent_message, mixer, study):
+    return mixer.blend('chains.Progress', message=parent_message, study=study)
+
+
+@pytest.fixture
+def message(mixer, chain, parent_message):
+    return mixer.blend('chains.Message', parent=parent_message, chain=chain, delay=3)
