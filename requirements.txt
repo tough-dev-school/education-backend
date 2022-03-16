@@ -52,7 +52,7 @@ click-repl==0.2.0
     # via celery
 cmarkgfm==0.8.0
     # via -r requirements.in
-cryptography==36.0.1
+cryptography==36.0.2
     # via pyjwt
 decorator==5.1.1
     # via retry
