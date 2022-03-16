@@ -1,5 +1,6 @@
-from datetime import timedelta
 from typing import Optional
+
+from datetime import timedelta
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
