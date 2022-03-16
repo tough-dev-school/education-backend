@@ -323,7 +323,7 @@ types-babel==2.9.8
     # via -r dev-requirements.in
 types-bleach==4.1.5
     # via -r dev-requirements.in
-types-freezegun==1.1.6
+types-freezegun==1.1.7
     # via -r dev-requirements.in
 types-markdown==3.3.12
     # via -r dev-requirements.in
