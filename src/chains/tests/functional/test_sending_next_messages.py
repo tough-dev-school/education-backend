@@ -1,22 +1,10 @@
 import pytest
 
-from chains.services import ChainSender
-
 pytestmark = [
     pytest.mark.django_db,
     pytest.mark.usefixtures('message', 'progress'),
     pytest.mark.freeze_time('2032-12-01 15:30:00'),
 ]
-
-
-@pytest.fixture
-def chain_sender(chain):
-    return ChainSender(chain)
-
-
-@pytest.fixture(autouse=True)
-def send_message(mocker):
-    return mocker.patch('chains.models.Message.send')
 
 
 def test_no_messages_are_sent(chain_sender, send_message):
@@ -26,12 +14,12 @@ def test_no_messages_are_sent(chain_sender, send_message):
 
 
 @pytest.mark.usefixtures('progress')
-def test_sent_if_progress_exists(chain_sender, send_message, freezer):
+def test_sent_if_progress_exists(chain_sender, send_message, freezer, message, study):
     freezer.move_to('2032-12-01 15:35:00')
 
     chain_sender()
 
-    send_message.assert_called_once()
+    send_message.assert_called_once_with(message, to=study)
 
 
 @pytest.mark.usefixtures('progress')
