@@ -12,14 +12,30 @@ class Chain(TimestampedModel):
     name = models.CharField(max_length=256, unique=True)
     course = models.ForeignKey('products.Course', on_delete=models.CASCADE)
 
+    sending_is_active = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = _('Email chain')
+        verbose_name_plural = _('Email chains')
+
+    def __str__(self) -> str:
+        return f'{self.course} {self.name}'
+
 
 class Message(TimestampedModel):
     name = models.CharField(max_length=256, unique=True)
     chain = models.ForeignKey('chains.Chain', on_delete=models.CASCADE)
     template_id = models.CharField(max_length=256)
 
-    parent = models.ForeignKey('chains.Message', on_delete=models.SET_NULL, null=True)
+    parent = models.ForeignKey('chains.Message', on_delete=models.SET_NULL, null=True, blank=True)
     delay = models.BigIntegerField(_('Delay (minutes)'), default=0)
+
+    class Meta:
+        verbose_name = _('Email chain message')
+        verbose_name_plural = _('Email chain messages')
+
+    def __str__(self) -> str:
+        return f'{self.chain} {self.name}'
 
     def send(self, to: Study) -> None:
         Progress.objects.create(study=to, message=self)

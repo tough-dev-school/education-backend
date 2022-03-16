@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
                 ('template_id', models.CharField(max_length=256)),
                 ('delay', models.BigIntegerField(default=0, verbose_name='Delay (minutes)')),
                 ('chain', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='chains.chain')),
-                ('parent', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='chains.message')),
+                ('parent', models.ForeignKey(null=True, blank=True, on_delete=django.db.models.deletion.SET_NULL, to='chains.message')),
             ],
             options={
                 'abstract': False,
