@@ -16,7 +16,7 @@ billiard==3.6.4.0
     # via celery
 bleach==4.1.0
     # via -r requirements.in
-boto3==1.21.20
+boto3==1.21.21
     # via -r requirements.in
 botocore==1.24.21
     # via
