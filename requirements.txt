@@ -232,7 +232,7 @@ wcwidth==0.2.5
     # via prompt-toolkit
 webencodings==0.5.1
     # via bleach
-whitenoise==5.3.0
+whitenoise==6.0.0
     # via -r requirements.in
 wrapt==1.13.3
     # via deprecated
