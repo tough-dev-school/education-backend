@@ -100,7 +100,7 @@ django-hattori==0.2.1
     # via -r requirements.in
 django-healthchecks==1.4.2
     # via -r requirements.in
-django-ipware==3.0.7
+django-ipware==4.0.2
     # via
     #   -r requirements.in
     #   django-axes
