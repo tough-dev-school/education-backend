@@ -281,7 +281,7 @@ requests==2.27.1
     #   requests-mock
 requests-mock==1.9.3
     # via -r dev-requirements.in
-rfc3986[idna2008]==1.5.0
+rfc3986[idna2008]==2.0.0
     # via
     #   -c requirements.txt
     #   httpx
