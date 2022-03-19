@@ -27,7 +27,8 @@ class Message(TimestampedModel):
     chain = models.ForeignKey('chains.Chain', on_delete=models.CASCADE)
     template_id = models.CharField(max_length=256)
 
-    parent = models.ForeignKey('chains.Message', on_delete=models.SET_NULL, null=True, blank=True)
+    parent = models.ForeignKey('chains.Message', on_delete=models.PROTECT, related_name='children', null=True, blank=True, limit_choices_to={'chain__sending_is_active': False, 'children__isnull': True})
+
     delay = models.BigIntegerField(_('Delay (minutes)'), default=0)
 
     class Meta:
