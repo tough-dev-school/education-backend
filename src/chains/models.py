@@ -72,9 +72,6 @@ class Message(TimestampedModel):
     def __str__(self) -> str:
         return f'{self.chain.course}, {self.chain} {self.name}'
 
-    def send(self, to: Study) -> None:
-        Progress.objects.create(study=to, message=self)
-
     def time_to_send(self, to: Study) -> bool:
         if self.parent is None:
             return False
