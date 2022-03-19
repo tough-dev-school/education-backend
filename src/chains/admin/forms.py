@@ -20,6 +20,7 @@ class MessageAddForm(forms.ModelForm):
         js = (
             'admin/js/vendor/jquery/jquery.js',
             'admin/js/limit_message_choices.js',
+            'admin/js/clickable_message_intervals.js',
         )
 
 
@@ -34,6 +35,7 @@ class MessageEditForm(forms.ModelForm):
         js = (
             'admin/js/vendor/jquery/jquery.js',
             'admin/js/limit_message_choices.js',
+            'admin/js/clickable_message_intervals.js',
         )
 
 
