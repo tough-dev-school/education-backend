@@ -12,6 +12,7 @@ INSTALLED_APPS = [
     'tinkoff',
     'triggers',
     'users',
+    'chains',
 
     'markdownx',
     'corsheaders',
