@@ -10,6 +10,9 @@ from studying.models import Study
 
 
 class ChainQuerySet(QuerySet):
+    def active(self) -> QuerySet['Chain']:
+        return self.filter(sending_is_active=True)
+
     def editable(self) -> QuerySet['Chain']:
         return self.filter(
             sending_is_active=False,

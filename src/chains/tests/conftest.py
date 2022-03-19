@@ -15,7 +15,7 @@ def study(mixer, course, user):
 
 @pytest.fixture
 def chain(mixer, course):
-    return mixer.blend('chains.Chain', course=course)
+    return mixer.blend('chains.Chain', course=course, sending_is_active=True)
 
 
 @pytest.fixture
