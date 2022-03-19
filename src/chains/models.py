@@ -1,6 +1,7 @@
 from typing import Optional
 
 from datetime import timedelta
+from django.db.models import QuerySet
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
@@ -8,34 +9,65 @@ from app.models import TimestampedModel, models
 from studying.models import Study
 
 
-class Chain(TimestampedModel):
-    name = models.CharField(max_length=256, unique=True)
-    course = models.ForeignKey('products.Course', on_delete=models.CASCADE)
+class ChainQuerySet(QuerySet):
+    def editable(self) -> QuerySet['Chain']:
+        return self.filter(
+            sending_is_active=False,
+        ).select_related(
+            'course',
+        )
 
-    sending_is_active = models.BooleanField(default=False)
+
+class Chain(TimestampedModel):
+    objects = models.Manager.from_queryset(ChainQuerySet)()
+
+    name = models.CharField(_('Name'), max_length=256)
+    course = models.ForeignKey('products.Course', verbose_name=_('Course'), on_delete=models.CASCADE)
+
+    sending_is_active = models.BooleanField(_('Sending is active'), default=False)
 
     class Meta:
         verbose_name = _('Email chain')
         verbose_name_plural = _('Email chains')
+        constraints = [
+            models.UniqueConstraint(fields=['name', 'course'], name='unique_name_per_course'),
+        ]
 
     def __str__(self) -> str:
-        return f'{self.course} {self.name}'
+        return self.name
+
+
+class MessageQuerySet(QuerySet):
+    def may_be_parent(self) -> QuerySet['Message']:
+        return self.filter(
+            chain__sending_is_active=False,
+            children__isnull=True,
+        ).select_related(
+            'chain',
+            'chain__course',
+        )
 
 
 class Message(TimestampedModel):
-    name = models.CharField(max_length=256, unique=True)
-    chain = models.ForeignKey('chains.Chain', on_delete=models.CASCADE)
-    template_id = models.CharField(max_length=256)
+    objects = models.Manager.from_queryset(MessageQuerySet)()
 
-    parent = models.ForeignKey('chains.Message', on_delete=models.SET_NULL, null=True, blank=True)
-    delay = models.BigIntegerField(_('Delay (minutes)'), default=0)
+    name = models.CharField(_('Name'), max_length=256)
+    chain = models.ForeignKey('chains.Chain', verbose_name=_('Chain'), on_delete=models.CASCADE)
+    template_id = models.CharField(_('Template id'), max_length=256)
+
+    parent = models.ForeignKey('chains.Message', on_delete=models.PROTECT, verbose_name=_('Parent'), related_name='children', null=True, blank=True, help_text=_('Messages without parent will be sent upon start'))
+
+    delay = models.BigIntegerField(_('Delay (minutes)'), default=0, help_text=_('86400 for day, 604800 for week'))
 
     class Meta:
         verbose_name = _('Email chain message')
         verbose_name_plural = _('Email chain messages')
+        constraints = [
+            models.UniqueConstraint(fields=['name', 'chain'], name='unique_name_per_chain'),
+        ]
 
     def __str__(self) -> str:
-        return f'{self.chain} {self.name}'
+        return f'{self.chain.course}, {self.chain} {self.name}'
 
     def send(self, to: Study) -> None:
         Progress.objects.create(study=to, message=self)
