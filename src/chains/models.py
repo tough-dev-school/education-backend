@@ -21,10 +21,10 @@ class ChainQuerySet(QuerySet):
 class Chain(TimestampedModel):
     objects = models.Manager.from_queryset(ChainQuerySet)()
 
-    name = models.CharField(max_length=256)
-    course = models.ForeignKey('products.Course', on_delete=models.CASCADE)
+    name = models.CharField(_('Name'), max_length=256)
+    course = models.ForeignKey('products.Course', verbose_name=_('Course'), on_delete=models.CASCADE)
 
-    sending_is_active = models.BooleanField(default=False)
+    sending_is_active = models.BooleanField(_('Sending is active'), default=False)
 
     class Meta:
         verbose_name = _('Email chain')
@@ -51,13 +51,13 @@ class MessageQuerySet(QuerySet):
 class Message(TimestampedModel):
     objects = models.Manager.from_queryset(MessageQuerySet)()
 
-    name = models.CharField(max_length=256)
-    chain = models.ForeignKey('chains.Chain', on_delete=models.CASCADE)
-    template_id = models.CharField(max_length=256)
+    name = models.CharField(_('Name'), max_length=256)
+    chain = models.ForeignKey('chains.Chain', verbose_name=_('Chain'), on_delete=models.CASCADE)
+    template_id = models.CharField(_('Template id'), max_length=256)
 
-    parent = models.ForeignKey('chains.Message', on_delete=models.PROTECT, related_name='children', null=True, blank=True)
+    parent = models.ForeignKey('chains.Message', on_delete=models.PROTECT, verbose_name=_('Parent'), related_name='children', null=True, blank=True, help_text=_('Messages without parent will be sent upon start'))
 
-    delay = models.BigIntegerField(_('Delay (minutes)'), default=0)
+    delay = models.BigIntegerField(_('Delay (minutes)'), default=0, help_text=_('86400 for day, 604800 for week'))
 
     class Meta:
         verbose_name = _('Email chain message')
