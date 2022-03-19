@@ -350,7 +350,7 @@ typing-extensions==4.1.1
     #   mypy
 uritemplate==4.1.1
     # via coreapi
-urllib3==1.26.8
+urllib3==1.26.9
     # via
     #   -c requirements.txt
     #   requests
