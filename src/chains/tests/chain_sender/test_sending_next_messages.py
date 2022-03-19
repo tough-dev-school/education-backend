@@ -19,7 +19,7 @@ def test_sent_if_progress_exists(chain_sender, send_message, freezer, message, s
 
     chain_sender()
 
-    send_message.assert_called_once_with(message, to=study)
+    send_message.assert_called_once_with(message, study=study)
 
 
 @pytest.mark.usefixtures('progress')

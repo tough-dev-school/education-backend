@@ -10,6 +10,6 @@ def chain_sender(chain):
     return ChainSender(chain)
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def send_message(mocker):
     return mocker.patch('chains.services.chain_sender.ChainSender.send')

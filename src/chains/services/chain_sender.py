@@ -24,14 +24,15 @@ class ChainSender:
 
         next_message = Message.objects.filter(chain=self.chain, parent=last_progress.message).first()
 
-        if next_message is not None and next_message.time_to_send(to=study):
-            self.send(next_message, to=study)
+        if next_message is not None and next_message.time_to_send(study=study):
+            self.send(next_message, study=study)
 
     def send_root_messages(self, study: Study):
         for message in Message.objects.filter(chain=self.chain, parent__isnull=True):
             if not Progress.objects.filter(message=message, study=study).exists():
-                self.send(message, to=study)
+                self.send(message, study=study)
 
     @staticmethod
-    def send(message: Message, to: Study) -> None:
-        message.send(to=to)
+    def send(message: Message, study: Study) -> None:
+        from chains.services.message_sender import MessageSender
+        MessageSender(message=message, study=study)()

@@ -11,7 +11,7 @@ pytestmark = [
 def test_sent(send_message, parent_message, study):
     tasks.send_active_chains()
 
-    send_message.assert_called_once_with(parent_message, to=study)
+    send_message.assert_called_once_with(parent_message, study=study)
 
 
 def test_inactive_chains_are_not_sent(send_message, chain):

@@ -1,6 +1,6 @@
-import pytest
 import contextlib
 import httpx
+import pytest
 
 from chains.models import Progress
 

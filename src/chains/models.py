@@ -72,11 +72,11 @@ class Message(TimestampedModel):
     def __str__(self) -> str:
         return f'{self.chain.course}, {self.chain} {self.name}'
 
-    def time_to_send(self, to: Study) -> bool:
+    def time_to_send(self, study: Study) -> bool:
         if self.parent is None:
             return False
 
-        previous_message_progress = Progress.objects.filter(study=to, message=self.parent).first()
+        previous_message_progress = Progress.objects.filter(study=study, message=self.parent).first()
 
         if previous_message_progress is None:
             return False
@@ -86,7 +86,7 @@ class Message(TimestampedModel):
 
 class ProgressQuerySet(models.QuerySet):
     def get_last_progress(self, chain: Chain, study: Study) -> Optional['Progress']:
-        return Progress.objects.filter(study=study, message__chain=chain).order_by('-created').first()
+        return self.filter(study=study, message__chain=chain).order_by('-created').first()
 
 
 class Progress(TimestampedModel):
@@ -94,3 +94,12 @@ class Progress(TimestampedModel):
 
     study = models.ForeignKey('studying.Study', on_delete=models.CASCADE)
     message = models.ForeignKey('chains.Message', on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['study', 'message'], name='single_message_per_study'),
+        ]
+
+        indexes = [
+            models.Index(fields=['study', 'message']),
+        ]
