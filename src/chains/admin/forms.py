@@ -8,10 +8,36 @@ class ChainChoiceField(forms.ModelChoiceField):
         return f'{obj.course}, {obj}'
 
 
-class MessageForm(forms.ModelForm):
+class MessageAddForm(forms.ModelForm):
     parent = forms.ModelChoiceField(queryset=Message.objects.may_be_parent())
     chain = ChainChoiceField(queryset=Chain.objects.editable())
 
     class Meta:
         model = Message
         fields = '__all__'
+
+    class Media:
+        js = (
+            'admin/js/vendor/jquery/jquery.js',
+            'admin/js/limit_message_choices.js',
+        )
+
+
+class MessageEditForm(forms.ModelForm):
+    chain = ChainChoiceField(queryset=Chain.objects.all())
+
+    class Meta:
+        model = Message
+        fields = '__all__'
+
+    class Media:
+        js = (
+            'admin/js/vendor/jquery/jquery.js',
+            'admin/js/limit_message_choices.js',
+        )
+
+
+__all__ = [
+    'MessageEditForm',
+    'MessageAddForm',
+]

@@ -1,13 +1,15 @@
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
-from chains.admin.forms import MessageForm
+from chains.admin.forms import MessageAddForm, MessageEditForm
 from chains.models import Message
 
 
 @admin.register(Message)
 class MessageAdmin(ModelAdmin):
-    form = MessageForm
+    add_form = MessageAddForm
+    form = MessageEditForm
+
     fields = [
         'name',
         'chain',
@@ -43,5 +45,5 @@ class MessageAdmin(ModelAdmin):
 
 
 __all__ = [
-    'MessageForm',
+    'MessageAdmin',
 ]
