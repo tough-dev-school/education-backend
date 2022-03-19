@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-13 11:58+0300\n"
+"POT-Creation-Date: 2022-03-19 11:46+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,15 +28,65 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
+#: chains/admin/message.py:42 chains/models.py:25 diplomas/admin.py:48
+#: homework/admin/answer/admin.py:55 homework/admin/answer/admin.py:100
+#: orders/models/order.py:47 products/models/course.py:30
+msgid "Course"
+msgstr "Курс"
+
+#: chains/models.py:24 chains/models.py:54 homework/models/question.py:13
+#: magnets/models.py:17 products/admin/bundle.py:20 products/admin/course.py:13
+#: products/admin/courses/record.py:17
+msgid "Name"
+msgstr "Название"
+
+#: chains/models.py:27
+msgid "Sending is active"
+msgstr "Запущена"
+
+#: chains/models.py:30
+msgid "Email chain"
+msgstr "Цепочка"
+
+#: chains/models.py:31
+msgid "Email chains"
+msgstr "Цепочки"
+
+#: chains/models.py:55
+msgid "Chain"
+msgstr "Цепочка"
+
+#: chains/models.py:56
+msgid "Template id"
+msgstr "ID шаблона в постмарке"
+
+#: chains/models.py:58
+msgid "Parent"
+msgstr "Родитель"
+
+#: chains/models.py:58
+msgid "Messages without parent will be sent upon start"
+msgstr "Если не поставить — сообщение уйдёт сразу при запуске цепочки"
+
+#: chains/models.py:60
+msgid "Delay (minutes)"
+msgstr "Задержка (мин.)"
+
+#: chains/models.py:60
+msgid "86400 for day, 604800 for week"
+msgstr "День — 86400, Неделя — 604800"
+
+#: chains/models.py:63
+msgid "Email chain message"
+msgstr "Письмо"
+
+#: chains/models.py:64
+msgid "Email chain messages"
+msgstr "Письма"
+
 #: diplomas/admin.py:44 users/models.py:79
 msgid "Student"
 msgstr "Студент"
-
-#: diplomas/admin.py:48 homework/admin/answer/admin.py:55
-#: homework/admin/answer/admin.py:100 orders/models/order.py:47
-#: products/models/course.py:30
-msgid "Course"
-msgstr "Курс"
 
 #: diplomas/admin.py:52 homework/models/question.py:18
 msgid "Homework"
@@ -133,12 +183,6 @@ msgstr "Ответы на домашку"
 #: homework/models/answer.py:73
 msgid "May see answers from every user"
 msgstr "Видит все ответы на домашку"
-
-#: homework/models/question.py:13 magnets/models.py:17
-#: products/admin/bundle.py:20 products/admin/course.py:13
-#: products/admin/courses/record.py:17
-msgid "Name"
-msgstr "Название"
 
 #: homework/models/question.py:19
 msgid "Homeworks"
@@ -609,9 +653,6 @@ msgstr "Студенты"
 
 #~ msgid "Gift"
 #~ msgstr "Подарок"
-
-#~ msgid "Is active"
-#~ msgstr "Включено"
 
 #~ msgid "Renew"
 #~ msgstr "Отметить как неиспользованную"
