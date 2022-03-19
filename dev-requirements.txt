@@ -26,7 +26,7 @@ backcall==0.2.0
     # via ipython
 boto3-stubs==1.21.21
     # via -r dev-requirements.in
-botocore-stubs==1.24.20
+botocore-stubs==1.24.21
     # via boto3-stubs
 certifi==2020.12.5
     # via
@@ -186,7 +186,7 @@ mccabe==0.6.1
     # via flake8
 mixer==7.0.6
     # via -r dev-requirements.in
-mypy==0.931
+mypy==0.941
     # via
     #   -r dev-requirements.in
     #   django-stubs
@@ -335,7 +335,7 @@ types-pytz==2021.3.5
     #   types-babel
 types-pyyaml==6.0.4
     # via django-stubs
-types-requests==2.27.11
+types-requests==2.27.13
     # via -r dev-requirements.in
 types-retry==0.9.5
     # via -r dev-requirements.in
@@ -350,7 +350,7 @@ typing-extensions==4.1.1
     #   mypy
 uritemplate==4.1.1
     # via coreapi
-urllib3==1.26.8
+urllib3==1.26.9
     # via
     #   -c requirements.txt
     #   requests
