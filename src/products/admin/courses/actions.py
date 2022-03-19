@@ -13,9 +13,9 @@ class CourseActionForm(ActionForm):
     )
 
     class Media:
-        js = ('admin/js/vendor/jquery/jquery.js', 'js/admin/course_action_form.js')
+        js = ('admin/js/vendor/jquery/jquery.js', 'admin/js/course_action_form.js')
         css = {
-            'all': ['css/admin/course_action_form.css'],
+            'all': ['admin/css/course_action_form.css'],
         }
 
 
