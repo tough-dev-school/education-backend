@@ -339,7 +339,7 @@ types-requests==2.27.13
     # via -r dev-requirements.in
 types-retry==0.9.5
     # via -r dev-requirements.in
-types-urllib3==1.26.10
+types-urllib3==1.26.11
     # via types-requests
 typing-extensions==4.1.1
     # via
