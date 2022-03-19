@@ -12,6 +12,7 @@ from app.mail.owl import TemplOwl  # type: ignore
         'max_retries': 10,
         'countdown': 5,
     },
+    acks_late=True,
 )
 def send_mail(to: Union[List, str], template_id, subject: str = '', ctx: Optional[dict] = None, disable_antispam=False):
     TemplOwl(

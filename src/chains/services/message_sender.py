@@ -1,4 +1,3 @@
-from celery import chain
 from dataclasses import dataclass
 
 from app.tasks import send_mail
@@ -20,16 +19,17 @@ class MessageSender:
         return False
 
     def send(self) -> None:
-        task = chain(
-            send_mail.s(
+        send_mail.apply_async(
+            kwargs=dict(
                 template_id=self.message.template_id,
                 to=self.study.student.email,
                 ctx=self.get_template_context(),
             ),
-            tasks.log_chain_progress.s(message_id=self.message.id, study_id=self.study.id),
+            link=tasks.log_chain_progress.si(
+                message_id=self.message.id,
+                study_id=self.study.id,
+            ),
         )
-
-        task.delay()
 
     def is_sent(self) -> bool:
         return Progress.objects.filter(study=self.study, message=self.message).exists()
