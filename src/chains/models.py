@@ -9,7 +9,18 @@ from app.models import TimestampedModel, models
 from studying.models import Study
 
 
+class ChainQuerySet(QuerySet):
+    def editable(self) -> QuerySet['Chain']:
+        return self.filter(
+            sending_is_active=False,
+        ).select_related(
+            'course',
+        )
+
+
 class Chain(TimestampedModel):
+    objects = models.Manager.from_queryset(ChainQuerySet)()
+
     name = models.CharField(max_length=256)
     course = models.ForeignKey('products.Course', on_delete=models.CASCADE)
 
@@ -56,7 +67,7 @@ class Message(TimestampedModel):
         ]
 
     def __str__(self) -> str:
-        return f'{self.chain.course} {self.chain} {self.name}'
+        return f'{self.chain.course}, {self.chain} {self.name}'
 
     def send(self, to: Study) -> None:
         Progress.objects.create(study=to, message=self)
