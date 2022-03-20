@@ -9,13 +9,18 @@ def course(mixer):
 
 
 @pytest.fixture
-def study(mixer, course, user):
-    return mixer.blend('studying.Study', course=course, user=user)
+def study(order):
+    return order.study
+
+
+@pytest.fixture
+def order(course, user, factory):
+    return factory.order(item=course, user=user, is_paid=True)
 
 
 @pytest.fixture
 def chain(mixer, course):
-    return mixer.blend('chains.Chain', course=course)
+    return mixer.blend('chains.Chain', course=course, sending_is_active=True)
 
 
 @pytest.fixture

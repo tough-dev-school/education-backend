@@ -34,6 +34,10 @@ celery.conf.update(
             'task': 'orders.tasks.ship_unshipped_orders',
             'schedule': crontab(hour='*', minute=0),
         },
+        'send_active_chains': {
+            'task': 'chains.tasks.send_active_chains',
+            'schedule': crontab(hour='*', minute='*/5'),
+        },
     },
 )
 

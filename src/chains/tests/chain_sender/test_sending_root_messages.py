@@ -19,7 +19,7 @@ def another_study(mixer, course):
 def test_sent(chain_sender, send_message, parent_message, study):
     chain_sender()
 
-    send_message.assert_called_once_with(parent_message, to=study)
+    send_message.assert_called_once_with(parent_message, study=study)
 
 
 def test_root_message_is_only_sent_when_there_is_no_progress_record(chain_sender, send_message, parent_message, study, mixer):
@@ -35,7 +35,7 @@ def test_progress_records_from_another_studies_are_ignored(chain_sender, send_me
 
     chain_sender()
 
-    send_message.assert_called_once_with(parent_message, to=study)
+    send_message.assert_called_once_with(parent_message, study=study)
 
 
 def test_two_root_messages_are_sent(chain_sender, send_message, parent_message, second_parent_message, study, mocker):
@@ -43,6 +43,6 @@ def test_two_root_messages_are_sent(chain_sender, send_message, parent_message, 
     chain_sender()
 
     send_message.assert_has_calls([
-        mocker.call(parent_message, to=study),
-        mocker.call(second_parent_message, to=study),
+        mocker.call(parent_message, study=study),
+        mocker.call(second_parent_message, study=study),
     ])
