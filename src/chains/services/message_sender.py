@@ -16,8 +16,6 @@ class MessageSender:
             self.send()
             return True
 
-        return False
-
     def send(self) -> None:
         send_mail.apply_async(
             kwargs=dict(

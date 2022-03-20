@@ -103,3 +103,6 @@ class Progress(TimestampedModel):
         indexes = [
             models.Index(fields=['study', 'message']),
         ]
+
+    def __str__(self) -> str:
+        return f'{self.study.student.email} {self.message.template_id}'
