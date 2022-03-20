@@ -1,6 +1,6 @@
 from typing import List, Optional, Union
 
-from anymail.exceptions import AnymailRequestsAPIError  # type: ignore
+from anymail.exceptions import AnymailRequestsAPIError
 
 from app.celery import celery
 from app.mail.owl import TemplOwl  # type: ignore

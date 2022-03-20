@@ -17,6 +17,7 @@ class Progress(TimestampedModel):
 
     study = models.ForeignKey('studying.Study', on_delete=models.CASCADE)
     message = models.ForeignKey('chains.Message', on_delete=models.CASCADE)
+    success = models.BooleanField(default=True)
 
     class Meta:
         constraints = [

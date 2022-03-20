@@ -17,5 +17,5 @@ def send_chain_messages(chain_id: int):
 
 
 @celery.task(acks_late=True)
-def log_chain_progress(message_id: int, study_id: int):
-    Progress.objects.create(message_id=message_id, study_id=study_id)
+def log_chain_progress(*, message_id: int, study_id: int, success: bool):
+    Progress.objects.create(message_id=message_id, study_id=study_id, success=success)
