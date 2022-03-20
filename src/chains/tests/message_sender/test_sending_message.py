@@ -1,10 +1,11 @@
-import contextlib
-import httpx
 import pytest
+from anymail.exceptions import AnymailRecipientsRefused
 
 from chains.models import Progress
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [
+    pytest.mark.django_db,
+]
 
 
 @pytest.fixture
@@ -34,8 +35,9 @@ def test_message_is_sent_only_once(send_message, message, study, owl):
     owl.assert_called_once()
 
 
-def test_message_is_not_sent_when_progress_record_exists(send_message, message, study, owl):
-    Progress.objects.create(message=message, study=study)
+@pytest.mark.parametrize('success', [True, False])
+def test_message_is_not_sent_when_progress_record_exists(send_message, message, study, owl, success):
+    Progress.objects.create(message=message, study=study, success=success)
 
     send_message()
 
@@ -45,13 +47,16 @@ def test_message_is_not_sent_when_progress_record_exists(send_message, message, 
 def test_progress_is_saved(send_message, message, study):
     send_message()
 
-    assert Progress.objects.filter(message=message, study=study).exists()
+    assert Progress.objects.filter(message=message, study=study, success=True).exists()
 
 
-def test_progress_is_not_saved_when_message_is_not_sent(send_message, message, study, owl):
-    owl.side_effect = httpx.ConnectTimeout('test error')
+@pytest.mark.xfail(strict=True, reason='Seems there is no way of testing link_error in the eager mode')
+@pytest.mark.parametrize('exc', [
+    AnymailRecipientsRefused,
+])
+def test_progress_status_is_saved_when_message_is_not_sent(send_message, message, study, owl, exc):
+    owl.side_effect = exc('Test Error')
 
-    with contextlib.suppress(httpx.ConnectTimeout):
-        send_message()
+    send_message()
 
-    assert not Progress.objects.filter(message=message, study=study).exists()
+    assert Progress.objects.filter(message=message, study=study, success=False).exists()
