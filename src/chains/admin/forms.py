@@ -9,7 +9,7 @@ class ChainChoiceField(forms.ModelChoiceField):
 
 
 class MessageAddForm(forms.ModelForm):
-    parent = forms.ModelChoiceField(queryset=Message.objects.may_be_parent())
+    parent = forms.ModelChoiceField(queryset=Message.objects.may_be_parent(), required=False)
     chain = ChainChoiceField(queryset=Chain.objects.editable())
 
     class Meta:
