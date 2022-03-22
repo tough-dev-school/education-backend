@@ -1,6 +1,7 @@
 from typing import Optional, Type
 
 from app.banking import Bank
+from stripebank.bank import StripeBank
 from tinkoff.bank import TinkoffBank
 from tinkoff.credit import TinkoffCredit
 
@@ -9,6 +10,7 @@ class BankSelector:
     banks = {
         'tinkoff_bank': TinkoffBank,
         'tinkoff_credit': TinkoffCredit,
+        'stripe': StripeBank,
     }
     default = 'tinkoff_bank'
 

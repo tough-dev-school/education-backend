@@ -1,6 +1,7 @@
 import pytest
 
 from banking.selector import BankSelector
+from stripebank.bank import StripeBank
 from tinkoff.bank import TinkoffBank
 from tinkoff.credit import TinkoffCredit
 
@@ -13,6 +14,7 @@ def select():
 @pytest.mark.parametrize(('desired', 'result'), [
     ('tinkoff_bank', TinkoffBank),
     ('tinkoff_credit', TinkoffCredit),
+    ('stripe', StripeBank),
     ('ev1l', TinkoffBank),
     ('', TinkoffBank),
 ])
