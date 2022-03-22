@@ -16,6 +16,8 @@ asgiref==3.5.0
     #   django
 astor==0.8.1
     # via flake8-simplify
+asttokens==2.0.5
+    # via stack-data
 attrs==20.3.0
     # via
     #   flake8-bugbear
@@ -68,6 +70,8 @@ eradicate==2.0.0
     # via flake8-eradicate
 execnet==1.9.0
     # via pytest-xdist
+executing==0.8.3
+    # via stack-data
 faker==4.0.0
     # via
     #   -c requirements.txt
@@ -211,6 +215,8 @@ prompt-toolkit==3.0.28
     #   ipython
 ptyprocess==0.7.0
     # via pexpect
+pure-eval==0.2.2
+    # via stack-data
 py==1.11.0
     # via
     #   -c requirements.txt
@@ -288,6 +294,7 @@ rfc3986[idna2008]==1.5.0
 six==1.16.0
     # via
     #   -c requirements.txt
+    #   asttokens
     #   flake8-print
     #   python-dateutil
     #   requests-mock
@@ -301,6 +308,8 @@ sqlparse==0.4.2
     # via
     #   -c requirements.txt
     #   django
+stack-data==0.2.0
+    # via ipython
 testfixtures==6.18.5
     # via flake8-isort
 text-unidecode==1.3
@@ -338,6 +347,8 @@ types-pyyaml==6.0.4
 types-requests==2.27.13
     # via -r dev-requirements.in
 types-retry==0.9.5
+    # via -r dev-requirements.in
+types-stripe==2.59.8
     # via -r dev-requirements.in
 types-urllib3==1.26.11
     # via types-requests
