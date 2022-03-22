@@ -17,6 +17,7 @@ class CourseAdmin(ModelAdmin):
                     'name_genitive',
                     'name_receipt',
                     'full_name',
+                    'name_international',
                     'group',
                 ],
             },

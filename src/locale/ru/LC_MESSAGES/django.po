@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-19 11:46+0300\n"
+"POT-Creation-Date: 2022-03-22 19:57+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,59 +28,60 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: chains/admin/message.py:42 chains/models.py:25 diplomas/admin.py:48
+#: chains/admin/message.py:42 chains/models/chain.py:23 diplomas/admin.py:48
 #: homework/admin/answer/admin.py:55 homework/admin/answer/admin.py:100
 #: orders/models/order.py:47 products/models/course.py:30
 msgid "Course"
 msgstr "Курс"
 
-#: chains/models.py:24 chains/models.py:54 homework/models/question.py:13
-#: magnets/models.py:17 products/admin/bundle.py:20 products/admin/course.py:13
+#: chains/models/chain.py:22 chains/models/message.py:25
+#: homework/models/question.py:13 magnets/models.py:17
+#: products/admin/bundle.py:20 products/admin/course.py:13
 #: products/admin/courses/record.py:17
 msgid "Name"
 msgstr "Название"
 
-#: chains/models.py:27
+#: chains/models/chain.py:25
 msgid "Sending is active"
 msgstr "Запущена"
 
-#: chains/models.py:30
+#: chains/models/chain.py:28
 msgid "Email chain"
 msgstr "Цепочка"
 
-#: chains/models.py:31
+#: chains/models/chain.py:29
 msgid "Email chains"
 msgstr "Цепочки"
 
-#: chains/models.py:55
+#: chains/models/message.py:26
 msgid "Chain"
 msgstr "Цепочка"
 
-#: chains/models.py:56
+#: chains/models/message.py:27
 msgid "Template id"
 msgstr "ID шаблона в постмарке"
 
-#: chains/models.py:58
+#: chains/models/message.py:29
 msgid "Parent"
 msgstr "Родитель"
 
-#: chains/models.py:58
+#: chains/models/message.py:29
 msgid "Messages without parent will be sent upon start"
 msgstr "Если не поставить — сообщение уйдёт сразу при запуске цепочки"
 
-#: chains/models.py:60
+#: chains/models/message.py:31
 msgid "Delay (minutes)"
 msgstr "Задержка (мин.)"
 
-#: chains/models.py:60
+#: chains/models/message.py:31
 msgid "86400 for day, 604800 for week"
 msgstr "День — 86400, Неделя — 604800"
 
-#: chains/models.py:63
+#: chains/models/message.py:34
 msgid "Email chain message"
 msgstr "Письмо"
 
-#: chains/models.py:64
+#: chains/models/message.py:35
 msgid "Email chain messages"
 msgstr "Письма"
 
@@ -332,7 +333,7 @@ msgid "Order author"
 msgstr "Количество заказов"
 
 #: orders/models/order.py:34 products/admin/bundle.py:32
-#: products/admin/course.py:25 products/admin/courses/record.py:29
+#: products/admin/course.py:26 products/admin/courses/record.py:29
 msgid "Price"
 msgstr "Цена"
 
@@ -435,7 +436,7 @@ msgstr ""
 msgid "Items"
 msgstr "Товары"
 
-#: products/admin/course.py:35 products/admin/courses/record.py:38
+#: products/admin/course.py:36 products/admin/courses/record.py:38
 msgid "Access"
 msgstr "Доступы"
 
@@ -461,18 +462,22 @@ msgstr "Для чеков"
 msgid "Full name for letters"
 msgstr "Для писем"
 
-#: products/models/base.py:29
+#: products/models/base.py:24
+msgid "Name used for international purchases"
+msgstr "Название для международных покупок"
+
+#: products/models/base.py:31
 msgid "Fixed promo code for tinkoff credit"
 msgstr "Промо-код на рассрочку в Тинькофф"
 
-#: products/models/base.py:29
+#: products/models/base.py:31
 msgid "Used in tinkoff credit only"
 msgstr ""
 "Пересылается в тинькофф, если покупатель оформляет рассрочку на курс. Если "
 "не заполнять — покупатель переплатит за кредит. Можно взять в админке "
 "Тинькофф"
 
-#: products/models/base.py:31 products/models/group.py:10
+#: products/models/base.py:33 products/models/group.py:10
 msgid "Analytical group"
 msgstr "Группа товаров (аналитика)"
 
