@@ -1,3 +1,4 @@
+import json
 import pytest
 
 from stripebank.bank import StripeBank
@@ -28,3 +29,9 @@ def course(mixer):
 @pytest.fixture
 def order(course, factory):
     return factory.order(item=course, is_paid=False)
+
+
+@pytest.fixture
+def webhook():
+    with open('./stripebank/tests/.fixtures/webhook.json', 'r') as fp:
+        return json.load(fp)
