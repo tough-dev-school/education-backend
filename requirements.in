@@ -42,3 +42,4 @@ redis
 uwsgi
 
 httpx
+stripe

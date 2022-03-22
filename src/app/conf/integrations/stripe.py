@@ -1,0 +1,3 @@
+from app.conf.environ import env
+
+STRIPE_API_KEY = env('STRIPE_API_KEY', cast=str, default='')
