@@ -30,7 +30,9 @@ class Bank(metaclass=ABCMeta):
 
     @property
     def price(self) -> int:
-        return int(self.order.price / self.ue * 100)
+        from banking import price_calculator
+        price = price_calculator.to_bank(bank=self.__class__, price=self.order.price)
+        return int(price * 100)
 
     @property
     def user(self) -> User:

@@ -5,7 +5,6 @@ from stripebank.models import StripeNotification
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.single_thread,
 ]
 
 

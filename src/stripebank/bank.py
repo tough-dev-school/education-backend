@@ -8,6 +8,8 @@ from banking.base import Bank
 
 class StripeBank(Bank):
     ue = 105  # ue stends for «условные единицы», this is some humour from 2000's
+    currency = 'USD'
+    currency_symbol = '$'
 
     def get_initial_payment_url(self) -> str:
         stripe.api_key = settings.STRIPE_API_KEY
