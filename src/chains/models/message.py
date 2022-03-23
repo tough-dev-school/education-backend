@@ -28,7 +28,7 @@ class Message(TimestampedModel):
 
     parent = models.ForeignKey('chains.Message', on_delete=models.PROTECT, verbose_name=_('Parent'), related_name='children', null=True, blank=True, help_text=_('Messages without parent will be sent upon start'))
 
-    delay = models.BigIntegerField(_('Delay (minutes)'), default=0, help_text=_('86400 for day, 604800 for week'))
+    delay = models.BigIntegerField(_('Delay (minutes)'), default=0, help_text=_('1440 for day, 10800 for week'))
 
     class Meta:
         verbose_name = _('Email chain message')
