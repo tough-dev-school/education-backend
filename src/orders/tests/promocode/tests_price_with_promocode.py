@@ -6,6 +6,11 @@ pytestmark = [
 ]
 
 
+@pytest.fixture(autouse=True)
+def _freeze_stripe_course(mocker):
+    mocker.patch('stripebank.bank.StripeBank.ue', 70)  # let it be forever :'(
+
+
 @pytest.mark.parametrize('code', [
     'TESTCODE',
     'testcode',
@@ -17,6 +22,22 @@ def test(api, course, code):
 
     assert got['price'] == 90450
     assert got['formatted_price'] == '90 450'
+    assert got['currency'] == 'RUB'
+    assert got['currency_symbol'] == '₽'
+
+
+@pytest.mark.parametrize(('bank', 'expected_price', 'expected_formatted_price', 'expected_currency', 'expected_currency_symbol'), [
+    ('tinkoff_bank', 90450, '90 450', 'RUB', '₽'),
+    ('tinkoff_credit', 90450, '90 450', 'RUB', '₽'),
+    ('stripe', 1292, '1 292', 'USD', '$'),
+])
+def test_promocode_with_bank(api, course, bank, expected_price, expected_formatted_price, expected_currency, expected_currency_symbol):
+    got = api.get(f'/api/v2/courses/{course.slug}/promocode/?promocode=TESTCODE&desired_bank={bank}')
+
+    assert got['price'] == expected_price
+    assert got['formatted_price'] == expected_formatted_price
+    assert got['currency'] == expected_currency
+    assert got['currency_symbol'] == expected_currency_symbol
 
 
 @pytest.mark.parametrize('code', [

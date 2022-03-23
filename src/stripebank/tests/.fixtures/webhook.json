@@ -1,0 +1,73 @@
+{
+  "id": "evt_1KgCDfLWSHwWFYUsv8vN2HnN",
+  "object": "event",
+  "api_version": "2020-08-27",
+  "created": 1647972851,
+  "data": {
+    "object": {
+      "id": "cs_test_a12qUdXreNQ0FVqOCg24WBjqWNGYRtdx9wST9jmvqcAf2ivfDE6QjC1brX",
+      "object": "checkout.session",
+      "after_expiration": null,
+      "allow_promotion_codes": null,
+      "amount_subtotal": 33333,
+      "amount_total": 33333,
+      "automatic_tax": {
+        "enabled": false,
+        "status": null
+      },
+      "billing_address_collection": null,
+      "cancel_url": "http://localhost:3000/error/?code=banking",
+      "client_reference_id": "tds-5978",
+      "consent": null,
+      "consent_collection": null,
+      "currency": "usd",
+      "customer": "cus_LMw5jYQojjqKhS",
+      "customer_creation": "always",
+      "customer_details": {
+        "email": "f@f213.in",
+        "phone": null,
+        "tax_exempt": "none",
+        "tax_ids": []
+      },
+      "customer_email": "f@f213.in",
+      "expires_at": 1648059193,
+      "livemode": false,
+      "locale": null,
+      "metadata": {},
+      "mode": "payment",
+      "payment_intent": "pi_3KgCCkLWSHwWFYUs1nL5b9Bj",
+      "payment_link": null,
+      "payment_method_options": {},
+      "payment_method_types": [
+        "card"
+      ],
+      "payment_status": "paid",
+      "phone_number_collection": {
+        "enabled": false
+      },
+      "recovered_from": null,
+      "setup_intent": null,
+      "shipping": null,
+      "shipping_address_collection": null,
+      "shipping_options": [],
+      "shipping_rate": null,
+      "status": "complete",
+      "submit_type": null,
+      "subscription": null,
+      "success_url": "http://localhost:3000/success/",
+      "total_details": {
+        "amount_discount": 0,
+        "amount_shipping": 0,
+        "amount_tax": 0
+      },
+      "url": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 1,
+  "request": {
+    "id": null,
+    "idempotency_key": null
+  },
+  "type": "checkout.session.completed"
+}

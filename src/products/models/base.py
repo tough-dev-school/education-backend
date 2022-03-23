@@ -21,6 +21,8 @@ class Shippable(TimestampedModel):
         _('Full name for letters'), max_length=255,
         help_text='Билет на мастер-класс о TDD или «запись курсов кройки и шитья»',
     )
+    name_international = models.CharField(_('Name used for international purchases'), max_length=255, blank=True, default='')
+
     slug = models.SlugField()
 
     price = models.DecimalField(max_digits=8, decimal_places=2)

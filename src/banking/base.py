@@ -7,6 +7,10 @@ from users.models import User
 
 
 class Bank(metaclass=ABCMeta):
+    currency = 'RUB'
+    currency_symbol = '₽'
+    ue = 1
+
     def __init__(self, order: Order, success_url=None, fail_url=None) -> None:
         self.order = order
         self._success_url = success_url
@@ -26,7 +30,9 @@ class Bank(metaclass=ABCMeta):
 
     @property
     def price(self) -> int:
-        return int(self.order.price * 100)
+        from banking import price_calculator
+        price = price_calculator.to_bank(bank=self.__class__, price=self.order.price)
+        return int(price * 100)
 
     @property
     def user(self) -> User:

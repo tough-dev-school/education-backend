@@ -3,7 +3,7 @@ from typing import Union
 import requests
 from django.conf import settings
 
-from app.banking import Bank
+from banking.base import Bank
 
 
 class TinkoffCreditRequestException(Exception):

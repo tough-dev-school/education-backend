@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from app.pricing import format_price
+from banking import price_calculator
 from banking.selector import BankSelector
 from orders.api.validators import GiftValidator, PurchaseValidator
 from orders.models import Order, PromoCode
@@ -59,9 +60,15 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
 
         price = promocode.apply(self.item) if promocode is not None else self.item.price
 
+        Bank = BankSelector()(desired_bank=request.GET.get('desired_bank'))
+
+        price = price_calculator.to_bank(Bank, price)
+
         return Response({
             'price': price,
             'formatted_price': format_price(price),
+            'currency': Bank.currency,
+            'currency_symbol': Bank.currency_symbol,
         })
 
     def _create_order(self, data) -> Order:

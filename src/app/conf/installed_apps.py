@@ -10,6 +10,7 @@ INSTALLED_APPS = [
     'products',
     'studying',
     'tinkoff',
+    'stripebank',
     'triggers',
     'users',
     'chains',

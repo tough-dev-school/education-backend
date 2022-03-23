@@ -47,3 +47,8 @@ def tinkoff_bank(mocker):
 @pytest.fixture(autouse=True)
 def tinkoff_credit(mocker):
     return mocker.patch('tinkoff.credit.TinkoffCredit.get_initial_payment_url', return_value='https://mocked.link')
+
+
+@pytest.fixture(autouse=True)
+def stripe_bank(mocker):
+    return mocker.patch('stripebank.bank.StripeBank.get_initial_payment_url', return_value='https://mocked.link')
