@@ -5,7 +5,7 @@ from django.conf import settings
 
 from banking.base import Bank
 
-UE = 105  # some humour from 2000's
+UE = 105  # UE is some humour from 2000's
 
 
 class StripeBank(Bank):

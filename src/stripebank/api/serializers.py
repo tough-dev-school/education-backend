@@ -25,4 +25,4 @@ class StripeNotificationSerializer(serializers.ModelSerializer):
         ]
 
     def validate_amount_total(self, validated_data) -> Decimal:
-        return validated_data / 100 * UE
+        return Decimal(int(validated_data) / 100 * UE)
