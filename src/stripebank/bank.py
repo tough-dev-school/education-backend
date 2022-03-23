@@ -5,10 +5,10 @@ from django.conf import settings
 
 from banking.base import Bank
 
-UE = 105  # UE is some humour from 2000's
-
 
 class StripeBank(Bank):
+    ue = 105  # ue stends for «условные единицы», this is some humour from 2000's
+
     def get_initial_payment_url(self) -> str:
         stripe.api_key = settings.STRIPE_API_KEY
 
@@ -36,7 +36,3 @@ class StripeBank(Bank):
                 'quantity': 1,
             },
         ]
-
-    @property
-    def price(self) -> int:
-        return int(self.order.item.price / UE * 100)

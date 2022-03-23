@@ -1,7 +1,7 @@
 from decimal import Decimal
 from rest_framework import serializers
 
-from stripebank.bank import UE
+from stripebank.bank import StripeBank
 from stripebank.models import StripeNotification
 
 
@@ -25,4 +25,4 @@ class StripeNotificationSerializer(serializers.ModelSerializer):
         ]
 
     def validate_amount_total(self, validated_data) -> Decimal:
-        return Decimal(int(validated_data) / 100 * UE)
+        return Decimal(int(validated_data) / 100 * StripeBank.ue)
