@@ -1,3 +1,4 @@
+import contextlib
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -39,5 +40,9 @@ def mark_order_as_paid_on_stripe_notifications(instance: StripeNotification, cre
     if instance.status != 'complete':
         return
 
-    order = Order.objects.get(pk=instance.order_id.replace('tds-', ''))
-    order.set_paid()
+    if 'tds-' not in instance.order_id:
+        return
+
+    with contextlib.suppress(Order.DoesNotExist):
+        order = Order.objects.get(pk=instance.order_id.replace('tds-', ''))
+        order.set_paid()
