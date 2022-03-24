@@ -2,7 +2,7 @@ from typing import Iterable, Optional
 
 from django.http import HttpResponseRedirect
 from rest_framework.decorators import action
-from rest_framework.exceptions import MethodNotAllowed, ValidationError
+from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
@@ -122,7 +122,7 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
         try:
             promocode_name = request.GET['promocode']
         except KeyError:
-            raise ValidationError(detail='please use «promocode» request parameter')
+            return None
 
         return PromoCode.objects.get_or_nothing(name=promocode_name)
 

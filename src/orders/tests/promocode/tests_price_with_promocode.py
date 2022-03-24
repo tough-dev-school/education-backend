@@ -67,6 +67,11 @@ def test_compatible_promocode(api, course, ten_percent_promocode):
 
 
 def test_wihtout_promocode(api, course):
-    api.get(
-        f'/api/v2/courses/{course.slug}/promocode/', expected_status_code=400,
+    got = api.get(
+        f'/api/v2/courses/{course.slug}/promocode/',
     )
+
+    assert got['price'] == 100500
+    assert got['formatted_price'] == '100 500'
+    assert got['currency'] == 'RUB'
+    assert got['currency_symbol'] == '₽'
