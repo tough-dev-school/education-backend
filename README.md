@@ -13,7 +13,8 @@ This project requires python3.9, running postgres and redis.
 Install requirements:
 
 ```sh
-pip install -r requirements.txt
+pip install --upgrade pip pip-tools
+pip-sync dev-requirements.txt requirements.txt
 cd src
 cp app/.env.ci app/.env  # default environment variables
 ```
