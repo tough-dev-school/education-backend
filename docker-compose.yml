@@ -1,11 +1,6 @@
 version: '2'
 
 services:
-  rabbitmq:
-    image: rabbitmq:3.9-alpine
-    ports:
-      - 5672:5672
-
   postgres:
     image: ghcr.io/f213/education-dev-db
     environment:
