@@ -26,11 +26,3 @@ def answers(mixer, question, user, another_user):
         mixer.blend('homework.Answer', question=question, author=user, parent=None),
         mixer.blend('homework.Answer', question=question, author=another_user, parent=None),
     ]
-
-
-@pytest.fixture(autouse=True)
-def answers_of_the_same_user(mixer, question, user, another_user):
-    return [
-        mixer.blend('homework.Answer', question=question, author=user, parent=None),
-        mixer.blend('homework.Answer', question=question, author=user, parent=None),
-    ]

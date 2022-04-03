@@ -18,17 +18,6 @@ def get(dispatcher, answers):
     return _get
 
 
-@pytest.fixture
-def get_and_give_of_the_same_user(dispatcher, answers_of_the_same_user):
-    def _get_and_give(user):
-        service = dispatcher(answers=answers_of_the_same_user)
-        answer = service.get_answer_to_check(user)
-        if answer is not None:
-            return service.give_answer_to_user(answer, user)
-
-    return _get_and_give
-
-
 def test_already_checked_answers_are_excluded(get, user, mixer, answers):
     mixer.blend('homework.AnswerCrossCheck', answer=answers[0], checker=user)
 
@@ -52,8 +41,3 @@ def test_answers_without_crosschecks_are_preferred(get, user, another_user, mixe
     mixer.blend('homework.AnswerCrossCheck', answer=answers[1], checker=user)
 
     assert get(another_user) == answers[0]
-
-
-def test_other_answers_of_the_same_user_are_ignored(get_and_give_of_the_same_user, another_user):
-    _ = get_and_give_of_the_same_user(another_user)
-    assert get_and_give_of_the_same_user(another_user) is None
