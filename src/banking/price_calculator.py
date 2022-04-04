@@ -1,4 +1,4 @@
-from typing import Type
+from typing import Optional, Type
 
 from decimal import Decimal
 
@@ -15,8 +15,8 @@ def to_bank(bank: Type[Bank], price: Decimal) -> Decimal:
     return Decimal(round(exchanged_price, 2))
 
 
-def ue_rate_by_bank_name(bank_name: str) -> int:
-    if bank_name not in BankSelector.banks:
+def ue_rate_by_bank_name(bank_name: Optional[str]) -> int:
+    if bank_name not in ['', None, *BankSelector.banks.keys()]:
         raise KeyError(f'Bank not found: {bank_name}')
 
     Bank = BankSelector()(bank_name)

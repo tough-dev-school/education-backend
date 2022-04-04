@@ -26,3 +26,8 @@ def test(bank_name, rate):
 def test_nonexistant_bank_name():
     with pytest.raises(KeyError):
         ue_rate_by_bank_name('non-existant')
+
+
+@pytest.mark.parametrize('bank_name', ['', None])
+def test_default_bank(bank_name):
+    assert ue_rate_by_bank_name(bank_name) == 11, 'Should be rate from tinkoff bank'
