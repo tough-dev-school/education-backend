@@ -3,6 +3,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
+from orders.admin.filters import IsActivePromocodeFilter
 from orders.models import PromoCode
 
 
@@ -23,7 +24,7 @@ class PromoCodeAdmin(ModelAdmin):
     ]
 
     list_filter = [
-        'active',
+        IsActivePromocodeFilter,
     ]
 
     def get_queryset(self, request):
