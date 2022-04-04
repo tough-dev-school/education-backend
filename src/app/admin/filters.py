@@ -33,20 +33,10 @@ class BooleanFilter(admin.SimpleListFilter):
                 return self.f(request, queryset)
 
 
-class DefaultBooleanFilter(BooleanFilter):
-    """Abstract base class for simple boolean filter with default value in
-    admin. You should define `title`, unique `parameter_name` and
-    `default_value` as "t" or "f":
-        class IsActivePromocodeFilter(DefaultBooleanFilter):
-            title = _('Active')
-            parameter_name = 'active'
-            default_value = 't'
-
-            def t(self, request, queryset):
-                return queryset.filter(active=True)
-
-            def f(self, request, queryset):
-                return queryset.filter(active=False)
+class DefaultFilter(admin.SimpleListFilter):
+    """Abstract base class for simple filter with a default value in
+    admin. You should define `title`, unique `parameter_name`,
+    `default_value`, `lookups` and `queryset` methods.
     """
     default_value: Optional[str] = None
 
@@ -69,3 +59,20 @@ class DefaultBooleanFilter(BooleanFilter):
         if self.value() is None:
             self.used_parameters[self.parameter_name] = self.default_value
         return super().queryset(*args, **kwargs)
+
+
+class DefaultBooleanFilter(DefaultFilter, BooleanFilter):
+    """Abstract base class for simple boolean filter with default value in
+    admin. You should define `title`, unique `parameter_name` and
+    `default_value` as "t" or "f":
+        class IsActivePromocodeFilter(DefaultBooleanFilter):
+            title = _('Active')
+            parameter_name = 'active'
+            default_value = 't'
+
+            def t(self, request, queryset):
+                return queryset.filter(active=True)
+
+            def f(self, request, queryset):
+                return queryset.filter(active=False)
+    """
