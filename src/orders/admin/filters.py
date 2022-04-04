@@ -6,4 +6,10 @@ from app.admin.filters import DefaultBooleanFilter
 class IsActivePromocodeFilter(DefaultBooleanFilter):
     title = _('Active')
     parameter_name = 'active'
-    default_value = True
+    default_value = 't'
+
+    def t(self, request, queryset):
+        return queryset.filter(active=True)
+
+    def f(self, request, queryset):
+        return queryset.filter(active=False)
