@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
 from orders.admin.orders import actions
-from orders.admin.orders.filters import OrderStatusFilter
+from orders.admin.orders.filters import OrderDesiredBankFilter, OrderStatusFilter
 from orders.admin.orders.forms import OrderAddForm, OrderChangeForm
 from orders.models import Order
 from users.models import Student
@@ -21,6 +21,7 @@ class OrderAdmin(ModelAdmin):
         'item',
         'is_paid',
         'promocode',
+        'desired_bank',
     ]
     list_display_links = [
         'id',
@@ -29,6 +30,7 @@ class OrderAdmin(ModelAdmin):
 
     list_filter = [
         OrderStatusFilter,
+        OrderDesiredBankFilter,
         'course',
     ]
     search_fields = [
@@ -54,13 +56,14 @@ class OrderAdmin(ModelAdmin):
         'paid',
         'shipped',
         'unpaid',
+        'desired_bank',
     ]
 
     fieldsets = [
         (
             None,
             {
-                'fields': ['user', 'price', 'email', 'author', 'login_as', 'paid', 'shipped', 'unpaid'],
+                'fields': ['user', 'price', 'email', 'author', 'login_as', 'desired_bank', 'paid', 'shipped', 'unpaid'],
             },
         ),
         (

@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
 from app.admin import admin
+from banking.selector import BankSelector
 from orders.models import Order
 
 
@@ -32,3 +33,16 @@ class OrderStatusFilter(admin.SimpleListFilter):
 
         if value == 'shipped_without_payment':
             return queryset.shipped_without_payment()  # type: ignore
+
+
+class OrderDesiredBankFilter(admin.SimpleListFilter):
+    title = _('Desired Bank')
+    parameter_name = 'desired_bank'
+
+    def lookups(self, *args, **kwargs):
+        bank_names = tuple(BankSelector.banks.keys())
+        return tuple(zip(bank_names, bank_names))
+
+    def queryset(self, request, queryset: QuerySet[Order]):
+        if self.value() is not None:
+            return queryset.filter(desired_bank=self.value())
