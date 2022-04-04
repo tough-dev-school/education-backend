@@ -52,3 +52,10 @@ def tinkoff_credit(mocker):
 @pytest.fixture(autouse=True)
 def stripe_bank(mocker):
     return mocker.patch('stripebank.bank.StripeBank.get_initial_payment_url', return_value='https://mocked.link')
+
+
+@pytest.fixture(autouse=True)
+def _freeze_ue_rate(mocker):
+    mocker.patch('tinkoff.bank.TinkoffBank.ue', 11)
+    mocker.patch('tinkoff.credit.TinkoffCredit.ue', 22)
+    mocker.patch('stripebank.bank.StripeBank.ue', 33)
