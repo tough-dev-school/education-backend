@@ -1,14 +1,15 @@
+import httpx
+
 from django.apps import apps
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from requests.exceptions import RequestException
 
 from app.celery import celery
 from app.integrations.dashamail import AppDashamail, DashamailException
 
 
 @celery.task(
-    autoretry_for=[RequestException, DashamailException, ObjectDoesNotExist],
+    autoretry_for=[httpx.HTTPError, DashamailException, ObjectDoesNotExist],
     retry_kwargs={
         'max_retries': 10,
         'countdown': 5,
@@ -32,7 +33,7 @@ def subscribe_to_dashamail(user_id: int, list_id=None, tags=None):
 
 
 @celery.task(
-    autoretry_for=[RequestException, DashamailException, ObjectDoesNotExist],
+    autoretry_for=[httpx.HTTPError, DashamailException, ObjectDoesNotExist],
     retry_kwargs={
         'max_retries': 10,
         'countdown': 5,

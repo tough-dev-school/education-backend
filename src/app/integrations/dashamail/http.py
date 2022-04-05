@@ -1,6 +1,6 @@
 from typing import Optional
 
-import requests
+import httpx
 from django.conf import settings
 from urllib.parse import urljoin
 
@@ -20,7 +20,7 @@ class DashamailHTTP:
             payload = {}
 
         payload = self.set_api_key(payload)
-        response = requests.request(
+        response = httpx.request(
             method=method,
             url=self.format_url(url),
             data=payload,
@@ -36,7 +36,7 @@ class DashamailHTTP:
         return self.request(url, method='POST', payload=payload)
 
     @staticmethod
-    def get_json(response: requests.Response) -> dict:
+    def get_json(response: httpx.Response) -> dict:
         if response.text:
             return response.json()
 
