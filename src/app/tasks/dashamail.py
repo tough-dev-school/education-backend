@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 
 from app.celery import celery
-from app.integrations.dashamail import AppDashamail, DashamailException, DashamailMember
+from app.integrations.dashamail import AppDashamail, DashamailException
 
 
 @celery.task(
@@ -22,13 +22,13 @@ def subscribe_to_dashamail(user_id: int, list_id=None, tags=None):
     if not list_id:
         return
 
-    django_user = apps.get_model('users.User').objects.get(pk=user_id)
-    dashamail_member = DashamailMember.from_django_user(django_user)
+    user = apps.get_model('users.User').objects.get(pk=user_id)
 
     dashamail = AppDashamail()
     dashamail.subscribe_user(
-        list_id=list_id,
-        member=dashamail_member,
+        list_id=list_id, email=user.email,
+        first_name=user.first_name,
+        last_name=user.last_name,
         tags=tags,
     )
 
@@ -48,11 +48,10 @@ def unsubscribe_from_dashamail(user_id: int, list_id=None):
     if not list_id:
         return
 
-    django_user = apps.get_model('users.User').objects.get(pk=user_id)
-    dashamail_member = DashamailMember.from_django_user(django_user)
+    user = apps.get_model('users.User').objects.get(pk=user_id)
 
     dashamail = AppDashamail()
     dashamail.unsubscribe_user(
         list_id=list_id,
-        member=dashamail_member,
+        email=user.email,
     )

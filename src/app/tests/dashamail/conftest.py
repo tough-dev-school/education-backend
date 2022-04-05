@@ -20,9 +20,12 @@ def dashamail(httpx_mock):
 
 @pytest.fixture
 def dashamail_member(user):
-    member = DashamailMember.from_django_user(user)
-    member.tags = ['test-tag', 'tag-test']
-    return member
+    return DashamailMember(
+        email=user.email,
+        first_name=user.first_name,
+        last_name=user.last_name,
+        tags=['test-tag', 'tag-test'],
+    )
 
 
 @pytest.fixture

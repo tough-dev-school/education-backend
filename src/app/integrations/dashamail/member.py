@@ -2,8 +2,6 @@ from typing import Optional
 
 from dataclasses import dataclass
 
-from users.models import User
-
 
 @dataclass
 class DashamailMember:
@@ -22,11 +20,3 @@ class DashamailMember:
             member['merge_3'] = ';'.join(self.tags)
 
         return member
-
-    @classmethod
-    def from_django_user(cls, user: User):
-        return cls(
-            email=user.email,
-            first_name=user.first_name,
-            last_name=user.last_name,
-        )

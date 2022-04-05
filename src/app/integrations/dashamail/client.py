@@ -9,18 +9,16 @@ class AppDashamail:
     def __init__(self) -> None:
         self.http = DashamailHTTP()
 
-    def subscribe_user(self, list_id: str, member: DashamailMember, tags: Optional[list[str]] = None) -> None:
-        if tags is not None:
-            member.tags = tags
-
+    def subscribe_user(self, list_id: str, email: str, first_name: str, last_name: str, tags: Optional[list[str]] = None) -> None:
+        member = DashamailMember(email, first_name, last_name, tags)
         self.update_subscription(list_id=list_id, member=member)
 
-    def unsubscribe_user(self, list_id: str, member: DashamailMember) -> None:
+    def unsubscribe_user(self, list_id: str, email: str) -> None:
         self.http.post(
             url='',
             payload={
                 'method': 'lists.unsubscribe_member',
-                'email': member.email,
+                'email': email,
                 'list_id': list_id,
             },
         )

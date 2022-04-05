@@ -12,20 +12,16 @@ def unsubscribe_user(mocker):
     return mocker.patch('app.integrations.dashamail.client.AppDashamail.unsubscribe_user')
 
 
-def test_task(user, dashamail_member, unsubscribe_user):
-    dashamail_member.tags = None
-
+def test_task(user, unsubscribe_user):
     tasks.unsubscribe_from_dashamail.delay(user.pk)
 
     unsubscribe_user.assert_called_once_with(
         list_id='1',
-        member=dashamail_member,
+        email=user.email,
     )
 
 
-def test_particular_list_id(user, dashamail_member, unsubscribe_user):
-    dashamail_member.tags = None
-
+def test_particular_list_id(user, unsubscribe_user):
     tasks.unsubscribe_from_dashamail.delay(
         user_id=user.pk,
         list_id='TESTING-LIST-ID',
@@ -33,7 +29,7 @@ def test_particular_list_id(user, dashamail_member, unsubscribe_user):
 
     unsubscribe_user.assert_called_once_with(
         list_id='TESTING-LIST-ID',
-        member=dashamail_member,
+        email=user.email,
     )
 
 

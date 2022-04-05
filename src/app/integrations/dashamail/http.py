@@ -37,6 +37,6 @@ class DashamailHTTP:
         return self.request(url, method='POST', payload=payload)
 
     @staticmethod
-    def get_json(response: httpx.Response) -> dict:
+    def get_json(response: httpx.Response) -> Optional[dict]:
         if response.text:
             return response.json()
