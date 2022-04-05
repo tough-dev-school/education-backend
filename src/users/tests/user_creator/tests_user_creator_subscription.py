@@ -7,7 +7,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture(autouse=True)
 def subscribe(mocker):
-    return mocker.patch('app.tasks.subscribe_to_mailchimp.delay')
+    return mocker.patch('app.tasks.subscribe_to_dashamail.delay')
 
 
 def test_user_is_subscribed_to_maichimp_by_default(subscribe):

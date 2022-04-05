@@ -3,7 +3,7 @@ from typing import Iterable, Optional
 import uuid
 from rest_framework import serializers
 
-from app.tasks import subscribe_to_mailchimp
+from app.tasks import subscribe_to_dashamail
 from users.models import User
 
 
@@ -54,4 +54,4 @@ class UserCreator:
     def after_creation(self) -> None:
         if self.do_subscribe:
             if self.resulting_user.email and len(self.resulting_user.email):
-                subscribe_to_mailchimp.delay(user_id=self.resulting_user.pk, tags=self.subscribe_tags)
+                subscribe_to_dashamail.delay(user_id=self.resulting_user.pk, tags=self.subscribe_tags)

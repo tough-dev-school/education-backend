@@ -1,7 +1,7 @@
 from typing import Optional
 
 from app.tasks import (
-    invite_to_clickmeeting, invite_to_zoomus, send_mail, subscribe_to_mailchimp, unsubscribe_from_mailchimp)
+    invite_to_clickmeeting, invite_to_zoomus, send_mail, subscribe_to_dashamail, unsubscribe_from_dashamail)
 from products.models import Course
 from studying import shipment_factory as factory
 from studying.models import Study
@@ -17,14 +17,14 @@ class CourseShipment(BaseShipment):
     def ship(self) -> None:
         self.invite_to_clickmeeting()
         self.invite_to_zoomus()
-        self.subscribe_to_mailchimp()
+        self.subscribe_to_dashamail()
         self.create_study_model()
 
         self.send_welcome_letter()
 
     def unship(self) -> None:
         self.remove_study_model()
-        self.unsubscribe_from_mailchimp()
+        self.unsubscribe_from_dashamail()
 
     def create_study_model(self) -> None:
         Study.objects.get_or_create(
@@ -36,18 +36,18 @@ class CourseShipment(BaseShipment):
     def remove_study_model(self) -> None:
         Study.objects.get(order=self.order).delete()
 
-    def subscribe_to_mailchimp(self) -> None:
-        if self.course.mailchimp_list_id is not None:
-            subscribe_to_mailchimp.delay(
-                list_id=self.course.mailchimp_list_id,
+    def subscribe_to_dashamail(self) -> None:
+        if self.course.dashamail_list_id is not None:
+            subscribe_to_dashamail.delay(
+                list_id=self.course.dashamail_list_id,
                 user_id=self.user.pk,
                 tags=[self.course.slug, f'{self.course.slug}-purchased'],
             )
 
-    def unsubscribe_from_mailchimp(self) -> None:
-        if self.course.mailchimp_list_id is not None:
-            unsubscribe_from_mailchimp.delay(
-                list_id=self.course.mailchimp_list_id,
+    def unsubscribe_from_dashamail(self) -> None:
+        if self.course.dashamail_list_id is not None:
+            unsubscribe_from_dashamail.delay(
+                list_id=self.course.dashamail_list_id,
                 user_id=self.user.pk,
             )
 
