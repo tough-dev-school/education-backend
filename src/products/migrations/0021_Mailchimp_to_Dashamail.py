@@ -17,6 +17,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='course',
             name='dashamail_list_id',
-            field=models.CharField(blank=True, help_text='Get it from audience settings', max_length=32, null=True, verbose_name='dashamail audience id'),
+            field=models.CharField(blank=True, help_text='Get it from audience settings', max_length=32, null=True, verbose_name='Dashamail audience id'),
         ),
     ]
