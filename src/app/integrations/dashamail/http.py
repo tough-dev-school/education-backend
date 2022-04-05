@@ -19,7 +19,8 @@ class DashamailHTTP:
         if payload is None:
             payload = {}
 
-        payload = self.set_api_key(payload)
+        payload['api_key'] = settings.DASHAMAIL_API_KEY
+
         response = httpx.request(
             method=method,
             url=self.format_url(url),
@@ -39,8 +40,3 @@ class DashamailHTTP:
     def get_json(response: httpx.Response) -> dict:
         if response.text:
             return response.json()
-
-    @staticmethod
-    def set_api_key(payload: dict):
-        payload['api_key'] = settings.DASHAMAIL_API_KEY
-        return payload

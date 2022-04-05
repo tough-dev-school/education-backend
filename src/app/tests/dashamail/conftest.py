@@ -1,5 +1,4 @@
 import pytest
-import requests_mock
 
 from app.integrations.dashamail import AppDashamail, DashamailMember
 
