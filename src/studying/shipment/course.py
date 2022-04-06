@@ -17,14 +17,12 @@ class CourseShipment(BaseShipment):
     def ship(self) -> None:
         self.invite_to_clickmeeting()
         self.invite_to_zoomus()
-        self.subscribe_to_dashamail()
         self.create_study_model()
 
         self.send_welcome_letter()
 
     def unship(self) -> None:
         self.remove_study_model()
-        self.unsubscribe_from_dashamail()
 
     def create_study_model(self) -> None:
         Study.objects.get_or_create(
@@ -35,21 +33,6 @@ class CourseShipment(BaseShipment):
 
     def remove_study_model(self) -> None:
         Study.objects.get(order=self.order).delete()
-
-    def subscribe_to_dashamail(self) -> None:
-        if self.course.dashamail_list_id is not None:
-            subscribe_to_dashamail.delay(
-                list_id=self.course.dashamail_list_id,
-                user_id=self.user.pk,
-                tags=[self.course.slug, f'{self.course.slug}-purchased'],
-            )
-
-    def unsubscribe_from_dashamail(self) -> None:
-        if self.course.dashamail_list_id is not None:
-            unsubscribe_from_dashamail.delay(
-                list_id=self.course.dashamail_list_id,
-                user_id=self.user.pk,
-            )
 
     def invite_to_clickmeeting(self) -> None:
         if self.course.clickmeeting_room_url is not None:
