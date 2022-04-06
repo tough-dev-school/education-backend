@@ -4,6 +4,7 @@ from datetime import datetime
 from decimal import Decimal
 
 from app.current_user import get_current_user
+from banking.price_calculator import ue_rate_by_bank_name
 from orders.models import Order, PromoCode
 from users.models import User
 
@@ -47,8 +48,14 @@ class OrderCreator:
             desired_shipment_date=self.desired_shipment_date,
             gift_message=self.gift_message,
             desired_bank=self.desired_bank,
+            ue_rate=self._get_ue_rate(self.desired_bank),
         )
 
-    def _get_promocode(self, promocode_name: Optional[str] = None) -> Optional[PromoCode]:
+    @staticmethod
+    def _get_promocode(promocode_name: Optional[str] = None) -> Optional[PromoCode]:
         if promocode_name is not None:
             return PromoCode.objects.get_or_nothing(name=promocode_name)
+
+    @staticmethod
+    def _get_ue_rate(desired_bank: Optional[str]) -> int:
+        return ue_rate_by_bank_name(desired_bank)
