@@ -12,14 +12,14 @@ def subscribe_to_dashamail(mocker):
 
 
 def test(user, subscribe_to_dashamail):
-    subscribe_user_to_dashamail(list_id='test-list-id', user=user)
+    subscribe_user_to_dashamail(list_id='test-list-id', user=user, tags=['test', 'test1'])
 
     subscribe_to_dashamail.assert_called_once_with(
         list_id='test-list-id',
         email=user.email,
         first_name=user.first_name,
         last_name=user.last_name,
-        tags=None,
+        tags=['test', 'test1'],
     )
 
 
