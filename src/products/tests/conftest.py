@@ -10,7 +10,7 @@ def testcode(mixer):
 
 @pytest.fixture(autouse=True)
 def subscribe(mocker):
-    return mocker.patch('app.tasks.subscribe_to_dashamail.delay')
+    return mocker.patch('users.services.user_creator.subscribe_user_to_dashamail')
 
 
 @pytest.fixture
