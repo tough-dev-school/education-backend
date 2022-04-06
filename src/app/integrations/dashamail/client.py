@@ -1,6 +1,6 @@
 from typing import Optional
 
-from app.integrations.dashamail.exceptions import DashamailSubscriptionFailed
+from app.integrations.dashamail.exceptions import DashamailSubscriptionFailed, DashamailUnsubscriptionFailed
 from app.integrations.dashamail.http import DashamailHTTP
 
 
@@ -30,13 +30,16 @@ class AppDashamail:
             raise DashamailSubscriptionFailed(f'{response}')
 
     def unsubscribe_user(self, email: str) -> None:
-        self.http.post(
+        response = self.http.post(
             url='',
             payload={
                 'method': 'lists.unsubscribe_member',
                 'email': email,
             },
         )
+
+        if response['response']['msg']['err_code'] != 0:
+            raise DashamailUnsubscriptionFailed(f'{response}')
 
 
 __all__ = [

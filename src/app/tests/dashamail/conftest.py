@@ -33,6 +33,20 @@ def successful_response_json():
 
 
 @pytest.fixture
+def fail_response_json():
+    return {
+        'response': {
+            'msg': {
+                'err_code': 4,
+                'text': 'error',
+                'type': 'message',
+            },
+            'data': {},
+        },
+    }
+
+
+@pytest.fixture
 def post(mocker, successful_response_json):
     return mocker.patch('app.integrations.dashamail.http.DashamailHTTP.post', return_value=successful_response_json)
 

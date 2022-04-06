@@ -5,20 +5,6 @@ from app.integrations.dashamail.exceptions import DashamailSubscriptionFailed
 pytestmark = [pytest.mark.django_db]
 
 
-@pytest.fixture
-def fail_response_json():
-    return {
-        'response': {
-            'msg': {
-                'err_code': 4,
-                'text': 'error',
-                'type': 'message',
-            },
-            'data': {},
-        },
-    }
-
-
 def test_subscribe(dashamail, post, user):
     dashamail.subscribe_user(
         list_id='test-list-id',
