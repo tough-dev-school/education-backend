@@ -1,6 +1,6 @@
 import pytest
 
-from app.integrations.dashamail import AppDashamail, DashamailMember
+from app.integrations.dashamail import AppDashamail
 
 pytestmark = [pytest.mark.django_db]
 
@@ -16,16 +16,6 @@ def dashamail(httpx_mock):
     client = AppDashamail()
     client.httpx_mock = httpx_mock
     return client
-
-
-@pytest.fixture
-def dashamail_member(user):
-    return DashamailMember(
-        email=user.email,
-        first_name=user.first_name,
-        last_name=user.last_name,
-        tags=['test-tag', 'tag-test'],
-    )
 
 
 @pytest.fixture
