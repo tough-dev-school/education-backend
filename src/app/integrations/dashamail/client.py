@@ -1,6 +1,6 @@
 from typing import Optional
 
-from app.integrations.dashamail.exceptions import DashamailSubscriptionFailed, DashamailUnsubscriptionFailed
+from app.integrations.dashamail.exceptions import DashamailSubscriptionFailed
 from app.integrations.dashamail.http import DashamailHTTP
 
 
