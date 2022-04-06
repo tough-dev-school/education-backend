@@ -12,7 +12,3 @@ class DashamailWrongResponse(DashamailHTTPException):
 
 class DashamailSubscriptionFailed(DashamailException):
     pass
-
-
-class DashamailUnsubscriptionFailed(DashamailException):
-    pass

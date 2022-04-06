@@ -24,17 +24,3 @@ def subscribe_to_dashamail(list_id: str, email: str, first_name: str, last_name:
         last_name=last_name,
         tags=tags,
     )
-
-
-@celery.task(
-    autoretry_for=[httpx.HTTPError, DashamailException],
-    retry_kwargs={
-        'max_retries': 10,
-        'countdown': 5,
-    },
-    rate_limit='1/s',
-)
-def unsubscribe_from_dashamail(email: str):
-    dashamail = AppDashamail()
-
-    dashamail.unsubscribe_user(email=email)

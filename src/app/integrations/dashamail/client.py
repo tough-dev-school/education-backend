@@ -29,18 +29,6 @@ class AppDashamail:
         if response['response']['msg']['err_code'] != 0:
             raise DashamailSubscriptionFailed(f'{response}')
 
-    def unsubscribe_user(self, email: str) -> None:
-        response = self.http.post(
-            url='',
-            payload={
-                'method': 'lists.unsubscribe_member',
-                'email': email,
-            },
-        )
-
-        if response['response']['msg']['err_code'] != 0:
-            raise DashamailUnsubscriptionFailed(f'{response}')
-
 
 __all__ = [
     'AppDashamail',
