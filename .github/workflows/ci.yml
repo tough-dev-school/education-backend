@@ -120,14 +120,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Login to the custom container registry
-        uses: docker/login-action@v1
-        if: ${{ github.ref == 'refs/heads/master' }}
-        with:
-          registry: ${{ secrets.CONTAINER_REGISTRY_HOST }}
-          username: ${{ secrets.CONTAINER_REGISTRY_LOGIN }}
-          password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
-
       - name: Build web image
         uses: docker/build-push-action@v2
         with:
@@ -137,8 +129,6 @@ jobs:
           tags: |
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:latest
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:${{ github.sha }}
-            ${{ secrets.CONTAINER_REGISTRY_HOST }}/${{ steps.image.outputs.lowercase }}/monolith-web:latest
-            ${{ secrets.CONTAINER_REGISTRY_HOST }}/${{ steps.image.outputs.lowercase }}/monolith-web:${{ github.sha }}
 
           build-args: |
             - RELEASE=${{ github.sha }}
@@ -154,8 +144,6 @@ jobs:
           tags: |
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:latest
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }}
-            ${{ secrets.CONTAINER_REGISTRY_HOST }}/${{ steps.image.outputs.lowercase }}/monolith-worker:latest
-            ${{ secrets.CONTAINER_REGISTRY_HOST }}/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }}
           build-args: |
             - RELEASE=${{ github.sha }}
           cache-from: type=gha
@@ -170,8 +158,6 @@ jobs:
           tags: |
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:latest
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:${{ github.sha }}
-            ${{ secrets.CONTAINER_REGISTRY_HOST }}/${{ steps.image.outputs.lowercase }}/monolith-scheduler:latest
-            ${{ secrets.CONTAINER_REGISTRY_HOST }}/${{ steps.image.outputs.lowercase }}/monolith-scheduler:${{ github.sha }}
           build-args: |
             - RELEASE=${{ github.sha }}
           cache-from: type=gha
