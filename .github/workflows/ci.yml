@@ -110,7 +110,7 @@ jobs:
         id: image
         uses: ASzc/change-string-case-action@v1
         with:
-          string: ${{ github.repository }}-backend
+          string: ${{ github.repository_owner }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
@@ -120,15 +120,58 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build image
-        id: docker_build
+      - name: Login to the custom container registry
+        uses: docker/login-action@v1
+        if: ${{ github.ref == 'refs/heads/master' }}
+        with:
+          registry: ${{ secrets.CONTAINER_REGISTRY_HOST }}
+          username: ${{ secrets.CONTAINER_REGISTRY_LOGIN }}
+          password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
+
+      - name: Build web image
         uses: docker/build-push-action@v2
         with:
           context: .
+          target: web
           push: ${{ github.ref == 'refs/heads/master' }}
           tags: |
-            ghcr.io/${{ steps.image.outputs.lowercase }}:latest
-            ghcr.io/${{ steps.image.outputs.lowercase }}:${{ github.sha }}
+            ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:latest
+            ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:${{ github.sha }}
+            ${{ secrets.CONTAINER_REGISTRY_HOST }}/${{ steps.image.outputs.lowercase }}/monolith-web:latest
+            ${{ secrets.CONTAINER_REGISTRY_HOST }}/${{ steps.image.outputs.lowercase }}/monolith-web:${{ github.sha }}
+
+          build-args: |
+            - RELEASE=${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build worker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          target: worker
+          push: ${{ github.ref == 'refs/heads/master' }}
+          tags: |
+            ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:latest
+            ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }}
+            ${{ secrets.CONTAINER_REGISTRY_HOST }}/${{ steps.image.outputs.lowercase }}/monolith-worker:latest
+            ${{ secrets.CONTAINER_REGISTRY_HOST }}/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }}
+          build-args: |
+            - RELEASE=${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build scheduler image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          target: scheduler
+          push: ${{ github.ref == 'refs/heads/master' }}
+          tags: |
+            ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:latest
+            ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:${{ github.sha }}
+            ${{ secrets.CONTAINER_REGISTRY_HOST }}/${{ steps.image.outputs.lowercase }}/monolith-scheduler:latest
+            ${{ secrets.CONTAINER_REGISTRY_HOST }}/${{ steps.image.outputs.lowercase }}/monolith-scheduler:${{ github.sha }}
           build-args: |
             - RELEASE=${{ github.sha }}
           cache-from: type=gha
