@@ -1,9 +1,9 @@
-from typing import Iterable, Optional
+from typing import Optional
 
 import uuid
 from rest_framework import serializers
 
-from app.tasks import subscribe_to_mailchimp
+from app.integrations.dashamail.helpers import subscribe_user_to_dashamail
 from users.models import User
 
 
@@ -21,7 +21,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 class UserCreator:
     """Service object for creating a user"""
-    def __init__(self, email: str, name: Optional[str] = None, subscribe: Optional[bool] = True, tags: Optional[Iterable[str]] = None):
+    def __init__(self, email: str, name: Optional[str] = None, subscribe: Optional[bool] = True, tags: Optional[list[str]] = None):
         self.do_subscribe = subscribe
         self.subscribe_tags = tags
 
@@ -54,4 +54,4 @@ class UserCreator:
     def after_creation(self) -> None:
         if self.do_subscribe:
             if self.resulting_user.email and len(self.resulting_user.email):
-                subscribe_to_mailchimp.delay(user_id=self.resulting_user.pk, tags=self.subscribe_tags)
+                subscribe_user_to_dashamail(user=self.resulting_user, tags=self.subscribe_tags)
