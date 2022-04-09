@@ -42,7 +42,6 @@ class CourseAdmin(ModelAdmin):
                     'zoomus_webinar_id',
                     'welcome_letter_template_id',
                     'gift_welcome_letter_template_id',
-                    'mailchimp_list_id',
                 ],
             },
         ),

@@ -33,3 +33,8 @@ def unship(mocker):
 @pytest.fixture
 def order(factory, nameless_user, course):
     return factory.order(user=nameless_user, course=course)
+
+
+@pytest.fixture(autouse=True)
+def subscribe(mocker):
+    return mocker.patch('app.tasks.subscribe_to_dashamail.delay')

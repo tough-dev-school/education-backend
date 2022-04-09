@@ -1,4 +1,4 @@
-from typing import Iterable, Optional
+from typing import List, Optional
 
 from django.http import HttpResponseRedirect
 from rest_framework.decorators import action
@@ -27,8 +27,8 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
         return self.get_object()
 
     @property
-    def tags(self) -> Iterable[str]:
-        return (self.item.slug)
+    def tags(self) -> List[str]:
+        return [self.item.slug]
 
     @action(methods=['POST'], detail=True)
     def purchase(self, request, pk=None, **kwargs):
@@ -110,7 +110,7 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
 
         return order_creator()
 
-    def _create_user(self, name: str, email: str, subscribe: bool = False, tags: Optional[Iterable[str]] = None) -> User:
+    def _create_user(self, name: str, email: str, subscribe: bool = False, tags: Optional[List[str]] = None) -> User:
         return UserCreator(
             name=name,
             email=email.strip(),

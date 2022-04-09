@@ -1,4 +1,4 @@
-FROM python:3.10.2-slim-buster
+FROM python:3.10.2-slim-buster as base
 LABEL maintainer="fedor@borshev.com"
 
 LABEL com.datadoghq.ad.logs='[{"source": "uwsgi", "service": "django"}]'
@@ -7,13 +7,10 @@ ENV PYTHONUNBUFFERED 1
 ENV DEBIAN_FRONTEND noninteractive
 
 ENV STATIC_ROOT /var/lib/django-static
-ENV DATABASE_URL sqlite:////var/lib/django-db/pmdaily.sqlite
-ENV CELERY_BACKEND redis://redis:6379/8
+ENV CELERY_APP=app.celery
 
 ENV _UWSGI_VERSION 2.0.20
 ENV DOCKERIZE_VERSION v0.6.1
-
-EXPOSE 8000
 
 RUN echo deb http://deb.debian.org/debian buster contrib non-free > /etc/apt/sources.list.d/debian-contrib.list \
   && apt-get update \
@@ -36,21 +33,36 @@ RUN wget -O uwsgi-${_UWSGI_VERSION}.tar.gz https://github.com/unbit/uwsgi/archiv
 
 RUN pip install --no-cache-dir --upgrade pip
 
-COPY dev-requirements.txt requirements.txt /
+COPY requirements.txt /
 
-RUN pip install --no-cache-dir -r requirements.txt -r /dev-requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 WORKDIR /src
 COPY src /src
-
-RUN mkdir /var/lib/django-db
-VOLUME /var/lib/django-db
 
 ENV NO_CACHE=On
 RUN ./manage.py compilemessages
 RUN ./manage.py collectstatic --noinput
 ENV NO_CACHE=Off
 
-HEALTHCHECK CMD wget -q -O /dev/null http://localhost:8000/api/v2/healthchecks/db/ --header "Host: edu-app.borshev.com" || exit 1
+USER nobody
 
+
+FROM base as web
+HEALTHCHECK CMD wget -q -O /dev/null http://localhost:8000/api/v2/healthchecks/db/ --header "Host: app.tough-dev.school" || exit 1
 CMD ./manage.py migrate && uwsgi --master --http :8000 --module app.wsgi --workers 2 --threads 2 --harakiri 25 --max-requests 1000 --log-x-forwarded-for
+
+
+FROM base as worker
+HEALTHCHECK CMD celery -A ${CELERY_APP} inspect ping -d $QUEUE@$HOSTNAME
+CMD celery -A ${CELERY_APP} worker -Q $QUEUE -c ${CONCURENCY:-2} -n "${QUEUE}@%h" --max-tasks-per-child ${MAX_REQUESTS_PER_CHILD:-50} --time-limit ${TIME_LIMIT:-900} --soft-time-limit ${SOFT_TIME_LIMIT:-45}
+
+
+FROM base as scheduler
+ENV SCHEDULER_DB_PATH=/var/db/scheduler
+USER root
+RUN mkdir -p ${SCHEDULER_DB_PATH} && chown nobody ${SCHEDULER_DB_PATH}
+VOLUME ${SCHEDULER_DB_PATH}
+USER nobody
+HEALTHCHECK NONE
+CMD celery -A ${CELERY_APP} beat --pidfile=/tmp/celerybeat.pid --schedule=${SCHEDULER_DB_PATH}/celerybeat-schedule.db
