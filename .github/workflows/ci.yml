@@ -162,3 +162,39 @@ jobs:
             - RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build-docker-image
+    if: ${{ github.ref == 'refs/heads/master' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read image identifiers
+        id: image
+        uses: ASzc/change-string-case-action@v1
+        with:
+          string: ${{ github.repository_owner }}
+
+      - name: Update backend image
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: circle
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: docker service update app_backend --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:${{ github.sha }} --with-registry-auth
+
+      - name: Update celery worker image
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: circle
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: docker service update app_worker --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }} --with-registry-auth
+
+      - name: Update celery scheduler image
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: circle
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            docker service update app_scheduler --detach --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:${{ github.sha }} --with-registry-auth
