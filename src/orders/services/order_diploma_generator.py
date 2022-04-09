@@ -1,5 +1,3 @@
-from typing import List
-
 from dataclasses import dataclass
 from django.utils.functional import cached_property
 
@@ -31,7 +29,7 @@ class OrderDiplomaGenerator:
     def course(self) -> Course:
         return self.order.study.course
 
-    def get_available_languages(self) -> List[str]:
+    def get_available_languages(self) -> list[str]:
         return [template.language for template in DiplomaTemplate.objects.filter(course=self.course)]
 
     def order_is_suitable_for_diploma_generation(self, language) -> bool:

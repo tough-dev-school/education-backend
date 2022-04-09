@@ -14,7 +14,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'app.settings')
 celery = Celery('app')
 
 celery.conf.update(
-    broker_url=env('REDISCLOUD_URL'),
+    broker_url=env('CELERY_BROKER_URL'),
     task_always_eager=env('CELERY_ALWAYS_EAGER', cast=bool, default=settings.DEBUG),  # by default in debug mode we run all celery tasks in foregroud.
     task_eager_propagates=True,
     task_ignore_result=True,

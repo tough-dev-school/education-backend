@@ -9,7 +9,7 @@ from users.models import User
 class Bank(metaclass=ABCMeta):
     currency = 'RUB'
     currency_symbol = '₽'
-    ue = 1
+    ue: int = 1
 
     def __init__(self, order: Order, success_url=None, fail_url=None) -> None:
         self.order = order

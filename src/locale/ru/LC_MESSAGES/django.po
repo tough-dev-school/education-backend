@@ -520,8 +520,8 @@ msgstr ""
 "предыдущий"
 
 #: products/models/course.py:25
-msgid "Mailchimp audience id"
-msgstr "ID списка рассылки в Mailchimp"
+msgid "Dashamail audience id"
+msgstr "ID списка рассылки в Dashamail"
 
 #: products/models/course.py:25
 msgid "Get it from audience settings"
