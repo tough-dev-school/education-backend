@@ -5,6 +5,7 @@ ALLOWED_HOSTS = [
     'localhost',
     'localhost:8000',
     'education-backend.herokuapp.com',  # used in netlify proxy
+    'app1.tough-dev.school',
     ABSOLUTE_HOST.replace('https://', ''),
 ]
 
