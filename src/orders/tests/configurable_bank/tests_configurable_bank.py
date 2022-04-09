@@ -42,6 +42,19 @@ def test_desired_bank_is_saved(call_purchase, bank):
     assert order.desired_bank == bank
 
 
+@pytest.mark.parametrize(('bank', 'ue_rate'), [
+    ('tinkoff_bank', 11),
+    ('tinkoff_credit', 22),
+    ('stripe', 33),
+])
+def test_ue_rate_is_saved(call_purchase, bank, ue_rate):
+    call_purchase(desired_bank=bank)
+
+    order = Order.objects.last()
+
+    assert order.ue_rate == ue_rate
+
+
 def test_by_default_desired_bank_is_empty_string(call_purchase):
     call_purchase()
 
