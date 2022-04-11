@@ -9,11 +9,12 @@ from users.models import User
 
 class AnswerCrossCheckDispatcher:
     """Given a bunch of answers and users, create a cross-check record
-    for each of them, making sure each answer has a user to check
-    and number of answers if equal for each user
+    for each of them, making sure the first answer of each user has a user to
+    check and number of answers if equal for each user
     """
     def __init__(self, answers: QuerySet[Answer], answers_per_user: int = 3):
         self.answers = Answer.objects.filter(pk__in=[answer.pk for answer in answers])
+        self.unique_author_answers = self.answers.order_by('author_id', 'created').distinct('author_id')
         self.users = User.objects.filter(pk__in=[answer.author_id for answer in answers]).order_by('?')
         self.answers_per_user = answers_per_user
 
@@ -27,11 +28,11 @@ class AnswerCrossCheckDispatcher:
                     crosschecks.append(
                         self.give_answer_to_user(answer, user),
                     )
-
         return crosschecks
 
     def get_answer_to_check(self, user: User) -> Optional[Answer]:
         return self.get_answers_with_crosscheck_count() \
+            .filter(id__in=self.unique_author_answers) \
             .annotate(already_checking=Count('answercrosscheck', filter=Q(answercrosscheck__checker_id=user.id))) \
             .exclude(already_checking__gte=1) \
             .exclude(author=user) \
