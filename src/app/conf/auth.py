@@ -1,4 +1,5 @@
 from datetime import timedelta
+from os import path
 
 from app.conf.environ import env
 
@@ -12,14 +13,29 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.RemoteUserBackend',
 ]
 
+
+keys = {
+    'public': env.str('JWT_PUBLIC_KEY', multiline=True),
+    'private': env.str('JWT_PRIVATE_KEY', multiline=True),
+}
+
+if not keys['public']:
+    with open(path.join(path.dirname(__file__), '/public.pem'), 'rb') as fp:
+        keys['public'] = fp.read()
+
+if not keys['private']:
+    with open(path.join(path.dirname(__file__), '/private.pem'), 'rb') as fp:
+        keys['private'] = fp.read()
+
+
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': timedelta(days=14),
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=21),
     'JWT_ALLOW_REFRESH': True,
     'JWT_ISSUER': 'education-backend',
     'JWT_ALGORITHM': 'RS256',
-    'JWT_PRIVATE_KEY': env.str('JWT_PRIVATE_KEY', multiline=True),
-    'JWT_PUBLIC_KEY': env.str('JWT_PUBLIC_KEY', multiline=True),
+    'JWT_PRIVATE_KEY': keys['private'],
+    'JWT_PUBLIC_KEY': keys['public'],
     'JWT_PAYLOAD_HANDLER': 'a12n.jwt.payload_handler',
 }
 

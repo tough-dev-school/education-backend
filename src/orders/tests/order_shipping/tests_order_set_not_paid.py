@@ -23,15 +23,6 @@ def test_removes_study_record(order):
     assert not hasattr(order, 'study'), 'Study record should be deleted at this point'
 
 
-def test_unsubsribes_from_mailchimp(order, mocker):
-    unsubscribe = mocker.patch('app.tasks.unsubscribe_from_mailchimp.delay')
-    order.course.setattr_and_save('mailchimp_list_id', '100500')
-
-    order.set_not_paid()
-
-    unsubscribe.assert_called_once_with(list_id='100500', user_id=order.user_id)
-
-
 def test_unships(order, unship):
     order.set_not_paid()
 
