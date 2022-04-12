@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
 from orders.models import PromoCode
+from orders.admin.promocodes import actions
 
 
 @admin.register(PromoCode)
@@ -25,6 +26,8 @@ class PromoCodeAdmin(ModelAdmin):
     list_filter = [
         'active',
     ]
+
+    actions = [actions.deactivate]
 
     def get_queryset(self, request):
         return super().get_queryset(request) \
