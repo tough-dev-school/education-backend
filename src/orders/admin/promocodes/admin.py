@@ -3,8 +3,8 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
-from orders.models import PromoCode
 from orders.admin.promocodes import actions
+from orders.models import PromoCode
 
 
 @admin.register(PromoCode)
