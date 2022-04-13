@@ -322,9 +322,13 @@ msgstr "Статус"
 msgid "If changed user, receives welcome letter one more time"
 msgstr "Если поменять, студент получит ещё одно письмо «спасибо за покупку»"
 
-#: orders/admin/promocodes.py:34
+#: orders/admin/promocodes/admin.py:37
 msgid "Order count"
 msgstr "Количество заказов"
+
+#: orders/admin/promocodes/actions.py:5
+msgid "Deactivate selected promo codes"
+msgstr "Деактивировать выбранные промо-коды"
 
 #: orders/models/order.py:32
 #, fuzzy
