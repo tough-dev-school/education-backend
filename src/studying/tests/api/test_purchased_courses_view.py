@@ -9,6 +9,7 @@ def test_list(api, course):
     assert got[0]['id'] == course.id
     assert got[0]['slug'] == 'ichteology'
     assert got[0]['name'] == 'Ихтеология для 5 класса'
+    assert got[0]['home_page_slug'] is None
 
 
 @pytest.mark.usefixtures('unpaid_order')

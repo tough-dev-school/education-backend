@@ -18,6 +18,7 @@ class Material(TimestampedModel):
     course = models.ForeignKey('products.Course', on_delete=models.CASCADE)
     page_id = models.CharField(_('Notion page id'), max_length=64, db_index=True, help_text=_('Paste it from notion address bar'))
     active = models.BooleanField(_('Active'), default=True)
+    is_home_page = models.BooleanField(_('Is home page of the course'), default=False)
 
     class Meta:
         verbose_name = _('Notion material')
