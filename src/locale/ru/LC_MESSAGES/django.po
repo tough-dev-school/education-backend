@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-22 19:57+0300\n"
+"POT-Creation-Date: 2022-04-19 20:42+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +30,7 @@ msgstr "Нет"
 
 #: chains/admin/message.py:42 chains/models/chain.py:23 diplomas/admin.py:48
 #: homework/admin/answer/admin.py:55 homework/admin/answer/admin.py:100
-#: orders/models/order.py:47 products/models/course.py:30
+#: orders/models/order.py:48 products/models/course.py:29
 msgid "Course"
 msgstr "Курс"
 
@@ -74,7 +74,9 @@ msgid "Delay (minutes)"
 msgstr "Задержка (мин.)"
 
 #: chains/models/message.py:31
-msgid "86400 for day, 604800 for week"
+#, fuzzy
+#| msgid "86400 for day, 604800 for week"
+msgid "1440 for day, 10800 for week"
 msgstr "День — 86400, Неделя — 604800"
 
 #: chains/models/message.py:34
@@ -245,15 +247,19 @@ msgstr "Скопируйте адрес из строки браузера"
 msgid "Active"
 msgstr "Включено"
 
-#: notion/models.py:23
+#: notion/models.py:21
+msgid "Is home page of the course"
+msgstr "Главная страница курса"
+
+#: notion/models.py:24
 msgid "Notion material"
 msgstr "Материал"
 
-#: notion/models.py:24
+#: notion/models.py:25
 msgid "Notion materials"
 msgstr "Материалы"
 
-#: notion/models.py:29
+#: notion/models.py:30
 msgid "May access materials from every course"
 msgstr "Видит страницы ноушена от всех курсов"
 
@@ -322,13 +328,13 @@ msgstr "Статус"
 msgid "If changed user, receives welcome letter one more time"
 msgstr "Если поменять, студент получит ещё одно письмо «спасибо за покупку»"
 
+#: orders/admin/promocodes/actions.py:6
+msgid "Deactivate selected promo codes"
+msgstr "Деактивировать выбранные промо-коды"
+
 #: orders/admin/promocodes/admin.py:37
 msgid "Order count"
 msgstr "Количество заказов"
-
-#: orders/admin/promocodes/actions.py:5
-msgid "Deactivate selected promo codes"
-msgstr "Деактивировать выбранные промо-коды"
 
 #: orders/models/order.py:32
 #, fuzzy
@@ -368,41 +374,45 @@ msgstr "Дата выполнения"
 msgid "User-requested bank string"
 msgstr "Банк"
 
-#: orders/models/order.py:48 products/models/record.py:16
+#: orders/models/order.py:46
+msgid "Purchase-time UE rate"
+msgstr ""
+
+#: orders/models/order.py:49 products/models/record.py:16
 msgid "Record"
 msgstr "Запись"
 
-#: orders/models/order.py:49 products/models/bundle.py:15
+#: orders/models/order.py:50 products/models/bundle.py:15
 msgid "Bundle"
 msgstr "Набор"
 
-#: orders/models/order.py:51
+#: orders/models/order.py:52
 msgid "Giver"
 msgstr "Даритель"
 
-#: orders/models/order.py:52
+#: orders/models/order.py:53
 msgid "Date when the gift should be shipped"
 msgstr "Когда подарить"
 
-#: orders/models/order.py:53
+#: orders/models/order.py:54
 msgid "Gift message"
 msgstr "Подарочное сообщение"
 
-#: orders/models/order.py:58
+#: orders/models/order.py:59
 msgctxt "orders"
 msgid "Order"
 msgstr "Заказ"
 
-#: orders/models/order.py:59
+#: orders/models/order.py:60
 msgctxt "orders"
 msgid "Orders"
 msgstr "Заказы"
 
-#: orders/models/order.py:62
+#: orders/models/order.py:63
 msgid "May mark orders as paid"
 msgstr "Отмечать заказы оплаченными"
 
-#: orders/models/order.py:63
+#: orders/models/order.py:64
 msgid "May mark orders as unpaid"
 msgstr "Возвращать заказы"
 
@@ -524,22 +534,14 @@ msgstr ""
 "предыдущий"
 
 #: products/models/course.py:25
-msgid "Dashamail audience id"
-msgstr "ID списка рассылки в Dashamail"
-
-#: products/models/course.py:25
-msgid "Get it from audience settings"
-msgstr "Взять можно в audience -> settings в админке мейлчимпа"
-
-#: products/models/course.py:26
 msgid "Display in LMS"
 msgstr "Показывать в LMS"
 
-#: products/models/course.py:26
+#: products/models/course.py:25
 msgid "If disabled will not be shown in LMS"
 msgstr "Если снять галочку, студенты не будут видеть курс в LMS"
 
-#: products/models/course.py:31
+#: products/models/course.py:30
 msgid "Courses"
 msgstr "Курсы"
 
@@ -650,6 +652,12 @@ msgstr "Пол"
 #: users/models.py:80
 msgid "Students"
 msgstr "Студенты"
+
+#~ msgid "Dashamail audience id"
+#~ msgstr "ID списка рассылки в Dashamail"
+
+#~ msgid "Get it from audience settings"
+#~ msgstr "Взять можно в audience -> settings в админке мейлчимпа"
 
 #~ msgid "Regenerate"
 #~ msgstr "Перегенерировать"

@@ -1,5 +1,5 @@
 from django.apps import apps
-from django.db.models import QuerySet
+from django.db.models import OuterRef, QuerySet, Subquery
 from django.utils.translation import gettext_lazy as _
 
 from app.models import models
@@ -10,7 +10,23 @@ from users.models import User
 
 class CourseQuerySet(QuerySet):
     def for_lms(self) -> QuerySet['Course']:
-        return self.filter(display_in_lms=True)
+        return self.filter(
+            display_in_lms=True,
+        ).with_course_homepage()
+
+    def with_course_homepage(self) -> QuerySet['Course']:
+        materials = apps.get_model('notion.Material').objects.filter(
+            course=OuterRef('pk'),
+            is_home_page=True,
+        ).order_by(
+            '-created',
+        ).values(
+            'page_id',
+        )
+
+        return self.annotate(
+            home_page_slug=Subquery(materials[:1]),
+        )
 
 
 class Course(Shippable):
