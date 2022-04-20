@@ -76,8 +76,8 @@ msgstr "Задержка (мин.)"
 #: chains/models/message.py:31
 #, fuzzy
 #| msgid "86400 for day, 604800 for week"
-msgid "1440 for day, 10800 for week"
-msgstr "День — 86400, Неделя — 604800"
+msgid "1440 for day, 10080 for week"
+msgstr "День — 1440, Неделя — 10080"
 
 #: chains/models/message.py:34
 msgid "Email chain message"

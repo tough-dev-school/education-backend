@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='message',
             name='delay',
-            field=models.BigIntegerField(default=0, help_text='1440 for day, 10800 for week', verbose_name='Delay (minutes)'),
+            field=models.BigIntegerField(default=0, help_text='1440 for day, 10080 for week', verbose_name='Delay (minutes)'),
         ),
     ]
