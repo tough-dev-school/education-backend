@@ -8,8 +8,6 @@ anyio==3.5.0
     # via
     #   -c requirements.txt
     #   httpcore
-appnope==0.1.2
-    # via ipython
 asgiref==3.5.0
     # via
     #   -c requirements.txt
@@ -53,7 +51,7 @@ decorator==5.1.1
     # via
     #   -c requirements.txt
     #   ipython
-django==3.2.12
+django==3.2.13
     # via
     #   -c requirements.txt
     #   django-stubs
