@@ -14,6 +14,8 @@ def test_ok(api):
     assert got['first_name_en'] == api.user.first_name_en
     assert got['last_name_en'] == api.user.last_name_en
     assert got['gender'] == api.user.gender
+    assert got['linkedin_username'] == api.user.linkedin_username
+    assert got['github_username'] == api.user.github_username
 
 
 def test_anon(anon):
@@ -54,6 +56,17 @@ def test_edit_gender(api):
 
     api.user.refresh_from_db()
     assert api.user.gender == 'female'
+
+
+@pytest.mark.parametrize('field', ['github_username', 'linkedin_username'])
+def test_edit_additional_fields(api, field):
+    setattr(api.user, field, 'h4x0r')
+    api.user.save()
+
+    api.patch('/api/v2/users/me/', {field: 'zeroc00l'})
+
+    api.user.refresh_from_db()
+    assert getattr(api.user, field) == 'zeroc00l'
 
 
 def test_edit_user_data_response(api):
