@@ -16,6 +16,8 @@ class UserSerializer(serializers.ModelSerializer):
             'last_name_en',
             'email',
             'gender',
+            'github_username',
+            'linkedin_username',
         ]
 
 

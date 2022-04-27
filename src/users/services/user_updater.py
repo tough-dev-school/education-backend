@@ -13,6 +13,8 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             'first_name_en',
             'last_name_en',
             'gender',
+            'github_username',
+            'linkedin_username',
         ]
 
 
