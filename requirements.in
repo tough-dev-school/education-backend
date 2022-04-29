@@ -39,7 +39,5 @@ urllib3>=1.26.5
 celery
 redis
 
-uwsgi
-
 httpx
 stripe
