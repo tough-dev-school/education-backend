@@ -1,3 +1,5 @@
+from typing import Union
+
 from abc import ABCMeta, abstractmethod
 from django.conf import settings
 from urllib.parse import urljoin
@@ -29,7 +31,7 @@ class Bank(metaclass=ABCMeta):
         return self._fail_url or urljoin(settings.FRONTEND_URL, '/error/?code=banking')
 
     @property
-    def price(self) -> int:
+    def price(self) -> Union[int, str]:
         from banking import price_calculator
         price = price_calculator.to_bank(bank=self.__class__, price=self.order.price)
         return int(price * 100)
