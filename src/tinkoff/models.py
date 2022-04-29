@@ -31,7 +31,7 @@ class PaymentNotification(TimestampedModel):
 
 class CreditNotification(TimestampedModel):
     """Notification for credit order by TinkoffCredit"""
-    STATUSES_CHOICES = (
+    STATUS_CHOICES = (
         ('approved', _('Approved')),
         ('rejected', _('Rejected')),
         ('canceled', _('Canceled')),
@@ -39,7 +39,7 @@ class CreditNotification(TimestampedModel):
     )
 
     order_id = models.IntegerField()
-    status = models.CharField(max_length=32, choices=STATUSES_CHOICES)
+    status = models.CharField(max_length=32, choices=STATUS_CHOICES)
     bank_created = models.DateTimeField()
     first_payment = models.DecimalField(max_digits=10, decimal_places=2)
     order_amount = models.DecimalField(max_digits=10, decimal_places=2)
@@ -53,3 +53,22 @@ class CreditNotification(TimestampedModel):
     middle_name = models.CharField(max_length=32, blank=True, null=True)
     loan_number = models.CharField(max_length=128, blank=True, null=True)
     email = models.CharField(max_length=128, null=True, blank=True)
+
+
+class DolyameNotification(TimestampedModel):
+    STATUS_CHOICES = (
+        ('approved', _('Approved')),
+        ('rejected', _('Rejected')),
+        ('canceled', _('Canceled')),
+        ('commited', _('Commited')),
+        ('wait_for_commit', _('Waiting for commit')),
+        ('completed', _('Completed')),
+    )
+
+    order_id = models.CharField(max_length=256)
+    status = models.CharField(max_length=32, choices=STATUS_CHOICES)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    demo = models.BooleanField()
+    residual_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    client_info = models.JSONField(default=dict)
+    payment_schedule = models.JSONField(default=dict)
