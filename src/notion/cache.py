@@ -6,7 +6,7 @@ from app.current_user import get_current_user
 from notion.client import NotionClient
 from notion.page import NotionPage
 
-TIMEOUT = 60 * 60 * 24 * 2  # 2 days
+TIMEOUT = 60 * 60 * 24 * 14  # 14 days
 
 
 def cache_key(page_id: str) -> str:
