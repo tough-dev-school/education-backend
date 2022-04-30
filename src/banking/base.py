@@ -1,5 +1,6 @@
-from typing import Union
+from typing import Optional, Union
 
+import uuid
 from abc import ABCMeta, abstractmethod
 from django.conf import settings
 from urllib.parse import urljoin
@@ -13,10 +14,18 @@ class Bank(metaclass=ABCMeta):
     currency_symbol = '₽'
     ue: int = 1
 
-    def __init__(self, order: Order, success_url=None, fail_url=None) -> None:
+    def __init__(
+        self,
+        order: Order,
+        success_url:
+        Optional[str] = None,
+        fail_url: Optional[str] = None,
+        idempotency_key: Optional[str] = None,
+    ) -> None:
         self.order = order
         self._success_url = success_url
         self._fail_url = fail_url
+        self.idempotency_key = idempotency_key or str(uuid.uuid4())
 
     @abstractmethod
     def get_initial_payment_url(self) -> str:

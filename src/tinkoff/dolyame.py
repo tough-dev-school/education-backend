@@ -1,5 +1,4 @@
 import httpx
-import uuid
 from decimal import Decimal
 from django.conf import settings
 from urllib.parse import urljoin
@@ -15,11 +14,11 @@ class Dolyame(Bank):
     base_url = 'https://partner.dolyame.ru/v1/'
 
     def get_initial_payment_url(self) -> str:
-        result = self.call(
+        result = self.post(
             method='orders/create',
             payload={
                 'order': {
-                    'id': f'tds-{self.order.id}',
+                    'id': self.order_id,
                     'amount': self.price,
                     'items': self.get_items(),
                 },
@@ -32,7 +31,16 @@ class Dolyame(Bank):
 
         return result['link']
 
-    def call(self, method: str, payload: dict) -> dict:
+    def commit(self) -> None:
+        self.post(
+            method=f'orders/{self.order_id}/commit',
+            payload={
+                'amount': self.price,
+                'items': self.get_items(),
+            },
+        )
+
+    def post(self, method: str, payload: dict) -> dict:
         """Query Dolyame API
         """
         response = httpx.post(
@@ -40,7 +48,7 @@ class Dolyame(Bank):
             json=payload,
             auth=(settings.DOLYAME_LOGIN, settings.DOLYAME_PASSWORD),
             headers={
-                'X-Correlation-ID': str(uuid.uuid4()),
+                'X-Correlation-ID': self.idempotency_key,
             },
             cert=settings.DOLYAME_CERTIFICATE_PATH,
         )
@@ -69,6 +77,10 @@ class Dolyame(Bank):
     @property
     def price(self) -> str:
         return str(Decimal(super().price / 100))  # type: ignore
+
+    @property
+    def order_id(self) -> str:
+        return f'tds-{self.order.id}'
 
     @staticmethod
     def get_notification_url() -> str:
