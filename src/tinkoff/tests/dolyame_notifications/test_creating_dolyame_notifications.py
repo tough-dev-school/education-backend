@@ -1,5 +1,6 @@
 import pytest
 from decimal import Decimal
+from pytest_httpx import HTTPXMock
 
 from tinkoff.models import DolyameNotification
 
@@ -33,7 +34,7 @@ def test_status(api, notification, status):
     assert notification.status == status
 
 
-def test_autocommit(api, notification, order, httpx_mock):
+def test_autocommit_is_sent(api, notification, order, httpx_mock):
     httpx_mock.add_response(
         url=f'https://partner.dolyame.ru/v1/orders/tds-{order.id}/commit',
         json={},

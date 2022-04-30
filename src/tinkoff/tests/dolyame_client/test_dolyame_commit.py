@@ -1,4 +1,5 @@
 import pytest
+import json
 import uuid
 from pytest_httpx import HTTPXMock
 
@@ -22,6 +23,12 @@ def test(order, idempotency_key, httpx_mock: HTTPXMock):
     )
 
     tasks.commit_dolyame_order(order_id=order.id, idempotency_key=idempotency_key)
+    result = json.loads(httpx_mock.get_requests()[0].content)
+
+    assert result['amount'] == '100500'
+    assert result['items'][0]['name'] == 'Предоставление доступа к записи курса «Пентакли и Тентакли»'
+    assert result['items'][0]['price'] == '100500'
+    assert result['items'][0]['quantity'] == 1
 
 
 @pytest.mark.xfail(strict=True, reason='Just to make sure above code works')
