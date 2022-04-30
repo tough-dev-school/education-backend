@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from orders.models import Order
 from stripebank.models import StripeNotification
 from tinkoff.models import CreditNotification as TinkoffCreditNotification
+from tinkoff.models import DolyameNotification
 from tinkoff.models import PaymentNotification as TinkoffPaymentNotification
 
 
@@ -41,6 +42,20 @@ def mark_order_as_paid_on_stripe_notifications(instance: StripeNotification, cre
         return
 
     if 'tds-' not in instance.order_id:
+        return
+
+    with contextlib.suppress(Order.DoesNotExist):
+        order = Order.objects.get(pk=instance.order_id.replace('tds-', ''))
+        order.set_paid()
+
+
+@receiver(post_save, sender=DolyameNotification)
+def mark_order_as_paid_on_dolyame_notifications(instance: DolyameNotification, created: bool, **kwargs):
+
+    if not created:
+        return
+
+    if instance.status != 'completed':
         return
 
     with contextlib.suppress(Order.DoesNotExist):

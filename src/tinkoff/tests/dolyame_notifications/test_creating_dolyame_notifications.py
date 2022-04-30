@@ -1,6 +1,5 @@
 import pytest
 from decimal import Decimal
-from pytest_httpx import HTTPXMock
 
 from tinkoff.models import DolyameNotification
 
