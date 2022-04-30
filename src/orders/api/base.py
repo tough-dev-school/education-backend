@@ -8,7 +8,7 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from app.pricing import format_price
 from banking import price_calculator
-from banking.selector import BankSelector
+from banking.selector import get_bank
 from orders.api.validators import GiftValidator, PurchaseValidator
 from orders.models import Order, PromoCode
 from orders.services.order_creator import OrderCreator
@@ -60,7 +60,7 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
 
         price = promocode.apply(self.item) if promocode is not None else self.item.price
 
-        Bank = BankSelector()(desired_bank=request.GET.get('desired_bank'))
+        Bank = get_bank(desired=request.GET.get('desired_bank'))
 
         price = price_calculator.to_bank(Bank, price)
 
@@ -127,7 +127,7 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
         return PromoCode.objects.get_or_nothing(name=promocode_name)
 
     def get_payment_link(self, order: Order, data: dict):
-        Bank = BankSelector()(desired_bank=data.get('desired_bank'))
+        Bank = get_bank(desired=data.get('desired_bank'))
         bank = Bank(order=order, success_url=data.get('success_url'))
 
         return bank.get_initial_payment_url()
