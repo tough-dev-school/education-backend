@@ -59,3 +59,10 @@ def _freeze_ue_rate(mocker):
     mocker.patch('tinkoff.bank.TinkoffBank.ue', 11)
     mocker.patch('tinkoff.credit.TinkoffCredit.ue', 22)
     mocker.patch('stripebank.bank.StripeBank.ue', 33)
+
+
+@pytest.fixture(autouse=True)
+def _freeze_acquiring_percent(mocker):
+    mocker.patch('tinkoff.bank.TinkoffBank.acquiring_percent', '1.2')
+    mocker.patch('tinkoff.credit.TinkoffCredit.acquiring_percent', '1.3')
+    mocker.patch('stripebank.bank.StripeBank.acquiring_percent', '1.4')

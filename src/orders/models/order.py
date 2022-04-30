@@ -44,6 +44,7 @@ class Order(TimestampedModel):
 
     desired_bank = models.CharField(_('User-requested bank string'), blank=True, max_length=32)
     ue_rate = models.IntegerField(_('Purchase-time UE rate'))
+    acquiring_percent = models.DecimalField(default=0, max_digits=4, decimal_places=2)
 
     course = ItemField(to='products.Course', verbose_name=_('Course'), null=True, blank=True, on_delete=models.PROTECT)  # type: ignore
     record = ItemField(to='products.Record', verbose_name=_('Record'), null=True, blank=True, on_delete=models.PROTECT)  # type: ignore
