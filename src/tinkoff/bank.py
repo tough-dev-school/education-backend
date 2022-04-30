@@ -2,6 +2,7 @@ from typing import Any
 
 import requests
 from collections import OrderedDict
+from decimal import Decimal
 from django.conf import settings
 from hashlib import sha256
 from urllib.parse import urljoin
@@ -11,6 +12,7 @@ from tinkoff.exceptions import TinkoffRequestException
 
 
 class TinkoffBank(Bank):
+    acquiring_percent = Decimal('1')
 
     def get_initial_payment_url(self) -> str:
         return self.Init()['PaymentURL']
