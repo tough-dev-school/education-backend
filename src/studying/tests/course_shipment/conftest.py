@@ -27,11 +27,6 @@ def shipment(user, course, order):
 
 
 @pytest.fixture(autouse=True)
-def invite_to_clickmeeting(mocker):
-    return mocker.patch('app.tasks.invite_to_clickmeeting.delay')
-
-
-@pytest.fixture(autouse=True)
 def invite_to_zoomus(mocker):
     return mocker.patch('app.tasks.invite_to_zoomus.delay')
 
