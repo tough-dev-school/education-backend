@@ -5,7 +5,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture(autouse=True)
 def api_call(mocker):
-    return mocker.patch('tinkoff.dolyame.Dolyame.call', return_value={'link': '__mocked'})
+    return mocker.patch('tinkoff.dolyame.Dolyame.post', return_value={'link': '__mocked'})
 
 
 def test_items(dolyame):

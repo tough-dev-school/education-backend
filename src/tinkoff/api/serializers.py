@@ -73,7 +73,7 @@ class CreditNotificationSerializer(serializers.ModelSerializer):
 
 
 class DolyameNotificationSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(source='order_id')
+    id = serializers.CharField(source='order_id')
 
     class Meta:
         model = DolyameNotification

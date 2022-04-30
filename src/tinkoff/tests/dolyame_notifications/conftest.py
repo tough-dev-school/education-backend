@@ -14,10 +14,10 @@ def fake_client():
 
 
 @pytest.fixture
-def notification():
+def notification(order):
     def _notification(status: str, **kwargs):
         return {
-            'id': '100500',
+            'id': f'tds-{order.pk}',
             'status': status,
             'amount': 10000.56,
             'residual_amount': 7500.42,

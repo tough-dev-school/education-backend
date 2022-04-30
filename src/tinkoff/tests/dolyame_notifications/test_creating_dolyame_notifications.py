@@ -6,13 +6,13 @@ from tinkoff.models import DolyameNotification
 pytestmark = [pytest.mark.django_db]
 
 
-def test_data(api, notification, payment_schedule):
+def test_data(api, order, notification, payment_schedule):
     api.post('/api/v2/banking/dolyame-notifications/', notification(status='approved', payment_schedule=payment_schedule), expected_status_code=200)
 
     notification = DolyameNotification.objects.last()
 
     assert notification.status == 'approved'
-    assert notification.order_id == 100500
+    assert notification.order_id == f'tds-{order.id}'
     assert notification.amount == Decimal('10000.56')
     assert notification.residual_amount == Decimal('7500.42')
     assert notification.demo is False
@@ -31,6 +31,15 @@ def test_status(api, notification, status):
     notification = DolyameNotification.objects.last()
 
     assert notification.status == status
+
+
+def test_autocommit(api, notification, order, httpx_mock):
+    httpx_mock.add_response(
+        url=f'https://partner.dolyame.ru/v1/orders/tds-{order.id}/commit',
+        json={},
+    )
+
+    api.post('/api/v2/banking/dolyame-notifications/', notification(status='wait_for_commit'), expected_status_code=200)
 
 
 def test_permission(fake_client, notification):
