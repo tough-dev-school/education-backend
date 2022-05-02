@@ -16,7 +16,7 @@ class OrderAdmin(ModelAdmin):
     add_form = OrderAddForm
     list_display = [
         'id',
-        'created',
+        'date',
         'customer',
         'item',
         'is_paid',
@@ -24,7 +24,7 @@ class OrderAdmin(ModelAdmin):
     ]
     list_display_links = [
         'id',
-        'created',
+        'date',
     ]
 
     list_filter = [
@@ -71,6 +71,14 @@ class OrderAdmin(ModelAdmin):
         ),
     ]
 
+    @property
+    def media(self):
+        media = super().media
+
+        media._css_lists.append({'all': ['admin/order_list.css']})
+
+        return media
+
     def get_queryset(self, request):
         return super().get_queryset(request).select_related(
             'user',
@@ -78,13 +86,35 @@ class OrderAdmin(ModelAdmin):
             'course',
         )
 
+    @admin.display(description=_('Date'), ordering='created__id')
+    def date(self, obj: Order):
+        return obj.created.strftime('%d.%m.%Y')
+
     @admin.display(description=_('User'), ordering='user__id')
-    def customer(self, obj):
-        return format_html(
-            '{name} &lt;<a href="mailto:{email}">{email}</a>&gt;',
-            name=str(obj.user),
-            email=obj.user.email,
-        )
+    def customer(self, obj: Order):
+        name_template = '{name} &lt;<a href="mailto:{email}">{email}</a>&gt;'
+        name = str(obj.user)
+        email = obj.user.email
+
+        total_length = len(name) + len(email)
+
+        if 30 <= total_length <= 34:
+            return format_html(
+                name_template,
+                name=obj.user.first_name,
+                email=email,
+            )
+        elif total_length > 34:
+            return format_html(
+                '<a href="mailto:{email}">{email}</a>',
+                email=email,
+            )
+        else:
+            return format_html(
+                '{name} &lt;<a href="mailto:{email}">{email}</a>&gt;',
+                name=name,
+                email=email,
+            )
 
     @admin.display(description=_('Item'))
     def item(self, obj):
@@ -93,12 +123,12 @@ class OrderAdmin(ModelAdmin):
     @admin.display(description=_('Is paid'), ordering='paid')
     def is_paid(self, obj: Order):
         if obj.paid is not None:
-            return _('Paid')
+            return _('Yes')
 
         if obj.shipped is not None:
             return _('Shipped without payment')
 
-        return _('Not paid')
+        return _('No')
 
     @admin.display(description=_('Login as customer'))
     @mark_safe
