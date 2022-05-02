@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from decimal import Decimal
 from django.conf import settings
 from urllib.parse import urljoin
 
@@ -9,7 +10,8 @@ from users.models import User
 class Bank(metaclass=ABCMeta):
     currency = 'RUB'
     currency_symbol = '₽'
-    ue: int = 1
+    ue: int = 1  # ue stands for «условные единицы», this is some humour from 2000's
+    acquiring_percent: Decimal = Decimal(0)  # we use it for analytics
 
     def __init__(self, order: Order, success_url=None, fail_url=None) -> None:
         self.order = order

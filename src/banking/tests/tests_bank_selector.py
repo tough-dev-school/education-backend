@@ -1,14 +1,9 @@
 import pytest
 
-from banking.selector import BankSelector
+from banking.selector import get_bank
 from stripebank.bank import StripeBank
 from tinkoff.bank import TinkoffBank
 from tinkoff.credit import TinkoffCredit
-
-
-@pytest.fixture
-def select():
-    return BankSelector()
 
 
 @pytest.mark.parametrize(('desired', 'result'), [
@@ -18,9 +13,9 @@ def select():
     ('ev1l', TinkoffBank),
     ('', TinkoffBank),
 ])
-def test(select, desired, result):
-    assert select(desired) == result
+def test(desired, result):
+    assert get_bank(desired) == result
 
 
-def test_default_bank(select):
-    assert select() == TinkoffBank
+def test_default_bank():
+    assert get_bank() == TinkoffBank
