@@ -6,7 +6,7 @@ from django.utils.functional import cached_property
 
 from app.current_user import get_current_user
 from banking.base import Bank
-from banking.selector import BankSelector
+from banking.selector import get_bank
 from orders.models import Order, PromoCode
 from users.models import User
 
@@ -61,4 +61,4 @@ class OrderCreator:
 
     @cached_property
     def bank(self) -> Type[Bank]:
-        return BankSelector()(self.desired_bank)
+        return get_bank(self.desired_bank)

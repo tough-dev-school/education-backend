@@ -5,19 +5,25 @@ from stripebank.bank import StripeBank
 from tinkoff.bank import TinkoffBank
 from tinkoff.credit import TinkoffCredit
 
+BANKS = {
+    'tinkoff_bank': TinkoffBank,
+    'tinkoff_credit': TinkoffCredit,
+    'stripe': StripeBank,
+}
 
-class BankSelector:
-    banks = {
-        'tinkoff_bank': TinkoffBank,
-        'tinkoff_credit': TinkoffCredit,
-        'stripe': StripeBank,
-    }
-    default = 'tinkoff_bank'
+DEFAULT_BANK = TinkoffBank
 
-    def __call__(self, desired_bank: Optional[str] = None) -> Type[Bank]:
-        desired_bank = desired_bank or self.default
 
-        try:
-            return self.banks[desired_bank]
-        except KeyError:
-            return self.banks[self.default]
+def get_bank(desired: Optional[str] = None) -> Type[Bank]:
+    if desired is None:
+        return DEFAULT_BANK
+
+    try:
+        return BANKS[desired]
+    except KeyError:
+        return DEFAULT_BANK
+
+
+__all__ = [
+    'get_bank',
+]
