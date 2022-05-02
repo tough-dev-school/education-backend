@@ -12,6 +12,7 @@ class StripeBank(Bank):
     currency = 'USD'
     currency_symbol = '$'
     acquiring_percent = Decimal(4)
+    name = 'Страйп'
 
     def get_initial_payment_url(self) -> str:
         stripe.api_key = settings.STRIPE_API_KEY

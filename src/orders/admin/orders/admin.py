@@ -3,6 +3,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
+from banking.selector import get_bank
 from orders.admin.orders import actions
 from orders.admin.orders.filters import OrderStatusFilter
 from orders.admin.orders.forms import OrderAddForm, OrderChangeForm
@@ -19,7 +20,7 @@ class OrderAdmin(ModelAdmin):
         'date',
         'customer',
         'item',
-        'is_paid',
+        'payment',
         'promocode',
     ]
     list_display_links = [
@@ -120,15 +121,20 @@ class OrderAdmin(ModelAdmin):
     def item(self, obj):
         return obj.item.name if obj.item is not None else '—'
 
-    @admin.display(description=_('Is paid'), ordering='paid')
-    def is_paid(self, obj: Order):
+    @admin.display(description=_('Payment'), ordering='paid')
+    def payment(self, obj: Order):
         if obj.paid is not None:
-            return _('Yes')
+            if obj.desired_bank:
+                return get_bank(obj.desired_bank).name
+            if obj.author_id != obj.user_id:
+                return _('B2B')
+
+            return _('Is paid')
 
         if obj.shipped is not None:
             return _('Shipped without payment')
 
-        return _('No')
+        return '—'
 
     @admin.display(description=_('Login as customer'))
     @mark_safe
