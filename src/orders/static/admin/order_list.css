@@ -1,0 +1,16 @@
+#result_list td,
+#result_list th {
+  font-size: 12px;
+}
+
+#result_list .column-id .sortoptions {
+  display: none;
+}
+
+#result_list .column-id .text {
+  padding-right: unset;
+}
+
+#result_list .field-customer {
+  white-space: nowrap;
+}
