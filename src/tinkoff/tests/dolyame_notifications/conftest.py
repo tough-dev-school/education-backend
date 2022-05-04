@@ -3,6 +3,13 @@ import pytest
 from app.test.api_client import DRFClient
 
 
+@pytest.fixture(autouse=True)
+def _credentials(settings):
+    settings.DOLYAME_LOGIN = 'root'
+    settings.DOLYAME_PASSWORD = 'l0ve'
+    settings.DOLYAME_CERTIFICATE_PATH = 'tinkoff/tests/.fixtures/testing.pem'
+
+
 @pytest.fixture
 def api():
     return DRFClient(anon=True, HTTP_X_FORWARDED_FOR='91.194.226.100, 10.0.0.1')
