@@ -1,6 +1,7 @@
 from typing import Any
 
 import stripe
+from decimal import Decimal
 from django.conf import settings
 
 from banking.base import Bank
@@ -10,6 +11,8 @@ class StripeBank(Bank):
     ue = 85  # ue stands for «условные единицы», this is some humour from 2000's
     currency = 'USD'
     currency_symbol = '$'
+    acquiring_percent = Decimal(4)
+    name = 'Страйп'
 
     def get_initial_payment_url(self) -> str:
         stripe.api_key = settings.STRIPE_API_KEY

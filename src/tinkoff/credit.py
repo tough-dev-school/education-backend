@@ -11,6 +11,8 @@ class TinkoffCreditRequestException(Exception):
 
 
 class TinkoffCredit(Bank):
+    name = 'Т.Кредит'
+
     def get_initial_payment_url(self) -> str:
         result = self.call(
             url=self.get_create_order_url(),

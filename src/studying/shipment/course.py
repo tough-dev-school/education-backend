@@ -1,6 +1,6 @@
 from typing import Optional
 
-from app.tasks import invite_to_clickmeeting, invite_to_zoomus, send_mail
+from app.tasks import invite_to_zoomus, send_mail
 from products.models import Course
 from studying import shipment_factory as factory
 from studying.models import Study
@@ -14,7 +14,6 @@ class CourseShipment(BaseShipment):
         return self.stuff_to_ship
 
     def ship(self) -> None:
-        self.invite_to_clickmeeting()
         self.invite_to_zoomus()
         self.create_study_model()
 
@@ -32,13 +31,6 @@ class CourseShipment(BaseShipment):
 
     def remove_study_model(self) -> None:
         Study.objects.get(order=self.order).delete()
-
-    def invite_to_clickmeeting(self) -> None:
-        if self.course.clickmeeting_room_url is not None:
-            invite_to_clickmeeting.delay(
-                room_url=self.course.clickmeeting_room_url,
-                email=self.user.email,
-            )
 
     def invite_to_zoomus(self) -> None:
         if self.course.zoomus_webinar_id is not None and len(self.course.zoomus_webinar_id):

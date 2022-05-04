@@ -1,4 +1,5 @@
 import pytest
+from decimal import Decimal
 
 from orders.models import Order
 
@@ -53,6 +54,19 @@ def test_ue_rate_is_saved(call_purchase, bank, ue_rate):
     order = Order.objects.last()
 
     assert order.ue_rate == ue_rate
+
+
+@pytest.mark.parametrize(('bank', 'acquiring_percent'), [
+    ('tinkoff_bank', '1.2'),
+    ('tinkoff_credit', '1.3'),
+    ('stripe', '1.4'),
+])
+def test_acquiring_percent_is_saved(call_purchase, bank, acquiring_percent):
+    call_purchase(desired_bank=bank)
+
+    order = Order.objects.last()
+
+    assert order.acquiring_percent == Decimal(acquiring_percent)
 
 
 def test_by_default_desired_bank_is_empty_string(call_purchase):
