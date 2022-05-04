@@ -12,3 +12,15 @@ class TinkoffCreditNetmaskPermission(permissions.BasePermission):
         sender_ip = IPv4Address(request.META['REMOTE_ADDR'])
 
         return sender_ip in IPv4Network('91.194.226.0/23')
+
+
+class DolyameNetmaskPermission(permissions.BasePermission):
+    """The only way to validate webhooks from dolyame is IP addess,
+    proof: https://dolyame.ru/develop/help/webhooks/
+    """
+    message = 'Dolyament requests are allowed only from tinkoff network'
+
+    def has_permission(self, request, *args, **kwargs):
+        sender_ip = IPv4Address(request.META['REMOTE_ADDR'])
+
+        return sender_ip in IPv4Network('91.194.226.0/23')

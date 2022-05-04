@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from tinkoff.models import CreditNotification, PaymentNotification
+from tinkoff.models import CreditNotification, DolyameNotification, PaymentNotification
 from tinkoff.token_validator import TinkoffNotificationsTokenValidator
 
 
@@ -69,4 +69,20 @@ class CreditNotificationSerializer(serializers.ModelSerializer):
             'phone',
             'loan_number',
             'email',
+        ]
+
+
+class DolyameNotificationSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(source='order_id')
+
+    class Meta:
+        model = DolyameNotification
+        fields = [
+            'id',
+            'status',
+            'amount',
+            'demo',
+            'residual_amount',
+            'client_info',
+            'payment_schedule',
         ]

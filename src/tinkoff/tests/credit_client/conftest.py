@@ -20,20 +20,6 @@ def _absolute_host(settings):
 
 
 @pytest.fixture
-def record(mixer):
-    return mixer.blend(
-        'products.Record',
-        name='Пентакли и тентакли',
-        name_receipt='Предоставление доступа к записи курса «Пентакли и Тентакли»',
-    )
-
-
-@pytest.fixture
-def order(factory, user, record):
-    return factory.order(user=user, item=record, price='100500')
-
-
-@pytest.fixture
 def tinkoff(order):
     with requests_mock.Mocker() as m:
         client = TinkoffCredit(order)
@@ -41,8 +27,3 @@ def tinkoff(order):
         client.m = m
 
         yield client
-
-
-@pytest.fixture
-def user(mixer):
-    return mixer.blend('users.User', first_name='Авраам Соломонович', last_name='Пейзенгольц')

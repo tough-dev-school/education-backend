@@ -1,5 +1,6 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional, Union
 
+import uuid
 from abc import ABCMeta, abstractmethod
 from decimal import Decimal
 from django.conf import settings
@@ -17,10 +18,18 @@ class Bank(metaclass=ABCMeta):
     acquiring_percent: Decimal = Decimal(0)  # we use it for analytics
     name: str = '—'
 
-    def __init__(self, order: 'Order', success_url=None, fail_url=None) -> None:
+    def __init__(
+        self,
+        order: 'Order',
+        success_url:
+        Optional[str] = None,
+        fail_url: Optional[str] = None,
+        idempotency_key: Optional[str] = None,
+    ) -> None:
         self.order = order
         self._success_url = success_url
         self._fail_url = fail_url
+        self.idempotency_key = idempotency_key or str(uuid.uuid4())
 
     @abstractmethod
     def get_initial_payment_url(self) -> str:
@@ -35,7 +44,7 @@ class Bank(metaclass=ABCMeta):
         return self._fail_url or urljoin(settings.FRONTEND_URL, '/error/?code=banking')
 
     @property
-    def price(self) -> int:
+    def price(self) -> Union[int, str]:
         from banking import price_calculator
         price = price_calculator.to_bank(bank=self.__class__, price=self.order.price)
         return int(price * 100)
