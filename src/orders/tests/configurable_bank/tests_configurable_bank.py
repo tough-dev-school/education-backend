@@ -27,6 +27,13 @@ def test_tinkoff_credit(call_purchase, tinkoff_bank, tinkoff_credit):
     tinkoff_credit.assert_called_once()
 
 
+def test_tinkoff_dolyame(call_purchase, tinkoff_bank, dolyame_bank):
+    call_purchase(desired_bank='dolyame')
+
+    tinkoff_bank.assert_not_called()
+    dolyame_bank.assert_called_once()
+
+
 def test_stripe_bank(call_purchase, tinkoff_bank, stripe_bank):
     call_purchase(desired_bank='stripe')
 
@@ -34,7 +41,7 @@ def test_stripe_bank(call_purchase, tinkoff_bank, stripe_bank):
     stripe_bank.assert_called_once()
 
 
-@pytest.mark.parametrize('bank', ['tinkoff_credit', 'stripe', 'tinkoff_bank'])
+@pytest.mark.parametrize('bank', ['tinkoff_credit', 'stripe', 'tinkoff_bank', 'dolyame'])
 def test_desired_bank_is_saved(call_purchase, bank):
     call_purchase(desired_bank=bank)
 
@@ -47,6 +54,7 @@ def test_desired_bank_is_saved(call_purchase, bank):
     ('tinkoff_bank', 11),
     ('tinkoff_credit', 22),
     ('stripe', 33),
+    ('dolyame', 44),
 ])
 def test_ue_rate_is_saved(call_purchase, bank, ue_rate):
     call_purchase(desired_bank=bank)
@@ -60,6 +68,7 @@ def test_ue_rate_is_saved(call_purchase, bank, ue_rate):
     ('tinkoff_bank', '1.2'),
     ('tinkoff_credit', '1.3'),
     ('stripe', '1.4'),
+    ('dolyame', '1.5'),
 ])
 def test_acquiring_percent_is_saved(call_purchase, bank, acquiring_percent):
     call_purchase(desired_bank=bank)

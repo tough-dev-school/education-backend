@@ -4,11 +4,13 @@ from banking.base import Bank
 from stripebank.bank import StripeBank
 from tinkoff.bank import TinkoffBank
 from tinkoff.credit import TinkoffCredit
+from tinkoff.dolyame import Dolyame
 
 BANKS = {
     'tinkoff_bank': TinkoffBank,
     'tinkoff_credit': TinkoffCredit,
     'stripe': StripeBank,
+    'dolyame': Dolyame,
 }
 
 DEFAULT_BANK = TinkoffBank

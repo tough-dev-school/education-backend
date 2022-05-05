@@ -12,6 +12,7 @@ class DolyameRequestException(Exception):
 
 class Dolyame(Bank):
     base_url = 'https://partner.dolyame.ru/v1/'
+    name = 'Долями'
 
     def get_initial_payment_url(self) -> str:
         result = self.post(
