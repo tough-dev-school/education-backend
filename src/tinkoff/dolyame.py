@@ -41,6 +41,15 @@ class Dolyame(Bank):
             },
         )
 
+    def refund(self) -> None:
+        self.post(
+            method=f'orders/{self.order_id}/refund',
+            payload={
+                'amount': self.price,
+                'returned_items': self.get_items(),
+            },
+        )
+
     def post(self, method: str, payload: dict) -> dict:
         """Query Dolyame API
         """
