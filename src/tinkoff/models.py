@@ -60,7 +60,7 @@ class DolyameNotification(TimestampedModel):
         ('approved', _('Approved')),
         ('rejected', _('Rejected')),
         ('canceled', _('Canceled')),
-        ('commited', _('Commited')),
+        ('committed', _('Committed')),
         ('wait_for_commit', _('Waiting for commit')),
         ('completed', _('Completed')),
     )
