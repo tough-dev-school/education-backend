@@ -42,3 +42,4 @@ class NotionMaterialAdmin(ModelAdmin):
         'course',
     ]
     form = NotionMaterialForm
+    save_as = True
