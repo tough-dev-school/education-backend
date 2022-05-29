@@ -11,6 +11,6 @@ if not env('DEBUG') and SENTRY_DSN:
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration()],
-        traces_sample_rate=0.2,
+        traces_sample_rate=0,
         send_default_pii=True,
     )
