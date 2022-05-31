@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from notion.block import NotionBlockList
+from notion.exceptions import NotSharedForWeb
 
 
 @dataclass
@@ -13,6 +14,9 @@ class NotionPage:
 
     @classmethod
     def from_api_response(cls, api_response: dict) -> 'NotionPage':
+        if 'block' not in api_response['recordMap']:
+            raise NotSharedForWeb()
+
         return cls(
             blocks=NotionBlockList.from_api_response(api_response['recordMap']['block']),
         )

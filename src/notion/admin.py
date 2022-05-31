@@ -3,7 +3,8 @@ from httpx import HTTPError
 
 from app.admin import ModelAdmin, admin
 from notion import helpers
-from notion.client import NotionClient, NotionError
+from notion.client import NotionClient
+from notion.exceptions import NotionError
 from notion.models import Material
 
 

@@ -3,13 +3,10 @@ from collections.abc import Iterable
 from django.conf import settings
 
 from notion.block import NotionBlockList
+from notion.exceptions import HTTPError
 from notion.helpers import id_to_uuid
 from notion.page import NotionPage
 from notion.types import BlockId
-
-
-class NotionError(Exception):
-    ...
 
 
 class NotionClient:
@@ -74,6 +71,6 @@ class NotionClient:
         )
 
         if response.status_code != 200:
-            raise NotionError(f'HTTP Error {response.status_code} fetching notion resouce {resource}: {response.text}')
+            raise HTTPError(f'HTTP Error {response.status_code} fetching notion resouce {resource}: {response.text}')
 
         return response.json()
