@@ -39,6 +39,8 @@ class Course(Shippable):
     gift_welcome_letter_template_id = models.CharField(_('Special welcome letter template id for gifts'), max_length=255, blank=True, null=True, help_text=_('If not set, common welcome letter will be used'))
     display_in_lms = models.BooleanField(_('Display in LMS'), default=True, help_text=_('If disabled will not be shown in LMS'))
 
+    diploma_template_context = models.JSONField(default=dict)
+
     class Meta:
         ordering = ['-id']
         verbose_name = _('Course')

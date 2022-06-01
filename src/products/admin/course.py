@@ -14,6 +14,7 @@ class CourseAdmin(ModelAdmin):
             {
                 'fields': [
                     'name',
+                    'slug',
                     'name_genitive',
                     'name_receipt',
                     'full_name',
@@ -36,11 +37,11 @@ class CourseAdmin(ModelAdmin):
             _('Access'),
             {
                 'fields': [
-                    'slug',
                     'display_in_lms',
                     'zoomus_webinar_id',
                     'welcome_letter_template_id',
                     'gift_welcome_letter_template_id',
+                    'diploma_template_context',
                 ],
             },
         ),

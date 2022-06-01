@@ -48,6 +48,16 @@ def test_user_name_en(generator):
     assert template_context['name'] == 'Abraham Lincoln'
 
 
+def test_additional_course_context(generator, course):
+    course.setattr_and_save('diploma_template_context', {'test': '__mocked'})
+
+    generator = generator(language='ru')
+
+    template_context = generator.get_template_context()
+
+    assert template_context['test'] == '__mocked'
+
+
 def test_bad_language(generator):
     generator = generator(language='en')
 

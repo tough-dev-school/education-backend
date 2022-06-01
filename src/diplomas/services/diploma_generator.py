@@ -71,4 +71,5 @@ class DiplomaGenerator:
         return {
             'name': self.student.get_printable_name(language=self.language),
             'sex': self.student.get_printable_gender()[:1],
+            **self.course.diploma_template_context,
         }
