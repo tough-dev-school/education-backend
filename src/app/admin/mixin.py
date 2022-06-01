@@ -8,6 +8,7 @@ from django.db.models import Field
 from django.template.defaultfilters import capfirst, time
 from django.utils import timezone
 from django.utils.html import format_html
+from prettyjson import PrettyJSONWidget
 
 from app.admin.widgets import AppNumberInput
 
@@ -26,14 +27,16 @@ class AppAdminMixin:
     formfield_overrides: Mapping[Type[Field], Mapping[str, Any]] = {
         models.DecimalField: {'widget': AppNumberInput},
         models.IntegerField: {'widget': AppNumberInput},
+        models.JSONField: {'widget': PrettyJSONWidget(attrs={'initial': 'parsed'})},
     }
+
     exclude: Sequence[str] = [
         'modified',
     ]
 
     class Media:
         css = {
-            'all': ['admin.css'],
+            'all': ['admin.css', 'prettyjson.css'],
         }
 
     def get_form(self: DjangoModelAdminProtocol, request: Any, obj: Optional[Type[models.Model]] = None, **kwargs: Any):

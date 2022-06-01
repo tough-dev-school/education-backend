@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'drf_recaptcha',
     'django_filters',
+    'prettyjson',
 
     'axes',
     'debug_toolbar',

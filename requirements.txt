@@ -71,6 +71,7 @@ django==3.2.13
     #   django-hattori
     #   django-healthchecks
     #   django-markdownx
+    #   django-prettyjson
     #   django-redis
     #   django-storages
     #   djangorestframework
@@ -106,6 +107,8 @@ django-ipware==4.0.2
     #   django-axes
     #   drf-recaptcha
 django-markdownx==3.0.1
+    # via -r requirements.in
+django-prettyjson==0.4.1
     # via -r requirements.in
 django-redis==5.2.0
     # via -r requirements.in
@@ -202,6 +205,7 @@ six==1.16.0
     #   click-repl
     #   django-hattori
     #   django-healthchecks
+    #   django-prettyjson
     #   python-dateutil
 sniffio==1.2.0
     # via
@@ -212,6 +216,8 @@ sqlparse==0.4.2
     # via
     #   django
     #   django-debug-toolbar
+standardjson==0.3.1
+    # via django-prettyjson
 stripe==2.67.0
     # via -r requirements.in
 text-unidecode==1.3

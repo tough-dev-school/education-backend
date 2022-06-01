@@ -1,0 +1,10 @@
+.jsonwidget button.parsed {
+  display: none !important;
+}
+
+.jsonwidget button.parseraw {
+  border: none;
+  background: unset;
+  text-decoration: underline;
+  cursor: pointer;
+}
