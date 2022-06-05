@@ -24,7 +24,7 @@ def test_data(api, order, notification, payment_schedule):
     assert notification.payment_schedule[0]['status'] == 'hold'
 
 
-@pytest.mark.parametrize('status', ['rejected', 'canceled', 'committed'])
+@pytest.mark.parametrize('status', ['rejected', 'canceled', 'committed', 'refunded'])
 def test_status(api, notification, status):
     api.post('/api/v2/banking/dolyame-notifications/', notification(status=status), expected_status_code=200)
 

@@ -59,6 +59,7 @@ class DolyameNotification(TimestampedModel):
     STATUS_CHOICES = (
         ('approved', _('Approved')),
         ('rejected', _('Rejected')),
+        ('refunded', _('Refunded')),
         ('canceled', _('Canceled')),
         ('committed', _('Committed')),
         ('wait_for_commit', _('Waiting for commit')),
