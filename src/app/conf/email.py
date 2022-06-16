@@ -12,3 +12,5 @@ ANYMAIL = {
     'POSTMARK_SERVER_TOKEN': env('POSTMARK_SERVER_TOKEN', cast=str, default=''),
     'DEBUG_API_REQUESTS': env('DEBUG'),
 }
+
+RECEIPTS_EMAIL = env('RECEIPTS_EMAIL', cast=str, default='receipts@tough-dev.school')
