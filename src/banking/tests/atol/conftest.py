@@ -2,7 +2,9 @@ import pytest
 
 from banking.atol.client import AtolClient
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [
+    pytest.mark.django_db,
+]
 
 
 @pytest.fixture(autouse=True)

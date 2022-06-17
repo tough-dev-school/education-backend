@@ -65,7 +65,7 @@ class AtolClient:
                 'price': self.get_item_price(),
                 'sum': self.get_item_price(),
                 'quantity': 1,
-                'payment_method': 'full_prepayment',
+                'payment_method': 'full_payment',
                 'payment_object': 'service',
                 'vat': {
                     'type': 'none',
