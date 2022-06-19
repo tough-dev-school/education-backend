@@ -1,6 +1,7 @@
 import pytest
 from decimal import Decimal
 
+from orders.models import Order
 from tinkoff.exceptions import TinkoffPaymentNotificationInvalidToken
 from tinkoff.models import PaymentNotification
 
@@ -10,10 +11,19 @@ pytestmark = [
 
 
 @pytest.fixture
-def req():
+def order(order):
+    """Manualy setting order id to avoid confusion with token regeneration
+    """
+    Order.objects.filter(id=order.id).update(id=201709)
+
+    return Order.objects.get(id=201709)
+
+
+@pytest.fixture
+def req(order):
     return {
         'TerminalKey': '1321054611234DEMO',
-        'OrderId': 201709,
+        'OrderId': order.slug,
         'Success': True,
         'Status': 'AUTHORIZED',
         'PaymentId': 8742591,
@@ -27,13 +37,14 @@ def req():
     }
 
 
-def test_success_creation(anon, req):
+@pytest.mark.usefixtures('_disable_token_validation')
+def test_success_creation(anon, req, order):
     anon.post('/api/v2/banking/tinkoff-notifications/', req, expected_status_code=200)
 
     instance = PaymentNotification.objects.last()
 
     assert instance.terminal_key == '1321054611234DEMO'
-    assert instance.order_id == 201709
+    assert instance.order == order
     assert instance.success is True
     assert instance.status == 'AUTHORIZED'
     assert instance.payment_id == 8742591
@@ -43,10 +54,10 @@ def test_success_creation(anon, req):
     assert instance.card_id == '322264'
     assert instance.pan == '430000******0777'
     assert instance.data is None
-    assert instance.token == 'b906d28e76c6428e37b25fcf86c0adc52c63d503013fdd632e300593d165766b'
     assert instance.exp_date == '1122'
 
 
+@pytest.mark.usefixtures('_disable_token_validation')
 def test_success_response(anon, req):
     got = anon.post('/api/v2/banking/tinkoff-notifications/', req, expected_status_code=200)
 

@@ -21,7 +21,7 @@ class TinkoffBank(Bank):
     def Init(self) -> dict:
         return self.call('Init', payload={
             'Amount': self.price,
-            'OrderId': self.order.id,
+            'OrderId': self.order.slug,
             'CustomerKey': self.user.id,
             'SuccessURL': self.success_url,
             'FailURL': self.fail_url,

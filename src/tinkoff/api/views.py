@@ -14,7 +14,10 @@ class TinkoffPaymentNotificationsView(APIView):
     permission_classes = [AllowAny]  # validation is done later via supplied JSON
 
     def post(self, request, *args, **kwargs):
-        serializer = PaymentNotificationSerializer(data=request.data)
+        serializer = PaymentNotificationSerializer(data={
+            'OrderId': Order.objects.get(slug=request.data.pop('OrderId')).pk,
+            **request.data,
+        })
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
