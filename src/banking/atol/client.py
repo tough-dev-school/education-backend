@@ -37,6 +37,10 @@ class AtolClient:
                             'sum': self.get_item_price(),
                         },
                     ],
+
+                },
+                'service': {
+                    'callback_url': self.get_callback_url(),
                 },
             },
         )
@@ -82,6 +86,10 @@ class AtolClient:
         But we use
         """
         return int(self.order.price)
+
+    @staticmethod
+    def get_callback_url() -> str:
+        return urljoin(settings.ABSOLUTE_HOST, '/api/v2/banking/atol-webhooks/')
 
 
 __all__ = [

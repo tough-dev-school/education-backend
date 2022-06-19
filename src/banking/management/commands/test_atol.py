@@ -6,6 +6,6 @@ from orders.models import Order
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
-        order = Order.objects.get(pk=6031)
+        order = Order.objects.get(pk=1731)
 
         AtolClient(order=order)()
