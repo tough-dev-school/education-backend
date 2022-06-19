@@ -2,12 +2,10 @@ import pytest
 
 from banking.models import Receipt
 
-pytestmark = [pytest.mark.django_db]
-
-
-@pytest.fixture(autouse=True)
-def _configure_webhook_salt(settings):
-    settings.ATOL_WEBHOOK_SALT = 'SECRET-SALT'
+pytestmark = [
+    pytest.mark.django_db,
+    pytest.mark.single_thread,
+]
 
 
 def test(api, order):
