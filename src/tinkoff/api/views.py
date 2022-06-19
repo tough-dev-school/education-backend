@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 
+from orders.models import Order
 from tinkoff import tasks
 from tinkoff.api.permissions import DolyameNetmaskPermission, TinkoffCreditNetmaskPermission
 from tinkoff.api.serializers import (
@@ -24,7 +25,10 @@ class TinkoffCreditNotificationsView(APIView):
     permission_classes = [TinkoffCreditNetmaskPermission]
 
     def post(self, request, *args, **kwargs):
-        serializer = CreditNotificationSerializer(data=request.data)
+        serializer = CreditNotificationSerializer(data={
+            'id': Order.objects.get(slug=request.data.pop('id')).pk,
+            **request.data,
+        })
         serializer.is_valid(raise_exception=True)
         serializer.save()
 

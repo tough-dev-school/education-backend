@@ -6,9 +6,9 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def notification():
+def notification(order):
     return {
-        'id': '1432',
+        'id': order.slug,
         'status': 'approved',
         'created_at': '2021-02-06T13:08:02.845Z',
         'committed': False,

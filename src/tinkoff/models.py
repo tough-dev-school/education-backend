@@ -38,7 +38,7 @@ class CreditNotification(TimestampedModel):
         ('signed', _('Signed')),
     )
 
-    order_id = models.IntegerField()
+    order = models.ForeignKey('orders.Order', on_delete=models.PROTECT)
     status = models.CharField(max_length=32, choices=STATUS_CHOICES)
     bank_created = models.DateTimeField()
     first_payment = models.DecimalField(max_digits=10, decimal_places=2)
