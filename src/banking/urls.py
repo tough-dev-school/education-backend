@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.urls import path
 
 from banking.api.views import AtolWebhookView
@@ -9,5 +10,5 @@ urlpatterns = [
     path('tinkoff-credit-notifications/', TinkoffCreditNotificationsView.as_view()),
     path('dolyame-notifications/', DolyameNotificationsView.as_view()),
     path('stripe-webhooks/', StripeWebhookView.as_view()),
-    path('atol-webhooks/', AtolWebhookView.as_view()),
+    path(f'atol-webhooks-{settings.ATOL_WEBHOOK_SALT}/', AtolWebhookView.as_view()),
 ]

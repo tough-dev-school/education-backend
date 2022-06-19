@@ -17,6 +17,12 @@ def _configure_atol(settings):
     settings.RECEIPTS_EMAIL = 'receipts@tough-dev.school'
 
 
+@pytest.fixture(autouse=True)
+def _configure_webhooks(settings):
+    settings.ABSOLUTE_HOST = 'https://atol.host'
+    settings.ATOL_WEBHOOK_SALT = 'SECRET-SALT'
+
+
 @pytest.fixture
 def atol(order):
     return AtolClient(order=order)

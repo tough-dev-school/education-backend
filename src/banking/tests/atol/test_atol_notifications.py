@@ -5,8 +5,13 @@ from banking.models import Receipt
 pytestmark = [pytest.mark.django_db]
 
 
+@pytest.fixture(autouse=True)
+def _configure_webhook_salt(settings):
+    settings.ATOL_WEBHOOK_SALT = 'SECRET-SALT'
+
+
 def test(api, order):
-    api.post('/api/v2/banking/atol-webhooks/', {
+    api.post('/api/v2/banking/atol-webhooks-SECRET-SALT/', {
         'uuid': '100500',
         'error': None,
         'payload': {

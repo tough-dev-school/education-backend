@@ -89,7 +89,7 @@ class AtolClient:
 
     @staticmethod
     def get_callback_url() -> str:
-        return urljoin(settings.ABSOLUTE_HOST, '/api/v2/banking/atol-webhooks/')
+        return urljoin(settings.ABSOLUTE_HOST, f'/api/v2/banking/atol-webhooks-{settings.ATOL_WEBHOOK_SALT}')
 
 
 __all__ = [

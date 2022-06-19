@@ -44,6 +44,14 @@ def test_order_data(atol, post, order):
     assert result['timestamp'] == '01.12.2032 16:20:40'
 
 
+def test_callback_url(atol, post):
+    atol()
+
+    result = post.call_args[1]['payload']
+
+    assert result['service']['callback_url'] == 'https://atol.host/api/v2/banking/atol-webhooks-SECRET-SALT'
+
+
 def test_client_data(atol, post):
     atol()
 
