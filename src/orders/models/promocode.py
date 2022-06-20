@@ -26,8 +26,11 @@ class PromoCodeQuerySet(QuerySet):
                 return self.active().get(name__iexact=name.strip())
 
 
+PromoCodeManager = models.Manager.from_queryset(PromoCodeQuerySet)
+
+
 class PromoCode(TimestampedModel):
-    objects = models.Manager.from_queryset(PromoCodeQuerySet)()
+    objects = PromoCodeManager()
 
     name = models.CharField(_('Promo Code'), max_length=32, unique=True, db_index=True)
     discount_percent = models.IntegerField(_('Discount percent'), null=True, blank=True)

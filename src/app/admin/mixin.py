@@ -30,10 +30,6 @@ class AppAdminMixin:
         models.JSONField: {'widget': PrettyJSONWidget(attrs={'initial': 'parsed'})},
     }
 
-    exclude: Sequence[str] = [
-        'modified',
-    ]
-
     class Media:
         css = {
             'all': ['admin.css', 'prettyjson.css'],

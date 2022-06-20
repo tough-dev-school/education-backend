@@ -26,8 +26,11 @@ class OrderQuerySet(QuerySet):
         return self.paid().filter(shipped__isnull=True, desired_shipment_date__lte=timezone.now())
 
 
+OrderManager = models.Manager.from_queryset(OrderQuerySet)
+
+
 class Order(TimestampedModel):
-    objects = models.Manager.from_queryset(OrderQuerySet)()
+    objects = OrderManager()
 
     author = models.ForeignKey('users.User', related_name='created_orders', verbose_name=_('Order author'), on_delete=models.PROTECT, editable=False)
     user = models.ForeignKey('users.Student', verbose_name=_('User'), on_delete=models.PROTECT)
