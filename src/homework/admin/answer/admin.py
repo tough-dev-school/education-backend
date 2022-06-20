@@ -73,26 +73,26 @@ class AnswerAdmin(ModelAdmin):
 
 @admin.register(AnswerCrossCheck)
 class AnswerCrossCheckAdmin(ModelAdmin):
-    fields = [
+    fields = (
         'course',
         'question',
         'checker',
         'author',
         'view',
         'checked',
-    ]
+    )
     list_display = fields
-    readonly_fields = [
+    readonly_fields = (
         'question',
         'course',
         'checked',
         'author',
         'view',
-    ]
-    list_filter = [
+    )
+    list_filter = (
         'answer__question',
         'answer__question__courses',
-    ]
+    )
 
     def get_queryset(self, request):
         return super().get_queryset(request).select_related('answer', 'answer__question', 'answer__author')

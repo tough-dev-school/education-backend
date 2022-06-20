@@ -34,7 +34,7 @@ def get_cached_page(page_id: str) -> NotionPage:
         invalidate_cache(page_id)
         return fetch_page(page_id)()
 
-    return cache.get_or_set(cache_key(page_id), fetch_page(page_id), TIMEOUT)
+    return cache.get_or_set(cache_key(page_id), fetch_page(page_id), TIMEOUT)  # type: ignore
 
 
 __all__ = [

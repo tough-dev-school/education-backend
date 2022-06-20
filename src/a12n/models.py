@@ -27,10 +27,10 @@ class PasswordlessAuthToken(TimestampedModel):
     expires = models.DateTimeField(default=default_expiration)
     used = models.DateTimeField(null=True)
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return urljoin(settings.FRONTEND_URL, '/'.join(['auth', 'passwordless', str(self.token), '']))
 
-    def mark_as_used(self):
+    def mark_as_used(self) -> None:
         if not settings.DANGEROUSLY_MAKE_ONE_TIME_PASSWORDLESS_TOKEN_MULTI_PASS:
             self.used = timezone.now()
             self.save()
