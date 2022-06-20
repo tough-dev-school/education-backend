@@ -7,7 +7,8 @@ from django.db.models import Count, Q, QuerySet
 from django.db.models.query_utils import FilteredRelation
 from django.utils.translation import gettext_lazy as _
 from markdownx.models import MarkdownxField
-from tree_queries.models import TreeNode, TreeQuerySet
+from tree_queries.models import TreeNode
+from tree_queries.query import TreeQuerySet
 from urllib.parse import urljoin
 
 from app.markdown import markdownify, remove_html
@@ -52,11 +53,8 @@ class AnswerQuerySet(TreeQuerySet):
         return self.filter(parent__isnull=True)
 
 
-AnswerManager = models.Manager.from_queryset(AnswerQuerySet)
-
-
 class Answer(TreeNode):
-    objects = AnswerQuerySet()
+    objects = models.Manager.from_queryset(AnswerQuerySet)()
 
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     modified = models.DateTimeField(auto_now=True, db_index=True)

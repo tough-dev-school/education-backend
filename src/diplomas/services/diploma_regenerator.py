@@ -7,7 +7,7 @@ from django.db.models import QuerySet
 from app.tasks import send_mail
 from app.types import Language
 from diplomas.models import Diploma, DiplomaTemplate
-from diplomas.services import DiplomaGenerator
+from diplomas.services.diploma_generator import DiplomaGenerator
 from users.models import User
 
 

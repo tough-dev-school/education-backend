@@ -43,7 +43,7 @@ class QuestionCrossCheckDispatcher:
         return [check for check in self.checks if check.checker == user]
 
     def get_answers_to_check(self) -> QuerySet[Answer]:
-        return self.question.answer_set.root_only().exclude(  # type: ignore
+        return self.question.answer_set.root_only().exclude(
             do_not_crosscheck=True,
         )
 
