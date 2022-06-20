@@ -52,8 +52,11 @@ class AnswerQuerySet(TreeQuerySet):
         return self.filter(parent__isnull=True)
 
 
+AnswerManager = models.Manager.from_queryset(AnswerQuerySet)
+
+
 class Answer(TreeNode):
-    objects = models.Manager.from_queryset(AnswerQuerySet)()
+    objects = AnswerQuerySet()
 
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     modified = models.DateTimeField(auto_now=True, db_index=True)

@@ -11,8 +11,11 @@ class EmailLeadCampaignQuerySet(models.QuerySet):
         return self.annotate(lead_count=Count('leadcampaignlogentry'))
 
 
+EmailLeadCampaignManager = models.Manager.from_queryset(EmailLeadCampaignQuerySet)
+
+
 class EmailLeadMagnetCampaign(TimestampedModel):
-    objects = models.Manager.from_queryset(EmailLeadCampaignQuerySet)()
+    objects = EmailLeadCampaignManager()
 
     name = models.CharField(_('Name'), max_length=32)
     slug = models.SlugField(unique=True)

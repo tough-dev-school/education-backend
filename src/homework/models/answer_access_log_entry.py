@@ -14,8 +14,11 @@ class AnswerAccessLogEntryQuerySet(QuerySet):
         return None
 
 
+AnswerAccessLogEntryManager = models.Manager.from_queryset(AnswerAccessLogEntryQuerySet)
+
+
 class AnswerAccessLogEntry(TimestampedModel):
-    objects = models.Manager.from_queryset(AnswerAccessLogEntryQuerySet)()
+    objects = AnswerAccessLogEntryManager()
 
     answer = models.ForeignKey('homework.Answer', on_delete=models.CASCADE)
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)

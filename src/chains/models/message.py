@@ -19,8 +19,11 @@ class MessageQuerySet(QuerySet):
         )
 
 
+MessageManager = models.Manager.from_queryset(MessageQuerySet)
+
+
 class Message(TimestampedModel):
-    objects = models.Manager.from_queryset(MessageQuerySet)()
+    objects = MessageManager()
 
     name = models.CharField(_('Name'), max_length=256)
     chain = models.ForeignKey('chains.Chain', verbose_name=_('Chain'), on_delete=models.CASCADE)

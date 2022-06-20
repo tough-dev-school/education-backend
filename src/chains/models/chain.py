@@ -16,8 +16,11 @@ class ChainQuerySet(QuerySet):
         )
 
 
+ChainManager = models.Manager.from_queryset(ChainQuerySet)
+
+
 class Chain(TimestampedModel):
-    objects = models.Manager.from_queryset(ChainQuerySet)()
+    objects = ChainManager()
 
     name = models.CharField(_('Name'), max_length=256)
     course = models.ForeignKey('products.Course', verbose_name=_('Course'), on_delete=models.CASCADE)

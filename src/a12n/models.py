@@ -16,8 +16,11 @@ class PasswordlessAuthTokenQuerySet(models.QuerySet):
         return self.filter(expires__gt=timezone.now(), used__isnull=True)
 
 
+PasswordlessAuthTokenManager = models.Manager.from_queryset(PasswordlessAuthTokenQuerySet)
+
+
 class PasswordlessAuthToken(TimestampedModel):
-    objects = models.Manager.from_queryset(PasswordlessAuthTokenQuerySet)()
+    objects = PasswordlessAuthTokenManager()
 
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
     token = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True)
