@@ -8,7 +8,7 @@ from banking.base import Bank
 
 
 class StripeBank(Bank):
-    ue = 75  # ue stands for «условные единицы», this is some humour from 2000's
+    ue = 65  # ue stands for «условные единицы», this is some humour from 2000's
     currency = 'USD'
     currency_symbol = '$'
     acquiring_percent = Decimal(4)
@@ -32,7 +32,7 @@ class StripeBank(Bank):
         return [
             {
                 'price_data': {
-                    'currency': 'usd',
+                    'currency': 'eur',
                     'product_data': {
                         'name': self.order.item.name_international,
                     },

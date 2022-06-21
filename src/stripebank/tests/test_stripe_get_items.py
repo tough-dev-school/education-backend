@@ -9,7 +9,7 @@ def test_item(stripe):
     assert result == [
         {
             'price_data': {
-                'currency': 'usd',
+                'currency': 'eur',
                 'product_data': {
                     'name': 'Cutting and Sewing',
                 },
