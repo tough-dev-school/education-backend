@@ -9,8 +9,8 @@ from banking.base import Bank
 
 class StripeBank(Bank):
     ue = 65  # ue stands for «условные единицы», this is some humour from 2000's
-    currency = 'USD'
-    currency_symbol = '$'
+    currency = 'EUR'
+    currency_symbol = '€'
     acquiring_percent = Decimal(4)
     name = 'Страйп'
 
