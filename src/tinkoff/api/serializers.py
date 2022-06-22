@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from tinkoff.models import CreditNotification, DolyameNotification, PaymentNotification
-from tinkoff.token_validator import TinkoffNotificationsTokenValidator
 
 
 class PaymentNotificationSerializer(serializers.ModelSerializer):
@@ -39,11 +38,6 @@ class PaymentNotificationSerializer(serializers.ModelSerializer):
 
     def validate_Amount(self, validated_data):
         return validated_data / 100
-
-    def validate_Token(self, validated_data):
-        validator = TinkoffNotificationsTokenValidator(self.initial_data)
-        if validator():
-            return validated_data
 
 
 class CreditNotificationSerializer(serializers.ModelSerializer):

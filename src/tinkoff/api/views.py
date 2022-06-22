@@ -8,12 +8,15 @@ from tinkoff import tasks
 from tinkoff.api.permissions import DolyameNetmaskPermission, TinkoffCreditNetmaskPermission
 from tinkoff.api.serializers import (
     CreditNotificationSerializer, DolyameNotificationSerializer, PaymentNotificationSerializer)
+from tinkoff.token_validator import TinkoffNotificationsTokenValidator
 
 
 class TinkoffPaymentNotificationsView(APIView):
     permission_classes = [AllowAny]  # validation is done later via supplied JSON
 
     def post(self, request, *args, **kwargs):
+        TinkoffNotificationsTokenValidator(request.data)()
+
         serializer = PaymentNotificationSerializer(data={
             'OrderId': Order.objects.get(slug=request.data.pop('OrderId')).pk,
             **request.data,

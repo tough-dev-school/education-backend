@@ -11,4 +11,4 @@ def _set_tinkoff_credentials(settings):
 
 @pytest.fixture
 def _disable_token_validation(mocker):
-    mocker.patch('tinkoff.api.serializers.PaymentNotificationSerializer.validate_Token', return_value=True)
+    mocker.patch('tinkoff.api.views.TinkoffNotificationsTokenValidator.__call__', return_value=True)
