@@ -32,6 +32,9 @@ def order(course, factory):
 
 
 @pytest.fixture
-def webhook():
+def webhook(order):
     with open('./stripebank/tests/.fixtures/webhook.json', 'r') as fp:
-        return json.load(fp)
+        webhook = json.load(fp)
+        webhook['data']['object']['client_reference_id'] = order.slug
+
+        return webhook

@@ -17,8 +17,7 @@ def mark_order_as_paid_on_tinkoff_bank_transactions(instance: TinkoffPaymentNoti
     if instance.status != 'CONFIRMED':
         return
 
-    order = Order.objects.get(pk=instance.order_id)
-    order.set_paid()
+    instance.order.set_paid()
 
 
 @receiver(post_save, sender=TinkoffCreditNotification)
@@ -29,8 +28,7 @@ def mark_order_as_paid_on_tinkoff_credit_transactions(instance: TinkoffCreditNot
     if instance.status != 'signed':
         return
 
-    order = Order.objects.get(pk=instance.order_id)
-    order.set_paid()
+    instance.order.set_paid()
 
 
 @receiver(post_save, sender=StripeNotification)
@@ -41,12 +39,7 @@ def mark_order_as_paid_on_stripe_notifications(instance: StripeNotification, cre
     if instance.status != 'complete':
         return
 
-    if 'tds-' not in instance.order_id:
-        return
-
-    with contextlib.suppress(Order.DoesNotExist):
-        order = Order.objects.get(pk=instance.order_id.replace('tds-', ''))
-        order.set_paid()
+    instance.order.set_paid()
 
 
 @receiver(post_save, sender=DolyameNotification)

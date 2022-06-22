@@ -23,7 +23,7 @@ class StripeBank(Bank):
             success_url=self.success_url,
             cancel_url=self.fail_url,
             customer_email=self.user.email,
-            client_reference_id=f'tds-{self.order.id}',
+            client_reference_id=self.order.slug,
         )
 
         return session.url
