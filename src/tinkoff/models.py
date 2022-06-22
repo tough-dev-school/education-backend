@@ -15,7 +15,7 @@ class PaymentNotification(TimestampedModel):
     )
 
     terminal_key = models.CharField(max_length=512)
-    order_id = models.IntegerField()
+    order = models.ForeignKey('orders.Order', on_delete=models.PROTECT, related_name='tinkoff_payment_notifications')
     success = models.BooleanField()
     status = models.CharField(max_length=128, choices=STATUS_CHOICES)
     payment_id = models.BigIntegerField()
@@ -38,7 +38,7 @@ class CreditNotification(TimestampedModel):
         ('signed', _('Signed')),
     )
 
-    order_id = models.IntegerField()
+    order = models.ForeignKey('orders.Order', on_delete=models.PROTECT, related_name='tinkoff_credit_notifications')
     status = models.CharField(max_length=32, choices=STATUS_CHOICES)
     bank_created = models.DateTimeField()
     first_payment = models.DecimalField(max_digits=10, decimal_places=2)
@@ -66,7 +66,7 @@ class DolyameNotification(TimestampedModel):
         ('completed', _('Completed')),
     )
 
-    order_id = models.CharField(max_length=256)
+    order = models.ForeignKey('orders.Order', related_name='dolyame_notifications', on_delete=models.PROTECT)
     status = models.CharField(max_length=32, choices=STATUS_CHOICES)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     demo = models.BooleanField()

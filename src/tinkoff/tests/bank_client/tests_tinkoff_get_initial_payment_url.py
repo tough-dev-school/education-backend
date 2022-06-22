@@ -24,7 +24,7 @@ def test_initial_payment_url_payload(tinkoff, req, settings):
 
     payload = req.call_args[1]['payload']
 
-    assert payload['OrderId'] == tinkoff.order.id
+    assert payload['OrderId'] == tinkoff.order.slug
     assert payload['CustomerKey'] == tinkoff.order.user.id
 
     assert 'https://' in payload['SuccessURL']

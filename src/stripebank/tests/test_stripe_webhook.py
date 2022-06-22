@@ -13,12 +13,12 @@ def _disable_signature_verification(mocker):
     mocker.patch('stripe.webhook.WebhookSignature.verify_header', return_value=True)
 
 
-def test(anon, webhook):
+def test(anon, webhook, order):
     anon.post('/api/v2/banking/stripe-webhooks/', webhook, expected_status_code=200)
 
     result = StripeNotification.objects.last()
 
-    assert result.order_id == 'tds-5978'
+    assert result.order == order
     assert result.stripe_id == 'cs_test_a12qUdXreNQ0FVqOCg24WBjqWNGYRtdx9wST9jmvqcAf2ivfDE6QjC1brX'
     assert result.amount == Decimal('23333.10')
     assert result.payment_status == 'paid'

@@ -40,7 +40,7 @@ def test_order_data(atol, post, order):
 
     result = post.call_args[1]['payload']
 
-    assert result['external_id'] == f'tds-{order.id}'
+    assert result['external_id'] == order.slug
     assert result['timestamp'] == '01.12.2032 16:20:40'
 
 

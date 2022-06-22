@@ -6,12 +6,12 @@ from tinkoff.models import CreditNotification
 pytestmark = [pytest.mark.django_db]
 
 
-def test(api, notification):
+def test(api, notification, order):
     api.post('/api/v2/banking/tinkoff-credit-notifications/', notification, expected_status_code=200)
 
     created = CreditNotification.objects.last()
 
-    assert created.order_id == 1432
+    assert created.order == order
     assert created.status == 'approved'
     assert created.first_payment == 0
     assert created.order_amount == 5200

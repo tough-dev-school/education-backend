@@ -6,7 +6,6 @@ from stripebank.models import StripeNotification
 
 
 class StripeNotificationSerializer(serializers.ModelSerializer):
-    client_reference_id = serializers.CharField(source='order_id')
     id = serializers.CharField(source='stripe_id')
     amount_total = serializers.DecimalField(source='amount', decimal_places=2, max_digits=9)
     payment_status = serializers.CharField()
@@ -16,8 +15,8 @@ class StripeNotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = StripeNotification
         fields = [
-            'client_reference_id',
             'id',
+            'order',
             'amount_total',
             'payment_status',
             'status',

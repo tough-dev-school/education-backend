@@ -39,7 +39,7 @@ def bank_data():
 def test_ok(anon, order, bank_data):
     anon.post(
         '/api/v2/banking/tinkoff-notifications/',
-        bank_data(Status='CONFIRMED', OrderId=order.id),
+        bank_data(Status='CONFIRMED', OrderId=order.slug),
         expected_status_code=200,
     )
 
@@ -52,7 +52,7 @@ def test_ok(anon, order, bank_data):
 def test_wrong_status(anon, order, bank_data, status):
     anon.post(
         '/api/v2/banking/tinkoff-notifications/',
-        bank_data(Status=status, OrderId=order.id),
+        bank_data(Status=status, OrderId=order.slug),
         expected_status_code=200,
     )
 

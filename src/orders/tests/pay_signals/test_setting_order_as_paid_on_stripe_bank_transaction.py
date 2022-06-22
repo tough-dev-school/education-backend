@@ -12,7 +12,7 @@ pytestmark = [
 def webhook(order):
     with open('./stripebank/tests/.fixtures/webhook.json', 'r') as fp:
         bank_data = json.load(fp)
-        bank_data['data']['object']['client_reference_id'] = f'tds-{order.pk}'
+        bank_data['data']['object']['client_reference_id'] = order.slug
 
         return bank_data
 
@@ -33,16 +33,6 @@ def test(anon, webhook, order):
 @pytest.mark.parametrize('status', ['not-complete', 'f4ke'])
 def test_wrong_status(anon, order, webhook, status):
     webhook['data']['object']['status'] = status
-
-    anon.post('/api/v2/banking/stripe-webhooks/', webhook, expected_status_code=200)
-
-    order.refresh_from_db()
-    assert order.paid is None
-
-
-@pytest.mark.parametrize('order_id', ['random-order-id-1005000', '100005000', 'tds-1000005000'])
-def test_wrong_order_id(anon, webhook, order_id, order):
-    webhook['data']['object']['client_reference_id'] = order_id
 
     anon.post('/api/v2/banking/stripe-webhooks/', webhook, expected_status_code=200)
 

@@ -1,5 +1,6 @@
 from typing import Iterable, Optional
 
+import shortuuid
 from django.db.models import CheckConstraint, QuerySet
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -31,6 +32,8 @@ OrderManager = models.Manager.from_queryset(OrderQuerySet)
 
 class Order(TimestampedModel):
     objects = OrderManager()
+
+    slug = models.CharField(max_length=32, db_index=True, unique=True, default=shortuuid.uuid)
 
     author = models.ForeignKey('users.User', related_name='created_orders', verbose_name=_('Order author'), on_delete=models.PROTECT, editable=False)
     user = models.ForeignKey('users.Student', verbose_name=_('User'), on_delete=models.PROTECT)

@@ -4,6 +4,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from orders.models import Order
 from stripebank.api.serializers import StripeNotificationSerializer
 
 
@@ -20,6 +21,7 @@ class StripeWebhookView(APIView):
         if event['type'] == 'checkout.session.completed':
             serializer = StripeNotificationSerializer(data={
                 **event['data']['object'],
+                'order': Order.objects.get(slug=event['data']['object']['client_reference_id']).pk,
                 'raw': event,
             })
             serializer.is_valid(raise_exception=True)

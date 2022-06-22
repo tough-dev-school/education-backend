@@ -20,7 +20,7 @@ class TinkoffCredit(Bank):
                 'shopId': settings.TINKOFF_CREDIT_SHOP_ID,
                 'showcaseId': settings.TINKOFF_CREDIT_SHOWCASE_ID,
                 'sum': self.price,
-                'orderNumber': self.order.id,
+                'orderNumber': self.order.slug,
                 'promoCode': self.order.item.tinkoff_credit_promo_code or None,
                 'values': self.get_user(),
                 'items': self.get_items(),

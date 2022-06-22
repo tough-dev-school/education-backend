@@ -30,7 +30,7 @@ def test_order_data(dolyame, order, api_call):
 
     got = api_call.call_args[1]['payload']
 
-    assert got['order']['id'] == f'tds-{order.id}'
+    assert got['order']['id'] == order.slug
     assert got['order']['amount'] == '100500'
     assert got['order']['items'][0]['name'] == 'Предоставление доступа к записи курса «Пентакли и Тентакли»'
     assert got['order']['items'][0]['quantity'] == 1

@@ -33,7 +33,7 @@ def test_order_data(tinkoff, order, api_call):
     assert got['shopId'] == '1234'
     assert got['showcaseId'] == '123-45'
     assert got['sum'] == 100500
-    assert got['orderNumber'] == order.id
+    assert got['orderNumber'] == order.slug
     assert got['items'][0]['name'] == 'Предоставление доступа к записи курса «Пентакли и Тентакли»'
     assert got['values']['contact']['fio']['firstName'] == 'Авраам Соломонович'
 

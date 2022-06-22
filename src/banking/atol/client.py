@@ -18,7 +18,7 @@ class AtolClient:
         self.post(
             method='sell',
             payload={
-                'external_id': f'tds-{self.order.id}',
+                'external_id': self.order.slug,
                 'timestamp': self.order.created.strftime('%d.%m.%Y %H:%M:%S'),
                 'receipt': {
                     'client': {

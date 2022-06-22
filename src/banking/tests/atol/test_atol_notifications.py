@@ -15,7 +15,7 @@ def test(api, order):
         'payload': {
             'total': 22000.0,
         },
-        'external_id': f'tds-{order.pk}',
+        'external_id': order.slug,
     }, expected_status_code=200)
 
     result = Receipt.objects.order_by('-id').first()

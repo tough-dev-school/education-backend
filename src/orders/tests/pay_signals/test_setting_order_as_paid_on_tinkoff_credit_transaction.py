@@ -38,7 +38,7 @@ def bank_data():
 def test_ok(api, order, bank_data):
     api.post('/api/v2/banking/tinkoff-credit-notifications/', bank_data(
         status='signed',
-        id=order.id,
+        id=order.slug,
     ), expected_status_code=200)
 
     order.refresh_from_db()
@@ -50,7 +50,7 @@ def test_ok(api, order, bank_data):
 def test_wr0ng_status(api, order, bank_data, status):
     api.post('/api/v2/banking/tinkoff-credit-notifications/', bank_data(
         status=status,
-        id=order.id,
+        id=order.slug,
     ), expected_status_code=200)
 
     order.refresh_from_db()
