@@ -21,15 +21,14 @@ class PromodeActiveFilter(DefaultTrueBooleanFilter):
 
 @admin.register(PromoCode)
 class PromoCodeAdmin(ModelAdmin):
-    list_display = [
+    list_display = (
         'id',
         'name',
-        'discount_percent',
-        'discount_value',
+        'discount',
         'order_count',
         'comment',
         'active',
-    ]
+    )
 
     list_editable = [
         'active',
@@ -37,6 +36,11 @@ class PromoCodeAdmin(ModelAdmin):
 
     list_filter = (
         PromodeActiveFilter,
+    )
+
+    list_display_links = (
+        'id',
+        'name',
     )
 
     actions = [actions.deactivate]
@@ -53,3 +57,13 @@ class PromoCodeAdmin(ModelAdmin):
             return f'<a href="{orders_url}?is_paid=t&promocode_id={obj.id}">{obj.order_count}</a>'
 
         return '—'
+
+    @admin.display(description=_('Discount'), ordering='discount_percent')
+    def discount(self, obj: PromoCode | None = None):
+        if not obj:
+            return '—'
+
+        if obj.discount_value is not None:
+            return f'{obj.discount_value} ₽'
+
+        return f'{obj.discount_percent} %'

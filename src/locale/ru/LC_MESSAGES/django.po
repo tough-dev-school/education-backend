@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-02 20:03+0300\n"
+"POT-Creation-Date: 2022-06-22 21:59+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,62 +28,74 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: chains/admin/message.py:42 chains/models/chain.py:23 diplomas/admin.py:48
+#: banking/models.py:9
+msgid "Atol"
+msgstr ""
+
+#: banking/models.py:18
+msgid "Receipt"
+msgstr ""
+
+#: banking/models.py:19
+msgid "Receipts"
+msgstr ""
+
+#: chains/admin/message.py:42 chains/models/chain.py:26 diplomas/admin.py:48
 #: homework/admin/answer/admin.py:55 homework/admin/answer/admin.py:100
-#: orders/models/order.py:50 products/models/course.py:45
+#: orders/models/order.py:55 products/models/course.py:49
 msgid "Course"
 msgstr "Курс"
 
-#: chains/models/chain.py:22 chains/models/message.py:25
-#: homework/models/question.py:13 magnets/models.py:17
+#: chains/models/chain.py:25 chains/models/message.py:28
+#: homework/models/question.py:13 magnets/models.py:20
 #: products/admin/bundle.py:20 products/admin/course.py:13
 #: products/admin/courses/record.py:17
 msgid "Name"
 msgstr "Название"
 
-#: chains/models/chain.py:25
+#: chains/models/chain.py:28
 msgid "Sending is active"
 msgstr "Запущена"
 
-#: chains/models/chain.py:28
+#: chains/models/chain.py:31
 msgid "Email chain"
 msgstr "Цепочка"
 
-#: chains/models/chain.py:29
+#: chains/models/chain.py:32
 msgid "Email chains"
 msgstr "Цепочки"
 
-#: chains/models/message.py:26
+#: chains/models/message.py:29
 msgid "Chain"
 msgstr "Цепочка"
 
-#: chains/models/message.py:27
+#: chains/models/message.py:30
 msgid "Template id"
 msgstr "ID шаблона в постмарке"
 
-#: chains/models/message.py:29
+#: chains/models/message.py:32
 msgid "Parent"
 msgstr "Родитель"
 
-#: chains/models/message.py:29
+#: chains/models/message.py:32
 msgid "Messages without parent will be sent upon start"
 msgstr "Если не поставить — сообщение уйдёт сразу при запуске цепочки"
 
-#: chains/models/message.py:31
+#: chains/models/message.py:34
 msgid "Delay (minutes)"
 msgstr "Задержка (мин.)"
 
-#: chains/models/message.py:31
+#: chains/models/message.py:34
 #, fuzzy
 #| msgid "86400 for day, 604800 for week"
 msgid "1440 for day, 10080 for week"
 msgstr "День — 1440, Неделя — 10080"
 
-#: chains/models/message.py:34
+#: chains/models/message.py:37
 msgid "Email chain message"
 msgstr "Письмо"
 
-#: chains/models/message.py:35
+#: chains/models/message.py:38
 msgid "Email chain messages"
 msgstr "Письма"
 
@@ -115,31 +127,31 @@ msgstr "Русский"
 msgid "English"
 msgstr "Английский"
 
-#: diplomas/models.py:41
+#: diplomas/models.py:44
 msgid "May access diplomas of all students"
 msgstr "Видит все дипломы"
 
-#: diplomas/models.py:44
+#: diplomas/models.py:47
 msgid "Diploma"
 msgstr "Диплом"
 
-#: diplomas/models.py:45
+#: diplomas/models.py:48
 msgid "Diplomas"
 msgstr "Дипломы"
 
-#: diplomas/models.py:70
+#: diplomas/models.py:73
 msgid "Check out https://is.gd/eutOYr for available templates"
 msgstr "Шаблоны искать в https://is.gd/eutOYr"
 
-#: diplomas/models.py:72
+#: diplomas/models.py:75
 msgid "This template is for students that have completed the homework"
 msgstr "Для тех, кто сдал домашку"
 
-#: diplomas/models.py:75
+#: diplomas/models.py:78
 msgid "Diploma template"
 msgstr "Шаблон диплома"
 
-#: diplomas/models.py:76
+#: diplomas/models.py:79
 msgid "Diploma templates"
 msgstr "Шаблоны дипломов"
 
@@ -171,19 +183,19 @@ msgstr "Первый ответ"
 msgid "Dispatch crosscheck"
 msgstr "Запустить p2p-проверку домашки"
 
-#: homework/models/answer.py:64
+#: homework/models/answer.py:65
 msgid "Exclude from cross-checking"
 msgstr "Исключить из p2p-проверки"
 
-#: homework/models/answer.py:69
+#: homework/models/answer.py:70
 msgid "Homework answer"
 msgstr "Ответ на домашку"
 
-#: homework/models/answer.py:70
+#: homework/models/answer.py:71
 msgid "Homework answers"
 msgstr "Ответы на домашку"
 
-#: homework/models/answer.py:73
+#: homework/models/answer.py:74
 msgid "May see answers from every user"
 msgstr "Видит все ответы на домашку"
 
@@ -203,63 +215,64 @@ msgstr "Количество лидов"
 msgid "Magnets"
 msgstr "Лид-магниты"
 
-#: magnets/models.py:20
+#: magnets/models.py:23
 msgid "Letter template id"
 msgstr "ID почтового шаблона"
 
-#: magnets/models.py:20
+#: magnets/models.py:23
 msgid "Will be sent upon lead registration"
 msgstr "Автоматически уходит юзеру, когда он зарегился"
 
-#: magnets/models.py:22
+#: magnets/models.py:25
 msgid "Success Message"
 msgstr "Сообщение об успехе"
 
-#: magnets/models.py:22
+#: magnets/models.py:25
 msgid "Will be shown under tilda form"
 msgstr "Покажется под формой в тильде"
 
-#: magnets/models.py:25
+#: magnets/models.py:28
 msgid "Email Lead Magnet Campaign"
 msgstr "Почтовая кампания"
 
-#: magnets/models.py:26
+#: magnets/models.py:29
 msgid "Email Lead Magnet Campaigns"
 msgstr "Почтовые кампании"
 
-#: notion/models.py:17
+#: notion/models.py:20
 msgid "Page title"
 msgstr "Заголовок страницы"
 
-#: notion/models.py:17
+#: notion/models.py:20
 msgid "Will be fetched automatically if empty"
 msgstr "Если не указать — попробуем скачать из ноушена"
 
-#: notion/models.py:19
+#: notion/models.py:22
 msgid "Notion page id"
 msgstr "ID страницы в ноушене"
 
-#: notion/models.py:19
+#: notion/models.py:22
 msgid "Paste it from notion address bar"
 msgstr "Скопируйте адрес из строки браузера"
 
-#: notion/models.py:20 orders/models/promocode.py:35
+#: notion/models.py:23 orders/admin/promocodes/admin.py:12
+#: orders/models/promocode.py:38
 msgid "Active"
 msgstr "Включено"
 
-#: notion/models.py:21
+#: notion/models.py:24
 msgid "Is home page of the course"
 msgstr "Главная страница курса"
 
-#: notion/models.py:24
+#: notion/models.py:27
 msgid "Notion material"
 msgstr "Материал"
 
-#: notion/models.py:25
+#: notion/models.py:28
 msgid "Notion materials"
 msgstr "Материалы"
 
-#: notion/models.py:30
+#: notion/models.py:33
 msgid "May access materials from every course"
 msgstr "Видит страницы ноушена от всех курсов"
 
@@ -295,7 +308,7 @@ msgstr "Не засчитать домашку"
 msgid "Item"
 msgstr "Товар"
 
-#: orders/admin/orders/admin.py:94 orders/models/order.py:34
+#: orders/admin/orders/admin.py:94 orders/models/order.py:39
 msgid "User"
 msgstr "Юзер"
 
@@ -340,117 +353,121 @@ msgstr "Если поменять, студент получит ещё одно
 msgid "Deactivate selected promo codes"
 msgstr "Деактивировать выбранные промо-коды"
 
-#: orders/admin/promocodes/admin.py:37
+#: orders/admin/promocodes/admin.py:53
 msgid "Order count"
 msgstr "Количество заказов"
 
-#: orders/models/order.py:33
+#: orders/admin/promocodes/admin.py:61
+msgid "Discount"
+msgstr "Скидка"
+
+#: orders/models/order.py:38
 #, fuzzy
 #| msgid "Order count"
 msgid "Order author"
 msgstr "Количество заказов"
 
-#: orders/models/order.py:35 products/admin/bundle.py:32
-#: products/admin/course.py:26 products/admin/courses/record.py:29
+#: orders/models/order.py:40 products/admin/bundle.py:32
+#: products/admin/course.py:27 products/admin/courses/record.py:29
 msgid "Price"
 msgstr "Цена"
 
-#: orders/models/order.py:36 orders/models/promocode.py:32
-#: orders/models/promocode.py:41
+#: orders/models/order.py:41 orders/models/promocode.py:35
+#: orders/models/promocode.py:44
 msgid "Promo Code"
 msgstr "Промо-код"
 
-#: orders/models/order.py:39
+#: orders/models/order.py:44
 msgid "Date when order got paid"
 msgstr "Когда оплачен"
 
-#: orders/models/order.py:41
+#: orders/models/order.py:46
 msgid "If set during creation, order automaticaly gets shipped"
 msgstr ""
 "Чтобы отметить заказ оплаченым, воспользуйтесь массовой операцией из списка "
 "заказво"
 
-#: orders/models/order.py:43
+#: orders/models/order.py:48
 msgid "Date when order got unpaid"
 msgstr "Когда вернули деньги"
 
-#: orders/models/order.py:44
+#: orders/models/order.py:49
 msgid "Date when order was shipped"
 msgstr "Дата выполнения"
 
-#: orders/models/order.py:46
+#: orders/models/order.py:51
 msgid "User-requested bank string"
 msgstr "Банк"
 
-#: orders/models/order.py:47
+#: orders/models/order.py:52
 msgid "Purchase-time UE rate"
 msgstr ""
 
-#: orders/models/order.py:51 products/models/record.py:16
+#: orders/models/order.py:56 products/models/record.py:16
 msgid "Record"
 msgstr "Запись"
 
-#: orders/models/order.py:52 products/models/bundle.py:15
+#: orders/models/order.py:57 products/models/bundle.py:15
 msgid "Bundle"
 msgstr "Набор"
 
-#: orders/models/order.py:54
+#: orders/models/order.py:59
 msgid "Giver"
 msgstr "Даритель"
 
-#: orders/models/order.py:55
+#: orders/models/order.py:60
 msgid "Date when the gift should be shipped"
 msgstr "Когда подарить"
 
-#: orders/models/order.py:56
+#: orders/models/order.py:61
 msgid "Gift message"
 msgstr "Подарочное сообщение"
 
-#: orders/models/order.py:61
+#: orders/models/order.py:66
 msgctxt "orders"
 msgid "Order"
 msgstr "Заказ"
 
-#: orders/models/order.py:62
+#: orders/models/order.py:67
 msgctxt "orders"
 msgid "Orders"
 msgstr "Заказы"
 
-#: orders/models/order.py:65
+#: orders/models/order.py:70
 msgid "May mark orders as paid"
 msgstr "Отмечать заказы оплаченными"
 
-#: orders/models/order.py:66
+#: orders/models/order.py:71
 msgid "May mark orders as unpaid"
 msgstr "Возвращать заказы"
 
-#: orders/models/promocode.py:33
+#: orders/models/promocode.py:36
 msgid "Discount percent"
 msgstr "Процент скидки"
 
-#: orders/models/promocode.py:34
+#: orders/models/promocode.py:37
 msgid "Discount amount"
 msgstr "Скидка в деньгах"
 
-#: orders/models/promocode.py:34
+#: orders/models/promocode.py:37
 msgid "Takes precedence over percent"
 msgstr "Если задать — процент не будет работать"
 
-#: orders/models/promocode.py:36
+#: orders/models/promocode.py:39
 msgid "Comment"
 msgstr "Комментарий"
 
-#: orders/models/promocode.py:38
+#: orders/models/promocode.py:41
 msgid "Can not be used for courses not checked here"
 msgstr ""
 "Если тут выбрать хоть что-нибудь, то промо-код будет действовать только для "
 "этого курса"
 
-#: orders/models/promocode.py:42
+#: orders/models/promocode.py:45
 msgid "Promo Codes"
 msgstr "Промо-коды"
 
-#: orders/models/promocode.py:49
+#: orders/models/promocode.py:52
 msgid "Percent or value must be set"
 msgstr ""
 
@@ -458,7 +475,7 @@ msgstr ""
 msgid "Items"
 msgstr "Товары"
 
-#: products/admin/course.py:36 products/admin/courses/record.py:38
+#: products/admin/course.py:37 products/admin/courses/record.py:38
 msgid "Access"
 msgstr "Доступы"
 
@@ -507,49 +524,45 @@ msgstr "Группа товаров (аналитика)"
 msgid "Bundles"
 msgstr "Наборы"
 
-#: products/models/course.py:35
+#: products/models/course.py:38
 msgid "Genitive name"
 msgstr "В родительном падеже"
 
-#: products/models/course.py:36
-msgid "Clickmeeting room URL"
-msgstr "Ссылка на ClickMeeting"
-
-#: products/models/course.py:36 products/models/course.py:37
-msgid "If set, every user who purcashes this course gets invited"
-msgstr "Купившие курс приглашаются автоматически"
-
-#: products/models/course.py:37
+#: products/models/course.py:39
 msgid "Zoom.us webinar ID"
 msgstr "ID вебинара в зуме"
 
 #: products/models/course.py:39
+msgid "If set, every user who purcashes this course gets invited"
+msgstr "Купившие курс приглашаются автоматически"
+
+#: products/models/course.py:41
 msgid "Welcome letter template id"
 msgstr "ID шаблона приветственного письма"
 
-#: products/models/course.py:39
+#: products/models/course.py:41
 msgid "Will be sent upon purchase if set"
 msgstr "Если задать — письмо будет уходить вместе с каждой покупкой"
 
-#: products/models/course.py:40
+#: products/models/course.py:42
 msgid "Special welcome letter template id for gifts"
 msgstr "ID шаблона для подарочного письма"
 
-#: products/models/course.py:40
+#: products/models/course.py:42
 msgid "If not set, common welcome letter will be used"
 msgstr ""
 "Если задать — для подарочных заказов будем использовать этот шаблон, а не "
 "предыдущий"
 
-#: products/models/course.py:41
+#: products/models/course.py:43
 msgid "Display in LMS"
 msgstr "Показывать в LMS"
 
-#: products/models/course.py:41
+#: products/models/course.py:43
 msgid "If disabled will not be shown in LMS"
 msgstr "Если снять галочку, студенты не будут видеть курс в LMS"
 
-#: products/models/course.py:46
+#: products/models/course.py:50
 msgid "Courses"
 msgstr "Курсы"
 
@@ -581,7 +594,7 @@ msgstr ""
 msgid "Reversed"
 msgstr ""
 
-#: tinkoff/models.py:12
+#: tinkoff/models.py:12 tinkoff/models.py:62
 msgid "Refunded"
 msgstr ""
 
@@ -589,20 +602,34 @@ msgstr ""
 msgid "Partial refunded"
 msgstr ""
 
-#: tinkoff/models.py:14 tinkoff/models.py:36
+#: tinkoff/models.py:14 tinkoff/models.py:36 tinkoff/models.py:61
 msgid "Rejected"
 msgstr ""
 
-#: tinkoff/models.py:35
+#: tinkoff/models.py:35 tinkoff/models.py:60
 msgid "Approved"
 msgstr ""
 
-#: tinkoff/models.py:37
+#: tinkoff/models.py:37 tinkoff/models.py:63
 msgid "Canceled"
 msgstr ""
 
 #: tinkoff/models.py:38
 msgid "Signed"
+msgstr ""
+
+#: tinkoff/models.py:64
+#, fuzzy
+#| msgid "Comment"
+msgid "Committed"
+msgstr "Комментарий"
+
+#: tinkoff/models.py:65
+msgid "Waiting for commit"
+msgstr ""
+
+#: tinkoff/models.py:66
+msgid "Completed"
 msgstr ""
 
 #: users/admin/student.py:10
@@ -660,6 +687,9 @@ msgstr "Пол"
 #: users/models.py:90
 msgid "Students"
 msgstr "Студенты"
+
+#~ msgid "Clickmeeting room URL"
+#~ msgstr "Ссылка на ClickMeeting"
 
 #~ msgid "Dashamail audience id"
 #~ msgstr "ID списка рассылки в Dashamail"
