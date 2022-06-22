@@ -3,8 +3,20 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
+from app.admin.filters import DefaultTrueBooleanFilter
 from orders.admin.promocodes import actions
 from orders.models import PromoCode
+
+
+class PromodeActiveFilter(DefaultTrueBooleanFilter):
+    title = _('Active')
+    parameter_name = 'is_active'
+
+    def t(self, request, queryset):
+        return queryset.filter(active=True)
+
+    def f(self, request, queryset):
+        return queryset.filter(active=False)
 
 
 @admin.register(PromoCode)
@@ -23,9 +35,9 @@ class PromoCodeAdmin(ModelAdmin):
         'active',
     ]
 
-    list_filter = [
-        'active',
-    ]
+    list_filter = (
+        PromodeActiveFilter,
+    )
 
     actions = [actions.deactivate]
 
