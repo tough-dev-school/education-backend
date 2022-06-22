@@ -49,7 +49,7 @@ class PromoCodeAdmin(ModelAdmin):
 
     @admin.display(description=_('Order count'), ordering='order_count')
     def order_count(self, obj: PromoCode | None = None) -> str:
-        if hasattr(obj, 'order_count') and obj.order_count:
+        if obj is not None and hasattr(obj, 'order_count') and obj.order_count:
             return str(obj.order_count)
 
         return '—'
