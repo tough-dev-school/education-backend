@@ -12,7 +12,7 @@ class BooleanFilter(admin.SimpleListFilter):
             parameter_name = 'has_classes'
             def t(self, request, queryset):
                 return queryset.filter(classes__isnull=False).distinct('pk')
-            def n(self, request, queryset):
+            def f(self, request, queryset):
                 return queryset.filter(classes__isnull=True)
     """
     def lookups(self, request, model_admin):
@@ -24,8 +24,22 @@ class BooleanFilter(admin.SimpleListFilter):
     def queryset(self, request, queryset):
         if not self.value():
             return queryset
-        else:
-            if self.value() == 't':
-                return self.t(request, queryset)
-            else:
-                return self.f(request, queryset)
+
+        if self.value() == 't':
+            return self.t(request, queryset)
+
+        return self.f(request, queryset)
+
+
+class DefaultTrueBooleanFilter(BooleanFilter):
+    def queryset(self, request, queryset):
+        if not self.value() or self.value() == 't':
+            return self.t(request, queryset)
+
+        return self.f(request, queryset)
+
+
+__all__ = [
+    'BooleanFilter',
+    'DefaultTrueBooleanFilter',
+]
