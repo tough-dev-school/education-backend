@@ -5,7 +5,7 @@ from django.db import migrations, models
 from django.db.models import F
 
 
-def find_orders(apps, schema_editor):
+def link_old_orders(apps, schema_editor):
     apps.get_model('tinkoff.CreditNotification').objects.update(
         order_id=F('old_order_id'),
     )
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
             name='order',
             field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, to='orders.order'),
         ),
-        migrations.RunPython(find_orders),
+        migrations.RunPython(link_old_orders),
         migrations.AlterField(
             model_name='creditnotification',
             name='order',

@@ -5,13 +5,13 @@ from django.db import migrations, models
 from django.db.models import F
 
 
-def remove_unlinked_transactions(apps, schema_editor):
+def remove_orphan_transactions(apps, schema_editor):
     apps.get_model('tinkoff.PaymentNotification').objects.filter(
         old_order_id__in=[948, 1153, 1166, 1167],
     ).delete()
 
 
-def find_orders(apps, schema_editor):
+def link_old_orders(apps, schema_editor):
     apps.get_model('tinkoff.PaymentNotification').objects.update(
         order_id=F('old_order_id'),
     )
@@ -35,8 +35,8 @@ class Migration(migrations.Migration):
             name='order',
             field=models.ForeignKey(null=True, to='orders.Order', on_delete=django.db.models.deletion.PROTECT),
         ),
-        migrations.RunPython(remove_unlinked_transactions),
-        migrations.RunPython(find_orders),
+        migrations.RunPython(remove_orphan_transactions),
+        migrations.RunPython(link_old_orders),
         migrations.AlterField(
             model_name='paymentnotification',
             name='order',
