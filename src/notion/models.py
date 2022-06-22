@@ -11,8 +11,11 @@ class MaterialQuerySet(QuerySet):
         return self.filter(active=True)
 
 
+MaterialManager = models.Manager.from_queryset(MaterialQuerySet)
+
+
 class Material(TimestampedModel):
-    objects = models.Manager.from_queryset(MaterialQuerySet)()
+    objects = MaterialManager()
 
     title = models.CharField(_('Page title'), max_length=128, blank=True, help_text=_('Will be fetched automatically if empty'))
     course = models.ForeignKey('products.Course', on_delete=models.CASCADE)

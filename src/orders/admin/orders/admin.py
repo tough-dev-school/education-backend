@@ -140,7 +140,7 @@ class OrderAdmin(ModelAdmin):
     @mark_safe
     def login_as(self, obj: Order) -> str:
         if obj.pk is None:
-            return '—'
+            return '—'  # type: ignore
 
         login_as_url = Student.objects.get(pk=obj.user_id).get_absolute_url()
 

@@ -21,8 +21,11 @@ class DiplomaQuerySet(models.QuerySet):
         return self.filter(study__student=user)
 
 
+DiplomaManager = models.Manager.from_queryset(DiplomaQuerySet)
+
+
 class Diploma(TimestampedModel):
-    objects = models.Manager.from_queryset(DiplomaQuerySet)()
+    objects = DiplomaManager()
 
     study = models.ForeignKey('studying.Study', on_delete=models.CASCADE)
     slug = models.CharField(max_length=32, db_index=True, unique=True, default=shortuuid.uuid)
@@ -47,7 +50,7 @@ class Diploma(TimestampedModel):
     def __str__(self) -> str:
         return f'{self.study}: {self.language}'
 
-    def get_other_languages(self) -> DiplomaQuerySet:
+    def get_other_languages(self) -> models.QuerySet['Diploma']:
         return self.__class__.objects.filter(study=self.study).exclude(pk=self.pk)
 
     def get_absolute_url(self) -> str:

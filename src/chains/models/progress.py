@@ -12,8 +12,11 @@ class ProgressQuerySet(models.QuerySet):
         return self.filter(study=study, message__chain=chain).order_by('-created').first()
 
 
+ProgressManager = models.Manager.from_queryset(ProgressQuerySet)
+
+
 class Progress(TimestampedModel):
-    objects = models.Manager.from_queryset(ProgressQuerySet)()
+    objects = ProgressManager()
 
     study = models.ForeignKey('studying.Study', on_delete=models.CASCADE)
     message = models.ForeignKey('chains.Message', on_delete=models.CASCADE)

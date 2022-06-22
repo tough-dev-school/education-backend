@@ -4,11 +4,13 @@
 #
 #    pip-compile dev-requirements.in
 #
-anyio==3.5.0
+anyio==3.6.1
     # via
     #   -c requirements.txt
     #   httpcore
-asgiref==3.5.0
+appnope==0.1.3
+    # via ipython
+asgiref==3.5.2
     # via
     #   -c requirements.txt
     #   django
@@ -16,7 +18,7 @@ astor==0.8.1
     # via flake8-simplify
 asttokens==2.0.5
     # via stack-data
-attrs==20.3.0
+attrs==21.4.0
     # via
     #   flake8-bugbear
     #   flake8-eradicate
@@ -24,11 +26,11 @@ attrs==20.3.0
     #   pytest
 backcall==0.2.0
     # via ipython
-boto3-stubs==1.21.21
+boto3-stubs==1.24.12
     # via -r dev-requirements.in
-botocore-stubs==1.24.21
+botocore-stubs==1.27.12
     # via boto3-stubs
-certifi==2020.12.5
+certifi==2022.6.15
     # via
     #   -c requirements.txt
     #   httpcore
@@ -37,7 +39,6 @@ certifi==2020.12.5
 charset-normalizer==2.0.12
     # via
     #   -c requirements.txt
-    #   httpx
     #   requests
 cognitive-complexity==1.2.0
     # via flake8-cognitive-complexity
@@ -45,7 +46,7 @@ coreapi==2.3.3
     # via djangorestframework-stubs
 coreschema==0.0.4
     # via coreapi
-coverage==5.5
+coverage[toml]==6.4.1
     # via pytest-cov
 decorator==5.1.1
     # via
@@ -56,15 +57,15 @@ django==3.2.13
     #   -c requirements.txt
     #   django-stubs
     #   django-stubs-ext
-django-stubs==1.9.0
+django-stubs==1.11.0
     # via
     #   -r dev-requirements.in
     #   djangorestframework-stubs
-django-stubs-ext==0.3.1
+django-stubs-ext==0.5.0
     # via django-stubs
-djangorestframework-stubs==1.4.0
+djangorestframework-stubs==1.6.0
     # via -r dev-requirements.in
-eradicate==2.0.0
+eradicate==2.1.0
     # via flake8-eradicate
 execnet==1.9.0
     # via pytest-xdist
@@ -74,7 +75,7 @@ faker==4.0.0
     # via
     #   -c requirements.txt
     #   mixer
-flake8==3.8.4
+flake8==3.9.2
     # via
     #   flake8-absolute-import
     #   flake8-bugbear
@@ -94,7 +95,7 @@ flake8==3.8.4
     #   flake8-walrus
 flake8-absolute-import==1.0.0.1
     # via -r dev-requirements.in
-flake8-bugbear==22.1.11
+flake8-bugbear==22.4.25
     # via -r dev-requirements.in
 flake8-cognitive-complexity==0.1.0
     # via -r dev-requirements.in
@@ -102,7 +103,7 @@ flake8-commas==2.1.0
     # via -r dev-requirements.in
 flake8-django==1.1.2
     # via -r dev-requirements.in
-flake8-eradicate==1.2.0
+flake8-eradicate==1.2.1
     # via -r dev-requirements.in
 flake8-fixme==1.1.1
     # via -r dev-requirements.in
@@ -110,7 +111,7 @@ flake8-isort==4.1.1
     # via -r dev-requirements.in
 flake8-mock==0.3
     # via -r dev-requirements.in
-flake8-multiline-containers==0.0.18
+flake8-multiline-containers==0.0.19
     # via -r dev-requirements.in
 flake8-mutable==1.2.0
     # via -r dev-requirements.in
@@ -120,7 +121,7 @@ flake8-pie==0.15.0
     # via -r dev-requirements.in
 flake8-plugin-utils==1.3.2
     # via flake8-pytest-style
-flake8-print==4.0.0
+flake8-print==5.0.0
     # via -r dev-requirements.in
 flake8-printf-formatting==1.1.2
     # via -r dev-requirements.in
@@ -130,7 +131,7 @@ flake8-pytest-style==1.6.0
     # via -r dev-requirements.in
 flake8-quotes==3.3.1
     # via -r dev-requirements.in
-flake8-simplify==0.18.1
+flake8-simplify==0.19.2
     # via -r dev-requirements.in
 flake8-todo==0.7
     # via -r dev-requirements.in
@@ -140,7 +141,7 @@ flake8-variables-names==0.0.5
     # via -r dev-requirements.in
 flake8-walrus==1.1.0
     # via -r dev-requirements.in
-freezegun==1.2.0
+freezegun==1.2.1
     # via
     #   -r dev-requirements.in
     #   pytest-freezegun
@@ -148,11 +149,11 @@ h11==0.12.0
     # via
     #   -c requirements.txt
     #   httpcore
-httpcore==0.14.7
+httpcore==0.15.0
     # via
     #   -c requirements.txt
     #   httpx
-httpx==0.22.0
+httpx==0.23.0
     # via
     #   -c requirements.txt
     #   pytest-httpx
@@ -162,13 +163,13 @@ idna==3.3
     #   anyio
     #   requests
     #   rfc3986
-importlib-metadata==4.11.3
+importlib-metadata==4.11.4
     # via
     #   -c requirements.txt
     #   pytest-randomly
 iniconfig==1.1.1
     # via pytest
-ipython==8.1.1
+ipython==8.4.0
     # via -r dev-requirements.in
 isort==5.10.1
     # via flake8-isort
@@ -178,7 +179,7 @@ jedi==0.18.1
     # via
     #   -r dev-requirements.in
     #   ipython
-jinja2==3.0.3
+jinja2==3.1.2
     # via coreschema
 markupsafe==2.1.1
     # via jinja2
@@ -188,7 +189,7 @@ mccabe==0.6.1
     # via flake8
 mixer==7.0.6
     # via -r dev-requirements.in
-mypy==0.941
+mypy==0.950
     # via
     #   -r dev-requirements.in
     #   django-stubs
@@ -205,9 +206,9 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
-pluggy==0.13.1
+pluggy==1.0.0
     # via pytest
-prompt-toolkit==3.0.28
+prompt-toolkit==3.0.29
     # via
     #   -c requirements.txt
     #   ipython
@@ -220,20 +221,20 @@ py==1.11.0
     #   -c requirements.txt
     #   pytest
     #   pytest-forked
-pycodestyle==2.6.0
+pycodestyle==2.7.0
     # via
     #   flake8
     #   flake8-print
     #   flake8-todo
-pyflakes==2.2.0
+pyflakes==2.3.1
     # via flake8
-pygments==2.11.2
+pygments==2.12.0
     # via ipython
-pyparsing==3.0.7
+pyparsing==3.0.9
     # via
     #   -c requirements.txt
     #   packaging
-pytest==7.0.1
+pytest==7.1.2
     # via
     #   pytest-cov
     #   pytest-deadfixtures
@@ -246,7 +247,7 @@ pytest==7.0.1
     #   pytest-randomly
     #   pytest-repeat
     #   pytest-xdist
-pytest-cov==2.12.1
+pytest-cov==3.0.0
     # via -r dev-requirements.in
 pytest-deadfixtures==2.2.1
     # via -r dev-requirements.in
@@ -258,11 +259,11 @@ pytest-forked==1.4.0
     # via pytest-xdist
 pytest-freezegun==0.4.2
     # via -r dev-requirements.in
-pytest-httpx==0.20.0
+pytest-httpx==0.21.0
     # via -r dev-requirements.in
 pytest-mock==3.7.0
     # via -r dev-requirements.in
-pytest-randomly==3.11.0
+pytest-randomly==3.12.0
     # via -r dev-requirements.in
 pytest-repeat==0.9.1
     # via -r dev-requirements.in
@@ -273,11 +274,11 @@ python-dateutil==2.8.2
     #   -c requirements.txt
     #   faker
     #   freezegun
-pytz==2021.3
+pytz==2022.1
     # via
     #   -c requirements.txt
     #   django
-requests==2.27.1
+requests==2.28.0
     # via
     #   -c requirements.txt
     #   coreapi
@@ -293,7 +294,6 @@ six==1.16.0
     # via
     #   -c requirements.txt
     #   asttokens
-    #   flake8-print
     #   python-dateutil
     #   requests-mock
 sniffio==1.2.0
@@ -306,52 +306,56 @@ sqlparse==0.4.2
     # via
     #   -c requirements.txt
     #   django
-stack-data==0.2.0
+stack-data==0.3.0
     # via ipython
 testfixtures==6.18.5
     # via flake8-isort
 text-unidecode==1.3
-    # via
-    #   -c requirements.txt
-    #   faker
-toml==0.10.2
-    # via
-    #   django-stubs
-    #   pytest-cov
+    # via faker
 tomli==2.0.1
     # via
+    #   coverage
+    #   django-stubs
     #   mypy
     #   pytest
-traitlets==5.1.1
+traitlets==5.3.0
     # via
     #   ipython
     #   matplotlib-inline
-types-babel==2.9.8
+types-babel==2.9.12
     # via -r dev-requirements.in
-types-bleach==4.1.5
+types-bleach==5.0.2
     # via -r dev-requirements.in
-types-freezegun==1.1.7
+types-freezegun==1.1.10
     # via -r dev-requirements.in
-types-markdown==3.3.12
+types-markdown==3.3.28
+    # via
+    #   -r dev-requirements.in
+    #   djangorestframework-stubs
+types-pillow==9.0.20
     # via -r dev-requirements.in
-types-pillow==9.0.7
-    # via -r dev-requirements.in
-types-pytz==2021.3.5
+types-pytz==2021.3.8
     # via
     #   django-stubs
     #   types-babel
-types-pyyaml==6.0.4
-    # via django-stubs
-types-requests==2.27.13
-    # via -r dev-requirements.in
-types-retry==0.9.5
-    # via -r dev-requirements.in
-types-stripe==2.59.8
-    # via -r dev-requirements.in
-types-urllib3==1.26.11
-    # via types-requests
-typing-extensions==4.1.1
+types-pyyaml==6.0.8
     # via
+    #   django-stubs
+    #   djangorestframework-stubs
+types-requests==2.27.30
+    # via
+    #   -r dev-requirements.in
+    #   djangorestframework-stubs
+types-retry==0.9.7
+    # via -r dev-requirements.in
+types-stripe==2.59.10
+    # via -r dev-requirements.in
+types-urllib3==1.26.15
+    # via types-requests
+typing-extensions==4.2.0
+    # via
+    #   boto3-stubs
+    #   botocore-stubs
     #   django-stubs
     #   django-stubs-ext
     #   djangorestframework-stubs
@@ -367,7 +371,7 @@ wcwidth==0.2.5
     # via
     #   -c requirements.txt
     #   prompt-toolkit
-zipp==3.7.0
+zipp==3.8.0
     # via
     #   -c requirements.txt
     #   importlib-metadata

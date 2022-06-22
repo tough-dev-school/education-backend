@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_jwt import views as jwt
@@ -23,17 +24,17 @@ class RefreshJSONWebTokenView(jwt.RefreshJSONWebTokenView):
 class RequestPasswordLessToken(AnonymousAPIView):
     throttle_classes = [AuthAnonRateThrottle]
 
-    def get(self, request, user_email: str):
+    def get(self, request: Request, user_email: str) -> Response:
         user = User.objects.filter(is_active=True).filter(email=user_email).first()
         if user is not None:
-            token = PasswordlessAuthToken.objects.create(user=user)
+            passwordless_auth_token = PasswordlessAuthToken.objects.create(user=user)
             send_mail.delay(
                 to=user.email,
                 template_id='passwordless-token',
-                ctx=dict(
-                    name=str(user),
-                    action_url=token.get_absolute_url(),
-                ),
+                ctx={
+                    'name': str(user),
+                    'action_url': passwordless_auth_token.get_absolute_url(),
+                },
                 disable_antispam=True,
             )
 
@@ -43,13 +44,13 @@ class RequestPasswordLessToken(AnonymousAPIView):
 class ObtainJSONWebTokenViaPasswordlessToken(AnonymousAPIView):
     throttle_classes = [AuthAnonRateThrottle]
 
-    def get(self, request, token):
-        token = get_object_or_404(PasswordlessAuthToken.objects.valid(), token=token)
+    def get(self, request: Request, token: str) -> Response:
+        passwordless_auth_token = get_object_or_404(PasswordlessAuthToken.objects.valid(), token=token)
 
-        token.mark_as_used()
+        passwordless_auth_token.mark_as_used()
 
         return Response({
-            'token': get_jwt(token.user),
+            'token': get_jwt(passwordless_auth_token.user),
         })
 
 

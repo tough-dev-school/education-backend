@@ -27,8 +27,11 @@ class OrderQuerySet(QuerySet):
         return self.paid().filter(shipped__isnull=True, desired_shipment_date__lte=timezone.now())
 
 
+OrderManager = models.Manager.from_queryset(OrderQuerySet)
+
+
 class Order(TimestampedModel):
-    objects = models.Manager.from_queryset(OrderQuerySet)()
+    objects = OrderManager()
 
     slug = models.CharField(max_length=32, db_index=True, unique=True, default=shortuuid.uuid)
 

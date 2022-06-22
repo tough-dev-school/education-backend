@@ -33,14 +33,14 @@ class NotionMaterialForm(forms.ModelForm):
 
 @admin.register(Material)
 class NotionMaterialAdmin(ModelAdmin):
-    list_display = [
+    list_display = (
         'title',
         'course',
         'page_id',
-    ]
+    )
     list_display_links = list_display
-    list_filter = [
+    list_filter = (
         'course',
-    ]
+    )
     form = NotionMaterialForm
     save_as = True
