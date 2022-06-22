@@ -66,7 +66,7 @@ class DolyameNotification(TimestampedModel):
         ('completed', _('Completed')),
     )
 
-    order_id = models.CharField(max_length=256)
+    order = models.ForeignKey('orders.Order', related_name='dolyame_notifications', on_delete=models.PROTECT)
     status = models.CharField(max_length=32, choices=STATUS_CHOICES)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     demo = models.BooleanField()

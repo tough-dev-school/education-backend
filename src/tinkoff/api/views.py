@@ -45,7 +45,10 @@ class DolyameNotificationsView(APIView):
     permission_classes = [DolyameNetmaskPermission]
 
     def post(self, request, *args, **kwargs):
-        serializer = DolyameNotificationSerializer(data=request.data)
+        serializer = DolyameNotificationSerializer(data={
+            'order': Order.objects.get(slug=request.data.pop('id')).pk,
+            **request.data,
+        })
         serializer.is_valid(raise_exception=True)
         notification = serializer.save()
 
@@ -53,7 +56,7 @@ class DolyameNotificationsView(APIView):
             tasks.commit_dolyame_order.apply_async(
                 countdown=10,
                 kwargs={
-                    'order_id': notification.order_id.replace('tds-', ''),
+                    'order_id': notification.order.pk,
                     'idempotency_key': str(uuid.uuid4()),
                 },
             )

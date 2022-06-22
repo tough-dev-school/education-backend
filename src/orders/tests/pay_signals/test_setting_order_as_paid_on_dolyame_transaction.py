@@ -16,7 +16,7 @@ def _disable_dolyame_authn(mocker):
 def notification(order):
     def _notification(status: str, **kwargs):
         return {
-            'id': f'tds-{order.pk}',
+            'id': order.slug,
             'status': status,
             'amount': 10000.56,
             'residual_amount': 7500.42,

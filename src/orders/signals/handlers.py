@@ -1,8 +1,6 @@
-import contextlib
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from orders.models import Order
 from stripebank.models import StripeNotification
 from tinkoff.models import CreditNotification as TinkoffCreditNotification
 from tinkoff.models import DolyameNotification
@@ -51,6 +49,4 @@ def mark_order_as_paid_on_dolyame_notifications(instance: DolyameNotification, c
     if instance.status != 'completed':
         return
 
-    with contextlib.suppress(Order.DoesNotExist):
-        order = Order.objects.get(pk=instance.order_id.replace('tds-', ''))
-        order.set_paid()
+    instance.order.set_paid()

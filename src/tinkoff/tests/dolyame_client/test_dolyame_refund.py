@@ -15,7 +15,7 @@ def idempotency_key() -> str:
 
 def test(order, idempotency_key, httpx_mock: HTTPXMock):
     httpx_mock.add_response(
-        url=f'https://partner.dolyame.ru/v1/orders/tds-{order.id}/refund',
+        url=f'https://partner.dolyame.ru/v1/orders/{order.slug}/refund',
         match_headers={
             'X-Correlation-ID': idempotency_key,
         },
@@ -34,7 +34,7 @@ def test(order, idempotency_key, httpx_mock: HTTPXMock):
 @pytest.mark.xfail(strict=True, reason='Just to make sure above code works')
 def test_header(order, idempotency_key, httpx_mock: HTTPXMock):
     httpx_mock.add_response(
-        url=f'https://partner.dolyame.ru/v1/orders/tds-{order.id}/refund',
+        url=f'https://partner.dolyame.ru/v1/orders/{order.slug}/refund',
         match_headers={
             'X-Correlation-ID': 'SOME-OTHER-VALUE',
         },

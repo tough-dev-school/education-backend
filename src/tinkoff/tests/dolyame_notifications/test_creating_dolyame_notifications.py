@@ -12,7 +12,7 @@ def test_data(api, order, notification, payment_schedule):
     notification = DolyameNotification.objects.last()
 
     assert notification.status == 'approved'
-    assert notification.order_id == f'tds-{order.id}'
+    assert notification.order == order
     assert notification.amount == Decimal('10000.56')
     assert notification.residual_amount == Decimal('7500.42')
     assert notification.demo is False
@@ -35,7 +35,7 @@ def test_status(api, notification, status):
 
 def test_autocommit_is_sent(api, notification, order, httpx_mock):
     httpx_mock.add_response(
-        url=f'https://partner.dolyame.ru/v1/orders/tds-{order.id}/commit',
+        url=f'https://partner.dolyame.ru/v1/orders/{order.slug}/commit',
         json={},
     )
 

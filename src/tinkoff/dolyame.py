@@ -19,7 +19,7 @@ class Dolyame(Bank):
             method='orders/create',
             payload={
                 'order': {
-                    'id': self.order_id,
+                    'id': self.order.slug,
                     'amount': self.price,
                     'items': self.get_items(),
                 },
@@ -34,7 +34,7 @@ class Dolyame(Bank):
 
     def commit(self) -> None:
         self.post(
-            method=f'orders/{self.order_id}/commit',
+            method=f'orders/{self.order.slug}/commit',
             payload={
                 'amount': self.price,
                 'items': self.get_items(),
@@ -43,7 +43,7 @@ class Dolyame(Bank):
 
     def refund(self) -> None:
         self.post(
-            method=f'orders/{self.order_id}/refund',
+            method=f'orders/{self.order.slug}/refund',
             payload={
                 'amount': self.price,
                 'returned_items': self.get_items(),
@@ -87,10 +87,6 @@ class Dolyame(Bank):
     @property
     def price(self) -> str:
         return str(Decimal(super().price / 100))  # type: ignore
-
-    @property
-    def order_id(self) -> str:
-        return f'tds-{self.order.id}'
 
     @staticmethod
     def get_notification_url() -> str:
