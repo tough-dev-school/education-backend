@@ -29,11 +29,23 @@ class AppAdminMixin:
         models.IntegerField: {'widget': AppNumberInput},
         models.JSONField: {'widget': PrettyJSONWidget(attrs={'initial': 'parsed'})},
     }
+    global_exclude = (
+        'created',
+        'modified',
+    )
 
     class Media:
         css = {
             'all': ['admin.css', 'prettyjson.css'],
         }
+
+    def get_exclude(self, request: Any, obj: Any | None = None) -> tuple[str]:
+        """Exclude globaly excluded items
+        """
+        return (
+            *(super().get_exclude(request, obj) or []),  # type: ignore
+            *self.global_exclude,
+        )
 
     def get_form(self: DjangoModelAdminProtocol, request: Any, obj: Optional[Type[models.Model]] = None, **kwargs: Any):
         """Use special form during object creation
