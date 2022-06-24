@@ -41,6 +41,11 @@ class PromoCodeAdmin(ModelAdmin):
         'name',
     )
 
+    search_fields = (
+        'name',
+        'comment',
+    )
+
     actions = [actions.deactivate]
 
     def get_queryset(self, request):
