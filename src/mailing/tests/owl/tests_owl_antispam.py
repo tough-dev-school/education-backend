@@ -2,7 +2,7 @@ import pytest
 from django.core import mail
 from functools import partial
 
-from app.models import EmailLogEntry
+from mailing.models import EmailLogEntry
 from mailing.owl import Owl
 from mailing.tasks import send_mail
 
