@@ -7,7 +7,7 @@ if TYPE_CHECKING:
     from products.models import Course
 
 
-def get_configuration(recipient: str) -> Optional['EmailConfiguration']:
+def get_configuration(*, recipient: str) -> Optional['EmailConfiguration']:
     last_contacted_course = get_last_contacted_course(recipient)
 
     if last_contacted_course is not None and hasattr(last_contacted_course, 'email_configuration'):
