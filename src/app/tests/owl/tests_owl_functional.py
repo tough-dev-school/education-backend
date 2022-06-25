@@ -1,7 +1,7 @@
 import pytest
 from django.core import mail
 
-from app.mail.owl import Owl  # type: ignore
+from app.mail.owl import Owl
 
 pytestmark = [pytest.mark.django_db]
 
@@ -20,7 +20,7 @@ def owl():
 
 
 def test_sending(owl):
-    owl.send()
+    owl()
 
     assert len(mail.outbox) == 1
 
@@ -31,7 +31,7 @@ def test_sending(owl):
 def test_kill_switch(owl, switch, settings):
     switch(settings)
 
-    owl.send()
+    owl()
 
     assert len(mail.outbox) == 0
 

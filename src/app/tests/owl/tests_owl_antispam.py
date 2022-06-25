@@ -2,7 +2,7 @@ import pytest
 from django.core import mail
 from functools import partial
 
-from app.mail.owl import Owl  # type: ignore
+from app.mail.owl import Owl
 from app.models import EmailLogEntry
 from app.tasks import send_mail
 
@@ -28,7 +28,7 @@ def email_log_entry_exists(**kwargs) -> bool:
 
 
 def test_log_entry_is_created(owl):
-    owl().send()
+    owl()()
 
     assert email_log_entry_exists(email='f@f213.in', template_id=100500) is True
 
@@ -36,7 +36,7 @@ def test_log_entry_is_created(owl):
 def test_when_log_entry_already_exists_all_is_ok(owl):
     EmailLogEntry.objects.create(email='f@f213.in', template_id=100500)
 
-    owl(disable_antispam=True).send()
+    owl(disable_antispam=True)()
 
 
 @pytest.mark.parametrize(('disable_antispam', 'should_email_be_sent'), [
@@ -46,7 +46,7 @@ def test_when_log_entry_already_exists_all_is_ok(owl):
 def test_mail_is_not_sent_when_log_entry_already_exists(owl, disable_antispam, should_email_be_sent):
     EmailLogEntry.objects.create(email='f@f213.in', template_id=100500)
 
-    owl(disable_antispam=disable_antispam).send()
+    owl(disable_antispam=disable_antispam)()
 
     assert (len(mail.outbox) == 1) is should_email_be_sent
 

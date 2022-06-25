@@ -17,7 +17,7 @@ def owl(mocker):
 
 @pytest.fixture
 def send(mocker):
-    return mocker.patch('app.tasks.mail.Owl.send')
+    return mocker.patch('app.tasks.mail.Owl.__call__')
 
 
 ARGS = dict(

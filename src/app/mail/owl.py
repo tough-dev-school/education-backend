@@ -1,56 +1,59 @@
-# type: ignore
-from typing import List, Union
-
+from anymail.message import AnymailMessage
+from dataclasses import dataclass
 from django.conf import settings
-from django.core.mail import EmailMessage
+from django.utils.functional import cached_property
 
 from app.mail import helpers
 from app.models import EmailLogEntry
 
 
+@dataclass
 class Owl:
     """Deliver messages [from Hogwarts] to end-users
     """
-    def __init__(self, to: Union[List, str], template_id, subject: str = '', ctx: dict = None, disable_antispam=False):
-        if to in (None, [None]):
-            to = []
-        self.template_id = template_id
-        self.subject = subject
-        self.to = [to] if isinstance(to, str) else to
-        self.ctx = helpers.normalize_email_context(ctx) if ctx is not None else {}
+    to: str
+    template_id: str
+    subject: str | None = ''
+    ctx: dict | None = None
+    disable_antispam: bool | None = False
 
-        if not disable_antispam:
-            self.remove_spammed_emails()
-
-        self.msg = self._get_message()
-
-    def _get_message(self) -> EmailMessage:
-        msg = EmailMessage(
-            subject=self.subject,
-            body='',
-            to=self.to,
-        )
-        msg.template_id = self.template_id
-        msg.merge_global_data = self.ctx
-        return msg
-
-    def send(self):
+    def __call__(self) -> None:
         if not settings.EMAIL_ENABLED:
+            return
+
+        if not self.disable_antispam and self.is_sent_already():
             return
 
         self.msg.send()
         self.write_email_log()
 
+    @cached_property
+    def msg(self) -> AnymailMessage:
+        msg = AnymailMessage(
+            subject=self.subject,
+            body='',
+            to=[self.to],
+        )
+        msg.template_id = self.template_id
+        msg.merge_global_data = self.get_normalized_message_context()
+
+        return msg
+
     def attach(self, filename=None, content=None, mimetype=None):
         """Add an attachment to the message"""
         return self.msg.attach(filename, content, mimetype)
 
-    def write_email_log(self):
-        for email in self.to:
-            EmailLogEntry.objects.update_or_create(
-                email=email,
-                template_id=self.template_id,
-            )
+    def get_normalized_message_context(self) -> dict:
+        if self.ctx is None:
+            return {}
 
-    def remove_spammed_emails(self):
-        self.to = [email for email in self.to if not EmailLogEntry.objects.filter(email=email, template_id=self.template_id).exists()]
+        return helpers.normalize_email_context(self.ctx)
+
+    def write_email_log(self) -> None:
+        EmailLogEntry.objects.update_or_create(
+            email=self.to,
+            template_id=self.template_id,
+        )
+
+    def is_sent_already(self) -> bool:
+        return EmailLogEntry.objects.filter(email=self.to, template_id=self.template_id).exists()
