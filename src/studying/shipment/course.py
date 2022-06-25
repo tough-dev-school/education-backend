@@ -1,6 +1,7 @@
 from typing import Optional
 
-from app.tasks import invite_to_zoomus, send_mail
+from app.tasks import invite_to_zoomus
+from mailing.tasks import send_mail
 from products.models import Course
 from studying import shipment_factory as factory
 from studying.models import Study

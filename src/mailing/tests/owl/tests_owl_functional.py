@@ -1,7 +1,7 @@
 import pytest
 from django.core import mail
 
-from app.mail.owl import Owl
+from mailing.owl import Owl
 
 pytestmark = [pytest.mark.django_db]
 

@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from functools import partial
 
-from app.tasks import send_mail
 from chains import tasks
 from chains.models import Message, Progress
+from mailing.tasks import send_mail
 from studying.models import Study
 
 

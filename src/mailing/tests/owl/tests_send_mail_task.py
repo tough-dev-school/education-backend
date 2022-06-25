@@ -1,6 +1,6 @@
 import pytest
 
-from app.tasks import send_mail
+from mailing.tasks import send_mail
 
 pytestmark = [pytest.mark.django_db]
 
@@ -12,12 +12,12 @@ def _enable_email(settings):
 
 @pytest.fixture
 def owl(mocker):
-    return mocker.patch('app.tasks.mail.Owl')
+    return mocker.patch('mailing.tasks.Owl')
 
 
 @pytest.fixture
 def send(mocker):
-    return mocker.patch('app.tasks.mail.Owl.__call__')
+    return mocker.patch('mailing.tasks.Owl.__call__')
 
 
 ARGS = dict(

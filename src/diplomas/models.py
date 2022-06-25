@@ -5,7 +5,7 @@ from urllib.parse import urljoin
 
 from app.files import RandomFileName
 from app.models import TimestampedModel, models
-from app.tasks import send_mail
+from mailing.tasks import send_mail
 
 
 class Languages(models.TextChoices):

@@ -14,6 +14,7 @@ INSTALLED_APPS = [
     'triggers',
     'users',
     'chains',
+    'mailing',
 
     'markdownx',
     'corsheaders',

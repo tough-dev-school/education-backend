@@ -3,8 +3,8 @@ from dataclasses import dataclass
 from django.conf import settings
 from django.utils.functional import cached_property
 
-from app.mail import helpers
 from app.models import EmailLogEntry
+from mailing import helpers
 
 
 @dataclass

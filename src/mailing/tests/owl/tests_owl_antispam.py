@@ -2,9 +2,9 @@ import pytest
 from django.core import mail
 from functools import partial
 
-from app.mail.owl import Owl
 from app.models import EmailLogEntry
-from app.tasks import send_mail
+from mailing.owl import Owl
+from mailing.tasks import send_mail
 
 pytestmark = [pytest.mark.django_db]
 

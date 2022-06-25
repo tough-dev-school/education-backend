@@ -12,4 +12,4 @@ def message_sender():
 
 @pytest.fixture(autouse=True)
 def owl(mocker):
-    return mocker.patch('app.tasks.mail.Owl')
+    return mocker.patch('mailing.tasks.Owl')

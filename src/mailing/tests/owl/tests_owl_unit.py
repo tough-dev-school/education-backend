@@ -1,6 +1,6 @@
 import pytest
 
-from app.mail.owl import Owl
+from mailing.owl import Owl
 
 pytestmark = [pytest.mark.django_db]
 
