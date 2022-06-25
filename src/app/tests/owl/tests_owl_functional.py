@@ -1,7 +1,7 @@
 import pytest
 from django.core import mail
 
-from app.mail.owl import TemplOwl  # type: ignore
+from app.mail.owl import Owl  # type: ignore
 
 pytestmark = [pytest.mark.django_db]
 
@@ -13,7 +13,7 @@ def _enable_email(settings):
 
 @pytest.fixture
 def owl():
-    return TemplOwl(
+    return Owl(
         to='f@f213.in',
         template_id=100500,
     )

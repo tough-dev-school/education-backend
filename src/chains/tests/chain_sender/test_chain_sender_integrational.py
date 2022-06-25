@@ -14,7 +14,7 @@ pytestmark = [
 
 @pytest.fixture
 def owl(mocker):
-    return mocker.patch('app.tasks.mail.TemplOwl')
+    return mocker.patch('app.tasks.mail.Owl')
 
 
 @pytest.fixture

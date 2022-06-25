@@ -8,9 +8,9 @@ from app.mail import helpers
 from app.models import EmailLogEntry
 
 
-class TemplOwl:
-    """This is a clone of the Owl class, with the same syntax, but supporting only template mailprovider messages.
-    This class is not compatible for providers without templates, such as mailgun"""
+class Owl:
+    """Deliver messages [from Hogwarts] to end-users
+    """
     def __init__(self, to: Union[List, str], template_id, subject: str = '', ctx: dict = None, disable_antispam=False):
         if to in (None, [None]):
             to = []

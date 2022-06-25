@@ -2,7 +2,7 @@ import pytest
 from django.core import mail
 from functools import partial
 
-from app.mail.owl import TemplOwl  # type: ignore
+from app.mail.owl import Owl  # type: ignore
 from app.models import EmailLogEntry
 from app.tasks import send_mail
 
@@ -17,7 +17,7 @@ def _enable_email(settings):
 @pytest.fixture
 def owl():
     return partial(
-        TemplOwl,
+        Owl,
         to='f@f213.in',
         template_id=100500,
     )

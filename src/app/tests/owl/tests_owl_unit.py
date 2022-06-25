@@ -1,6 +1,6 @@
 import pytest
 
-from app.mail.owl import TemplOwl  # type: ignore
+from app.mail.owl import Owl  # type: ignore
 
 pytestmark = [pytest.mark.django_db]
 
@@ -17,7 +17,7 @@ def _freeze_sender(settings):
     ([None], []),
 ])
 def test_to(to, expected):
-    owl = TemplOwl(to, 100500)
+    owl = Owl(to, 100500)
 
     assert owl.to == expected
 
@@ -28,24 +28,24 @@ def test_to(to, expected):
     ({'a': 'b'}, {'a': 'b'}),
 ])
 def test_dict(ctx, expected):
-    owl = TemplOwl('test@test.org', 100500, ctx=ctx)
+    owl = Owl('test@test.org', 100500, ctx=ctx)
     assert owl.ctx == expected
 
 
 def test_subject():
-    owl = TemplOwl('test@test.org', 100500, subject='Some email subject')
+    owl = Owl('test@test.org', 100500, subject='Some email subject')
 
     assert owl.subject == 'Some email subject'
 
 
 def test_omitted_subject():
-    owl = TemplOwl('test@test.org', 100500)
+    owl = Owl('test@test.org', 100500)
 
     assert owl.subject == ''
 
 
 def test_msg_params():
-    owl = TemplOwl('test@test.org', 100500, subject='Some email subject', ctx={'a': 'b'})
+    owl = Owl('test@test.org', 100500, subject='Some email subject', ctx={'a': 'b'})
 
     assert owl.msg.from_email == 'Jesus Christ <me@christ.com>'
     assert owl.msg.merge_global_data == {'a': 'b'}
