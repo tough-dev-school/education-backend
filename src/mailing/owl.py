@@ -12,7 +12,7 @@ from mailing.models import EmailConfiguration, EmailLogEntry
 
 @dataclass
 class Owl:
-    """Deliver messages [from Hogwarts] to end-users
+    """Deliver messages [from Hogwarts] to the particular end-user
     """
     to: str
     template_id: str
@@ -24,7 +24,7 @@ class Owl:
         if not settings.EMAIL_ENABLED:
             return
 
-        if not self.disable_antispam and self.is_sent_already:
+        if self.is_sent_already and not self.disable_antispam:
             return
 
         self.msg.send()

@@ -4,7 +4,7 @@ from app.models import TimestampedModel, models
 
 
 class EmailConfiguration(TimestampedModel):
-    """Configuration is the low-level database storage for email backend settings, e.g. mail_from, or raw backend kwargs
+    """Configuration is the low-level email backend settings, e.g. email backend class, `mail_from`, or raw backend kwargs
     """
     class BACKEND(models.TextChoices):
         UNSET = '', _('Unset')

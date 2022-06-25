@@ -8,6 +8,8 @@ if TYPE_CHECKING:
 
 
 def get_configuration(*, recipient: str) -> Optional['EmailConfiguration']:
+    """Find email conifguration by email taking it from the course the user has last contacted with
+    """
     last_contacted_course = get_last_contacted_course(recipient)
 
     if last_contacted_course is not None and hasattr(last_contacted_course, 'email_configuration'):
