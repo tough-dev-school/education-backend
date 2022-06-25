@@ -1,26 +1,10 @@
 import pytest
 from django.core import mail
-from functools import partial
 
 from mailing.models import EmailLogEntry
-from mailing.owl import Owl
 from mailing.tasks import send_mail
 
 pytestmark = [pytest.mark.django_db]
-
-
-@pytest.fixture(autouse=True)
-def _enable_email(settings):
-    settings.EMAIL_ENABLED = True
-
-
-@pytest.fixture
-def owl():
-    return partial(
-        Owl,
-        to='f@f213.in',
-        template_id=100500,
-    )
 
 
 def email_log_entry_exists(**kwargs) -> bool:

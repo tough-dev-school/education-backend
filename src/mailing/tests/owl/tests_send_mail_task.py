@@ -5,18 +5,13 @@ from mailing.tasks import send_mail
 pytestmark = [pytest.mark.django_db]
 
 
-@pytest.fixture(autouse=True)
-def _enable_email(settings):
-    settings.EMAIL_ENABLED = True
-
-
 @pytest.fixture
-def owl(mocker):
+def init(mocker):
     return mocker.patch('mailing.tasks.Owl')
 
 
 @pytest.fixture
-def send(mocker):
+def call(mocker):
     return mocker.patch('mailing.tasks.Owl.__call__')
 
 
@@ -31,13 +26,13 @@ ARGS = dict(
 )
 
 
-def test_init(owl):
+def test_init(init):
     send_mail(**ARGS)
 
-    owl.assert_called_once_with(**ARGS)
+    init.assert_called_once_with(**ARGS)
 
 
-def test_send(send):
+def test_call(call):
     send_mail(**ARGS)
 
-    send.assert_called_once()
+    call.assert_called_once()

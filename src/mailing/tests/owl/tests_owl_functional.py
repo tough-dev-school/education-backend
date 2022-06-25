@@ -1,26 +1,11 @@
 import pytest
 from django.core import mail
 
-from mailing.owl import Owl
-
 pytestmark = [pytest.mark.django_db]
 
 
-@pytest.fixture(autouse=True)
-def _enable_email(settings):
-    settings.EMAIL_ENABLED = True
-
-
-@pytest.fixture
-def owl():
-    return Owl(
-        to='f@f213.in',
-        template_id=100500,
-    )
-
-
 def test_sending(owl):
-    owl()
+    owl()()
 
     assert len(mail.outbox) == 1
 
@@ -31,12 +16,13 @@ def test_sending(owl):
 def test_kill_switch(owl, switch, settings):
     switch(settings)
 
-    owl()
+    owl()()
 
     assert len(mail.outbox) == 0
 
 
 def test_attaching(owl):
+    owl = owl()
     owl.attach(filename='testing_file_name_100500.txt', content=b'just testing')
 
     assert len(owl.msg.attachments) == 1
