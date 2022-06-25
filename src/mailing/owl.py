@@ -20,10 +20,6 @@ class Owl:
     ctx: dict | None = None
     disable_antispam: bool | None = False
 
-    def attach(self, filename=None, content=None, mimetype=None) -> None:
-        """Add an attachment to the message"""
-        return self.msg.attach(filename, content, mimetype)
-
     def __call__(self) -> None:
         if not settings.EMAIL_ENABLED:
             return

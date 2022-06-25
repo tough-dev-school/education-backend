@@ -19,11 +19,3 @@ def test_kill_switch(owl, switch, settings):
     owl()()
 
     assert len(mail.outbox) == 0
-
-
-def test_attaching(owl):
-    owl = owl()
-    owl.attach(filename='testing_file_name_100500.txt', content=b'just testing')
-
-    assert len(owl.msg.attachments) == 1
-    assert 'testing_file_name_100500.txt' in owl.msg.attachments[0]
