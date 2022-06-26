@@ -9,6 +9,11 @@ pytestmark = [
 
 
 @pytest.fixture
+def order(factory):
+    return factory.order(bank_id='stripe')
+
+
+@pytest.fixture
 def webhook(order):
     with open('./stripebank/tests/.fixtures/webhook.json', 'r') as fp:
         bank_data = json.load(fp)

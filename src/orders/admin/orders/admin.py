@@ -124,8 +124,8 @@ class OrderAdmin(ModelAdmin):
     @admin.display(description=_('Payment'), ordering='paid')
     def payment(self, obj: Order):
         if obj.paid is not None:
-            if obj.desired_bank:
-                return get_bank(obj.desired_bank).name
+            if obj.bank_id:
+                return get_bank(obj.bank_id).name
             if obj.author_id != obj.user_id:
                 return _('B2B')
 

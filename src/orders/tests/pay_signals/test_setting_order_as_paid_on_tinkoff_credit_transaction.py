@@ -7,6 +7,11 @@ pytestmark = [
 ]
 
 
+@pytest.fixture
+def order(factory):
+    return factory.order(bank_id='tinkoff_creding')
+
+
 @pytest.fixture(autouse=True)
 def _disable_tinkoff_authn(mocker):
     mocker.patch('tinkoff.api.permissions.TinkoffCreditNetmaskPermission.has_permission', return_value=True)
