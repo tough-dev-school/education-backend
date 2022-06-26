@@ -1,7 +1,4 @@
-from typing import Optional, Union
-
-
-def normalize_single_value(value: Optional[Union[dict, list]]) -> Optional[Union[dict, list]]:
+def normalize_single_value(value: dict | list | None = None) -> dict | list | None:
     """Returns Noner if value is not suitable"""
     if isinstance(value, dict):
         value = normalize_email_context(value)

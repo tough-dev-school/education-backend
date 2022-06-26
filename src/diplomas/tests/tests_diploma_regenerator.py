@@ -32,7 +32,7 @@ def diploma_en(mixer, order):
 
 @pytest.fixture
 def send_mail(mocker):
-    return mocker.patch('app.tasks.mail.TemplOwl.send')
+    return mocker.patch('mailing.tasks.Owl.send')
 
 
 def test_diplomas_are_regenerated(student, course, diploma_generator, mocker, order):

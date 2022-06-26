@@ -1,9 +1,7 @@
-from typing import List, Optional, Union
-
 from anymail.exceptions import AnymailRequestsAPIError
 
 from app.celery import celery
-from app.mail.owl import TemplOwl  # type: ignore
+from mailing.owl import Owl
 
 
 @celery.task(
@@ -14,11 +12,11 @@ from app.mail.owl import TemplOwl  # type: ignore
     },
     acks_late=True,
 )
-def send_mail(to: Union[List, str], template_id, subject: str = '', ctx: Optional[dict] = None, disable_antispam=False):
-    TemplOwl(
+def send_mail(to: str, template_id: str, subject: str | None = '', ctx: dict | None = None, disable_antispam: bool | None = False):
+    Owl(
         to=to,
         template_id=template_id,
         subject=subject,
         ctx=ctx,
         disable_antispam=disable_antispam,
-    ).send()
+    )()

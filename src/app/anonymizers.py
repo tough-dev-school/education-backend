@@ -4,18 +4,6 @@ from django.contrib.sessions.models import Session as DjangoSession
 from hattori.base import BaseAnonymizer, faker
 from rest_framework.authtoken.models import Token
 
-from app.models import EmailLogEntry
-
-
-class EmailLogEntryAnonymizer(BaseAnonymizer):
-    model = EmailLogEntry
-
-    attributes = [
-        ('created', faker.date),
-        ('email', faker.email),
-        ('template_id', lambda: '-'.join(faker.words(nb=5))),
-    ]
-
 
 class Cleanup:
     attributes = [

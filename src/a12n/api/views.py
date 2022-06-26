@@ -8,8 +8,8 @@ from a12n.api.throttling import AuthAnonRateThrottle
 from a12n.models import PasswordlessAuthToken
 from a12n.utils import get_jwt
 from app.permissions import SuperUserOnly
-from app.tasks import send_mail
 from app.views import AnonymousAPIView
+from mailing.tasks import send_mail
 from users.models import User
 
 

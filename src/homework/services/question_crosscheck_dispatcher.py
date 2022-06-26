@@ -1,8 +1,8 @@
 from django.db.models import QuerySet
 
-from app.tasks import send_mail
 from homework.models import Answer, AnswerCrossCheck, Question
 from homework.services.answer_crosscheck_dispatcher import AnswerCrossCheckDispatcher
+from mailing.tasks import send_mail
 from users.models import User
 
 

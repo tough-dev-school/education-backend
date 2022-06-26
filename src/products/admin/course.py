@@ -1,8 +1,8 @@
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
+from mailing.admin.email_configuration import EmailConfigurationAdmin
 from products.admin.courses import actions
-from products.admin.courses.record import RecordAdmin
 from products.models import Course
 
 
@@ -15,11 +15,12 @@ class CourseAdmin(ModelAdmin):
                 'fields': [
                     'name',
                     'slug',
+                    'display_in_lms',
+                    'group',
                     'name_genitive',
                     'name_receipt',
                     'full_name',
                     'name_international',
-                    'group',
                 ],
             },
         ),
@@ -29,16 +30,13 @@ class CourseAdmin(ModelAdmin):
                 'fields': [
                     'price',
                     'old_price',
-                    'tinkoff_credit_promo_code',
                 ],
             },
         ),
         (
-            _('Access'),
+            _('Email messages'),
             {
                 'fields': [
-                    'display_in_lms',
-                    'zoomus_webinar_id',
                     'welcome_letter_template_id',
                     'gift_welcome_letter_template_id',
                     'diploma_template_context',
@@ -47,28 +45,28 @@ class CourseAdmin(ModelAdmin):
         ),
     ]
 
-    list_display = [
+    list_display = (
         'id',
         'group',
         'name',
         'slug',
-    ]
+    )
 
-    list_filter = [
+    list_filter = (
         'group',
-    ]
+    )
 
-    list_display_links = [
+    list_display_links = (
         'id',
         'name',
-    ]
+    )
 
     prepopulated_fields = {
         'slug': ['name'],
     }
-    inlines = [
-        RecordAdmin,
-    ]
+    inlines = (
+        EmailConfigurationAdmin,
+    )
     action_form = actions.CourseActionForm
 
     actions = [

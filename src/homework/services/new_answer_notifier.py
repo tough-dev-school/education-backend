@@ -1,7 +1,7 @@
 from django.db.models import QuerySet
 
-from app.tasks import send_mail
 from homework.models import Answer
+from mailing.tasks import send_mail
 from users.models import User
 
 

@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 from django.core.exceptions import ImproperlyConfigured
 
-from app.tasks import send_mail
+from mailing.tasks import send_mail
 from orders.models import Order
 from triggers.helpers import lower_first
 from triggers.models import TriggerLogEntry

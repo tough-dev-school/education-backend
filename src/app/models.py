@@ -104,15 +104,6 @@ class TimestampedModel(DefaultModel, Timestamped):
         abstract = True
 
 
-class EmailLogEntry(TimestampedModel):
-    email = models.CharField(max_length=255, null=False)
-    template_id = models.CharField(max_length=255, null=False)
-
-    class Meta:
-        index_together = ['email', 'template_id']
-        unique_together = ['email', 'template_id']
-
-
 def only_one_or_zero_is_set(*fields: str) -> models.Q:
     """Generate a query for CheckConstraint that allows to set only one (or none of) given fields"""
     constraints = []

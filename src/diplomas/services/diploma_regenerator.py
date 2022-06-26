@@ -4,10 +4,10 @@ import contextlib
 from dataclasses import dataclass
 from django.db.models import QuerySet
 
-from app.tasks import send_mail
 from app.types import Language
 from diplomas.models import Diploma, DiplomaTemplate
 from diplomas.services.diploma_generator import DiplomaGenerator
+from mailing.tasks import send_mail
 from users.models import User
 
 

@@ -3,7 +3,7 @@ from django.db.models import OuterRef, QuerySet, Subquery
 from django.utils.translation import gettext_lazy as _
 
 from app.models import models
-from app.tasks import send_mail
+from mailing.tasks import send_mail
 from products.models.base import Shippable
 from users.models import User
 
@@ -42,7 +42,7 @@ class Course(Shippable):
     gift_welcome_letter_template_id = models.CharField(_('Special welcome letter template id for gifts'), max_length=255, blank=True, null=True, help_text=_('If not set, common welcome letter will be used'))
     display_in_lms = models.BooleanField(_('Display in LMS'), default=True, help_text=_('If disabled will not be shown in LMS'))
 
-    diploma_template_context = models.JSONField(default=dict)
+    diploma_template_context = models.JSONField(default=dict, blank=True)
 
     class Meta:
         ordering = ['-id']

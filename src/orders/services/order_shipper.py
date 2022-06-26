@@ -3,7 +3,8 @@ from typing import Optional
 from django.conf import settings
 from django.utils import timezone
 
-from app.tasks import send_happiness_message, send_mail
+from app.tasks import send_happiness_message
+from mailing.tasks import send_mail
 from orders.models import Order
 
 
