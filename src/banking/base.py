@@ -52,3 +52,6 @@ class Bank(metaclass=ABCMeta):
     @property
     def user(self) -> 'User':
         return self.order.user
+
+    def successful_payment_callback(self) -> None:
+        ...

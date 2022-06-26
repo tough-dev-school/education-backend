@@ -7,6 +7,11 @@ pytestmark = [
 ]
 
 
+@pytest.fixture
+def order(factory):
+    return factory.order(bank_id='tinkoff_bank')
+
+
 @pytest.fixture(autouse=True)
 def _tinkoff_credentials(settings):
     settings.TINKOFF_TERMINAL_KEY = 'testDEMO'

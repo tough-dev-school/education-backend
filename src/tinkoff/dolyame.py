@@ -4,6 +4,7 @@ from django.conf import settings
 from urllib.parse import urljoin
 
 from banking.base import Bank
+from banking.tasks import print_atol_receipt
 
 
 class DolyameRequestException(Exception):
@@ -49,6 +50,11 @@ class Dolyame(Bank):
                 'returned_items': self.get_items(),
             },
         )
+
+    def successful_payment_callback(self) -> None:
+        """We have to manualy print reciepts for this payment method
+        """
+        print_atol_receipt.delay(order_id=self.order.pk)
 
     def post(self, method: str, payload: dict) -> dict:
         """Query Dolyame API
