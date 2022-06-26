@@ -9,6 +9,9 @@ from orders.models import Order
 class AtolWebhookView(APIView):
     permission_classes = [AllowAny]  # validation is done later via supplied JSON
 
+    def get(self, request, *args, **kwargs):
+        return HttpResponse('Temporary answering you OK to check what atol wants sending GET here instead of POST')
+
     def post(self, request, *args, **kwargs):
         Receipt.objects.create(
             provider='atol',
