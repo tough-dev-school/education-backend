@@ -120,3 +120,5 @@ src/frontend/static/js/*
 .pytest_cache
 .postgres
 *.sqlite
+
+staticfiles
