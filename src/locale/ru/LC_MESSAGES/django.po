@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-22 21:59+0300\n"
+"POT-Creation-Date: 2022-06-26 11:06+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,7 +49,6 @@ msgstr "Курс"
 #: chains/models/chain.py:25 chains/models/message.py:28
 #: homework/models/question.py:13 magnets/models.py:20
 #: products/admin/bundle.py:20 products/admin/course.py:13
-#: products/admin/courses/record.py:17
 msgid "Name"
 msgstr "Название"
 
@@ -239,6 +238,36 @@ msgstr "Почтовая кампания"
 msgid "Email Lead Magnet Campaigns"
 msgstr "Почтовые кампании"
 
+#: mailing/models/configuration.py:10
+msgid "Unset"
+msgstr ""
+
+#: mailing/models/configuration.py:11
+msgid "Postmark"
+msgstr ""
+
+#: mailing/models/configuration.py:15
+#, fuzzy
+#| msgid "Email chain"
+msgid "Email sender"
+msgstr "Цепочка"
+
+#: mailing/models/configuration.py:15
+msgid "E.g. Fedor Borshev &lt;fedor@borshev.com&gt;. MUST configure postmark!"
+msgstr ""
+
+#: mailing/models/configuration.py:20
+#, fuzzy
+#| msgid "Email chain"
+msgid "Email configuration"
+msgstr "Цепочка"
+
+#: mailing/models/configuration.py:21
+#, fuzzy
+#| msgid "Email chains"
+msgid "Email configurations"
+msgstr "Цепочки"
+
 #: notion/models.py:20
 msgid "Page title"
 msgstr "Заголовок страницы"
@@ -255,7 +284,7 @@ msgstr "ID страницы в ноушене"
 msgid "Paste it from notion address bar"
 msgstr "Скопируйте адрес из строки браузера"
 
-#: notion/models.py:23 orders/admin/promocodes/admin.py:12
+#: notion/models.py:23 orders/admin/promocodes/admin.py:10
 #: orders/models/promocode.py:38
 msgid "Active"
 msgstr "Включено"
@@ -353,11 +382,11 @@ msgstr "Если поменять, студент получит ещё одно
 msgid "Deactivate selected promo codes"
 msgstr "Деактивировать выбранные промо-коды"
 
-#: orders/admin/promocodes/admin.py:53
+#: orders/admin/promocodes/admin.py:55
 msgid "Order count"
 msgstr "Количество заказов"
 
-#: orders/admin/promocodes/admin.py:61
+#: orders/admin/promocodes/admin.py:62
 msgid "Discount"
 msgstr "Скидка"
 
@@ -368,7 +397,7 @@ msgid "Order author"
 msgstr "Количество заказов"
 
 #: orders/models/order.py:40 products/admin/bundle.py:32
-#: products/admin/course.py:27 products/admin/courses/record.py:29
+#: products/admin/course.py:28
 msgid "Price"
 msgstr "Цена"
 
@@ -475,9 +504,11 @@ msgstr ""
 msgid "Items"
 msgstr "Товары"
 
-#: products/admin/course.py:37 products/admin/courses/record.py:38
-msgid "Access"
-msgstr "Доступы"
+#: products/admin/course.py:37
+#, fuzzy
+#| msgid "Email chain messages"
+msgid "Email messages"
+msgstr "Письма"
 
 #: products/admin/courses/actions.py:11
 #, fuzzy
@@ -488,10 +519,6 @@ msgstr "ID шаблона в постмарке"
 #: products/admin/courses/actions.py:22
 msgid "Send email to all purchased_users"
 msgstr "Отправить письмо всем купившим"
-
-#: products/admin/courses/record.py:51
-msgid "Downloadable link"
-msgstr "Ссылка на скачиваие"
 
 #: products/models/base.py:19
 msgid "Name for receipts"
@@ -687,6 +714,12 @@ msgstr "Пол"
 #: users/models.py:90
 msgid "Students"
 msgstr "Студенты"
+
+#~ msgid "Access"
+#~ msgstr "Доступы"
+
+#~ msgid "Downloadable link"
+#~ msgstr "Ссылка на скачиваие"
 
 #~ msgid "Clickmeeting room URL"
 #~ msgstr "Ссылка на ClickMeeting"
