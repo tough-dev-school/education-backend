@@ -1,6 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
+from mailing.admin.email_configuration import EmailConfigurationAdmin
 from products.admin.courses import actions
 from products.models import Course
 
@@ -33,7 +34,7 @@ class CourseAdmin(ModelAdmin):
             },
         ),
         (
-            _('Email'),
+            _('Email messages'),
             {
                 'fields': [
                     'welcome_letter_template_id',
@@ -44,25 +45,28 @@ class CourseAdmin(ModelAdmin):
         ),
     ]
 
-    list_display = [
+    list_display = (
         'id',
         'group',
         'name',
         'slug',
-    ]
+    )
 
-    list_filter = [
+    list_filter = (
         'group',
-    ]
+    )
 
-    list_display_links = [
+    list_display_links = (
         'id',
         'name',
-    ]
+    )
 
     prepopulated_fields = {
         'slug': ['name'],
     }
+    inlines = (
+        EmailConfigurationAdmin,
+    )
     action_form = actions.CourseActionForm
 
     actions = [

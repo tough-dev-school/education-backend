@@ -19,8 +19,8 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
                 ('modified', models.DateTimeField(blank=True, db_index=True, null=True)),
                 ('backend', models.CharField(choices=[('', 'Unset'), ('anymail.backends.postmark.EmailBackend', 'Postmark')], default='', max_length=256)),
-                ('from_email', models.CharField(help_text='E.g. Fedor Borshev <fedor@borshev.com>', max_length=256, verbose_name='Email sender')),
-                ('backend_options', models.JSONField(default=dict)),
+                ('from_email', models.CharField(help_text='E.g. Fedor Borshev &lt;fedor@borshev.com&gt;. MUST configure postmark!', max_length=256, verbose_name='Email sender')),
+                ('backend_options', models.JSONField(default=dict, blank=True)),
                 ('course', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='email_configuration', to='products.course')),
             ],
             options={

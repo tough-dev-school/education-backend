@@ -12,10 +12,16 @@ class EmailConfiguration(TimestampedModel):
 
     backend = models.CharField(max_length=256, choices=BACKEND.choices, default=BACKEND.UNSET)
     course = models.OneToOneField('products.Course', related_name='email_configuration', on_delete=models.CASCADE)
-    from_email = models.CharField(_('Email sender'), max_length=256, help_text=_('E.g. Fedor Borshev <fedor@borshev.com>'))
+    from_email = models.CharField(_('Email sender'), max_length=256, help_text=_('E.g. Fedor Borshev &lt;fedor@borshev.com&gt;. MUST configure postmark!'))
 
-    backend_options = models.JSONField(default=dict)
+    backend_options = models.JSONField(default=dict, blank=True)
 
     class Meta:
         verbose_name = _('Email configuration')
         verbose_name_plural = _('Email configurations')
+
+    def __str__(self) -> str:
+        if self.course is not None:
+            return str(self.course)
+
+        return super().__str__()  # type: ignore
