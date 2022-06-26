@@ -49,7 +49,7 @@ class OrderCreator:
             giver=self.giver,
             desired_shipment_date=self.desired_shipment_date,
             gift_message=self.gift_message,
-            desired_bank=self.desired_bank,
+            bank_id=self.desired_bank,
             ue_rate=self.bank.ue,
             acquiring_percent=self.bank.acquiring_percent,
         )

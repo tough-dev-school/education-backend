@@ -48,7 +48,7 @@ class Order(TimestampedModel):
     unpaid = models.DateTimeField(_('Date when order got unpaid'), null=True, blank=True)
     shipped = models.DateTimeField(_('Date when order was shipped'), null=True, blank=True)
 
-    desired_bank = models.CharField(_('User-requested bank string'), blank=True, max_length=32)
+    bank_id = models.CharField(_('User-requested bank string'), blank=True, max_length=32)
     ue_rate = models.IntegerField(_('Purchase-time UE rate'))
     acquiring_percent = models.DecimalField(default=0, max_digits=4, decimal_places=2)
 

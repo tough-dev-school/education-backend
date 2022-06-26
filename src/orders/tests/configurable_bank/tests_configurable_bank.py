@@ -47,7 +47,7 @@ def test_desired_bank_is_saved(call_purchase, bank):
 
     order = Order.objects.last()
 
-    assert order.desired_bank == bank
+    assert order.bank_id == bank
 
 
 @pytest.mark.parametrize(('bank', 'ue_rate'), [
@@ -83,7 +83,7 @@ def test_by_default_desired_bank_is_empty_string(call_purchase):
 
     order = Order.objects.last()
 
-    assert order.desired_bank == ''
+    assert order.bank_id == ''
 
 
 def test_desired_bank_is_stored_during_gift(api, default_gift_data):
@@ -97,4 +97,4 @@ def test_desired_bank_is_stored_during_gift(api, default_gift_data):
 
     order = Order.objects.last()
 
-    assert order.desired_bank == 'tinkoff_credit'
+    assert order.bank_id == 'tinkoff_credit'
