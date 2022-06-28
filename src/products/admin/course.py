@@ -16,6 +16,7 @@ class CourseAdmin(ModelAdmin):
                     'name',
                     'slug',
                     'display_in_lms',
+                    'disable_triggers',
                     'group',
                     'name_genitive',
                     'name_receipt',
