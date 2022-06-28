@@ -44,7 +44,15 @@ class BaseTrigger(metaclass=ABCMeta):
         ])
 
     def message_does_not_look_like_a_message_that_should_never_be_sent(self) -> bool:
-        return self.order.giver is None
+
+        if self.order.course_id is not None:
+            if self.order.course.disable_triggers is True:
+                return False
+
+        if self.order.giver is not None:
+            return False
+
+        return True
 
     def log_success(self) -> TriggerLogEntry:
         return TriggerLogEntry.objects.create(order=self.order, trigger=self.name)

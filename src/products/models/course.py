@@ -44,6 +44,8 @@ class Course(Shippable):
 
     diploma_template_context = models.JSONField(default=dict, blank=True)
 
+    disable_triggers = models.BooleanField(_('Disable all triggers'), default=False)
+
     class Meta:
         ordering = ['-id']
         verbose_name = _('Course')

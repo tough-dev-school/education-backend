@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-26 11:06+0300\n"
+"POT-Creation-Date: 2022-06-28 16:58+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,7 +42,7 @@ msgstr ""
 
 #: chains/admin/message.py:42 chains/models/chain.py:26 diplomas/admin.py:48
 #: homework/admin/answer/admin.py:55 homework/admin/answer/admin.py:100
-#: orders/models/order.py:55 products/models/course.py:49
+#: orders/models/order.py:55 products/models/course.py:51
 msgid "Course"
 msgstr "Курс"
 
@@ -397,7 +397,7 @@ msgid "Order author"
 msgstr "Количество заказов"
 
 #: orders/models/order.py:40 products/admin/bundle.py:32
-#: products/admin/course.py:28
+#: products/admin/course.py:29
 msgid "Price"
 msgstr "Цена"
 
@@ -504,7 +504,7 @@ msgstr ""
 msgid "Items"
 msgstr "Товары"
 
-#: products/admin/course.py:37
+#: products/admin/course.py:38
 #, fuzzy
 #| msgid "Email chain messages"
 msgid "Email messages"
@@ -589,7 +589,11 @@ msgstr "Показывать в LMS"
 msgid "If disabled will not be shown in LMS"
 msgstr "Если снять галочку, студенты не будут видеть курс в LMS"
 
-#: products/models/course.py:50
+#: products/models/course.py:47
+msgid "Disable all triggers"
+msgstr "Отключить триггерные письма"
+
+#: products/models/course.py:52
 msgid "Courses"
 msgstr "Курсы"
 
