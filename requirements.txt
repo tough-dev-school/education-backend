@@ -179,7 +179,7 @@ pytz==2022.1
     #   celery
     #   django
     #   djangorestframework
-redis==4.3.3
+redis==4.3.4
     # via
     #   -r requirements.in
     #   django-redis
