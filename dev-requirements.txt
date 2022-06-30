@@ -36,7 +36,7 @@ certifi==2022.6.15
     #   httpcore
     #   httpx
     #   requests
-charset-normalizer==2.0.12
+charset-normalizer==2.1.0
     # via
     #   -c requirements.txt
     #   requests
