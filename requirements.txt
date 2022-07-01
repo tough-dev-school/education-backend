@@ -33,7 +33,7 @@ certifi==2022.6.15
     #   httpx
     #   requests
     #   sentry-sdk
-cffi==1.15.0
+cffi==1.15.1
     # via
     #   cmarkgfm
     #   cryptography
