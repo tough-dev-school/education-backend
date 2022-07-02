@@ -63,7 +63,7 @@ django-stubs==1.11.0
     #   djangorestframework-stubs
 django-stubs-ext==0.5.0
     # via django-stubs
-djangorestframework-stubs==1.6.0
+djangorestframework-stubs==1.7.0
     # via -r dev-requirements.in
 eradicate==2.1.0
     # via flake8-eradicate
