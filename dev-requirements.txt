@@ -322,7 +322,7 @@ traitlets==5.3.0
     # via
     #   ipython
     #   matplotlib-inline
-types-babel==2.9.12
+types-babel==2.10.0
     # via -r dev-requirements.in
 types-bleach==5.0.2
     # via -r dev-requirements.in
