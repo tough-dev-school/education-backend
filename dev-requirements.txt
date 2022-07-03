@@ -342,7 +342,7 @@ types-pyyaml==6.0.9
     # via
     #   django-stubs
     #   djangorestframework-stubs
-types-requests==2.27.30
+types-requests==2.28.0
     # via
     #   -r dev-requirements.in
     #   djangorestframework-stubs
