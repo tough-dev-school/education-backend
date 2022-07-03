@@ -216,7 +216,7 @@ sqlparse==0.4.2
     #   django-debug-toolbar
 standardjson==0.3.1
     # via django-prettyjson
-stripe==3.4.0
+stripe==3.5.0
     # via -r requirements.in
 tqdm==4.64.0
     # via django-hattori
