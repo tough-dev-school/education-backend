@@ -2,6 +2,7 @@ import pytest
 
 pytestmark = [
     pytest.mark.django_db,
+    pytest.mark.freeze_time('2032-12-01 15:30:12'),
     pytest.mark.usefixtures('purchase'),
 ]
 
@@ -17,6 +18,16 @@ def test_changing_text(api, answer):
     answer.refresh_from_db()
 
     assert answer.text == '*patched*'
+
+
+def test_405_for_put(api, answer):
+    api.put(f'/api/v2/homework/answers/{answer.slug}/', {'text': '*patched*'}, expected_status_code=405)
+
+
+def test_only_answers_not_longer_then_10_minutes_may_be_edited(api, answer, freezer):
+    freezer.move_to('2032-12-01 16:30')
+
+    api.patch(f'/api/v2/homework/answers/{answer.slug}/', {'text': '*patched*'}, expected_status_code=403)
 
 
 @pytest.mark.xfail(reason='WIP: will add per-course permissions later')
