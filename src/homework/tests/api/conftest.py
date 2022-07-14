@@ -36,7 +36,7 @@ def another_question(mixer, course):
 
 @pytest.fixture
 def answer(mixer, question, api):
-    return mixer.blend('homework.Answer', question=question, author=api.user)
+    return mixer.blend('homework.Answer', question=question, author=api.user, text='*test*')
 
 
 @pytest.fixture
@@ -50,3 +50,9 @@ def purchase(factory, course, api):
     order.set_paid()
 
     return order
+
+
+@pytest.fixture
+def _no_purchase(purchase):
+    """Invalidate the purchase"""
+    purchase.setattr_and_save('paid', None)

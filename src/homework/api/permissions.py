@@ -33,18 +33,12 @@ class ShouldBeAnswerAuthorOrReadOnly(permissions.BasePermission):
         if obj.author == request.user:
             return True
 
-        if request.method == 'DELETE' and request.user.has_perm('homework.delete_answer'):
-            return True
-
         return False
 
 
-class MayDeleteAnswerOnlyForLimitedTime(permissions.BasePermission):
+class MayChangeAnswerOnlyForLimitedTime(permissions.BasePermission):
     def has_object_permission(self, request, view, obj) -> bool:
-        if request.method != 'DELETE':
-            return True
-
-        if request.user.has_perm('homework.delete_answer'):
+        if request.method in permissions.SAFE_METHODS:
             return True
 
         if timezone.now() - obj.created < timedelta(minutes=30):

@@ -30,6 +30,7 @@ def test_markdown(api, answer):
     got = api.get(f'/api/v2/homework/answers/{answer.slug}/')
 
     assert got['text'].startswith('<p><em>should be rendered'), f'"{got["text"]}" should start with "<p><em>should be rendered"'
+    assert got['src'] == '*should be rendered*'
 
 
 def test_non_root_answers_are_ok(api, answer, another_answer):

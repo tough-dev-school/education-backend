@@ -20,6 +20,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 class AnswerTreeSerializer(serializers.ModelSerializer):
     author = UserSafeSerializer()
     text = MarkdownXField()
+    src = serializers.CharField(source='text')
     parent = SoftField(source='parent.slug')  # type: ignore
     descendants = serializers.SerializerMethodField()
     question = serializers.CharField(source='question.slug')
@@ -33,6 +34,7 @@ class AnswerTreeSerializer(serializers.ModelSerializer):
             'author',
             'parent',
             'text',
+            'src',
             'descendants',
         ]
 

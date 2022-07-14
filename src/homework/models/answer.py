@@ -15,6 +15,7 @@ from app.markdown import markdownify, remove_html
 from app.models import models
 from orders.models import Order
 from products.models import Course
+from users.models import User
 
 
 class AnswerQuerySet(TreeQuerySet):
@@ -30,7 +31,7 @@ class AnswerQuerySet(TreeQuerySet):
             Q(author=user) | Q(access_log_entries_for_this_user__user=user),
         )
 
-    def for_user(self, user):
+    def for_user(self, user: User) -> 'AnswerQuerySet':
         """
         Return all child answers of any
         answers that have ever been accessed by given user
@@ -49,7 +50,7 @@ class AnswerQuerySet(TreeQuerySet):
     def with_crosscheck_count(self):
         return self.annotate(crosscheck_count=Count('answercrosscheck'))
 
-    def root_only(self):
+    def root_only(self) -> 'AnswerQuerySet':
         return self.filter(parent__isnull=True)
 
 
