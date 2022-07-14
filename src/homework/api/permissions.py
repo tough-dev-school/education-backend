@@ -33,9 +33,6 @@ class ShouldBeAnswerAuthorOrReadOnly(permissions.BasePermission):
         if obj.author == request.user:
             return True
 
-        if request.method == 'DELETE' and request.user.has_perm('homework.delete_answer'):
-            return True
-
         return False
 
 
