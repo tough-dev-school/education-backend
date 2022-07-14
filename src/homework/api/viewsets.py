@@ -14,6 +14,7 @@ class AnswerViewSet(AppViewSet):
     serializer_class = AnswerTreeSerializer
     serializer_action_classes = {
         'create': AnswerCreateSerializer,
+        'partial_update': AnswerCreateSerializer,
     }
 
     lookup_field = 'slug'
@@ -24,9 +25,6 @@ class AnswerViewSet(AppViewSet):
         MayDeleteAnswerOnlyForLimitedTime,
     ]
     filterset_class = AnswerFilterSet
-
-    def update(self, request, **kwargs):
-        raise MethodNotAllowed(request.method)
 
     def get_queryset(self):
         queryset = super().get_queryset()
