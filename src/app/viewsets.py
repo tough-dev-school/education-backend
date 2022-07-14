@@ -1,6 +1,7 @@
-from typing import Any, Dict, Optional, Protocol, Type
+from typing import Any, Dict, Protocol, Type
 
 from django.core.exceptions import ImproperlyConfigured
+from rest_framework.serializers import Serializer
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.viewsets import ReadOnlyModelViewSet as _ReadOnlyModelViewSet
 
@@ -13,7 +14,7 @@ __all__ = [
 
 
 class ViewsetWithValidationProtocol(Protocol):
-    validator_class: Optional[Type[Validator]]
+    validator_class: Type[Validator] | None
 
 
 class ValidationMixin(ViewsetWithValidationProtocol):
@@ -23,7 +24,7 @@ class ValidationMixin(ViewsetWithValidationProtocol):
 
         return self.validator_class
 
-    def _validate(self, data, context: Optional[dict] = None):
+    def _validate(self, data, context: dict | None = None):
         Validator = self.get_validator_class()
         Validator.do(data, context=self.get_validator_context())
 
@@ -34,7 +35,7 @@ class ValidationMixin(ViewsetWithValidationProtocol):
 
 
 class MultiSerializerMixin:
-    def get_serializer_class(self, action=None):
+    def get_serializer_class(self, action: str | None = None) -> Type[Serializer]:
         """
         Look for serializer class in self.serializer_action_classes, which
         should be a dict mapping action name (key) to serializer class (value),
@@ -58,12 +59,12 @@ class MultiSerializerMixin:
 
         """
         if action is None:
-            action = self.action
+            action = self.action  # type: ignore
 
         try:
-            return self.serializer_action_classes[action]
+            return self.serializer_action_classes[action]  # type: ignore
         except (KeyError, AttributeError):
-            return super().get_serializer_class()
+            return super().get_serializer_class()  # type: ignore
 
 
 class ReadOnlyAppViewSet(MultiSerializerMixin, _ReadOnlyModelViewSet):
