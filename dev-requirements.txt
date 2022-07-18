@@ -26,9 +26,9 @@ attrs==21.4.0
     #   pytest
 backcall==0.2.0
     # via ipython
-boto3-stubs==1.24.22
+boto3-stubs==1.24.30
     # via -r dev-requirements.in
-botocore-stubs==1.27.22
+botocore-stubs==1.27.31
     # via boto3-stubs
 certifi==2022.6.15
     # via
