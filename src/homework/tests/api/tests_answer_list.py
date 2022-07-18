@@ -67,6 +67,14 @@ def test_answers_from_another_authors_are_included_if_already_seen(api, mixer, q
     assert len(got) == 1
 
 
+def test_answers_from_another_authors_are_excluded_if_author_is_filtered(api, mixer, question, answer_from_another_user):
+    mixer.blend('homework.AnswerAccessLogEntry', user=api.user, answer=answer_from_another_user)
+
+    got = api.get(f'/api/v2/homework/answers/?question={question.slug}&author={api.user.uuid}')['results']
+
+    assert len(got) == 0
+
+
 def test_access_log_entries_from_another_users_do_not_break_the_select(api, mixer, question, answer):
     mixer.cycle(5).blend('homework.AnswerAccessLogEntry', question=question, answer=answer)
 
