@@ -18,6 +18,7 @@ def test_ok(api, question, answer):
     got = api.get(f'/api/v2/homework/answers/?question={question.slug}')['results']
 
     assert 'created' in got[0]
+    assert 'modified' in got[0]
     assert got[0]['slug'] == str(answer.slug)
     assert '<em>test</em>' in got[0]['text']
     assert got[0]['src'] == '*test*'
