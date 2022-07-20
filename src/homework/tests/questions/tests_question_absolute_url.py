@@ -14,4 +14,4 @@ def question(mixer):
 
 
 def test(question):
-    assert question.get_absolute_url() == 'https://education.borshev.com/lms/homework/questions/068e2b1a-613b-4924-be6b-7b3d0c4dedb7/'
+    assert question.get_absolute_url() == 'https://education.borshev.com/lms/homework/question-admin/068e2b1a-613b-4924-be6b-7b3d0c4dedb7/'

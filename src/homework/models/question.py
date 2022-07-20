@@ -22,7 +22,7 @@ class Question(TimestampedModel):
         ]
 
     def get_absolute_url(self) -> str:
-        return urljoin(settings.FRONTEND_URL, f'homework/questions/{self.slug}/')
+        return urljoin(settings.FRONTEND_URL, f'homework/question-admin/{self.slug}/')
 
     def dispatch_crosscheck(self, **kwargs) -> int:
         from homework.services import QuestionCrossCheckDispatcher
