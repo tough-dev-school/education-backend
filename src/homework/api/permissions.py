@@ -41,7 +41,9 @@ class MayChangeAnswerOnlyForLimitedTime(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        if timezone.now() - obj.created < timedelta(minutes=30):
+        last_update_time = obj.created if obj.modified is None else obj.modified
+
+        if timezone.now() - last_update_time < timedelta(minutes=30):
             return True
 
         return False
