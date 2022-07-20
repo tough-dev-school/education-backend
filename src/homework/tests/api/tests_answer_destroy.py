@@ -31,10 +31,18 @@ def test_destory_non_root_answer(api, answer, answer_of_another_author):
         answer.refresh_from_db()
 
 
-def test_only_answers_not_longer_then_10_minutes_may_be_destroyed(api, answer, freezer):
+def test_only_answers_not_longer_then_30_minutes_may_be_destroyed(api, answer, freezer):
     freezer.move_to('2032-12-01 16:30')
 
     api.delete(f'/api/v2/homework/answers/{answer.slug}/', expected_status_code=403)
+
+
+def test_answers_modified_within_last_30_minutes_may_be_destroyed(api, answer, freezer):
+    freezer.move_to('2032-12-01 16:30')
+
+    Answer.objects.update(modified='2032-12-01 16:24')
+
+    api.delete(f'/api/v2/homework/answers/{answer.slug}/', expected_status_code=204)
 
 
 def test_can_not_destroy_answer_of_another_author(api, answer_of_another_author):

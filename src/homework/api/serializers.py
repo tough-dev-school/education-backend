@@ -29,6 +29,7 @@ class AnswerTreeSerializer(serializers.ModelSerializer):
         model = Answer
         fields = [
             'created',
+            'modified',
             'slug',
             'question',
             'author',

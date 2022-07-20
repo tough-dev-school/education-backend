@@ -10,6 +10,7 @@ def test_ok(api, answer, question):
     got = api.get(f'/api/v2/homework/answers/{answer.slug}/')
 
     assert 'created' in got
+    assert 'modified' in got
     assert got['slug'] == str(answer.slug)
     assert got['author']['uuid'] == str(api.user.uuid)
     assert got['author']['first_name'] == api.user.first_name
