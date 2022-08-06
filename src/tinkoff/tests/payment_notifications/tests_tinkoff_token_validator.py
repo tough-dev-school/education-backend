@@ -4,7 +4,7 @@ from tinkoff.exceptions import TinkoffPaymentNotificationInvalidToken, TinkoffPa
 from tinkoff.token_validator import TinkoffNotificationsTokenValidator
 
 
-@pytest.mark.parametrize('data', [
+@pytest.mark.parametrize('payload', [
     {
         'TerminalKey': '1321054611234DEMO',
         'OrderId': 201709,
@@ -17,16 +17,19 @@ from tinkoff.token_validator import TinkoffNotificationsTokenValidator
         'CardId': 322264,
         'Pan': '430000******0777',
         'Token': 'b906d28e76c6428e37b25fcf86c0adc52c63d503013fdd632e300593d165766b',
+        'Data': {
+            'test': '__dummy',
+        },
         'ExpDate': '1122',
     },
 ])
-def test_success_validation(data):
-    validator = TinkoffNotificationsTokenValidator(data)
+def test_success_validation(payload):
+    validator = TinkoffNotificationsTokenValidator(payload)
 
     assert validator() is True
 
 
-@pytest.mark.parametrize('data', [
+@pytest.mark.parametrize('payload', [
     {
         'TerminalKey': '1321054611234DEMO',
         'OrderId': 201709,
@@ -41,15 +44,15 @@ def test_success_validation(data):
         'ExpDate': '1122',
     },
 ])
-def test_no_token_passed_for_validation(data):
-    validator = TinkoffNotificationsTokenValidator(data)
+def test_no_token_passed_for_validation(payload):
+    validator = TinkoffNotificationsTokenValidator(payload)
 
     with pytest.raises(TinkoffPaymentNotificationNoTokenPassed) as excinfo:
         validator()
-    assert data in excinfo.value.args
+    assert payload in excinfo.value.args
 
 
-@pytest.mark.parametrize('data', [
+@pytest.mark.parametrize('payload', [
     {
         'TerminalKey': 'Terminal Key',
         'OrderId': 123,
@@ -65,9 +68,9 @@ def test_no_token_passed_for_validation(data):
         'ExpDate': '0118',
     },
 ])
-def test_failed_validation(data):
-    validator = TinkoffNotificationsTokenValidator(data)
+def test_failed_validation(payload):
+    validator = TinkoffNotificationsTokenValidator(payload)
 
     with pytest.raises(TinkoffPaymentNotificationInvalidToken) as excinfo:
         validator()
-    assert data in excinfo.value.args
+    assert payload in excinfo.value.args
