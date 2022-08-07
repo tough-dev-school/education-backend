@@ -46,7 +46,7 @@ coreapi==2.3.3
     # via djangorestframework-stubs
 coreschema==0.0.4
     # via coreapi
-coverage[toml]==6.4.1
+coverage[toml]==6.4.3
     # via pytest-cov
 decorator==5.1.1
     # via
