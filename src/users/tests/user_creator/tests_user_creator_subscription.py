@@ -10,17 +10,14 @@ def subscribe(mocker):
     return mocker.patch('users.services.user_creator.subscribe_user_to_dashamail')
 
 
-def test_user_is_subscribed_to_dashamail_by_default(subscribe):
-    created = UserCreator(name='Рулон Обоев', email='rulon.oboev@gmail.com')()
+def test_user_is_not_subscribed_to_dashamail_by_default(subscribe):
+    UserCreator(name='Рулон Обоев', email='rulon.oboev@gmail.com')()
 
-    subscribe.assert_called_once_with(
-        user=created,
-        tags=None,
-    )
+    subscribe.assert_not_called()
 
 
 def test_tags_are_passed(subscribe):
-    created = UserCreator(name='Рулон Обоев', email='rulon.oboev@gmail.com', tags=['aatag', 'bbtag'])()
+    created = UserCreator(name='Рулон Обоев', email='rulon.oboev@gmail.com', subscribe=True, tags=['aatag', 'bbtag'])()
 
     subscribe.assert_called_once_with(
         user=created,

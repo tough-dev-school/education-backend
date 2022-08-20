@@ -1,6 +1,6 @@
-from typing import Optional
-
 import uuid
+from dataclasses import dataclass
+from django.utils.functional import cached_property
 from rest_framework import serializers
 
 from app.integrations.dashamail.helpers import subscribe_user_to_dashamail
@@ -19,39 +19,41 @@ class UserCreateSerializer(serializers.ModelSerializer):
         ]
 
 
+@dataclass
 class UserCreator:
-    """Service object for creating a user"""
-    def __init__(self, email: str, name: Optional[str] = None, subscribe: Optional[bool] = True, tags: Optional[list[str]] = None):
-        self.do_subscribe = subscribe
-        self.subscribe_tags = tags
+    email: str
+    name: str | None = ''
+    subscribe: bool | None = False
+    tags: list[str] | None = None
 
-        email = email.lower()
-
-        self.data = {
-            'email': email,
-            'username': email or str(uuid.uuid4()),
-            'subscribed': subscribe,
-            **User.parse_name(name or ''),
-        }
+    @cached_property
+    def username(self) -> str:
+        return self.email.lower() or str(uuid.uuid4())
 
     def __call__(self) -> User:
-        self.resulting_user = self.get() or self.create()
+        user = self.get() or self.create()
+        self.after_creation(created_user=user)
 
-        self.after_creation()
-        return self.resulting_user
+        return user
 
-    def get(self) -> Optional[User]:
-        return User.objects.filter(is_active=True).filter(email=self.data['email']).first()
+    def get(self) -> User | None:
+        if self.email:
+            return User.objects.filter(is_active=True).filter(email__iexact=self.email).first()
 
     def create(self) -> User:
-        serializer = UserCreateSerializer(data=self.data)
+        serializer = UserCreateSerializer(data={
+            'email': self.email.lower(),
+            'username': self.username,
+            'subscribed': self.subscribe,
+            **User.parse_name(self.name or ''),
+        })
         serializer.is_valid(raise_exception=True)
 
         serializer.save()
 
         return serializer.instance  # type: ignore
 
-    def after_creation(self) -> None:
-        if self.do_subscribe:
-            if self.resulting_user.email and len(self.resulting_user.email):
-                subscribe_user_to_dashamail(user=self.resulting_user, tags=self.subscribe_tags)
+    def after_creation(self, created_user: User) -> None:
+        if self.subscribe:
+            if created_user.email and len(created_user.email):
+                subscribe_user_to_dashamail(user=created_user, tags=self.tags or [])
