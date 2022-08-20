@@ -145,7 +145,7 @@ freezegun==1.2.1
     # via
     #   -r dev-requirements.in
     #   pytest-freezegun
-h11==0.12.0
+h11==0.13.0
     # via
     #   -c requirements.txt
     #   httpcore
