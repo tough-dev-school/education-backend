@@ -19,16 +19,21 @@ from users.services import UserCreator
 class PurchaseViewSet(ReadOnlyModelViewSet):
     """Abstract viewset for purchasable items"""
 
-    def list(self, request, *args, **kwargs):
-        raise MethodNotAllowed('list')
-
     @property
     def item(self):
         return self.get_object()
 
     @property
-    def tags(self) -> List[str]:
+    def tags(self) -> list[str]:
         return [self.item.slug]
+
+    @property
+    def subscribe(self) -> bool:
+        return str(self.request.POST.get('subscribe', False)).lower() in [
+            'true',
+            '1',
+            'yes',
+        ]
 
     @action(methods=['POST'], detail=True)
     def purchase(self, request, pk=None, **kwargs):
@@ -76,7 +81,7 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
             user=self._create_user(
                 name=data['name'],
                 email=data['email'],
-                subscribe=data.get('subscribe', False),
+                subscribe=self.subscribe,
                 tags=self.tags,
             ),
             item=self.item,
@@ -86,19 +91,17 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
         return creator()
 
     def _create_gift(self, data) -> Order:
-        do_subscribe = data.get('subscribe', False)
-
         order_creator = OrderCreator(
             user=self._create_user(
                 name=data['receiver_name'],
                 email=data['receiver_email'],
-                subscribe=do_subscribe,
+                subscribe=self.subscribe,
                 tags=[*self.tags, 'gift_receiver'],
             ),
             giver=self._create_user(
                 name=data['giver_name'],
                 email=data['giver_email'],
-                subscribe=do_subscribe,
+                subscribe=self.subscribe,
                 tags=[*self.tags, 'gift_giver'],
             ),
             item=self.item,
@@ -131,3 +134,6 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
         bank = Bank(order=order, success_url=data.get('success_url'))
 
         return bank.get_initial_payment_url()
+
+    def list(self, request, *args, **kwargs):
+        raise MethodNotAllowed('list')

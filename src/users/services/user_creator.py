@@ -1,7 +1,6 @@
+import uuid
 from dataclasses import dataclass
 from django.utils.functional import cached_property
-
-import uuid
 from rest_framework import serializers
 
 from app.integrations.dashamail.helpers import subscribe_user_to_dashamail
