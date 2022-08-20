@@ -71,7 +71,7 @@ execnet==1.9.0
     # via pytest-xdist
 executing==0.8.3
     # via stack-data
-faker==4.0.0
+faker==4.18.0
     # via
     #   -c requirements.txt
     #   mixer
