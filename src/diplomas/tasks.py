@@ -12,6 +12,7 @@ from users.models import User
     acks_late=True,
     rate_limit='3/s',
     autoretry_for=[WrongDiplomaServiceResponse, httpx.RequestError], max_retries=10,
+    soft_time_limit=240,
 )
 def generate_diploma(student_id: int, course_id: int, language: Language):
     generator = DiplomaGenerator(
