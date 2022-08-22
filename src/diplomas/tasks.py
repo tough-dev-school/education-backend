@@ -10,7 +10,7 @@ from users.models import User
 
 @celery.task(
     acks_late=True,
-    rate_limit='3/s',
+    rate_limit='1/s',
     autoretry_for=[WrongDiplomaServiceResponse, httpx.RequestError], max_retries=10,
     soft_time_limit=240,
 )
