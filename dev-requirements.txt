@@ -18,7 +18,7 @@ astor==0.8.1
     # via flake8-simplify
 asttokens==2.0.8
     # via stack-data
-attrs==21.4.0
+attrs==22.1.0
     # via
     #   flake8-bugbear
     #   flake8-eradicate
