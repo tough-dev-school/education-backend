@@ -108,7 +108,7 @@ jobs:
 
       - name: Generate image identifier
         id: image
-        uses: ASzc/change-string-case-action@v1
+        uses: ASzc/change-string-case-action@v2
         with:
           string: ${{ github.repository_owner }}
 
@@ -170,7 +170,7 @@ jobs:
     steps:
       - name: Read image identifiers
         id: image
-        uses: ASzc/change-string-case-action@v1
+        uses: ASzc/change-string-case-action@v2
         with:
           string: ${{ github.repository_owner }}
 
