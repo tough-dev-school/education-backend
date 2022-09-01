@@ -12,7 +12,7 @@ from tinkoff.exceptions import TinkoffRequestException
 
 
 class TinkoffBank(Bank):
-    acquiring_percent = Decimal('1')
+    acquiring_percent = Decimal('2.49')
     name = 'Тинькофф'
 
     def get_initial_payment_url(self) -> str:
