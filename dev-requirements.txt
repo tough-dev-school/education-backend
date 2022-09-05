@@ -348,7 +348,7 @@ types-requests==2.28.9
     #   djangorestframework-stubs
 types-retry==0.9.9
     # via -r dev-requirements.in
-types-stripe==2.59.10
+types-stripe==3.5.1
     # via -r dev-requirements.in
 types-urllib3==1.26.23
     # via types-requests
