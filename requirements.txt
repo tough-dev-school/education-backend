@@ -192,7 +192,7 @@ rfc3986[idna2008]==1.5.0
     # via httpx
 s3transfer==0.6.0
     # via boto3
-sentry-sdk==1.9.6
+sentry-sdk==1.9.8
     # via -r requirements.in
 shortuuid==1.0.9
     # via -r requirements.in
