@@ -203,7 +203,7 @@ six==1.16.0
     #   django-hattori
     #   django-prettyjson
     #   python-dateutil
-sniffio==1.2.0
+sniffio==1.3.0
     # via
     #   anyio
     #   httpcore
