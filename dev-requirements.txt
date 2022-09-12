@@ -139,7 +139,7 @@ flake8-use-fstring==1.4
     # via -r dev-requirements.in
 flake8-variables-names==0.0.5
     # via -r dev-requirements.in
-flake8-walrus==1.1.0
+flake8-walrus==1.2.0
     # via -r dev-requirements.in
 freezegun==1.2.2
     # via
