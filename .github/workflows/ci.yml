@@ -126,6 +126,7 @@ jobs:
           context: .
           target: web
           push: ${{ github.ref == 'refs/heads/master' }}
+          platforms: linux/amd64,linux/arm64
           tags: |
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:latest
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:${{ github.sha }}
