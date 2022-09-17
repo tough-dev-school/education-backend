@@ -1,10 +1,8 @@
 ---
-name: CI
+name: Crossplatform nightly
 on:
-  push:
-    branches:
-      - master
-  pull_request:
+  schedule:
+    - cron: '30 4 * * *'
 
 jobs:
   build:
@@ -82,14 +80,6 @@ jobs:
           cp src/app/.env.ci src/app/.env
           make test
 
-      - name: Upload code coverage to codeclimate
-        uses: paambaati/codeclimate-action@v3.0.0
-        env:
-          CC_TEST_REPORTER_ID: dd4cac59d43b52ee4c29cfed9d5162098a49ff65d9e72003abc1fa65cd608f1d
-        with:
-          coverageLocations: |
-            ${{github.workspace}}/src/coverage.xml:coverage.py
-
   build-docker-image:
     needs: test
     runs-on: ubuntu-latest
@@ -120,81 +110,18 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build web image
+      - name: Build dev image
         uses: docker/build-push-action@v2
         with:
           context: .
           target: web
           push: ${{ github.ref == 'refs/heads/master' }}
+          platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:latest
-            ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:${{ github.sha }}
+            ghcr.io/${{ steps.image.outputs.lowercase }}/dev-backend:latest
+            ghcr.io/${{ steps.image.outputs.lowercase }}/dev-backend:${{ github.sha }}
 
           build-args: |
             - RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      - name: Build worker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          target: worker
-          push: ${{ github.ref == 'refs/heads/master' }}
-          tags: |
-            ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:latest
-            ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }}
-          build-args: |
-            - RELEASE=${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Build scheduler image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          target: scheduler
-          push: ${{ github.ref == 'refs/heads/master' }}
-          tags: |
-            ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:latest
-            ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:${{ github.sha }}
-          build-args: |
-            - RELEASE=${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-  deploy:
-    needs: build-docker-image
-    if: ${{ github.ref == 'refs/heads/master' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Read image identifiers
-        id: image
-        uses: ASzc/change-string-case-action@v2
-        with:
-          string: ${{ github.repository_owner }}
-
-      - name: Update backend image
-        uses: appleboy/ssh-action@v0.1.5
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: circle
-          key: ${{ secrets.DEPLOY_KEY }}
-          script: docker service update app_backend --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:${{ github.sha }} --with-registry-auth
-
-      - name: Update celery worker image
-        uses: appleboy/ssh-action@v0.1.5
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: circle
-          key: ${{ secrets.DEPLOY_KEY }}
-          script: docker service update app_worker --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }} --with-registry-auth
-
-      - name: Update celery scheduler image
-        uses: appleboy/ssh-action@v0.1.5
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: circle
-          key: ${{ secrets.DEPLOY_KEY }}
-          script: |
-            docker service update app_scheduler --detach --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:${{ github.sha }} --with-registry-auth
