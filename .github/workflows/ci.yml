@@ -138,8 +138,8 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:${{ github.sha }}
 
           build-args: |
-            - PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
-            - RELEASE=${{ github.sha }}
+            PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
+            RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -153,8 +153,8 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:latest
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }}
           build-args: |
-            - PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
-            - RELEASE=${{ github.sha }}
+            PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
+            RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -168,8 +168,8 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:latest
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:${{ github.sha }}
           build-args: |
-            - PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
-            - RELEASE=${{ github.sha }}
+            PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
+            RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

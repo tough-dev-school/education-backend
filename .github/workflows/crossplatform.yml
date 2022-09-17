@@ -127,7 +127,7 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/dev-backend:${{ github.sha }}
 
           build-args: |
-            - PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
-            - RELEASE=${{ github.sha }}
+            PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
+            RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
