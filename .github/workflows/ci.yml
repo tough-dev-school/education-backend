@@ -99,6 +99,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - uses: actions/setup-python@v4
+        id: setup-python
+        with:
+          python-version-file: '.python-version'
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
@@ -133,6 +138,7 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:${{ github.sha }}
 
           build-args: |
+            - PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
             - RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -147,6 +153,7 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:latest
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }}
           build-args: |
+            - PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
             - RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -161,6 +168,7 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:latest
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:${{ github.sha }}
           build-args: |
+            - PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
             - RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
