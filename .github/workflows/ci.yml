@@ -13,14 +13,15 @@ jobs:
       - uses: actions/checkout@v3
 
       - uses: actions/setup-python@v4
+        id: setup-python
         with:
-          python-version: "3.10.5"
+          python-version-file: '.python-version'
 
       - uses: actions/cache@v3
         with:
           path: |
             venv
-          key: ${{ runner.os }}-venv-v3-${{ hashFiles('**/*requirements.txt') }}
+          key: ${{ runner.os }}-venv-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/*requirements.txt') }}
 
       - name: Install dependencies
         if: steps.cache-primes.outputs.cache-hit != 'true'
@@ -59,14 +60,15 @@ jobs:
       - uses: actions/checkout@v3
 
       - uses: actions/setup-python@v4
+        id: setup-python
         with:
-          python-version: "3.10.5"
+          python-version-file: '.python-version'
 
       - uses: actions/cache@v3
         with:
           path: |
             venv
-          key: ${{ runner.os }}-venv-v3-${{ hashFiles('**/*requirements.txt') }}
+          key: ${{ runner.os }}-venv-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/*requirements.txt') }}
 
       - name: Install locale stuff
         run: |
@@ -96,6 +98,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        id: setup-python
+        with:
+          python-version-file: '.python-version'
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -131,7 +138,8 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:${{ github.sha }}
 
           build-args: |
-            - RELEASE=${{ github.sha }}
+            PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
+            RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -145,7 +153,8 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:latest
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }}
           build-args: |
-            - RELEASE=${{ github.sha }}
+            PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
+            RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -159,7 +168,8 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:latest
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:${{ github.sha }}
           build-args: |
-            - RELEASE=${{ github.sha }}
+            PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
+            RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

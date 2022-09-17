@@ -1,4 +1,5 @@
-FROM python:3.10.7-slim-buster as base
+ARG PYTHON_VERSION
+FROM python:${PYTHON_VERSION}-slim-buster as base
 LABEL maintainer="fedor@borshev.com"
 
 LABEL com.datadoghq.ad.logs='[{"source": "uwsgi", "service": "django"}]'
