@@ -136,7 +136,7 @@ httpcore==0.15.0
     # via httpx
 httpx==0.23.0
     # via -r requirements.in
-idna==3.3
+idna==3.4
     # via
     #   anyio
     #   requests
