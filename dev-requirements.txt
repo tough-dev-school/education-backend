@@ -157,7 +157,7 @@ httpx==0.23.0
     # via
     #   -c requirements.txt
     #   pytest-httpx
-idna==3.3
+idna==3.4
     # via
     #   -c requirements.txt
     #   anyio
