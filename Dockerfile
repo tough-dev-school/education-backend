@@ -15,7 +15,7 @@ ENV _WAITFOR_VERSION 2.2.3
 
 RUN echo deb http://deb.debian.org/debian buster contrib non-free > /etc/apt/sources.list.d/debian-contrib.list \
   && apt-get update \
-  && apt-get --no-install-recommends install -y gettext locales-all wget imagemagick tzdata git \
+  && apt-get --no-install-recommends install -y gettext locales-all wget imagemagick tzdata git netcat \
   && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get --no-install-recommends install -y build-essential libxml2-dev libxslt1-dev \
