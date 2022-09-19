@@ -12,6 +12,7 @@ whitenoise
 psycopg2-binary
 shortuuid
 retry
+bcrypt
 
 djangorestframework>=3.11.0
 django-storages
