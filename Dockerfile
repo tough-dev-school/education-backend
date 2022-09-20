@@ -1,4 +1,5 @@
-FROM python:3.10.6-slim-buster as base
+ARG PYTHON_VERSION
+FROM python:${PYTHON_VERSION}-slim-buster as base
 LABEL maintainer="fedor@borshev.com"
 
 LABEL com.datadoghq.ad.logs='[{"source": "uwsgi", "service": "django"}]'
@@ -10,11 +11,11 @@ ENV STATIC_ROOT /var/lib/django-static
 ENV CELERY_APP=app.celery
 
 ENV _UWSGI_VERSION 2.0.20
-ENV DOCKERIZE_VERSION v0.6.1
+ENV _WAITFOR_VERSION 2.2.3
 
 RUN echo deb http://deb.debian.org/debian buster contrib non-free > /etc/apt/sources.list.d/debian-contrib.list \
   && apt-get update \
-  && apt-get --no-install-recommends install -y gettext locales-all wget imagemagick tzdata git \
+  && apt-get --no-install-recommends install -y gettext locales-all wget imagemagick tzdata git netcat \
   && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get --no-install-recommends install -y build-essential libxml2-dev libxslt1-dev \
@@ -22,9 +23,8 @@ RUN apt-get update && apt-get --no-install-recommends install -y build-essential
   && apt-get --no-install-recommends install -y libffi-dev libcgraph6 libgraphviz-dev libmagic-dev \
   && rm -rf /var/lib/apt/lists/*
 
-RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-  && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-  && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+RUN wget -O /usr/local/bin/wait-for https://github.com/eficode/wait-for/releases/download/v${_WAITFOR_VERSION}/wait-for \
+  && chmod +x /usr/local/bin/wait-for
 
 RUN wget -O uwsgi-${_UWSGI_VERSION}.tar.gz https://github.com/unbit/uwsgi/archive/${_UWSGI_VERSION}.tar.gz \
   && tar zxvf uwsgi-*.tar.gz \
