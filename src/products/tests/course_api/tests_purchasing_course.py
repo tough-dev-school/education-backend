@@ -25,6 +25,17 @@ def test_order(call_purchase, course):
     assert not hasattr(placed, 'study')  # Study record is not created yet, because order is not paid
 
 
+def test_order_of_free_course(call_purchase, course):
+    course.setattr_and_save('price', 0)
+    call_purchase()
+
+    placed = get_order()
+
+    assert placed.item == course
+    assert placed.price == Decimal(0)
+    assert placed.paid is None
+
+
 def test_user(call_purchase, course):
     call_purchase()
 
