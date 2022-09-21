@@ -5,8 +5,10 @@ from decimal import Decimal
 from django.utils.functional import cached_property
 
 from app.current_user import get_current_user
+from app.helpers import lower_first
 from banking.base import Bank
 from banking.selector import get_bank
+from mailing.tasks import send_mail
 from orders.models import Order, PromoCode
 from users.models import User
 
@@ -38,6 +40,8 @@ class OrderCreator:
         order.set_item(self.item)
         order.save()
 
+        self.send_confirmation_message(order)
+
         return order
 
     def create(self) -> Order:
@@ -62,3 +66,20 @@ class OrderCreator:
     @cached_property
     def bank(self) -> Type[Bank]:
         return get_bank(self.desired_bank)
+
+    def send_confirmation_message(self, order: Order) -> None:
+        if order.price == 0 and order.item is not None:
+            if hasattr(order.item, 'confirmation_template_id') and order.item.confirmation_template_id:
+                send_mail.delay(
+                    to=order.user.email,
+                    template_id=order.item.confirmation_template_id,
+                    ctx=self.get_template_context(order),
+                )
+
+    @staticmethod
+    def get_template_context(order: Order) -> dict[str, str]:
+        return {
+            'item': order.item.full_name,
+            'item_lower': lower_first(order.item.full_name),
+            'firstname': order.user.first_name,
+        }
