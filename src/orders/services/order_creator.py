@@ -1,4 +1,4 @@
-from typing import Optional, Type, Union
+from typing import Type
 
 from datetime import datetime
 from decimal import Decimal
@@ -16,12 +16,12 @@ class OrderCreator:
         self,
         user: User,
         item,
-        price: Optional[Decimal] = None,
-        promocode: Optional[str] = None,
-        giver: Optional[User] = None,
-        desired_shipment_date: Optional[Union[str, datetime]] = None,
-        gift_message: Optional[str] = None,
-        desired_bank: Optional[str] = None,
+        price: Decimal | None = None,
+        promocode: str | None = None,
+        giver: User | None = None,
+        desired_shipment_date: str | datetime | None = None,
+        gift_message: str | None = None,
+        desired_bank: str | None = None,
     ):
         self.item = item
         self.user = user
@@ -55,7 +55,7 @@ class OrderCreator:
         )
 
     @staticmethod
-    def _get_promocode(promocode_name: Optional[str] = None) -> Optional[PromoCode]:
+    def _get_promocode(promocode_name: str | None = None) -> PromoCode | None:
         if promocode_name is not None:
             return PromoCode.objects.get_or_nothing(name=promocode_name)
 
