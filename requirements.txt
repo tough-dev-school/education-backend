@@ -121,7 +121,7 @@ django-storages==1.13.1
     # via -r requirements.in
 django-tree-queries==0.11.0
     # via -r requirements.in
-djangorestframework==3.13.1
+djangorestframework==3.14.0
     # via
     #   -r requirements.in
     #   drf-jwt
