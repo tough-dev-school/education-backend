@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-28 16:58+0300\n"
+"POT-Creation-Date: 2022-09-23 06:12+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -106,7 +106,7 @@ msgstr "Студент"
 msgid "Homework"
 msgstr "Домашка"
 
-#: diplomas/admin.py:56 orders/admin/orders/admin.py:90
+#: diplomas/admin.py:56 orders/admin/orders/admin.py:91
 msgid "Date"
 msgstr "Дата"
 
@@ -182,19 +182,19 @@ msgstr "Первый ответ"
 msgid "Dispatch crosscheck"
 msgstr "Запустить p2p-проверку домашки"
 
-#: homework/models/answer.py:65
+#: homework/models/answer.py:66
 msgid "Exclude from cross-checking"
 msgstr "Исключить из p2p-проверки"
 
-#: homework/models/answer.py:70
+#: homework/models/answer.py:71
 msgid "Homework answer"
 msgstr "Ответ на домашку"
 
-#: homework/models/answer.py:71
+#: homework/models/answer.py:72
 msgid "Homework answers"
 msgstr "Ответы на домашку"
 
-#: homework/models/answer.py:74
+#: homework/models/answer.py:75
 msgid "May see answers from every user"
 msgstr "Видит все ответы на домашку"
 
@@ -333,31 +333,31 @@ msgstr "Засчитать домашку"
 msgid "Disaccept homework"
 msgstr "Не засчитать домашку"
 
-#: orders/admin/orders/admin.py:68 orders/admin/orders/admin.py:120
+#: orders/admin/orders/admin.py:69 orders/admin/orders/admin.py:121
 msgid "Item"
 msgstr "Товар"
 
-#: orders/admin/orders/admin.py:94 orders/models/order.py:39
+#: orders/admin/orders/admin.py:95 orders/models/order.py:39
 msgid "User"
 msgstr "Юзер"
 
-#: orders/admin/orders/admin.py:124
+#: orders/admin/orders/admin.py:125
 msgid "Payment"
 msgstr "Оплата"
 
-#: orders/admin/orders/admin.py:130
+#: orders/admin/orders/admin.py:131
 msgid "B2B"
 msgstr ""
 
-#: orders/admin/orders/admin.py:132
+#: orders/admin/orders/admin.py:133
 msgid "Is paid"
 msgstr "Оплачен"
 
-#: orders/admin/orders/admin.py:135 orders/admin/orders/filters.py:17
+#: orders/admin/orders/admin.py:136 orders/admin/orders/filters.py:17
 msgid "Shipped without payment"
 msgstr "Ждем денег"
 
-#: orders/admin/orders/admin.py:139
+#: orders/admin/orders/admin.py:140
 msgid "Login as customer"
 msgstr "Зайти от имени студента"
 
@@ -390,11 +390,13 @@ msgstr "Количество заказов"
 msgid "Discount"
 msgstr "Скидка"
 
+#: orders/models/order.py:36
+msgid "id"
+msgstr "Ид"
+
 #: orders/models/order.py:38
-#, fuzzy
-#| msgid "Order count"
 msgid "Order author"
-msgstr "Количество заказов"
+msgstr "Продавец"
 
 #: orders/models/order.py:40 products/admin/bundle.py:32
 #: products/admin/course.py:29
@@ -511,8 +513,6 @@ msgid "Email messages"
 msgstr "Письма"
 
 #: products/admin/courses/actions.py:11
-#, fuzzy
-#| msgid "Postmark template_id"
 msgid "Email template id"
 msgstr "ID шаблона в постмарке"
 
@@ -668,16 +668,12 @@ msgid "Email"
 msgstr ""
 
 #: users/admin/student.py:11
-#, fuzzy
-#| msgid "first name in english"
 msgid "first name"
-msgstr "Имя на английском"
+msgstr "Имя"
 
 #: users/admin/student.py:12
-#, fuzzy
-#| msgid "last name in english"
 msgid "last name"
-msgstr "Фамилия на английском"
+msgstr "Фамилия"
 
 #: users/admin/student.py:44
 msgid "Personal info"

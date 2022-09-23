@@ -50,6 +50,7 @@ class OrderAdmin(ModelAdmin):
         actions.generate_diplams,
     ]
     readonly_fields = [
+        'slug',
         'author',
         'login_as',
         'paid',
@@ -61,7 +62,7 @@ class OrderAdmin(ModelAdmin):
         (
             None,
             {
-                'fields': ['user', 'price', 'email', 'author', 'login_as', 'paid', 'shipped', 'unpaid'],
+                'fields': ['slug', 'user', 'price', 'email', 'author', 'login_as', 'paid', 'shipped', 'unpaid'],
             },
         ),
         (
