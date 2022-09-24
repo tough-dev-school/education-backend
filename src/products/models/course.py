@@ -47,6 +47,7 @@ class Course(Shippable):
     disable_triggers = models.BooleanField(_('Disable all triggers'), default=False)
 
     confirmation_template_id = models.CharField(_('Confirmation template id'), max_length=255, null=True, blank=True, help_text=_('If set user sill receive this message upon creating zero-priced order'))
+    confirmation_success_url = models.URLField(_('Confirmation success URL'), null=True, blank=True)
 
     class Meta:
         ordering = ['-id']

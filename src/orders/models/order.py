@@ -26,6 +26,11 @@ class OrderQuerySet(QuerySet):
         """Paid orders that may be shipped right now"""
         return self.paid().filter(shipped__isnull=True, desired_shipment_date__lte=timezone.now())
 
+    def available_to_confirm(self) -> QuerySet['Order']:
+        return self.filter(
+            price=0,
+        )
+
 
 OrderManager = models.Manager.from_queryset(OrderQuerySet)
 
