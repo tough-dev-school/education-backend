@@ -2,7 +2,10 @@ from typing import Type
 
 from datetime import datetime
 from decimal import Decimal
+from django.conf import settings
+from django.urls import reverse
 from django.utils.functional import cached_property
+from urllib.parse import urljoin
 
 from app.current_user import get_current_user
 from app.helpers import lower_first
@@ -82,4 +85,5 @@ class OrderCreator:
             'item': order.item.full_name,
             'item_lower': lower_first(order.item.full_name),
             'firstname': order.user.first_name,
+            'confirmation_url': urljoin(settings.FRONTEND_URL, reverse('confirm-order', args=[order.slug])),
         }

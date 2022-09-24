@@ -10,6 +10,11 @@ def send_mail(mocker):
     return mocker.patch('mailing.tasks.send_mail.delay')
 
 
+@pytest.fixture(autouse=True)
+def _freeze_frontend_host(settings):
+    settings.FRONTEND_URL = 'https://school.host'
+
+
 def test_message_is_not_sent_by_default(create, user, course, send_mail):
     create(user=user, item=course)
 
@@ -31,7 +36,7 @@ def test_message_is_sent_when_course_has_confirmation_template_id(create, user, 
         price=0,
     )
 
-    create(user=user, item=course)
+    order = create(user=user, item=course)
 
     send_mail.assert_called_once_with(
         to=user.email,
@@ -40,5 +45,6 @@ def test_message_is_sent_when_course_has_confirmation_template_id(create, user, 
             item='Курс кройки и шитья',
             item_lower='курс кройки и шитья',
             firstname='Авраам Соломонович',
+            confirmation_url=f'https://school.host/api/v2/orders/{order.slug}/confirm/',
         ),
     )

@@ -1,9 +1,10 @@
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING
 
 import uuid
 from abc import ABCMeta, abstractmethod
 from decimal import Decimal
 from django.conf import settings
+from rest_framework.request import Request
 from urllib.parse import urljoin
 
 if TYPE_CHECKING:
@@ -21,19 +22,26 @@ class Bank(metaclass=ABCMeta):
     def __init__(
         self,
         order: 'Order',
-        success_url:
-        Optional[str] = None,
-        fail_url: Optional[str] = None,
-        idempotency_key: Optional[str] = None,
+        request: Request | None = None,
+        success_url: str | None = None,
+        fail_url: str | None = None,
+        idempotency_key: str | None = None,
     ) -> None:
         self.order = order
+        self.request = request
         self._success_url = success_url
         self._fail_url = fail_url
         self.idempotency_key = idempotency_key or str(uuid.uuid4())
 
+        self.validate_order(order=self.order)
+
     @abstractmethod
     def get_initial_payment_url(self) -> str:
         raise NotImplementedError()
+
+    def validate_order(self, order: 'Order') -> None:
+        """Hook to validate if order suites given bank"""
+        return
 
     @property
     def success_url(self) -> str:
@@ -44,7 +52,7 @@ class Bank(metaclass=ABCMeta):
         return self._fail_url or urljoin(settings.FRONTEND_URL, '/error/?code=banking')
 
     @property
-    def price(self) -> Union[int, str]:
+    def price(self) -> int | str:
         from banking import price_calculator
         price = price_calculator.to_bank(bank=self.__class__, price=self.order.price)
         return int(price * 100)

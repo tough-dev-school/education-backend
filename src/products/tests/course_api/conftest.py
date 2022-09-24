@@ -27,11 +27,11 @@ def bank(mocker):
 
 @pytest.fixture
 def call_purchase(api, default_user_data):
-    return lambda **kwargs: api.post(
+    return lambda as_response=False, **kwargs: api.post(
         '/api/v2/courses/ruloning-oboev/purchase/',
         {
             **default_user_data,
             **kwargs,
         },
-        format='multipart', expected_status_code=302,
+        format='multipart', expected_status_code=302, as_response=as_response,
     )
