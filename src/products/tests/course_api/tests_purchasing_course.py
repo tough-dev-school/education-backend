@@ -25,18 +25,7 @@ def test_order(call_purchase, course):
     assert not hasattr(placed, 'study')  # Study record is not created yet, because order is not paid
 
 
-def test_order_of_free_course(call_purchase, course):
-    course.setattr_and_save('price', 0)
-    call_purchase()
-
-    placed = get_order()
-
-    assert placed.item == course
-    assert placed.price == Decimal(0)
-    assert placed.paid is None
-
-
-def test_user(call_purchase, course):
+def test_user(call_purchase):
     call_purchase()
 
     placed = get_order()
@@ -81,10 +70,8 @@ def test_by_default_user_is_not_subscribed(call_purchase):
     assert placed.user.subscribed is False
 
 
-def test_redirect(api, course, default_user_data):
-    response = api.post('/api/v2/courses/ruloning-oboev/purchase/', {
-        **default_user_data,
-    }, format='multipart', expected_status_code=302, as_response=True)
+def test_redirect(call_purchase):
+    response = call_purchase(as_response=True)
 
     assert response.status_code == 302
     assert response['Location'] == 'https://bank.test/pay/'
