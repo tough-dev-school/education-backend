@@ -22,6 +22,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20,
     'DEFAULT_THROTTLE_RATES': {
         'anon-auth': '10/min',
+        'public-id': '60/hour',
         'notion-materials': '100/hour',
     },
 }

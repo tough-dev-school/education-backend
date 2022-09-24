@@ -10,38 +10,38 @@ def confirmed_order(order):
     return order
 
 
-def test_respose(api, order):
-    response = api.get(f'/api/v2/orders/{order.slug}/confirm/', as_response=True)
+def test_respose(anon, order):
+    response = anon.get(f'/api/v2/orders/{order.slug}/confirm/', as_response=True)
 
     assert response.status_code == 302
     assert response['location'] == 'https://well.done'
 
 
-def test_response_on_already_confirmed_order(api, confirmed_order):
-    response = api.get(f'/api/v2/orders/{confirmed_order.slug}/confirm/', as_response=True)
+def test_response_on_already_confirmed_order(anon, confirmed_order):
+    response = anon.get(f'/api/v2/orders/{confirmed_order.slug}/confirm/', as_response=True)
 
     assert response.status_code == 302
     assert response['location'] == 'https://well.done'
 
 
-def test_unconfirmed_order_ships(api, order, ship):
-    api.get(f'/api/v2/orders/{order.slug}/confirm/', expected_status_code=302)
+def test_unconfirmed_order_ships(anon, order, ship):
+    anon.get(f'/api/v2/orders/{order.slug}/confirm/', expected_status_code=302)
 
     order.refresh_from_db()
     ship.assert_called_once_with(order=order, to=order.user)
     assert order.paid is not None
 
 
-def test_order_is_shipped_only_one_time(api, order, ship):
+def test_order_is_shipped_only_one_time(anon, order, ship):
     for _ in range(3):
-        api.get(f'/api/v2/orders/{order.slug}/confirm/', expected_status_code=302)
+        anon.get(f'/api/v2/orders/{order.slug}/confirm/', expected_status_code=302)
 
     ship.assert_called_once_with(order=order, to=order.user)
 
 
-def test_404_for_non_zero_priced_orders(api, order, ship):
+def test_404_for_non_zero_priced_orders(anon, order, ship):
     order.setattr_and_save('price', 100500)
 
-    api.get(f'/api/v2/orders/{order.slug}/confirm/', expected_status_code=404)
+    anon.get(f'/api/v2/orders/{order.slug}/confirm/', expected_status_code=404)
 
     ship.assert_not_called()
