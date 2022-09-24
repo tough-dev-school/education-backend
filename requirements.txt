@@ -210,7 +210,7 @@ sniffio==1.3.0
     #   anyio
     #   httpcore
     #   httpx
-sqlparse==0.4.2
+sqlparse==0.4.3
     # via
     #   django
     #   django-debug-toolbar
