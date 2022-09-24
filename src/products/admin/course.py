@@ -44,6 +44,17 @@ class CourseAdmin(ModelAdmin):
                 ],
             },
         ),
+        (
+            _('Order confirmation'),
+            {
+                'fields': [
+                    'confirmation_template_id',
+                    'confirmation_success_url',
+                ],
+            },
+        ),
+
+
     ]
 
     list_display = (
