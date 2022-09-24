@@ -1,6 +1,7 @@
 import pytest
 
 from banking.selector import get_bank
+from banking.zero_price_bank import ZeroPriceBank
 from stripebank.bank import StripeBank
 from tinkoff.bank import TinkoffBank
 from tinkoff.credit import TinkoffCredit
@@ -10,6 +11,7 @@ from tinkoff.credit import TinkoffCredit
     ('tinkoff_bank', TinkoffBank),
     ('tinkoff_credit', TinkoffCredit),
     ('stripe', StripeBank),
+    ('zero_price', ZeroPriceBank),
     ('ev1l', TinkoffBank),
     ('', TinkoffBank),
 ])

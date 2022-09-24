@@ -131,7 +131,11 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
 
     def get_payment_link(self, order: Order, data: dict):
         Bank = get_bank(desired=data.get('desired_bank'))
-        bank = Bank(order=order, success_url=data.get('success_url'))
+        bank = Bank(
+            order=order,
+            request=self.request,
+            success_url=data.get('success_url'),
+        )
 
         return bank.get_initial_payment_url()
 

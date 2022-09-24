@@ -1,6 +1,7 @@
 from typing import Optional, Type
 
 from banking.base import Bank
+from banking.zero_price_bank import ZeroPriceBank
 from stripebank.bank import StripeBank
 from tinkoff.bank import TinkoffBank
 from tinkoff.credit import TinkoffCredit
@@ -11,6 +12,7 @@ BANKS = {
     'tinkoff_credit': TinkoffCredit,
     'stripe': StripeBank,
     'dolyame': Dolyame,
+    'zero_price': ZeroPriceBank,
 }
 
 DEFAULT_BANK = TinkoffBank
