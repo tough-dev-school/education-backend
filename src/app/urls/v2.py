@@ -9,6 +9,7 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('notion/', include('notion.urls')),
     path('studies/', include('studying.urls')),
+    path('orders/', include('orders.urls')),
     path('', include('products.urls')),
 
     path('healthchecks/', include('django_healthchecks.urls')),

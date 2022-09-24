@@ -1,6 +1,6 @@
 import pytest
 
-from triggers.helpers import lower_first
+from app.helpers import lower_first
 
 
 @pytest.mark.parametrize(('input', 'expected'), [

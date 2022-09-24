@@ -1,4 +1,5 @@
 from django.apps import apps
+from django.core.exceptions import ValidationError
 from django.db.models import OuterRef, QuerySet, Subquery
 from django.utils.translation import gettext_lazy as _
 
@@ -46,11 +47,25 @@ class Course(Shippable):
 
     disable_triggers = models.BooleanField(_('Disable all triggers'), default=False)
 
+    confirmation_template_id = models.CharField(_('Confirmation template id'), max_length=255, null=True, blank=True, help_text=_('If set user sill receive this message upon creating zero-priced order'))
+    confirmation_success_url = models.URLField(_('Confirmation success URL'), null=True, blank=True)
+
     class Meta:
         ordering = ['-id']
         verbose_name = _('Course')
         verbose_name_plural = _('Courses')
         db_table = 'courses_course'
+
+    def clean(self):
+        """Check for correct setting of confirmation_template_id and confirmation_success_url"""
+        if not self.confirmation_template_id and not self.confirmation_success_url:
+            return
+
+        if not all([self.confirmation_template_id, self.confirmation_success_url]):
+            raise ValidationError(_('Both confirmation_template_id and confirmation_success_url must be set'))
+
+        if self.price != 0:
+            raise ValidationError(_('Courses with confirmation should have zero price'))
 
     def get_purchased_users(self) -> QuerySet[User]:
         return User.objects.filter(
