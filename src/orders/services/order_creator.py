@@ -1,12 +1,14 @@
-from typing import Optional, Type, Union
+from typing import Type
 
 from datetime import datetime
 from decimal import Decimal
 from django.utils.functional import cached_property
 
 from app.current_user import get_current_user
+from app.helpers import lower_first
 from banking.base import Bank
 from banking.selector import get_bank
+from mailing.tasks import send_mail
 from orders.models import Order, PromoCode
 from users.models import User
 
@@ -16,12 +18,12 @@ class OrderCreator:
         self,
         user: User,
         item,
-        price: Optional[Decimal] = None,
-        promocode: Optional[str] = None,
-        giver: Optional[User] = None,
-        desired_shipment_date: Optional[Union[str, datetime]] = None,
-        gift_message: Optional[str] = None,
-        desired_bank: Optional[str] = None,
+        price: Decimal | None = None,
+        promocode: str | None = None,
+        giver: User | None = None,
+        desired_shipment_date: str | datetime | None = None,
+        gift_message: str | None = None,
+        desired_bank: str | None = None,
     ):
         self.item = item
         self.user = user
@@ -37,6 +39,8 @@ class OrderCreator:
 
         order.set_item(self.item)
         order.save()
+
+        self.send_confirmation_message(order)
 
         return order
 
@@ -55,10 +59,27 @@ class OrderCreator:
         )
 
     @staticmethod
-    def _get_promocode(promocode_name: Optional[str] = None) -> Optional[PromoCode]:
+    def _get_promocode(promocode_name: str | None = None) -> PromoCode | None:
         if promocode_name is not None:
             return PromoCode.objects.get_or_nothing(name=promocode_name)
 
     @cached_property
     def bank(self) -> Type[Bank]:
         return get_bank(self.desired_bank)
+
+    def send_confirmation_message(self, order: Order) -> None:
+        if order.price == 0 and order.item is not None:
+            if hasattr(order.item, 'confirmation_template_id') and order.item.confirmation_template_id:
+                send_mail.delay(
+                    to=order.user.email,
+                    template_id=order.item.confirmation_template_id,
+                    ctx=self.get_template_context(order),
+                )
+
+    @staticmethod
+    def get_template_context(order: Order) -> dict[str, str]:
+        return {
+            'item': order.item.full_name,
+            'item_lower': lower_first(order.item.full_name),
+            'firstname': order.user.first_name,
+        }

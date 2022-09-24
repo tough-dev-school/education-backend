@@ -26,6 +26,18 @@ def test_course(create, user, course):
     assert order.item == course
 
 
+def test_free_course(create, user, course):
+    course.setattr_and_save('price', 0)
+
+    order = create(user=user, item=course)
+
+    order.refresh_from_db()
+
+    assert order.price == 0
+    assert order.item == course
+    assert order.paid is None
+
+
 def test_record(create, user, record):
     order = create(user=user, item=record)
 
