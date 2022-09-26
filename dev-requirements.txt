@@ -306,7 +306,7 @@ sqlparse==0.4.3
     # via
     #   -c requirements.txt
     #   django
-stack-data==0.5.0
+stack-data==0.5.1
     # via ipython
 testfixtures==7.0.0
     # via flake8-isort
