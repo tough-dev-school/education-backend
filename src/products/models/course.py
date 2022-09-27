@@ -78,3 +78,6 @@ class Course(Shippable):
                 to=user.email,
                 template_id=template_id,
             )
+
+    def __str__(self) -> str:
+        return f'{self.name} | {self.group}'
