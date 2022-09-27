@@ -80,4 +80,8 @@ class Course(Shippable):
             )
 
     def __str__(self) -> str:
+<<<<<<< HEAD
         return f'{self.name} | {self.group}'
+=======
+        return f"{self.name} | {self.group}"
+>>>>>>> master
