@@ -115,7 +115,7 @@ django-prettyjson==0.4.1
     # via -r requirements.in
 django-redis==5.2.0
     # via -r requirements.in
-django-split-settings==1.1.0
+django-split-settings==1.2.0
     # via -r requirements.in
 django-storages==1.13.1
     # via -r requirements.in
