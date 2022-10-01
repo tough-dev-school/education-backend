@@ -185,7 +185,7 @@ markupsafe==2.1.1
     # via jinja2
 matplotlib-inline==0.1.6
     # via ipython
-mccabe==0.6.1
+mccabe==0.7.0
     # via flake8
 mixer==7.0.6
     # via -r dev-requirements.in
