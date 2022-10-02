@@ -247,7 +247,7 @@ pytest==7.1.3
     #   pytest-randomly
     #   pytest-repeat
     #   pytest-xdist
-pytest-cov==3.0.0
+pytest-cov==4.0.0
     # via -r dev-requirements.in
 pytest-deadfixtures==2.2.1
     # via -r dev-requirements.in
