@@ -20,9 +20,9 @@ billiard==3.6.4.0
     # via celery
 bleach==5.0.1
     # via -r requirements.in
-boto3==1.24.85
+boto3==1.24.87
     # via -r requirements.in
-botocore==1.27.86
+botocore==1.27.87
     # via
     #   boto3
     #   s3transfer
@@ -216,7 +216,7 @@ sqlparse==0.4.3
     #   django-debug-toolbar
 standardjson==0.3.1
     # via django-prettyjson
-stripe==4.1.0
+stripe==4.2.0
     # via -r requirements.in
 text-unidecode==1.3
     # via faker
