@@ -175,7 +175,7 @@ jobs:
 
   deploy:
     needs: build-docker-image
-    if: ${{ github.ref == 'refs/heads/master' }}
+    if: github.ref == 'refs/heads/master' && github.repository_owner == 'tough-dev-school'
     runs-on: ubuntu-latest
     steps:
       - name: Read image identifiers
