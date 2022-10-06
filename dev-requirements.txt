@@ -26,9 +26,9 @@ attrs==22.1.0
     #   pytest
 backcall==0.2.0
     # via ipython
-boto3-stubs==1.24.84
+boto3-stubs==1.24.87
     # via -r dev-requirements.in
-botocore-stubs==1.27.84
+botocore-stubs==1.27.87
     # via boto3-stubs
 certifi==2022.9.24
     # via
@@ -52,7 +52,7 @@ decorator==5.1.1
     # via
     #   -c requirements.txt
     #   ipython
-django==3.2.15
+django==3.2.16
     # via
     #   -c requirements.txt
     #   django-stubs
@@ -163,6 +163,10 @@ idna==3.4
     #   anyio
     #   requests
     #   rfc3986
+importlib-metadata==5.0.0
+    # via
+    #   -c requirements.txt
+    #   pytest-randomly
 iniconfig==1.1.1
     # via pytest
 ipython==8.5.0
@@ -243,7 +247,7 @@ pytest==7.1.3
     #   pytest-randomly
     #   pytest-repeat
     #   pytest-xdist
-pytest-cov==3.0.0
+pytest-cov==4.0.0
     # via -r dev-requirements.in
 pytest-deadfixtures==2.2.1
     # via -r dev-requirements.in
@@ -257,7 +261,7 @@ pytest-freezegun==0.4.2
     # via -r dev-requirements.in
 pytest-httpx==0.21.0
     # via -r dev-requirements.in
-pytest-mock==3.9.0
+pytest-mock==3.10.0
     # via -r dev-requirements.in
 pytest-randomly==3.12.0
     # via -r dev-requirements.in
@@ -270,7 +274,7 @@ python-dateutil==2.8.2
     #   -c requirements.txt
     #   faker
     #   freezegun
-pytz==2022.2.1
+pytz==2022.4
     # via
     #   -c requirements.txt
     #   django
@@ -334,7 +338,7 @@ types-markdown==3.4.2
     #   djangorestframework-stubs
 types-pillow==9.2.2
     # via -r dev-requirements.in
-types-pytz==2022.2.1.0
+types-pytz==2022.4.0.0
     # via
     #   django-stubs
     #   types-babel
@@ -342,7 +346,7 @@ types-pyyaml==6.0.12
     # via
     #   django-stubs
     #   djangorestframework-stubs
-types-requests==2.28.11
+types-requests==2.28.11.1
     # via
     #   -r dev-requirements.in
     #   djangorestframework-stubs
