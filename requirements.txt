@@ -22,7 +22,7 @@ bleach==5.0.1
     # via -r requirements.in
 boto3==1.24.86
     # via -r requirements.in
-botocore==1.27.86
+botocore==1.27.87
     # via
     #   boto3
     #   s3transfer
