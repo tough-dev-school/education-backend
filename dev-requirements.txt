@@ -332,7 +332,7 @@ types-bleach==5.0.3
     # via -r dev-requirements.in
 types-freezegun==1.1.10
     # via -r dev-requirements.in
-types-markdown==3.4.2
+types-markdown==3.4.2.1
     # via
     #   -r dev-requirements.in
     #   djangorestframework-stubs
