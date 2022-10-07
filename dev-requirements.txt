@@ -28,7 +28,7 @@ backcall==0.2.0
     # via ipython
 boto3-stubs==1.24.88
     # via -r dev-requirements.in
-botocore-stubs==1.27.87
+botocore-stubs==1.27.88
     # via boto3-stubs
 certifi==2022.9.24
     # via
