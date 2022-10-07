@@ -360,7 +360,7 @@ types-stripe==3.5.2
     # via -r dev-requirements.in
 types-urllib3==1.26.25
     # via types-requests
-typing-extensions==4.3.0
+typing-extensions==4.4.0
     # via
     #   boto3-stubs
     #   django-stubs
