@@ -115,7 +115,7 @@ flake8-multiline-containers==0.0.19
     # via -r dev-requirements.in
 flake8-mutable==1.2.0
     # via -r dev-requirements.in
-flake8-pep3101==1.3.0
+flake8-pep3101==2.0.0
     # via -r dev-requirements.in
 flake8-pie==0.16.0
     # via -r dev-requirements.in
