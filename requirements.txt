@@ -14,7 +14,7 @@ async-timeout==4.0.2
     # via redis
 babel==2.10.3
     # via -r requirements.in
-bcrypt==4.0.0
+bcrypt==4.0.1
     # via -r requirements.in
 billiard==3.6.4.0
     # via celery
