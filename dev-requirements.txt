@@ -163,10 +163,6 @@ idna==3.4
     #   anyio
     #   requests
     #   rfc3986
-importlib-metadata==5.0.0
-    # via
-    #   -c requirements.txt
-    #   pytest-randomly
 iniconfig==1.1.1
     # via pytest
 ipython==8.5.0
@@ -290,8 +286,6 @@ rfc3986[idna2008]==1.5.0
     # via
     #   -c requirements.txt
     #   httpx
-simplejson==3.17.6
-    # via -r dev-requirements.in
 six==1.16.0
     # via
     #   -c requirements.txt

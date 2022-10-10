@@ -13,6 +13,7 @@ psycopg2-binary
 shortuuid
 retry
 bcrypt
+simplejson
 
 djangorestframework>=3.11.0
 django-storages

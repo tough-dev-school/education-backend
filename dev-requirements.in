@@ -16,7 +16,6 @@ pytest-httpx
 
 freezegun
 mixer==7.0.6
-simplejson
 requests-mock
 
 jedi
