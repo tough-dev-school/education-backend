@@ -330,7 +330,7 @@ types-markdown==3.4.2.1
     # via
     #   -r dev-requirements.in
     #   djangorestframework-stubs
-types-pillow==9.2.2
+types-pillow==9.2.2.1
     # via -r dev-requirements.in
 types-pytz==2022.4.0.0
     # via
