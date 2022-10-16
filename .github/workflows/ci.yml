@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:13.8-alpine
+        image: postgres:15.0-alpine
         env:
           POSTGRES_PASSWORD: secret
         options: >-
