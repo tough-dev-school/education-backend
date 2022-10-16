@@ -352,7 +352,7 @@ types-simplejson==3.17.7
     # via -r dev-requirements.in
 types-stripe==3.5.2
     # via -r dev-requirements.in
-types-urllib3==1.26.25
+types-urllib3==1.26.25.1
     # via types-requests
 typing-extensions==4.4.0
     # via
