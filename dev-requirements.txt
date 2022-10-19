@@ -4,7 +4,7 @@
 #
 #    pip-compile dev-requirements.in
 #
-anyio==3.6.1
+anyio==3.6.2
     # via
     #   -c requirements.txt
     #   httpcore
