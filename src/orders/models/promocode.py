@@ -4,6 +4,7 @@ import contextlib
 from decimal import Decimal
 from django.core.exceptions import ValidationError
 from django.db.models import Case, CheckConstraint, Count, Q, QuerySet, When
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from app.models import TimestampedModel, models
@@ -12,7 +13,11 @@ from products.models import Course
 
 class PromoCodeQuerySet(QuerySet):
     def active(self) -> QuerySet['PromoCode']:
-        return self.filter(active=True)
+        return self.filter(
+            active=True,
+        ).filter(
+            Q(expires__isnull=True) | Q(expires__gte=timezone.now()),
+        )
 
     def with_order_count(self) -> QuerySet['PromoCode']:
         return self.annotate(order_count=Count(Case(
@@ -35,6 +40,7 @@ class PromoCode(TimestampedModel):
     name = models.CharField(_('Promo Code'), max_length=32, unique=True, db_index=True)
     discount_percent = models.IntegerField(_('Discount percent'), null=True, blank=True)
     discount_value = models.IntegerField(_('Discount amount'), null=True, blank=True, help_text=_('Takes precedence over percent'))
+    expires = models.DateTimeField(null=True, blank=True)
     active = models.BooleanField(_('Active'), default=True)
     comment = models.TextField(_('Comment'), blank=True, null=True)
 
