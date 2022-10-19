@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
@@ -11,10 +12,12 @@ class PromodeActiveFilter(DefaultTrueBooleanFilter):
     parameter_name = 'is_active'
 
     def t(self, request, queryset):
-        return queryset.filter(active=True)
+        return queryset.active()
 
     def f(self, request, queryset):
-        return queryset.filter(active=False)
+        return queryset.exclude(
+            pk__in=queryset.active().values_list('pk'),
+        )
 
 
 @admin.register(PromoCode)
@@ -25,12 +28,8 @@ class PromoCodeAdmin(ModelAdmin):
         'discount',
         'order_count',
         'comment',
-        'active',
+        'is_active',
     )
-
-    list_editable = [
-        'active',
-    ]
 
     list_filter = (
         PromodeActiveFilter,
@@ -68,3 +67,14 @@ class PromoCodeAdmin(ModelAdmin):
             return f'{obj.discount_value} ₽'
 
         return f'{obj.discount_percent} %'
+
+    @admin.display(description=_('Active'), boolean=True)
+    def is_active(self, obj: PromoCode | None = None) -> bool | None:
+        if not obj:
+            return None
+
+        if obj.active is True:
+            if obj.expires is None or obj.expires >= timezone.now():
+                return True
+
+        return False
