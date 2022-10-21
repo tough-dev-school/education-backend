@@ -255,7 +255,7 @@ pytest-forked==1.4.0
     # via pytest-xdist
 pytest-freezegun==0.4.2
     # via -r dev-requirements.in
-pytest-httpx==0.21.0
+pytest-httpx==0.21.1
     # via -r dev-requirements.in
 pytest-mock==3.10.0
     # via -r dev-requirements.in
