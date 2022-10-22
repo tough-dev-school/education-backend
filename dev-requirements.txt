@@ -249,7 +249,7 @@ pytest-deadfixtures==2.2.1
     # via -r dev-requirements.in
 pytest-django==4.5.2
     # via -r dev-requirements.in
-pytest-env==0.6.2
+pytest-env==0.7.0
     # via -r dev-requirements.in
 pytest-forked==1.4.0
     # via pytest-xdist
