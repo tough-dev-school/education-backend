@@ -230,7 +230,7 @@ pyparsing==3.0.9
     # via
     #   -c requirements.txt
     #   packaging
-pytest==7.1.3
+pytest==7.2.0
     # via
     #   pytest-cov
     #   pytest-deadfixtures
