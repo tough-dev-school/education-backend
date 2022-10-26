@@ -132,7 +132,7 @@ djangorestframework==3.14.0
     #   drf-recaptcha
 drf-jwt==1.19.2
     # via -r requirements.in
-drf-recaptcha==2.2.1
+drf-recaptcha==2.2.2
     # via -r requirements.in
 faker==4.0.0
     # via django-hattori
@@ -161,7 +161,7 @@ pillow==9.2.0
     # via django-markdownx
 prompt-toolkit==3.0.31
     # via click-repl
-psycopg2-binary==2.9.4
+psycopg2-binary==2.9.5
     # via -r requirements.in
 py==1.11.0
     # via retry
