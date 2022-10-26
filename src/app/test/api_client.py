@@ -5,16 +5,18 @@ from mixer.backend.django import mixer
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
 
+from users.models import User
+
 
 class DRFClient(APIClient):
 
-    def __init__(self, user=None, god_mode=True, anon=False, *args, **kwargs):
+    def __init__(self, user=None, god_mode=True, anon=False, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
         if not anon:
             self.auth(user, god_mode)
 
-    def auth(self, user=None, god_mode=True):
+    def auth(self, user=None, god_mode=True) -> None:
         self.user = user or self._create_user(god_mode)
         self.god_mode = god_mode
 
@@ -23,7 +25,7 @@ class DRFClient(APIClient):
             HTTP_AUTHORIZATION=f'Token {token}',
         )
 
-    def _create_user(self, god_mode=True):
+    def _create_user(self, god_mode=True) -> User:
         user_opts = {}
         if god_mode:
             user_opts = {
