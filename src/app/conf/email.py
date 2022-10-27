@@ -14,3 +14,8 @@ ANYMAIL = {
 }
 
 RECEIPTS_EMAIL = env('RECEIPTS_EMAIL', cast=str, default='receipts@tough-dev.school')
+
+
+# Postmark template IDs
+PASSWORDLESS_TOKEN_TEMPLATE_ID = env('PASSWORDLESS_TOKEN_TEMPLATE_ID', cast=str, default='passwordless-token')
+PASSWORD_RESET_TEMPLATE_ID = env('PASSWORD_RESET_TEMPLATE_ID', cast=str, default='password-reset')

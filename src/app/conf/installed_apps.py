@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'drf_recaptcha',
     'django_filters',
     'prettyjson',
+    'dj_rest_auth',
 
     'axes',
     'debug_toolbar',
