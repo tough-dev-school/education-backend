@@ -318,7 +318,7 @@ traitlets==5.5.0
     # via
     #   ipython
     #   matplotlib-inline
-types-awscrt==0.14.7
+types-awscrt==0.15.1
     # via botocore-stubs
 types-babel==2.10.0
     # via -r dev-requirements.in
