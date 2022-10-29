@@ -157,7 +157,7 @@ markdown==3.4.1
     # via django-markdownx
 packaging==21.3
     # via redis
-pillow==9.2.0
+pillow==9.3.0
     # via django-markdownx
 prompt-toolkit==3.0.31
     # via click-repl
