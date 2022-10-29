@@ -16,7 +16,7 @@ asgiref==3.5.2
     #   django
 astor==0.8.1
     # via flake8-simplify
-asttokens==2.0.8
+asttokens==2.1.0
     # via stack-data
 attrs==22.1.0
     # via
