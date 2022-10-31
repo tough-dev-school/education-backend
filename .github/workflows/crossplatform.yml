@@ -104,7 +104,7 @@ jobs:
 
       - name: Generate image identifier
         id: image
-        uses: ASzc/change-string-case-action@v2
+        uses: ASzc/change-string-case-action@v4
         with:
           string: ${{ github.repository_owner }}
 
