@@ -25,6 +25,13 @@ Configure postgres and redis. It's convenient to use docker and docker-compose:
 docker-compose up -d
 ```
 
+If you don't have access to de-anonymized db image use `postgres:13.6-alpine` in `docker-compose.yml` instead:
+```yaml
+postgres:
+    image: postgres:13.6-alpine
+    ...
+```
+
 Run the server:
 
 ```bash

@@ -2,7 +2,7 @@ version: '2'
 
 services:
   postgres:
-    image: postgres:13.6-alpine
+    image: ghcr.io/tough-dev-school/dev-db
     environment:
       - POSTGRES_PASSWORD=secret
     ports:
