@@ -67,6 +67,7 @@ dev = [
     "pytest-repeat",
     "pytest-xdist",
     "pytest-httpx",
+
     "freezegun",
     "mixer==7.0.6",
     "requests-mock",
@@ -95,6 +96,7 @@ dev = [
     "flake8-walrus",
     "flake8-use-fstring",
     "flake8-pyproject",
+
     "mypy",
     "boto3-stubs",
     "django-stubs",

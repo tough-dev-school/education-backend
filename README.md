@@ -7,35 +7,40 @@ Django-based production project, integrated with Tinkoff, zoom.us, Dashamail, Po
 ## Configuration
 Configuration is stored in `src/app/.env`, for examples see `src/app/.env.ci`
 
+
 ## Installing on a local machine
-This project requires python3.9, running postgres and redis.
+This project requires python 3.10. Python virtual environment should be installed and activated.\
+Deps are managed by [pip-tools](https://github.com/jazzband/pip-tools) with requirements stored in [pyproject.toml](https://github.com/jazzband/pip-tools#requirements-from-pyprojecttoml).
 
 Install requirements:
 
-```sh
+```bash
 pip install --upgrade pip pip-tools
-pip-sync dev-requirements.txt requirements.txt
-cd src
-cp app/.env.ci app/.env  # default environment variables
+make
 ```
 
-```sh
+Configure postgres and redis. It's convenient to use docker and docker-compose:
+
+```bash
+docker-compose up -d
+```
+
+Run the server:
+
+```bash
+cd src && cp app/.env.ci app/.env  # default environment variables
 ./manage.py migrate
 ./manage.py createsuperuser
+./manage.py runserver
 ```
 
 Testing:
 ```bash
+# run lint
+make -C .. lint
+
 # run unit tests
-$ pytest
-```
-
-Development servers:
-
-```bash
-# run django dev server
-$ ./manage.py runserver
-
+make -C .. test
 ```
 
 ## Backend Code requirements
