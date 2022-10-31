@@ -350,7 +350,7 @@ types-s3transfer==0.6.0.post4
     # via boto3-stubs
 types-simplejson==3.17.7.1
     # via -r dev-requirements.in
-types-stripe==3.5.2
+types-stripe==3.5.2.1
     # via -r dev-requirements.in
 types-urllib3==1.26.25.1
     # via types-requests
