@@ -101,7 +101,6 @@ django==3.2.16
     #   django-cors-headers
     #   django-debug-toolbar
     #   django-filter
-    #   django-hattori
     #   django-healthchecks
     #   django-markdownx
     #   django-prettyjson
@@ -120,9 +119,7 @@ django-axes==5.39.0
 django-behaviors==0.5.1
     # via education-backend (pyproject.toml)
 django-bulk-update==2.2.0
-    # via
-    #   django-hattori
-    #   education-backend (pyproject.toml)
+    # via education-backend (pyproject.toml)
 django-cachalot==2.5.2
     # via education-backend (pyproject.toml)
 django-cors-headers==3.13.0
@@ -132,8 +129,6 @@ django-debug-toolbar==3.7.0
 django-environ==0.9.0
     # via education-backend (pyproject.toml)
 django-filter==22.1
-    # via education-backend (pyproject.toml)
-django-hattori==0.2.1
     # via education-backend (pyproject.toml)
 django-healthchecks==1.5.0
     # via education-backend (pyproject.toml)
@@ -181,9 +176,7 @@ execnet==1.9.0
 executing==1.2.0
     # via stack-data
 faker==4.0.0
-    # via
-    #   django-hattori
-    #   mixer
+    # via mixer
 flake8==5.0.4
     # via
     #   flake8-absolute-import
@@ -427,7 +420,6 @@ six==1.16.0
     #   asttokens
     #   bleach
     #   click-repl
-    #   django-hattori
     #   django-prettyjson
     #   python-dateutil
     #   requests-mock
@@ -455,8 +447,6 @@ tomli==2.0.1
     #   flake8-pyproject
     #   mypy
     #   pytest
-tqdm==4.64.1
-    # via django-hattori
 traitlets==5.5.0
     # via
     #   ipython

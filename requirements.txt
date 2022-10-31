@@ -73,7 +73,6 @@ django==3.2.16
     #   django-cors-headers
     #   django-debug-toolbar
     #   django-filter
-    #   django-hattori
     #   django-healthchecks
     #   django-markdownx
     #   django-prettyjson
@@ -90,9 +89,7 @@ django-axes==5.39.0
 django-behaviors==0.5.1
     # via education-backend (pyproject.toml)
 django-bulk-update==2.2.0
-    # via
-    #   django-hattori
-    #   education-backend (pyproject.toml)
+    # via education-backend (pyproject.toml)
 django-cachalot==2.5.2
     # via education-backend (pyproject.toml)
 django-cors-headers==3.13.0
@@ -102,8 +99,6 @@ django-debug-toolbar==3.7.0
 django-environ==0.9.0
     # via education-backend (pyproject.toml)
 django-filter==22.1
-    # via education-backend (pyproject.toml)
-django-hattori==0.2.1
     # via education-backend (pyproject.toml)
 django-healthchecks==1.5.0
     # via education-backend (pyproject.toml)
@@ -134,8 +129,6 @@ drf-jwt==1.19.2
     # via education-backend (pyproject.toml)
 drf-recaptcha==2.2.2
     # via education-backend (pyproject.toml)
-faker==4.0.0
-    # via django-hattori
 h11==0.12.0
     # via httpcore
 httpcore==0.15.0
@@ -174,9 +167,7 @@ pyjwt[crypto]==2.6.0
 pyparsing==3.0.9
     # via packaging
 python-dateutil==2.8.2
-    # via
-    #   botocore
-    #   faker
+    # via botocore
 pytz==2022.5
     # via
     #   babel
@@ -208,7 +199,6 @@ six==1.16.0
     # via
     #   bleach
     #   click-repl
-    #   django-hattori
     #   django-prettyjson
     #   python-dateutil
 sniffio==1.3.0
@@ -224,10 +214,6 @@ standardjson==0.3.1
     # via django-prettyjson
 stripe==4.2.0
     # via education-backend (pyproject.toml)
-text-unidecode==1.3
-    # via faker
-tqdm==4.64.1
-    # via django-hattori
 urllib3==1.26.12
     # via
     #   botocore

@@ -11,7 +11,6 @@ SECRET_KEY = env('SECRET_KEY', cast=str, default='s3cr3t')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG', cast=bool, default=False)
 CI = env('CI', cast=bool, default=False)
-ANONYMIZE_ENABLED = DEBUG
 
 # Application definition
 

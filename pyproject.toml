@@ -28,7 +28,6 @@ dependencies = [
     "django-filter",
     "django-anymail",
     "django-axes",
-    "django-hattori",
     "django-debug-toolbar",
     "dj-rest-auth",
 

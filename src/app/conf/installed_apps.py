@@ -19,7 +19,6 @@ INSTALLED_APPS = [
     'markdownx',
     'corsheaders',
     'cachalot',
-    'hattori',
     'anymail',
     'rest_framework',
     'rest_framework.authtoken',
