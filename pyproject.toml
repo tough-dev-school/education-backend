@@ -1,0 +1,151 @@
+[project]
+name = "education-backend"
+version = "2022.10.31"
+requires-python = ">=3.10"
+dependencies = [
+    "Django<3.3",
+    "django-behaviors",
+    "django-cors-headers",
+    "django-environ",
+    "django-ipware",
+    "django-split-settings",
+    "django-tree-queries",
+    "django-cachalot",
+    "django_redis",
+    "django-prettyjson",
+    "whitenoise",
+    "psycopg2-binary",
+    "shortuuid",
+    "retry",
+    "bcrypt",
+    "simplejson",
+
+    "djangorestframework>=3.11.0",
+    "django-storages",
+    "drf-recaptcha",
+    "drf-jwt",
+    "django-bulk-update",
+    "django-filter",
+    "django-anymail",
+    "django-axes",
+    "django-hattori",
+    "django-debug-toolbar",
+    "dj-rest-auth",
+
+    "django-healthchecks",
+
+    "django-markdownx",
+    "cmarkgfm",
+    "bleach",
+
+    "sentry-sdk",
+
+    "babel",
+    "boto3",
+    "PyJWT",
+    "urllib3>=1.26.5",
+
+    "celery",
+    "redis",
+
+    "httpx",
+    "stripe",
+]
+
+
+[project.optional-dependencies]
+dev = [
+    "ipython",
+
+    "pytest-django>=3.9",
+    "pytest-cov",
+    "pytest-deadfixtures",
+    "pytest-env",
+    "pytest-freezegun",
+    "pytest-mock",
+    "pytest-randomly",
+    "pytest-repeat",
+    "pytest-xdist",
+    "pytest-httpx",
+
+    "freezegun",
+    "mixer==7.0.6",
+    "requests-mock",
+
+    "jedi",
+    "flake8-absolute-import",
+    "flake8-bugbear",
+    "flake8-cognitive-complexity",
+    "flake8-commas",
+    "flake8-django",
+    "flake8-eradicate",
+    "flake8-fixme",
+    "flake8-isort>=4.0.0",
+    "flake8-multiline-containers",
+    "flake8-mutable",
+    "flake8-pie",
+    "flake8-pep3101",
+    "flake8-print",
+    "flake8-printf-formatting",
+    "flake8-pytest",
+    "flake8-pytest-style",
+    "flake8-quotes",
+    "flake8-simplify",
+    "flake8-todo",
+    "flake8-variables-names",
+    "flake8-walrus",
+    "flake8-use-fstring",
+    "flake8-pyproject",
+
+    "mypy",
+    "boto3-stubs",
+    "django-stubs",
+    "djangorestframework-stubs",
+    "types-babel",
+    "types-bleach",
+    "types-freezegun",
+    "types-Markdown",
+    "types-requests",
+    "types-retry",
+    "types-Pillow",
+    "types-simplejson",
+    "types-stripe",
+]
+
+
+[tool.flake8]
+max-line-length = 160
+ignore = [
+    "B010",  # Do not call setattr(x, 'attr', val), instead use normal property access: x.attr = val
+    "DJ01",  # Avoid using null=True on string-based fields such as CharField and TextField
+    "E501",  # Line too long
+    "E265",  # Block comments should have one space before the pound sign (#) and the comment itself
+    "F811",  # Redefinition of unused name from line n
+    "FS003",  # f-string missing prefix
+    "PIE783",  # Warn about Celery task definitions that don't have explicit names
+    "PIE785",  # Celery tasks can bunch up if they don't have expirations
+    "PIE801",  # Return boolean expressions directly instead of returning True and False
+    "PT001",  # Use @pytest.fixture() over @pytest.fixture
+    "SIM102",  # Use a single if-statement instead of nested if-statements
+    "SIM113",  # Use enumerate instead of manually incrementing a counter
+    "VNE003",  # Variable names that shadow builtins are not allowed
+    "W504",  # Line breaks should occur before the binary operator to keep all operators aligned
+]
+exclude = [
+    "static",
+    "migrations",
+    "frontend",
+    ".git",
+    "__pycache__",
+]
+
+
+[tool.isort]
+line_length = 119
+multi_line_output = 4
+known_standard_library = ["typing"]
+skip_glob = [
+    "*/migrations/*.py",
+    "node_modules",
+    "venv",
+]

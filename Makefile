@@ -6,14 +6,10 @@ install-deps: deps
 
 deps:
 	pip install --upgrade pip pip-tools
-	pip-compile requirements.in
+	pip-compile --output-file requirements.txt pyproject.toml
 
 dev-deps: deps
-	pip-compile dev-requirements.in
-
-fetchdb:
-	scp borshev.com:/srv/pmdaily/storage/pmdaily.sqlite storage/
-	cd src && ./manage.py anonymize_db
+	pip-compile --extra=dev --output-file dev-requirements.txt pyproject.toml
 
 server:
 	cd src && ./manage.py migrate && ./manage.py runserver
