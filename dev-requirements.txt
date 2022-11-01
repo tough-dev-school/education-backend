@@ -320,9 +320,7 @@ ptyprocess==0.7.0
 pure-eval==0.2.2
     # via stack-data
 py==1.11.0
-    # via
-    #   pytest-forked
-    #   retry
+    # via retry
 pycodestyle==2.9.1
     # via
     #   flake8
@@ -346,7 +344,6 @@ pytest==7.2.0
     #   pytest-deadfixtures
     #   pytest-django
     #   pytest-env
-    #   pytest-forked
     #   pytest-freezegun
     #   pytest-httpx
     #   pytest-mock
@@ -361,8 +358,6 @@ pytest-django==4.5.2
     # via education-backend (pyproject.toml)
 pytest-env==0.8.1
     # via education-backend (pyproject.toml)
-pytest-forked==1.4.0
-    # via pytest-xdist
 pytest-freezegun==0.4.2
     # via education-backend (pyproject.toml)
 pytest-httpx==0.21.1
