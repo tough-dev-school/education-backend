@@ -24,7 +24,6 @@ dependencies = [
     "django-storages",
     "drf-recaptcha",
     "drf-jwt",
-    "django-bulk-update",
     "django-filter",
     "django-anymail",
     "django-axes",
