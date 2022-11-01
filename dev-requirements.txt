@@ -24,7 +24,7 @@ attrs==22.1.0
     #   flake8-eradicate
     #   flake8-multiline-containers
     #   pytest
-babel==2.10.3
+babel==2.11.0
     # via education-backend (pyproject.toml)
 backcall==0.2.0
     # via ipython
