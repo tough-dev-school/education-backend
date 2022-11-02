@@ -1,4 +1,4 @@
-from typing import Optional, cast
+from typing import cast
 
 import contextlib
 from dataclasses import dataclass
@@ -8,6 +8,7 @@ from app.types import Language
 from diplomas.models import Diploma, DiplomaTemplate
 from diplomas.services.diploma_generator import DiplomaGenerator
 from mailing.tasks import send_mail
+from studying.models import Study
 from users.models import User
 
 
@@ -15,22 +16,37 @@ from users.models import User
 class DiplomaRegenerator:
     student: User
 
+    def __post_init__(self) -> None:
+        self.regenerated_diplomas_counter = 0
+
     def __call__(self) -> None:
-        if self.diplomas.count():
-            regenerated_diplomas_count = self.regenerate_diplomas()
+        for study in self.studies:
+            self.generate_study_diplomas(study)
 
-            if regenerated_diplomas_count > 0:
-                self.notify()
+        if self.regenerated_diplomas_counter > 0:
+            self.notify()
 
-    def regenerate_diplomas(self) -> int:
-        count = 0
-        for diploma in self.diplomas.iterator():
-            generated = self.regenerate(diploma)
+    @property
+    def studies(self) -> QuerySet[Study]:
+        return Study.objects.filter(student=self.student).select_related('course')
+
+    def generate_study_diplomas(self, study: Study) -> None:
+        for language in self.get_study_diploma_languages(study):
+            generated = self.regenerate(study, language)
 
             if generated is not None:
-                count += 1
+                self.regenerated_diplomas_counter += 1
 
-        return count
+    def get_study_diploma_languages(self, study: Study) -> QuerySet:
+        return (
+            DiplomaTemplate.objects
+            .filter(
+                course=study.course,
+                homework_accepted=study.homework_accepted,
+                language__in=self.student.diploma_languages,
+            )
+            .values_list('language', flat=True)
+        )
 
     def notify(self) -> None:
         send_mail.delay(
@@ -39,14 +55,10 @@ class DiplomaRegenerator:
             disable_antispam=True,
         )
 
-    @property
-    def diplomas(self) -> QuerySet[Diploma]:
-        return Diploma.objects.filter(study__student=self.student).select_related('study')
-
-    def regenerate(self, diploma: Diploma) -> Optional[Diploma]:
-        with contextlib.suppress(DiplomaTemplate.DoesNotExist):  # we have manualy generated diplomas
+    def regenerate(self, study: Study, language: str) -> Diploma | None:
+        with contextlib.suppress(DiplomaTemplate.DoesNotExist):  # we have manually generated diplomas
             return DiplomaGenerator(
-                student=diploma.study.student,
-                course=diploma.study.course,
-                language=cast(Language, diploma.language),
+                student=self.student,
+                course=study.course,
+                language=cast(Language, language),
             )()

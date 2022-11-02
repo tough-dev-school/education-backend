@@ -1,5 +1,6 @@
 import pytest
 
+from diplomas.models import DiplomaTemplate
 from orders import tasks
 from orders.services import OrderDiplomaGenerator
 
@@ -61,3 +62,10 @@ def test_student_without_a_name_does_not_get_the_diploma(diploma_generator, orde
     tasks.generate_diploma.delay(order_id=order.id)
 
     diploma_generator.assert_not_called()
+
+
+@pytest.mark.xfail(reason='plz_ask_is_it_correct_behavior', raises=DiplomaTemplate.DoesNotExist)
+def test_raise_if_no_suitable_template_exists(order, student, course):
+    order.study.setattr_and_save('homework_accepted', True)
+
+    OrderDiplomaGenerator(order=order)()

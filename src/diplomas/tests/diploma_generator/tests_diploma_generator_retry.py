@@ -35,7 +35,7 @@ def _reset_runs_count():
 
 @pytest.fixture
 def generator(generator):
-    return generator(language='ru')
+    return generator(language='RU')
 
 
 def test_ok(generator, httpx_mock):

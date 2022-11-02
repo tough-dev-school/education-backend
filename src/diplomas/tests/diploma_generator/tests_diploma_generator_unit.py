@@ -8,7 +8,7 @@ pytestmark = [
 
 
 def test_study_object(generator, order):
-    generator = generator(language='ru')
+    generator = generator(language='RU')
 
     assert generator.study == order.study, 'study object is returned'
 
@@ -20,7 +20,7 @@ def test_study_object(generator, order):
     ('male', 'm'),
 ])
 def test_sex(generator, gender, expected):
-    generator = generator(language='ru')
+    generator = generator(language='RU')
     generator.student.gender = gender
 
     template_context = generator.get_template_context()
@@ -29,7 +29,7 @@ def test_sex(generator, gender, expected):
 
 
 def test_user_name_ru(generator):
-    generator = generator(language='ru')
+    generator = generator(language='RU')
     generator.student.first_name = 'Авраам'
     generator.student.last_name = 'Линкольн'
 
@@ -39,7 +39,7 @@ def test_user_name_ru(generator):
 
 
 def test_user_name_en(generator):
-    generator = generator(language='en')
+    generator = generator(language='EN')
     generator.student.first_name_en = 'Abraham'
     generator.student.last_name_en = 'Lincoln'
 
@@ -51,7 +51,7 @@ def test_user_name_en(generator):
 def test_additional_course_context(generator, course):
     course.setattr_and_save('diploma_template_context', {'test': '__mocked'})
 
-    generator = generator(language='ru')
+    generator = generator(language='RU')
 
     template_context = generator.get_template_context()
 
@@ -59,7 +59,7 @@ def test_additional_course_context(generator, course):
 
 
 def test_bad_language(generator):
-    generator = generator(language='en')
+    generator = generator(language='EN')
 
     with pytest.raises(DiplomaTemplate.DoesNotExist):
         generator.get_external_service_url()
@@ -69,7 +69,7 @@ def test_no_template_for_homework(generator, order):
     order.study.homework_accepted = True
     order.study.save()
 
-    generator = generator(language='ru')
+    generator = generator(language='RU')
 
     with pytest.raises(DiplomaTemplate.DoesNotExist):
         generator.get_external_service_url()
@@ -78,6 +78,6 @@ def test_no_template_for_homework(generator, order):
 def test_external_service_url(generator, settings):
     settings.DIPLOMA_GENERATOR_HOST = 'https://secret.generator.com/'
 
-    generator = generator(language='ru')
+    generator = generator(language='RU')
 
     assert generator.get_external_service_url() == 'https://secret.generator.com/test-template.png'
