@@ -20,15 +20,18 @@ class DiplomaRegenerator:
         self.regenerated_diplomas_counter = 0
 
     def __call__(self) -> None:
-        for study in self.studies:
+        for study in self.studies_with_diplomas:
             self.generate_study_diplomas(study)
 
         if self.regenerated_diplomas_counter > 0:
             self.notify()
 
     @property
-    def studies(self) -> QuerySet[Study]:
-        return Study.objects.filter(student=self.student).select_related('course')
+    def studies_with_diplomas(self) -> QuerySet[Study]:
+        return Study.objects.filter(
+            student=self.student,
+            diploma__isnull=False,
+        ).distinct().select_related('course')
 
     def generate_study_diplomas(self, study: Study) -> None:
         for language in self.get_study_diploma_languages(study):
@@ -38,15 +41,11 @@ class DiplomaRegenerator:
                 self.regenerated_diplomas_counter += 1
 
     def get_study_diploma_languages(self, study: Study) -> QuerySet:
-        return (
-            DiplomaTemplate.objects
-            .filter(
-                course=study.course,
-                homework_accepted=study.homework_accepted,
-                language__in=self.student.diploma_languages,
-            )
-            .values_list('language', flat=True)
-        )
+        return DiplomaTemplate.objects.filter(
+            course=study.course,
+            homework_accepted=study.homework_accepted,
+            language__in=self.student.diploma_languages,
+        ).values_list('language', flat=True)
 
     def notify(self) -> None:
         send_mail.delay(
