@@ -24,7 +24,7 @@ attrs==22.1.0
     #   flake8-eradicate
     #   flake8-multiline-containers
     #   pytest
-babel==2.10.3
+babel==2.11.0
     # via education-backend (pyproject.toml)
 backcall==0.2.0
     # via ipython
@@ -36,7 +36,7 @@ bleach==5.0.1
     # via education-backend (pyproject.toml)
 boto3==1.25.5
     # via education-backend (pyproject.toml)
-boto3-stubs==1.25.5
+boto3-stubs==1.26.0.post1
     # via education-backend (pyproject.toml)
 botocore==1.28.5
     # via
@@ -81,7 +81,7 @@ coreschema==0.0.4
     # via coreapi
 coverage[toml]==6.5.0
     # via pytest-cov
-cryptography==38.0.1
+cryptography==38.0.3
     # via pyjwt
 decorator==5.1.1
     # via
@@ -457,7 +457,7 @@ types-markdown==3.4.2.1
     #   education-backend (pyproject.toml)
 types-pillow==9.3.0.0
     # via education-backend (pyproject.toml)
-types-pytz==2022.5.0.0
+types-pytz==2022.6.0.1
     # via
     #   django-stubs
     #   types-babel
