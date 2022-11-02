@@ -81,7 +81,7 @@ coreschema==0.0.4
     # via coreapi
 coverage[toml]==6.5.0
     # via pytest-cov
-cryptography==38.0.1
+cryptography==38.0.3
     # via pyjwt
 decorator==5.1.1
     # via
