@@ -36,13 +36,13 @@ bleach==5.0.1
     # via education-backend (pyproject.toml)
 boto3==1.25.5
     # via education-backend (pyproject.toml)
-boto3-stubs==1.26.0.post1
+boto3-stubs==1.26.1
     # via education-backend (pyproject.toml)
 botocore==1.28.5
     # via
     #   boto3
     #   s3transfer
-botocore-stubs==1.28.5
+botocore-stubs==1.29.1
     # via boto3-stubs
 celery==5.2.7
     # via education-backend (pyproject.toml)
@@ -443,9 +443,9 @@ traitlets==5.5.0
     # via
     #   ipython
     #   matplotlib-inline
-types-awscrt==0.15.1
+types-awscrt==0.15.2
     # via botocore-stubs
-types-babel==2.10.0
+types-babel==2.11.0.0
     # via education-backend (pyproject.toml)
 types-bleach==5.0.3.1
     # via education-backend (pyproject.toml)
