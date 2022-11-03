@@ -14,7 +14,7 @@ def _mock_response(httpx_mock):
 
 
 def test_service(generator, student, course):
-    generator = generator(language='ru')
+    generator = generator(language='RU')
 
     diploma = generator()
 
@@ -24,7 +24,7 @@ def test_service(generator, student, course):
 
 
 def test_diploma_is_regenrated_when_it_already_exists(generator, student, course):
-    generator = generator(language='ru')
+    generator = generator(language='RU')
 
     first_diploma = generator()
     second_diploma = generator()
@@ -36,7 +36,7 @@ def test_diploma_is_regenrated_when_it_already_exists(generator, student, course
 
 
 def test_task(student, course):
-    generate_diploma.delay(student_id=student.id, course_id=course.id, language='ru')
+    generate_diploma.delay(student_id=student.id, course_id=course.id, language='RU')
 
     diploma = Diploma.objects.get(study__student=student, study__course=course)
 

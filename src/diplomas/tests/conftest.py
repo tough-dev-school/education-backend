@@ -27,7 +27,7 @@ def order(factory, course, student):
 
 @pytest.fixture(autouse=True)
 def template(mixer, course):
-    return mixer.blend('diplomas.DiplomaTemplate', slug='test-template', course=course, language='ru', homework_accepted=False)
+    return mixer.blend('diplomas.DiplomaTemplate', slug='test-template', course=course, language='RU', homework_accepted=False)
 
 
 @pytest.fixture

@@ -1,11 +1,10 @@
-from typing import Optional, cast
+from typing import cast
 
-import contextlib
 from dataclasses import dataclass
 from django.db.models import QuerySet
 
 from app.types import Language
-from diplomas.models import Diploma, DiplomaTemplate
+from diplomas.models import Diploma
 from diplomas.services.diploma_generator import DiplomaGenerator
 from mailing.tasks import send_mail
 from users.models import User
@@ -41,12 +40,15 @@ class DiplomaRegenerator:
 
     @property
     def diplomas(self) -> QuerySet[Diploma]:
-        return Diploma.objects.filter(study__student=self.student).select_related('study')
+        return (
+            Diploma.objects.filter(study__student=self.student)
+            .filter_with_template()  # we have manually generated diplomas
+            .select_related('study')
+        )
 
-    def regenerate(self, diploma: Diploma) -> Optional[Diploma]:
-        with contextlib.suppress(DiplomaTemplate.DoesNotExist):  # we have manualy generated diplomas
-            return DiplomaGenerator(
-                student=diploma.study.student,
-                course=diploma.study.course,
-                language=cast(Language, diploma.language),
-            )()
+    def regenerate(self, diploma: Diploma) -> Diploma:
+        return DiplomaGenerator(
+            student=diploma.study.student,
+            course=diploma.study.course,
+            language=cast(Language, diploma.language),
+        )()
