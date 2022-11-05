@@ -26,14 +26,14 @@ class DiplomaQuerySet(models.QuerySet):
         DiplomaTemplate = apps.get_model('diplomas.DiplomaTemplate')
 
         return self.alias(
-            is_template_exists=Exists(
+            template_exists=Exists(
                 DiplomaTemplate.objects.filter(
                     course=OuterRef('study__course'),
                     language=OuterRef('language'),
                     homework_accepted=OuterRef('study__homework_accepted'),
                 ),
             ),
-        ).filter(is_template_exists=True)
+        ).filter(template_exists=True)
 
 
 DiplomaManager = models.Manager.from_queryset(DiplomaQuerySet)
