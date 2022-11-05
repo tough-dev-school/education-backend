@@ -149,7 +149,7 @@ packaging==21.3
     # via redis
 pillow==9.3.0
     # via django-markdownx
-prompt-toolkit==3.0.31
+prompt-toolkit==3.0.32
     # via click-repl
 psycopg2-binary==2.9.5
     # via education-backend (pyproject.toml)
