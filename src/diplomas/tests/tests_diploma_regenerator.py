@@ -44,8 +44,8 @@ def test_diplomas_are_regenerated(student, course, diploma_ru, diploma_en, order
     DiplomaRegenerator(student)()
 
     diploma_ru.refresh_from_db()
-    assert diploma_ru.modified is not None
     diploma_en.refresh_from_db()
+    assert diploma_ru.modified is not None
     assert diploma_en.modified is not None
 
 
@@ -53,8 +53,8 @@ def test_task_diplomas_regenerated(student, course, order, diploma_ru, diploma_e
     tasks.regenerate_diplomas.delay(student_id=student.id)
 
     diploma_ru.refresh_from_db()
-    assert diploma_ru.modified is not None
     diploma_en.refresh_from_db()
+    assert diploma_ru.modified is not None
     assert diploma_en.modified is not None
 
 

@@ -23,25 +23,25 @@ def test_diploma_with_template_in_query(diploma, query):
     assert diploma in diplomas
 
 
-def test_exclude_diplomas_not_matching_template_course(mixer, query, template):
+def test_exclude_diplomas_not_matching_template_course(mixer, query, template, diploma):
     template.setattr_and_save('course', mixer.blend('products.Course'))
 
     diplomas = query()
 
-    assert diplomas.count() == 0
+    assert diploma not in diplomas
 
 
-def test_exclude_diplomas_not_matching_template_language(query, template):
+def test_exclude_diplomas_not_matching_template_language(query, template, diploma):
     template.setattr_and_save('language', 'EN')
 
     diplomas = query()
 
-    assert diplomas.count() == 0
+    assert diploma not in diplomas
 
 
-def test_exclude_diplomas_not_matching_template_homework_accepted(query, template):
+def test_exclude_diplomas_not_matching_template_homework_accepted(query, template, diploma):
     template.setattr_and_save('homework_accepted', True)
 
     diplomas = query()
 
-    assert diplomas.count() == 0
+    assert diploma not in diplomas

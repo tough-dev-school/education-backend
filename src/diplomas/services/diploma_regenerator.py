@@ -42,7 +42,7 @@ class DiplomaRegenerator:
     def diplomas(self) -> QuerySet[Diploma]:
         return (
             Diploma.objects.filter(study__student=self.student)
-            .filter_with_template()  # we have manually generated diplomas
+            .filter_with_template()  # some diplomas have no template, can't regenerate them
             .select_related('study')
         )
 
