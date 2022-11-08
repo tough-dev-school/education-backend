@@ -4,32 +4,59 @@ from dataclasses import dataclass
 from django.db.models import QuerySet
 
 from app.types import Language
-from diplomas.models import Diploma
+from diplomas.models import Diploma, DiplomaTemplate
 from diplomas.services.diploma_generator import DiplomaGenerator
 from mailing.tasks import send_mail
+from studying.models import Study
 from users.models import User
 
 
 @dataclass
 class DiplomaRegenerator:
+    """Update and create student's diplomas in other language."""
+
     student: User
 
     def __call__(self) -> None:
-        if self.diplomas.count():
-            regenerated_diplomas_count = self.regenerate_diplomas()
+        generated_diplomas_count = 0
 
-            if regenerated_diplomas_count > 0:
-                self.notify()
+        for study in self.studies:
+            generated_diplomas_count += self.generate_study_diplomas(study)
 
-    def regenerate_diplomas(self) -> int:
+        if generated_diplomas_count > 0:
+            self.notify()
+
+    @property
+    def studies(self) -> QuerySet[Study]:
+        return Study.objects.filter(
+            id__in=self.get_study_ids_for_diploma_regeneration(),
+        ).select_related('course')
+
+    def generate_study_diplomas(self, study: Study) -> int:
         count = 0
-        for diploma in self.diplomas.iterator():
-            generated = self.regenerate(diploma)
-
-            if generated is not None:
-                count += 1
+        for language in self.get_study_diploma_languages(study):
+            self.regenerate(study, language)
+            count += 1
 
         return count
+
+    def get_study_ids_for_diploma_regeneration(self) -> list[int]:
+        return list(
+            Diploma.objects.filter(study__student=self.student)
+            .filter_with_template()  # some diplomas have no template, can't regenerate them
+            .order_by()
+            .values_list('study__id', flat=True)
+            .distinct('study__id'),
+        )
+
+    def get_study_diploma_languages(self, study: Study) -> list[str]:
+        return list(
+            DiplomaTemplate.objects.filter(
+                course=study.course,
+                homework_accepted=study.homework_accepted,
+                language__in=self.student.diploma_languages,
+            ).values_list('language', flat=True),
+        )
 
     def notify(self) -> None:
         send_mail.delay(
@@ -38,17 +65,9 @@ class DiplomaRegenerator:
             disable_antispam=True,
         )
 
-    @property
-    def diplomas(self) -> QuerySet[Diploma]:
-        return (
-            Diploma.objects.filter(study__student=self.student)
-            .filter_with_template()  # some diplomas have no template, can't regenerate them
-            .select_related('study')
-        )
-
-    def regenerate(self, diploma: Diploma) -> Diploma:
+    def regenerate(self, study: Study, language: str) -> Diploma:
         return DiplomaGenerator(
-            student=diploma.study.student,
-            course=diploma.study.course,
-            language=cast(Language, diploma.language),
+            student=self.student,
+            course=study.course,
+            language=cast(Language, language),
         )()
