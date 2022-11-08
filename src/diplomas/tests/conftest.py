@@ -1,7 +1,9 @@
 import pytest
 from functools import partial
 
+from diplomas.models import Languages
 from diplomas.services import DiplomaGenerator
+from users.models import User
 
 
 @pytest.fixture(autouse=True)
@@ -18,7 +20,7 @@ def student(mixer):
         last_name='Кривомазов',
         first_name_en='Ovir',
         last_name_en='Krivomazov',
-        gender='male',
+        gender=User.GENDERS.MALE,
     )
 
 
@@ -34,7 +36,13 @@ def order(factory, course, student):
 
 @pytest.fixture(autouse=True)
 def template(mixer, course):
-    return mixer.blend('diplomas.DiplomaTemplate', slug='test-template', course=course, language='RU', homework_accepted=False)
+    return mixer.blend(
+        'diplomas.DiplomaTemplate',
+        slug='test-template',
+        course=course,
+        language=Languages.RU,
+        homework_accepted=False,
+    )
 
 
 @pytest.fixture

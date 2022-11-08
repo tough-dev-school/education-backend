@@ -5,6 +5,7 @@ from diplomas.models import DiplomaTemplate
 from diplomas.tasks import generate_diploma
 from orders.models import Order
 from products.models import Course
+from studying.models import Study
 from users.models import User
 
 
@@ -21,18 +22,23 @@ class OrderDiplomaGenerator:
             )
 
     @cached_property
+    def study(self) -> Study:
+        return self.order.study
+
+    @cached_property
     def student(self) -> User:
-        return self.order.study.student
+        return self.study.student
 
     @cached_property
     def course(self) -> Course:
-        return self.order.study.course
+        return self.study.course
 
     def get_available_languages(self) -> list[str]:
         return [
             template.language
             for template in DiplomaTemplate.objects.filter(
                 course=self.course,
+                homework_accepted=self.study.homework_accepted,
                 language__in=self.student.diploma_languages,
             )
         ]

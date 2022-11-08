@@ -1,7 +1,7 @@
 import pytest
 
 from diplomas import tasks
-from diplomas.models import DiplomaTemplate
+from diplomas.models import Diploma, Languages
 from diplomas.services import DiplomaRegenerator
 
 pytestmark = [
@@ -10,119 +10,145 @@ pytestmark = [
 
 
 @pytest.fixture(autouse=True)
+def _mock_diploma_generator_fetch_image(mocker, factory):
+    image = factory.uploaded_image()
+    mocker.patch('diplomas.services.diploma_regenerator.DiplomaGenerator.fetch_image', return_value=image)
+
+
+@pytest.fixture(autouse=True)
 def template_en(mixer, course):
-    return mixer.blend('diplomas.DiplomaTemplate', slug='test-template-en', course=course, language='EN', homework_accepted=False)
-
-
-@pytest.fixture(autouse=True)
-def diploma_ru(mixer, order):
-    return mixer.blend('diplomas.Diploma', study=order.study, language='RU')
-
-
-@pytest.fixture(autouse=True)
-def diploma_en(mixer, order):
-    return mixer.blend('diplomas.Diploma', study=order.study, language='EN')
-
-
-@pytest.fixture(autouse=True)
-def mock_diploma_generator(mocker):
-    return mocker.patch('diplomas.services.diploma_regenerator.DiplomaGenerator.__init__', return_value=None)
-
-
-@pytest.fixture(autouse=True)
-def mock_run_diploma_generation(mocker):
-    return mocker.patch('diplomas.services.diploma_generator.DiplomaGenerator.__call__')
+    return mixer.blend(
+        'diplomas.DiplomaTemplate',
+        slug='test-template',
+        course=course,
+        language=Languages.EN,
+        homework_accepted=False,
+    )
 
 
 @pytest.fixture
-def mock_send_mail(mocker):
-    return mocker.patch('mailing.tasks.send_mail.delay')
+def diploma_ru(mixer, order):
+    return mixer.blend('diplomas.Diploma', study=order.study, language=Languages.RU)
 
 
-def test_diplomas_are_regenerated(student, course, mock_diploma_generator, mocker):
+@pytest.fixture
+def diploma_en(mixer, order):
+    return mixer.blend('diplomas.Diploma', study=order.study, language=Languages.EN)
+
+
+@pytest.fixture
+def mock_diploma_generator(mocker):
+    return mocker.patch('diplomas.services.diploma_generator.DiplomaGenerator.__call__', autospec=True)
+
+
+@pytest.fixture
+def mock_diploma_regenerator(mocker):
+    return mocker.patch('diplomas.services.diploma_regenerator.DiplomaRegenerator.__call__', autospec=True)
+
+
+@pytest.fixture
+def _remove_student_en_name(student):
+    student.first_name_en = ''
+    student.last_name_en = ''
+    student.save()
+
+
+def test_diplomas_are_regenerated(student, diploma_ru, diploma_en, order):
     DiplomaRegenerator(student)()
 
-    mock_diploma_generator.assert_has_calls((
-        mocker.call(course=course, student=student, language='RU'),
-        mocker.call(course=course, student=student, language='EN'),
-    ), any_order=True)
+    diploma_ru.refresh_from_db()
+    diploma_en.refresh_from_db()
+    assert diploma_ru.modified is not None
+    assert diploma_en.modified is not None
 
 
-def test_task(student, course, mock_diploma_generator, mocker):
+def test_task_diplomas_regenerated(student, course, order, diploma_ru, diploma_en):
     tasks.regenerate_diplomas.delay(student_id=student.id)
 
-    mock_diploma_generator.assert_has_calls((
-        mocker.call(course=course, student=student, language='RU'),
-        mocker.call(course=course, student=student, language='EN'),
-    ), any_order=True)
+    diploma_ru.refresh_from_db()
+    diploma_en.refresh_from_db()
+    assert diploma_ru.modified is not None
+    assert diploma_en.modified is not None
 
 
-def test_sky_does_not_fall_if_there_is_no_template_for_generated_diploma(student, mock_send_mail, mock_diploma_generator):
-    mock_diploma_generator.side_effect = DiplomaTemplate.DoesNotExist
-
+def test_email_is_sent(send_mail, student, diploma_ru):
     DiplomaRegenerator(student)()
 
-    mock_send_mail.assert_not_called()
-
-
-def test_email_is_sent(mock_send_mail, student):
-    DiplomaRegenerator(student)()
-
-    mock_send_mail.assert_called_once_with(
+    send_mail.assert_called_once_with(
         to=student.email,
         template_id='diplomas_regenerated',
         disable_antispam=True,
     )
 
 
-def test_no_diplomas_are_generated_when_student_didnt_set_name(another_user, mock_diploma_generator, mock_send_mail):
+def test_task_call_regenerator(student, course, order, diploma_ru, mock_diploma_regenerator):
+    tasks.regenerate_diplomas.delay(student_id=student.id)
+
+    mock_diploma_regenerator.assert_called_once()
+    called_service = mock_diploma_regenerator.call_args.args[0]
+    assert called_service.student == student
+
+
+def test_call_diploma_generator_service(student, course, diploma_ru, diploma_en, mock_diploma_generator):
+    DiplomaRegenerator(student)()
+
+    first_called_service = mock_diploma_generator.call_args.args[0]
+    second_called_service = mock_diploma_generator.call_args.args[1]
+    assert mock_diploma_generator.call_count == 2
+    assert first_called_service.course == course
+    assert first_called_service.student == student
+    assert first_called_service.language == Languages.RU
+    assert second_called_service.course == course
+    assert second_called_service.student == student
+    assert second_called_service.language == Languages.EN
+
+
+@pytest.mark.usefixtures('diploma_ru')
+def test_generate_new_diplomas_in_other_languages(student):
+    DiplomaRegenerator(student)()
+
+    diplomas_en_language = Diploma.objects.filter(language=Languages.EN)
+    assert diplomas_en_language.exists() is True
+
+
+@pytest.mark.usefixtures('diploma_ru', '_remove_student_en_name')
+def test_do_not_generate_new_diplomas_in_other_languages_when_no_name_in_language(student):
+    DiplomaRegenerator(student)()
+
+    diplomas_en_language = Diploma.objects.filter(language=Languages.EN)
+    assert diplomas_en_language.exists() is False
+
+
+@pytest.mark.usefixtures('diploma_ru')
+def test_do_not_generate_new_diplomas_in_other_languages_when_no_template_in_language(student, template_en):
+    template_en.delete()
+
+    DiplomaRegenerator(student)()
+
+    diplomas_en_language = Diploma.objects.filter(language=Languages.EN)
+    assert diplomas_en_language.exists() is False
+
+
+@pytest.mark.usefixtures('diploma_ru', '_remove_student_en_name')
+def test_do_not_update_diplomas_in_language_when_no_name_in_language(student, diploma_en):
+    DiplomaRegenerator(student)()
+
+    diploma_en.refresh_from_db()
+    assert diploma_en.modified is None
+
+
+@pytest.mark.usefixtures('diploma_ru')
+def test_do_not_update_diplomas_in_languages_when_no_template_in_language(student, template_en, diploma_en):
+    template_en.delete()
+
+    DiplomaRegenerator(student)()
+
+    diploma_en.refresh_from_db()
+    assert diploma_en.modified is None
+
+
+def test_generate_new_diplomas_for_order_if_at_least_one_diploma_for_order_exists(another_user, send_mail):
     DiplomaRegenerator(another_user)()
 
-    mock_diploma_generator.assert_not_called()
-    mock_send_mail.assert_not_called()
-
-
-def test_diplomas_not_generated_if_not_exists_before(diploma_ru, diploma_en, student, mock_diploma_generator):
-    diploma_en.delete()
-    diploma_ru.delete()
-
-    DiplomaRegenerator(student)()
-
-    mock_diploma_generator.assert_not_called()
-
-
-def test_diplomas_for_all_languages_generated_if_for_one_language_exists(student, course, mock_diploma_generator, mocker, diploma_ru):
-    diploma_ru.delete()
-
-    DiplomaRegenerator(student)()
-
-    mock_diploma_generator.assert_has_calls((
-        mocker.call(course=course, student=student, language='RU'),
-        mocker.call(course=course, student=student, language='EN'),
-    ), any_order=True)
-
-
-def test_language_diploma_not_generated_if_name_for_language_not_set(student, course, mock_diploma_generator):
-    student.first_name_en = ''
-    student.last_name_en = ''
-    student.save()
-
-    DiplomaRegenerator(student)()
-
-    mock_diploma_generator.assert_called_once_with(
-        course=course,
-        student=student,
-        language='RU',  # only for RU regenerated
-    )
-
-
-def test_language_diploma_not_generated_if_there_is_no_template_for_language(student, course, mock_diploma_generator, template):
-    template.delete()
-
-    DiplomaRegenerator(student)()
-
-    mock_diploma_generator.assert_called_once_with(
-        course=course,
-        student=student,
-        language='EN',  # only for EN regenerated
-    )
+    assert Diploma.objects.count() == 0
+    send_mail.assert_not_called()

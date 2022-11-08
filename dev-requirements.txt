@@ -36,13 +36,13 @@ bleach==5.0.1
     # via education-backend (pyproject.toml)
 boto3==1.25.5
     # via education-backend (pyproject.toml)
-boto3-stubs==1.26.0.post1
+boto3-stubs==1.26.4
     # via education-backend (pyproject.toml)
 botocore==1.28.5
     # via
     #   boto3
     #   s3transfer
-botocore-stubs==1.28.5
+botocore-stubs==1.29.4
     # via boto3-stubs
 celery==5.2.7
     # via education-backend (pyproject.toml)
@@ -148,7 +148,7 @@ django-stubs==1.11.0
     # via
     #   djangorestframework-stubs
     #   education-backend (pyproject.toml)
-django-stubs-ext==0.5.0
+django-stubs-ext==0.7.0
     # via django-stubs
 django-tree-queries==0.11.0
     # via education-backend (pyproject.toml)
@@ -166,7 +166,7 @@ drf-recaptcha==2.2.2
     # via education-backend (pyproject.toml)
 eradicate==2.1.0
     # via flake8-eradicate
-exceptiongroup==1.0.0
+exceptiongroup==1.0.1
     # via pytest
 execnet==1.9.0
     # via pytest-xdist
@@ -309,7 +309,7 @@ pillow==9.3.0
     # via django-markdownx
 pluggy==1.0.0
     # via pytest
-prompt-toolkit==3.0.31
+prompt-toolkit==3.0.32
     # via
     #   click-repl
     #   ipython
@@ -360,7 +360,7 @@ pytest-env==0.8.1
     # via education-backend (pyproject.toml)
 pytest-freezegun==0.4.2
     # via education-backend (pyproject.toml)
-pytest-httpx==0.21.1
+pytest-httpx==0.21.2
     # via education-backend (pyproject.toml)
 pytest-mock==3.10.0
     # via education-backend (pyproject.toml)
@@ -443,9 +443,9 @@ traitlets==5.5.0
     # via
     #   ipython
     #   matplotlib-inline
-types-awscrt==0.15.1
+types-awscrt==0.15.2
     # via botocore-stubs
-types-babel==2.10.0
+types-babel==2.11.0.2
     # via education-backend (pyproject.toml)
 types-bleach==5.0.3.1
     # via education-backend (pyproject.toml)

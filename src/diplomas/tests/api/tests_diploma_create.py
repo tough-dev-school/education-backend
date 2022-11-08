@@ -1,6 +1,6 @@
 import pytest
 
-from diplomas.models import Diploma
+from diplomas.models import Diploma, Languages
 
 pytestmark = [pytest.mark.django_db]
 
@@ -44,7 +44,7 @@ def test_uploading(api, payload, course, student):
 
     assert created.study.course == course
     assert created.study.student == student
-    assert created.language == 'RU'
+    assert created.language == Languages.RU
 
     assert '-4' in created.image.path
     assert created.image.path.endswith('.gif')

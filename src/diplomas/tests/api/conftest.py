@@ -1,5 +1,7 @@
 import pytest
 
+from diplomas.models import Languages
+
 pytestmark = [pytest.mark.django_db]
 
 
@@ -15,4 +17,4 @@ def api(api):
 
 @pytest.fixture
 def diploma(factory):
-    return factory.diploma(language='EN')
+    return factory.diploma(language=Languages.EN)

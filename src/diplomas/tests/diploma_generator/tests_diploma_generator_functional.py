@@ -23,7 +23,7 @@ def test_service(generator, student, course):
     assert diploma.study.course == course
 
 
-def test_diploma_is_regenrated_when_it_already_exists(generator, student, course):
+def test_diploma_is_regenerated_when_it_already_exists(generator, student, course):
     generator = generator(language='RU')
 
     first_diploma = generator()

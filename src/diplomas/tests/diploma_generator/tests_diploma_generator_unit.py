@@ -1,6 +1,7 @@
 import pytest
 
 from diplomas.models import DiplomaTemplate
+from users.models import User
 
 pytestmark = [
     pytest.mark.django_db,
@@ -16,8 +17,8 @@ def test_study_object(generator, order):
 @pytest.mark.parametrize(('gender', 'expected'), [
     ('', 'm'),
     (None, 'm'),
-    ('female', 'f'),
-    ('male', 'm'),
+    (User.GENDERS.FEMALE, 'f'),
+    (User.GENDERS.MALE, 'm'),
 ])
 def test_sex(generator, gender, expected):
     generator = generator(language='RU')
