@@ -1,11 +1,13 @@
 import pytest
 
+from diplomas.models import Languages
+
 pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
 def diploma_with_another_lang(mixer, diploma):
-    return mixer.blend('diplomas.Diploma', study=diploma.study, language='RU')
+    return mixer.blend('diplomas.Diploma', study=diploma.study, language=Languages.RU)
 
 
 def test(anon, diploma):

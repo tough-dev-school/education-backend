@@ -1,5 +1,7 @@
 import shortuuid
+from django.apps import apps
 from django.conf import settings
+from django.db.models import Exists, OuterRef
 from django.utils.translation import gettext_lazy as _
 from urllib.parse import urljoin
 
@@ -19,6 +21,19 @@ class DiplomaQuerySet(models.QuerySet):
 
     def for_user(self, user):
         return self.filter(study__student=user)
+
+    def filter_with_template(self) -> 'DiplomaQuerySet':
+        DiplomaTemplate = apps.get_model('diplomas.DiplomaTemplate')
+
+        return self.alias(
+            template_exists=Exists(
+                DiplomaTemplate.objects.filter(
+                    course=OuterRef('study__course'),
+                    language=OuterRef('language'),
+                    homework_accepted=OuterRef('study__homework_accepted'),
+                ),
+            ),
+        ).filter(template_exists=True)
 
 
 DiplomaManager = models.Manager.from_queryset(DiplomaQuerySet)
