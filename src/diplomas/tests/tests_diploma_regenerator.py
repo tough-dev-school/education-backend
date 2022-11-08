@@ -2,7 +2,7 @@ import pytest
 
 from diplomas import tasks
 from diplomas.models import Diploma, Languages
-from diplomas.services import DiplomaRegenerator
+from diplomas.services import DiplomaGenerator, DiplomaRegenerator
 
 pytestmark = [
     pytest.mark.django_db,
@@ -89,18 +89,14 @@ def test_task_call_regenerator(student, course, order, diploma_ru, mock_diploma_
     assert called_service.student == student
 
 
-def test_call_diploma_generator_service(student, course, diploma_ru, diploma_en, mock_diploma_generator):
+@pytest.mark.usefixtures('diploma_ru', 'diploma_en')
+def test_call_diploma_generator_service(student, course, mock_diploma_generator, mocker):
     DiplomaRegenerator(student)()
 
-    first_called_service = mock_diploma_generator.call_args.args[0]
-    second_called_service = mock_diploma_generator.call_args.args[1]
-    assert mock_diploma_generator.call_count == 2
-    assert first_called_service.course == course
-    assert first_called_service.student == student
-    assert first_called_service.language == Languages.RU
-    assert second_called_service.course == course
-    assert second_called_service.student == student
-    assert second_called_service.language == Languages.EN
+    mock_diploma_generator.assert_has_calls((
+        mocker.call(DiplomaGenerator(course=course, student=student, language='EN')),
+        mocker.call(DiplomaGenerator(course=course, student=student, language='RU')),
+    ), any_order=True)
 
 
 @pytest.mark.usefixtures('diploma_ru')
