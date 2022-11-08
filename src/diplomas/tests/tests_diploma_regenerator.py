@@ -1,7 +1,7 @@
 import pytest
 
 from diplomas import tasks
-from diplomas.models import Diploma
+from diplomas.models import Diploma, Languages
 from diplomas.services import DiplomaRegenerator
 
 pytestmark = [
@@ -17,17 +17,23 @@ def _mock_diploma_generator_fetch_image(mocker, factory):
 
 @pytest.fixture(autouse=True)
 def template_en(mixer, course):
-    return mixer.blend('diplomas.DiplomaTemplate', slug='test-template', course=course, language='EN', homework_accepted=False)
+    return mixer.blend(
+        'diplomas.DiplomaTemplate',
+        slug='test-template',
+        course=course,
+        language=Languages.EN,
+        homework_accepted=False,
+    )
 
 
 @pytest.fixture
 def diploma_ru(mixer, order):
-    return mixer.blend('diplomas.Diploma', study=order.study, language='RU')
+    return mixer.blend('diplomas.Diploma', study=order.study, language=Languages.RU)
 
 
 @pytest.fixture
 def diploma_en(mixer, order):
-    return mixer.blend('diplomas.Diploma', study=order.study, language='EN')
+    return mixer.blend('diplomas.Diploma', study=order.study, language=Languages.EN)
 
 
 @pytest.fixture
@@ -93,7 +99,7 @@ def test_diploma_generator_service_is_called(student, course, diploma_ru, mock_d
     called_service = mock_diploma_generator.call_args.args[0]
     assert called_service.course == course
     assert called_service.student == student
-    assert called_service.language == 'RU'
+    assert called_service.language == Languages.RU
 
 
 def test_no_diplomas_are_generated_when_there_are_no_diplomas_for_user(another_user, send_mail):

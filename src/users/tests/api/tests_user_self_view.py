@@ -1,5 +1,7 @@
 import pytest
 
+from users.models import User
+
 pytestmark = [pytest.mark.django_db]
 
 
@@ -49,13 +51,13 @@ def test_edit_user_data_in_english(api):
 
 
 def test_edit_gender(api):
-    api.user.gender = 'male'
+    api.user.gender = User.GENDERS.MALE
     api.user.save()
 
     api.patch('/api/v2/users/me/', {'gender': 'female'})
 
     api.user.refresh_from_db()
-    assert api.user.gender == 'female'
+    assert api.user.gender == User.GENDERS.FEMALE
 
 
 @pytest.mark.parametrize('field', ['github_username', 'linkedin_username'])

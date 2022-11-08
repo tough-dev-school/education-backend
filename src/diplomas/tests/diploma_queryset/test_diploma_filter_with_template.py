@@ -1,6 +1,6 @@
 import pytest
 
-from diplomas.models import Diploma
+from diplomas.models import Diploma, Languages
 
 pytestmark = [
     pytest.mark.django_db,
@@ -9,7 +9,7 @@ pytestmark = [
 
 @pytest.fixture(autouse=True)
 def diploma(mixer, order):
-    return mixer.blend('diplomas.Diploma', study=order.study, language='RU')
+    return mixer.blend('diplomas.Diploma', study=order.study, language=Languages.RU)
 
 
 @pytest.fixture
@@ -32,7 +32,7 @@ def test_exclude_diplomas_not_matching_template_course(mixer, query, template, d
 
 
 def test_exclude_diplomas_not_matching_template_language(query, template, diploma):
-    template.setattr_and_save('language', 'EN')
+    template.setattr_and_save('language', Languages.EN)
 
     diplomas = query()
 

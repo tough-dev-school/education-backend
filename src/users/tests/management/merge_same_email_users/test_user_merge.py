@@ -1,6 +1,8 @@
 import pytest
 from mixer.backend.django import mixer
 
+from users.models import User
+
 pytestmark = pytest.mark.django_db
 
 
@@ -28,7 +30,7 @@ def test_merged_user_has_email_lowered(bob_a, bob_b, command):
     ('first_name_en', 'Bob', ''),
     ('last_name_en', 'McBob', ''),
     ('subscribed', True, False),
-    ('gender', 'male', ''),
+    ('gender', User.GENDERS.MALE, ''),
 ])
 def test_target_user_populates_empty_property(bob_a, bob_b, command, prop_name, prop_value, empty_value):
     setattr(bob_a, prop_name, prop_value)
@@ -47,7 +49,7 @@ def test_target_user_populates_empty_property(bob_a, bob_b, command, prop_name, 
     ('first_name_en', 'Bob', ''),
     ('last_name_en', 'McBob', ''),
     ('subscribed', True, False),
-    ('gender', 'male', ''),
+    ('gender', User.GENDERS.MALE, ''),
 ])
 def test_target_user_preserves_non_empty_property(bob_a, bob_b, command, prop_name, prop_value, empty_value):
     setattr(bob_a, prop_name, empty_value)
