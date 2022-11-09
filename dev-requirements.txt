@@ -36,13 +36,13 @@ bleach==5.0.1
     # via education-backend (pyproject.toml)
 boto3==1.25.5
     # via education-backend (pyproject.toml)
-boto3-stubs==1.26.4
+boto3-stubs==1.26.5
     # via education-backend (pyproject.toml)
 botocore==1.28.5
     # via
     #   boto3
     #   s3transfer
-botocore-stubs==1.29.4
+botocore-stubs==1.29.5
     # via boto3-stubs
 celery==5.2.7
     # via education-backend (pyproject.toml)
@@ -445,7 +445,7 @@ traitlets==5.5.0
     #   matplotlib-inline
 types-awscrt==0.15.2
     # via botocore-stubs
-types-babel==2.11.0.2
+types-babel==2.11.0.3
     # via education-backend (pyproject.toml)
 types-bleach==5.0.3.1
     # via education-backend (pyproject.toml)
@@ -455,7 +455,7 @@ types-markdown==3.4.2.1
     # via
     #   djangorestframework-stubs
     #   education-backend (pyproject.toml)
-types-pillow==9.3.0.0
+types-pillow==9.3.0.1
     # via education-backend (pyproject.toml)
 types-pytz==2022.6.0.1
     # via
@@ -465,7 +465,7 @@ types-pyyaml==6.0.12.1
     # via
     #   django-stubs
     #   djangorestframework-stubs
-types-requests==2.28.11.2
+types-requests==2.28.11.3
     # via
     #   djangorestframework-stubs
     #   education-backend (pyproject.toml)
