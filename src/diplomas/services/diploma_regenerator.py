@@ -13,7 +13,12 @@ from users.models import User
 
 @dataclass
 class DiplomaRegenerator:
-    """Update and create student's diplomas for all languages."""
+    """Update and create student's diplomas.
+
+    Tries to create diplomas on every possible language, to handle a case when student
+    had a blank name for particular language, bot obtained it after the initial diploma
+    generation. E.g. had only name in russian, and added an english name later.
+    """
 
     student: User
 
