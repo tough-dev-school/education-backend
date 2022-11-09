@@ -19,6 +19,7 @@ class DiplomaAdmin(ModelAdmin):
     fields = [
         'slug',
         'student',
+        'study',
         'course',
         'language',
         'image',
@@ -40,6 +41,7 @@ class DiplomaAdmin(ModelAdmin):
 
     readonly_fields = ['slug', 'course', 'student']
     list_select_related = ['study', 'study__student', 'study__course']
+    raw_id_fields = ['study']
 
     @admin.display(description=_('Student'), ordering='study__student')
     def student(self, diploma: Diploma):
