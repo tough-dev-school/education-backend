@@ -57,10 +57,11 @@ class User(AbstractUser):
 
     @cached_property
     def diploma_languages(self) -> set[Language]:
+        language_values = [cast(Language, language) for language in Languages.values]
         return {
             language
-            for language in map(lambda value: cast(Language, value), Languages.values)
-            if self.get_printable_name(language=language) is not None
+            for language in language_values
+            if self.get_printable_name(language) is not None
         }
 
     def get_printable_name(self, language: Language) -> Optional[str]:

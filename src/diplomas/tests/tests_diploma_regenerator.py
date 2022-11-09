@@ -47,10 +47,11 @@ def mock_diploma_regenerator(mocker):
 
 
 @pytest.fixture
-def _remove_student_en_name(student):
+def student_without_english_name(student):
     student.first_name_en = ''
     student.last_name_en = ''
     student.save()
+    return student
 
 
 def test_diplomas_are_regenerated(student, diploma_ru, diploma_en, order):
@@ -114,9 +115,9 @@ def test_generate_new_diplomas_in_other_languages(student):
     assert diplomas_en_language.exists() is True
 
 
-@pytest.mark.usefixtures('diploma_ru', '_remove_student_en_name')
-def test_do_not_generate_new_diplomas_in_other_languages_for_student_without_name_in_that_languages(student):
-    DiplomaRegenerator(student)()
+@pytest.mark.usefixtures('diploma_ru')
+def test_do_not_generate_new_diplomas_in_other_languages_for_student_without_name_in_that_languages(student_without_english_name):
+    DiplomaRegenerator(student_without_english_name)()
 
     diplomas_en_language = Diploma.objects.filter(language=Languages.EN)
     assert diplomas_en_language.exists() is False
@@ -132,9 +133,9 @@ def test_do_not_generate_new_diplomas_in_other_languages_when_no_template_in_tha
     assert diplomas_en_language.exists() is False
 
 
-@pytest.mark.usefixtures('diploma_ru', '_remove_student_en_name')
-def test_do_not_update_diplomas_in_languages_for_student_without_name_in_that_languages(student, diploma_en):
-    DiplomaRegenerator(student)()
+@pytest.mark.usefixtures('diploma_ru')
+def test_do_not_update_diplomas_in_languages_for_student_without_name_in_that_languages(student_without_english_name, diploma_en):
+    DiplomaRegenerator(student_without_english_name)()
 
     diploma_en.refresh_from_db()
     assert diploma_en.modified is None

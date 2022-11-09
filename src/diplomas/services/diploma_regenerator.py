@@ -13,7 +13,7 @@ from users.models import User
 
 @dataclass
 class DiplomaRegenerator:
-    """Update and create student's diplomas in other language."""
+    """Update and create student's diplomas for all languages."""
 
     student: User
 
@@ -49,14 +49,14 @@ class DiplomaRegenerator:
             .distinct('study__id'),
         )
 
-    def get_study_diploma_languages(self, study: Study) -> list[str]:
-        return list(
-            DiplomaTemplate.objects.filter(
-                course=study.course,
-                homework_accepted=study.homework_accepted,
-                language__in=self.student.diploma_languages,
-            ).values_list('language', flat=True),
-        )
+    def get_study_diploma_languages(self, study: Study) -> list[Language]:
+        study_diploma_languages = DiplomaTemplate.objects.filter(
+            course=study.course,
+            homework_accepted=study.homework_accepted,
+            language__in=self.student.diploma_languages,
+        ).values_list('language', flat=True)
+
+        return [cast(Language, language) for language in study_diploma_languages]
 
     def notify(self) -> None:
         send_mail.delay(
@@ -65,9 +65,9 @@ class DiplomaRegenerator:
             disable_antispam=True,
         )
 
-    def regenerate(self, study: Study, language: str) -> Diploma:
+    def regenerate(self, study: Study, language: Language) -> Diploma:
         return DiplomaGenerator(
             student=self.student,
             course=study.course,
-            language=cast(Language, language),
+            language=language,
         )()
