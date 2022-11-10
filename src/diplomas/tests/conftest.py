@@ -14,7 +14,14 @@ def _set_diploma_generator_url(settings):
 
 @pytest.fixture
 def student(mixer):
-    return mixer.blend('users.User', first_name='Овир', last_name='Кривомазов', gender=User.GENDERS.MALE)
+    return mixer.blend(
+        'users.User',
+        first_name='Овир',
+        last_name='Кривомазов',
+        first_name_en='Ovir',
+        last_name_en='Krivomazov',
+        gender=User.GENDERS.MALE,
+    )
 
 
 @pytest.fixture
@@ -31,7 +38,8 @@ def order(factory, course, student):
 def template(mixer, course):
     return mixer.blend(
         'diplomas.DiplomaTemplate',
-        slug='test-template', course=course,
+        slug='test-template',
+        course=course,
         language=Languages.RU,
         homework_accepted=False,
     )
