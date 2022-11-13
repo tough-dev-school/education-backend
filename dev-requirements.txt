@@ -36,13 +36,13 @@ bleach==5.0.1
     # via education-backend (pyproject.toml)
 boto3==1.25.5
     # via education-backend (pyproject.toml)
-boto3-stubs==1.26.4
+boto3-stubs==1.26.8
     # via education-backend (pyproject.toml)
 botocore==1.28.5
     # via
     #   boto3
     #   s3transfer
-botocore-stubs==1.29.4
+botocore-stubs==1.29.8
     # via boto3-stubs
 celery==5.2.7
     # via education-backend (pyproject.toml)
@@ -403,7 +403,7 @@ s3transfer==0.6.0
     # via boto3
 sentry-sdk==1.10.1
     # via education-backend (pyproject.toml)
-shortuuid==1.0.9
+shortuuid==1.0.10
     # via education-backend (pyproject.toml)
 simplejson==3.17.6
     # via education-backend (pyproject.toml)
@@ -424,7 +424,7 @@ sqlparse==0.4.3
     # via
     #   django
     #   django-debug-toolbar
-stack-data==0.6.0
+stack-data==0.6.1
     # via ipython
 standardjson==0.3.1
     # via django-prettyjson
@@ -443,9 +443,9 @@ traitlets==5.5.0
     # via
     #   ipython
     #   matplotlib-inline
-types-awscrt==0.15.2
+types-awscrt==0.15.3
     # via botocore-stubs
-types-babel==2.11.0.2
+types-babel==2.11.0.4
     # via education-backend (pyproject.toml)
 types-bleach==5.0.3.1
     # via education-backend (pyproject.toml)
@@ -455,17 +455,17 @@ types-markdown==3.4.2.1
     # via
     #   djangorestframework-stubs
     #   education-backend (pyproject.toml)
-types-pillow==9.3.0.0
+types-pillow==9.3.0.1
     # via education-backend (pyproject.toml)
 types-pytz==2022.6.0.1
     # via
     #   django-stubs
     #   types-babel
-types-pyyaml==6.0.12.1
+types-pyyaml==6.0.12.2
     # via
     #   django-stubs
     #   djangorestframework-stubs
-types-requests==2.28.11.2
+types-requests==2.28.11.4
     # via
     #   djangorestframework-stubs
     #   education-backend (pyproject.toml)
@@ -473,11 +473,11 @@ types-retry==0.9.9
     # via education-backend (pyproject.toml)
 types-s3transfer==0.6.0.post4
     # via boto3-stubs
-types-simplejson==3.17.7.1
+types-simplejson==3.17.7.2
     # via education-backend (pyproject.toml)
-types-stripe==3.5.2
+types-stripe==3.5.2.2
     # via education-backend (pyproject.toml)
-types-urllib3==1.26.25.1
+types-urllib3==1.26.25.3
     # via types-requests
 typing-extensions==4.4.0
     # via
