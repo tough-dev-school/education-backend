@@ -1,14 +1,17 @@
 from app import validators
+from banking.definitions import BankChoice
 
 
 class PurchaseValidator(validators.Validator):
     name = validators.CharField(required=True)
     email = validators.EmailField(required=True)
+    desired_bank = validators.ChoiceField(choices=BankChoice.values, required=False)
 
     class Meta:
         fields = [
             'name',
             'email',
+            'desired_bank',
         ]
 
 
@@ -18,6 +21,7 @@ class GiftValidator(validators.Validator):
     giver_name = validators.CharField(required=True)
     giver_email = validators.EmailField(required=True)
     desired_shipment_date = validators.DateTimeField(required=True)
+    desired_bank = validators.ChoiceField(choices=BankChoice.values, required=False)
 
     class Meta:
         fields = [
@@ -26,4 +30,5 @@ class GiftValidator(validators.Validator):
             'giver_name',
             'giver_email',
             'desired_shipment_date',
+            'desired_bank',
         ]

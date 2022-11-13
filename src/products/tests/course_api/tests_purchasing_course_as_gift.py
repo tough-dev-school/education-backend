@@ -7,6 +7,8 @@ pytestmark = [
     pytest.mark.django_db,
 ]
 
+base_url = '/api/v2/courses/ruloning-oboev/gift/'
+
 
 def get_order():
     return Order.objects.last()
@@ -24,7 +26,7 @@ def default_gift_data():
 
 
 def test_order(api, course, default_gift_data):
-    api.post('/api/v2/courses/ruloning-oboev/gift/', default_gift_data, format='multipart', expected_status_code=302)
+    api.post(base_url, default_gift_data, format='multipart', expected_status_code=302)
 
     placed = get_order()
 
@@ -51,15 +53,31 @@ def test_order(api, course, default_gift_data):
 def test_required_fields(api, required_field_name, default_gift_data):
 
     del default_gift_data[required_field_name]
-    got = api.post('/api/v2/courses/ruloning-oboev/gift/', default_gift_data, format='multipart', expected_status_code=400)
+    got = api.post(base_url, default_gift_data, format='multipart', expected_status_code=400)
 
     assert required_field_name in got
 
 
 def test_gift_message(api, default_gift_data):
     default_gift_data['gift_message'] = 'Гори в аду!'
-    api.post('/api/v2/courses/ruloning-oboev/gift/', default_gift_data, format='multipart', expected_status_code=302)
+    api.post(base_url, default_gift_data, format='multipart', expected_status_code=302)
 
     placed = get_order()
 
     assert placed.gift_message == 'Гори в аду!'
+
+
+def test_non_existed_bank_could_not_be_chosen_as_desired(api, default_gift_data):
+    default_gift_data['desired_bank'] = 'non-existed-bank'
+
+    got = api.post(base_url, default_gift_data, format='multipart', expected_status_code=400)
+
+    assert 'desired_bank' in got
+
+
+def test_custom_success_url(api, default_gift_data, bank):
+    default_gift_data['success_url'] = 'https://ok.true/yes'
+
+    api.post(base_url, default_gift_data, format='multipart', expected_status_code=302)
+
+    assert bank.call_args[1]['success_url'] == 'https://ok.true/yes'

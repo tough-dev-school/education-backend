@@ -98,3 +98,11 @@ def test_desired_bank_is_stored_during_gift(api, default_gift_data):
     order = Order.objects.last()
 
     assert order.bank_id == 'tinkoff_credit'
+
+
+def test_non_existed_bank_could_not_be_chosen_as_desired(api, default_user_data):
+    default_user_data['desired_bank'] = 'non-existed-bank'
+
+    got = api.post('/api/v2/courses/ruloning-oboev/purchase/', default_user_data, format='multipart', expected_status_code=400)
+
+    assert 'desired_bank' in got
