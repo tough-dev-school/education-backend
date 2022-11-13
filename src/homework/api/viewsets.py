@@ -1,3 +1,6 @@
+from typing import Any, Sequence
+
+from django.db.models import QuerySet
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
@@ -29,6 +32,13 @@ class AnswerViewSet(AppViewSet):
     ]
     filterset_class = AnswerFilterSet
 
+    @property
+    def pagination_disabled(self) -> bool:
+        return str(self.request.query_params.get('disable_pagination', False)).lower() in [
+            'true',
+            '1',
+        ]
+
     def update(self, request: Request, *args, **kwargs) -> Response:
         if not kwargs.get('partial', False):
             raise MethodNotAllowed('Please use patch')
@@ -48,6 +58,13 @@ class AnswerViewSet(AppViewSet):
         queryset = self.limit_queryset_to_user(queryset)  # type: ignore
 
         return self.limit_queryset_for_list(queryset)
+
+    def paginate_queryset(self, queryset: QuerySet[Answer] | Sequence[Any]) -> Sequence[Any] | None:
+        """Disable response pagination with query param `disable_pagination`."""
+        if self.pagination_disabled:
+            return None
+
+        return super().paginate_queryset(queryset)
 
     def limit_queryset_to_user(self, queryset: AnswerQuerySet) -> AnswerQuerySet:
         if not self.request.user.has_perm('homework.see_all_answers') and self.action != 'retrieve':

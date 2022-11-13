@@ -95,3 +95,15 @@ def test_users_with_permission_may_see_all_answers(api, question):
 
 def test_no_anon(anon, question):
     anon.get(f'/api/v2/homework/answers/?question={question.slug}', expected_status_code=401)
+
+
+@pytest.mark.parametrize('disable_pagination_value', [
+    'True',
+    'true',
+    '1',
+])
+def test_pagination_could_be_disable_with_query_param(api, question, answer, disable_pagination_value):
+    got = api.get(f'/api/v2/homework/answers/?question={question.slug}&disable_pagination={disable_pagination_value}')
+
+    assert len(got) == 1
+    assert got[0]['slug'] == str(answer.slug)
