@@ -1,5 +1,5 @@
 import pytest
-from datetime import datetime
+from datetime import datetime, timezone
 
 pytestmark = [pytest.mark.django_db]
 
@@ -29,12 +29,12 @@ def answer(mixer, user, question):
 
 @pytest.fixture(autouse=True)
 def purchase(factory, course, user):
-    return factory.order(user=user, item=course, paid=datetime(2032, 12, 1, 15, 30))
+    return factory.order(user=user, item=course, paid=datetime(2032, 12, 1, 15, 30, tzinfo=timezone.utc))
 
 
 @pytest.fixture
 def latest_purchase(factory, another_course, user):
-    return factory.order(user=user, item=another_course, paid=datetime(2035, 12, 1, 15, 30))
+    return factory.order(user=user, item=another_course, paid=datetime(2035, 12, 1, 15, 30, tzinfo=timezone.utc))
 
 
 def test_single_course(answer, course):

@@ -1,5 +1,5 @@
 import pytest
-from datetime import datetime
+from datetime import datetime, timezone
 
 from triggers import tasks
 from triggers.started_purchase import StartedPurchaseTrigger
@@ -33,7 +33,7 @@ def test_main_task(order, run_trigger):
 
 
 def test_not_running_trigger_for_paid_orders(order, run_trigger):
-    order.setattr_and_save('paid', datetime(2032, 12, 1, 15, 13))
+    order.setattr_and_save('paid', datetime(2032, 12, 1, 15, 13, tzinfo=timezone.utc))
 
     tasks.check_for_started_purchase_triggers()
 

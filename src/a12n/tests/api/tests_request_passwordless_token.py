@@ -1,11 +1,11 @@
 import pytest
-from datetime import datetime
+from datetime import datetime, timezone
 
 from a12n.models import PasswordlessAuthToken
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.freeze_time('2049-01-05 12:45:44'),
+    pytest.mark.freeze_time('2049-01-05 12:45:44Z'),
 ]
 
 
@@ -26,7 +26,7 @@ def test_token_is_created(anon, user):
 
     assert token.user == user
     assert '-4' in str(token.token)
-    assert token.expires == datetime(2049, 1, 5, 14, 45, 44)
+    assert token.expires == datetime(2049, 1, 5, 14, 45, 44, tzinfo=timezone.utc)
     assert token.used is None
 
 

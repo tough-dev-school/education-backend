@@ -11,7 +11,7 @@ def giver(mixer):
 @pytest.fixture
 def order(order, giver):
     order.setattr_and_save('giver', giver)
-    order.setattr_and_save('desired_shipment_date', '2021-01-01 15:30')
+    order.setattr_and_save('desired_shipment_date', '2021-01-01 15:30Z')
 
     order.refresh_from_db()
 

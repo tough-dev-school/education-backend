@@ -41,9 +41,9 @@ def test_incompatible_promocode(call_purchase, another_course, testcode):
     assert placed.price == Decimal('1900'), 'promocode should not be accepteed'
 
 
-@pytest.mark.freeze_time('2032-12-01 23:59')
+@pytest.mark.freeze_time('2032-12-01 23:59Z')
 def test_expired_promocode(call_purchase, testcode):
-    testcode.setattr_and_save('expires', '2032-11-01 15:30:00')
+    testcode.setattr_and_save('expires', '2032-11-01 15:30:00Z')
 
     call_purchase(promocode='TESTCODE')
     placed = get_order()

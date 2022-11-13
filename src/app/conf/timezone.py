@@ -1,5 +1,5 @@
 from app.conf.environ import env
 
-USE_TZ = False
+USE_TZ = True
 
 TIME_ZONE = env('TIME_ZONE', cast=str, default='Europe/Moscow')

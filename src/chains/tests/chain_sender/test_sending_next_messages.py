@@ -3,7 +3,7 @@ import pytest
 pytestmark = [
     pytest.mark.django_db,
     pytest.mark.usefixtures('message', 'progress'),
-    pytest.mark.freeze_time('2032-12-01 15:30:00'),
+    pytest.mark.freeze_time('2032-12-01 15:30:00Z'),
 ]
 
 
@@ -15,7 +15,7 @@ def test_no_messages_are_sent(chain_sender, send_message):
 
 @pytest.mark.usefixtures('progress')
 def test_sent_if_progress_exists(chain_sender, send_message, freezer, message, study):
-    freezer.move_to('2032-12-01 15:35:00')
+    freezer.move_to('2032-12-01 15:35:00Z')
 
     chain_sender()
 
@@ -24,7 +24,7 @@ def test_sent_if_progress_exists(chain_sender, send_message, freezer, message, s
 
 @pytest.mark.usefixtures('progress')
 def test_not_sent_if_time_has_not_come(chain_sender, send_message, freezer):
-    freezer.move_to('2032-12-01 15:32:00')  # move 2 minutes forward when delay of message is 3 minutes
+    freezer.move_to('2032-12-01 15:32:00Z')  # move 2 minutes forward when delay of message is 3 minutes
 
     chain_sender()
 

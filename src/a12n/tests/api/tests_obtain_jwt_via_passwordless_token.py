@@ -2,7 +2,7 @@ import pytest
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.freeze_time('2032-12-01 15:30:45'),
+    pytest.mark.freeze_time('2032-12-01 15:30:45Z'),
 ]
 
 
@@ -13,7 +13,7 @@ def _enable_passwordless_token_expiration(settings):
 
 @pytest.fixture(autouse=True)
 def token(user, mixer):
-    return mixer.blend('a12n.PasswordlessAuthToken', user=user, token='3149798e-c219-47f5-921f-8ae9a75b709b', expires='2032-12-05 15:30', used=None)
+    return mixer.blend('a12n.PasswordlessAuthToken', user=user, token='3149798e-c219-47f5-921f-8ae9a75b709b', expires='2032-12-05 15:30Z', used=None)
 
 
 @pytest.fixture
@@ -29,7 +29,7 @@ def test_invalid_token(get_token):
 
 
 def test_expired_token(get_token, token):
-    token.setattr_and_save('expires', '1999-01-01')
+    token.setattr_and_save('expires', '1999-01-01 00:00Z')
 
     get_token(token=str(token.token), expected_status_code=404)
 

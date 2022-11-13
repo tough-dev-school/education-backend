@@ -6,11 +6,12 @@ pytestmark = [
 ]
 
 
+@pytest.mark.freeze_time('2022-10-09 10:10+03:00')
 def test_ok(api, answer, question):
     got = api.get(f'/api/v2/homework/answers/{answer.slug}/')
 
-    assert 'created' in got
-    assert 'modified' in got
+    assert got['created'] == '2022-10-09T10:10:00+03:00'
+    assert got['modified'] == '2022-10-09T10:10:00+03:00'
     assert got['slug'] == str(answer.slug)
     assert got['author']['uuid'] == str(api.user.uuid)
     assert got['author']['first_name'] == api.user.first_name

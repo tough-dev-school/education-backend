@@ -1,9 +1,9 @@
 import pytest
-from datetime import datetime
+from datetime import datetime, timezone
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.freeze_time('2032-12-01 15:30'),
+    pytest.mark.freeze_time('2032-12-01 15:30Z'),
 ]
 
 
@@ -50,7 +50,7 @@ def test_ok(anon, order, bank_data):
 
     order.refresh_from_db()
 
-    assert order.paid == datetime(2032, 12, 1, 15, 30)
+    assert order.paid == datetime(2032, 12, 1, 15, 30, tzinfo=timezone.utc)
 
 
 @pytest.mark.parametrize('status', ['AUTHORIZED', 'CANCELLED'])
