@@ -1,14 +1,16 @@
-from typing import Optional
+from typing import Optional, cast
 
 import uuid
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Permission
 from django.db.models import Q, TextChoices, UniqueConstraint
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from urllib.parse import urljoin
 
 from app.models import models
 from app.types import Language
+from diplomas.models import Languages
 
 
 class User(AbstractUser):
@@ -52,6 +54,15 @@ class User(AbstractUser):
             return 'Anonymous'
 
         return name.strip()
+
+    @cached_property
+    def diploma_languages(self) -> set[Language]:
+        language_values = [cast(Language, language) for language in Languages.values]
+        return {
+            language
+            for language in language_values
+            if self.get_printable_name(language) is not None
+        }
 
     def get_printable_name(self, language: Language) -> Optional[str]:
         if language.lower() == 'ru':
