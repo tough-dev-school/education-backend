@@ -33,7 +33,7 @@ def purchase(factory, course, user):
     return factory.order(
         user=user,
         item=course,
-        paid=datetime(2032, 12, 1, 15, 30, tzinfo=ZoneInfo('America/New_York')),  # any timezone should suite that test
+        paid=datetime(2032, 12, 1, 15, 30, tzinfo=ZoneInfo('America/New_York')),  # any timezone should suite here
     )
 
 
@@ -42,7 +42,7 @@ def latest_purchase(factory, another_course, user):
     return factory.order(
         user=user,
         item=another_course,
-        paid=datetime(2035, 12, 1, 15, 30, tzinfo=ZoneInfo('Asia/Magadan')),  # any timezone should suite that test
+        paid=datetime(2035, 12, 1, 15, 30, tzinfo=ZoneInfo('Asia/Magadan')),  # any timezone should suite here
     )
 
 

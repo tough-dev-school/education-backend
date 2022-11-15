@@ -1,5 +1,5 @@
 import pytest
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from a12n.models import PasswordlessAuthToken
 
@@ -26,7 +26,7 @@ def test_token_is_created(anon, user):
 
     assert token.user == user
     assert '-4' in str(token.token)
-    assert token.expires == datetime(2049, 1, 5, 18, 45, 44, tzinfo=timezone.utc)  # 2 hours expiration time + 4 hours timezone delta
+    assert token.expires == datetime(2049, 1, 5, 14, 45, 44, tzinfo=timezone(timedelta(hours=-4)))
     assert token.used is None
 
 

@@ -1,5 +1,5 @@
 import pytest
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 pytestmark = [
     pytest.mark.django_db,
@@ -50,7 +50,7 @@ def test_sets_unpaid_date(order):
 
     order.refresh_from_db()
 
-    assert order.unpaid == datetime(2032, 12, 1, 10, 30, tzinfo=timezone.utc)  # -5 hours as timezone delta
+    assert order.unpaid == datetime(2032, 12, 1, 15, 30, tzinfo=timezone(timedelta(hours=5)))
 
 
 def test_does_not_set_unpaid_date_if_order_was_not_paid(order):

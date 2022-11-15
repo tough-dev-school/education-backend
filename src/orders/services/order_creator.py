@@ -106,6 +106,6 @@ class OrderCreator:
         parsed_dt = parse_datetime(input_dt) if isinstance(input_dt, str) else input_dt
 
         if parsed_dt is None:
-            raise OrderCreatorException('Input is not well formatted and could not be converted to datetime.')
+            raise OrderCreatorException('Input is not ISO formatted and could not be converted to datetime.')
 
         return make_aware(parsed_dt) if is_naive(parsed_dt) else parsed_dt

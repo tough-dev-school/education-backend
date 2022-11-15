@@ -1,5 +1,5 @@
 import pytest
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from homework.models import Answer
 
@@ -28,7 +28,7 @@ def test_changing_text_updates_modified_time(api, answer):
 
     answer.refresh_from_db()
 
-    assert answer.modified == datetime(2032, 12, 1, 12, 30, 12, tzinfo=timezone.utc)  # -3 hours as timezone delta
+    assert answer.modified == datetime(2032, 12, 1, 15, 30, 12, tzinfo=timezone(timedelta(hours=3)))
 
 
 def test_405_for_put(api, answer):
