@@ -36,13 +36,13 @@ bleach==5.0.1
     # via education-backend (pyproject.toml)
 boto3==1.25.5
     # via education-backend (pyproject.toml)
-boto3-stubs==1.26.8
+boto3-stubs==1.26.9
     # via education-backend (pyproject.toml)
 botocore==1.28.5
     # via
     #   boto3
     #   s3transfer
-botocore-stubs==1.29.8
+botocore-stubs==1.29.9
     # via boto3-stubs
 celery==5.2.7
     # via education-backend (pyproject.toml)
@@ -166,7 +166,7 @@ drf-recaptcha==2.2.2
     # via education-backend (pyproject.toml)
 eradicate==2.1.0
     # via flake8-eradicate
-exceptiongroup==1.0.1
+exceptiongroup==1.0.4
     # via pytest
 execnet==1.9.0
     # via pytest-xdist
@@ -401,11 +401,11 @@ rfc3986[idna2008]==1.5.0
     # via httpx
 s3transfer==0.6.0
     # via boto3
-sentry-sdk==1.10.1
+sentry-sdk==1.11.0
     # via education-backend (pyproject.toml)
-shortuuid==1.0.10
+shortuuid==1.0.11
     # via education-backend (pyproject.toml)
-simplejson==3.17.6
+simplejson==3.18.0
     # via education-backend (pyproject.toml)
 six==1.16.0
     # via
@@ -445,7 +445,7 @@ traitlets==5.5.0
     #   matplotlib-inline
 types-awscrt==0.15.3
     # via botocore-stubs
-types-babel==2.11.0.4
+types-babel==2.11.0.5
     # via education-backend (pyproject.toml)
 types-bleach==5.0.3.1
     # via education-backend (pyproject.toml)
@@ -475,7 +475,7 @@ types-s3transfer==0.6.0.post4
     # via boto3-stubs
 types-simplejson==3.17.7.2
     # via education-backend (pyproject.toml)
-types-stripe==3.5.2.2
+types-stripe==3.5.2.3
     # via education-backend (pyproject.toml)
 types-urllib3==1.26.25.3
     # via types-requests
