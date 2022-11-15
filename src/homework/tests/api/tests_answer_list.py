@@ -14,12 +14,13 @@ def answer_from_another_user(another_user, another_answer):
     return another_answer
 
 
-@pytest.mark.freeze_time('2022-10-09 10:30:12Z')
+@pytest.mark.freeze_time('2022-10-09 10:30:12+12:00')  # +12 hours kamchatka timezone
+@pytest.mark.usefixtures('kamchatka_timezone')
 def test_ok(api, question, answer):
     got = api.get(f'/api/v2/homework/answers/?question={question.slug}')['results']
 
-    assert got[0]['created'] == '2022-10-09T13:30:12+03:00'  # +3 hours default timezone
-    assert got[0]['modified'] == '2022-10-09T13:30:12+03:00'  # +3 hours default timezone
+    assert got[0]['created'] == '2022-10-09T10:30:12+12:00'
+    assert got[0]['modified'] == '2022-10-09T10:30:12+12:00'
     assert got[0]['slug'] == str(answer.slug)
     assert '<em>test</em>' in got[0]['text']
     assert got[0]['src'] == '*test*'

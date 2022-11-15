@@ -1,7 +1,5 @@
 import pytest
 from datetime import datetime, timedelta, timezone
-from django.conf import settings
-from zoneinfo import ZoneInfo
 
 from orders.models import Order
 
@@ -67,10 +65,10 @@ def test_gift_message(api, default_gift_data):
     assert placed.gift_message == 'Гори в аду!'
 
 
-def test_desired_shipment_date_no_timezone_saves_with_default_timezone(api, default_gift_data):
+def test_desired_shipment_date_no_timezone_saves_with_default_timezone(api, default_gift_data, kamchatka_timezone):
     default_gift_data['desired_shipment_date'] = '2032-12-01 12:35:15'  # timezone is empty
     api.post('/api/v2/courses/ruloning-oboev/gift/', default_gift_data, format='multipart', expected_status_code=302)
 
     placed = get_order()
 
-    assert placed.desired_shipment_date == datetime(2032, 12, 1, 12, 35, 15, tzinfo=ZoneInfo(settings.TIME_ZONE))
+    assert placed.desired_shipment_date == datetime(2032, 12, 1, 12, 35, 15, tzinfo=kamchatka_timezone)

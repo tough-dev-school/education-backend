@@ -1,6 +1,5 @@
 import pytest
 from datetime import datetime, timedelta, timezone
-from django.conf import settings
 from zoneinfo import ZoneInfo
 
 from orders.services.order_creator import OrderCreatorException
@@ -38,7 +37,7 @@ def test_fields(create, user, another_user, course):
     ),
     (
         '2022-10-10 12:40',
-        datetime(2022, 10, 10, 12, 40, tzinfo=ZoneInfo(settings.TIME_ZONE)),  # string without timezone saved as datetime with default timezone
+        datetime(2022, 10, 10, 12, 40, tzinfo=ZoneInfo('Asia/Kamchatka')),  # string without timezone saved as datetime with default timezone
     ),
     (
         '2022-10-10 12:40-12:00',
@@ -50,9 +49,10 @@ def test_fields(create, user, another_user, course):
     ),
     (
         datetime(2022, 10, 10, 15, 10),
-        datetime(2022, 10, 10, 15, 10, tzinfo=ZoneInfo(settings.TIME_ZONE)),  # datetime without timezone saved with default timezone
+        datetime(2022, 10, 10, 15, 10, tzinfo=ZoneInfo('Asia/Kamchatka')),  # datetime without timezone saved with default timezone
     ),
 ])
+@pytest.mark.usefixtures('kamchatka_timezone')
 def test_desired_shipment_date(create, user, course, desired_shipment_date, saved_date):
     order = create(user=user, item=course, desired_shipment_date=desired_shipment_date)
 
