@@ -4,7 +4,9 @@ from datetime import datetime
 from decimal import Decimal
 from django.conf import settings
 from django.urls import reverse
+from django.utils.dateparse import parse_datetime
 from django.utils.functional import cached_property
+from django.utils.timezone import is_naive, make_aware
 from urllib.parse import urljoin
 
 from app.current_user import get_current_user
@@ -14,6 +16,10 @@ from banking.selector import get_bank
 from mailing.tasks import send_mail
 from orders.models import Order, PromoCode
 from users.models import User
+
+
+class OrderCreatorException(Exception):
+    pass
 
 
 class OrderCreator:
@@ -33,7 +39,7 @@ class OrderCreator:
         self.price = price if price is not None else item.get_price(promocode=promocode)
         self.promocode = self._get_promocode(promocode)
         self.giver = giver
-        self.desired_shipment_date = desired_shipment_date
+        self.desired_shipment_date = self.make_datetime_aware(desired_shipment_date)
         self.gift_message = gift_message if gift_message is not None else ''
         self.desired_bank = desired_bank if desired_bank is not None else ''
 
@@ -87,3 +93,19 @@ class OrderCreator:
             'firstname': order.user.first_name,
             'confirmation_url': urljoin(settings.FRONTEND_URL, reverse('confirm-order', args=[order.slug])),
         }
+
+    @staticmethod
+    def make_datetime_aware(input_dt: str | datetime | None = None) -> datetime | None:
+        """Return timezone aware datetime.datetime or None.
+
+        Supports time zone offsets. When the input contains one, the output uses a timezone
+        with a fixed offset from UTC. If timezone offset was not provided use default timezone."""
+        if input_dt is None:
+            return None
+
+        parsed_dt = parse_datetime(input_dt) if isinstance(input_dt, str) else input_dt
+
+        if parsed_dt is None:
+            raise OrderCreatorException('Input is not well formatted and could not be converted to datetime.')
+
+        return make_aware(parsed_dt) if is_naive(parsed_dt) else parsed_dt

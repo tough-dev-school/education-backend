@@ -1,5 +1,5 @@
 import pytest
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from django.conf import settings
 from zoneinfo import ZoneInfo
 
@@ -21,7 +21,7 @@ def default_gift_data():
         'receiver_email': 'zaboy@gmail.com',
         'giver_name': 'Камаз Помоев',
         'giver_email': 'kamaz@gmail.com',
-        'desired_shipment_date': '2032-12-01 12:35:15Z',
+        'desired_shipment_date': '2032-12-01 12:35:15+04:00',
     }
 
 
@@ -32,7 +32,7 @@ def test_order(api, course, default_gift_data):
 
     assert placed.item == course
 
-    assert placed.desired_shipment_date == datetime(2032, 12, 1, 12, 35, 15, tzinfo=timezone.utc)
+    assert placed.desired_shipment_date == datetime(2032, 12, 1, 12, 35, 15, tzinfo=timezone(timedelta(hours=4)))
 
     assert placed.user.email == 'zaboy@gmail.com'
     assert placed.user.first_name == 'Забой'
