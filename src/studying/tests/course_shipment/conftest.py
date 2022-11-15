@@ -41,6 +41,6 @@ def gifted_order(factory, course, giver):
     return factory.order(
         item=course,
         giver=giver,
-        desired_shipment_date='2025-01-05 12:20Z',
+        desired_shipment_date='2025-01-05 12:20+03:00',
         gift_message='Гори в аду!',
     )
