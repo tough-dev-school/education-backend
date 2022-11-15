@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.freeze_time('2032-12-01 15:30Z'),
+    pytest.mark.freeze_time('2032-12-01 15:30+01:00'),
 ]
 
 
@@ -48,7 +48,7 @@ def test_ok(api, order, bank_data):
 
     order.refresh_from_db()
 
-    assert order.paid == datetime(2032, 12, 1, 15, 30, tzinfo=timezone.utc)
+    assert order.paid == datetime(2032, 12, 1, 14, 30, tzinfo=timezone.utc)  # -1 hour timezone delta
 
 
 @pytest.mark.parametrize('status', ['approved', 'rejected'])

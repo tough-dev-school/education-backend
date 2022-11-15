@@ -1,11 +1,11 @@
 import pytest
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from orders import tasks
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.freeze_time('2032-12-01 00:15:00Z'),
+    pytest.mark.freeze_time('2032-12-01 00:15:00+02:00'),
 ]
 
 
@@ -17,8 +17,8 @@ def product(mixer):
 @pytest.fixture
 def order(factory, product, another_user):
     return factory.order(
-        paid='2032-12-01 00:01:00Z',
-        desired_shipment_date='2032-12-01 00:14:00Z',
+        paid='2032-12-01 00:01:00+02:00',
+        desired_shipment_date='2032-12-01 00:14:00+02:00',
         shipped=None,
         record=product,
         giver=another_user,
@@ -54,12 +54,12 @@ def test_order_is_marked_as_shipped(order):
     tasks.ship_unshipped_orders()
     order.refresh_from_db()
 
-    assert order.shipped == datetime(2032, 12, 1, 0, 15, tzinfo=timezone.utc)
+    assert order.shipped == datetime(2032, 12, 1, 0, 15, tzinfo=timezone(timedelta(hours=2)))
 
 
 @pytest.mark.parametrize('change_order', [
     lambda order: order.setattr_and_save('paid', None),
-    lambda order: order.setattr_and_save('shipped', '2032-12-01 12:30Z'),
+    lambda order: order.setattr_and_save('shipped', '2032-12-01 12:30+02:00'),
     lambda order: order.setattr_and_save('desired_shipment_date', None),
 ])
 def test_not_shipping_orders_that_should_not_be_shipped(order, ship, change_order):
