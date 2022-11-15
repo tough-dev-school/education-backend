@@ -166,7 +166,7 @@ drf-recaptcha==2.2.2
     # via education-backend (pyproject.toml)
 eradicate==2.1.0
     # via flake8-eradicate
-exceptiongroup==1.0.3
+exceptiongroup==1.0.4
     # via pytest
 execnet==1.9.0
     # via pytest-xdist
@@ -473,7 +473,7 @@ types-retry==0.9.9
     # via education-backend (pyproject.toml)
 types-s3transfer==0.6.0.post4
     # via boto3-stubs
-types-simplejson==3.17.7.2
+types-simplejson==3.18.0.0
     # via education-backend (pyproject.toml)
 types-stripe==3.5.2.3
     # via education-backend (pyproject.toml)
