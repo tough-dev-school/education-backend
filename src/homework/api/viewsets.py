@@ -1,6 +1,3 @@
-from typing import Any, Sequence
-
-from django.db.models import QuerySet
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
@@ -59,7 +56,7 @@ class AnswerViewSet(AppViewSet):
 
         return self.limit_queryset_for_list(queryset)
 
-    def paginate_queryset(self, queryset: QuerySet[Answer] | Sequence[Any]) -> Sequence[Any] | None:
+    def paginate_queryset(self, queryset):
         """Disable response pagination with query param `disable_pagination`."""
         if self.pagination_disabled:
             return None
