@@ -166,7 +166,7 @@ drf-recaptcha==2.2.2
     # via education-backend (pyproject.toml)
 eradicate==2.1.0
     # via flake8-eradicate
-exceptiongroup==1.0.2
+exceptiongroup==1.0.3
     # via pytest
 execnet==1.9.0
     # via pytest-xdist
