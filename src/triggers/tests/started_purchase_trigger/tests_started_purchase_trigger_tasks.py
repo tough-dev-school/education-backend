@@ -1,12 +1,11 @@
 import pytest
-from datetime import datetime, timezone
 
 from triggers import tasks
 from triggers.started_purchase import StartedPurchaseTrigger
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.freeze_time('2032-12-01 15:30'),
+    pytest.mark.freeze_time('2032-12-01 15:30+03:00'),
 ]
 
 
@@ -33,7 +32,7 @@ def test_main_task(order, run_trigger):
 
 
 def test_not_running_trigger_for_paid_orders(order, run_trigger):
-    order.setattr_and_save('paid', datetime(2032, 12, 1, 15, 13, tzinfo=timezone.utc))
+    order.setattr_and_save('paid', '2032-12-01 15:13+03:00')
 
     tasks.check_for_started_purchase_triggers()
 
