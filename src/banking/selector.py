@@ -15,6 +15,8 @@ BANKS = {
     'zero_price': ZeroPriceBank,
 }
 
+BANK_CHOICES = tuple(BANKS.keys())
+
 DEFAULT_BANK = TinkoffBank
 
 

@@ -15,6 +15,7 @@ class Dolyame(Bank):
     acquiring_percent = Decimal('4.9')
     base_url = 'https://partner.dolyame.ru/v1/'
     name = 'Долями'
+    bank_id = 'dolyame'
 
     def get_initial_payment_url(self) -> str:
         result = self.post(
