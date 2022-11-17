@@ -18,13 +18,14 @@ jobs:
           python-version-file: '.python-version'
 
       - uses: actions/cache@v3
+        id: cache-dependencies
         with:
           path: |
             venv
           key: ${{ runner.os }}-venv-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/*requirements.txt') }}
 
       - name: Install dependencies
-        if: steps.cache-primes.outputs.cache-hit != 'true'
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
         run: |
           python -m venv venv
           . venv/bin/activate
