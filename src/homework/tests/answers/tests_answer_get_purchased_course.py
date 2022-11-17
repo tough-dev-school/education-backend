@@ -1,5 +1,6 @@
 import pytest
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 pytestmark = [pytest.mark.django_db]
 
@@ -29,12 +30,20 @@ def answer(mixer, user, question):
 
 @pytest.fixture(autouse=True)
 def purchase(factory, course, user):
-    return factory.order(user=user, item=course, paid=datetime(2032, 12, 1, 15, 30))
+    return factory.order(
+        user=user,
+        item=course,
+        paid=datetime(2032, 12, 1, 15, 30, tzinfo=ZoneInfo('America/New_York')),  # any timezone should suite here
+    )
 
 
 @pytest.fixture
 def latest_purchase(factory, another_course, user):
-    return factory.order(user=user, item=another_course, paid=datetime(2035, 12, 1, 15, 30))
+    return factory.order(
+        user=user,
+        item=another_course,
+        paid=datetime(2035, 12, 1, 15, 30, tzinfo=ZoneInfo('Asia/Magadan')),  # any timezone should suite here
+    )
 
 
 def test_single_course(answer, course):

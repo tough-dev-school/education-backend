@@ -1,9 +1,9 @@
 import pytest
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.freeze_time('2032-12-01 15:30'),
+    pytest.mark.freeze_time('2032-12-01 15:30+01:00'),
 ]
 
 
@@ -53,7 +53,7 @@ def test_ok(api, order, notification):
 
     order.refresh_from_db()
 
-    assert order.paid == datetime(2032, 12, 1, 15, 30)
+    assert order.paid == datetime(2032, 12, 1, 15, 30, tzinfo=timezone(timedelta(hours=1)))
 
 
 def test_atol_receipt_is_printed(api, order, notification, atol_receipt_printer):

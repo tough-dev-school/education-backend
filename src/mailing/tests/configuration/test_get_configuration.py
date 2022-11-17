@@ -35,8 +35,8 @@ def test_courses_are_ordered_by_creation_1(factory, configuration, another_confi
     order1 = factory.order(user=user, item=another_configuration.course)
     order2 = factory.order(user=user, item=configuration.course)
 
-    Order.objects.filter(pk=order1.pk).update(created='2032-12-01 16:20')
-    Order.objects.filter(pk=order2.pk).update(created='2032-12-01 15:30')
+    Order.objects.filter(pk=order1.pk).update(created='2032-12-01 16:20+04:00')
+    Order.objects.filter(pk=order2.pk).update(created='2032-12-01 15:30+04:00')
 
     assert get_configuration(recipient=user.email) == another_configuration
 
@@ -45,7 +45,7 @@ def test_courses_are_ordered_by_creation_2(factory, configuration, another_confi
     order1 = factory.order(user=user, item=another_configuration.course)
     order2 = factory.order(user=user, item=configuration.course)
 
-    Order.objects.filter(pk=order2.pk).update(created='2032-12-01 16:20')
-    Order.objects.filter(pk=order1.pk).update(created='2032-12-01 15:30')
+    Order.objects.filter(pk=order2.pk).update(created='2032-12-01 16:20+04:00')
+    Order.objects.filter(pk=order1.pk).update(created='2032-12-01 15:30+04:00')
 
     assert get_configuration(recipient=user.email) == configuration

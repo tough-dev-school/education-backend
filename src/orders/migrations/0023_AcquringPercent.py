@@ -14,7 +14,7 @@ def set_previous_acquiring_percent(apps, schema_editor):
         acquiring_percent=Decimal('2.79'),
     )
 
-    Order.objects.filter(desired_bank='tinkoff_bank', created__gte='2022-04-18 00:00:00').update(
+    Order.objects.filter(desired_bank='tinkoff_bank', created__gte='2022-04-18 00:00:00Z').update(
         acquiring_percent=Decimal('1'),
     )
 

@@ -38,9 +38,9 @@ def test_only_answers_not_longer_then_30_minutes_may_be_destroyed(api, answer, f
 
 
 def test_answers_modified_within_last_30_minutes_may_be_destroyed(api, answer, freezer):
-    freezer.move_to('2032-12-01 16:30')
+    freezer.move_to('2032-12-01 16:30+05:00')
 
-    Answer.objects.update(modified='2032-12-01 16:24')
+    Answer.objects.update(modified='2032-12-01 16:24+05:00')
 
     api.delete(f'/api/v2/homework/answers/{answer.slug}/', expected_status_code=204)
 

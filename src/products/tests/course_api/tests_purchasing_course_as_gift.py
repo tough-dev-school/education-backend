@@ -1,5 +1,5 @@
 import pytest
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from functools import partial
 
 from orders.models import Order
@@ -25,7 +25,7 @@ def default_gift_data():
         'receiver_email': 'zaboy@gmail.com',
         'giver_name': 'Камаз Помоев',
         'giver_email': 'kamaz@gmail.com',
-        'desired_shipment_date': '2032-12-01 12:35:15',
+        'desired_shipment_date': '2032-12-01 12:35:15+04:00',
     }
 
 
@@ -36,7 +36,7 @@ def test_order(gift, course, default_gift_data):
 
     assert placed.item == course
 
-    assert placed.desired_shipment_date == datetime(2032, 12, 1, 12, 35, 15)
+    assert placed.desired_shipment_date == datetime(2032, 12, 1, 12, 35, 15, tzinfo=timezone(timedelta(hours=4)))
 
     assert placed.user.email == 'zaboy@gmail.com'
     assert placed.user.first_name == 'Забой'
@@ -69,6 +69,15 @@ def test_gift_message(gift, default_gift_data):
     placed = get_order()
 
     assert placed.gift_message == 'Гори в аду!'
+
+
+def test_desired_shipment_date_no_timezone_saves_with_default_timezone(api, default_gift_data, kamchatka_timezone):
+    default_gift_data['desired_shipment_date'] = '2032-12-01 12:35:15'  # timezone is empty
+    api.post('/api/v2/courses/ruloning-oboev/gift/', default_gift_data, format='multipart', expected_status_code=302)
+
+    placed = get_order()
+
+    assert placed.desired_shipment_date == datetime(2032, 12, 1, 12, 35, 15, tzinfo=kamchatka_timezone)
 
 
 def test_non_existed_bank_could_not_be_chosen_as_desired(gift, default_gift_data):

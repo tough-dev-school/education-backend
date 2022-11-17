@@ -1,9 +1,9 @@
 import pytest
-from datetime import datetime
+from datetime import datetime, timezone
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.freeze_time('2032-12-01 15:30'),
+    pytest.mark.freeze_time('2032-12-01 15:30Z'),
 ]
 
 
@@ -13,7 +13,7 @@ def test_works(order):
     order.set_paid()
     order.refresh_from_db()
 
-    assert order.paid == datetime(2032, 12, 1, 15, 30)
+    assert order.paid == datetime(2032, 12, 1, 15, 30, tzinfo=timezone.utc)
     assert order.study is not None
 
 
@@ -24,7 +24,7 @@ def test_ships(order, course, user, ship):
 
 
 def test_not_ships_if_order_is_already_paid(order, ship):
-    order.setattr_and_save('paid', datetime(2032, 12, 1, 15, 30))
+    order.setattr_and_save('paid', datetime(2032, 12, 1, 15, 30, tzinfo=timezone.utc))
 
     order.set_paid()
 
@@ -32,7 +32,7 @@ def test_not_ships_if_order_is_already_paid(order, ship):
 
 
 def test_not_ships_if_order_has_desired_shipment_date(order, ship):
-    order.setattr_and_save('desired_shipment_date', datetime(2039, 12, 12, 15, 30))
+    order.setattr_and_save('desired_shipment_date', datetime(2039, 12, 12, 15, 30, tzinfo=timezone.utc))
 
     order.set_paid()
 
@@ -40,7 +40,7 @@ def test_not_ships_if_order_has_desired_shipment_date(order, ship):
 
 
 def test_orders_with_desired_shipment_date_do_not_have_shipment_date_set(order, ship):
-    order.setattr_and_save('desired_shipment_date', datetime(2039, 12, 12, 15, 30))
+    order.setattr_and_save('desired_shipment_date', datetime(2039, 12, 12, 15, 30, tzinfo=timezone.utc))
 
     order.set_paid()
     order.refresh_from_db()
@@ -52,11 +52,11 @@ def test_shipment_date(order):
     order.set_paid()
     order.refresh_from_db()
 
-    assert order.shipped == datetime(2032, 12, 1, 15, 30)
+    assert order.shipped == datetime(2032, 12, 1, 15, 30, tzinfo=timezone.utc)
 
 
 def test_order_is_not_shipped_again_if_already_shipped(order, ship):
-    order.shipped = datetime(2000, 11, 12, 1, 13)
+    order.shipped = datetime(2000, 11, 12, 1, 13, tzinfo=timezone.utc)
     order.save()
 
     order.set_paid()
@@ -65,17 +65,17 @@ def test_order_is_not_shipped_again_if_already_shipped(order, ship):
 
 
 def test_shippment_date_is_not_reset(order, ship):
-    order.shipped = datetime(2000, 11, 12, 1, 13)
+    order.shipped = datetime(2000, 11, 12, 1, 13, tzinfo=timezone.utc)
     order.save()
 
     order.set_paid()
     order.refresh_from_db()
 
-    assert order.shipped == datetime(2000, 11, 12, 1, 13)
+    assert order.shipped == datetime(2000, 11, 12, 1, 13, tzinfo=timezone.utc)
 
 
 def test_unpaid_date_is_reset(order):
-    order.unpaid = datetime(2032, 12, 1, 15, 13)
+    order.unpaid = datetime(2032, 12, 1, 15, 13, tzinfo=timezone.utc)
     order.save()
 
     order.set_paid()
@@ -85,14 +85,14 @@ def test_unpaid_date_is_reset(order):
 
 
 def test_unpaid_date_is_not_reset_when_order_is_not_paid(order):
-    order.paid = datetime(2032, 12, 1, 12, 13)
-    order.unpaid = datetime(2032, 12, 1, 15, 13)
+    order.paid = datetime(2032, 12, 1, 12, 13, tzinfo=timezone.utc)
+    order.unpaid = datetime(2032, 12, 1, 15, 13, tzinfo=timezone.utc)
     order.save()
 
     order.set_paid()
     order.refresh_from_db()
 
-    assert order.unpaid == datetime(2032, 12, 1, 15, 13), 'unpaid has not been changed'
+    assert order.unpaid == datetime(2032, 12, 1, 15, 13, tzinfo=timezone.utc), 'unpaid has not been changed'
 
 
 def test_empty_item_does_not_break_things(order, ship):
