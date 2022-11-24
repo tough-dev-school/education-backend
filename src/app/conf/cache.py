@@ -11,10 +11,10 @@ if env('NO_CACHE', cast=bool, default=False):
         },
     }
 
-CACHALOT_ENABLED = env('CACHALOT_ENABLED', cast=bool, default=True)
+if env('CI', cast=bool, default=False):
+    CACHALOT_ENABLED = False  # disable `django-cachalot` in tests https://github.com/noripyt/django-cachalot/issues/126
+
 CACHALOT_UNCACHABLE_TABLES = [
     'django_migrations',
     'django_content_type',
-    'orders_order',  # https://github.com/noripyt/django-cachalot/issues/126
-    'chains_progress',
 ]
