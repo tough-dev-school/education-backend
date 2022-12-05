@@ -31,10 +31,11 @@ class AnswerViewSet(AppViewSet):
 
     @property
     def pagination_disabled(self) -> bool:
-        return str(self.request.query_params.get('disable_pagination', False)).lower() in [
-            'true',
-            '1',
-        ]
+        return self.get_query_bool_value('disable_pagination')
+
+    @property
+    def descendants_disabled(self) -> bool:
+        return self.get_query_bool_value('empty_descendants')
 
     def update(self, request: Request, *args, **kwargs) -> Response:
         if not kwargs.get('partial', False):
@@ -91,3 +92,17 @@ class AnswerViewSet(AppViewSet):
                     user=self.request.user,
                     answer=answer,
                 )
+
+    def get_query_bool_value(self, query_param: str):
+        return str(self.request.query_params.get(query_param, False)).lower() in [
+            'true',
+            '1',
+        ]
+
+    def get_serializer_context(self) -> dict:
+        """Include `disable_descendants` in context to not return descendants if used."""
+
+        context = super().get_serializer_context()
+        context['descendants_disabled'] = self.descendants_disabled
+
+        return context

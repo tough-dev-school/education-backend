@@ -40,6 +40,11 @@ class AnswerTreeSerializer(serializers.ModelSerializer):
         ]
 
     def get_descendants(self, obj):
+        descendants_disabled = self.context.get('descendants_disabled')
+
+        if descendants_disabled:
+            return []
+
         queryset = obj.get_first_level_descendants()
         serializer = AnswerTreeSerializer(
             queryset,

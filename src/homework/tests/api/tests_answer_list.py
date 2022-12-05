@@ -14,6 +14,15 @@ def answer_from_another_user(another_user, another_answer):
     return another_answer
 
 
+@pytest.fixture
+def descendant_answer(another_answer, answer, another_user):
+    another_answer.parent = answer
+    another_answer.author = another_user
+    another_answer.save()
+
+    return another_answer
+
+
 @pytest.mark.freeze_time('2022-10-09 10:30:12+12:00')  # +12 hours kamchatka timezone
 @pytest.mark.usefixtures('kamchatka_timezone')
 def test_ok(api, question, answer):
@@ -122,3 +131,25 @@ def test_paginated_response_with_disable_pagination_false_or_invalid_value(api, 
     assert 'results' in got
     assert 'count' in got
     assert len(got['results']) == 1
+
+
+@pytest.mark.usefixtures('descendant_answer')
+def test_include_descendants_by_default(api, question):
+    got = api.get(f'/api/v2/homework/answers/?question={question.slug}')['results'][0]
+
+    assert len(got['descendants']) == 1
+
+
+@pytest.mark.parametrize(('empty_descendants_value', 'expected_descendants'), [
+    ('True', 0),
+    ('true', 0),
+    ('1', 0),
+    ('false', 1),
+    ('False', 1),
+    ('any-other-value', 1),
+])
+@pytest.mark.usefixtures('descendant_answer')
+def test_descendants_with_query_param_empty_descendants(api, question, empty_descendants_value, expected_descendants):
+    got = api.get(f'/api/v2/homework/answers/?question={question.slug}&empty_descendants={empty_descendants_value}')['results'][0]
+
+    assert len(got['descendants']) == expected_descendants
