@@ -31,7 +31,7 @@ class AnswerQuerySet(TreeQuerySet):
             Q(author=user) | Q(access_log_entries_for_this_user__user=user),
         )
 
-    def for_user(self, user: User) -> 'AnswerQuerySet':
+    def allowed_for_user(self, user: User) -> 'AnswerQuerySet':
         """
         Return all child answers of allowed to access answers
 

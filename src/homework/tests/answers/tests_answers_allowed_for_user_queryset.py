@@ -31,7 +31,7 @@ def answer_access_log_entry(mixer, user, answer_one):
 
 
 def answers(user):
-    return Answer.objects.for_user(user)
+    return Answer.objects.allowed_for_user(user)
 
 
 def test_personal_root_answers_are_included(answer_one, answer_two, user):

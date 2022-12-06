@@ -23,4 +23,4 @@ class AnswerCommentView(ListAPIView):
     pagination_class = None
 
     def get_queryset(self) -> AnswerQuerySet:
-        return super().get_queryset().root_only().for_user(self.request.user)  # type: ignore
+        return super().get_queryset().root_only().allowed_for_user(self.request.user)  # type: ignore

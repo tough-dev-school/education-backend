@@ -65,7 +65,7 @@ class AnswerViewSet(AppViewSet):
 
     def limit_queryset_to_user(self, queryset: AnswerQuerySet) -> AnswerQuerySet:
         if self.action != 'retrieve':
-            return queryset.for_user(self.request.user)  # type: ignore
+            return queryset.allowed_for_user(self.request.user)  # type: ignore
 
         return queryset
 
