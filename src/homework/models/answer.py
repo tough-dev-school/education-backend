@@ -33,9 +33,16 @@ class AnswerQuerySet(TreeQuerySet):
 
     def for_user(self, user: User) -> 'AnswerQuerySet':
         """
-        Return all child answers of any
-        answers that have ever been accessed by given user
+        Return all child answers of allowed to access answers
+
+        The answer is allowed to access for user:
+            1. If user has permissions 'homework.see_all_answers': all answers without restrictions
+            2. All other users: answers where user is author or any other answers that have ever been accessed
+            by given user
         """
+        if user.has_perm('homework.see_all_answers'):
+            return self
+
         accessed_answers = self.accessed_by(user)
 
         roots_of_accessed_answers = [

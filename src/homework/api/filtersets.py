@@ -1,5 +1,6 @@
 from django_filters import rest_framework as filters
 
+from app.api.filters import UUIDInFilter
 from homework.models import Answer
 
 
@@ -12,4 +13,14 @@ class AnswerFilterSet(filters.FilterSet):
         fields = [
             'question',
             'author',
+        ]
+
+
+class AnswerCommentFilterSet(filters.FilterSet):
+    answer = UUIDInFilter(field_name='slug', required=True)
+
+    class Meta:
+        model = Answer
+        fields = [
+            'answer',
         ]
