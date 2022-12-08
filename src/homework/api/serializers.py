@@ -63,3 +63,13 @@ class AnswerCreateSerializer(serializers.ModelSerializer):
             'parent',
             'text',
         ]
+
+
+class AnswerCommentTreeSerializer(AnswerTreeSerializer):
+
+    class Meta:
+        model = Answer
+        fields = [
+            'slug',
+            'descendants',
+        ]

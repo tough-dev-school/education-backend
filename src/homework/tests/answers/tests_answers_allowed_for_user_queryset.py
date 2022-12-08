@@ -31,7 +31,7 @@ def answer_access_log_entry(mixer, user, answer_one):
 
 
 def answers(user):
-    return Answer.objects.for_user(user)
+    return Answer.objects.allowed_for_user(user)
 
 
 def test_personal_root_answers_are_included(answer_one, answer_two, user):
@@ -44,6 +44,14 @@ def test_other_authors_are_excluded(answer_one, another_user, user):
     answer_one.save()
 
     assert answer_one not in answers(user)
+
+
+def test_other_answers_included_for_user_with_see_all_answers_permissions(answer_one, user, another_user):
+    answer_one.author = another_user
+    answer_one.save()
+    user.add_perm('homework.answer.see_all_answers')
+
+    assert answer_one in answers(user)
 
 
 @pytest.mark.usefixtures('answer_access_log_entry')

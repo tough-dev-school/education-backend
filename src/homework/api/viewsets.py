@@ -64,8 +64,8 @@ class AnswerViewSet(AppViewSet):
         return super().paginate_queryset(queryset)
 
     def limit_queryset_to_user(self, queryset: AnswerQuerySet) -> AnswerQuerySet:
-        if not self.request.user.has_perm('homework.see_all_answers') and self.action != 'retrieve':
-            return queryset.for_user(self.request.user)  # type: ignore
+        if self.action != 'retrieve':
+            return queryset.allowed_for_user(self.request.user)  # type: ignore
 
         return queryset
 
