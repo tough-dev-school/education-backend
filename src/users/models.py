@@ -27,12 +27,14 @@ class User(AbstractUser):
 
     linkedin_username = models.CharField(max_length=256, blank=True, db_index=True, default='')
     github_username = models.CharField(max_length=256, blank=True, db_index=True, default='')
+    telegram_username = models.CharField(max_length=256, blank=True, db_index=True, default='')
 
     class Meta(AbstractUser.Meta):
         abstract = False
         constraints = [
             UniqueConstraint(name='unique_github_username', fields=['github_username'], condition=~Q(github_username='')),
             UniqueConstraint(name='unique_linkedin_username', fields=['linkedin_username'], condition=~Q(linkedin_username='')),
+            UniqueConstraint(name='unique_telegram_username', fields=['telegram_username'], condition=~Q(telegram_username='')),
         ]
 
     @classmethod

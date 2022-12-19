@@ -1,7 +1,13 @@
+from django.db.models import Q
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from diplomas.tasks import regenerate_diplomas
 from users.models import User
+
+
+class UserUpdaterException(ValidationError):
+    """Use it if user could not be updated."""
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
@@ -15,6 +21,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             'gender',
             'github_username',
             'linkedin_username',
+            'telegram_username',
         ]
 
 
@@ -24,6 +31,8 @@ class UserUpdater:
         self.user_data = user_data
 
     def __call__(self) -> User:
+        self.validate_socials()
+
         user = self.user
 
         self.update(user)
@@ -44,3 +53,15 @@ class UserUpdater:
 
     def regenerate_diplomas(self) -> None:
         regenerate_diplomas.delay(student_id=self.user.id)
+
+    def validate_socials(self) -> None:
+        social_fields = ['linkedin_username', 'github_username', 'telegram_username']
+
+        filter_query = Q()
+
+        for social in social_fields:
+            if self.user_data.get(social):
+                filter_query |= Q(**{social: self.user_data.get(social)})
+
+        if filter_query and User.objects.exclude(pk=self.user.pk).filter(filter_query).exists():
+            raise UserUpdaterException(detail={'serviceError': 'One or several social usernames are used by another user.'})

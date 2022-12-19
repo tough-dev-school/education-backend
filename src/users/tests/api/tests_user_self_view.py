@@ -18,6 +18,7 @@ def test_ok(api):
     assert got['gender'] == api.user.gender
     assert got['linkedin_username'] == api.user.linkedin_username
     assert got['github_username'] == api.user.github_username
+    assert got['telegram_username'] == api.user.telegram_username
 
 
 def test_anon(anon):
@@ -60,7 +61,7 @@ def test_edit_gender(api):
     assert api.user.gender == User.GENDERS.FEMALE
 
 
-@pytest.mark.parametrize('field', ['github_username', 'linkedin_username'])
+@pytest.mark.parametrize('field', ['github_username', 'linkedin_username', 'telegram_username'])
 def test_edit_additional_fields(api, field):
     setattr(api.user, field, 'h4x0r')
     api.user.save()
@@ -93,3 +94,26 @@ def test_user_update_triggers_diploma_regeneration(api, mocker):
     })
 
     diploma_regenerator.assert_called_once()
+
+
+@pytest.mark.parametrize('field', ['github_username', 'linkedin_username', 'telegram_username'])
+def test_raise_error_is_social_username_used_already(api, field, user):
+    setattr(user, field, 'h4x0r')  # set field value user to other user
+    user.save()
+
+    got = api.patch('/api/v2/users/me/', {field: 'h4x0r'}, expected_status_code=400)
+
+    assert 'serviceError' in got
+
+
+@pytest.mark.parametrize('field', ['github_username', 'linkedin_username', 'telegram_username'])
+def test_do_not_raise_if_update_his_own_socials(api, field):
+    setattr(api.user, field, 'h4x0r')
+    api.user.save()
+
+    api.patch('/api/v2/users/me/', {field: 'h4x0r'})  # user update his own socials with same values
+
+
+@pytest.mark.parametrize('field', ['github_username', 'linkedin_username', 'telegram_username'])
+def test_do_not_raise_if_user_clears_socials(api, field, user):
+    api.patch('/api/v2/users/me/', {field: ''})  # user update his own socials with same values

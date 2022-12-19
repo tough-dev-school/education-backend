@@ -18,6 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
             'gender',
             'github_username',
             'linkedin_username',
+            'telegram_username',
         ]
 
 
