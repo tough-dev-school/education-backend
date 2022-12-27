@@ -85,35 +85,39 @@ def test_edit_user_data_response(api):
     assert got['last_name'] == 'Otkhodov'
 
 
-def test_user_update_triggers_diploma_regeneration(api, mocker):
+@pytest.mark.parametrize(
+    'field_used_in_diplomas',
+    ['first_name', 'last_name', 'first_name_en', 'last_name_en'],
+)
+def test_user_update_first_or_last_names_triggers_diploma_regeneration(api, mocker, field_used_in_diplomas):
     diploma_regenerator = mocker.patch('diplomas.tasks.regenerate_diplomas.delay')
 
     api.patch('/api/v2/users/me/', {
-        'first_name': 'Kamaz',
-        'last_name': 'Otkhodov',
+        field_used_in_diplomas: 'Kamaz',
     })
 
     diploma_regenerator.assert_called_once()
 
 
-@pytest.mark.parametrize('field', ['github_username', 'linkedin_username', 'telegram_username'])
-def test_raise_error_is_social_username_used_already(api, field, user):
-    setattr(user, field, 'h4x0r')  # set field value user to other user
-    user.save()
+def test_user_update_gender_triggers_diploma_regeneration(api, mocker):
+    diploma_regenerator = mocker.patch('diplomas.tasks.regenerate_diplomas.delay')
 
-    got = api.patch('/api/v2/users/me/', {field: 'h4x0r'}, expected_status_code=400)
+    api.patch('/api/v2/users/me/', {
+        'gender': User.GENDERS.FEMALE,
+    })
 
-    assert 'serviceError' in got
-
-
-@pytest.mark.parametrize('field', ['github_username', 'linkedin_username', 'telegram_username'])
-def test_do_not_raise_if_update_his_own_socials(api, field):
-    setattr(api.user, field, 'h4x0r')
-    api.user.save()
-
-    api.patch('/api/v2/users/me/', {field: 'h4x0r'})  # user update his own socials with same values
+    diploma_regenerator.assert_called_once()
 
 
-@pytest.mark.parametrize('field', ['github_username', 'linkedin_username', 'telegram_username'])
-def test_do_not_raise_if_user_clears_socials(api, field, user):
-    api.patch('/api/v2/users/me/', {field: ''})  # user update his own socials with same values
+@pytest.mark.parametrize(
+    'field_not_used_in_diplomas',
+    ['github_username', 'linkedin_username', 'telegram_username'],
+)
+def test_non_diploma_fields_not_triggers_diploma_regeneration(api, mocker, field_not_used_in_diplomas):
+    diploma_regenerator = mocker.patch('diplomas.tasks.regenerate_diplomas.delay')
+
+    api.patch('/api/v2/users/me/', {
+        field_not_used_in_diplomas: 'nkiryanov',
+    })
+
+    diploma_regenerator.assert_not_called()
