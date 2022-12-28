@@ -3,7 +3,7 @@ from typing import Optional, cast
 import uuid
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Permission
-from django.db.models import Q, TextChoices, UniqueConstraint
+from django.db.models import TextChoices
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from urllib.parse import urljoin
@@ -27,13 +27,10 @@ class User(AbstractUser):
 
     linkedin_username = models.CharField(max_length=256, blank=True, db_index=True, default='')
     github_username = models.CharField(max_length=256, blank=True, db_index=True, default='')
+    telegram_username = models.CharField(max_length=256, blank=True, db_index=True, default='')
 
     class Meta(AbstractUser.Meta):
         abstract = False
-        constraints = [
-            UniqueConstraint(name='unique_github_username', fields=['github_username'], condition=~Q(github_username='')),
-            UniqueConstraint(name='unique_linkedin_username', fields=['linkedin_username'], condition=~Q(linkedin_username='')),
-        ]
 
     @classmethod
     def parse_name(cls, name: str) -> dict:
