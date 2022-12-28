@@ -10,6 +10,8 @@ def test_list(api, course):
     assert got[0]['slug'] == 'ichteology'
     assert got[0]['name'] == 'Ихтеология для 5 класса'
     assert got[0]['home_page_slug'] is None
+    assert '.gif' in got[0]['cover']
+    assert 'http://' in got[0]['cover']
 
 
 @pytest.mark.usefixtures('unpaid_order')
