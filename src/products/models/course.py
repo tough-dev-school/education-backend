@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.db.models import OuterRef, QuerySet, Subquery
 from django.utils.translation import gettext_lazy as _
 
+from app.files import RandomFileName
 from app.models import models
 from mailing.tasks import send_mail
 from products.models.base import Shippable
@@ -49,6 +50,13 @@ class Course(Shippable):
 
     confirmation_template_id = models.CharField(_('Confirmation template id'), max_length=255, null=True, blank=True, help_text=_('If set user sill receive this message upon creating zero-priced order'))
     confirmation_success_url = models.URLField(_('Confirmation success URL'), null=True, blank=True)
+
+    cover = models.ImageField(
+        verbose_name=_('Cover image'),
+        upload_to=RandomFileName('courses/covers'),
+        blank=True,
+        help_text=_('The cover image of course'),
+    )
 
     class Meta:
         ordering = ['-id']

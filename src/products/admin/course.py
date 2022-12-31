@@ -15,6 +15,7 @@ class CourseAdmin(ModelAdmin):
                 'fields': [
                     'name',
                     'slug',
+                    'cover',
                     'display_in_lms',
                     'disable_triggers',
                     'group',
@@ -62,6 +63,7 @@ class CourseAdmin(ModelAdmin):
         'group',
         'name',
         'slug',
+        'has_cover',
     )
 
     list_filter = (
@@ -87,3 +89,7 @@ class CourseAdmin(ModelAdmin):
     ]
 
     save_as = True
+
+    @admin.display(boolean=True)
+    def has_cover(self, course: Course) -> bool:
+        return bool(course.cover)

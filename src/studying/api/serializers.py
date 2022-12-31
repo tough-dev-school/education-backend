@@ -13,4 +13,5 @@ class CourseSerializer(serializers.ModelSerializer):
             'slug',
             'name',
             'home_page_slug',
+            'cover',
         ]
