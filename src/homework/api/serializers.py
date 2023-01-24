@@ -62,6 +62,10 @@ class AnswerCreateSerializer(serializers.ModelSerializer):
             'question',
             'parent',
             'text',
+            'slug',
+        ]
+        read_only_fields = [
+            'slug',
         ]
 
 
