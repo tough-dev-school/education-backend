@@ -8,20 +8,8 @@ pytestmark = [
 
 
 @pytest.fixture
-def add_course_access(course, factory):
-    def _add_access(user):
-        order = factory.order(user=user, item=course)
-        order.set_paid()
-        return order
-
-    return _add_access
-
-
-@pytest.fixture
-def commenter(mixer, add_course_access):
-    commenter = mixer.blend('users.User')
-    add_course_access(commenter)
-    return commenter
+def commenter(mixer):
+    return mixer.blend('users.User')
 
 
 @pytest.fixture(autouse=True)
@@ -64,9 +52,7 @@ def test_not_notifying_commenter(reply, answer, commenter, get_notified_users):
     assert commenter.email not in get_notified_users()
 
 
-def test_notifying_another_commenter(reply, answer, another_user, commenter, get_notified_users, add_course_access):
-    add_course_access(another_user)
-
+def test_notifying_another_commenter(reply, answer, another_user, commenter, get_notified_users):
     reply(answer, {
         'text': 'Верните деньги!',
     }, as_user=commenter)

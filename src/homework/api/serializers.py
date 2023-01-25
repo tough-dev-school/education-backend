@@ -62,7 +62,6 @@ class AnswerCreateSerializer(serializers.ModelSerializer):
             'question',
             'parent',
             'text',
-            'slug',
         ]
 
 
