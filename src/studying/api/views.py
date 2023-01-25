@@ -2,13 +2,14 @@ from django.db.models import QuerySet
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 
+from app.api.mixins import DisablePaginationWithQueryParamMixin
 from app.views import AuthenticatedRequest
 from products.models import Course
 from studying.api.serializers import CourseSerializer
 from studying.models import Study
 
 
-class PurchasedCoursesView(ListAPIView):
+class PurchasedCoursesView(DisablePaginationWithQueryParamMixin, ListAPIView):
     serializer_class = CourseSerializer
     permission_classes = [IsAuthenticated]
     request: AuthenticatedRequest
