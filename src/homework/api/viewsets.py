@@ -3,6 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 
+from app.api.mixins import DisablePaginationWithQueryParamMixin
 from app.viewsets import AppViewSet
 from homework.api.filtersets import AnswerFilterSet
 from homework.api.permissions import (
@@ -12,7 +13,7 @@ from homework.models import Answer, AnswerAccessLogEntry
 from homework.models.answer import AnswerQuerySet
 
 
-class AnswerViewSet(AppViewSet):
+class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     queryset = Answer.objects.for_viewset()
     serializer_class = AnswerDetailedTreeSerializer
     serializer_action_classes = {
@@ -28,13 +29,6 @@ class AnswerViewSet(AppViewSet):
         MayChangeAnswerOnlyForLimitedTime,
     ]
     filterset_class = AnswerFilterSet
-
-    @property
-    def pagination_disabled(self) -> bool:
-        return str(self.request.query_params.get('disable_pagination', False)).lower() in [
-            'true',
-            '1',
-        ]
 
     def update(self, request: Request, *args, **kwargs) -> Response:
         if not kwargs.get('partial', False):
@@ -56,13 +50,6 @@ class AnswerViewSet(AppViewSet):
         queryset = self.limit_queryset_for_list(queryset)
 
         return queryset.with_children_count().order_by('created')
-
-    def paginate_queryset(self, queryset):
-        """Disable response pagination with query param `disable_pagination`."""
-        if self.pagination_disabled:
-            return None
-
-        return super().paginate_queryset(queryset)
 
     def limit_queryset_to_user(self, queryset: AnswerQuerySet) -> AnswerQuerySet:
         if self.action != 'retrieve':
