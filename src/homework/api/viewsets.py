@@ -36,6 +36,14 @@ class AnswerViewSet(AppViewSet):
             '1',
         ]
 
+    def create(self, request: Request, *args, **kwargs) -> Response:
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        answer = serializer.save()
+
+        Serializer = self.get_serializer_class(action='retrieve')
+        return Response(Serializer(answer).data, status=201)
+
     def update(self, request: Request, *args, **kwargs) -> Response:
         if not kwargs.get('partial', False):
             raise MethodNotAllowed('Please use patch')

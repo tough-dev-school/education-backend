@@ -64,9 +64,6 @@ class AnswerCreateSerializer(serializers.ModelSerializer):
             'text',
             'slug',
         ]
-        read_only_fields = [
-            'slug',
-        ]
 
 
 class AnswerCommentTreeSerializer(AnswerTreeSerializer):
