@@ -7,14 +7,14 @@ from app.viewsets import AppViewSet
 from homework.api.filtersets import AnswerFilterSet
 from homework.api.permissions import (
     MayChangeAnswerOnlyForLimitedTime, ShouldBeAnswerAuthorOrReadOnly, ShouldHavePurchasedQuestionCoursePermission)
-from homework.api.serializers import AnswerCreateSerializer, AnswerTreeSerializer
+from homework.api.serializers import AnswerCreateSerializer, AnswerDetailedTreeSerializer
 from homework.models import Answer, AnswerAccessLogEntry
 from homework.models.answer import AnswerQuerySet
 
 
 class AnswerViewSet(AppViewSet):
     queryset = Answer.objects.for_viewset()
-    serializer_class = AnswerTreeSerializer
+    serializer_class = AnswerDetailedTreeSerializer
     serializer_action_classes = {
         'create': AnswerCreateSerializer,
         'partial_update': AnswerCreateSerializer,
@@ -53,8 +53,9 @@ class AnswerViewSet(AppViewSet):
         queryset = super().get_queryset()
 
         queryset = self.limit_queryset_to_user(queryset)  # type: ignore
+        queryset = self.limit_queryset_for_list(queryset)
 
-        return self.limit_queryset_for_list(queryset)
+        return queryset.with_children_count().order_by('created')
 
     def paginate_queryset(self, queryset):
         """Disable response pagination with query param `disable_pagination`."""

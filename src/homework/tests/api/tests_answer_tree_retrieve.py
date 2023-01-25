@@ -39,9 +39,26 @@ def test_no_descendants_by_default(api, answer):
 def test_child_answers(api, answer, another_answer):
     got = api.get(f'/api/v2/homework/answers/{answer.slug}/')
 
-    assert got['descendants'][0]['slug'] == str(another_answer.slug)
-    assert got['descendants'][0]['author']['first_name'] == another_answer.author.first_name
-    assert got['descendants'][0]['author']['last_name'] == another_answer.author.last_name
+    assert len(got['descendants']) == 1
+
+
+@pytest.mark.freeze_time('2022-10-09 10:30:12+12:00')  # +12 hours kamchatka timezone
+@pytest.mark.usefixtures('kamchatka_timezone')
+def test_child_answers_fields(api, answer, another_answer):
+    got = api.get(f'/api/v2/homework/answers/{answer.slug}/')['descendants'][0]
+
+    assert len(got) == 9
+    assert got['created'] == '2022-10-09T10:30:12+12:00'
+    assert got['modified'] == '2022-10-09T10:30:12+12:00'
+    assert got['slug'] == str(another_answer.slug)
+    assert got['parent'] == str(answer.slug)
+    assert got['question'] == str(another_answer.question.slug)
+    assert got['author']['uuid'] == str(another_answer.author.uuid)
+    assert got['author']['first_name'] == another_answer.author.first_name
+    assert got['author']['last_name'] == another_answer.author.last_name
+    assert 'text' in got
+    assert 'src' in got
+    assert 'descendants' in got
 
 
 def test_multilevel_child_answers(api, answer, another_answer, child_of_another_answer):

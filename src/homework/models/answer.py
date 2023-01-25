@@ -3,7 +3,7 @@ from typing import Optional
 import textwrap
 import uuid
 from django.conf import settings
-from django.db.models import Count, Q, QuerySet
+from django.db.models import Count, Q
 from django.db.models.query_utils import FilteredRelation
 from django.utils.translation import gettext_lazy as _
 from markdownx.models import MarkdownxField
@@ -19,10 +19,10 @@ from users.models import User
 
 
 class AnswerQuerySet(TreeQuerySet):
-    def for_viewset(self) -> QuerySet['Answer']:
+    def for_viewset(self) -> 'AnswerQuerySet':
         return self.with_tree_fields().select_related('author', 'question')
 
-    def accessed_by(self, user) -> QuerySet['Answer']:
+    def accessed_by(self, user) -> 'AnswerQuerySet':
         return self.with_tree_fields().annotate(
             access_log_entries_for_this_user=FilteredRelation(
                 'answeraccesslogentry',
@@ -54,11 +54,14 @@ class AnswerQuerySet(TreeQuerySet):
         else:
             return self.none()
 
-    def with_crosscheck_count(self):
+    def with_crosscheck_count(self) -> 'AnswerQuerySet':
         return self.annotate(crosscheck_count=Count('answercrosscheck'))
 
     def root_only(self) -> 'AnswerQuerySet':
         return self.filter(parent__isnull=True)
+
+    def with_children_count(self) -> 'AnswerQuerySet':
+        return self.annotate(children_count=Count('children'))
 
 
 class Answer(TreeNode):
@@ -107,7 +110,7 @@ class Answer(TreeNode):
 
         return None
 
-    def get_first_level_descendants(self):
+    def get_first_level_descendants(self) -> 'AnswerQuerySet':
         return self.descendants().filter(parent=self.id)
 
     def __str__(self) -> str:
