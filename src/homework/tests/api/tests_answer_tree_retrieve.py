@@ -44,7 +44,7 @@ def test_child_answers(api, answer, another_answer):
 
 @pytest.mark.freeze_time('2022-10-09 10:30:12+12:00')  # +12 hours kamchatka timezone
 @pytest.mark.usefixtures('kamchatka_timezone')
-def test_childe_answer_fields(api, answer, another_answer):
+def test_child_answers_fields(api, answer, another_answer):
     got = api.get(f'/api/v2/homework/answers/{answer.slug}/')['descendants'][0]
 
     assert len(got) == 9

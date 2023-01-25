@@ -52,7 +52,7 @@ class AnswerTreeSerializer(serializers.ModelSerializer):
         return cast(list[dict], serializer.data)
 
 
-class AnswerDetailedSerializer(AnswerTreeSerializer):
+class AnswerDetailedTreeSerializer(AnswerTreeSerializer):
     has_descendants = serializers.BooleanField(source='children_count')
 
     class Meta:
