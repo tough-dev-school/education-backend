@@ -1,13 +1,14 @@
 
 from rest_framework.exceptions import MethodNotAllowed
 
+from app.api.mixins import DisablePaginationWithQueryParamMixin
 from app.viewsets import AppViewSet
 from diplomas.api import serializers
 from diplomas.api.permissions import DiplomaPermission
 from diplomas.models import Diploma
 
 
-class DiplomaViewSet(AppViewSet):
+class DiplomaViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     queryset = Diploma.objects.for_viewset()
     lookup_field = 'slug'
     serializer_class = serializers.DiplomaSerializer
