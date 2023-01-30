@@ -11,6 +11,7 @@ pytestmark = [
 def test_ok(api, answer, question):
     got = api.get(f'/api/v2/homework/answers/{answer.slug}/')
 
+    assert len(got) == 9
     assert got['created'] == '2022-10-09T11:10:00+12:00'
     assert got['modified'] == '2022-10-09T11:10:00+12:00'
     assert got['slug'] == str(answer.slug)
@@ -19,6 +20,18 @@ def test_ok(api, answer, question):
     assert got['author']['last_name'] == api.user.last_name
     assert got['question'] == str(question.slug)
     assert got['descendants'] == []
+    assert got['has_descendants'] is False
+    assert 'text' in got
+    assert 'src' in got
+
+
+def test_has_descendants_is_true_if_answer_has_children(api, answer, another_answer):
+    another_answer.parent = answer
+    another_answer.save()
+
+    got = api.get(f'/api/v2/homework/answers/{answer.slug}/')
+
+    assert got['has_descendants'] is True
 
 
 def test_query_count_for_answer_without_descendants(api, answer, django_assert_num_queries):
@@ -43,14 +56,14 @@ def test_non_root_answers_are_ok(api, answer, another_answer):
     api.get(f'/api/v2/homework/answers/{answer.slug}/', expected_status_code=200)
 
 
-def test_answers_without_parents_do_not_have_this_field(api, question, answer):
-    """Just to document weird behaviour of our API: we hide the parent field when it is empty"""
-    answer.parent = None
+def test_answers_with_parents_have_parent_field(api, question, answer, another_answer):
+    """Just to document weird behavior of our API: the parent is showed for not root answers only."""
+    answer.parent = another_answer
     answer.save()
 
     got = api.get(f'/api/v2/homework/answers/{answer.slug}/')
 
-    assert 'parent' not in got
+    assert 'parent' in got
 
 
 def test_403_for_not_purchased_users(api, answer, purchase):

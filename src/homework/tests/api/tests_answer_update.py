@@ -38,7 +38,7 @@ def test_changing_text(api, answer):
 def test_patch_changing_text_response_fields(api, answer, another_answer):
     got = api.patch(f'/api/v2/homework/answers/{answer.slug}/', {'text': '*patched*'})
 
-    assert len(got) == 9
+    assert len(got) == 10
     assert got['created'] == '2032-12-01T15:30:12+03:00'
     assert got['modified'] == '2032-12-01T15:30:12+03:00'
     assert '-4' in got['slug']
@@ -49,6 +49,7 @@ def test_patch_changing_text_response_fields(api, answer, another_answer):
     assert got['author']['last_name'] == api.user.last_name
     assert got['text'] == '<p><em>patched</em></p>\n'
     assert got['src'] == '*patched*'
+    assert got['has_descendants'] is False
     assert 'descendants' in got
 
 
@@ -59,7 +60,7 @@ def test_update_answer_without_parent_do_not_have_parent_field_in_response(api, 
 
     got = api.patch(f'/api/v2/homework/answers/{answer.slug}/', {'text': '*patched*'})
 
-    assert len(got) == 8
+    assert len(got) == 9
     assert 'parent' not in got
 
 

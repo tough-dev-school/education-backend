@@ -41,7 +41,7 @@ def test_create_answer_fields(api, question, another_answer):
         'parent': another_answer.slug,
     })
 
-    assert len(got) == 9
+    assert len(got) == 10
     assert got['created'] == '2023-01-23T08:30:40+12:00'
     assert got['modified'] == '2023-01-23T08:30:40+12:00'
     assert '-4' in got['slug']
@@ -52,7 +52,8 @@ def test_create_answer_fields(api, question, another_answer):
     assert got['parent'] == str(another_answer.slug)
     assert got['text'] == '<p>Да ты умничка!</p>\n'
     assert got['src'] == 'Да ты умничка!'
-    assert got['descendants'] == []  # just created answer couldn't have descendants
+    assert got['has_descendants'] is False  # just created answer couldn't have descendants
+    assert got['descendants'] == []
 
 
 def test_without_parent(api, question):
@@ -85,7 +86,7 @@ def test_create_answer_without_parent_do_not_have_parent_field_in_response(api, 
         'text': 'Верните деньги!',
     })
 
-    assert len(got) == 8
+    assert len(got) == 9
     assert 'parent' not in got
 
 
@@ -120,7 +121,7 @@ def test_ok_for_userpusers(api, question):
     }, expected_status_code=201)
 
 
-@pytest.mark.xfail(strict=True, reason='WIP no permission per question when create answer')
+@pytest.mark.xfail(strict=True, reason='Мы не проверяем право доступа к вопросу при создании ответа. Считаем это неважным, см #1370')
 def test_403_if_user_has_not_purchase_record_at_all(api, question, purchase):
     purchase.delete()
 

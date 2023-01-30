@@ -1,3 +1,5 @@
+from typing import cast
+
 from rest_framework import serializers
 
 from app.serializers import MarkdownXField, SoftField
@@ -39,7 +41,7 @@ class AnswerTreeSerializer(serializers.ModelSerializer):
             'descendants',
         ]
 
-    def get_descendants(self, obj):
+    def get_descendants(self, obj: Answer) -> list[dict]:
         queryset = obj.get_first_level_descendants()
         serializer = AnswerTreeSerializer(
             queryset,
@@ -47,7 +49,26 @@ class AnswerTreeSerializer(serializers.ModelSerializer):
             context=self.context,
         )
 
-        return serializer.data
+        return cast(list[dict], serializer.data)
+
+
+class AnswerDetailedTreeSerializer(AnswerTreeSerializer):
+    has_descendants = serializers.BooleanField(source='children_count')
+
+    class Meta:
+        model = Answer
+        fields = [
+            'created',
+            'modified',
+            'slug',
+            'question',
+            'author',
+            'parent',
+            'text',
+            'src',
+            'descendants',
+            'has_descendants',
+        ]
 
 
 class AnswerCreateSerializer(serializers.ModelSerializer):

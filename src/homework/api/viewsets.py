@@ -3,18 +3,19 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 
+from app.api.mixins import DisablePaginationWithQueryParamMixin
 from app.viewsets import AppViewSet
 from homework.api.filtersets import AnswerFilterSet
 from homework.api.permissions import (
     MayChangeAnswerOnlyForLimitedTime, ShouldBeAnswerAuthorOrReadOnly, ShouldHavePurchasedQuestionCoursePermission)
-from homework.api.serializers import AnswerCreateSerializer, AnswerTreeSerializer
+from homework.api.serializers import AnswerCreateSerializer, AnswerDetailedTreeSerializer
 from homework.models import Answer, AnswerAccessLogEntry
 from homework.models.answer import AnswerQuerySet
 
 
-class AnswerViewSet(AppViewSet):
+class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     queryset = Answer.objects.for_viewset()
-    serializer_class = AnswerTreeSerializer
+    serializer_class = AnswerDetailedTreeSerializer
     serializer_action_classes = {
         'create': AnswerCreateSerializer,
         'partial_update': AnswerCreateSerializer,
@@ -29,17 +30,11 @@ class AnswerViewSet(AppViewSet):
     ]
     filterset_class = AnswerFilterSet
 
-    @property
-    def pagination_disabled(self) -> bool:
-        return str(self.request.query_params.get('disable_pagination', False)).lower() in [
-            'true',
-            '1',
-        ]
-
     def create(self, request: Request, *args, **kwargs) -> Response:
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         answer = serializer.save()
+        answer = self.get_queryset().get(pk=answer.pk)
 
         Serializer = self.get_serializer_class(action='retrieve')
         return Response(Serializer(answer).data, status=201)
@@ -61,15 +56,9 @@ class AnswerViewSet(AppViewSet):
         queryset = super().get_queryset()
 
         queryset = self.limit_queryset_to_user(queryset)  # type: ignore
+        queryset = self.limit_queryset_for_list(queryset)
 
-        return self.limit_queryset_for_list(queryset)
-
-    def paginate_queryset(self, queryset):
-        """Disable response pagination with query param `disable_pagination`."""
-        if self.pagination_disabled:
-            return None
-
-        return super().paginate_queryset(queryset)
+        return queryset.with_children_count().order_by('created')
 
     def limit_queryset_to_user(self, queryset: AnswerQuerySet) -> AnswerQuerySet:
         if self.action != 'retrieve':
