@@ -30,6 +30,15 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     ]
     filterset_class = AnswerFilterSet
 
+    def create(self, request: Request, *args, **kwargs) -> Response:
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        answer = serializer.save()
+        answer = self.get_queryset().get(pk=answer.pk)
+
+        Serializer = self.get_serializer_class(action='retrieve')
+        return Response(Serializer(answer).data, status=201)
+
     def update(self, request: Request, *args, **kwargs) -> Response:
         if not kwargs.get('partial', False):
             raise MethodNotAllowed('Please use patch')

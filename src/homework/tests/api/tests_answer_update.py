@@ -11,6 +11,17 @@ pytestmark = [
 
 
 @pytest.fixture
+def answer(answer, another_answer):
+    Answer.objects.filter(pk=answer.pk).update(
+        modified='2032-12-01 15:10+03:00',  # force to set modified time
+        parent=another_answer,
+    )
+
+    answer.refresh_from_db()
+    return answer
+
+
+@pytest.fixture
 def answer_of_another_author(mixer, question, another_user):
     return mixer.blend('homework.Answer', question=question, author=another_user)
 
@@ -21,14 +32,36 @@ def test_changing_text(api, answer):
     answer.refresh_from_db()
 
     assert answer.text == '*patched*'
+    assert answer.modified == datetime(2032, 12, 1, 15, 30, 12, tzinfo=timezone(timedelta(hours=3)))  # modified time updated
 
 
-def test_changing_text_updates_modified_time(api, answer):
-    api.patch(f'/api/v2/homework/answers/{answer.slug}/', {'text': '*patched*'})
+def test_patch_changing_text_response_fields(api, answer, another_answer):
+    got = api.patch(f'/api/v2/homework/answers/{answer.slug}/', {'text': '*patched*'})
 
-    answer.refresh_from_db()
+    assert len(got) == 10
+    assert got['created'] == '2032-12-01T15:30:12+03:00'
+    assert got['modified'] == '2032-12-01T15:30:12+03:00'
+    assert '-4' in got['slug']
+    assert got['question'] == str(answer.question.slug)
+    assert got['parent'] == str(another_answer.slug)
+    assert got['author']['uuid'] == str(api.user.uuid)
+    assert got['author']['first_name'] == api.user.first_name
+    assert got['author']['last_name'] == api.user.last_name
+    assert got['text'] == '<p><em>patched</em></p>\n'
+    assert got['src'] == '*patched*'
+    assert got['has_descendants'] is False
+    assert 'descendants' in got
 
-    assert answer.modified == datetime(2032, 12, 1, 15, 30, 12, tzinfo=timezone(timedelta(hours=3)))
+
+def test_update_answer_without_parent_do_not_have_parent_field_in_response(api, question, answer):
+    """Just to document weird behavior of our API: we hide the parent field when it is empty"""
+    answer.parent = None
+    answer.save()
+
+    got = api.patch(f'/api/v2/homework/answers/{answer.slug}/', {'text': '*patched*'})
+
+    assert len(got) == 9
+    assert 'parent' not in got
 
 
 def test_405_for_put(api, answer):
