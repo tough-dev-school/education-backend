@@ -19,7 +19,7 @@ def answer_from_another_user(another_user, another_answer):
 def test_ok(api, question, answer):
     got = api.get(f'/api/v2/homework/answers/?question={question.slug}')['results']
 
-    assert len(got[0]) == 9
+    assert len(got[0]) == 8
     assert got[0]['created'] == '2022-10-09T10:30:12+12:00'
     assert got[0]['modified'] == '2022-10-09T10:30:12+12:00'
     assert got[0]['slug'] == str(answer.slug)
@@ -29,7 +29,6 @@ def test_ok(api, question, answer):
     assert got[0]['author']['uuid'] == str(api.user.uuid)
     assert got[0]['author']['first_name'] == api.user.first_name
     assert got[0]['author']['last_name'] == api.user.last_name
-    assert got[0]['descendants'] == []
     assert got[0]['has_descendants'] is False
 
 
