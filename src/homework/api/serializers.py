@@ -19,13 +19,31 @@ class QuestionSerializer(serializers.ModelSerializer):
         ]
 
 
-class AnswerTreeSerializer(serializers.ModelSerializer):
+class AnswerDetailedSerializer(serializers.ModelSerializer):
     author = UserSafeSerializer()
     text = MarkdownXField()
     src = serializers.CharField(source='text')
     parent = SoftField(source='parent.slug')  # type: ignore
-    descendants = serializers.SerializerMethodField()
     question = serializers.CharField(source='question.slug')
+    has_descendants = serializers.BooleanField(source='children_count')
+
+    class Meta:
+        model = Answer
+        fields = [
+            'created',
+            'modified',
+            'slug',
+            'question',
+            'author',
+            'parent',
+            'text',
+            'src',
+            'has_descendants',
+        ]
+
+
+class AnswerTreeSerializer(AnswerDetailedSerializer):
+    descendants = serializers.SerializerMethodField()
 
     class Meta:
         model = Answer
@@ -42,7 +60,7 @@ class AnswerTreeSerializer(serializers.ModelSerializer):
         ]
 
     def get_descendants(self, obj: Answer) -> list[dict]:
-        queryset = obj.get_first_level_descendants()
+        queryset = obj.get_first_level_descendants().select_related('question', 'author')
         serializer = AnswerTreeSerializer(
             queryset,
             many=True,
@@ -50,25 +68,6 @@ class AnswerTreeSerializer(serializers.ModelSerializer):
         )
 
         return cast(list[dict], serializer.data)
-
-
-class AnswerDetailedTreeSerializer(AnswerTreeSerializer):
-    has_descendants = serializers.BooleanField(source='children_count')
-
-    class Meta:
-        model = Answer
-        fields = [
-            'created',
-            'modified',
-            'slug',
-            'question',
-            'author',
-            'parent',
-            'text',
-            'src',
-            'descendants',
-            'has_descendants',
-        ]
 
 
 class AnswerCreateSerializer(serializers.ModelSerializer):

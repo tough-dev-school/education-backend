@@ -8,14 +8,14 @@ from app.viewsets import AppViewSet
 from homework.api.filtersets import AnswerFilterSet
 from homework.api.permissions import (
     MayChangeAnswerOnlyForLimitedTime, ShouldBeAnswerAuthorOrReadOnly, ShouldHavePurchasedQuestionCoursePermission)
-from homework.api.serializers import AnswerCreateSerializer, AnswerDetailedTreeSerializer
+from homework.api.serializers import AnswerCreateSerializer, AnswerDetailedSerializer
 from homework.models import Answer, AnswerAccessLogEntry
 from homework.models.answer import AnswerQuerySet
 
 
 class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     queryset = Answer.objects.for_viewset()
-    serializer_class = AnswerDetailedTreeSerializer
+    serializer_class = AnswerDetailedSerializer
     serializer_action_classes = {
         'create': AnswerCreateSerializer,
         'partial_update': AnswerCreateSerializer,

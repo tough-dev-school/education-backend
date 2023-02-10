@@ -40,7 +40,7 @@ def test_fields(get_comments, answer):
     got = get_comments(f'?answer={answer.slug}')[0]
 
     assert got['slug'] == str(answer.slug)
-    assert got['descendants'] == []
+    assert got['descendants'] == []  # descendants response tested in tests_comments_list_descendants
 
 
 def test_return_results_for_several_comma_separated_answers(get_comments, answer, another_answer):
@@ -83,15 +83,6 @@ def test_include_other_authors_user_with_see_all_answers_permissions(get_comment
     got = get_comments(f'?answer={answer_another_user.slug}')
 
     assert len(got) == 1
-
-
-@pytest.mark.usefixtures('purchase')
-def test_same_descendants_with_retrieve(api, get_comments, answer_with_descendants):
-    comments_descendants = get_comments(f'?answer={answer_with_descendants.slug}')[0]['descendants']
-
-    retrieve_descendants = api.get(f'/api/v2/homework/answers/{answer_with_descendants.slug}/')['descendants']
-
-    assert retrieve_descendants == comments_descendants
 
 
 def test_no_anon(anon, answer):

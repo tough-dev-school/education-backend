@@ -41,7 +41,7 @@ def test_create_answer_fields(api, question, another_answer):
         'parent': another_answer.slug,
     })
 
-    assert len(got) == 10
+    assert len(got) == 9
     assert got['created'] == '2023-01-23T08:30:40+12:00'
     assert got['modified'] == '2023-01-23T08:30:40+12:00'
     assert '-4' in got['slug']
@@ -53,7 +53,6 @@ def test_create_answer_fields(api, question, another_answer):
     assert got['text'] == '<p>Да ты умничка!</p>\n'
     assert got['src'] == 'Да ты умничка!'
     assert got['has_descendants'] is False  # just created answer couldn't have descendants
-    assert got['descendants'] == []
 
 
 def test_without_parent(api, question):
@@ -86,7 +85,7 @@ def test_create_answer_without_parent_do_not_have_parent_field_in_response(api, 
         'text': 'Верните деньги!',
     })
 
-    assert len(got) == 9
+    assert len(got) == 8
     assert 'parent' not in got
 
 
@@ -111,7 +110,7 @@ def test_ok_for_users_with_permission(api, question):
 
 
 @pytest.mark.usefixtures('_no_purchase')
-def test_ok_for_userpusers(api, question):
+def test_ok_for_superusers(api, question):
     api.user.is_superuser = True
     api.user.save()
 
