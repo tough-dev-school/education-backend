@@ -70,10 +70,7 @@ def test_child_answers_fields(get_answer_comments, answer, another_answer):
     assert 'descendants' in descendant
 
 
-def test_multilevel_child_answers(get_answer_comments, api, another_answer, child_of_another_answer):
-    child_of_another_answer.author = api.user  # make child_of_another_answer accessible
-    child_of_another_answer.save()
-
+def test_multilevel_child_answers(get_answer_comments, another_answer, child_of_another_answer):
     got = get_answer_comments()[0]
 
     assert got['descendants'][0]['slug'] == str(another_answer.slug)
@@ -86,3 +83,9 @@ def test_only_immediate_siblings_are_included(get_answer_comments):
     got = get_answer_comments()[0]
 
     assert len(got['descendants']) == 1
+
+
+@pytest.mark.usefixtures('another_answer', 'child_of_another_answer')
+def test_reasonable_nplusone_queries_for_answers_with_descendants(get_answer_comments, django_assert_num_queries):
+    with django_assert_num_queries(10):
+        get_answer_comments()[0]
