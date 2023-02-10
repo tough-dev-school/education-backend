@@ -1,5 +1,3 @@
-from typing import Any, Optional
-
 from django.db.models import QuerySet
 from rest_framework.exceptions import NotFound
 from rest_framework.request import Request
@@ -11,7 +9,6 @@ from notion.api.throttling import NotionThrottle
 from notion.cache import get_cached_page
 from notion.helpers import uuid_to_id
 from notion.models import Material
-from notion.page import NotionPage
 from studying.models import Study
 
 
@@ -29,10 +26,9 @@ class NotionMaterialView(AuthenticatedAPIView):
         return Response(
             data=NotionPageSerializer(page).data,
             status=200,
-            headers=self.get_headers(page),
         )
 
-    def get_material(self) -> Optional[Material]:
+    def get_material(self) -> Material | None:
         queryset = self.get_queryset()
 
         return queryset.filter(page_id=self.page_id).first()
@@ -43,15 +39,6 @@ class NotionMaterialView(AuthenticatedAPIView):
 
         available_courses = Study.objects.filter(student=self.request.user).values('course')
         return Material.objects.filter(active=True, course__in=available_courses)
-
-    @staticmethod
-    def get_headers(page: NotionPage) -> dict:
-        headers: dict[str, Any] = dict()
-
-        if page.last_modified is not None:
-            headers['last-modified'] = page.last_modified.strftime('%a, %d %b %Y %H:%M:%S %Z')
-
-        return headers
 
     @property
     def page_id(self) -> str:
