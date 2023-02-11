@@ -260,7 +260,7 @@ idna==3.4
     #   rfc3986
 iniconfig==1.1.1
     # via pytest
-ipython==8.6.0
+ipython==8.10.0
     # via education-backend (pyproject.toml)
 isort==5.10.1
     # via flake8-isort
