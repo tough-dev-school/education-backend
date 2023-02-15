@@ -91,7 +91,7 @@ deprecated==1.2.13
     # via redis
 dj-rest-auth==2.2.5
     # via education-backend (pyproject.toml)
-django==3.2.17
+django==3.2.18
     # via
     #   dj-rest-auth
     #   django-anymail
