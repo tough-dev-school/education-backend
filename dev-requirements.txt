@@ -142,7 +142,7 @@ django-redis==5.2.0
     # via education-backend (pyproject.toml)
 django-split-settings==1.2.0
     # via education-backend (pyproject.toml)
-django-storages==1.13.1
+django-storages==1.13.2
     # via education-backend (pyproject.toml)
 django-stubs==1.11.0
     # via
