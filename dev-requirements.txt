@@ -293,7 +293,7 @@ mypy==0.950
     #   django-stubs
     #   djangorestframework-stubs
     #   education-backend (pyproject.toml)
-mypy-extensions==0.4.3
+mypy-extensions==0.4.4
     # via mypy
 packaging==21.3
     # via
