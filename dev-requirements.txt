@@ -249,7 +249,7 @@ h11==0.12.0
     # via httpcore
 httpcore==0.15.0
     # via httpx
-httpx==0.23.0
+httpx==0.23.3
     # via
     #   education-backend (pyproject.toml)
     #   pytest-httpx
