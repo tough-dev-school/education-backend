@@ -280,7 +280,7 @@ kombu==5.2.4
     # via celery
 markdown==3.4.1
     # via django-markdownx
-markupsafe==2.1.1
+markupsafe==2.1.2
     # via jinja2
 matplotlib-inline==0.1.6
     # via ipython
