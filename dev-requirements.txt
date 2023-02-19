@@ -385,7 +385,7 @@ redis==4.3.4
     # via
     #   django-redis
     #   education-backend (pyproject.toml)
-requests==2.28.1
+requests==2.28.2
     # via
     #   coreapi
     #   django-anymail
