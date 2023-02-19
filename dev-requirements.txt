@@ -266,7 +266,7 @@ isort==5.10.1
     # via flake8-isort
 itypes==1.2.0
     # via coreapi
-jedi==0.18.1
+jedi==0.18.2
     # via
     #   education-backend (pyproject.toml)
     #   ipython
