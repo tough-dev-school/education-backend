@@ -34,7 +34,7 @@ billiard==3.6.4.0
     # via celery
 bleach==5.0.1
     # via education-backend (pyproject.toml)
-boto3==1.25.5
+boto3==1.26.75
     # via education-backend (pyproject.toml)
 boto3-stubs==1.26.75
     # via education-backend (pyproject.toml)
