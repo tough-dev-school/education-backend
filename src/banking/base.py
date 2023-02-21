@@ -39,7 +39,7 @@ class Bank(metaclass=ABCMeta):
     def get_initial_payment_url(self) -> str:
         raise NotImplementedError()
 
-    def validate_order(self, order: 'Order') -> None:
+    def validate_order(self, order: 'Order') -> None:  # NOQA: B027
         """Hook to validate if order suites given bank"""
         return
 
@@ -61,5 +61,5 @@ class Bank(metaclass=ABCMeta):
     def user(self) -> 'User':
         return self.order.user
 
-    def successful_payment_callback(self) -> None:
+    def successful_payment_callback(self) -> None:  # NOQA: B027
         ...
