@@ -8,6 +8,7 @@ class ChainAdmin(ModelAdmin):
         'name',
         'course',
         'sending_is_active',
+        'is_archived',
     ]
 
     list_display = [
@@ -15,11 +16,13 @@ class ChainAdmin(ModelAdmin):
         'name',
         'course',
         'sending_is_active',
+        'is_archived',
     ]
 
     list_editable = [
         'name',
         'sending_is_active',
+        'is_archived',
     ]
 
 
