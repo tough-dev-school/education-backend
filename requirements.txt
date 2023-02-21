@@ -22,7 +22,7 @@ bleach==5.0.1
     # via education-backend (pyproject.toml)
 boto3==1.25.5
     # via education-backend (pyproject.toml)
-botocore==1.28.5
+botocore==1.29.75
     # via
     #   boto3
     #   s3transfer
