@@ -469,7 +469,7 @@ types-requests==2.28.11.14
     # via
     #   djangorestframework-stubs
     #   education-backend (pyproject.toml)
-types-retry==0.9.9
+types-retry==0.9.9.2
     # via education-backend (pyproject.toml)
 types-s3transfer==0.6.0.post5
     # via boto3-stubs
