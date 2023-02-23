@@ -42,7 +42,7 @@ botocore==1.28.5
     # via
     #   boto3
     #   s3transfer
-botocore-stubs==1.29.76
+botocore-stubs==1.29.77
     # via boto3-stubs
 celery==5.2.7
     # via education-backend (pyproject.toml)
