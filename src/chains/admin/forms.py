@@ -13,7 +13,7 @@ class MessageAddForm(forms.ModelForm):
     parent = forms.ModelChoiceField(queryset=Message.objects.may_be_parent(), required=False)
     chain = ChainChoiceField(
         queryset=Chain.objects.editable(),
-        help_text=(_('Only the chains that are neither archived nor active for sending are listed here')),
+        help_text=(_('Only the chains that are neither archived nor active for sending are listed')),
     )
 
     class Meta:
