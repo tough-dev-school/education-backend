@@ -45,8 +45,8 @@ def material(mixer, course):
 @pytest.fixture
 def page() -> NotionPage:
     return NotionPage(blocks=NotionBlockList([
-        NotionBlock(id='block-1', data={'block-name': 'block-1', 'value': {'last_edited_time': 1642356660000}}),
-        NotionBlock(id='block-2', data={'block-name': 'block-2'}),
+        NotionBlock(id='block-1', data={'role': 'reader-1', 'value': {'last_edited_time': 1642356660000}}),
+        NotionBlock(id='block-2', data={'role': 'reader-2'}),
     ]))
 
 

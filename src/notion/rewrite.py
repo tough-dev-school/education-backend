@@ -1,45 +1,46 @@
-from typing import Any, Mapping
+from typing import Mapping
 
 import contextlib
 from functools import lru_cache
 
 from notion.helpers import uuid_to_id
 from notion.models import Material
+from notion.types import BlockData, BlockId, TextProperty
 
 
 @lru_cache
-def get_rewrite_mapping() -> Mapping[str, str]:
+def get_rewrite_mapping() -> Mapping[BlockId, BlockId]:
     """Returns a mapping Notion Material -> our slug"""
     mapping = Material.objects.all().values_list('page_id', 'slug')
 
     return {page_id: uuid_to_id(str(slug)) for page_id, slug in mapping}
 
 
-def rewrite(notion_block_data: dict[str, Any]) -> dict[str, Any]:
+def rewrite(notion_block_data: BlockData) -> BlockData:
     if 'properties' not in notion_block_data.get('value', {}):
         return notion_block_data
 
-    for key in ['title', 'caption']:
+    for key in ('title', 'caption'):
         if key in notion_block_data['value']['properties']:
-            notion_block_data['value']['properties'][key] = rewrite_prop(notion_block_data['value']['properties'][key])
+            notion_block_data['value']['properties'][key] = rewrite_prop(notion_block_data['value']['properties'][key])  # type: ignore
 
     return notion_block_data
 
 
-def rewrite_prop(prop: list) -> list[str]:  # NOQA: CCR001
+def rewrite_prop(prop: TextProperty) -> TextProperty:  # NOQA: CCR001
     """Drill down notion property data, searching for a link to the internal material.
     If the link is found -- rewrite its id to our material slug
     """
-    rewritten: list = list()
-    rewrite_mapping = get_rewrite_mapping()
+    rewritten = TextProperty()
+    mapping = get_rewrite_mapping()
 
-    for i, value in enumerate(prop):
+    for value in prop:
         if isinstance(value, list):
-            if len(value) >= 1 and value[0] == 'a' and value[1].startswith('/'):
+            if len(value) >= 1 and value[0] == 'a' and value[1].startswith('/'):  # it is a link, and the link is internal
                 with contextlib.suppress(KeyError):  # blocks not in mapping remain not rewritten
-                    value[1] = '/' + rewrite_mapping[value[1].replace('/', '')]
+                    value[1] = '/' + mapping[value[1].replace('/', '')]
             else:
-                value = rewrite_prop(prop[i])
+                value = rewrite_prop(value)
 
         rewritten.append(value)
 

@@ -1,19 +1,19 @@
-from typing import Any, Generator, Optional
+from typing import Generator
 
 import contextlib
 from collections import UserList
 from dataclasses import dataclass
 
 from notion.rewrite import rewrite
-from notion.types import BlockId
+from notion.types import BlockData, BlockId
 
 
 @dataclass
 class NotionBlock:
     id: BlockId
-    data: dict[str, Any]
+    data: BlockData
 
-    def get_data(self) -> dict[str, Any]:
+    def get_data(self) -> BlockData:
         return rewrite(self.data)
 
     @property
@@ -24,14 +24,14 @@ class NotionBlock:
             return list()
 
     @property
-    def type(self) -> Optional[str]:
+    def type(self) -> str | None:
         with contextlib.suppress(KeyError):
             return self.data['value']['type']
 
 
 class NotionBlockList(UserList[NotionBlock]):
     @classmethod
-    def from_api_response(cls, api_response: dict[str, dict]) -> 'NotionBlockList':
+    def from_api_response(cls, api_response: dict[str, BlockData]) -> 'NotionBlockList':
         instance = cls()
         for block_id, data in api_response.items():
             instance.append(NotionBlock(id=block_id, data=data))
@@ -59,7 +59,7 @@ class NotionBlockList(UserList[NotionBlock]):
                     yield block
 
     @property
-    def first_page_block(self) -> Optional[NotionBlock]:
+    def first_page_block(self) -> NotionBlock | None:
         """We assume that first block with type == 'page' is the root block, that has some unlderlying blocks we should fetch"""
         for block in self.data:
             if block.type == 'page' and len(block.content) > 0:

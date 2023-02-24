@@ -16,8 +16,8 @@ def test_both_formats_work(api, material_id, mock_notion_response):
 def test_content_is_passed_from_notion_client(api, material):
     got = api.get(f'/api/v2/notion/materials/{material.page_id}/')
 
-    assert got['block-1']['block-name'] == 'block-1'
-    assert got['block-2']['block-name'] == 'block-2'
+    assert got['block-1']['role'] == 'reader-1'
+    assert got['block-2']['role'] == 'reader-2'
 
 
 def test_404_for_non_existant_materials(api, mock_notion_response):
