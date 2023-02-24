@@ -18,6 +18,9 @@ class MessageQuerySet(QuerySet):
             'chain__course',
         )
 
+    def not_archived(self) -> QuerySet['Message']:
+        return self.filter(chain__archived=False)
+
 
 MessageManager = models.Manager.from_queryset(MessageQuerySet)
 

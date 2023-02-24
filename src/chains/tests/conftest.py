@@ -20,7 +20,7 @@ def order(course, user, factory):
 
 @pytest.fixture
 def chain(mixer, course):
-    return mixer.blend('chains.Chain', course=course, sending_is_active=True)
+    return mixer.blend('chains.Chain', course=course, sending_is_active=True, archived=False)
 
 
 @pytest.fixture

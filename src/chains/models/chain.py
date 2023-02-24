@@ -6,11 +6,18 @@ from app.models import TimestampedModel, models
 
 class ChainQuerySet(QuerySet):
     def active(self) -> QuerySet['Chain']:
-        return self.filter(sending_is_active=True)
+        return self.filter(
+            sending_is_active=True,
+            archived=False,
+        )
+
+    def archived(self) -> QuerySet['Chain']:
+        return self.filter(archived=True)
 
     def editable(self) -> QuerySet['Chain']:
         return self.filter(
             sending_is_active=False,
+            archived=False,
         ).select_related(
             'course',
         )
@@ -26,6 +33,7 @@ class Chain(TimestampedModel):
     course = models.ForeignKey('products.Course', verbose_name=_('Course'), on_delete=models.CASCADE)
 
     sending_is_active = models.BooleanField(_('Sending is active'), default=False)
+    archived = models.BooleanField(_('The chain is archived'), default=False)
 
     class Meta:
         verbose_name = _('Email chain')

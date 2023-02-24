@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from chains.models import Chain, Message
 
@@ -9,8 +10,16 @@ class ChainChoiceField(forms.ModelChoiceField):
 
 
 class MessageAddForm(forms.ModelForm):
-    parent = forms.ModelChoiceField(queryset=Message.objects.may_be_parent(), required=False)
-    chain = ChainChoiceField(queryset=Chain.objects.editable())
+    parent = forms.ModelChoiceField(
+        queryset=Message.objects.may_be_parent(),
+        required=False,
+        label=(_('Parent')),
+    )
+    chain = ChainChoiceField(
+        queryset=Chain.objects.editable(),
+        label=(_('Chain')),
+        help_text=(_('Only the chains that are neither archived nor active for sending are listed')),
+    )
 
     class Meta:
         model = Message
