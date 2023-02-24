@@ -10,9 +10,14 @@ class ChainChoiceField(forms.ModelChoiceField):
 
 
 class MessageAddForm(forms.ModelForm):
-    parent = forms.ModelChoiceField(queryset=Message.objects.may_be_parent(), required=False)
+    parent = forms.ModelChoiceField(
+        queryset=Message.objects.may_be_parent(),
+        required=False,
+        label=(_('Parent')),
+    )
     chain = ChainChoiceField(
         queryset=Chain.objects.editable(),
+        label=(_('Chain')),
         help_text=(_('Only the chains that are neither archived nor active for sending are listed')),
     )
 

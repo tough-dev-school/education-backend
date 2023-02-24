@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-24 12:54+0300\n"
+"POT-Creation-Date: 2023-02-24 16:09+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -39,72 +39,72 @@ msgstr ""
 msgid "Receipts"
 msgstr ""
 
-#: chains/admin/chain.py:8
+#: chains/admin/chain.py:9
 msgid "Archived"
 msgstr "Заархивирована"
 
-#: chains/admin/forms.py:16
+#: chains/admin/forms.py:16 chains/models/message.py:36
+msgid "Parent"
+msgstr "Родитель"
+
+#: chains/admin/forms.py:20 chains/models/message.py:33
+msgid "Chain"
+msgstr "Цепочка"
+
+#: chains/admin/forms.py:21
 msgid ""
 "Only the chains that are neither archived nor active for sending are listed"
-msgstr "В списке только незапущенные и не заархивированные цепочки"
+msgstr "В списке только не запущенные и не заархивированные цепочки"
 
-#: chains/admin/message.py:42 chains/models/chain.py:30 diplomas/admin.py:50
+#: chains/admin/message.py:48 chains/models/chain.py:33 diplomas/admin.py:50
 #: homework/admin/answer/admin.py:55 homework/admin/answer/admin.py:100
 #: orders/models/order.py:60 products/models/course.py:63
 msgid "Course"
 msgstr "Курс"
 
-#: chains/models/chain.py:29 chains/models/message.py:31
+#: chains/models/chain.py:32 chains/models/message.py:32
 #: homework/models/question.py:13 magnets/models.py:20
 #: products/admin/bundle.py:20 products/admin/course.py:13
 msgid "Name"
 msgstr "Название"
 
-#: chains/models/chain.py:32
+#: chains/models/chain.py:35
 msgid "Sending is active"
 msgstr "Запущена"
 
-#: chains/models/chain.py:33
+#: chains/models/chain.py:36
 msgid "The chain is archived"
 msgstr "Заархивирована"
 
-#: chains/models/chain.py:36
+#: chains/models/chain.py:39
 msgid "Email chain"
 msgstr "Цепочка"
 
-#: chains/models/chain.py:37
+#: chains/models/chain.py:40
 msgid "Email chains"
 msgstr "Цепочки"
 
-#: chains/models/message.py:32
-msgid "Chain"
-msgstr "Цепочка"
-
-#: chains/models/message.py:33
+#: chains/models/message.py:34
 msgid "Template id"
 msgstr "ID шаблона в постмарке"
 
-#: chains/models/message.py:35
-msgid "Parent"
-msgstr "Родитель"
-
-#: chains/models/message.py:35
+#: chains/models/message.py:36
 msgid "Messages without parent will be sent upon start"
 msgstr "Если не поставить — сообщение уйдёт сразу при запуске цепочки"
 
-#: chains/models/message.py:37
+#: chains/models/message.py:38
 msgid "Delay (minutes)"
 msgstr "Задержка (мин.)"
 
-#: chains/models/message.py:37
+#: chains/models/message.py:38
 msgid "1440 for day, 10080 for week"
 msgstr "День — 1440, Неделя — 10080"
 
-#: chains/models/message.py:40
+#: chains/models/message.py:41
 msgid "Email chain message"
 msgstr "Письмо"
 
-#: chains/models/message.py:41
+#: chains/models/message.py:42
 msgid "Email chain messages"
 msgstr "Письма"
 

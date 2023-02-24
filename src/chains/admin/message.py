@@ -1,3 +1,6 @@
+from django.contrib.admin import RelatedOnlyFieldListFilter
+from django.db.models import QuerySet
+from django.http.request import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import ModelAdmin, admin
@@ -9,6 +12,9 @@ from chains.models import Message
 class MessageAdmin(ModelAdmin):
     add_form = MessageAddForm
     form = MessageEditForm
+
+    def get_queryset(self, request: HttpRequest) -> QuerySet[Message]:
+        return super().get_queryset(request).not_archived()  # type: ignore
 
     fields = [
         'name',
@@ -29,8 +35,8 @@ class MessageAdmin(ModelAdmin):
     ]
 
     list_filter = [
-        'chain__course',
-        'chain',
+        ('chain__course', RelatedOnlyFieldListFilter),
+        ('chain', RelatedOnlyFieldListFilter),
     ]
 
     list_select_related = [
