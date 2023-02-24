@@ -14,9 +14,16 @@ def test_sent(send_message, parent_message, study):
     send_message.assert_called_once_with(parent_message, study=study)
 
 
-def test_inactive_chains_are_not_sent(send_message, chain):
-    chain.sending_is_active = False
-    chain.save()
+def test_sending_inactive_chains_are_not_sent(send_message, chain):
+    chain.setattr_and_save('sending_is_active', False)
+
+    tasks.send_active_chains()
+
+    send_message.assert_not_called()
+
+
+def test_archived_chains_are_not_sent(send_message, chain):
+    chain.setattr_and_save('archived', True)
 
     tasks.send_active_chains()
 

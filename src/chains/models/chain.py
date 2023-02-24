@@ -6,7 +6,10 @@ from app.models import TimestampedModel, models
 
 class ChainQuerySet(QuerySet):
     def active(self) -> QuerySet['Chain']:
-        return self.filter(sending_is_active=True)
+        return self.filter(
+            sending_is_active=True,
+            archived=False,
+        )
 
     def archived(self) -> QuerySet['Chain']:
         return self.filter(archived=True)

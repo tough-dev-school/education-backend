@@ -28,7 +28,7 @@ def test_exclude_sending_is_active_chains(get_editable, chain):
 
     got = get_editable()
 
-    assert got.count() == 0
+    assert chain not in got
 
 
 def test_exclude_archived_chains(get_editable, chain):
@@ -36,4 +36,4 @@ def test_exclude_archived_chains(get_editable, chain):
 
     got = get_editable()
 
-    assert got.count() == 0
+    assert chain not in got
