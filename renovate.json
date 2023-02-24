@@ -5,6 +5,7 @@
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "ignoreDeps": ["boto3", "botocore"],
       "automerge": true
     }
   ]
