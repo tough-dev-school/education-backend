@@ -8,7 +8,7 @@ amqp==5.1.1
     # via kombu
 anyio==3.6.2
     # via httpcore
-asgiref==3.5.2
+asgiref==3.6.0
     # via django
 async-timeout==4.0.2
     # via redis
@@ -149,7 +149,7 @@ packaging==21.3
     # via redis
 pillow==9.3.0
     # via django-markdownx
-prompt-toolkit==3.0.36
+prompt-toolkit==3.0.37
     # via click-repl
 psycopg2-binary==2.9.5
     # via education-backend (pyproject.toml)
@@ -211,7 +211,7 @@ standardjson==0.3.1
     # via django-prettyjson
 stripe==5.2.0
     # via education-backend (pyproject.toml)
-urllib3==1.26.12
+urllib3==1.26.14
     # via
     #   botocore
     #   education-backend (pyproject.toml)
@@ -222,7 +222,7 @@ vine==5.0.0
     #   amqp
     #   celery
     #   kombu
-wcwidth==0.2.5
+wcwidth==0.2.6
     # via prompt-toolkit
 webencodings==0.5.1
     # via bleach
