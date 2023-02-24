@@ -14,7 +14,7 @@ asgiref==3.6.0
     # via django
 astor==0.8.1
     # via flake8-simplify
-asttokens==2.1.0
+asttokens==2.2.1
     # via stack-data
 async-timeout==4.0.2
     # via redis
