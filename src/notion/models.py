@@ -1,3 +1,4 @@
+import uuid
 from django.conf import settings
 from django.db.models import QuerySet, UniqueConstraint
 from django.utils.translation import gettext_lazy as _
@@ -16,6 +17,8 @@ MaterialManager = models.Manager.from_queryset(MaterialQuerySet)
 
 class Material(TimestampedModel):
     objects = MaterialManager()
+
+    slug = models.UUIDField(default=uuid.uuid4, db_index=True, unique=True)
 
     title = models.CharField(_('Page title'), max_length=128, blank=True, help_text=_('Will be fetched automatically if empty'))
     course = models.ForeignKey('products.Course', on_delete=models.CASCADE)

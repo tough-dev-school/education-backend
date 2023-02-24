@@ -4,6 +4,7 @@ import contextlib
 from collections import UserList
 from dataclasses import dataclass
 
+from notion.rewrite import rewrite
 from notion.types import BlockId
 
 
@@ -11,6 +12,9 @@ from notion.types import BlockId
 class NotionBlock:
     id: BlockId
     data: dict[str, Any]
+
+    def get_data(self) -> dict[str, Any]:
+        return rewrite(self.data)
 
     @property
     def content(self) -> list[BlockId]:
