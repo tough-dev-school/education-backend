@@ -2,7 +2,6 @@ from typing import Optional
 
 import contextlib
 from dataclasses import dataclass
-from datetime import datetime
 
 from notion.block import NotionBlockList
 from notion.exceptions import NotSharedForWeb
@@ -20,10 +19,6 @@ class NotionPage:
         return cls(
             blocks=NotionBlockList.from_api_response(api_response['recordMap']['block']),
         )
-
-    @property
-    def last_modified(self) -> Optional[datetime]:
-        return self.blocks.last_modified
 
     @property
     def title(self) -> Optional[str]:
