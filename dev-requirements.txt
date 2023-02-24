@@ -36,7 +36,7 @@ bleach==5.0.1
     # via education-backend (pyproject.toml)
 boto3==1.25.5
     # via education-backend (pyproject.toml)
-boto3-stubs==1.26.77
+boto3-stubs==1.26.78
     # via education-backend (pyproject.toml)
 botocore==1.28.5
     # via
