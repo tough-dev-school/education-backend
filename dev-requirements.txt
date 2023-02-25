@@ -150,7 +150,7 @@ django-stubs==1.11.0
     #   education-backend (pyproject.toml)
 django-stubs-ext==0.7.0
     # via django-stubs
-django-tree-queries==0.11.0
+django-tree-queries==0.14.0
     # via education-backend (pyproject.toml)
 djangorestframework==3.14.0
     # via
