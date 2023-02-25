@@ -89,7 +89,7 @@ django-behaviors==0.5.1
     # via education-backend (pyproject.toml)
 django-cachalot==2.5.2
     # via education-backend (pyproject.toml)
-django-cors-headers==3.13.0
+django-cors-headers==3.14.0
     # via education-backend (pyproject.toml)
 django-debug-toolbar==3.8.1
     # via education-backend (pyproject.toml)
