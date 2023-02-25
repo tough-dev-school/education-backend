@@ -2,7 +2,7 @@
   "extends": [
     "config:base"
   ],
-  "ignoreDeps": ["boto3", "botocore"],
+  "ignoreDeps": ["boto3", "boto3-stubs", "botocore", "botocore-stubs"],
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
