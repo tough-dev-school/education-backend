@@ -305,7 +305,7 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
-pillow==9.3.0
+pillow==9.4.0
     # via django-markdownx
 pluggy==1.0.0
     # via pytest
