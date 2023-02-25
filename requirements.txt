@@ -114,7 +114,7 @@ django-split-settings==1.2.0
     # via education-backend (pyproject.toml)
 django-storages==1.13.2
     # via education-backend (pyproject.toml)
-django-tree-queries==0.11.0
+django-tree-queries==0.14.0
     # via education-backend (pyproject.toml)
 djangorestframework==3.14.0
     # via
