@@ -227,7 +227,7 @@ flake8-pyproject==1.2.2
     # via education-backend (pyproject.toml)
 flake8-pytest==1.4
     # via education-backend (pyproject.toml)
-flake8-pytest-style==1.6.0
+flake8-pytest-style==1.7.2
     # via education-backend (pyproject.toml)
 flake8-quotes==3.3.2
     # via education-backend (pyproject.toml)
