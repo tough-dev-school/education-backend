@@ -381,7 +381,7 @@ pytz==2022.7.1
     #   celery
     #   django
     #   djangorestframework
-redis==4.3.4
+redis==4.5.1
     # via
     #   django-redis
     #   education-backend (pyproject.toml)
