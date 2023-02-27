@@ -457,7 +457,7 @@ types-markdown==3.4.2.5
     #   education-backend (pyproject.toml)
 types-pillow==9.4.0.17
     # via education-backend (pyproject.toml)
-types-pytz==2022.6.0.1
+types-pytz==2022.7.1.2
     # via
     #   django-stubs
     #   types-babel
