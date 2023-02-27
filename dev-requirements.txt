@@ -439,7 +439,7 @@ tomli==2.0.1
     #   flake8-pyproject
     #   mypy
     #   pytest
-traitlets==5.5.0
+traitlets==5.9.0
     # via
     #   ipython
     #   matplotlib-inline
