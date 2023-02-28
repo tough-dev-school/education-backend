@@ -504,7 +504,7 @@ wcwidth==0.2.6
     # via prompt-toolkit
 webencodings==0.5.1
     # via bleach
-whitenoise==6.2.0
+whitenoise==6.4.0
     # via education-backend (pyproject.toml)
 wrapt==1.14.1
     # via deprecated
