@@ -79,7 +79,7 @@ coreapi==2.3.3
     # via djangorestframework-stubs
 coreschema==0.0.4
     # via coreapi
-coverage[toml]==6.5.0
+coverage[toml]==7.2.1
     # via pytest-cov
 cryptography==39.0.1
     # via pyjwt
