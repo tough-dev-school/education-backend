@@ -228,7 +228,7 @@ webencodings==0.5.1
     # via bleach
 whitenoise==6.4.0
     # via education-backend (pyproject.toml)
-wrapt==1.14.1
+wrapt==1.15.0
     # via deprecated
 
 # The following packages are considered to be unsafe in a requirements file:
