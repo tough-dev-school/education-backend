@@ -186,7 +186,7 @@ jobs:
           string: ${{ github.repository_owner }}
 
       - name: Update backend image
-        uses: appleboy/ssh-action@v0.1.7
+        uses: appleboy/ssh-action@v0.1.8
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: circle
@@ -194,7 +194,7 @@ jobs:
           script: docker service update app_backend --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:${{ github.sha }} --with-registry-auth
 
       - name: Update celery worker image
-        uses: appleboy/ssh-action@v0.1.7
+        uses: appleboy/ssh-action@v0.1.8
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: circle
@@ -202,7 +202,7 @@ jobs:
           script: docker service update app_worker --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }} --with-registry-auth
 
       - name: Update celery scheduler image
-        uses: appleboy/ssh-action@v0.1.7
+        uses: appleboy/ssh-action@v0.1.8
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: circle
