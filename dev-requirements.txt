@@ -309,7 +309,7 @@ pillow==9.4.0
     # via django-markdownx
 pluggy==1.0.0
     # via pytest
-prompt-toolkit==3.0.37
+prompt-toolkit==3.0.38
     # via
     #   click-repl
     #   ipython
