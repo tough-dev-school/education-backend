@@ -445,7 +445,7 @@ traitlets==5.9.0
     #   matplotlib-inline
 types-awscrt==0.16.10
     # via botocore-stubs
-types-babel==2.11.0.10
+types-babel==2.11.0.11
     # via education-backend (pyproject.toml)
 types-bleach==5.0.3.1
     # via education-backend (pyproject.toml)
