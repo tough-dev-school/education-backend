@@ -12,7 +12,7 @@ asgiref==3.6.0
     # via django
 async-timeout==4.0.2
     # via redis
-babel==2.11.0
+babel==2.12.1
     # via education-backend (pyproject.toml)
 bcrypt==4.0.1
     # via education-backend (pyproject.toml)
