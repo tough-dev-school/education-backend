@@ -2,6 +2,7 @@
   "extends": [
     "config:base"
   ],
+  "enabledManagers": ["pip_requirements"],
   "ignoreDeps": ["boto3", "boto3-stubs", "botocore", "botocore-stubs"],
   "packageRules": [
     {
