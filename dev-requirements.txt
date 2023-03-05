@@ -338,7 +338,7 @@ pyjwt[crypto]==2.6.0
     #   education-backend (pyproject.toml)
 pyparsing==3.0.9
     # via packaging
-pytest==7.2.1
+pytest==7.2.2
     # via
     #   pytest-cov
     #   pytest-deadfixtures
