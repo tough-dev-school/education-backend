@@ -164,7 +164,7 @@ drf-jwt==1.19.2
     # via education-backend (pyproject.toml)
 drf-recaptcha==2.2.2
     # via education-backend (pyproject.toml)
-eradicate==2.1.0
+eradicate==2.2.0
     # via flake8-eradicate
 exceptiongroup==1.1.0
     # via pytest
