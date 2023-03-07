@@ -13,5 +13,4 @@ urlpatterns = [
     path("orders/", include("orders.urls")),
     path("", include("products.urls")),
     path("healthchecks/", include("django_healthchecks.urls")),
-    path("markdownx/", include("markdownx.urls")),
 ]

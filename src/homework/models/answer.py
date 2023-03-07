@@ -1,9 +1,7 @@
 import textwrap
-from typing import Optional
 from urllib.parse import urljoin
 import uuid
 
-from markdownx.models import MarkdownxField
 from tree_queries.models import TreeNode
 from tree_queries.query import TreeQuerySet
 
@@ -78,7 +76,7 @@ class Answer(TreeNode):
     author = models.ForeignKey("users.User", on_delete=models.CASCADE)
     do_not_crosscheck = models.BooleanField(_("Exclude from cross-checking"), default=False)
 
-    text = MarkdownxField()
+    text = models.TextField()
 
     class Meta:
         verbose_name = _("Homework answer")
@@ -105,7 +103,7 @@ class Answer(TreeNode):
 
         return url
 
-    def get_purchased_course(self) -> Optional[Course]:
+    def get_purchased_course(self) -> Course | None:
         latest_purchase = Order.objects.paid().filter(user=self.author, course__in=self.question.courses.all()).order_by("-paid").first()
 
         if latest_purchase:

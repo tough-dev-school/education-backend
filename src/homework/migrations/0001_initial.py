@@ -2,8 +2,6 @@
 
 import uuid
 
-import markdownx.models
-
 from django.conf import settings
 from django.db import migrations
 from django.db import models
@@ -28,7 +26,7 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(blank=True, db_index=True, null=True)),
                 ('slug', models.UUIDField(db_index=True, default=uuid.uuid4, unique=True)),
                 ('name', models.CharField(max_length=256, verbose_name='Name')),
-                ('text', markdownx.models.MarkdownxField()),
+                ('text', models.TextField()),
                 ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.course')),
             ],
             options={
@@ -43,7 +41,7 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
                 ('modified', models.DateTimeField(blank=True, db_index=True, null=True)),
                 ('slug', models.UUIDField(db_index=True, default=uuid.uuid4, unique=True)),
-                ('text', markdownx.models.MarkdownxField()),
+                ('text', models.TextField()),
                 ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
                 ('question', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='homework.question')),
             ],

@@ -2,7 +2,7 @@ from typing import cast
 
 from rest_framework import serializers
 
-from app.serializers import MarkdownXField
+from app.serializers import MarkdownField
 from app.serializers import SoftField
 from homework.models import Answer
 from homework.models import Question
@@ -10,7 +10,7 @@ from users.api.serializers import UserSafeSerializer
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-    text = MarkdownXField()
+    text = MarkdownField()
 
     class Meta:
         model = Question
@@ -23,7 +23,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 class AnswerDetailedSerializer(serializers.ModelSerializer):
     author = UserSafeSerializer()
-    text = MarkdownXField()
+    text = MarkdownField()
     src = serializers.CharField(source="text")
     parent = SoftField(source="parent.slug")  # type: ignore
     question = serializers.CharField(source="question.slug")
