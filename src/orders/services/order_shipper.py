@@ -1,5 +1,4 @@
-from typing import Optional
-
+from dataclasses import dataclass
 from django.conf import settings
 from django.utils import timezone
 
@@ -8,13 +7,13 @@ from mailing.tasks import send_mail
 from orders.models import Order
 
 
+@dataclass
 class OrderShipper:
     """Ship the order (actualy calls item ship() method)"""
-    def __init__(self, order: Order, silent: Optional[bool] = False):
-        self.order = order
-        self.silent = silent
+    order: Order
+    silent: bool | None = False
 
-    def __call__(self):
+    def __call__(self) -> None:
         if self.ship():
             self.mark_order_as_shipped()
 
@@ -34,11 +33,11 @@ class OrderShipper:
 
         return False
 
-    def mark_order_as_shipped(self):
+    def mark_order_as_shipped(self) -> None:
         self.order.shipped = timezone.now()
         self.order.save()
 
-    def send_happiness_message(self):
+    def send_happiness_message(self) -> None:
         if not settings.HAPPINESS_MESSAGES_CHAT_ID:
             return
 
@@ -47,7 +46,7 @@ class OrderShipper:
 
         send_happiness_message.delay(text=f'💰+{sum} ₽, {self.order.user}, {reason}')
 
-    def send_notification_to_giver(self):
+    def send_notification_to_giver(self) -> None:
         if self.order.giver is None:
             return
 

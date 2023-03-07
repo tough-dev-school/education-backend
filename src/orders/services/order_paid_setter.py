@@ -1,18 +1,20 @@
+from dataclasses import dataclass
 from django.utils import timezone
 
 from banking.selector import get_bank
 from orders.models import Order
 
 
+@dataclass
 class OrderPaidSetter:
     """Mark order as paid"""
-    def __init__(self, order: Order, silent: bool | None = False):
-        self.order = order
-        self.silent = silent
+    order: Order
+    silent: bool | None = False
 
-        # saving order state at boot time
-        self.is_already_paid = (order.paid is not None)
-        self.is_already_shipped = (order.shipped is not None)
+    def __post_init__(self) -> None:
+        """Save order state at boot time"""
+        self.is_already_paid = (self.order.paid is not None)
+        self.is_already_shipped = (self.order.shipped is not None)
 
     def __call__(self) -> None:
         self.mark_order_as_paid()
