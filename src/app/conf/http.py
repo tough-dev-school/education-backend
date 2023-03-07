@@ -4,13 +4,12 @@ ABSOLUTE_HOST = env("ABSOLUTE_HOST", cast=str, default="https://app.tough-dev.sc
 ALLOWED_HOSTS = ["*"]
 
 CSRF_TRUSTED_ORIGINS = [
-    "education.borshev.com",
-    "borshev.com",
-    "tough-dev.school",
+    "https://app.tough-dev.school",
 ]
 CORS_ALLOWED_ORIGINS = [
     "https://education.borshev.com",
     "https://certificates.tough-dev.school",
+    "https://lms.tough-dev.school",
 ]
 CORS_ORIGIN_REGEX_WHITELIST = [
     r".*education-frontend.netlify.app.*",
