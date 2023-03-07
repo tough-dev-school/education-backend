@@ -1,5 +1,5 @@
 ARG PYTHON_VERSION
-FROM python:${PYTHON_VERSION}-slim-buster as base
+FROM python:${PYTHON_VERSION}-slim-bullseye as base
 LABEL maintainer="fedor@borshev.com"
 
 LABEL com.datadoghq.ad.logs='[{"source": "uwsgi", "service": "django"}]'
@@ -10,7 +10,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV STATIC_ROOT /var/lib/django-static
 ENV CELERY_APP=app.celery
 
-ENV _UWSGI_VERSION 2.0.20
+ENV _UWSGI_VERSION 2.0.21
 ENV _WAITFOR_VERSION 2.2.3
 
 RUN echo deb http://deb.debian.org/debian buster contrib non-free > /etc/apt/sources.list.d/debian-contrib.list \

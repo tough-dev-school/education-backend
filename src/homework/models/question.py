@@ -1,8 +1,6 @@
 from urllib.parse import urljoin
 import uuid
 
-from markdownx.models import MarkdownxField
-
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
@@ -15,7 +13,7 @@ class Question(TimestampedModel):
     courses = models.ManyToManyField("products.Course")
     name = models.CharField(_("Name"), max_length=256)
 
-    text = MarkdownxField()
+    text = models.TextField()
 
     class Meta:
         verbose_name = _("Homework")

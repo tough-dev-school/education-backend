@@ -3,7 +3,7 @@ name = "education-backend"
 version = "2022.10.31"
 requires-python = ">=3.10"
 dependencies = [
-    "Django<3.3",
+    "Django",
     "django-behaviors",
     "django-cors-headers",
     "django-environ",
@@ -11,7 +11,6 @@ dependencies = [
     "django-split-settings",
     "django-tree-queries",
     "django-cachalot",
-    "django_redis",
     "django-prettyjson",
     "whitenoise",
     "psycopg2-binary",
@@ -19,8 +18,9 @@ dependencies = [
     "retry",
     "bcrypt",
     "simplejson",
+    "Pillow",
 
-    "djangorestframework>=3.11.0",
+    "djangorestframework",
     "django-storages",
     "drf-recaptcha",
     "drf-jwt",
@@ -32,7 +32,6 @@ dependencies = [
 
     "django-healthchecks",
 
-    "django-markdownx",
     "cmarkgfm",
     "bleach",
 

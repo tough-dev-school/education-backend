@@ -33,6 +33,7 @@ include(
     "conf/sentry.py",
     "conf/storage.py",
     "conf/static.py",
+    "conf/warnings.py",
     "conf/templates.py",
     "conf/timezone.py",
     "conf/vat.py",

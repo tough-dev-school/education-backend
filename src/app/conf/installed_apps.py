@@ -15,7 +15,6 @@ INSTALLED_APPS = [
     "users",
     "chains",
     "mailing",
-    "markdownx",
     "corsheaders",
     "cachalot",
     "anymail",
