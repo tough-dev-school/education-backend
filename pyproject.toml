@@ -18,6 +18,7 @@ dependencies = [
     "retry",
     "bcrypt",
     "simplejson",
+    "Pillow",
 
     "djangorestframework",
     "django-storages",
