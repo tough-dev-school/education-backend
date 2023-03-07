@@ -59,7 +59,7 @@ cryptography==39.0.2
     # via pyjwt
 decorator==5.1.1
     # via retry
-dj-rest-auth==2.2.8
+dj-rest-auth==3.0.0
     # via education-backend (pyproject.toml)
 django==3.2.18
     # via
