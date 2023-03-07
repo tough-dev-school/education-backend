@@ -2,7 +2,8 @@ import httpx
 
 from app.celery import celery
 from app.types import Language
-from diplomas.services import DiplomaGenerator, DiplomaRegenerator
+from diplomas.services import DiplomaGenerator
+from diplomas.services import DiplomaRegenerator
 from diplomas.services.diploma_generator import WrongDiplomaServiceResponse
 from products.models import Course
 from users.models import User
@@ -10,8 +11,9 @@ from users.models import User
 
 @celery.task(
     acks_late=True,
-    rate_limit='1/s',
-    autoretry_for=[WrongDiplomaServiceResponse, httpx.RequestError], max_retries=10,
+    rate_limit="1/s",
+    autoretry_for=[WrongDiplomaServiceResponse, httpx.RequestError],
+    max_retries=10,
     soft_time_limit=240,
 )
 def generate_diploma(student_id: int, course_id: int, language: Language):
@@ -26,7 +28,7 @@ def generate_diploma(student_id: int, course_id: int, language: Language):
 
 @celery.task(
     acks_late=True,
-    rate_limit='3/s',
+    rate_limit="3/s",
     autoretry_for=[WrongDiplomaServiceResponse],
     max_retries=10,
 )

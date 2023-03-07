@@ -1,52 +1,53 @@
 from django.utils.translation import gettext_lazy as _
 
-from app.admin import ModelAdmin, admin
+from app.admin import admin
+from app.admin import ModelAdmin
 from products.models import Bundle
 
 
 @admin.register(Bundle)
 class BundleAdmin(ModelAdmin):
     list_display = [
-        'id',
-        'slug',
-        'name',
+        "id",
+        "slug",
+        "name",
     ]
     list_display_links = [
-        'id',
-        'slug',
+        "id",
+        "slug",
     ]
     fieldsets = [
         (
-            _('Name'),
+            _("Name"),
             {
-                'fields': [
-                    'name',
-                    'slug',
-                    'name_receipt',
-                    'full_name',
-                    'group',
+                "fields": [
+                    "name",
+                    "slug",
+                    "name_receipt",
+                    "full_name",
+                    "group",
                 ],
             },
         ),
         (
-            _('Price'),
+            _("Price"),
             {
-                'fields': [
-                    'price',
-                    'old_price',
+                "fields": [
+                    "price",
+                    "old_price",
                 ],
             },
         ),
         (
-            _('Items'),
+            _("Items"),
             {
-                'fields': [
-                    'records',
+                "fields": [
+                    "records",
                 ],
             },
         ),
     ]
 
     prepopulated_fields = {
-        'slug': ['name'],
+        "slug": ["name"],
     }

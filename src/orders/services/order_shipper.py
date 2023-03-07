@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 from django.conf import settings
 from django.utils import timezone
 
@@ -10,6 +11,7 @@ from orders.models import Order
 @dataclass
 class OrderShipper:
     """Ship the order (actualy calls item ship() method)"""
+
     order: Order
     silent: bool | None = False
 
@@ -41,10 +43,10 @@ class OrderShipper:
         if not settings.HAPPINESS_MESSAGES_CHAT_ID:
             return
 
-        sum = str(self.order.price).replace('.00', '')
-        reason = str(self.order.item) if self.order.giver is None else f'{self.order.item} (подарок)'
+        sum = str(self.order.price).replace(".00", "")
+        reason = str(self.order.item) if self.order.giver is None else f"{self.order.item} (подарок)"
 
-        send_happiness_message.delay(text=f'💰+{sum} ₽, {self.order.user}, {reason}')
+        send_happiness_message.delay(text=f"💰+{sum} ₽, {self.order.user}, {reason}")
 
     def send_notification_to_giver(self) -> None:
         if self.order.giver is None:
@@ -55,13 +57,13 @@ class OrderShipper:
 
         send_mail.delay(
             to=self.order.giver.email,
-            template_id='gift-notification-for-giver',  # postmark
+            template_id="gift-notification-for-giver",  # postmark
             disable_antispam=True,
             ctx={
-                'item_name': self.order.item.full_name,
-                'receiver_name': str(self.order.user),
-                'receiver_email': self.order.user.email,
-                'desired_shipment_date': self.order.desired_shipment_date.strftime('%d.%m.%Y'),
+                "item_name": self.order.item.full_name,
+                "receiver_name": str(self.order.user),
+                "receiver_email": self.order.user.email,
+                "desired_shipment_date": self.order.desired_shipment_date.strftime("%d.%m.%Y"),
             },
         )
 

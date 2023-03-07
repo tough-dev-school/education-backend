@@ -14,7 +14,7 @@ def get_editable():
 
 @pytest.fixture
 def chain(mixer):
-    return mixer.blend('chains.Chain', sending_is_active=False, archived=False)
+    return mixer.blend("chains.Chain", sending_is_active=False, archived=False)
 
 
 def test_include_active_not_archived_chains(get_editable, chain):
@@ -24,7 +24,7 @@ def test_include_active_not_archived_chains(get_editable, chain):
 
 
 def test_exclude_sending_is_active_chains(get_editable, chain):
-    chain.setattr_and_save('sending_is_active', True)
+    chain.setattr_and_save("sending_is_active", True)
 
     got = get_editable()
 
@@ -32,7 +32,7 @@ def test_exclude_sending_is_active_chains(get_editable, chain):
 
 
 def test_exclude_archived_chains(get_editable, chain):
-    chain.setattr_and_save('archived', True)
+    chain.setattr_and_save("archived", True)
 
     got = get_editable()
 

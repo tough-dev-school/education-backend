@@ -12,22 +12,22 @@ def email_changer():
 
 @pytest.fixture
 def user(mixer):
-    return mixer.blend('users.User', first_name='Kamaz', last_name='Otkhodov', email='kamaz@gmail.com')
+    return mixer.blend("users.User", first_name="Kamaz", last_name="Otkhodov", email="kamaz@gmail.com")
 
 
 @pytest.fixture
 def nameless_user(mixer):
-    return mixer.blend('users.User', first_name='', last_name='')
+    return mixer.blend("users.User", first_name="", last_name="")
 
 
 @pytest.fixture
 def ship(mocker):
-    return mocker.patch('studying.shipment_factory.ship')
+    return mocker.patch("studying.shipment_factory.ship")
 
 
 @pytest.fixture
 def unship(mocker):
-    return mocker.patch('studying.shipment_factory.unship')
+    return mocker.patch("studying.shipment_factory.unship")
 
 
 @pytest.fixture
@@ -37,4 +37,4 @@ def order(factory, nameless_user, course):
 
 @pytest.fixture(autouse=True)
 def subscribe(mocker):
-    return mocker.patch('app.tasks.subscribe_to_dashamail.delay')
+    return mocker.patch("app.tasks.subscribe_to_dashamail.delay")

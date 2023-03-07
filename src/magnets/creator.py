@@ -1,6 +1,7 @@
 from typing import Optional
 
-from magnets.models import EmailLeadMagnetCampaign, LeadCampaignLogEntry
+from magnets.models import EmailLeadMagnetCampaign
+from magnets.models import LeadCampaignLogEntry
 from users.models import User
 from users.services import UserCreator
 
@@ -8,8 +9,8 @@ from users.services import UserCreator
 class LeadCreator:
     def __init__(self, campaign: EmailLeadMagnetCampaign, email: str, name: Optional[str] = None):
         self.data = {
-            'name': name or '',
-            'email': email,
+            "name": name or "",
+            "email": email,
         }
 
         self.campaign = campaign
@@ -22,8 +23,8 @@ class LeadCreator:
 
     def _create_user(self) -> User:
         return UserCreator(
-            name=self.data['name'],
-            email=self.data['email'],
+            name=self.data["name"],
+            email=self.data["email"],
             subscribe=True,
             tags=self.tags,
         )()
@@ -36,4 +37,4 @@ class LeadCreator:
 
     @property
     def tags(self):
-        return [f'{self.campaign.slug}-lead-magnet']
+        return [f"{self.campaign.slug}-lead-magnet"]

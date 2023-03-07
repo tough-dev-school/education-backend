@@ -9,9 +9,9 @@ class PurchaseValidator(validators.Validator):
 
     class Meta:
         fields = [
-            'name',
-            'email',
-            'desired_bank',
+            "name",
+            "email",
+            "desired_bank",
         ]
 
 
@@ -25,10 +25,10 @@ class GiftValidator(validators.Validator):
 
     class Meta:
         fields = [
-            'receiver_name',
-            'receiver_email',
-            'giver_name',
-            'giver_email',
-            'desired_shipment_date',
-            'desired_bank',
+            "receiver_name",
+            "receiver_email",
+            "giver_name",
+            "giver_email",
+            "desired_shipment_date",
+            "desired_bank",
         ]

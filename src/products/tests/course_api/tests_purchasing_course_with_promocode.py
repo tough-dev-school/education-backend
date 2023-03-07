@@ -1,11 +1,11 @@
-import pytest
 from decimal import Decimal
+import pytest
 
 from orders.models import Order
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures('testcode'),
+    pytest.mark.usefixtures("testcode"),
 ]
 
 
@@ -15,14 +15,17 @@ def get_order():
 
 @pytest.fixture
 def another_course(mixer):
-    return mixer.blend('products.Course', slug='kamazing-navoza', price=100500)
+    return mixer.blend("products.Course", slug="kamazing-navoza", price=100500)
 
 
-@pytest.mark.parametrize(('promocode', 'expected'), [
-    ('TESTCODE', 1710),
-    ('', 1900),
-    ('3V1L_H4XX0R', 1900),
-])
+@pytest.mark.parametrize(
+    ("promocode", "expected"),
+    [
+        ("TESTCODE", 1710),
+        ("", 1900),
+        ("3V1L_H4XX0R", 1900),
+    ],
+)
 def test_purchasing_with_promocode(call_purchase, course, promocode, expected):
     call_purchase(promocode=promocode)
 
@@ -35,24 +38,24 @@ def test_purchasing_with_promocode(call_purchase, course, promocode, expected):
 def test_incompatible_promocode(call_purchase, another_course, testcode):
     testcode.courses.add(another_course)
 
-    call_purchase(promocode='TESTCODE')
+    call_purchase(promocode="TESTCODE")
     placed = get_order()
 
-    assert placed.price == Decimal('1900'), 'promocode should not be accepteed'
+    assert placed.price == Decimal("1900"), "promocode should not be accepteed"
 
 
-@pytest.mark.freeze_time('2032-12-01 23:59')
+@pytest.mark.freeze_time("2032-12-01 23:59")
 def test_expired_promocode(call_purchase, testcode):
-    testcode.setattr_and_save('expires', '2032-11-01 15:30:00+02:00')
+    testcode.setattr_and_save("expires", "2032-11-01 15:30:00+02:00")
 
-    call_purchase(promocode='TESTCODE')
+    call_purchase(promocode="TESTCODE")
     placed = get_order()
 
-    assert placed.price == Decimal('1900'), 'promocode should not be accepteed'
+    assert placed.price == Decimal("1900"), "promocode should not be accepteed"
 
 
 def test_promocode_is_stored(call_purchase, testcode):
-    call_purchase(promocode='TESTCODE')
+    call_purchase(promocode="TESTCODE")
 
     placed = get_order()
 

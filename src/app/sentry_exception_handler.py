@@ -1,5 +1,5 @@
-import sentry_sdk
 from rest_framework.views import exception_handler
+import sentry_sdk
 
 
 def sentry_exception_handler(exc, context):

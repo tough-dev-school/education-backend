@@ -5,7 +5,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def course(mixer):
-    return mixer.blend('products.Course')
+    return mixer.blend("products.Course")
 
 
 @pytest.fixture
@@ -20,19 +20,19 @@ def order(course, user, factory):
 
 @pytest.fixture
 def chain(mixer, course):
-    return mixer.blend('chains.Chain', course=course, sending_is_active=True, archived=False)
+    return mixer.blend("chains.Chain", course=course, sending_is_active=True, archived=False)
 
 
 @pytest.fixture
 def parent_message(mixer, chain):
-    return mixer.blend('chains.Message', parent=None, chain=chain)
+    return mixer.blend("chains.Message", parent=None, chain=chain)
 
 
 @pytest.fixture
 def progress(parent_message, mixer, study):
-    return mixer.blend('chains.Progress', message=parent_message, study=study)
+    return mixer.blend("chains.Progress", message=parent_message, study=study)
 
 
 @pytest.fixture
 def message(mixer, chain, parent_message):
-    return mixer.blend('chains.Message', parent=parent_message, chain=chain, delay=3)
+    return mixer.blend("chains.Message", parent=parent_message, chain=chain, delay=3)

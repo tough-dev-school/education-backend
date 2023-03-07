@@ -10,7 +10,7 @@ from users.models import User
 
 
 class Command(BaseCommand):
-    help = 'merge active user accounts with same email into one latest joined'
+    help = "merge active user accounts with same email into one latest joined"
 
     def merge_user(self, source: User, target: User):
         """Merge source user into target user, considering all relations.
@@ -45,7 +45,7 @@ class Command(BaseCommand):
         """Merges all users with sa me email (case insensitive),
         into last registered user, in order of join date.
         """
-        same_users = User.objects.filter(is_active=True, is_staff=False).filter(email__iexact=email).order_by('-date_joined')
+        same_users = User.objects.filter(is_active=True, is_staff=False).filter(email__iexact=email).order_by("-date_joined")
         target, sources = same_users[0], same_users[1:]
 
         for source in sources:
@@ -59,4 +59,4 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         for user in User.objects.filter(is_active=True, is_staff=False):
             self.handle_single_email(user.email)
-        self.stdout.write('DONE!')
+        self.stdout.write("DONE!")

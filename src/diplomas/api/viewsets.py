@@ -1,4 +1,3 @@
-
 from rest_framework.exceptions import MethodNotAllowed
 
 from app.api.mixins import DisablePaginationWithQueryParamMixin
@@ -10,11 +9,11 @@ from diplomas.models import Diploma
 
 class DiplomaViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     queryset = Diploma.objects.for_viewset()
-    lookup_field = 'slug'
+    lookup_field = "slug"
     serializer_class = serializers.DiplomaSerializer
     serializer_action_classes = {
-        'create': serializers.DiplomaCreateSerializer,
-        'retrieve': serializers.DiplomaRetrieveSerializer,
+        "create": serializers.DiplomaCreateSerializer,
+        "retrieve": serializers.DiplomaRetrieveSerializer,
     }
     permission_classes = [DiplomaPermission]
 
@@ -22,7 +21,7 @@ class DiplomaViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
         """Filter diplomas only for current user"""
         queryset = super().get_queryset()
 
-        if self.action != 'retrieve' and not self.request.user.has_perm('diplomas.access_all_diplomas'):
+        if self.action != "retrieve" and not self.request.user.has_perm("diplomas.access_all_diplomas"):
             queryset = queryset.for_user(self.request.user)
 
         return queryset

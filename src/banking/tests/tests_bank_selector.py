@@ -7,14 +7,17 @@ from tinkoff.bank import TinkoffBank
 from tinkoff.credit import TinkoffCredit
 
 
-@pytest.mark.parametrize(('desired', 'result'), [
-    ('tinkoff_bank', TinkoffBank),
-    ('tinkoff_credit', TinkoffCredit),
-    ('stripe', StripeBank),
-    ('zero_price', ZeroPriceBank),
-    ('ev1l', TinkoffBank),
-    ('', TinkoffBank),
-])
+@pytest.mark.parametrize(
+    ("desired", "result"),
+    [
+        ("tinkoff_bank", TinkoffBank),
+        ("tinkoff_credit", TinkoffCredit),
+        ("stripe", StripeBank),
+        ("zero_price", ZeroPriceBank),
+        ("ev1l", TinkoffBank),
+        ("", TinkoffBank),
+    ],
+)
 def test(desired, result):
     assert get_bank(desired) == result
 

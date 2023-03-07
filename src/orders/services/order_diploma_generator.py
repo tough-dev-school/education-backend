@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 from django.utils.functional import cached_property
 
 from diplomas.models import DiplomaTemplate

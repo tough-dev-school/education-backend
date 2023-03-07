@@ -1,5 +1,6 @@
-import httpx
 import pytest
+
+import httpx
 
 from diplomas.services.diploma_generator import WrongDiplomaServiceResponse
 
@@ -19,7 +20,7 @@ def generate_exception_n_times(times: int):
 
             return httpx.Response(status_code=500)
 
-        return httpx.Response(status_code=200, content=b'TYPICAL MAC USER JPG')
+        return httpx.Response(status_code=200, content=b"TYPICAL MAC USER JPG")
 
     return generator
 
@@ -35,7 +36,7 @@ def _reset_runs_count():
 
 @pytest.fixture
 def generator(generator):
-    return generator(language='RU')
+    return generator(language="RU")
 
 
 def test_ok(generator, httpx_mock):
@@ -43,7 +44,7 @@ def test_ok(generator, httpx_mock):
 
     diploma = generator()
 
-    assert diploma.image.read() == b'TYPICAL MAC USER JPG'
+    assert diploma.image.read() == b"TYPICAL MAC USER JPG"
 
 
 def test_fail(generator, httpx_mock):

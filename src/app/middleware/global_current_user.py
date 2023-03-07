@@ -1,4 +1,5 @@
-from app.current_user import set_current_user, unset_current_user
+from app.current_user import set_current_user
+from app.current_user import unset_current_user
 
 
 def set_global_user(get_response):

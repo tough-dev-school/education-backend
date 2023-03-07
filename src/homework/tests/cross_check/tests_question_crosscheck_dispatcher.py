@@ -28,18 +28,20 @@ def test_email_is_sent(question_dispatcher, send_mail, mocker, answers):
     question_dispatcher()
 
     assert send_mail.call_count == 2
-    send_mail.assert_has_calls([
-        mocker.call(
-            to=answers[0].author.email,
-            template_id='new-answers-to-check',
-            disable_antispam=True,
-            ctx={
-                'answers': [
-                    {
-                        'url': mocker.ANY,
-                        'text': mocker.ANY,
-                    },
-                ],
-            },
-        ),
-    ])
+    send_mail.assert_has_calls(
+        [
+            mocker.call(
+                to=answers[0].author.email,
+                template_id="new-answers-to-check",
+                disable_antispam=True,
+                ctx={
+                    "answers": [
+                        {
+                            "url": mocker.ANY,
+                            "text": mocker.ANY,
+                        },
+                    ],
+                },
+            ),
+        ]
+    )

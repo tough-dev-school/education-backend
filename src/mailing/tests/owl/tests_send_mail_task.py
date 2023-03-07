@@ -7,20 +7,20 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def init(mocker):
-    return mocker.patch('mailing.tasks.Owl')
+    return mocker.patch("mailing.tasks.Owl")
 
 
 @pytest.fixture
 def call(mocker):
-    return mocker.patch('mailing.tasks.Owl.__call__')
+    return mocker.patch("mailing.tasks.Owl.__call__")
 
 
 ARGS = dict(
-    to=['f@f213.in'],
+    to=["f@f213.in"],
     template_id=100500,
-    subject='Графиня изменившимся лицом бежит пруду',
+    subject="Графиня изменившимся лицом бежит пруду",
     ctx={
-        'a': 'testing',
+        "a": "testing",
     },
     disable_antispam=False,
 )

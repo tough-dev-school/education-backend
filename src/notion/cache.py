@@ -10,7 +10,7 @@ TIMEOUT = 60 * 60 * 24 * 14  # 14 days
 
 
 def cache_key(page_id: str) -> str:
-    return f'notion-page-cache--{page_id}'
+    return f"notion-page-cache--{page_id}"
 
 
 def invalidate_cache(page_id: str) -> None:
@@ -38,5 +38,5 @@ def get_cached_page(page_id: str) -> NotionPage:
 
 
 __all__ = [
-    'get_cached_page',
+    "get_cached_page",
 ]

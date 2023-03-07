@@ -12,6 +12,11 @@ def api(api):
 
 
 def test(api, factory, diploma):
-    api.put(f'/api/v2/diplomas/{diploma.slug}/', {
-        'image': factory.uploaded_image(),
-    }, format='multipart', expected_status_code=405)
+    api.put(
+        f"/api/v2/diplomas/{diploma.slug}/",
+        {
+            "image": factory.uploaded_image(),
+        },
+        format="multipart",
+        expected_status_code=405,
+    )

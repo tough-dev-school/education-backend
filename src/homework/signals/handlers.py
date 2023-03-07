@@ -17,6 +17,6 @@ def send_new_answer_notification(instance, created, **kwargs):
     tasks.notify_about_new_answer.apply_async(
         countdown=60,
         kwargs={
-            'answer_id': instance.pk,
+            "answer_id": instance.pk,
         },
     )

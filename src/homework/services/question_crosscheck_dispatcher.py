@@ -1,6 +1,8 @@
 from django.db.models import QuerySet
 
-from homework.models import Answer, AnswerCrossCheck, Question
+from homework.models import Answer
+from homework.models import AnswerCrossCheck
+from homework.models import Question
 from homework.services.answer_crosscheck_dispatcher import AnswerCrossCheckDispatcher
 from mailing.tasks import send_mail
 from users.models import User
@@ -31,7 +33,7 @@ class QuestionCrossCheckDispatcher:
             user_checks_list = self.get_checks_for_user(user)
             send_mail.delay(
                 to=user.email,
-                template_id='new-answers-to-check',
+                template_id="new-answers-to-check",
                 ctx=self.get_notification_context(user_checks_list),
                 disable_antispam=True,
             )
@@ -52,11 +54,13 @@ class QuestionCrossCheckDispatcher:
         answers = list()
 
         for check in checks:
-            answers.append({
-                'url': check.answer.get_absolute_url(),
-                'text': str(check.answer),
-            })
+            answers.append(
+                {
+                    "url": check.answer.get_absolute_url(),
+                    "text": str(check.answer),
+                }
+            )
 
         return {
-            'answers': answers,
+            "answers": answers,
         }

@@ -7,11 +7,11 @@ from orders.services.order_unpaid_setter import OrderUnpaidSetter
 from orders.services.order_unshipper import OrderUnshipper
 
 __all__ = [
-    'OrderCreator',
-    'OrderDiplomaGenerator',
-    'OrderEmailChanger',
-    'OrderPaidSetter',
-    'OrderUnpaidSetter',
-    'OrderShipper',
-    'OrderUnshipper',
+    "OrderCreator",
+    "OrderDiplomaGenerator",
+    "OrderEmailChanger",
+    "OrderPaidSetter",
+    "OrderUnpaidSetter",
+    "OrderShipper",
+    "OrderUnshipper",
 ]

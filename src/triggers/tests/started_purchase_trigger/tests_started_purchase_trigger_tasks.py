@@ -5,18 +5,18 @@ from triggers.started_purchase import StartedPurchaseTrigger
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.freeze_time('2032-12-01 15:30+03:00'),
+    pytest.mark.freeze_time("2032-12-01 15:30+03:00"),
 ]
 
 
 @pytest.fixture
 def condition(mocker):
-    return mocker.patch.object(StartedPurchaseTrigger, 'condition')
+    return mocker.patch.object(StartedPurchaseTrigger, "condition")
 
 
 @pytest.fixture
 def run_trigger(mocker):
-    return mocker.patch.object(tasks.run_started_purchase_trigger, 'delay')
+    return mocker.patch.object(tasks.run_started_purchase_trigger, "delay")
 
 
 def test_single_task_runs_the_trigger(condition, order):
@@ -32,7 +32,7 @@ def test_main_task(order, run_trigger):
 
 
 def test_not_running_trigger_for_paid_orders(order, run_trigger):
-    order.setattr_and_save('paid', '2032-12-01 15:13+03:00')
+    order.setattr_and_save("paid", "2032-12-01 15:13+03:00")
 
     tasks.check_for_started_purchase_triggers()
 
@@ -48,7 +48,7 @@ def test_not_running_trigger_for_shipped_orders(order, run_trigger):
 
 
 def test_not_running_trigger_for_old_orders(order, run_trigger, freezer):
-    freezer.move_to('2038-12-01 15:30')  # far in the future
+    freezer.move_to("2038-12-01 15:30")  # far in the future
 
     tasks.check_for_started_purchase_triggers()
 

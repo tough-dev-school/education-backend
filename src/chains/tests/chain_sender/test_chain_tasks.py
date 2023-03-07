@@ -4,7 +4,7 @@ from chains import tasks
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures('study', 'parent_message'),
+    pytest.mark.usefixtures("study", "parent_message"),
 ]
 
 
@@ -15,7 +15,7 @@ def test_sent(send_message, parent_message, study):
 
 
 def test_sending_inactive_chains_are_not_sent(send_message, chain):
-    chain.setattr_and_save('sending_is_active', False)
+    chain.setattr_and_save("sending_is_active", False)
 
     tasks.send_active_chains()
 
@@ -23,7 +23,7 @@ def test_sending_inactive_chains_are_not_sent(send_message, chain):
 
 
 def test_archived_chains_are_not_sent(send_message, chain):
-    chain.setattr_and_save('archived', True)
+    chain.setattr_and_save("archived", True)
 
     tasks.send_active_chains()
 

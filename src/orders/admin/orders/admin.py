@@ -2,11 +2,13 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
-from app.admin import ModelAdmin, admin
+from app.admin import admin
+from app.admin import ModelAdmin
 from banking.selector import get_bank
 from orders.admin.orders import actions
 from orders.admin.orders.filters import OrderStatusFilter
-from orders.admin.orders.forms import OrderAddForm, OrderChangeForm
+from orders.admin.orders.forms import OrderAddForm
+from orders.admin.orders.forms import OrderChangeForm
 from orders.models import Order
 from users.models import Student
 
@@ -16,29 +18,29 @@ class OrderAdmin(ModelAdmin):
     form = OrderChangeForm
     add_form = OrderAddForm
     list_display = [
-        'id',
-        'date',
-        'customer',
-        'item',
-        'payment',
-        'promocode',
+        "id",
+        "date",
+        "customer",
+        "item",
+        "payment",
+        "promocode",
     ]
     list_display_links = [
-        'id',
-        'date',
+        "id",
+        "date",
     ]
 
     list_filter = [
         OrderStatusFilter,
-        'course',
+        "course",
     ]
     search_fields = [
-        'id',
-        'course__name',
-        'record__course__name',
-        'user__first_name',
-        'user__last_name',
-        'user__email',
+        "id",
+        "course__name",
+        "record__course__name",
+        "user__first_name",
+        "user__last_name",
+        "user__email",
     ]
     actions = [
         actions.set_paid,
@@ -50,25 +52,25 @@ class OrderAdmin(ModelAdmin):
         actions.generate_diplams,
     ]
     readonly_fields = [
-        'slug',
-        'author',
-        'login_as',
-        'paid',
-        'shipped',
-        'unpaid',
+        "slug",
+        "author",
+        "login_as",
+        "paid",
+        "shipped",
+        "unpaid",
     ]
 
     fieldsets = [
         (
             None,
             {
-                'fields': ['slug', 'user', 'price', 'email', 'author', 'login_as', 'paid', 'shipped', 'unpaid'],
+                "fields": ["slug", "user", "price", "email", "author", "login_as", "paid", "shipped", "unpaid"],
             },
         ),
         (
-            _('Item'),
+            _("Item"),
             {
-                'fields': ['course', 'record', 'bundle'],
+                "fields": ["course", "record", "bundle"],
             },
         ),
     ]
@@ -77,22 +79,26 @@ class OrderAdmin(ModelAdmin):
     def media(self):
         media = super().media
 
-        media._css_lists.append({'all': ['admin/order_list.css']})
+        media._css_lists.append({"all": ["admin/order_list.css"]})
 
         return media
 
     def get_queryset(self, request):
-        return super().get_queryset(request).select_related(
-            'user',
-            'record',
-            'course',
+        return (
+            super()
+            .get_queryset(request)
+            .select_related(
+                "user",
+                "record",
+                "course",
+            )
         )
 
-    @admin.display(description=_('Date'), ordering='created__id')
+    @admin.display(description=_("Date"), ordering="created__id")
     def date(self, obj: Order):
-        return obj.created.strftime('%d.%m.%Y')
+        return obj.created.strftime("%d.%m.%Y")
 
-    @admin.display(description=_('User'), ordering='user__id')
+    @admin.display(description=_("User"), ordering="user__id")
     def customer(self, obj: Order):
         name_template = '{name} &lt;<a href="mailto:{email}">{email}</a>&gt;'
         name = str(obj.user)
@@ -118,37 +124,37 @@ class OrderAdmin(ModelAdmin):
                 email=email,
             )
 
-    @admin.display(description=_('Item'))
+    @admin.display(description=_("Item"))
     def item(self, obj):
-        return obj.item.name if obj.item is not None else '—'
+        return obj.item.name if obj.item is not None else "—"
 
-    @admin.display(description=_('Payment'), ordering='paid')
+    @admin.display(description=_("Payment"), ordering="paid")
     def payment(self, obj: Order):
         if obj.paid is not None:
             if obj.bank_id:
                 return get_bank(obj.bank_id).name
             if obj.author_id != obj.user_id:
-                return _('B2B')
+                return _("B2B")
 
-            return _('Is paid')
+            return _("Is paid")
 
         if obj.shipped is not None:
-            return _('Shipped without payment')
+            return _("Shipped without payment")
 
-        return '—'
+        return "—"
 
-    @admin.display(description=_('Login as customer'))
+    @admin.display(description=_("Login as customer"))
     @mark_safe
     def login_as(self, obj: Order) -> str:
         if obj.pk is None:
-            return '—'  # type: ignore
+            return "—"  # type: ignore
 
         login_as_url = Student.objects.get(pk=obj.user_id).get_absolute_url()
 
         return f'<a href="{login_as_url}" target="_blank">Зайти от имени студента</a>'
 
     def has_pay_permission(self, request):
-        return request.user.has_perm('orders.pay_order')
+        return request.user.has_perm("orders.pay_order")
 
     def has_unpay_permission(self, request):
-        return request.user.has_perm('orders.unpay_order')
+        return request.user.has_perm("orders.unpay_order")

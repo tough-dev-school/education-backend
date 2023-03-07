@@ -16,14 +16,14 @@ def test_no_crosschecks(dispatcher, answers):
 
 
 def test_no_crosschecks_from_non_dispatched_users(dispatcher, mixer, answers):
-    mixer.blend('homework.AnswerCrossCheck', answer=answers[1])
+    mixer.blend("homework.AnswerCrossCheck", answer=answers[1])
     dispatcher = dispatcher(answers)
 
     assert get_crosscheck_count(answers[1], dispatcher) == 0
 
 
 def test_crosschecks(dispatcher, mixer, answers):
-    mixer.blend('homework.AnswerCrossCheck', answer=answers[1], checker=answers[0].author)
+    mixer.blend("homework.AnswerCrossCheck", answer=answers[1], checker=answers[0].author)
     dispatcher = dispatcher(answers)
 
     assert get_crosscheck_count(answers[1], dispatcher) == 1

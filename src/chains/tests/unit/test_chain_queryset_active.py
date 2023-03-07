@@ -19,7 +19,7 @@ def test_include_chains(get_active, chain):
 
 
 def test_exclude_sending_is_active_turned_off(get_active, chain):
-    chain.setattr_and_save('sending_is_active', False)
+    chain.setattr_and_save("sending_is_active", False)
 
     got = get_active()
 
@@ -27,7 +27,7 @@ def test_exclude_sending_is_active_turned_off(get_active, chain):
 
 
 def test_exclude_archived_chains(get_active, chain):
-    chain.setattr_and_save('archived', True)
+    chain.setattr_and_save("archived", True)
 
     got = get_active()
 

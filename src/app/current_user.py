@@ -1,6 +1,6 @@
+from threading import current_thread
+from threading import local
 from typing import Optional
-
-from threading import current_thread, local
 
 from users.models import User
 
@@ -26,4 +26,4 @@ def unset_current_user():
 
 def _thread_key() -> str:
     thread_name = current_thread().name
-    return f'user_{thread_name}'
+    return f"user_{thread_name}"
