@@ -10,7 +10,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV STATIC_ROOT /var/lib/django-static
 ENV CELERY_APP=app.celery
 
-ENV _UWSGI_VERSION 2.0.20
+ENV _UWSGI_VERSION 2.0.21
 ENV _WAITFOR_VERSION 2.2.3
 
 RUN echo deb http://deb.debian.org/debian buster contrib non-free > /etc/apt/sources.list.d/debian-contrib.list \
