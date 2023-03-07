@@ -1,5 +1,5 @@
 ARG PYTHON_VERSION
-FROM python:${PYTHON_VERSION}-slim-buster as base
+FROM python:${PYTHON_VERSION}-slim-bullseye as base
 LABEL maintainer="fedor@borshev.com"
 
 LABEL com.datadoghq.ad.logs='[{"source": "uwsgi", "service": "django"}]'
