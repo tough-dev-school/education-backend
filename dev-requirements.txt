@@ -207,7 +207,7 @@ flake8-eradicate==1.4.0
     # via education-backend (pyproject.toml)
 flake8-fixme==1.1.1
     # via education-backend (pyproject.toml)
-flake8-isort==5.0.3
+flake8-isort==6.0.0
     # via education-backend (pyproject.toml)
 flake8-multiline-containers==0.0.19
     # via education-backend (pyproject.toml)
