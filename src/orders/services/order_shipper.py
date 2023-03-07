@@ -21,7 +21,7 @@ class OrderShipper:
         if not self.order.notification_to_giver_is_sent:
             self.send_notification_to_giver()
 
-        if not self.silent:
+        if not self.silent and self.order.price > 0:
             self.send_happiness_message()
 
     def ship(self) -> bool:
