@@ -1,8 +1,7 @@
-from typing import Any, Generator, Optional
-
-import contextlib
 from collections import UserList
+import contextlib
 from dataclasses import dataclass
+from typing import Any, Generator, Optional
 
 from notion.types import BlockId
 
@@ -15,19 +14,19 @@ class NotionBlock:
     @property
     def content(self) -> list[BlockId]:
         try:
-            return self.data['value']['content']
+            return self.data["value"]["content"]
         except KeyError:
             return list()
 
     @property
     def type(self) -> Optional[str]:
         with contextlib.suppress(KeyError):
-            return self.data['value']['type']
+            return self.data["value"]["type"]
 
 
 class NotionBlockList(UserList[NotionBlock]):
     @classmethod
-    def from_api_response(cls, api_response: dict[str, dict]) -> 'NotionBlockList':
+    def from_api_response(cls, api_response: dict[str, dict]) -> "NotionBlockList":
         instance = cls()
         for block_id, data in api_response.items():
             instance.append(NotionBlock(id=block_id, data=data))
@@ -50,7 +49,7 @@ class NotionBlockList(UserList[NotionBlock]):
     def blocks_with_underliying_blocks(self) -> Generator[NotionBlock, None, None]:
         """List of non-page blocks that have other blocks in it"""
         for block in self.data:
-            if block.type != 'page':
+            if block.type != "page":
                 if len(block.content) > 1:
                     yield block
 
@@ -58,5 +57,5 @@ class NotionBlockList(UserList[NotionBlock]):
     def first_page_block(self) -> Optional[NotionBlock]:
         """We assume that first block with type == 'page' is the root block, that has some unlderlying blocks we should fetch"""
         for block in self.data:
-            if block.type == 'page' and len(block.content) > 0:
+            if block.type == "page" and len(block.content) > 0:
                 return block

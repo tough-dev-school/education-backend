@@ -10,8 +10,9 @@ pytestmark = [
 
 @pytest.fixture
 def answers(mixer, question, user, another_user):
-    return mixer.cycle(2).blend('homework.Answer', question=question, author=user, parent=None) \
-        + [mixer.blend('homework.Answer', question=question, author=another_user, parent=None)]
+    return mixer.cycle(2).blend("homework.Answer", question=question, author=user, parent=None) + [
+        mixer.blend("homework.Answer", question=question, author=another_user, parent=None)
+    ]
 
 
 @pytest.fixture

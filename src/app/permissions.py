@@ -1,4 +1,6 @@
-from rest_framework.permissions import AllowAny, BasePermission, IsAuthenticated
+from rest_framework.permissions import AllowAny
+from rest_framework.permissions import BasePermission
+from rest_framework.permissions import IsAuthenticated
 
 
 class SuperUserOnly(BasePermission):
@@ -7,7 +9,7 @@ class SuperUserOnly(BasePermission):
 
 
 __all__ = [
-    'AllowAny',
-    'IsAuthenticated',
-    'SuperUserOnly',
+    "AllowAny",
+    "IsAuthenticated",
+    "SuperUserOnly",
 ]

@@ -1,6 +1,8 @@
 from django.apps import apps
 from django.core.exceptions import ValidationError
-from django.db.models import OuterRef, QuerySet, Subquery
+from django.db.models import OuterRef
+from django.db.models import QuerySet
+from django.db.models import Subquery
 from django.utils.translation import gettext_lazy as _
 
 from app.files import RandomFileName
@@ -11,19 +13,24 @@ from users.models import User
 
 
 class CourseQuerySet(QuerySet):
-    def for_lms(self) -> QuerySet['Course']:
+    def for_lms(self) -> QuerySet["Course"]:
         return self.filter(
             display_in_lms=True,
         ).with_course_homepage()
 
-    def with_course_homepage(self) -> QuerySet['Course']:
-        materials = apps.get_model('notion.Material').objects.filter(
-            course=OuterRef('pk'),
-            is_home_page=True,
-        ).order_by(
-            '-created',
-        ).values(
-            'page_id',
+    def with_course_homepage(self) -> QuerySet["Course"]:
+        materials = (
+            apps.get_model("notion.Material")
+            .objects.filter(
+                course=OuterRef("pk"),
+                is_home_page=True,
+            )
+            .order_by(
+                "-created",
+            )
+            .values(
+                "page_id",
+            )
         )
 
         return self.annotate(
@@ -37,32 +44,44 @@ CourseManager = models.Manager.from_queryset(CourseQuerySet)
 class Course(Shippable):
     objects = CourseManager()
 
-    name_genitive = models.CharField(_('Genitive name'), max_length=255, help_text='«мастер-класса о TDD». К примеру для записей.')
-    zoomus_webinar_id = models.CharField(_('Zoom.us webinar ID'), max_length=255, null=True, blank=True, help_text=_('If set, every user who purcashes this course gets invited'))
+    name_genitive = models.CharField(_("Genitive name"), max_length=255, help_text="«мастер-класса о TDD». К примеру для записей.")
+    zoomus_webinar_id = models.CharField(
+        _("Zoom.us webinar ID"), max_length=255, null=True, blank=True, help_text=_("If set, every user who purcashes this course gets invited")
+    )
 
-    welcome_letter_template_id = models.CharField(_('Welcome letter template id'), max_length=255, blank=True, null=True, help_text=_('Will be sent upon purchase if set'))
-    gift_welcome_letter_template_id = models.CharField(_('Special welcome letter template id for gifts'), max_length=255, blank=True, null=True, help_text=_('If not set, common welcome letter will be used'))
-    display_in_lms = models.BooleanField(_('Display in LMS'), default=True, help_text=_('If disabled will not be shown in LMS'))
+    welcome_letter_template_id = models.CharField(
+        _("Welcome letter template id"), max_length=255, blank=True, null=True, help_text=_("Will be sent upon purchase if set")
+    )
+    gift_welcome_letter_template_id = models.CharField(
+        _("Special welcome letter template id for gifts"), max_length=255, blank=True, null=True, help_text=_("If not set, common welcome letter will be used")
+    )
+    display_in_lms = models.BooleanField(_("Display in LMS"), default=True, help_text=_("If disabled will not be shown in LMS"))
 
     diploma_template_context = models.JSONField(default=dict, blank=True)
 
-    disable_triggers = models.BooleanField(_('Disable all triggers'), default=False)
+    disable_triggers = models.BooleanField(_("Disable all triggers"), default=False)
 
-    confirmation_template_id = models.CharField(_('Confirmation template id'), max_length=255, null=True, blank=True, help_text=_('If set user sill receive this message upon creating zero-priced order'))
-    confirmation_success_url = models.URLField(_('Confirmation success URL'), null=True, blank=True)
+    confirmation_template_id = models.CharField(
+        _("Confirmation template id"),
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text=_("If set user sill receive this message upon creating zero-priced order"),
+    )
+    confirmation_success_url = models.URLField(_("Confirmation success URL"), null=True, blank=True)
 
     cover = models.ImageField(
-        verbose_name=_('Cover image'),
-        upload_to=RandomFileName('courses/covers'),
+        verbose_name=_("Cover image"),
+        upload_to=RandomFileName("courses/covers"),
         blank=True,
-        help_text=_('The cover image of course'),
+        help_text=_("The cover image of course"),
     )
 
     class Meta:
-        ordering = ['-id']
-        verbose_name = _('Course')
-        verbose_name_plural = _('Courses')
-        db_table = 'courses_course'
+        ordering = ["-id"]
+        verbose_name = _("Course")
+        verbose_name_plural = _("Courses")
+        db_table = "courses_course"
 
     def clean(self):
         """Check for correct setting of confirmation_template_id and confirmation_success_url"""
@@ -70,14 +89,14 @@ class Course(Shippable):
             return
 
         if not all([self.confirmation_template_id, self.confirmation_success_url]):
-            raise ValidationError(_('Both confirmation_template_id and confirmation_success_url must be set'))
+            raise ValidationError(_("Both confirmation_template_id and confirmation_success_url must be set"))
 
         if self.price != 0:
-            raise ValidationError(_('Courses with confirmation should have zero price'))
+            raise ValidationError(_("Courses with confirmation should have zero price"))
 
     def get_purchased_users(self) -> QuerySet[User]:
         return User.objects.filter(
-            pk__in=apps.get_model('studying.Study').objects.filter(course=self).values_list('student', flat=True),
+            pk__in=apps.get_model("studying.Study").objects.filter(course=self).values_list("student", flat=True),
         )
 
     def send_email_to_all_purchased_users(self, template_id: str):

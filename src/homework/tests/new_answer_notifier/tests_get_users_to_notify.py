@@ -29,7 +29,7 @@ def test_parent_answer_author_is_in_the_list(notifier, answer, another_answer):
 
 
 def test_sibling_answer_author_is_in_the_list(notifier, answer, another_answer, mixer):
-    answer.parent = another_answer.parent = mixer.blend('homework.Answer')
+    answer.parent = another_answer.parent = mixer.blend("homework.Answer")
     answer.save()
     another_answer.save()
 

@@ -8,8 +8,9 @@ def real_ip_middleware(get_response):
     If this does not work as you exepcted, check out django-ipware docs to configure it
     for your local needs: https://github.com/un33k/django-ipware
     """
+
     def middleware(request):
-        request.META['REMOTE_ADDR'] = get_client_ip(request)[0]
+        request.META["REMOTE_ADDR"] = get_client_ip(request)[0]
 
         return get_response(request)
 

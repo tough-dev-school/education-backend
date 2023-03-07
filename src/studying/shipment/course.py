@@ -51,9 +51,9 @@ class CourseShipment(BaseShipment):
 
     def get_template_context(self) -> dict:
         return {
-            'name': self.course.name,
-            'slug': self.course.slug,
-            'name_genitive': self.course.name_genitive,
+            "name": self.course.name,
+            "slug": self.course.slug,
+            "name_genitive": self.course.name_genitive,
             **self.get_gift_template_context(),
         }
 

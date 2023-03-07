@@ -1,6 +1,6 @@
+from functools import partial
 from typing import Callable, Dict
 
-from functools import partial
 from mixer.backend.django import mixer
 
 
@@ -16,7 +16,7 @@ class FixtureRegistry:
     def get(self, name: str) -> Callable:
         method = self.METHODS.get(name)
         if not method:
-            raise AttributeError(f'Factory method “{name}” not found.')
+            raise AttributeError(f"Factory method “{name}” not found.")
         return method
 
 

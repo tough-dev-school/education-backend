@@ -1,5 +1,6 @@
 from app.celery import celery
-from homework.models import Answer, Question
+from homework.models import Answer
+from homework.models import Question
 from homework.services import NewAnswerNotifier
 
 

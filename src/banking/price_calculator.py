@@ -1,6 +1,5 @@
-from typing import Type
-
 from decimal import Decimal
+from typing import Type
 
 from banking.base import Bank
 

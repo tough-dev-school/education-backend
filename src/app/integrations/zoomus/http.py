@@ -1,8 +1,10 @@
+from datetime import datetime
+from urllib.parse import urljoin
+
 import jwt
 import requests
-from datetime import datetime
+
 from django.utils.functional import cached_property
-from urllib.parse import urljoin
 
 TIMEOUT = 10
 
@@ -12,7 +14,7 @@ class ZoomusHTTPException(Exception):
 
 
 class ZoomusClientHTTP:
-    def __init__(self, api_key: str, api_secret: str, base_url: str = 'https://api.zoom.us/'):
+    def __init__(self, api_key: str, api_secret: str, base_url: str = "https://api.zoom.us/"):
         self.base_url = base_url
         self.api_key = api_key
         self.api_secret = api_secret
@@ -21,20 +23,20 @@ class ZoomusClientHTTP:
     def token(self) -> str:
         return jwt.encode(
             payload={
-                'iss': self.api_key,
-                'exp': datetime.utcnow().timestamp() + 3600 * 5,
+                "iss": self.api_key,
+                "exp": datetime.utcnow().timestamp() + 3600 * 5,
             },
             key=self.api_secret,
-            algorithm='HS256',
+            algorithm="HS256",
         )
 
     def format_url(self, url: str) -> str:
-        return urljoin(self.base_url, url.lstrip('/'))
+        return urljoin(self.base_url, url.lstrip("/"))
 
     @property
     def headers(self):
         return {
-            'Authorization': f'Bearer {self.token}',
+            "Authorization": f"Bearer {self.token}",
         }
 
     def post(self, url: str, data: dict, expected_status_code=200) -> dict:
@@ -47,10 +49,10 @@ class ZoomusClientHTTP:
 
         json = response.json()
         if response.status_code != expected_status_code:
-            if 'message' in json:
+            if "message" in json:
                 msg = f'Error from zoom.us: {json["message"]}, errors: {json.get("errors")}'
             else:
-                msg = f'Non-ok HTTP response from zoom.us: {response.status_code}'
+                msg = f"Non-ok HTTP response from zoom.us: {response.status_code}"
 
             raise ZoomusHTTPException(msg)
 
@@ -63,6 +65,6 @@ class ZoomusClientHTTP:
             headers=self.headers,
         )
         if response.status_code != 200:
-            raise ZoomusHTTPException(f'Non-ok HTTP response from zoom.us: {response.status_code}')
+            raise ZoomusHTTPException(f"Non-ok HTTP response from zoom.us: {response.status_code}")
 
         return response.json()

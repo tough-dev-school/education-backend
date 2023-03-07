@@ -4,8 +4,8 @@ from app.admin.filters import BooleanFilter
 
 
 class IsRootFilter(BooleanFilter):
-    title = _('Is root answer')
-    parameter_name = 'is_root'
+    title = _("Is root answer")
+    parameter_name = "is_root"
 
     def t(self, request, queryset):
         return queryset.filter(parent__isnull=True)

@@ -9,10 +9,10 @@ Product = Union[Course, Bundle, Record]
 ProductType = Union[Type[Course], Type[Bundle], Type[Record]]
 
 __all__ = [
-    'Bundle',
-    'Course',
-    'Group',
-    'Record',
-    'Product',
-    'ProductType',
+    "Bundle",
+    "Course",
+    "Group",
+    "Record",
+    "Product",
+    "ProductType",
 ]

@@ -2,8 +2,10 @@ from typing import cast
 
 from rest_framework import serializers
 
-from app.serializers import MarkdownXField, SoftField
-from homework.models import Answer, Question
+from app.serializers import MarkdownXField
+from app.serializers import SoftField
+from homework.models import Answer
+from homework.models import Question
 from users.api.serializers import UserSafeSerializer
 
 
@@ -13,32 +15,32 @@ class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = [
-            'slug',
-            'name',
-            'text',
+            "slug",
+            "name",
+            "text",
         ]
 
 
 class AnswerDetailedSerializer(serializers.ModelSerializer):
     author = UserSafeSerializer()
     text = MarkdownXField()
-    src = serializers.CharField(source='text')
-    parent = SoftField(source='parent.slug')  # type: ignore
-    question = serializers.CharField(source='question.slug')
-    has_descendants = serializers.BooleanField(source='children_count')
+    src = serializers.CharField(source="text")
+    parent = SoftField(source="parent.slug")  # type: ignore
+    question = serializers.CharField(source="question.slug")
+    has_descendants = serializers.BooleanField(source="children_count")
 
     class Meta:
         model = Answer
         fields = [
-            'created',
-            'modified',
-            'slug',
-            'question',
-            'author',
-            'parent',
-            'text',
-            'src',
-            'has_descendants',
+            "created",
+            "modified",
+            "slug",
+            "question",
+            "author",
+            "parent",
+            "text",
+            "src",
+            "has_descendants",
         ]
 
 
@@ -48,19 +50,19 @@ class AnswerTreeSerializer(AnswerDetailedSerializer):
     class Meta:
         model = Answer
         fields = [
-            'created',
-            'modified',
-            'slug',
-            'question',
-            'author',
-            'parent',
-            'text',
-            'src',
-            'descendants',
+            "created",
+            "modified",
+            "slug",
+            "question",
+            "author",
+            "parent",
+            "text",
+            "src",
+            "descendants",
         ]
 
     def get_descendants(self, obj: Answer) -> list[dict]:
-        queryset = obj.get_first_level_descendants().select_related('question', 'author')
+        queryset = obj.get_first_level_descendants().select_related("question", "author")
         serializer = AnswerTreeSerializer(
             queryset,
             many=True,
@@ -72,24 +74,23 @@ class AnswerTreeSerializer(AnswerDetailedSerializer):
 
 class AnswerCreateSerializer(serializers.ModelSerializer):
     author = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    parent = serializers.SlugRelatedField(slug_field='slug', queryset=Answer.objects.all(), required=False, allow_null=True)  # type: ignore
-    question = serializers.SlugRelatedField(slug_field='slug', queryset=Question.objects.all())
+    parent = serializers.SlugRelatedField(slug_field="slug", queryset=Answer.objects.all(), required=False, allow_null=True)  # type: ignore
+    question = serializers.SlugRelatedField(slug_field="slug", queryset=Question.objects.all())
 
     class Meta:
         model = Answer
         fields = [
-            'author',
-            'question',
-            'parent',
-            'text',
+            "author",
+            "question",
+            "parent",
+            "text",
         ]
 
 
 class AnswerCommentTreeSerializer(AnswerTreeSerializer):
-
     class Meta:
         model = Answer
         fields = [
-            'slug',
-            'descendants',
+            "slug",
+            "descendants",
         ]

@@ -1,5 +1,5 @@
-import pytest
 from functools import partial
+import pytest
 
 from mailing.owl import Owl
 
@@ -15,6 +15,6 @@ def _enable_email(settings):
 def owl():
     return partial(
         Owl,
-        to='f@f213.in',
+        to="f@f213.in",
         template_id=100500,
     )

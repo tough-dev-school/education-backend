@@ -1,6 +1,7 @@
 import pytest
 
-from notion.block import NotionBlock, NotionBlockList
+from notion.block import NotionBlock
+from notion.block import NotionBlockList
 from notion.page import NotionPage
 
 pytestmark = [pytest.mark.django_db]
@@ -8,8 +9,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def api(api):
-    """We test it as normal student, not superuser to check permissions
-    """
+    """We test it as normal student, not superuser to check permissions"""
     api.user.is_superuser = False
     api.user.save()
 
@@ -18,7 +18,7 @@ def api(api):
 
 @pytest.fixture
 def course(mixer):
-    return mixer.blend('products.Course')
+    return mixer.blend("products.Course")
 
 
 @pytest.fixture(autouse=True)
@@ -39,17 +39,21 @@ def unpaid_order(order):
 
 @pytest.fixture(autouse=True)
 def material(mixer, course):
-    return mixer.blend('notion.Material', course=course, page_id='0e5693d2173a4f77ae8106813b6e5329')
+    return mixer.blend("notion.Material", course=course, page_id="0e5693d2173a4f77ae8106813b6e5329")
 
 
 @pytest.fixture
 def page() -> NotionPage:
-    return NotionPage(blocks=NotionBlockList([
-        NotionBlock(id='block-1', data={'block-name': 'block-1', 'value': {'last_edited_time': 1642356660000}}),
-        NotionBlock(id='block-2', data={'block-name': 'block-2'}),
-    ]))
+    return NotionPage(
+        blocks=NotionBlockList(
+            [
+                NotionBlock(id="block-1", data={"block-name": "block-1", "value": {"last_edited_time": 1642356660000}}),
+                NotionBlock(id="block-2", data={"block-name": "block-2"}),
+            ]
+        )
+    )
 
 
 @pytest.fixture
 def mock_notion_response(mocker, page: NotionPage):
-    return mocker.patch('notion.client.NotionClient.fetch_page_recursively', return_value=page)
+    return mocker.patch("notion.client.NotionClient.fetch_page_recursively", return_value=page)

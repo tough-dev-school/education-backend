@@ -11,14 +11,17 @@ def get_order():
 
 @pytest.fixture(autouse=True)
 def testcode(mixer):
-    return mixer.blend('orders.Promocode', name='TESTCODE', discount_percent=10)
+    return mixer.blend("orders.Promocode", name="TESTCODE", discount_percent=10)
 
 
-@pytest.mark.parametrize(('promocode', 'expected'), [
-    ('TESTCODE', 90450),
-    ('', 100500),
-    ('3V1l', 100500),
-])
+@pytest.mark.parametrize(
+    ("promocode", "expected"),
+    [
+        ("TESTCODE", 90450),
+        ("", 100500),
+        ("3V1l", 100500),
+    ],
+)
 def test(promocode, expected, user, course, create):
     order = create(user=user, item=course, promocode=promocode)
 

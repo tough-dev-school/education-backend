@@ -5,14 +5,17 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def record(mixer):
-    return mixer.blend('products.Record')
+    return mixer.blend("products.Record")
 
 
-@pytest.mark.parametrize(('template_id', 'expected'), [
-    (None, None),
-    ('', None),
-    ('100500', '100500'),
-])
+@pytest.mark.parametrize(
+    ("template_id", "expected"),
+    [
+        (None, None),
+        ("", None),
+        ("100500", "100500"),
+    ],
+)
 def test(record, template_id, expected):
     record.template_id = template_id
 

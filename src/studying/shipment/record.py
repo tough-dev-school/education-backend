@@ -7,19 +7,19 @@ from studying.shipment.base import BaseShipment
 
 
 class RecordTemplateContext(serializers.ModelSerializer):
-    record_link = serializers.CharField(source='get_url')
+    record_link = serializers.CharField(source="get_url")
 
     class Meta:
         model = Record
         fields = [
-            'name_genitive',
-            'record_link',
+            "name_genitive",
+            "record_link",
         ]
 
 
 @factory.register(Record)
 class RecordShipment(BaseShipment):
-    template_id = 'purchased-record'
+    template_id = "purchased-record"
 
     @property
     def record(self) -> Record:

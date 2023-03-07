@@ -5,7 +5,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def course(mixer):
-    return mixer.blend('products.Course')
+    return mixer.blend("products.Course")
 
 
 @pytest.fixture
@@ -24,12 +24,12 @@ def another_order(factory, user):
     return order
 
 
-@pytest.mark.usefixtures('user')
+@pytest.mark.usefixtures("user")
 def test_nothing(course):
     assert len(course.get_purchased_users()) == 0
 
 
-@pytest.mark.usefixtures('order')
+@pytest.mark.usefixtures("order")
 def test_one_user(course, user):
     assert user in course.get_purchased_users()
 
@@ -46,6 +46,6 @@ def test_non_purchased(course, order):
     assert len(course.get_purchased_users()) == 0
 
 
-@pytest.mark.usefixtures('another_order')
+@pytest.mark.usefixtures("another_order")
 def test_another_order(course):
     assert len(course.get_purchased_users()) == 0

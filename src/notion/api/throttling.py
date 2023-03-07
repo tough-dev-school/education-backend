@@ -5,4 +5,5 @@ from app.throttling import ConfigurableThrottlingMixin
 
 class NotionThrottle(ConfigurableThrottlingMixin, UserRateThrottle):
     """Throttle for any authorization views."""
-    scope = 'notion-materials'
+
+    scope = "notion-materials"

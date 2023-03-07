@@ -7,5 +7,5 @@ class EmailLeadMagnetCampaignStubSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmailLeadMagnetCampaign
         fields = [
-            'slug',
+            "slug",
         ]

@@ -11,6 +11,6 @@ class AtolHTTPError(AtolException):
 
 
 __all__ = [
-    'AtolException',
-    'AtolAuthError',
+    "AtolException",
+    "AtolAuthError",
 ]

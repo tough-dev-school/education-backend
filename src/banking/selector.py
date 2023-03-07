@@ -8,11 +8,11 @@ from tinkoff.credit import TinkoffCredit
 from tinkoff.dolyame import Dolyame
 
 BANKS = {
-    'tinkoff_bank': TinkoffBank,
-    'tinkoff_credit': TinkoffCredit,
-    'stripe': StripeBank,
-    'dolyame': Dolyame,
-    'zero_price': ZeroPriceBank,
+    "tinkoff_bank": TinkoffBank,
+    "tinkoff_credit": TinkoffCredit,
+    "stripe": StripeBank,
+    "dolyame": Dolyame,
+    "zero_price": ZeroPriceBank,
 }
 
 BANK_CHOICES = tuple(BANKS.keys())
@@ -31,5 +31,5 @@ def get_bank(desired: Optional[str] = None) -> Type[Bank]:
 
 
 __all__ = [
-    'get_bank',
+    "get_bank",
 ]

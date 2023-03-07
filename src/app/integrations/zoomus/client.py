@@ -24,7 +24,7 @@ class ZoomusClient:
         zoomus_user = ZoomusUser(user)
 
         return self.http.post(
-            url=f'v2/webinars/{webinar_id}/registrants/',
+            url=f"v2/webinars/{webinar_id}/registrants/",
             data=dict(zoomus_user),
             expected_status_code=201,
         )

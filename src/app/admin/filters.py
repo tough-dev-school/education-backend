@@ -15,17 +15,18 @@ class BooleanFilter(admin.SimpleListFilter):
             def f(self, request, queryset):
                 return queryset.filter(classes__isnull=True)
     """
+
     def lookups(self, request, model_admin):
         return (
-            ('t', _('Yes')),
-            ('f', _('No')),
+            ("t", _("Yes")),
+            ("f", _("No")),
         )
 
     def queryset(self, request, queryset):
         if not self.value():
             return queryset
 
-        if self.value() == 't':
+        if self.value() == "t":
             return self.t(request, queryset)
 
         return self.f(request, queryset)
@@ -33,7 +34,7 @@ class BooleanFilter(admin.SimpleListFilter):
 
 class DefaultTrueBooleanFilter(BooleanFilter):
     def queryset(self, request, queryset):
-        if not self.value() or self.value() == 't':
+        if not self.value() or self.value() == "t":
             return self.t(request, queryset)
 
         return self.f(request, queryset)
@@ -41,13 +42,13 @@ class DefaultTrueBooleanFilter(BooleanFilter):
 
 class DefaultFalseBooleanFilter(BooleanFilter):
     def queryset(self, request, queryset):
-        if not self.value() or self.value() == 'f':
+        if not self.value() or self.value() == "f":
             return self.f(request, queryset)
 
         return self.t(request, queryset)
 
 
 __all__ = [
-    'BooleanFilter',
-    'DefaultTrueBooleanFilter',
+    "BooleanFilter",
+    "DefaultTrueBooleanFilter",
 ]

@@ -1,5 +1,7 @@
-import httpx
 from collections.abc import Iterable
+
+import httpx
+
 from django.conf import settings
 
 from notion.block import NotionBlockList
@@ -10,8 +12,8 @@ from notion.types import BlockId
 
 
 class NotionClient:
-    """Client for private notion.so API, inspired by https://github.com/splitbee/notion-api-worker
-    """
+    """Client for private notion.so API, inspired by https://github.com/splitbee/notion-api-worker"""
+
     def __init__(self) -> None:
         self.attempted_blocks: list[BlockId] = list()
 
@@ -36,13 +38,13 @@ class NotionClient:
     def fetch_page(self, page_id: str) -> NotionPage:
         """Fetch notion page"""
         response = self.fetch(
-            resource='loadPageChunk',
+            resource="loadPageChunk",
             request_body={
-                'page': {'id': id_to_uuid(page_id)},
-                'limit': 100,
-                'cursor': {'stack': []},
-                'chunkNumber': 0,
-                'verticalColumns': False,
+                "page": {"id": id_to_uuid(page_id)},
+                "limit": 100,
+                "cursor": {"stack": []},
+                "chunkNumber": 0,
+                "verticalColumns": False,
             },
         )
 
@@ -51,26 +53,26 @@ class NotionClient:
     def fetch_blocks(self, blocks: Iterable[BlockId]) -> NotionBlockList:
         """Fetch a list of notion blocks"""
         response = self.fetch(
-            resource='syncRecordValues',
+            resource="syncRecordValues",
             request_body={
-                'requests': [{'id': block, 'table': 'block', 'version': -1} for block in blocks],
+                "requests": [{"id": block, "table": "block", "version": -1} for block in blocks],
             },
         )
 
-        return NotionBlockList.from_api_response(response['recordMap']['block'])
+        return NotionBlockList.from_api_response(response["recordMap"]["block"])
 
     @staticmethod
     def fetch(resource: str, request_body: dict) -> dict:
         response = httpx.post(
-            url=f'https://www.notion.so/api/v3/{resource}',
-            cookies={'token_v2': settings.NOTION_TOKEN},
+            url=f"https://www.notion.so/api/v3/{resource}",
+            cookies={"token_v2": settings.NOTION_TOKEN},
             json=request_body,
             headers={
-                'content-type': 'application/json',
+                "content-type": "application/json",
             },
         )
 
         if response.status_code != 200:
-            raise HTTPError(f'HTTP Error {response.status_code} fetching notion resouce {resource}: {response.text}')
+            raise HTTPError(f"HTTP Error {response.status_code} fetching notion resouce {resource}: {response.text}")
 
         return response.json()

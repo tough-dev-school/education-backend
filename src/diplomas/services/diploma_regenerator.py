@@ -1,10 +1,11 @@
+from dataclasses import dataclass
 from typing import cast
 
-from dataclasses import dataclass
 from django.db.models import QuerySet
 
 from app.types import Language
-from diplomas.models import Diploma, DiplomaTemplate
+from diplomas.models import Diploma
+from diplomas.models import DiplomaTemplate
 from diplomas.services.diploma_generator import DiplomaGenerator
 from mailing.tasks import send_mail
 from studying.models import Study
@@ -35,7 +36,7 @@ class DiplomaRegenerator:
     def studies(self) -> QuerySet[Study]:
         return Study.objects.filter(
             id__in=self.get_study_ids_for_diploma_regeneration(),
-        ).select_related('course')
+        ).select_related("course")
 
     def generate_study_diplomas(self, study: Study) -> int:
         count = 0
@@ -50,8 +51,8 @@ class DiplomaRegenerator:
             Diploma.objects.filter(study__student=self.student)
             .filter_with_template()  # some diplomas have no template, can't regenerate them
             .order_by()
-            .values_list('study__id', flat=True)
-            .distinct('study__id'),
+            .values_list("study__id", flat=True)
+            .distinct("study__id"),
         )
 
     def get_study_diploma_languages(self, study: Study) -> list[Language]:
@@ -59,14 +60,14 @@ class DiplomaRegenerator:
             course=study.course,
             homework_accepted=study.homework_accepted,
             language__in=self.student.diploma_languages,
-        ).values_list('language', flat=True)
+        ).values_list("language", flat=True)
 
         return [cast(Language, language) for language in study_diploma_languages]
 
     def notify(self) -> None:
         send_mail.delay(
             to=self.student.email,
-            template_id='diplomas_regenerated',
+            template_id="diplomas_regenerated",
             disable_antispam=True,
         )
 

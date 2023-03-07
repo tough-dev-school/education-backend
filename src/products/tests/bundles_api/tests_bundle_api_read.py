@@ -6,6 +6,6 @@ pytestmark = [
 
 
 def test_retrieve(api, bundle):
-    got = api.get('/api/v2/bundles/pinetree-tickets/')
+    got = api.get("/api/v2/bundles/pinetree-tickets/")
 
-    assert got['name'] == 'Флаг и билет на ёлку'
+    assert got["name"] == "Флаг и билет на ёлку"

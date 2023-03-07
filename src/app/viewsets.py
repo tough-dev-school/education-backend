@@ -1,15 +1,16 @@
 from typing import Any, Dict, Protocol, Type
 
-from django.core.exceptions import ImproperlyConfigured
 from rest_framework.serializers import Serializer
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.viewsets import ReadOnlyModelViewSet as _ReadOnlyModelViewSet
 
+from django.core.exceptions import ImproperlyConfigured
+
 from app.validators import Validator
 
 __all__ = [
-    'AppViewSet',
-    'ReadOnlyAppViewSet',
+    "AppViewSet",
+    "ReadOnlyAppViewSet",
 ]
 
 
@@ -20,7 +21,7 @@ class ViewsetWithValidationProtocol(Protocol):
 class ValidationMixin(ViewsetWithValidationProtocol):
     def get_validator_class(self) -> Type[Validator]:
         if self.validator_class is None:
-            raise ImproperlyConfigured('Please set validator_class class variable')
+            raise ImproperlyConfigured("Please set validator_class class variable")
 
         return self.validator_class
 
@@ -30,7 +31,7 @@ class ValidationMixin(ViewsetWithValidationProtocol):
 
     def get_validator_context(self) -> Dict[str, Any]:
         return {
-            'request': self.request,  # type: ignore
+            "request": self.request,  # type: ignore
         }
 
 
@@ -82,7 +83,7 @@ class AppViewSet(MultiSerializerMixin, ModelViewSet):
         """
         response = super().update(request, *args, **kwargs)
 
-        Serializer = self.get_serializer_class(action='retrieve')
+        Serializer = self.get_serializer_class(action="retrieve")
         response.data = Serializer(self.get_object()).data
 
         return response
@@ -100,11 +101,11 @@ class AppViewSet(MultiSerializerMixin, ModelViewSet):
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
 
         try:
-            self.kwargs[lookup_url_kwarg] = response.data.get(self.lookup_field) or response.data['id']
+            self.kwargs[lookup_url_kwarg] = response.data.get(self.lookup_field) or response.data["id"]
         except KeyError:
             return response  # if you want to mangle with response serializing, please provide ID or lookup_url_kwarg in your serializer
 
-        Serializer = self.get_serializer_class(action='retrieve')
+        Serializer = self.get_serializer_class(action="retrieve")
         response.data = Serializer(self.get_object()).data
 
         return response

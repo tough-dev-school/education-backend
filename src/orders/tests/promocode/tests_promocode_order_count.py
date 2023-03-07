@@ -4,12 +4,12 @@ from orders.models import PromoCode
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures('ten_percent_promocode'),
+    pytest.mark.usefixtures("ten_percent_promocode"),
 ]
 
 
 def get_annotated_promocode():
-    return PromoCode.objects.with_order_count().get_or_nothing('TESTCODE')
+    return PromoCode.objects.with_order_count().get_or_nothing("TESTCODE")
 
 
 @pytest.fixture

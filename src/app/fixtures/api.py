@@ -1,6 +1,5 @@
-from typing import Callable
-
 import pytest
+from typing import Callable
 
 from app.test.api_client import DRFClient
 from users.models import User

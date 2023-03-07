@@ -4,8 +4,8 @@ from homework.models.answer_cross_check import AnswerCrossCheck
 from homework.models.question import Question
 
 __all__ = [
-    'Answer',
-    'AnswerAccessLogEntry',
-    'AnswerCrossCheck',
-    'Question',
+    "Answer",
+    "AnswerAccessLogEntry",
+    "AnswerCrossCheck",
+    "Question",
 ]

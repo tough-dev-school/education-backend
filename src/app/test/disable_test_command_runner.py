@@ -6,4 +6,4 @@ class DisableTestCommandRunner:
         pass
 
     def run_tests(self, *args):
-        raise CommandError('Please use pytest')
+        raise CommandError("Please use pytest")

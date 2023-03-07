@@ -12,7 +12,7 @@ def mark_order_as_paid_on_tinkoff_bank_transactions(instance: TinkoffPaymentNoti
     if not created:
         return
 
-    if instance.status != 'CONFIRMED':
+    if instance.status != "CONFIRMED":
         return
 
     instance.order.set_paid()
@@ -23,7 +23,7 @@ def mark_order_as_paid_on_tinkoff_credit_transactions(instance: TinkoffCreditNot
     if not created:
         return
 
-    if instance.status != 'signed':
+    if instance.status != "signed":
         return
 
     instance.order.set_paid()
@@ -34,7 +34,7 @@ def mark_order_as_paid_on_stripe_notifications(instance: StripeNotification, cre
     if not created:
         return
 
-    if instance.status != 'complete':
+    if instance.status != "complete":
         return
 
     instance.order.set_paid()
@@ -46,7 +46,7 @@ def mark_order_as_paid_on_dolyame_notifications(instance: DolyameNotification, c
     if not created:
         return
 
-    if instance.status != 'completed':
+    if instance.status != "completed":
         return
 
     instance.order.set_paid()

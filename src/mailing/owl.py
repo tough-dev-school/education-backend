@@ -1,5 +1,7 @@
-from anymail.message import AnymailMessage
 from dataclasses import dataclass
+
+from anymail.message import AnymailMessage
+
 from django.conf import settings
 from django.core import mail
 from django.core.mail.backends.base import BaseEmailBackend
@@ -7,16 +9,17 @@ from django.utils.functional import cached_property
 
 from mailing import helpers
 from mailing.configuration import get_configuration
-from mailing.models import EmailConfiguration, EmailLogEntry
+from mailing.models import EmailConfiguration
+from mailing.models import EmailLogEntry
 
 
 @dataclass
 class Owl:
-    """Deliver messages [from Hogwarts] to the particular end-user
-    """
+    """Deliver messages [from Hogwarts] to the particular end-user"""
+
     to: str
     template_id: str
-    subject: str | None = ''
+    subject: str | None = ""
     ctx: dict | None = None
     disable_antispam: bool | None = False
 
@@ -40,7 +43,7 @@ class Owl:
     def msg(self) -> AnymailMessage:
         return AnymailMessage(
             subject=self.subject,
-            body='',
+            body="",
             to=[self.to],
             connection=self.connection,
             from_email=self.from_email,

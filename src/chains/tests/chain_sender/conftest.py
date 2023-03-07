@@ -12,4 +12,4 @@ def chain_sender(chain):
 
 @pytest.fixture
 def send_message(mocker):
-    return mocker.patch('chains.services.chain_sender.ChainSender.send')
+    return mocker.patch("chains.services.chain_sender.ChainSender.send")

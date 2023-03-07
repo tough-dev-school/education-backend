@@ -1,6 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 
-from app.admin import ModelAdmin, admin
+from app.admin import admin
+from app.admin import ModelAdmin
 from mailing.admin.email_configuration import EmailConfigurationAdmin
 from products.admin.courses import actions
 from products.models import Course
@@ -10,77 +11,71 @@ from products.models import Course
 class CourseAdmin(ModelAdmin):
     fieldsets = [
         (
-            _('Name'),
+            _("Name"),
             {
-                'fields': [
-                    'name',
-                    'slug',
-                    'cover',
-                    'display_in_lms',
-                    'disable_triggers',
-                    'group',
-                    'name_genitive',
-                    'name_receipt',
-                    'full_name',
-                    'name_international',
+                "fields": [
+                    "name",
+                    "slug",
+                    "cover",
+                    "display_in_lms",
+                    "disable_triggers",
+                    "group",
+                    "name_genitive",
+                    "name_receipt",
+                    "full_name",
+                    "name_international",
                 ],
             },
         ),
         (
-            _('Price'),
+            _("Price"),
             {
-                'fields': [
-                    'price',
-                    'old_price',
+                "fields": [
+                    "price",
+                    "old_price",
                 ],
             },
         ),
         (
-            _('Email messages'),
+            _("Email messages"),
             {
-                'fields': [
-                    'welcome_letter_template_id',
-                    'gift_welcome_letter_template_id',
-                    'diploma_template_context',
+                "fields": [
+                    "welcome_letter_template_id",
+                    "gift_welcome_letter_template_id",
+                    "diploma_template_context",
                 ],
             },
         ),
         (
-            _('Order confirmation'),
+            _("Order confirmation"),
             {
-                'fields': [
-                    'confirmation_template_id',
-                    'confirmation_success_url',
+                "fields": [
+                    "confirmation_template_id",
+                    "confirmation_success_url",
                 ],
             },
         ),
-
-
     ]
 
     list_display = (
-        'id',
-        'group',
-        'name',
-        'slug',
-        'has_cover',
+        "id",
+        "group",
+        "name",
+        "slug",
+        "has_cover",
     )
 
-    list_filter = (
-        'group',
-    )
+    list_filter = ("group",)
 
     list_display_links = (
-        'id',
-        'name',
+        "id",
+        "name",
     )
 
     prepopulated_fields = {
-        'slug': ['name'],
+        "slug": ["name"],
     }
-    inlines = (
-        EmailConfigurationAdmin,
-    )
+    inlines = (EmailConfigurationAdmin,)
     action_form = actions.CourseActionForm
 
     actions = [

@@ -1,4 +1,5 @@
 import pytest
+
 from anymail.exceptions import AnymailRecipientsRefused
 
 from chains.models import Progress
@@ -18,13 +19,13 @@ def test_message_is_sent(send_message, message, study, owl):
 
     owl.assert_called_once_with(
         ctx={
-            'firstname': study.student.first_name,
-            'lastname': study.student.last_name,
+            "firstname": study.student.first_name,
+            "lastname": study.student.last_name,
         },
         disable_antispam=False,
         template_id=message.template_id,
         to=study.student.email,
-        subject='',
+        subject="",
     )
 
 
@@ -35,7 +36,7 @@ def test_message_is_sent_only_once(send_message, message, study, owl):
     owl.assert_called_once()
 
 
-@pytest.mark.parametrize('success', [True, False])
+@pytest.mark.parametrize("success", [True, False])
 def test_message_is_not_sent_when_progress_record_exists(send_message, message, study, owl, success):
     Progress.objects.create(message=message, study=study, success=success)
 
@@ -50,12 +51,15 @@ def test_progress_is_saved(send_message, message, study):
     assert Progress.objects.filter(message=message, study=study, success=True).exists()
 
 
-@pytest.mark.xfail(strict=True, reason='Seems there is no way of testing link_error in the eager mode')
-@pytest.mark.parametrize('exc', [
-    AnymailRecipientsRefused,
-])
+@pytest.mark.xfail(strict=True, reason="Seems there is no way of testing link_error in the eager mode")
+@pytest.mark.parametrize(
+    "exc",
+    [
+        AnymailRecipientsRefused,
+    ],
+)
 def test_progress_status_is_saved_when_message_is_not_sent(send_message, message, study, owl, exc):
-    owl.side_effect = exc('Test Error')
+    owl.side_effect = exc("Test Error")
 
     send_message()
 
