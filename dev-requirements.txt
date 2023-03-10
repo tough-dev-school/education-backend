@@ -297,7 +297,7 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
-platformdirs==3.1.0
+platformdirs==3.1.1
     # via black
 pluggy==1.0.0
     # via pytest
