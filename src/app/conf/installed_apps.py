@@ -16,7 +16,6 @@ INSTALLED_APPS = [
     "chains",
     "mailing",
     "corsheaders",
-    "cachalot",
     "anymail",
     "rest_framework",
     "rest_framework.authtoken",
