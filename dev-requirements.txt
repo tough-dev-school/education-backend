@@ -283,7 +283,7 @@ mypy==0.950
     #   django-stubs
     #   djangorestframework-stubs
     #   education-backend (pyproject.toml)
-mypy-extensions==0.4.4
+mypy-extensions==1.0.0
     # via
     #   black
     #   mypy
