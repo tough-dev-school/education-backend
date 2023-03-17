@@ -155,7 +155,7 @@ djangorestframework==3.14.0
     #   drf-jwt
     #   drf-recaptcha
     #   education-backend (pyproject.toml)
-djangorestframework-stubs==1.7.0
+djangorestframework-stubs==1.10.0
     # via education-backend (pyproject.toml)
 drf-jwt==1.19.2
     # via education-backend (pyproject.toml)
