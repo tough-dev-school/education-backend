@@ -169,7 +169,7 @@ executing==1.2.0
     # via stack-data
 faker==4.0.0
     # via mixer
-flake8==5.0.4
+flake8==6.0.0
     # via
     #   flake8-absolute-import
     #   flake8-black
