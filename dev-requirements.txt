@@ -217,7 +217,7 @@ flake8-print==5.0.0
     # via education-backend (pyproject.toml)
 flake8-printf-formatting==1.1.2
     # via education-backend (pyproject.toml)
-flake8-pyproject==1.2.2
+flake8-pyproject==1.2.3
     # via education-backend (pyproject.toml)
 flake8-pytest==1.4
     # via education-backend (pyproject.toml)
