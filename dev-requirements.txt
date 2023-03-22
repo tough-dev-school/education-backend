@@ -167,7 +167,7 @@ execnet==1.9.0
     # via pytest-xdist
 executing==1.2.0
     # via stack-data
-faker==4.0.0
+faker==12.0.1
     # via mixer
 flake8==5.0.4
     # via
@@ -276,7 +276,7 @@ matplotlib-inline==0.1.6
     # via ipython
 mccabe==0.7.0
     # via flake8
-mixer==7.0.6
+mixer==7.2.2
     # via education-backend (pyproject.toml)
 mypy==0.950
     # via
@@ -297,6 +297,8 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
+pillow==9.4.0
+    # via education-backend (pyproject.toml)
 platformdirs==3.1.1
     # via black
 pluggy==1.0.0
@@ -418,8 +420,6 @@ standardjson==0.3.1
     # via django-prettyjson
 stripe==5.2.0
     # via education-backend (pyproject.toml)
-text-unidecode==1.3
-    # via faker
 tomli==2.0.1
     # via django-stubs
 traitlets==5.9.0

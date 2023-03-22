@@ -13,7 +13,7 @@ pytestmark = [
 
 @pytest.fixture(autouse=True)
 def _mock_diploma_generator_fetch_image(mocker, factory):
-    image = factory.uploaded_image()
+    image = factory.image()
     mocker.patch("diplomas.services.diploma_regenerator.DiplomaGenerator.fetch_image", return_value=image)
 
 
