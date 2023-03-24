@@ -23,7 +23,7 @@ def order(factory, course, student):
 
 @pytest.fixture
 def image(factory):
-    return factory.uploaded_image()
+    return factory.image()
 
 
 @pytest.fixture
