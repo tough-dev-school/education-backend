@@ -191,7 +191,7 @@ sqlparse==0.4.3
     #   django-debug-toolbar
 standardjson==0.3.1
     # via django-prettyjson
-stripe==5.2.0
+stripe==5.3.0
     # via education-backend (pyproject.toml)
 urllib3==1.26.15
     # via
