@@ -105,3 +105,11 @@ class Course(Shippable):
                 to=user.email,
                 template_id=template_id,
             )
+
+    def __str__(self) -> str:
+        name = getattr(self, "name", None)
+        group = getattr(self, "group", None)
+        if name is not None and group is not None:
+            return f"{name} - {group.name}"
+
+        return super().__str__()
