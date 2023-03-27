@@ -432,7 +432,7 @@ types-awscrt==0.16.13.post1
     #   types-s3transfer
 types-babel==2.11.0.12
     # via education-backend (pyproject.toml)
-types-bleach==6.0.0.1
+types-bleach==6.0.0.2
     # via education-backend (pyproject.toml)
 types-freezegun==1.1.10
     # via education-backend (pyproject.toml)
