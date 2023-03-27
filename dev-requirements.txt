@@ -430,7 +430,7 @@ types-awscrt==0.16.13.post1
     # via
     #   botocore-stubs
     #   types-s3transfer
-types-babel==2.11.0.11
+types-babel==2.11.0.12
     # via education-backend (pyproject.toml)
 types-bleach==6.0.0.1
     # via education-backend (pyproject.toml)
