@@ -135,7 +135,7 @@ jmespath==1.0.1
     #   botocore
 kombu==5.2.4
     # via celery
-pillow==9.4.0
+pillow==9.5.0
     # via education-backend (pyproject.toml)
 prompt-toolkit==3.0.38
     # via click-repl
