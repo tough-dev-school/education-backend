@@ -297,7 +297,7 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
-pillow==9.4.0
+pillow==9.5.0
     # via education-backend (pyproject.toml)
 platformdirs==3.2.0
     # via black
