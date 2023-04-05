@@ -436,7 +436,7 @@ types-bleach==6.0.0.2
     # via education-backend (pyproject.toml)
 types-freezegun==1.1.10
     # via education-backend (pyproject.toml)
-types-markdown==3.4.2.6
+types-markdown==3.4.2.7
     # via
     #   djangorestframework-stubs
     #   education-backend (pyproject.toml)
