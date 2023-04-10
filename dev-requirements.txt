@@ -324,7 +324,7 @@ pycparser==2.21
     # via cffi
 pyflakes==2.5.0
     # via flake8
-pygments==2.14.0
+pygments==2.15.0
     # via ipython
 pyjwt[crypto]==2.6.0
     # via
