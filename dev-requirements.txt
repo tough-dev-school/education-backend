@@ -426,7 +426,7 @@ traitlets==5.9.0
     # via
     #   ipython
     #   matplotlib-inline
-types-awscrt==0.16.13.post1
+types-awscrt==0.16.14
     # via
     #   botocore-stubs
     #   types-s3transfer
