@@ -458,7 +458,7 @@ types-retry==0.9.9.3
     # via education-backend (pyproject.toml)
 types-s3transfer==0.6.0.post7
     # via boto3-stubs
-types-simplejson==3.18.0.3
+types-simplejson==3.19.0.0
     # via education-backend (pyproject.toml)
 types-stripe==3.5.2.9
     # via education-backend (pyproject.toml)
