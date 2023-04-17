@@ -440,7 +440,7 @@ types-markdown==3.4.2.7
     # via
     #   djangorestframework-stubs
     #   education-backend (pyproject.toml)
-types-pillow==9.5.0.0
+types-pillow==9.5.0.1
     # via education-backend (pyproject.toml)
 types-pytz==2023.3.0.0
     # via
