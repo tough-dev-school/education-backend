@@ -185,7 +185,7 @@ sniffio==1.3.0
     #   anyio
     #   httpcore
     #   httpx
-sqlparse==0.4.3
+sqlparse==0.4.4
     # via
     #   django
     #   django-debug-toolbar
