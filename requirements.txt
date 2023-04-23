@@ -116,7 +116,7 @@ djangorestframework==3.14.0
     #   education-backend (pyproject.toml)
 drf-jwt==1.19.2
     # via education-backend (pyproject.toml)
-drf-recaptcha==2.2.2
+drf-recaptcha==2.2.3
     # via education-backend (pyproject.toml)
 h11==0.12.0
     # via httpcore
