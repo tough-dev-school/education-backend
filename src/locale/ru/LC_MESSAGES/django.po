@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-26 08:08+0300\n"
+"POT-Creation-Date: 2023-04-26 08:13+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -29,15 +29,15 @@ msgstr "Нет"
 
 #: banking/models.py:10
 msgid "Atol"
-msgstr ""
+msgstr "Атол"
 
 #: banking/models.py:19
 msgid "Receipt"
-msgstr ""
+msgstr "Чек"
 
 #: banking/models.py:20
 msgid "Receipts"
-msgstr ""
+msgstr "Чеки"
 
 #: chains/admin/chain.py:10
 msgid "Archived"
@@ -257,26 +257,20 @@ msgid "Postmark"
 msgstr ""
 
 #: mailing/models/configuration.py:16
-#, fuzzy
-#| msgid "Email chain"
 msgid "Email sender"
-msgstr "Цепочка"
+msgstr "Отправитель"
 
 #: mailing/models/configuration.py:16
 msgid "E.g. Fedor Borshev &lt;fedor@borshev.com&gt;. MUST configure postmark!"
 msgstr ""
 
 #: mailing/models/configuration.py:21
-#, fuzzy
-#| msgid "Email chain"
 msgid "Email configuration"
-msgstr "Цепочка"
+msgstr "Способ отсылки"
 
 #: mailing/models/configuration.py:22
-#, fuzzy
-#| msgid "Email chains"
 msgid "Email configurations"
-msgstr "Цепочки"
+msgstr "Способы отсылки"
 
 #: notion/models.py:23
 msgid "Page title"
@@ -438,7 +432,7 @@ msgstr "Банк"
 
 #: orders/models/order.py:62
 msgid "Purchase-time UE rate"
-msgstr ""
+msgstr "Курс у.е. на момент покупки"
 
 #: orders/models/order.py:66 products/models/record.py:16
 msgid "Record"
@@ -489,6 +483,10 @@ msgstr "Скидка в деньгах"
 #: orders/models/promocode.py:50
 msgid "Takes precedence over percent"
 msgstr "Если задать — процент не будет работать"
+
+#: orders/models/promocode.py:51
+msgid "Expiration date"
+msgstr "Дата окончания"
 
 #: orders/models/promocode.py:53
 msgid "Destination"
@@ -783,9 +781,6 @@ msgstr "Студенты"
 
 #~ msgid "Permissions"
 #~ msgstr "Пермишены"
-
-#~ msgid "Important dates"
-#~ msgstr "Даты"
 
 #~ msgid "Gift"
 #~ msgstr "Подарок"
