@@ -50,7 +50,7 @@ class PromoCode(TimestampedModel):
     discount_value = models.IntegerField(_("Discount amount"), null=True, blank=True, help_text=_("Takes precedence over percent"))
     expires = models.DateTimeField(null=True, blank=True)
     active = models.BooleanField(_("Active"), default=True)
-    comment = models.TextField(_("Comment"), blank=True, null=True)
+    destination = models.TextField(_("Destination"))
 
     courses = models.ManyToManyField("products.Course", help_text=_("Can not be used for courses not checked here"), blank=True)
 

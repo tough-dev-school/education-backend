@@ -28,7 +28,7 @@ class PromoCodeAdmin(ModelAdmin):
         "name",
         "discount",
         "order_count",
-        "comment",
+        "destination",
         "is_active",
     )
 
@@ -41,7 +41,7 @@ class PromoCodeAdmin(ModelAdmin):
 
     search_fields = (
         "name",
-        "comment",
+        "destination",
     )
 
     actions = [actions.deactivate]
