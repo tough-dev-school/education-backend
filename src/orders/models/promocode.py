@@ -33,7 +33,7 @@ class PromoCodeQuerySet(QuerySet):
             )
         )
 
-    def get_or_nothing(self, name: Optional[str]) -> Optional["PromoCode"]:
+    def get_or_nothing(self, name: str | None) -> Optional["PromoCode"]:
         if name is not None:
             with contextlib.suppress(PromoCode.DoesNotExist):
                 return self.active().get(name__iexact=name.strip())
@@ -48,9 +48,9 @@ class PromoCode(TimestampedModel):
     name = models.CharField(_("Promo Code"), max_length=32, unique=True, db_index=True)
     discount_percent = models.IntegerField(_("Discount percent"), null=True, blank=True)
     discount_value = models.IntegerField(_("Discount amount"), null=True, blank=True, help_text=_("Takes precedence over percent"))
-    expires = models.DateTimeField(null=True, blank=True)
+    expires = models.DateTimeField(_("Expiration date"), null=True, blank=True)
     active = models.BooleanField(_("Active"), default=True)
-    comment = models.TextField(_("Comment"), blank=True, null=True)
+    destination = models.TextField(_("Destination"))
 
     courses = models.ManyToManyField("products.Course", help_text=_("Can not be used for courses not checked here"), blank=True)
 
