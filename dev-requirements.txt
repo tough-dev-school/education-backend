@@ -354,7 +354,7 @@ pytest-env==0.8.1
     # via education-backend (pyproject.toml)
 pytest-freezegun==0.4.2
     # via education-backend (pyproject.toml)
-pytest-httpx==0.21.3
+pytest-httpx==0.22.0
     # via education-backend (pyproject.toml)
 pytest-mock==3.10.0
     # via education-backend (pyproject.toml)
