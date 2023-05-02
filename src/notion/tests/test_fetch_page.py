@@ -32,7 +32,7 @@ def ok():
 
 
 def test_ok(httpx_mock: HTTPXMock, ok, notion):
-    httpx_mock.add_response(url="https://www.notion.so/api/v3/loadPageChunk", json=ok)
+    httpx_mock.add_response(url="http://notion.middleware/v1/notion/loadPageChunk/", json=ok)
 
     page = notion.fetch_page("0cb348b3a2d24c05bc944e2302fa553")
 
@@ -41,7 +41,7 @@ def test_ok(httpx_mock: HTTPXMock, ok, notion):
 
 
 def test_page_title(httpx_mock: HTTPXMock, ok, notion):
-    httpx_mock.add_response(url="https://www.notion.so/api/v3/loadPageChunk", json=ok)
+    httpx_mock.add_response(url="http://notion.middleware/v1/notion/loadPageChunk/", json=ok)
 
     page = notion.fetch_page("0cb348b3a2d24c05bc944e2302fa553")
 
@@ -49,7 +49,7 @@ def test_page_title(httpx_mock: HTTPXMock, ok, notion):
 
 
 def test_abscense_of_the_page_block_does_not_break_page_title(httpx_mock: HTTPXMock, ok, notion):
-    httpx_mock.add_response(url="https://www.notion.so/api/v3/loadPageChunk", json=ok)
+    httpx_mock.add_response(url="http://notion.middleware/v1/notion/loadPageChunk/", json=ok)
 
     page = notion.fetch_page("0cb348b3a2d24c05bc944e2302fa553")
 
@@ -59,7 +59,7 @@ def test_abscense_of_the_page_block_does_not_break_page_title(httpx_mock: HTTPXM
 
 
 def test_block_without_title_does_not_break_page_title_1(httpx_mock: HTTPXMock, ok, notion):
-    httpx_mock.add_response(url="https://www.notion.so/api/v3/loadPageChunk", json=ok)
+    httpx_mock.add_response(url="http://notion.middleware/v1/notion/loadPageChunk/", json=ok)
 
     page = notion.fetch_page("0cb348b3a2d24c05bc944e2302fa553")
 
@@ -69,7 +69,7 @@ def test_block_without_title_does_not_break_page_title_1(httpx_mock: HTTPXMock, 
 
 
 def test_block_without_title_does_not_break_page_title_2(httpx_mock: HTTPXMock, ok, notion):
-    httpx_mock.add_response(url="https://www.notion.so/api/v3/loadPageChunk", json=ok)
+    httpx_mock.add_response(url="http://notion.middleware/v1/notion/loadPageChunk/", json=ok)
 
     page = notion.fetch_page("0cb348b3a2d24c05bc944e2302fa553")
 
@@ -80,7 +80,7 @@ def test_block_without_title_does_not_break_page_title_2(httpx_mock: HTTPXMock, 
 
 def test_not_shared_exception(notion, httpx_mock: HTTPXMock):
     httpx_mock.add_response(
-        url="https://www.notion.so/api/v3/loadPageChunk",
+        url="http://notion.middleware/v1/notion/loadPageChunk/",
         json={
             "recordMap": {},  # not shared page looks excactly like this
         },

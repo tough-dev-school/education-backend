@@ -63,16 +63,19 @@ class NotionClient:
 
     @staticmethod
     def fetch(resource: str, request_body: dict) -> dict:
-        response = httpx.post(
-            url=f"https://www.notion.so/api/v3/{resource}",
-            cookies={"token_v2": settings.NOTION_TOKEN},
-            json=request_body,
+        client = httpx.Client(
+            http2=True,
+        )
+        response = client.post(
+            url=f"{settings.NOTION_MIDDLEWARE_URL}/v1/notion/{resource}/",
             headers={
                 "content-type": "application/json",
             },
+            json=request_body,
+            timeout=settings.NOTION_MIDDLEWARE_TIMEOUT,
         )
 
         if response.status_code != 200:
-            raise HTTPError(f"HTTP Error {response.status_code} fetching notion resouce {resource}: {response.text}")
+            raise HTTPError(f"{ response.http_version } error {response.status_code} fetching notion resouce {resource}: {response.text}")
 
         return response.json()

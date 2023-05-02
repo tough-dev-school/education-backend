@@ -9,8 +9,8 @@ def notion() -> NotionClient:
 
 
 @pytest.fixture(autouse=True)
-def _configure_notion_settings(settings):
-    settings.NOTION_TOKEN = "tsttkn"
+def _freeze_notion_middleware_url(settings):
+    settings.NOTION_MIDDLEWARE_URL = "http://notion.middleware"
 
 
 @pytest.fixture
