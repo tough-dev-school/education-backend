@@ -45,7 +45,7 @@ dependencies = [
     "celery",
     "redis",
 
-    "httpx",
+    "httpx[http2]",
     "stripe",
 ]
 
