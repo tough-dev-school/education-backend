@@ -6,7 +6,7 @@ from pytest_httpx import HTTPXMock
 @pytest.fixture
 def _ok(httpx_mock: HTTPXMock):
     httpx_mock.add_response(
-        url="https://www.notion.so/api/v3/syncRecordValues",
+        url="http://notion.middleware/v1/notion/syncRecordValues/",
         json={
             "recordMap": {
                 "block": {
