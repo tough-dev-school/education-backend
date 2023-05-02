@@ -111,7 +111,7 @@ django==4.1.7
     #   drf-jwt
     #   drf-recaptcha
     #   education-backend (pyproject.toml)
-django-anymail==9.1
+django-anymail==9.2
     # via education-backend (pyproject.toml)
 django-axes==5.41.1
     # via education-backend (pyproject.toml)
