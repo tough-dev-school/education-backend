@@ -10,7 +10,6 @@ pytestmark = [
     pytest.mark.django_db,
     pytest.mark.single_thread,
     pytest.mark.repeat(3),
-    pytest.mark.skip(reason="WIP"),
 ]
 
 

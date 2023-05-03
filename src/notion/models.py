@@ -1,18 +1,28 @@
 from urllib.parse import urljoin
+import contextlib
 import uuid
 
 from django.conf import settings
+from django.db.models import Q
 from django.db.models import QuerySet
 from django.db.models import UniqueConstraint
 from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
 
 from app.models import models
 from app.models import TimestampedModel
+from typing import Optional
 
 
 class MaterialQuerySet(QuerySet):
     def active(self) -> QuerySet["Material"]:
         return self.filter(active=True)
+
+    def get_by_page_id_or_slug(self, page_id_or_slug: str) -> Optional["Material"]:
+        with contextlib.suppress(ValidationError):
+            return self.filter(
+                Q(slug=page_id_or_slug) | Q(page_id=page_id_or_slug),
+            ).first()
 
 
 MaterialManager = models.Manager.from_queryset(MaterialQuerySet)
