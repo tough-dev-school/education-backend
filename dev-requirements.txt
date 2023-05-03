@@ -475,7 +475,7 @@ typing-extensions==4.5.0
     #   mypy
 uritemplate==4.1.1
     # via coreapi
-urllib3==1.26.15
+urllib3==2.0.1
     # via
     #   botocore
     #   education-backend (pyproject.toml)
