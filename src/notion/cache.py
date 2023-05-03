@@ -21,7 +21,7 @@ def fetch_page(page_id: str) -> Callable[[], NotionPage]:
     return lambda: NotionClient().fetch_page_recursively(page_id)
 
 
-def current_user_is_staff() -> bool:
+def cache_disabled() -> bool:
     user = get_current_user()
     if user:
         return user.is_staff
@@ -30,7 +30,7 @@ def current_user_is_staff() -> bool:
 
 
 def get_cached_page(page_id: str) -> NotionPage:
-    if current_user_is_staff():
+    if cache_disabled():
         invalidate_cache(page_id)
         return fetch_page(page_id)()
 
