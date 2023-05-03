@@ -12,6 +12,7 @@ from django.utils.translation import gettext_lazy as _
 
 from app.models import models
 from app.models import TimestampedModel
+from notion.helpers import uuid_to_id
 
 
 class MaterialQuerySet(QuerySet):
@@ -53,4 +54,5 @@ class Material(TimestampedModel):
         return f"{self.course} - {self.title}"
 
     def get_absolute_url(self) -> str:
-        return urljoin(settings.FRONTEND_URL, f"materials/{self.page_id}/")
+        slug = uuid_to_id(str(self.slug))
+        return urljoin(settings.FRONTEND_URL, f"materials/{slug}/")
