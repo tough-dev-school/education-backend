@@ -1,5 +1,6 @@
-from django.conf import settings
 from rest_framework.throttling import AnonRateThrottle
+
+from django.conf import settings
 
 
 class ConfigurableThrottlingMixin:
@@ -12,10 +13,11 @@ class ConfigurableThrottlingMixin:
 
 class PublicIDThrottle(ConfigurableThrottlingMixin, AnonRateThrottle):
     """Throttle for any authorization views."""
-    scope = 'public-id'
+
+    scope = "public-id"
 
 
 __all__ = [
-    'ConfigurableThrottlingMixin',
-    'PublicIDThrottle',
+    "ConfigurableThrottlingMixin",
+    "PublicIDThrottle",
 ]

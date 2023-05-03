@@ -1,20 +1,22 @@
-from typing import Type
-
 from datetime import datetime
 from decimal import Decimal
+from typing import Type
+from urllib.parse import urljoin
+
 from django.conf import settings
 from django.urls import reverse
 from django.utils.dateparse import parse_datetime
 from django.utils.functional import cached_property
-from django.utils.timezone import is_naive, make_aware
-from urllib.parse import urljoin
+from django.utils.timezone import is_naive
+from django.utils.timezone import make_aware
 
 from app.current_user import get_current_user
 from app.helpers import lower_first
 from banking.base import Bank
 from banking.selector import get_bank
 from mailing.tasks import send_mail
-from orders.models import Order, PromoCode
+from orders.models import Order
+from orders.models import PromoCode
 from users.models import User
 
 
@@ -40,8 +42,8 @@ class OrderCreator:
         self.promocode = self._get_promocode(promocode)
         self.giver = giver
         self.desired_shipment_date = self.make_datetime_aware(desired_shipment_date)
-        self.gift_message = gift_message if gift_message is not None else ''
-        self.desired_bank = desired_bank if desired_bank is not None else ''
+        self.gift_message = gift_message if gift_message is not None else ""
+        self.desired_bank = desired_bank if desired_bank is not None else ""
 
     def __call__(self) -> Order:
         order = self.create()
@@ -78,7 +80,7 @@ class OrderCreator:
 
     def send_confirmation_message(self, order: Order) -> None:
         if order.price == 0 and order.item is not None:
-            if hasattr(order.item, 'confirmation_template_id') and order.item.confirmation_template_id:
+            if hasattr(order.item, "confirmation_template_id") and order.item.confirmation_template_id:
                 send_mail.delay(
                     to=order.user.email,
                     template_id=order.item.confirmation_template_id,
@@ -88,10 +90,10 @@ class OrderCreator:
     @staticmethod
     def get_template_context(order: Order) -> dict[str, str]:
         return {
-            'item': order.item.full_name,
-            'item_lower': lower_first(order.item.full_name),
-            'firstname': order.user.first_name,
-            'confirmation_url': urljoin(settings.FRONTEND_URL, reverse('confirm-order', args=[order.slug])),
+            "item": order.item.full_name,
+            "item_lower": lower_first(order.item.full_name),
+            "firstname": order.user.first_name,
+            "confirmation_url": urljoin(settings.FRONTEND_URL, reverse("confirm-order", args=[order.slug])),
         }
 
     @staticmethod
@@ -106,6 +108,6 @@ class OrderCreator:
         parsed_dt = parse_datetime(input_dt) if isinstance(input_dt, str) else input_dt
 
         if parsed_dt is None:
-            raise OrderCreatorException('Input is not ISO formatted and could not be converted to datetime.')
+            raise OrderCreatorException("Input is not ISO formatted and could not be converted to datetime.")
 
         return make_aware(parsed_dt) if is_naive(parsed_dt) else parsed_dt

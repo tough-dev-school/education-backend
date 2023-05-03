@@ -10,26 +10,26 @@ class AppDashamail:
 
     def subscribe_user(self, list_id: str, email: str, first_name: str, last_name: str, tags: Optional[list[str]] = None) -> None:
         payload = {
-            'method': 'lists.add_member',
-            'update': True,
-            'list_id': list_id,
-            'email': email,
-            'merge_1': first_name,
-            'merge_2': last_name,
+            "method": "lists.add_member",
+            "update": True,
+            "list_id": list_id,
+            "email": email,
+            "merge_1": first_name,
+            "merge_2": last_name,
         }
 
         if tags:
-            payload['merge_3'] = ';'.join(tags)
+            payload["merge_3"] = ";".join(tags)
 
         response = self.http.post(
-            url='',
+            url="",
             payload=payload,
         )
 
-        if response['response']['msg']['err_code'] != 0:
-            raise DashamailSubscriptionFailed(f'{response}')
+        if response["response"]["msg"]["err_code"] != 0:
+            raise DashamailSubscriptionFailed(f"{response}")
 
 
 __all__ = [
-    'AppDashamail',
+    "AppDashamail",
 ]

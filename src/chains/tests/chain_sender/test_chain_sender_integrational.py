@@ -1,6 +1,5 @@
-from typing import Optional
-
 import pytest
+from typing import Optional
 
 from chains import tasks
 from chains.models import Message
@@ -8,13 +7,13 @@ from users.models import User
 
 pytestmark = [
     pytest.mark.django_db(transaction=True),
-    pytest.mark.freeze_time('2032-12-01 15:30'),
+    pytest.mark.freeze_time("2032-12-01 15:30"),
 ]
 
 
 @pytest.fixture
 def owl(mocker):
-    return mocker.patch('mailing.tasks.Owl')
+    return mocker.patch("mailing.tasks.Owl")
 
 
 @pytest.fixture
@@ -23,12 +22,12 @@ def assert_message_is_sent(owl, study):
         student = to or study.student
         owl.assert_any_call(
             to=student.email,
-            subject='',
+            subject="",
             disable_antispam=False,
             template_id=message.template_id,
             ctx={
-                'firstname': student.first_name,
-                'lastname': student.last_name,
+                "firstname": student.first_name,
+                "lastname": student.last_name,
             },
         )
 
@@ -57,7 +56,7 @@ def test(study, parent_message, message, assert_message_is_sent, freezer):
     tasks.send_active_chains()
     assert_message_is_sent(parent_message)  # root message is sent for the first time
 
-    freezer.move_to('2032-12-01 15:40')  # 10 minutes forward
+    freezer.move_to("2032-12-01 15:40")  # 10 minutes forward
     tasks.send_active_chains()
 
     assert_message_is_sent(message)  # second message is sent
@@ -69,7 +68,7 @@ def test_two_users(parent_message, message, assert_message_is_sent, freezer, stu
     assert_message_is_sent(parent_message, to=study.student, reset=False)
     assert_message_is_sent(parent_message, to=another_study.student)
 
-    freezer.move_to('2032-12-01 15:40')  # 10 minutes forward
+    freezer.move_to("2032-12-01 15:40")  # 10 minutes forward
     tasks.send_active_chains()
 
     assert_message_is_sent(message, to=study.student, reset=False)
@@ -84,11 +83,13 @@ def test_second_message_is_not_sent_when_it_is_too_early(study, parent_message, 
     assert_nothing_is_sent()  # nothing should be sent right after that, cuz time has not come
 
 
-def test_message_is_not_sent_when_study_model_disappeares_during_learning(study, parent_message, assert_message_is_sent, assert_nothing_is_sent, freezer, order):
+def test_message_is_not_sent_when_study_model_disappeares_during_learning(
+    study, parent_message, assert_message_is_sent, assert_nothing_is_sent, freezer, order
+):
     tasks.send_active_chains()
     assert_message_is_sent(parent_message)  # root message is sent for the first time
 
-    freezer.move_to('2032-12-01 15:40')  # 10 minutes forward
+    freezer.move_to("2032-12-01 15:40")  # 10 minutes forward
     order.unship()
     tasks.send_active_chains()
 

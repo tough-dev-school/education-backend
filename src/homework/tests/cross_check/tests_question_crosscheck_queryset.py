@@ -5,12 +5,12 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def another_question(mixer):
-    return mixer.blend('homework.Question')
+    return mixer.blend("homework.Question")
 
 
 @pytest.fixture
 def another_answer(mixer, question):
-    return mixer.blend('homework.Answer', question=question)
+    return mixer.blend("homework.Answer", question=question)
 
 
 def test_two_answers_by_default(question_dispatcher, answers):

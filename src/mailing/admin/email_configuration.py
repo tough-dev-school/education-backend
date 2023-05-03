@@ -6,7 +6,7 @@ class EmailConfigurationAdmin(StackedInline):
     model = EmailConfiguration
 
     fields = [
-        'backend',
-        'from_email',
-        'backend_options',
+        "backend",
+        "from_email",
+        "backend_options",
     ]

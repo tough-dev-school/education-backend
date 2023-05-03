@@ -8,27 +8,30 @@ def test_item(stripe):
 
     assert result == [
         {
-            'price_data': {
-                'currency': 'eur',
-                'product_data': {
-                    'name': 'Cutting and Sewing',
+            "price_data": {
+                "currency": "eur",
+                "product_data": {
+                    "name": "Cutting and Sewing",
                 },
-                'unit_amount': 143600,
+                "unit_amount": 143600,
             },
-            'quantity': 1,
+            "quantity": 1,
         },
     ]
 
 
-@pytest.mark.parametrize(('price', 'expected'), [
-    (70, 100),
-    (140, 200),
-    (95, 100),
-    (105, 200),
-])
+@pytest.mark.parametrize(
+    ("price", "expected"),
+    [
+        (70, 100),
+        (140, 200),
+        (95, 100),
+        (105, 200),
+    ],
+)
 def test_price(stripe, price, expected):
-    stripe.order.setattr_and_save('price', price)
+    stripe.order.setattr_and_save("price", price)
 
     result = stripe.get_items()
 
-    assert result[0]['price_data']['unit_amount'] == expected
+    assert result[0]["price_data"]["unit_amount"] == expected

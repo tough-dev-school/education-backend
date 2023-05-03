@@ -6,10 +6,10 @@ install-deps: deps
 
 deps:
 	pip install --upgrade pip pip-tools
-	pip-compile --output-file requirements.txt pyproject.toml
+	pip-compile --output-file requirements.txt --resolver=backtracking pyproject.toml
 
 dev-deps: deps
-	pip-compile --extra=dev --output-file dev-requirements.txt pyproject.toml
+	pip-compile --extra=dev --output-file dev-requirements.txt --resolver=backtracking pyproject.toml
 
 server:
 	cd src && ./manage.py migrate && ./manage.py runserver

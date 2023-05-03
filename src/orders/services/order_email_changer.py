@@ -26,6 +26,6 @@ class OrderEmailChanger:
 
     def get_user(self) -> User:
         user: User = self.order.user
-        user_creator = UserCreator(email=self.email, name=f'{user.first_name} {user.last_name}')
+        user_creator = UserCreator(email=self.email, name=f"{user.first_name} {user.last_name}")
 
         return user_creator()

@@ -5,22 +5,22 @@ from homework.models import Answer
 
 
 class AnswerFilterSet(filters.FilterSet):
-    question = filters.UUIDFilter(field_name='question__slug')
-    author = filters.UUIDFilter(field_name='author__uuid')
+    question = filters.UUIDFilter(field_name="question__slug")
+    author = filters.UUIDFilter(field_name="author__uuid")
 
     class Meta:
         model = Answer
         fields = [
-            'question',
-            'author',
+            "question",
+            "author",
         ]
 
 
 class AnswerCommentFilterSet(filters.FilterSet):
-    answer = UUIDInFilter(field_name='slug', required=True)
+    answer = UUIDInFilter(field_name="slug", required=True)
 
     class Meta:
         model = Answer
         fields = [
-            'answer',
+            "answer",
         ]

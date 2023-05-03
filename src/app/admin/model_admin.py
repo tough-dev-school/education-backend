@@ -16,8 +16,8 @@ class TabularInline(AppAdminMixin, admin.TabularInline):
 
 
 __all__ = [
-    'admin',
-    'ModelAdmin',
-    'StackedInline',
-    'TabularInline',
+    "admin",
+    "ModelAdmin",
+    "StackedInline",
+    "TabularInline",
 ]

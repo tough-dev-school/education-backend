@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 
-from chains.models import Chain, Message, Progress
+from chains.models import Chain
+from chains.models import Message
+from chains.models import Progress
 from studying.models import Study
 
 
@@ -35,4 +37,5 @@ class ChainSender:
     @staticmethod
     def send(message: Message, study: Study) -> None:
         from chains.services.message_sender import MessageSender
+
         MessageSender(message=message, study=study)()

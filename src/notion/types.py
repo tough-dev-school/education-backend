@@ -18,22 +18,22 @@ class BlockValue(TypedDict, total=False):
     last_edited_time: int
     properties: Properties
     type: Literal[
-        'page',
-        'text',
-        'bookmark',
-        'callout',
-        'code',
-        'column',
-        'column_list',
-        'decorator',
-        'equation',
-        'header',
-        'image',
-        'divider',
-        'sub_header',
-        'sub_sub_header',
-        'bulleted_list',
-        'numbered_list',
+        "page",
+        "text",
+        "bookmark",
+        "callout",
+        "code",
+        "column",
+        "column_list",
+        "decorator",
+        "equation",
+        "header",
+        "image",
+        "divider",
+        "sub_header",
+        "sub_sub_header",
+        "bulleted_list",
+        "numbered_list",
     ]
 
 
@@ -43,7 +43,7 @@ class BlockData(TypedDict, total=False):
 
 
 __all__ = [
-    'BlockId',
-    'BlockData',
-    'TextProperty',
+    "BlockId",
+    "BlockData",
+    "TextProperty",
 ]

@@ -7,17 +7,17 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def ship_record(mocker):
-    return mocker.patch('studying.shipment.RecordShipment.ship')
+    return mocker.patch("studying.shipment.RecordShipment.ship")
 
 
 @pytest.fixture
 def ship_course(mocker):
-    return mocker.patch('studying.shipment.CourseShipment.ship')
+    return mocker.patch("studying.shipment.CourseShipment.ship")
 
 
 @pytest.fixture
 def order(mixer):
-    return mixer.blend('orders.Order')
+    return mixer.blend("orders.Order")
 
 
 def test_record(record, ship_record, user, order):
@@ -34,4 +34,4 @@ def test_course(course, ship_course, user, order):
 
 def test_shipping_stuff_without_registered_shipping_algorithm(user, order):
     with pytest.raises(factory.ShipmentAlgorithmNotFound):
-        factory.ship({'any rand': 'om stuff'}, to=user, order=order)
+        factory.ship({"any rand": "om stuff"}, to=user, order=order)

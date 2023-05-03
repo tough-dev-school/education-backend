@@ -3,7 +3,7 @@ name = "education-backend"
 version = "2022.10.31"
 requires-python = ">=3.10"
 dependencies = [
-    "Django<3.3",
+    "Django",
     "django-behaviors",
     "django-cors-headers",
     "django-environ",
@@ -11,7 +11,6 @@ dependencies = [
     "django-split-settings",
     "django-tree-queries",
     "django-cachalot",
-    "django_redis",
     "django-prettyjson",
     "whitenoise",
     "psycopg2-binary",
@@ -19,8 +18,9 @@ dependencies = [
     "retry",
     "bcrypt",
     "simplejson",
+    "Pillow",
 
-    "djangorestframework>=3.11.0",
+    "djangorestframework",
     "django-storages",
     "drf-recaptcha",
     "drf-jwt",
@@ -32,7 +32,6 @@ dependencies = [
 
     "django-healthchecks",
 
-    "django-markdownx",
     "cmarkgfm",
     "bleach",
 
@@ -46,7 +45,7 @@ dependencies = [
     "celery",
     "redis",
 
-    "httpx",
+    "httpx[http2]",
     "stripe",
 ]
 
@@ -67,14 +66,16 @@ dev = [
     "pytest-httpx",
 
     "freezegun",
-    "mixer==7.0.6",
+    "mixer==7.2.2",
     "requests-mock",
+
+    "black",
 
     "jedi",
     "flake8-absolute-import",
+    "flake8-black",
     "flake8-bugbear",
     "flake8-cognitive-complexity",
-    "flake8-commas",
     "flake8-django",
     "flake8-eradicate",
     "flake8-fixme",
@@ -87,7 +88,6 @@ dev = [
     "flake8-printf-formatting",
     "flake8-pytest",
     "flake8-pytest-style",
-    "flake8-quotes",
     "flake8-simplify",
     "flake8-todo",
     "flake8-variables-names",
@@ -113,6 +113,7 @@ dev = [
 
 [tool.flake8]
 max-line-length = 160
+line-quotes = "\""
 ignore = [
     "B010",  # Do not call setattr(x, 'attr', val), instead use normal property access: x.attr = val
     "DJ01",  # Avoid using null=True on string-based fields such as CharField and TextField
@@ -127,7 +128,8 @@ ignore = [
     "SIM102",  # Use a single if-statement instead of nested if-statements
     "SIM113",  # Use enumerate instead of manually incrementing a counter
     "VNE003",  # Variable names that shadow builtins are not allowed
-    "W504",  # Line breaks should occur before the binary operator to keep all operators aligned
+    "W503",  # https://www.flake8rules.com/rules/W503.html
+    "E203", # whitespace before ':', disabled for black purposes https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html#slices
 ]
 exclude = [
     "static",
@@ -139,11 +141,19 @@ exclude = [
 
 
 [tool.isort]
-line_length = 119
-multi_line_output = 4
-known_standard_library = ["typing"]
-skip_glob = [
-    "*/migrations/*.py",
-    "node_modules",
-    "venv",
-]
+profile = "google"
+line_length = 160
+multi_line_output = 3
+use_parentheses = true
+extra_standard_library = ["pytest"]
+known_django = ["django", "restframework"]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "DJANGO", "FIRSTPARTY", "LOCALFOLDER"]
+
+
+[tool.black]
+ exclude = '''
+ /(
+   | migrations
+ )/
+ '''
+ line_length = 160

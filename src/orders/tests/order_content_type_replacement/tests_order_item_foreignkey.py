@@ -8,7 +8,7 @@ def test_empty_order(order, record):
 
     field = order.get_item_foreignkey(record)
 
-    assert field == 'record'
+    assert field == "record"
 
 
 def test_order_with_record(order, record):
@@ -16,7 +16,7 @@ def test_order_with_record(order, record):
 
     field = order.get_item_foreignkey(record)
 
-    assert field == 'record'
+    assert field == "record"
 
 
 def test_order_with_course(order, course):
@@ -24,4 +24,4 @@ def test_order_with_course(order, course):
 
     field = order.get_item_foreignkey(course)
 
-    assert field == 'course'
+    assert field == "course"

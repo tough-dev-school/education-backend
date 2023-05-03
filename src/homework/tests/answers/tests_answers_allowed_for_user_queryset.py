@@ -7,27 +7,27 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def root_answer(mixer, user):
-    return mixer.blend('homework.Answer', author=user)
+    return mixer.blend("homework.Answer", author=user)
 
 
 @pytest.fixture
 def answer_one(mixer, user):
-    return mixer.blend('homework.Answer', author=user)
+    return mixer.blend("homework.Answer", author=user)
 
 
 @pytest.fixture
 def answer_two(mixer, user):
-    return mixer.blend('homework.Answer', author=user)
+    return mixer.blend("homework.Answer", author=user)
 
 
 @pytest.fixture
 def child_of_answer_two(mixer, answer_two):
-    return mixer.blend('homework.Answer', parent=answer_two)
+    return mixer.blend("homework.Answer", parent=answer_two)
 
 
 @pytest.fixture
 def answer_access_log_entry(mixer, user, answer_one):
-    return mixer.blend('homework.AnswerAccessLogEntry', answer=answer_one, user=user)
+    return mixer.blend("homework.AnswerAccessLogEntry", answer=answer_one, user=user)
 
 
 def answers(user):
@@ -49,12 +49,12 @@ def test_other_authors_are_excluded(answer_one, another_user, user):
 def test_other_answers_included_for_user_with_see_all_answers_permissions(answer_one, user, another_user):
     answer_one.author = another_user
     answer_one.save()
-    user.add_perm('homework.answer.see_all_answers')
+    user.add_perm("homework.answer.see_all_answers")
 
     assert answer_one in answers(user)
 
 
-@pytest.mark.usefixtures('answer_access_log_entry')
+@pytest.mark.usefixtures("answer_access_log_entry")
 def test_other_authors_are_included_if_seen(answer_one, another_user, user):
     answer_one.author = another_user
     answer_one.save()
@@ -62,9 +62,9 @@ def test_other_authors_are_included_if_seen(answer_one, another_user, user):
     assert answer_one in answers(user)
 
 
-@pytest.mark.usefixtures('answer_access_log_entry')
+@pytest.mark.usefixtures("answer_access_log_entry")
 def test_no_weird_orm_quirks_on_answers_accessed_by_multiple_users(mixer, answer_one, another_user, user):
-    mixer.cycle(5).blend('homework.AnswerAccessLogEntry', answer=answer_one)
+    mixer.cycle(5).blend("homework.AnswerAccessLogEntry", answer=answer_one)
 
     answer_one.author = another_user
     answer_one.save()

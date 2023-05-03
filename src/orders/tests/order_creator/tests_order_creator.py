@@ -27,7 +27,7 @@ def test_course(create, user, course):
 
 
 def test_free_course(create, user, course):
-    course.setattr_and_save('price', 0)
+    course.setattr_and_save("price", 0)
 
     order = create(user=user, item=course)
 
@@ -56,7 +56,7 @@ def test_course_manual(create, user, course):
     assert order.item == course
 
 
-@pytest.mark.parametrize('price', [0, 200500])
+@pytest.mark.parametrize("price", [0, 200500])
 def test_forced_price(create, user, course, price):
     order = create(user=user, item=course, price=price)
 

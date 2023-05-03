@@ -1,10 +1,11 @@
 from dj_rest_auth import views as dj_rest_auth_views
-from django.conf import settings
-from django.shortcuts import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_jwt import views as jwt
+
+from django.conf import settings
+from django.shortcuts import get_object_or_404
 
 from a12n.api.serializers import PasswordResetSerializer
 from a12n.api.throttling import AuthAnonRateThrottle
@@ -35,13 +36,13 @@ class RequestPasswordLessToken(AnonymousAPIView):
                 to=user.email,
                 template_id=settings.PASSWORDLESS_TOKEN_TEMPLATE_ID,
                 ctx={
-                    'name': str(user),
-                    'action_url': passwordless_auth_token.get_absolute_url(),
+                    "name": str(user),
+                    "action_url": passwordless_auth_token.get_absolute_url(),
                 },
                 disable_antispam=True,
             )
 
-        return Response({'ok': True})
+        return Response({"ok": True})
 
 
 class ObtainJSONWebTokenViaPasswordlessToken(AnonymousAPIView):
@@ -52,9 +53,11 @@ class ObtainJSONWebTokenViaPasswordlessToken(AnonymousAPIView):
 
         passwordless_auth_token.mark_as_used()
 
-        return Response({
-            'token': get_jwt(passwordless_auth_token.user),
-        })
+        return Response(
+            {
+                "token": get_jwt(passwordless_auth_token.user),
+            }
+        )
 
 
 class ObtainJSONWebTokenViaUserId(APIView):
@@ -63,9 +66,11 @@ class ObtainJSONWebTokenViaUserId(APIView):
     def get(self, request, user_id):
         user = get_object_or_404(User, pk=user_id)
 
-        return Response({
-            'token': get_jwt(user),
-        })
+        return Response(
+            {
+                "token": get_jwt(user),
+            }
+        )
 
 
 class RequestPasswordResetView(dj_rest_auth_views.PasswordResetView):

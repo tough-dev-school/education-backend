@@ -1,6 +1,7 @@
 import pytest
 
-from homework.services import AnswerCrossCheckDispatcher, QuestionCrossCheckDispatcher
+from homework.services import AnswerCrossCheckDispatcher
+from homework.services import QuestionCrossCheckDispatcher
 
 pytestmark = [pytest.mark.django_db]
 
@@ -17,12 +18,12 @@ def question_dispatcher(question):
 
 @pytest.fixture
 def question(mixer):
-    return mixer.blend('homework.Question')
+    return mixer.blend("homework.Question")
 
 
 @pytest.fixture(autouse=True)
 def answers(mixer, question, user, another_user):
     return [
-        mixer.blend('homework.Answer', question=question, author=user, parent=None),
-        mixer.blend('homework.Answer', question=question, author=another_user, parent=None),
+        mixer.blend("homework.Answer", question=question, author=user, parent=None),
+        mixer.blend("homework.Answer", question=question, author=another_user, parent=None),
     ]

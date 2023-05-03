@@ -7,14 +7,14 @@ from products.models.base import Shippable
 
 
 class Bundle(Shippable):
-    records = models.ManyToManyField('products.Record')
-    courses = models.ManyToManyField('products.Course')
+    records = models.ManyToManyField("products.Record")
+    courses = models.ManyToManyField("products.Course")
 
     class Meta:
-        ordering = ['-id']
-        verbose_name = _('Bundle')
-        verbose_name_plural = _('Bundles')
-        db_table = 'courses_bundle'
+        ordering = ["-id"]
+        verbose_name = _("Bundle")
+        verbose_name_plural = _("Bundles")
+        db_table = "courses_bundle"
 
     def iterate_bundled_items(self) -> Generator[Shippable, None, None]:
         yield from self.records.iterator()

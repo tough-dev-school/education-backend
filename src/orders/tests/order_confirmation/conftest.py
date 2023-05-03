@@ -6,9 +6,9 @@ pytestmark = [pytest.mark.django_db]
 @pytest.fixture
 def course(mixer):
     return mixer.blend(
-        'products.Course',
+        "products.Course",
         price=0,
-        confirmation_success_url='https://well.done',
+        confirmation_success_url="https://well.done",
     )
 
 
@@ -19,4 +19,4 @@ def order(factory, course):
 
 @pytest.fixture(autouse=True)
 def ship(mocker):
-    return mocker.patch('products.models.Course.ship')
+    return mocker.patch("products.models.Course.ship")

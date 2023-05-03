@@ -1,9 +1,10 @@
+from datetime import datetime
+from datetime import timezone
 import pytest
-from datetime import datetime, timezone
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.freeze_time('2032-12-01 15:30Z'),
+    pytest.mark.freeze_time("2032-12-01 15:30Z"),
 ]
 
 
@@ -24,7 +25,7 @@ def test_ships(order, course, user, ship):
 
 
 def test_not_ships_if_order_is_already_paid(order, ship):
-    order.setattr_and_save('paid', datetime(2032, 12, 1, 15, 30, tzinfo=timezone.utc))
+    order.setattr_and_save("paid", datetime(2032, 12, 1, 15, 30, tzinfo=timezone.utc))
 
     order.set_paid()
 
@@ -32,7 +33,7 @@ def test_not_ships_if_order_is_already_paid(order, ship):
 
 
 def test_not_ships_if_order_has_desired_shipment_date(order, ship):
-    order.setattr_and_save('desired_shipment_date', datetime(2039, 12, 12, 15, 30, tzinfo=timezone.utc))
+    order.setattr_and_save("desired_shipment_date", datetime(2039, 12, 12, 15, 30, tzinfo=timezone.utc))
 
     order.set_paid()
 
@@ -40,7 +41,7 @@ def test_not_ships_if_order_has_desired_shipment_date(order, ship):
 
 
 def test_orders_with_desired_shipment_date_do_not_have_shipment_date_set(order, ship):
-    order.setattr_and_save('desired_shipment_date', datetime(2039, 12, 12, 15, 30, tzinfo=timezone.utc))
+    order.setattr_and_save("desired_shipment_date", datetime(2039, 12, 12, 15, 30, tzinfo=timezone.utc))
 
     order.set_paid()
     order.refresh_from_db()
@@ -92,11 +93,11 @@ def test_unpaid_date_is_not_reset_when_order_is_not_paid(order):
     order.set_paid()
     order.refresh_from_db()
 
-    assert order.unpaid == datetime(2032, 12, 1, 15, 13, tzinfo=timezone.utc), 'unpaid has not been changed'
+    assert order.unpaid == datetime(2032, 12, 1, 15, 13, tzinfo=timezone.utc), "unpaid has not been changed"
 
 
 def test_empty_item_does_not_break_things(order, ship):
-    order.setattr_and_save('course', None)
+    order.setattr_and_save("course", None)
 
     order.set_paid()
 

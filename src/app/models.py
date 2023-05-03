@@ -1,18 +1,19 @@
+import contextlib
+from copy import copy
+from functools import reduce
+import operator
 from typing import Optional
 
-import contextlib
-import operator
 from behaviors.behaviors import Timestamped  # type: ignore
-from copy import copy
+
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.functional import cached_property
-from functools import reduce
 
 __all__ = [
-    'models',
-    'DefaultModel',
-    'TimestampedModel',
+    "models",
+    "DefaultModel",
+    "TimestampedModel",
 ]
 
 
@@ -50,10 +51,12 @@ class DefaultModel(models.Model):
     def copy(self, **kwargs):
         """Creates new object from current."""
         instance = copy(self)
-        kwargs.update({
-            'id': None,
-            'pk': None,
-        })
+        kwargs.update(
+            {
+                "id": None,
+                "pk": None,
+            }
+        )
         instance.update_from_kwargs(**kwargs)
         return instance
 
@@ -62,7 +65,7 @@ class DefaultModel(models.Model):
         """
         Get a unique within the app model label
         """
-        return cls._meta.label_lower.split('.')[-1]
+        return cls._meta.label_lower.split(".")[-1]
 
     @classmethod
     def get_foreignkey(cls, Model) -> Optional[str]:
@@ -80,14 +83,10 @@ class DefaultModel(models.Model):
                 del self.__dict__[property_name]
 
     def _get_cached_property_names(self) -> list[str]:
-        return [
-            func_name
-            for func_name in dir(self.__class__)
-            if type(getattr(self.__class__, func_name)) is cached_property
-        ]
+        return [func_name for func_name in dir(self.__class__) if type(getattr(self.__class__, func_name)) is cached_property]
 
     def __str__(self) -> str:
-        name = getattr(self, 'name', None)
+        name = getattr(self, "name", None)
         if name is not None:
             return str(name)
 
@@ -100,6 +99,7 @@ class TimestampedModel(DefaultModel, Timestamped):
 
     Currently based on https://github.com/audiolion/django-behaviors
     """
+
     class Meta:
         abstract = True
 
@@ -110,14 +110,14 @@ def only_one_or_zero_is_set(*fields: str) -> models.Q:
     for field in fields:
         constraint = models.Q(
             **{
-                f'{field}__isnull': False,
-                **{f'{empty_field}__isnull': True for empty_field in fields if empty_field != field},
+                f"{field}__isnull": False,
+                **{f"{empty_field}__isnull": True for empty_field in fields if empty_field != field},
             },
         )
         constraints.append(constraint)
 
     all_fields_can_empty_constraint = models.Q(
-        **{f'{field}__isnull': True for field in fields},
+        **{f"{field}__isnull": True for field in fields},
     )
 
     constraints.append(all_fields_can_empty_constraint)

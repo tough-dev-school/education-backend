@@ -13,4 +13,4 @@ def get_jwt(user) -> str:
 
 
 def decode_jwt_without_validation(token: str) -> dict:
-    return jwt.decode(token, options={'verify_signature': False}, algorithms=['HS256'])
+    return jwt.decode(token, options={"verify_signature": False}, algorithms=["HS256"])

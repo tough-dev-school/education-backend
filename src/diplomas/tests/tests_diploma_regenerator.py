@@ -1,8 +1,10 @@
 import pytest
 
 from diplomas import tasks
-from diplomas.models import Diploma, Languages
-from diplomas.services import DiplomaGenerator, DiplomaRegenerator
+from diplomas.models import Diploma
+from diplomas.models import Languages
+from diplomas.services import DiplomaGenerator
+from diplomas.services import DiplomaRegenerator
 
 pytestmark = [
     pytest.mark.django_db,
@@ -11,15 +13,15 @@ pytestmark = [
 
 @pytest.fixture(autouse=True)
 def _mock_diploma_generator_fetch_image(mocker, factory):
-    image = factory.uploaded_image()
-    mocker.patch('diplomas.services.diploma_regenerator.DiplomaGenerator.fetch_image', return_value=image)
+    image = factory.image()
+    mocker.patch("diplomas.services.diploma_regenerator.DiplomaGenerator.fetch_image", return_value=image)
 
 
 @pytest.fixture(autouse=True)
 def template_en(mixer, course):
     return mixer.blend(
-        'diplomas.DiplomaTemplate',
-        slug='test-template',
+        "diplomas.DiplomaTemplate",
+        slug="test-template",
         course=course,
         language=Languages.EN,
         homework_accepted=False,
@@ -28,28 +30,28 @@ def template_en(mixer, course):
 
 @pytest.fixture
 def diploma_ru(mixer, order):
-    return mixer.blend('diplomas.Diploma', study=order.study, language=Languages.RU)
+    return mixer.blend("diplomas.Diploma", study=order.study, language=Languages.RU)
 
 
 @pytest.fixture
 def diploma_en(mixer, order):
-    return mixer.blend('diplomas.Diploma', study=order.study, language=Languages.EN)
+    return mixer.blend("diplomas.Diploma", study=order.study, language=Languages.EN)
 
 
 @pytest.fixture
 def mock_diploma_generator(mocker):
-    return mocker.patch('diplomas.services.diploma_generator.DiplomaGenerator.__call__', autospec=True)
+    return mocker.patch("diplomas.services.diploma_generator.DiplomaGenerator.__call__", autospec=True)
 
 
 @pytest.fixture
 def mock_diploma_regenerator(mocker):
-    return mocker.patch('diplomas.services.diploma_regenerator.DiplomaRegenerator.__call__', autospec=True)
+    return mocker.patch("diplomas.services.diploma_regenerator.DiplomaRegenerator.__call__", autospec=True)
 
 
 @pytest.fixture
 def student_without_english_name(student):
-    student.first_name_en = ''
-    student.last_name_en = ''
+    student.first_name_en = ""
+    student.last_name_en = ""
     student.save()
     return student
 
@@ -77,7 +79,7 @@ def test_email_is_sent(send_mail, student, diploma_ru):
 
     send_mail.assert_called_once_with(
         to=student.email,
-        template_id='diplomas_regenerated',
+        template_id="diplomas_regenerated",
         disable_antispam=True,
     )
 
@@ -90,14 +92,17 @@ def test_task_call_regenerator(student, course, order, diploma_ru, mock_diploma_
     assert called_service.student == student
 
 
-@pytest.mark.usefixtures('diploma_ru', 'diploma_en')
+@pytest.mark.usefixtures("diploma_ru", "diploma_en")
 def test_diploma_generator_service_is_called(student, course, mock_diploma_generator, mocker):
     DiplomaRegenerator(student)()
 
-    mock_diploma_generator.assert_has_calls((
-        mocker.call(DiplomaGenerator(course=course, student=student, language='EN')),
-        mocker.call(DiplomaGenerator(course=course, student=student, language='RU')),
-    ), any_order=True)
+    mock_diploma_generator.assert_has_calls(
+        (
+            mocker.call(DiplomaGenerator(course=course, student=student, language="EN")),
+            mocker.call(DiplomaGenerator(course=course, student=student, language="RU")),
+        ),
+        any_order=True,
+    )
 
 
 def test_no_diplomas_are_generated_when_there_are_no_diplomas_for_user(another_user, send_mail):
@@ -107,7 +112,7 @@ def test_no_diplomas_are_generated_when_there_are_no_diplomas_for_user(another_u
     send_mail.assert_not_called()
 
 
-@pytest.mark.usefixtures('diploma_ru')
+@pytest.mark.usefixtures("diploma_ru")
 def test_generate_new_diplomas_in_other_languages(student):
     DiplomaRegenerator(student)()
 
@@ -115,7 +120,7 @@ def test_generate_new_diplomas_in_other_languages(student):
     assert diplomas_en_language.exists() is True
 
 
-@pytest.mark.usefixtures('diploma_ru')
+@pytest.mark.usefixtures("diploma_ru")
 def test_do_not_generate_new_diplomas_in_other_languages_for_student_without_name_in_that_languages(student_without_english_name):
     DiplomaRegenerator(student_without_english_name)()
 
@@ -123,7 +128,7 @@ def test_do_not_generate_new_diplomas_in_other_languages_for_student_without_nam
     assert diplomas_en_language.exists() is False
 
 
-@pytest.mark.usefixtures('diploma_ru')
+@pytest.mark.usefixtures("diploma_ru")
 def test_do_not_generate_new_diplomas_in_other_languages_when_no_template_in_that_languages(student, template_en):
     template_en.delete()
 
@@ -133,7 +138,7 @@ def test_do_not_generate_new_diplomas_in_other_languages_when_no_template_in_tha
     assert diplomas_en_language.exists() is False
 
 
-@pytest.mark.usefixtures('diploma_ru')
+@pytest.mark.usefixtures("diploma_ru")
 def test_do_not_update_diplomas_in_languages_for_student_without_name_in_that_languages(student_without_english_name, diploma_en):
     DiplomaRegenerator(student_without_english_name)()
 
@@ -141,7 +146,7 @@ def test_do_not_update_diplomas_in_languages_for_student_without_name_in_that_la
     assert diploma_en.modified is None
 
 
-@pytest.mark.usefixtures('diploma_ru')
+@pytest.mark.usefixtures("diploma_ru")
 def test_do_not_update_diplomas_in_languages_when_no_template_in_that_languages(student, template_en, diploma_en):
     template_en.delete()
 
@@ -151,9 +156,9 @@ def test_do_not_update_diplomas_in_languages_when_no_template_in_that_languages(
     assert diploma_en.modified is None
 
 
-@pytest.mark.usefixtures('diploma_ru', 'diploma_en')
+@pytest.mark.usefixtures("diploma_ru", "diploma_en")
 def test_do_not_generate_new_diplomas_for_study_without_at_least_one_diploma(factory, mixer, student, send_mail):
-    order = factory.order(item=mixer.blend('products.Course'), user=student, is_paid=True)  # study for order created
+    order = factory.order(item=mixer.blend("products.Course"), user=student, is_paid=True)  # study for order created
 
     DiplomaRegenerator(student)()
 

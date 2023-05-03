@@ -1,7 +1,8 @@
 from typing import Any, Protocol, Sequence
 
-from django.db.models import QuerySet
 from rest_framework.request import Request
+
+from django.db.models import QuerySet
 
 
 class BaseListAPIView(Protocol):
@@ -22,9 +23,9 @@ class DisablePaginationWithQueryParamMixin:
 
     @property
     def pagination_disabled(self: BaseListAPIView) -> bool:
-        return str(self.request.query_params.get('disable_pagination', False)).lower() in [
-            'true',
-            '1',
+        return str(self.request.query_params.get("disable_pagination", False)).lower() in [
+            "true",
+            "1",
         ]
 
     def paginate_queryset(self: BaseListAPIView, queryset: QuerySet | Sequence[Any]) -> None | Sequence[Any]:

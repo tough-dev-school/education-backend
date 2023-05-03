@@ -2,15 +2,16 @@ import httpx
 
 from app.celery import celery
 from orders.models import Order
-from tinkoff.dolyame import Dolyame, DolyameRequestException
+from tinkoff.dolyame import Dolyame
+from tinkoff.dolyame import DolyameRequestException
 
 
 @celery.task(
     acks_late=True,
     autoretry_for=[DolyameRequestException, httpx.HTTPError],
     retry_kwargs={
-        'max_retries': 10,
-        'countdown': 5,
+        "max_retries": 10,
+        "countdown": 5,
     },
 )
 def commit_dolyame_order(order_id: int, idempotency_key: str):
@@ -26,8 +27,8 @@ def commit_dolyame_order(order_id: int, idempotency_key: str):
     acks_late=True,
     autoretry_for=[DolyameRequestException, httpx.HTTPError],
     retry_kwargs={
-        'max_retries': 10,
-        'countdown': 5,
+        "max_retries": 10,
+        "countdown": 5,
     },
 )
 def refund_dolyame_order(order_id: int, idempotency_key: str):

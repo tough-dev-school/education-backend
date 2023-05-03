@@ -5,12 +5,12 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def course(mixer):
-    return mixer.blend('products.Course')
+    return mixer.blend("products.Course")
 
 
 @pytest.fixture
 def record(mixer):
-    return mixer.blend('products.Record')
+    return mixer.blend("products.Record")
 
 
 @pytest.fixture
@@ -23,7 +23,7 @@ def order(factory, bundle):
 
 @pytest.fixture
 def bundle(mixer, course, record):
-    bundle = mixer.blend('products.Bundle')
+    bundle = mixer.blend("products.Bundle")
     bundle.courses.add(course)
     bundle.records.add(record)
 
@@ -32,12 +32,12 @@ def bundle(mixer, course, record):
 
 @pytest.fixture
 def unship_course(mocker):
-    return mocker.patch('products.models.Course.unship')
+    return mocker.patch("products.models.Course.unship")
 
 
 @pytest.fixture
 def unship_record(mocker):
-    return mocker.patch('products.models.Record.unship')
+    return mocker.patch("products.models.Record.unship")
 
 
 def test_bundle_unshipment(bundle, order, unship_record, unship_course):

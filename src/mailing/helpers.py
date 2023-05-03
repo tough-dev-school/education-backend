@@ -21,5 +21,5 @@ def normalize_email_context(ctx: dict) -> dict:
 
 
 __all__ = [
-    'normalize_email_context',
+    "normalize_email_context",
 ]

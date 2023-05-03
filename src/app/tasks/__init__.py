@@ -3,7 +3,7 @@ from app.tasks.tg import send_happiness_message
 from app.tasks.zoomus import invite_to_zoomus
 
 __all__ = [
-    'invite_to_zoomus',
-    'send_happiness_message',
-    'subscribe_to_dashamail',
+    "invite_to_zoomus",
+    "send_happiness_message",
+    "subscribe_to_dashamail",
 ]

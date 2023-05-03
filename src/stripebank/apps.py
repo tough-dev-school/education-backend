@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class StripebankConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'stripebank'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "stripebank"

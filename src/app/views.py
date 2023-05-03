@@ -1,7 +1,8 @@
-from django.views.generic import RedirectView
 from rest_framework import permissions
 from rest_framework.request import Request
 from rest_framework.views import APIView
+
+from django.views.generic import RedirectView
 
 from users.models import User
 
@@ -20,4 +21,4 @@ class AuthenticatedAPIView(APIView):
 
 
 class HomePageView(RedirectView):
-    url = '/admin/'
+    url = "/admin/"

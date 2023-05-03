@@ -1,13 +1,15 @@
+from dataclasses import dataclass
 import hashlib
 import json
-from dataclasses import dataclass
+
 from django.conf import settings
 
-from tinkoff.exceptions import TinkoffPaymentNotificationInvalidToken, TinkoffPaymentNotificationNoTokenPassed
+from tinkoff.exceptions import TinkoffPaymentNotificationInvalidToken
+from tinkoff.exceptions import TinkoffPaymentNotificationNoTokenPassed
 
 PAYLOAD_KEYS_EXCLUDED_FROM_SIGNATURE_VALIDATION = [
-    'Token',
-    'Data',
+    "Token",
+    "Data",
 ]
 
 
@@ -26,7 +28,7 @@ class TinkoffNotificationsTokenValidator:
 
     def extract_token(self) -> str:
         try:
-            return self.payload['Token']
+            return self.payload["Token"]
         except KeyError:
             raise TinkoffPaymentNotificationNoTokenPassed(self.payload)
 
@@ -35,7 +37,7 @@ class TinkoffNotificationsTokenValidator:
         for key in PAYLOAD_KEYS_EXCLUDED_FROM_SIGNATURE_VALIDATION:
             data.pop(key, None)
 
-        data['Password'] = settings.TINKOFF_TERMINAL_PASSWORD
+        data["Password"] = settings.TINKOFF_TERMINAL_PASSWORD
         return data
 
     def validate_payload_for_token(self, payload: dict, token: str) -> bool:
@@ -45,8 +47,8 @@ class TinkoffNotificationsTokenValidator:
             if not isinstance(value, str):
                 value = json.dumps(value)
             values.append(value)
-        concatenated_values = ''.join(values)
+        concatenated_values = "".join(values)
 
-        hashed = hashlib.sha256(concatenated_values.encode('utf8'))
+        hashed = hashlib.sha256(concatenated_values.encode("utf8"))
         hexdigest = hashed.hexdigest()
         return hexdigest == token

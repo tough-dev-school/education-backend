@@ -2,7 +2,8 @@ from dataclasses import dataclass
 from functools import partial
 
 from chains import tasks
-from chains.models import Message, Progress
+from chains.models import Message
+from chains.models import Progress
 from mailing.tasks import send_mail
 from studying.models import Study
 
@@ -35,6 +36,6 @@ class MessageSender:
 
     def get_template_context(self) -> dict[str, str]:
         return {
-            'firstname': self.study.student.first_name,
-            'lastname': self.study.student.last_name,
+            "firstname": self.study.student.first_name,
+            "lastname": self.study.student.last_name,
         }

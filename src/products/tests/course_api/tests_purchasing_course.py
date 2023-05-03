@@ -1,5 +1,5 @@
-import pytest
 from decimal import Decimal
+import pytest
 
 from orders.models import Order
 
@@ -8,7 +8,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture(autouse=True)
 def subscribe(mocker):
-    return mocker.patch('users.services.user_creator.subscribe_user_to_dashamail')
+    return mocker.patch("users.services.user_creator.subscribe_user_to_dashamail")
 
 
 def get_order():
@@ -21,8 +21,8 @@ def test_order(call_purchase, course):
     placed = get_order()
 
     assert placed.item == course
-    assert placed.price == Decimal('1900.00')
-    assert not hasattr(placed, 'study')  # Study record is not created yet, because order is not paid
+    assert placed.price == Decimal("1900.00")
+    assert not hasattr(placed, "study")  # Study record is not created yet, because order is not paid
 
 
 def test_user(call_purchase):
@@ -30,21 +30,24 @@ def test_user(call_purchase):
 
     placed = get_order()
 
-    assert placed.user.first_name == 'Забой'
-    assert placed.user.last_name == 'Шахтёров'
-    assert placed.user.email == 'zaboy@gmail.com'
+    assert placed.user.first_name == "Забой"
+    assert placed.user.last_name == "Шахтёров"
+    assert placed.user.email == "zaboy@gmail.com"
 
 
-@pytest.mark.parametrize(('wants_to_subscribe', 'should_be_subscribed'), [
-    ('True', True),
-    ('true', True),
-    ('1', True),
-    (1, True),
-    ('False', False),
-    ('false', False),
-    ('0', False),
-    (0, False),
-])
+@pytest.mark.parametrize(
+    ("wants_to_subscribe", "should_be_subscribed"),
+    [
+        ("True", True),
+        ("true", True),
+        ("1", True),
+        (1, True),
+        ("False", False),
+        ("false", False),
+        ("0", False),
+        (0, False),
+    ],
+)
 def test_user_auto_subscription(call_purchase, wants_to_subscribe, should_be_subscribed, subscribe):
     call_purchase(subscribe=wants_to_subscribe)
 
@@ -59,7 +62,7 @@ def test_subscription_tags(call_purchase, subscribe):
 
     placed = get_order()
 
-    subscribe.assert_called_once_with(user=placed.user, tags=['ruloning-oboev'])
+    subscribe.assert_called_once_with(user=placed.user, tags=["ruloning-oboev"])
 
 
 def test_by_default_user_is_not_subscribed(call_purchase):
@@ -74,15 +77,15 @@ def test_redirect(call_purchase):
     response = call_purchase(as_response=True)
 
     assert response.status_code == 302
-    assert response['Location'] == 'https://bank.test/pay/'
+    assert response["Location"] == "https://bank.test/pay/"
 
 
 def test_custom_success_url(call_purchase, bank):
-    call_purchase(success_url='https://ok.true/yes')
-    assert bank.call_args[1]['success_url'] == 'https://ok.true/yes'
+    call_purchase(success_url="https://ok.true/yes")
+    assert bank.call_args[1]["success_url"] == "https://ok.true/yes"
 
 
 def test_invalid(client):
-    response = client.post('/api/v2/courses/ruloning-oboev/purchase/', {})
+    response = client.post("/api/v2/courses/ruloning-oboev/purchase/", {})
 
     assert response.status_code == 400

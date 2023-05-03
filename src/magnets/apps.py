@@ -3,6 +3,6 @@ from django.utils.translation import gettext_lazy as _
 
 
 class MagnetsConfig(AppConfig):
-    name = 'magnets'
+    name = "magnets"
 
-    verbose_name = _('Magnets')
+    verbose_name = _("Magnets")

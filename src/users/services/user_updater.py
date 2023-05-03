@@ -8,14 +8,14 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'first_name',
-            'last_name',
-            'first_name_en',
-            'last_name_en',
-            'gender',
-            'github_username',
-            'linkedin_username',
-            'telegram_username',
+            "first_name",
+            "last_name",
+            "first_name_en",
+            "last_name_en",
+            "gender",
+            "github_username",
+            "linkedin_username",
+            "telegram_username",
         ]
 
 
@@ -43,7 +43,7 @@ class UserUpdater:
         return set(serializer.validated_data.keys())
 
     def after_update(self, updated_fields: set[str]) -> None:
-        fields_used_in_diplomas = {'first_name', 'last_name', 'first_name_en', 'last_name_en', 'gender'}
+        fields_used_in_diplomas = {"first_name", "last_name", "first_name_en", "last_name_en", "gender"}
 
         if fields_used_in_diplomas.intersection(updated_fields):
             self.regenerate_diplomas()
