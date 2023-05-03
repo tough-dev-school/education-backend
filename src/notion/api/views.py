@@ -32,7 +32,7 @@ class NotionMaterialView(AuthenticatedAPIView):
     def get_material(self) -> Material | None:
         queryset = self.get_queryset()
 
-        return queryset.get_by_page_id_or_slug(self.page_id)
+        return queryset.get_by_page_id_or_slug(self.page_id)  # type: ignore
 
     def get_queryset(self) -> QuerySet[Material]:
         if self.request.user.is_superuser or self.request.user.has_perm("notion.see_all_materials"):

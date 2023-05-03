@@ -1,17 +1,17 @@
-from urllib.parse import urljoin
 import contextlib
+from typing import Optional
+from urllib.parse import urljoin
 import uuid
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.db.models import QuerySet
 from django.db.models import UniqueConstraint
 from django.utils.translation import gettext_lazy as _
-from django.core.exceptions import ValidationError
 
 from app.models import models
 from app.models import TimestampedModel
-from typing import Optional
 
 
 class MaterialQuerySet(QuerySet):
