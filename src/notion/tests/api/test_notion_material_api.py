@@ -3,6 +3,7 @@ import pytest
 pytestmark = [
     pytest.mark.django_db,
     pytest.mark.usefixtures("mock_notion_response"),
+    pytest.mark.usefixtures("_disable_notion_cache"),
 ]
 
 

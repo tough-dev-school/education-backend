@@ -62,3 +62,8 @@ def page() -> NotionPage:
 @pytest.fixture
 def mock_notion_response(mocker, page: NotionPage):
     return mocker.patch("notion.client.NotionClient.fetch_page_recursively", return_value=page)
+
+
+@pytest.fixture
+def _disable_notion_cache(mocker):
+    mocker.patch("notion.cache.cache_disabled", return_value=True)
