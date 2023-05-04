@@ -378,7 +378,7 @@ pytz==2023.3
     #   djangorestframework
 redis==4.5.4
     # via education-backend (pyproject.toml)
-requests==2.29.0
+requests==2.30.0
     # via
     #   coreapi
     #   django-anymail
