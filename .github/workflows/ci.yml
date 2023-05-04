@@ -179,6 +179,19 @@ jobs:
     if: github.ref == 'refs/heads/master' && github.repository_owner == 'tough-dev-school'
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Draft Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: production
+          finalize: false
+
       - name: Read image identifiers
         id: image
         uses: ASzc/change-string-case-action@v5
@@ -209,3 +222,13 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
             docker service update app_scheduler --detach --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:${{ github.sha }} --with-registry-auth
+
+      - name: Finalize Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: production
+          finalize: true
