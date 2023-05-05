@@ -44,6 +44,7 @@ class NotionMaterialAdmin(ModelAdmin):
         "title",
         "course",
         "page_id",
+        "is_home_page",
     ]
     list_display_links = list_display
     list_filter = ("course",)
