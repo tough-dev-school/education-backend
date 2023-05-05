@@ -3,6 +3,7 @@ from typing import Optional
 from urllib.parse import urljoin
 import uuid
 
+from django.apps import apps
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db.models import Q
@@ -13,11 +14,21 @@ from django.utils.translation import gettext_lazy as _
 from app.models import models
 from app.models import TimestampedModel
 from notion.helpers import uuid_to_id
+from users.models import User
 
 
 class MaterialQuerySet(QuerySet):
     def active(self) -> QuerySet["Material"]:
         return self.filter(active=True)
+
+    def for_student(self, student: User) -> QuerySet["Material"]:
+        available_courses = apps.get_model("studying.Study").objects.filter(student=student).values("course")
+
+        materials_from_available_courses = Material.objects.filter(active=True, course__in=available_courses)
+
+        return Material.objects.filter(  # add materials with same page_ids but belonging to another courses
+            page_id__in=materials_from_available_courses.values("page_id"),
+        )
 
     def get_by_page_id_or_slug(self, page_id_or_slug: str) -> Optional["Material"]:
         with contextlib.suppress(ValidationError):

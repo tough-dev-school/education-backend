@@ -10,7 +10,6 @@ from notion.api.throttling import NotionThrottle
 from notion.cache import get_cached_page
 from notion.helpers import uuid_to_id
 from notion.models import Material
-from studying.models import Study
 
 
 class NotionMaterialView(AuthenticatedAPIView):
@@ -38,8 +37,7 @@ class NotionMaterialView(AuthenticatedAPIView):
         if self.request.user.is_superuser or self.request.user.has_perm("notion.see_all_materials"):
             return Material.objects.all()
 
-        available_courses = Study.objects.filter(student=self.request.user).values("course")
-        return Material.objects.filter(active=True, course__in=available_courses)
+        return Material.objects.for_student(self.request.user)
 
     @property
     def page_id(self) -> str:
