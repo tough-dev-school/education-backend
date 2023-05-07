@@ -14,9 +14,6 @@ if not env("DEBUG") and SENTRY_DSN:
             "/api/v2/healthchecks/",
             "chains.tasks.send_chain_messages",
             "chains.tasks.send_active_chains",
-            "triggers.tasks.run_started_purchase_trigger",
-            "triggers.tasks.check_for_started_purchase_triggers",
-            "triggers.tasks.check_for_record_feedback_triggers",
             "/admin/jsi18n/",
         ):
             return None

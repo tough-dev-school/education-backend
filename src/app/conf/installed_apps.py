@@ -11,7 +11,6 @@ INSTALLED_APPS = [
     "studying",
     "tinkoff",
     "stripebank",
-    "triggers",
     "users",
     "chains",
     "mailing",

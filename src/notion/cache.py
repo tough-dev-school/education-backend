@@ -31,8 +31,9 @@ def cache_disabled() -> bool:
 
 def get_cached_page(page_id: str) -> NotionPage:
     if cache_disabled():
-        invalidate_cache(page_id)
-        return fetch_page(page_id)()
+        page = fetch_page(page_id)()
+        cache.set(cache_key(page_id), page, TIMEOUT)
+        return page
 
     return cache.get_or_set(cache_key(page_id), fetch_page(page_id), TIMEOUT)
 

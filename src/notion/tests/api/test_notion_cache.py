@@ -89,9 +89,9 @@ def test_staff_request_returns_uncached_page(api, as_staff, httpx_mock: HTTPXMoc
     assert len(httpx_mock.get_requests()) == 2
 
 
-def test_staff_request_invalidates_cache(api, as_staff, httpx_mock: HTTPXMock):
+def test_staff_request_sets_cache(api, as_staff, httpx_mock: HTTPXMock):
     api.get("/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/")
     as_staff.get("/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/")
-    api.get("/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/")
+    api.get("/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/")  # should not be called
 
-    assert len(httpx_mock.get_requests()) == 3
+    assert len(httpx_mock.get_requests()) == 2
