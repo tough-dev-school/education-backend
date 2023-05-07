@@ -46,7 +46,7 @@ class Owl:
             body="",
             to=[self.to],
             connection=self.connection,
-            from_email=self.from_email,
+            from_email=self.configuration.from_email,
             template_id=self.template_id,
             merge_global_data=self.normalized_message_context,
         )
@@ -56,7 +56,7 @@ class Owl:
         return mail.get_connection(
             fail_silently=False,
             backend=self.backend_name,
-            **self.backend_options,
+            **self.configuration.backend_options,
         )
 
     @property
@@ -71,30 +71,23 @@ class Owl:
         return EmailLogEntry.objects.filter(email=self.to, template_id=self.template_id).exists()
 
     @cached_property
-    def configuration(self) -> EmailConfiguration | None:
+    def configuration(self) -> EmailConfiguration:
         """
         Configuration works only in production mode to avoid confusing the developer when settings custom email backend
         """
-        if not settings.DEBUG:
-            return get_configuration(recipient=self.to)
+        return get_configuration(recipient=self.to) or self.get_default_configuration()
 
     @cached_property
     def backend_name(self) -> str:
-        if self.configuration is None or self.configuration.backend == EmailConfiguration.BACKEND.UNSET:
+        if self.configuration.backend == EmailConfiguration.BACKEND.UNSET:
             return settings.EMAIL_BACKEND
 
         return self.configuration.backend
 
-    @cached_property
-    def backend_options(self) -> dict:
-        if self.configuration is not None:
-            return self.configuration.backend_options
-
-        return {}
-
-    @cached_property
-    def from_email(self) -> str:
-        if self.configuration is not None:
-            return self.configuration.from_email
-
-        return settings.DEFAULT_FROM_EMAIL
+    @staticmethod
+    def get_default_configuration() -> EmailConfiguration:
+        return EmailConfiguration(
+            backend=EmailConfiguration.BACKEND.UNSET,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            backend_options={},
+        )
