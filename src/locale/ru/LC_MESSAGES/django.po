@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-26 08:13+0300\n"
+"POT-Creation-Date: 2023-05-07 21:21+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -250,7 +250,7 @@ msgstr "Почтовые кампании"
 
 #: mailing/models/configuration.py:11
 msgid "Unset"
-msgstr ""
+msgstr "Дефолтный"
 
 #: mailing/models/configuration.py:12
 msgid "Postmark"
@@ -264,48 +264,56 @@ msgstr "Отправитель"
 msgid "E.g. Fedor Borshev &lt;fedor@borshev.com&gt;. MUST configure postmark!"
 msgstr ""
 
-#: mailing/models/configuration.py:21
+#: mailing/models/configuration.py:17
+msgid "Reply-to header"
+msgstr "Reply-to"
+
+#: mailing/models/configuration.py:17
+msgid "E.g. Fedor Borshev &lt;fedor@borshev.com&gt;"
+msgstr ""
+
+#: mailing/models/configuration.py:22
 msgid "Email configuration"
 msgstr "Способ отсылки"
 
-#: mailing/models/configuration.py:22
+#: mailing/models/configuration.py:23
 msgid "Email configurations"
 msgstr "Способы отсылки"
 
-#: notion/models.py:23
+#: notion/models.py:48
 msgid "Page title"
 msgstr "Заголовок страницы"
 
-#: notion/models.py:23
+#: notion/models.py:48
 msgid "Will be fetched automatically if empty"
 msgstr "Если не указать — попробуем скачать из ноушена"
 
-#: notion/models.py:25
+#: notion/models.py:50
 msgid "Notion page id"
 msgstr "ID страницы в ноушене"
 
-#: notion/models.py:25
+#: notion/models.py:50
 msgid "Paste it from notion address bar"
 msgstr "Скопируйте адрес из строки браузера"
 
-#: notion/models.py:26 orders/admin/promocodes/admin.py:12
+#: notion/models.py:51 orders/admin/promocodes/admin.py:12
 #: orders/admin/promocodes/admin.py:69 orders/models/promocode.py:52
 msgid "Active"
 msgstr "Включено"
 
-#: notion/models.py:27
+#: notion/models.py:52
 msgid "Is home page of the course"
 msgstr "Главная страница курса"
 
-#: notion/models.py:30
+#: notion/models.py:55
 msgid "Notion material"
 msgstr "Материал"
 
-#: notion/models.py:31
+#: notion/models.py:56
 msgid "Notion materials"
 msgstr "Материалы"
 
-#: notion/models.py:36
+#: notion/models.py:61
 msgid "May access materials from every course"
 msgstr "Видит страницы ноушена от всех курсов"
 

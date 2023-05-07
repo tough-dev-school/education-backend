@@ -47,6 +47,7 @@ class Owl:
             to=[self.to],
             connection=self.connection,
             from_email=self.configuration.from_email,
+            reply_to=[self.configuration.reply_to],
             template_id=self.template_id,
             merge_global_data=self.normalized_message_context,
         )
@@ -89,5 +90,6 @@ class Owl:
         return EmailConfiguration(
             backend=EmailConfiguration.BACKEND.UNSET,
             from_email=settings.DEFAULT_FROM_EMAIL,
+            reply_to=settings.DEFAULT_REPLY_TO,
             backend_options={},
         )
