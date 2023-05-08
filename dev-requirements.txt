@@ -125,7 +125,7 @@ django-debug-toolbar==4.0.0
     # via education-backend (pyproject.toml)
 django-environ==0.10.0
     # via education-backend (pyproject.toml)
-django-filter==22.1
+django-filter==23.2
     # via education-backend (pyproject.toml)
 django-healthchecks==1.5.0
     # via education-backend (pyproject.toml)
