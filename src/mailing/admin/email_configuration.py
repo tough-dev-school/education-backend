@@ -8,5 +8,6 @@ class EmailConfigurationAdmin(StackedInline):
     fields = [
         "backend",
         "from_email",
+        "reply_to",
         "backend_options",
     ]

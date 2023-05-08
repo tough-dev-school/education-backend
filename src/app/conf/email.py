@@ -8,6 +8,8 @@ DASHAMAIL_API_KEY = env("DASHAMAIL_API_KEY", default="")
 DASHAMAIL_LIST_ID = env("DASHAMAIL_LIST_ID", default="")
 
 DEFAULT_FROM_EMAIL = env("EMAIL_FROM", cast=str, default="")
+DEFAULT_REPLY_TO = env("REPLY_TO", cast=str, default=DEFAULT_FROM_EMAIL)
+
 ANYMAIL = {
     "POSTMARK_SERVER_TOKEN": env("POSTMARK_SERVER_TOKEN", cast=str, default=""),
     "DEBUG_API_REQUESTS": env("DEBUG"),
