@@ -376,7 +376,7 @@ pytz==2023.3
     # via
     #   celery
     #   djangorestframework
-redis==4.5.4
+redis==4.5.5
     # via education-backend (pyproject.toml)
 requests==2.30.0
     # via
