@@ -151,7 +151,7 @@ py==1.11.0
     # via retry
 pycparser==2.21
     # via cffi
-pyjwt[crypto]==2.6.0
+pyjwt[crypto]==2.7.0
     # via
     #   drf-jwt
     #   education-backend (pyproject.toml)
