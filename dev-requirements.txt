@@ -461,7 +461,7 @@ types-s3transfer==0.6.1
     # via boto3-stubs
 types-simplejson==3.19.0.1
     # via education-backend (pyproject.toml)
-types-stripe==3.5.2.9
+types-stripe==3.5.2.10
     # via education-backend (pyproject.toml)
 types-urllib3==1.26.25.12
     # via types-requests
