@@ -125,7 +125,7 @@ django-debug-toolbar==4.0.0
     # via education-backend (pyproject.toml)
 django-environ==0.10.0
     # via education-backend (pyproject.toml)
-django-filter==22.1
+django-filter==23.2
     # via education-backend (pyproject.toml)
 django-healthchecks==1.5.0
     # via education-backend (pyproject.toml)
@@ -304,7 +304,7 @@ pickleshare==0.7.5
     # via ipython
 pillow==9.5.0
     # via education-backend (pyproject.toml)
-platformdirs==3.5.0
+platformdirs==3.5.1
     # via black
 pluggy==1.0.0
     # via pytest
@@ -331,7 +331,7 @@ pyflakes==2.5.0
     # via flake8
 pygments==2.15.1
     # via ipython
-pyjwt[crypto]==2.6.0
+pyjwt[crypto]==2.7.0
     # via
     #   drf-jwt
     #   education-backend (pyproject.toml)
@@ -376,7 +376,7 @@ pytz==2023.3
     # via
     #   celery
     #   djangorestframework
-redis==4.5.4
+redis==4.5.5
     # via education-backend (pyproject.toml)
 requests==2.30.0
     # via
@@ -392,7 +392,7 @@ retry==0.9.2
     # via education-backend (pyproject.toml)
 s3transfer==0.6.1
     # via boto3
-sentry-sdk==1.22.1
+sentry-sdk==1.22.2
     # via education-backend (pyproject.toml)
 shortuuid==1.0.11
     # via education-backend (pyproject.toml)
@@ -431,17 +431,17 @@ types-awscrt==0.16.17
     # via
     #   botocore-stubs
     #   types-s3transfer
-types-babel==2.11.0.12
+types-babel==2.11.0.13
     # via education-backend (pyproject.toml)
-types-bleach==6.0.0.2
+types-bleach==6.0.0.3
     # via education-backend (pyproject.toml)
 types-freezegun==1.1.10
     # via education-backend (pyproject.toml)
-types-markdown==3.4.2.8
+types-markdown==3.4.2.9
     # via
     #   djangorestframework-stubs
     #   education-backend (pyproject.toml)
-types-pillow==9.5.0.2
+types-pillow==9.5.0.4
     # via education-backend (pyproject.toml)
 types-pytz==2023.3.0.0
     # via
@@ -459,11 +459,11 @@ types-retry==0.9.9.3
     # via education-backend (pyproject.toml)
 types-s3transfer==0.6.1
     # via boto3-stubs
-types-simplejson==3.19.0.0
+types-simplejson==3.19.0.1
     # via education-backend (pyproject.toml)
-types-stripe==3.5.2.9
+types-stripe==3.5.2.10
     # via education-backend (pyproject.toml)
-types-urllib3==1.26.25.12
+types-urllib3==1.26.25.13
     # via types-requests
 typing-extensions==4.5.0
     # via
