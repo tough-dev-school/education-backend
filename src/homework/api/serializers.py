@@ -5,6 +5,7 @@ from rest_framework import serializers
 from app.serializers import MarkdownField
 from app.serializers import SoftField
 from homework.models import Answer
+from homework.models import AnswerImage
 from homework.models import Question
 from users.api.serializers import UserSafeSerializer
 
@@ -93,4 +94,15 @@ class AnswerCommentTreeSerializer(AnswerTreeSerializer):
         fields = [
             "slug",
             "descendants",
+        ]
+
+
+class AnswerImageSerializer(serializers.ModelSerializer):
+    author = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
+    class Meta:
+        model = AnswerImage
+        fields = [
+            "author",
+            "image",
         ]
