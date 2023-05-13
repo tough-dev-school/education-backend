@@ -190,7 +190,7 @@ flake8-absolute-import==1.0.0.1
     # via education-backend (pyproject.toml)
 flake8-black==0.3.6
     # via education-backend (pyproject.toml)
-flake8-bugbear==23.3.12
+flake8-bugbear==23.5.9
     # via education-backend (pyproject.toml)
 flake8-cognitive-complexity==0.1.0
     # via education-backend (pyproject.toml)
