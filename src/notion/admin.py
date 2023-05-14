@@ -8,6 +8,7 @@ from notion import helpers
 from notion.client import NotionClient
 from notion.exceptions import NotionError
 from notion.models import Material
+from notion.models import MaterialFile
 
 
 class NotionMaterialForm(forms.ModelForm):
@@ -50,3 +51,8 @@ class NotionMaterialAdmin(ModelAdmin):
     list_filter = ("course",)
     form = NotionMaterialForm
     save_as = True
+
+
+@admin.register(MaterialFile)
+class MaterialFileAdmin(ModelAdmin):
+    ...

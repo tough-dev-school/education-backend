@@ -67,3 +67,17 @@ class Material(TimestampedModel):
     def get_absolute_url(self) -> str:
         slug = uuid_to_id(str(self.slug))
         return urljoin(settings.FRONTEND_URL, f"materials/{slug}/")
+
+
+class MaterialFile(TimestampedModel):
+    file = models.FileField(upload_to="materials", unique=True)  # NOQA: VNE002
+
+    class Meta:
+        verbose_name = _("Material file")
+        verbose_name_plural = _("Material files")
+
+    def __str__(self) -> str:
+        return self.file.name
+
+    def get_absolute_url(self) -> str:
+        return self.file.url
