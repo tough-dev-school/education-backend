@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-07 21:21+0300\n"
+"POT-Creation-Date: 2023-05-14 20:43+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -316,6 +316,14 @@ msgstr "Материалы"
 #: notion/models.py:61
 msgid "May access materials from every course"
 msgstr "Видит страницы ноушена от всех курсов"
+
+#: notion/models.py:76
+msgid "Material file"
+msgstr "Файл"
+
+#: notion/models.py:77
+msgid "Material files"
+msgstr "Файлы"
 
 #: orders/admin/orders/actions.py:10
 msgid "Set paid"
