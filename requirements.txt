@@ -172,7 +172,7 @@ retry==0.9.2
     # via education-backend (pyproject.toml)
 s3transfer==0.6.1
     # via boto3
-sentry-sdk==1.22.2
+sentry-sdk==1.23.0
     # via education-backend (pyproject.toml)
 shortuuid==1.0.11
     # via education-backend (pyproject.toml)
