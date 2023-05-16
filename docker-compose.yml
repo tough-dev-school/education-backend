@@ -14,12 +14,25 @@ services:
     image: ghcr.io/tough-dev-school/notion-middleware
     env_file: ".env"
     ports:
-      - 9000:8000
+      - 8001:8000
 
   redis:
     image: redis:6-alpine
     ports:
       - 6379:6379
 
+  s3:
+    image: bitnami/minio
+    environment:
+      - MINIO_ROOT_USER=root
+      - MINIO_ROOT_PASSWORD=ibcxJ8Du
+      - MINIO_DEFAULT_BUCKETS=dev:public
+    volumes:
+      - s3-data:/data
+    ports:
+      - 9000:9000
+      - 9001:9001
+
 volumes:
   dev-db-data:
+  s3-data:
