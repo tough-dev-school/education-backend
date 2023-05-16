@@ -121,7 +121,7 @@ django-cachalot==2.5.3
     # via education-backend (pyproject.toml)
 django-cors-headers==3.14.0
     # via education-backend (pyproject.toml)
-django-debug-toolbar==4.0.0
+django-debug-toolbar==4.1.0
     # via education-backend (pyproject.toml)
 django-environ==0.10.0
     # via education-backend (pyproject.toml)
