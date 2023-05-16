@@ -1,5 +1,4 @@
 from rest_framework import generics
-from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 
 from django.db.models import QuerySet
@@ -32,6 +31,5 @@ class AnswerCommentView(generics.ListAPIView):
 
 class AnswerImageUploadView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
-    parser_classes = [MultiPartParser]
     serializer_class = serializers.AnswerImageSerializer
     queryset = AnswerImage.objects.all()
