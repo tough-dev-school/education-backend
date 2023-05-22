@@ -447,7 +447,7 @@ types-pytz==2023.3.0.0
     # via
     #   django-stubs
     #   types-babel
-types-pyyaml==6.0.12.9
+types-pyyaml==6.0.12.10
     # via
     #   django-stubs
     #   djangorestframework-stubs
