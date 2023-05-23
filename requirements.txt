@@ -163,7 +163,7 @@ pytz==2023.3
     #   djangorestframework
 redis==4.5.5
     # via education-backend (pyproject.toml)
-requests==2.30.0
+requests==2.31.0
     # via
     #   django-anymail
     #   django-healthchecks
