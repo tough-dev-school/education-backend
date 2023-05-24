@@ -347,7 +347,7 @@ pytest==7.3.1
     #   pytest-randomly
     #   pytest-repeat
     #   pytest-xdist
-pytest-cov==4.0.0
+pytest-cov==4.1.0
     # via education-backend (pyproject.toml)
 pytest-deadfixtures==2.2.1
     # via education-backend (pyproject.toml)
