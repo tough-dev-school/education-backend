@@ -37,7 +37,7 @@ def rewrite_prop(prop: TextProperty) -> TextProperty:  # NOQA: CCR001
 
     for value in prop:
         if isinstance(value, list):
-            if len(value) >= 1 and value[0] == "a" and value[1].startswith("/"):  # it is a link, and the link is internal
+            if len(value) >= 1 and value[0] == "a" and isinstance(value[1], str) and value[1].startswith("/"):  # it is a link, and the link is internal
                 with contextlib.suppress(KeyError):  # blocks not in mapping remain not rewritten
                     value[1] = "/" + mapping[value[1].replace("/", "")]
             else:
