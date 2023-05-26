@@ -132,3 +132,23 @@ def test_links_not_from_mapping(block):
             ],
         ],
     ]
+
+
+@pytest.mark.parametrize(
+    "weird_text",
+    [
+        [
+            ["a", [["'b'"]]],
+            ["uthorized.", [["'i'"], ["'b'"]]],
+            [
+                " weird text",
+            ],
+        ],
+    ],
+)
+def test_weird_text(block, weird_text):
+    block["value"]["properties"]["title"] = weird_text
+
+    result = rewrite(block)["value"]["properties"]
+
+    assert result["title"] == weird_text
