@@ -2,6 +2,7 @@ import pytest
 
 from pytest_httpx import HTTPXMock
 
+from notion.exceptions import NotionResponseError
 from notion.exceptions import NotSharedForWeb
 
 
@@ -86,4 +87,13 @@ def test_not_shared_exception(notion, httpx_mock: HTTPXMock):
         },
     )
     with pytest.raises(NotSharedForWeb):
+        notion.fetch_page("0cb348b3a2d24c05bc944e2302fa553")
+
+
+def test_wrong_response_exception(notion, httpx_mock: HTTPXMock):
+    httpx_mock.add_response(
+        url="http://notion.middleware/v1/notion/loadPageChunk/",
+        json={"errorId": "de586d84-7fbb-466b-b633-8b1ae5cf0497", "name": "ValidationError", "message": "Invalid input."},
+    )
+    with pytest.raises(NotionResponseError):
         notion.fetch_page("0cb348b3a2d24c05bc944e2302fa553")

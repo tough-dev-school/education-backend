@@ -41,7 +41,7 @@ class NotionClient:
             resource="loadPageChunk",
             request_body={
                 "page": {"id": id_to_uuid(page_id)},
-                "limit": 100,
+                "limit": 30,
                 "cursor": {"stack": []},
                 "chunkNumber": 0,
                 "verticalColumns": False,

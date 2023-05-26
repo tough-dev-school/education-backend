@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from notion.block import NotionBlockList
+from notion.exceptions import NotionResponseError
 from notion.exceptions import NotSharedForWeb
 
 
@@ -12,6 +13,9 @@ class NotionPage:
 
     @classmethod
     def from_api_response(cls, api_response: dict) -> "NotionPage":
+        if "errorId" in api_response:
+            raise NotionResponseError(f"Notion response error. {api_response['name']}: {api_response['message']}")
+
         if "block" not in api_response["recordMap"]:
             raise NotSharedForWeb()
 
