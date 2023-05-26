@@ -1,6 +1,7 @@
 from collections.abc import Iterable
 
 import httpx
+from sentry_sdk import add_breadcrumb
 
 from django.conf import settings
 
@@ -63,6 +64,8 @@ class NotionClient:
 
     @staticmethod
     def fetch(resource: str, request_body: dict) -> dict:
+        add_breadcrumb(category="http", message=f"Sending notion request for {resource}", level="debug", data=request_body)
+
         client = httpx.Client(
             http2=True,
         )
@@ -78,4 +81,8 @@ class NotionClient:
         if response.status_code != 200:
             raise HTTPError(f"{ response.http_version } error {response.status_code} fetching notion resouce {resource}: {response.text}")
 
-        return response.json()
+        notion_response = response.json()
+
+        add_breadcrumb(category="http", message=f"Got notion response for {resource}", level="debug", data=notion_response)
+
+        return notion_response
