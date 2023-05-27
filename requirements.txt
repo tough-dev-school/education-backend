@@ -8,7 +8,7 @@ amqp==5.1.1
     # via kombu
 anyio==3.7.0
     # via httpcore
-asgiref==3.7.1
+asgiref==3.7.2
     # via django
 async-timeout==4.0.2
     # via redis
