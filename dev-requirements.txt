@@ -196,7 +196,7 @@ flake8-cognitive-complexity==0.1.0
     # via education-backend (pyproject.toml)
 flake8-django==1.2
     # via education-backend (pyproject.toml)
-flake8-eradicate==1.4.0
+flake8-eradicate==1.5.0
     # via education-backend (pyproject.toml)
 flake8-fixme==1.1.1
     # via education-backend (pyproject.toml)
