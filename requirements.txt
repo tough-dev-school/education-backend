@@ -55,7 +55,7 @@ click-repl==0.2.0
     # via celery
 cmarkgfm==2022.10.27
     # via education-backend (pyproject.toml)
-cryptography==40.0.2
+cryptography==41.0.0
     # via pyjwt
 decorator==5.1.1
     # via retry
