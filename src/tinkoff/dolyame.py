@@ -14,7 +14,7 @@ class DolyameRequestException(Exception):
 
 
 class Dolyame(Bank):
-    acquiring_percent = Decimal("4.9")
+    acquiring_percent = Decimal("6.9")
     base_url = "https://partner.dolyame.ru/v1/"
     name = "Долями"
     bank_id = "dolyame"
