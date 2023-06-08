@@ -386,7 +386,7 @@ requests==2.31.0
     #   djangorestframework-stubs
     #   requests-mock
     #   stripe
-requests-mock==1.10.0
+requests-mock==1.11.0
     # via education-backend (pyproject.toml)
 retry==0.9.2
     # via education-backend (pyproject.toml)
