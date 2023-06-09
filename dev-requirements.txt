@@ -160,7 +160,7 @@ drf-jwt==1.19.2
     # via education-backend (pyproject.toml)
 drf-recaptcha==2.2.3
     # via education-backend (pyproject.toml)
-eradicate==2.2.0
+eradicate==2.3.0
     # via flake8-eradicate
 execnet==1.9.0
     # via pytest-xdist
