@@ -51,7 +51,7 @@ click-didyoumean==0.3.0
     # via celery
 click-plugins==1.1.1
     # via celery
-click-repl==0.2.0
+click-repl==0.3.0
     # via celery
 cmarkgfm==2022.10.27
     # via education-backend (pyproject.toml)
