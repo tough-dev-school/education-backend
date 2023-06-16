@@ -353,7 +353,7 @@ pytest-deadfixtures==2.2.1
     # via education-backend (pyproject.toml)
 pytest-django==4.5.2
     # via education-backend (pyproject.toml)
-pytest-env==0.8.1
+pytest-env==0.8.2
     # via education-backend (pyproject.toml)
 pytest-freezegun==0.4.2
     # via education-backend (pyproject.toml)
