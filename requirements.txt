@@ -212,7 +212,7 @@ wcwidth==0.2.6
     # via prompt-toolkit
 webencodings==0.5.1
     # via bleach
-whitenoise==6.4.0
+whitenoise==6.5.0
     # via education-backend (pyproject.toml)
 
 # The following packages are considered to be unsafe in a requirements file:
