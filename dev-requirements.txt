@@ -304,7 +304,7 @@ pickleshare==0.7.5
     # via ipython
 pillow==9.5.0
     # via education-backend (pyproject.toml)
-platformdirs==3.5.3
+platformdirs==3.6.0
     # via black
 pluggy==1.0.0
     # via pytest
