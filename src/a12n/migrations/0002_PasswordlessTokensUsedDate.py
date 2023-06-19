@@ -2,7 +2,6 @@
 
 from django.db import migrations
 from django.db import models
-from django.db.migrations.operations.fields import RemoveField
 
 
 class Migration(migrations.Migration):
