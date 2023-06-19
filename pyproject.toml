@@ -72,6 +72,7 @@ dev = [
     "black",
 
     "jedi",
+    "autoflake==1.7.0",
     "flake8-absolute-import",
     "flake8-black",
     "flake8-bugbear",
