@@ -17,6 +17,11 @@ server:
 worker:
 	cd src && celery -A app worker -E --purge
 
+fmt:
+	cd src && autoflake --in-place --remove-all-unused-imports --recursive .
+	cd src && isort .
+	cd src && black .
+
 lint:
 	cd src && ./manage.py makemigrations --check --no-input --dry-run
 	flake8 src
