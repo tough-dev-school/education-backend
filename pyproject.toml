@@ -21,8 +21,10 @@ dependencies = [
     "Pillow",
 
     "djangorestframework",
+    "djangorestframework-camel-case",
     "django-storages",
     "drf-recaptcha",
+    "drf-spectacular[sidecar]",
     "drf-jwt",
     "django-filter",
     "django-anymail",

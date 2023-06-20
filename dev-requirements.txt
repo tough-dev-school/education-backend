@@ -23,6 +23,7 @@ attrs==23.1.0
     #   flake8-bugbear
     #   flake8-eradicate
     #   flake8-multiline-containers
+    #   jsonschema
 autoflake==1.7.8
     # via education-backend (pyproject.toml)
 babel==2.12.1
@@ -112,6 +113,8 @@ django==4.1.9
     #   djangorestframework
     #   drf-jwt
     #   drf-recaptcha
+    #   drf-spectacular
+    #   drf-spectacular-sidecar
     #   education-backend (pyproject.toml)
 django-anymail==10.0
     # via education-backend (pyproject.toml)
@@ -155,6 +158,7 @@ djangorestframework==3.14.0
     #   dj-rest-auth
     #   drf-jwt
     #   drf-recaptcha
+    #   drf-spectacular
     #   education-backend (pyproject.toml)
 djangorestframework-stubs==1.7.0
     # via education-backend (pyproject.toml)
@@ -162,6 +166,10 @@ drf-jwt==1.19.2
     # via education-backend (pyproject.toml)
 drf-recaptcha==2.2.3
     # via education-backend (pyproject.toml)
+drf-spectacular[sidecar]==0.26.2
+    # via education-backend (pyproject.toml)
+drf-spectacular-sidecar==2023.6.1
+    # via drf-spectacular
 eradicate==2.3.0
     # via flake8-eradicate
 execnet==1.9.0
@@ -260,6 +268,8 @@ idna==3.4
     #   anyio
     #   httpx
     #   requests
+inflection==0.5.1
+    # via drf-spectacular
 iniconfig==2.0.0
     # via pytest
 ipython==8.14.0
@@ -278,6 +288,8 @@ jmespath==1.0.1
     # via
     #   boto3
     #   botocore
+jsonschema==4.17.3
+    # via drf-spectacular
 kombu==5.3.1
     # via celery
 markupsafe==2.1.3
@@ -342,6 +354,8 @@ pyjwt[crypto]==2.7.0
     # via
     #   drf-jwt
     #   education-backend (pyproject.toml)
+pyrsistent==0.19.3
+    # via jsonschema
 pytest==7.3.2
     # via
     #   pytest-cov
@@ -383,6 +397,8 @@ pytz==2023.3
     # via
     #   celery
     #   djangorestframework
+pyyaml==6.0
+    # via drf-spectacular
 redis==4.5.5
     # via education-backend (pyproject.toml)
 requests==2.31.0
@@ -482,7 +498,9 @@ typing-extensions==4.6.3
     #   flake8-pie
     #   mypy
 uritemplate==4.1.1
-    # via coreapi
+    # via
+    #   coreapi
+    #   drf-spectacular
 urllib3==1.26.16
     # via
     #   botocore
