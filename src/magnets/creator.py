@@ -1,23 +1,29 @@
+from dataclasses import dataclass
+
+from app.services import BaseService
 from magnets.models import EmailLeadMagnetCampaign
 from magnets.models import LeadCampaignLogEntry
 from users.models import User
 from users.services import UserCreator
 
 
-class LeadCreator:
-    def __init__(self, campaign: EmailLeadMagnetCampaign, email: str, name: str | None = None):
+@dataclass
+class LeadCreator(BaseService):
+    campaign: EmailLeadMagnetCampaign
+    email: str
+    name: str | None = None
+
+    def __post_init__(self):
         self.data = {
-            "name": name or "",
-            "email": email,
+            "name": self.name or "",
+            "email": self.email,
         }
 
-        self.campaign = campaign
+    def act(self):
+        user = self._create_user()
+        self._create_log_entry(user)
 
-    def __call__(self):
-        self.user = self._create_user()
-        self._create_log_entry()
-
-        self.campaign.execute(self.user)
+        self.campaign.execute(user)
 
     def _create_user(self) -> User:
         return UserCreator(
@@ -27,9 +33,9 @@ class LeadCreator:
             tags=self.tags,
         )()
 
-    def _create_log_entry(self):
+    def _create_log_entry(self, user: User):
         LeadCampaignLogEntry.objects.create(
-            user=self.user,
+            user=user,
             campaign=self.campaign,
         )
 
