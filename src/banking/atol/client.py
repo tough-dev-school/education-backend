@@ -5,6 +5,7 @@ import httpx
 
 from django.conf import settings
 
+from app.services import BaseService
 from banking.atol import exceptions
 from banking.atol.auth import get_atol_token
 from orders.models import Order
@@ -13,10 +14,10 @@ BASE_URL = "https://online.atol.ru/possystem/v4/"
 
 
 @dataclass
-class AtolClient:
+class AtolClient(BaseService):
     order: Order
 
-    def __call__(self) -> None:
+    def act(self) -> None:
         self.post(
             method="sell",
             payload={
