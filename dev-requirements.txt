@@ -23,6 +23,8 @@ attrs==23.1.0
     #   flake8-bugbear
     #   flake8-eradicate
     #   flake8-multiline-containers
+autoflake==1.7.0
+    # via education-backend (pyproject.toml)
 babel==2.12.1
     # via education-backend (pyproject.toml)
 backcall==0.2.0
@@ -328,7 +330,9 @@ pycodestyle==2.9.1
 pycparser==2.21
     # via cffi
 pyflakes==2.5.0
-    # via flake8
+    # via
+    #   autoflake
+    #   flake8
 pygments==2.15.1
     # via ipython
 pyjwt[crypto]==2.7.0
@@ -402,7 +406,6 @@ six==1.16.0
     # via
     #   asttokens
     #   bleach
-    #   click-repl
     #   django-prettyjson
     #   python-dateutil
     #   requests-mock
@@ -459,6 +462,8 @@ types-retry==0.9.9.3
     # via education-backend (pyproject.toml)
 types-s3transfer==0.6.1
     # via boto3-stubs
+types-setuptools==67.8.0.0
+    # via types-babel
 types-simplejson==3.19.0.1
     # via education-backend (pyproject.toml)
 types-stripe==3.5.2.10
@@ -478,6 +483,7 @@ uritemplate==4.1.1
 urllib3==1.26.16
     # via
     #   botocore
+    #   django-anymail
     #   education-backend (pyproject.toml)
     #   requests
     #   sentry-sdk

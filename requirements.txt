@@ -181,7 +181,6 @@ simplejson==3.19.1
 six==1.16.0
     # via
     #   bleach
-    #   click-repl
     #   django-prettyjson
     #   python-dateutil
 sniffio==1.3.0
@@ -200,6 +199,7 @@ stripe==5.4.0
 urllib3==1.26.16
     # via
     #   botocore
+    #   django-anymail
     #   education-backend (pyproject.toml)
     #   requests
     #   sentry-sdk

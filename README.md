@@ -9,7 +9,7 @@ Configuration is stored in `src/app/.env`, for examples see `src/app/.env.ci`
 
 
 ## Installing on a local machine
-This project requires python 3.10. Python virtual environment should be installed and activated.\
+This project requires python 3.11. Python virtual environment should be installed and activated.\
 Deps are managed by [pip-tools](https://github.com/jazzband/pip-tools) with requirements stored in [pyproject.toml](https://github.com/jazzband/pip-tools#requirements-from-pyprojecttoml).
 
 Install requirements:
