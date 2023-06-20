@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from app.services import BaseService
 from chains.models import Chain
 from chains.models import Message
 from chains.models import Progress
@@ -7,10 +8,10 @@ from studying.models import Study
 
 
 @dataclass
-class ChainSender:
+class ChainSender(BaseService):
     chain: Chain
 
-    def __call__(self) -> None:
+    def act(self) -> None:
         for study in Study.objects.filter(course=self.chain.course).iterator():
             self.send_messages_for_study(study)
 
