@@ -117,6 +117,7 @@ src/frontend/static/js/*
 .idea
 
 .envrc
+*.isorted
 .pytest_cache
 .postgres
 *.sqlite
