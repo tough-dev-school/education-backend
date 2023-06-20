@@ -4,6 +4,7 @@ import json
 
 from django.conf import settings
 
+from app.services import BaseService
 from tinkoff.exceptions import TinkoffPaymentNotificationInvalidToken
 from tinkoff.exceptions import TinkoffPaymentNotificationNoTokenPassed
 
@@ -14,10 +15,10 @@ PAYLOAD_KEYS_EXCLUDED_FROM_SIGNATURE_VALIDATION = [
 
 
 @dataclass
-class TinkoffNotificationsTokenValidator:
+class TinkoffNotificationsTokenValidator(BaseService):
     payload: dict
 
-    def __call__(self) -> bool:
+    def act(self) -> bool:
         token = self.extract_token()
         data = self.get_data_for_signature_validation()
 
