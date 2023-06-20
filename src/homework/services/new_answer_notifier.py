@@ -1,15 +1,18 @@
+from dataclasses import dataclass
+
 from django.db.models import QuerySet
 
+from app.services import BaseService
 from homework.models import Answer
 from mailing.tasks import send_mail
 from users.models import User
 
 
-class NewAnswerNotifier:
-    def __init__(self, answer: Answer):
-        self.answer = answer
+@dataclass
+class NewAnswerNotifier(BaseService):
+    answer: Answer
 
-    def __call__(self):
+    def act(self):
         for user_to_notify in self.get_users_to_notify().iterator():
             self.send_mail_to_user(user_to_notify)
 
