@@ -7,6 +7,7 @@ from retry import retry
 from django.conf import settings
 from django.core.files.base import ContentFile
 
+from app.services import BaseService
 from app.types import Language
 from diplomas.models import Diploma
 from diplomas.models import DiplomaTemplate
@@ -20,12 +21,12 @@ class WrongDiplomaServiceResponse(httpx.HTTPError):
 
 
 @dataclass
-class DiplomaGenerator:
+class DiplomaGenerator(BaseService):
     course: Course
     student: User
     language: Language
 
-    def __call__(self) -> Diploma:
+    def act(self) -> Diploma:
         image = self.fetch_image()
 
         diploma = self.create_diploma()

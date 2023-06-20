@@ -3,6 +3,7 @@ from typing import cast
 
 from django.db.models import QuerySet
 
+from app.services import BaseService
 from app.types import Language
 from diplomas.models import Diploma
 from diplomas.models import DiplomaTemplate
@@ -13,7 +14,7 @@ from users.models import User
 
 
 @dataclass
-class DiplomaRegenerator:
+class DiplomaRegenerator(BaseService):
     """Update and create student's diplomas.
 
     Tries to create diplomas on every possible language, to handle a case when student
@@ -23,7 +24,7 @@ class DiplomaRegenerator:
 
     student: User
 
-    def __call__(self) -> None:
+    def act(self) -> None:
         generated_diplomas_count = 0
 
         for study in self.studies:
