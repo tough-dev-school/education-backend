@@ -23,6 +23,7 @@ REST_FRAMEWORK = {
         "public-id": "60/hour",
         "notion-materials": "100/hour",
     },
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 DRF_RECAPTCHA_SECRET_KEY = env("RECAPTCHA_SECRET_KEY", cast=str, default="")
 DRF_RECAPTCHA_TESTING = DRF_RECAPTCHA_TESTING_PASS = not env("RECAPTCHA_ENABLED", cast=bool, default=True)
@@ -31,3 +32,18 @@ if env("DEBUG"):
     REST_FRAMEWORK["DEFAULT_AUTHENTICATION_CLASSES"].append("rest_framework.authentication.SessionAuthentication")  # type: ignore
 
     REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"].append("rest_framework.renderers.BrowsableAPIRenderer")  # type: ignore
+
+
+# Set up drf_spectacular, https://drf-spectacular.readthedocs.io/en/latest/settings.html
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Our fancy API",
+    "DESCRIPTION": "So great, needs no docs",
+    "SWAGGER_UI_DIST": "SIDECAR",
+    "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
+    "REDOC_DIST": "SIDECAR",
+    "CAMELIZE_NAMES": True,
+    "POSTPROCESSING_HOOKS": [
+        "drf_spectacular.hooks.postprocess_schema_enums",
+        "drf_spectacular.contrib.djangorestframework_camel_case.camelize_serializer_fields",
+    ],
+}

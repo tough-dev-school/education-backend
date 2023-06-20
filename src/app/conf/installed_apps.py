@@ -16,6 +16,8 @@ INSTALLED_APPS = [
     "mailing",
     "corsheaders",
     "anymail",
+    "drf_spectacular",
+    "drf_spectacular_sidecar",
     "rest_framework",
     "rest_framework.authtoken",
     "drf_recaptcha",
