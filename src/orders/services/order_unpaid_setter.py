@@ -1,16 +1,21 @@
+from dataclasses import dataclass
+
 from django.utils import timezone
 
+from app.services import BaseService
 from orders.models import Order
 
 
-class OrderUnpaidSetter:
+@dataclass
+class OrderUnpaidSetter(BaseService):
     """Mark order as not paid"""
 
-    def __init__(self, order: Order):
-        self.order = order
-        self.was_paid_before_service_call = order.paid is not None
+    order: Order
 
-    def __call__(self):
+    def __post_init__(self):
+        self.was_paid_before_service_call = self.order.paid is not None
+
+    def act(self):
         self.mark_order_as_not_paid()
         self.unship()
 

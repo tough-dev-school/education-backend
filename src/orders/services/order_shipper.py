@@ -3,19 +3,20 @@ from dataclasses import dataclass
 from django.conf import settings
 from django.utils import timezone
 
+from app.services import BaseService
 from app.tasks import send_happiness_message
 from mailing.tasks import send_mail
 from orders.models import Order
 
 
 @dataclass
-class OrderShipper:
+class OrderShipper(BaseService):
     """Ship the order (actualy calls item ship() method)"""
 
     order: Order
     silent: bool | None = False
 
-    def __call__(self) -> None:
+    def act(self) -> None:
         if self.ship():
             self.mark_order_as_shipped()
 

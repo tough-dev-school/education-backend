@@ -2,12 +2,13 @@ from dataclasses import dataclass
 
 from django.utils import timezone
 
+from app.services import BaseService
 from banking.selector import get_bank
 from orders.models import Order
 
 
 @dataclass
-class OrderPaidSetter:
+class OrderPaidSetter(BaseService):
     """Mark order as paid"""
 
     order: Order
@@ -18,7 +19,7 @@ class OrderPaidSetter:
         self.is_already_paid = self.order.paid is not None
         self.is_already_shipped = self.order.shipped is not None
 
-    def __call__(self) -> None:
+    def act(self) -> None:
         self.mark_order_as_paid()
         self.call_bank_successfull_callback()
         self.ship()
