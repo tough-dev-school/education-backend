@@ -1,5 +1,4 @@
 import pytest
-from typing import Optional
 
 from chains import tasks
 from chains.models import Message
@@ -18,7 +17,7 @@ def owl(mocker):
 
 @pytest.fixture
 def assert_message_is_sent(owl, study):
-    def _assert(message: Message, to: Optional[User] = None, reset: Optional[bool] = True):
+    def _assert(message: Message, to: User | None = None, reset: bool | None = True):
         student = to or study.student
         owl.assert_any_call(
             to=student.email,

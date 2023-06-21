@@ -1,5 +1,5 @@
 from decimal import Decimal
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 from django.apps import apps
 from django.utils.translation import gettext_lazy as _
@@ -66,7 +66,7 @@ class Shippable(TimestampedModel):
 
         return self.price
 
-    def get_template_id(self) -> Optional[str]:
+    def get_template_id(self) -> str | None:
         """Get custom per-item template_id"""
         if not hasattr(self, "template_id"):
             return None

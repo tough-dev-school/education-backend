@@ -1,4 +1,3 @@
-from typing import Optional
 from urllib.parse import urljoin
 
 import httpx
@@ -16,7 +15,7 @@ class DashamailHTTP:
     def format_url(self, url: str) -> str:
         return urljoin(self.base_url, url.lstrip("&"))
 
-    def request(self, url, *, method: str, payload: Optional[dict] = None) -> dict:
+    def request(self, url, *, method: str, payload: dict | None = None) -> dict:
         if payload is None:
             payload = {}
 
@@ -38,6 +37,6 @@ class DashamailHTTP:
         return self.request(url, method="POST", payload=payload)
 
     @staticmethod
-    def get_json(response: httpx.Response) -> Optional[dict]:
+    def get_json(response: httpx.Response) -> dict | None:
         if response.text:
             return response.json()

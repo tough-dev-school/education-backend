@@ -1,4 +1,4 @@
-from typing import Optional, Type
+from typing import Type
 
 from banking.base import Bank
 from banking.zero_price_bank import ZeroPriceBank
@@ -20,7 +20,7 @@ BANK_CHOICES = tuple(BANKS.keys())
 DEFAULT_BANK = TinkoffBank
 
 
-def get_bank(desired: Optional[str] = None) -> Type[Bank]:
+def get_bank(desired: str | None = None) -> Type[Bank]:
     if desired is None:
         return DEFAULT_BANK
 

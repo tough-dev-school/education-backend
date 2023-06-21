@@ -1,5 +1,5 @@
 import contextlib
-from typing import Optional
+from typing import Optional  # NOQA: I251
 from urllib.parse import urljoin
 import uuid
 

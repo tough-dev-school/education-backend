@@ -1,5 +1,3 @@
-from typing import List, Optional
-
 from rest_framework.decorators import action
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.response import Response
@@ -118,7 +116,7 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
 
         return order_creator()
 
-    def _create_user(self, name: str, email: str, subscribe: bool = False, tags: Optional[List[str]] = None) -> User:
+    def _create_user(self, name: str, email: str, subscribe: bool = False, tags: list[str] | None = None) -> User:
         return UserCreator(
             name=name,
             email=email.strip(),
@@ -126,7 +124,7 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
             tags=tags,
         )()
 
-    def _get_promocode(self, request) -> Optional[PromoCode]:
+    def _get_promocode(self, request) -> PromoCode | None:
         try:
             promocode_name = request.GET["promocode"]
         except KeyError:
