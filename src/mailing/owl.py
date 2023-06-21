@@ -7,6 +7,7 @@ from django.core import mail
 from django.core.mail.backends.base import BaseEmailBackend
 from django.utils.functional import cached_property
 
+from app.services import BaseService
 from mailing import helpers
 from mailing.configuration import get_configuration
 from mailing.models import EmailConfiguration
@@ -14,7 +15,7 @@ from mailing.models import EmailLogEntry
 
 
 @dataclass
-class Owl:
+class Owl(BaseService):
     """Deliver messages [from Hogwarts] to the particular end-user"""
 
     to: str
@@ -23,7 +24,7 @@ class Owl:
     ctx: dict | None = None
     disable_antispam: bool | None = False
 
-    def __call__(self) -> None:
+    def act(self) -> None:
         if not settings.EMAIL_ENABLED:
             return
 

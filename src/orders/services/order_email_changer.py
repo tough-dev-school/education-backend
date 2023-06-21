@@ -1,16 +1,19 @@
+from dataclasses import dataclass
+
 from django.utils.functional import cached_property
 
+from app.services import BaseService
 from orders.models import Order
 from users.models import User
 from users.services import UserCreator
 
 
-class OrderEmailChanger:
-    def __init__(self, order: Order, email: str):
-        self.order = order
-        self.email = email
+@dataclass
+class OrderEmailChanger(BaseService):
+    order: Order
+    email: str
 
-    def __call__(self):
+    def act(self):
         if self.was_shipped:
             self.order.unship()
 

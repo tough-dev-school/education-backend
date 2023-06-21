@@ -1,11 +1,14 @@
+from dataclasses import dataclass
+
+from app.services import BaseService
 from orders.models import Order
 
 
-class OrderUnshipper:
-    def __init__(self, order: Order):
-        self.order = order
+@dataclass
+class OrderUnshipper(BaseService):
+    order: Order
 
-    def __call__(self):
+    def act(self):
         self.order.item.unship(order=self.order)
 
         self.mark_order_as_unpaid()

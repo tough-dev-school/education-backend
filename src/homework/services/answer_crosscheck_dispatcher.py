@@ -1,27 +1,33 @@
+from dataclasses import dataclass
+
 from django.db import transaction
 from django.db.models import Count
 from django.db.models import Q
 from django.db.models import QuerySet
 
+from app.services import BaseService
 from homework.models import Answer
 from homework.models import AnswerCrossCheck
 from users.models import User
 
 
-class AnswerCrossCheckDispatcher:
+@dataclass
+class AnswerCrossCheckDispatcher(BaseService):
     """Given a bunch of answers and users, create a cross-check record
     for each of them, making sure the first answer of each user has a user to
     check and number of answers if equal for each user
     """
 
-    def __init__(self, answers: QuerySet[Answer], answers_per_user: int = 3):
-        self.answers = Answer.objects.filter(pk__in=[answer.pk for answer in answers])
+    answers: QuerySet[Answer]
+    answers_per_user: int = 3
+
+    def __post_init__(self):
+        self.answers = Answer.objects.filter(pk__in=[answer.pk for answer in self.answers])
         self.unique_author_answers = self.answers.order_by("author_id", "created").distinct("author_id")
-        self.users = User.objects.filter(pk__in=[answer.author_id for answer in answers]).order_by("?")
-        self.answers_per_user = answers_per_user
+        self.users = User.objects.filter(pk__in=[answer.author_id for answer in self.answers]).order_by("?")
 
     @transaction.atomic
-    def __call__(self) -> list[AnswerCrossCheck]:
+    def act(self) -> list[AnswerCrossCheck]:
         crosschecks = list()
         for user in self.users.iterator():
             for _ in range(self.answers_per_user):

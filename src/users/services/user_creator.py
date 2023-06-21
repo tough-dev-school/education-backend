@@ -6,6 +6,7 @@ from rest_framework import serializers
 from django.utils.functional import cached_property
 
 from app.integrations.dashamail.helpers import subscribe_user_to_dashamail
+from app.services import BaseService
 from users.models import User
 
 
@@ -22,7 +23,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 
 @dataclass
-class UserCreator:
+class UserCreator(BaseService):
     email: str
     name: str | None = ""
     subscribe: bool | None = False
@@ -32,7 +33,7 @@ class UserCreator:
     def username(self) -> str:
         return self.email.lower() or str(uuid.uuid4())
 
-    def __call__(self) -> User:
+    def act(self) -> User:
         user = self.get() or self.create()
         self.after_creation(created_user=user)
 

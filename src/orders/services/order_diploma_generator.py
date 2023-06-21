@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from django.utils.functional import cached_property
 
+from app.services import BaseService
 from diplomas.models import DiplomaTemplate
 from diplomas.tasks import generate_diploma
 from orders.models import Order
@@ -11,10 +12,10 @@ from users.models import User
 
 
 @dataclass
-class OrderDiplomaGenerator:
+class OrderDiplomaGenerator(BaseService):
     order: Order
 
-    def __call__(self):
+    def act(self):
         for language in self.get_available_languages():
             generate_diploma.delay(
                 student_id=self.student.id,

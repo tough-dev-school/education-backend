@@ -1,5 +1,8 @@
+from dataclasses import dataclass
+
 from rest_framework import serializers
 
+from app.services import BaseService
 from diplomas.tasks import regenerate_diplomas
 from users.models import User
 
@@ -19,12 +22,12 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         ]
 
 
-class UserUpdater:
-    def __init__(self, user: User, user_data: dict):
-        self.user = user
-        self.user_data = user_data
+@dataclass
+class UserUpdater(BaseService):
+    user: User
+    user_data: dict
 
-    def __call__(self) -> User:
+    def act(self) -> User:
         user = self.user
 
         updated_fields = self.update(user)

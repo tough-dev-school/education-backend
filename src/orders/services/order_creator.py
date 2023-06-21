@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
 from typing import Type
@@ -11,41 +12,41 @@ from django.utils.timezone import is_naive
 from django.utils.timezone import make_aware
 
 from app.current_user import get_current_user
+from app.exceptions import AppServiceException
 from app.helpers import lower_first
+from app.services import BaseService
 from banking.base import Bank
 from banking.selector import get_bank
 from mailing.tasks import send_mail
 from orders.models import Order
 from orders.models import PromoCode
+from products.models.base import Shippable
 from users.models import User
 
 
-class OrderCreatorException(Exception):
+class OrderCreatorException(AppServiceException):
     pass
 
 
-class OrderCreator:
-    def __init__(
-        self,
-        user: User,
-        item,
-        price: Decimal | None = None,
-        promocode: str | None = None,
-        giver: User | None = None,
-        desired_shipment_date: str | datetime | None = None,
-        gift_message: str | None = None,
-        desired_bank: str | None = None,
-    ):
-        self.item = item
-        self.user = user
-        self.price = price if price is not None else item.get_price(promocode=promocode)
-        self.promocode = self._get_promocode(promocode)
-        self.giver = giver
-        self.desired_shipment_date = self.make_datetime_aware(desired_shipment_date)
-        self.gift_message = gift_message if gift_message is not None else ""
-        self.desired_bank = desired_bank if desired_bank is not None else ""
+@dataclass
+class OrderCreator(BaseService):
+    user: User
+    item: Shippable
+    price: Decimal | None = None
+    promocode: str | None = None
+    giver: User | None = None
+    desired_shipment_date: str | datetime | None = None
+    gift_message: str | None = None
+    desired_bank: str | None = None
 
-    def __call__(self) -> Order:
+    def __post_init__(self):
+        self.price = self.price if self.price is not None else self.item.get_price(promocode=self.promocode)
+        self.promocode = self._get_promocode(self.promocode)
+        self.desired_shipment_date = self.make_datetime_aware(self.desired_shipment_date)
+        self.gift_message = self.gift_message if self.gift_message is not None else ""
+        self.desired_bank = self.desired_bank if self.desired_bank is not None else ""
+
+    def act(self) -> Order:
         order = self.create()
 
         order.set_item(self.item)
@@ -59,7 +60,7 @@ class OrderCreator:
         return Order.objects.create(
             user=self.user,
             author=get_current_user() or self.user,
-            price=self.price,
+            price=self.price,  # type: ignore
             promocode=self.promocode,
             giver=self.giver,
             desired_shipment_date=self.desired_shipment_date,
