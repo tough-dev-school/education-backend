@@ -36,14 +36,12 @@ if env("DEBUG"):
 
 # Set up drf_spectacular, https://drf-spectacular.readthedocs.io/en/latest/settings.html
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Tough dev school APII",
+    "TITLE": "Tough dev school API",
     "DESCRIPTION": "So great, needs no docs",
     "SWAGGER_UI_DIST": "SIDECAR",
     "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
     "REDOC_DIST": "SIDECAR",
-    "CAMELIZE_NAMES": True,
     "POSTPROCESSING_HOOKS": [
         "drf_spectacular.hooks.postprocess_schema_enums",
-        "drf_spectacular.contrib.djangorestframework_camel_case.camelize_serializer_fields",
     ],
 }

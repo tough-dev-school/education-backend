@@ -119,8 +119,6 @@ djangorestframework==3.14.0
     #   drf-recaptcha
     #   drf-spectacular
     #   education-backend (pyproject.toml)
-djangorestframework-camel-case==1.4.2
-    # via education-backend (pyproject.toml)
 drf-jwt==1.19.2
     # via education-backend (pyproject.toml)
 drf-recaptcha==2.2.3
