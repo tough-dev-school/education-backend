@@ -7,7 +7,30 @@ from app.serializers import SoftField
 from homework.models import Answer
 from homework.models import AnswerImage
 from homework.models import Question
+from homework.models.reaction import Reaction
 from users.api.serializers import UserSafeSerializer
+
+
+class ReactionDetailedSerializer(serializers.ModelSerializer):
+    author = UserSafeSerializer()
+    answer = serializers.CharField(source="answer.slug")
+
+    class Meta:
+        model = Reaction
+        fields = [
+            "slug",
+            "emoji",
+            "author",
+            "answer",
+        ]
+
+
+class ReactionCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reaction
+        fields = [
+            "emoji",
+        ]
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -29,6 +52,7 @@ class AnswerDetailedSerializer(serializers.ModelSerializer):
     parent = SoftField(source="parent.slug")  # type: ignore
     question = serializers.CharField(source="question.slug")
     has_descendants = serializers.BooleanField(source="children_count")
+    reactions = ReactionDetailedSerializer(many=True)
 
     class Meta:
         model = Answer
@@ -42,6 +66,7 @@ class AnswerDetailedSerializer(serializers.ModelSerializer):
             "text",
             "src",
             "has_descendants",
+            "reactions",
         ]
 
 
@@ -60,6 +85,7 @@ class AnswerTreeSerializer(AnswerDetailedSerializer):
             "text",
             "src",
             "descendants",
+            "reactions",
         ]
 
     def get_descendants(self, obj: Answer) -> list[dict]:

@@ -55,3 +55,8 @@ def purchase(factory, course, api):
 def _no_purchase(purchase):
     """Invalidate the purchase"""
     purchase.setattr_and_save("paid", None)
+
+
+@pytest.fixture
+def reaction(mixer, answer, api):
+    return mixer.blend("homework.Reaction", answer=answer, author=api.user)

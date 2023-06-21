@@ -7,6 +7,7 @@ from tree_queries.query import TreeQuerySet
 
 from django.conf import settings
 from django.db.models import Count
+from django.db.models import Prefetch
 from django.db.models import Q
 from django.db.models.query_utils import FilteredRelation
 from django.utils.translation import gettext_lazy as _
@@ -14,6 +15,7 @@ from django.utils.translation import gettext_lazy as _
 from app.markdown import markdownify
 from app.markdown import remove_html
 from app.models import models
+from homework.models.reaction import Reaction
 from orders.models import Order
 from products.models import Course
 from users.models import User
@@ -22,6 +24,9 @@ from users.models import User
 class AnswerQuerySet(TreeQuerySet):
     def for_viewset(self) -> "AnswerQuerySet":
         return self.with_tree_fields().select_related("author", "question")
+
+    def prefetch_reactions(self) -> "AnswerQuerySet":
+        return self.prefetch_related(Prefetch("reactions", queryset=Reaction.objects.for_viewset()))
 
     def accessed_by(self, user) -> "AnswerQuerySet":
         return (
@@ -51,7 +56,7 @@ class AnswerQuerySet(TreeQuerySet):
         roots_of_accessed_answers = [str(answer.tree_path[0]) for answer in accessed_answers.iterator()]
 
         if len(roots_of_accessed_answers) > 0:
-            return self.with_tree_fields().extra(where=[f'tree_path[1] in ({",".join(roots_of_accessed_answers)})'])
+            return self.prefetch_reactions().with_tree_fields().extra(where=[f'tree_path[1] in ({",".join(roots_of_accessed_answers)})'])
         else:
             return self.none()
 

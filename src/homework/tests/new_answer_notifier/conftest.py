@@ -9,16 +9,6 @@ def notifier():
 
 
 @pytest.fixture
-def question(mixer):
-    return mixer.blend("homework.Question", name="Вторая домашка")
-
-
-@pytest.fixture
-def answer(mixer, question):
-    return mixer.blend("homework.Answer", question=question)
-
-
-@pytest.fixture
 def another_answer(mixer):
     return mixer.blend("homework.Answer")
 
