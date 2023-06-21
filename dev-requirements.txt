@@ -311,7 +311,7 @@ pillow==9.5.0
     # via education-backend (pyproject.toml)
 platformdirs==3.7.0
     # via black
-pluggy==1.0.0
+pluggy==1.2.0
     # via pytest
 prompt-toolkit==3.0.38
     # via
