@@ -49,7 +49,7 @@ botocore==1.29.85
     #   s3transfer
 botocore-stubs==1.29.85
     # via boto3-stubs
-celery==5.2.7
+celery==5.3.1
     # via education-backend (pyproject.toml)
 certifi==2023.5.7
     # via
