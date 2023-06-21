@@ -36,7 +36,7 @@ if env("DEBUG"):
 
 # Set up drf_spectacular, https://drf-spectacular.readthedocs.io/en/latest/settings.html
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Our fancy API",
+    "TITLE": "Tough dev school APII",
     "DESCRIPTION": "So great, needs no docs",
     "SWAGGER_UI_DIST": "SIDECAR",
     "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
