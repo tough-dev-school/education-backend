@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 import re
-from typing import Any, Mapping, Optional, Protocol, Type
+from typing import Any, Mapping, Protocol, Type
 
 from prettyjson import PrettyJSONWidget
 
@@ -17,11 +17,11 @@ from app.admin.widgets import AppNumberInput
 
 class DjangoModelAdminProtocol(Protocol):
     @property
-    def add_form(self) -> Optional[str]:
+    def add_form(self) -> str | None:
         ...
 
     @property
-    def add_fieldsets(self) -> Sequence[tuple[Optional[str], Any]]:
+    def add_fieldsets(self) -> Sequence[tuple[str | None, Any]]:
         ...
 
 
@@ -48,7 +48,7 @@ class AppAdminMixin:
             *self.global_exclude,
         )
 
-    def get_form(self: DjangoModelAdminProtocol, request: Any, obj: Optional[Type[models.Model]] = None, **kwargs: Any):
+    def get_form(self: DjangoModelAdminProtocol, request: Any, obj: Type[models.Model] | None = None, **kwargs: Any):
         """Use special form during object creation"""
         defaults = {}
         if obj is None and hasattr(self, "add_form") and self.add_form is not None:

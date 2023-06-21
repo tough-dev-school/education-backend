@@ -1,5 +1,3 @@
-from typing import Union
-
 import requests
 
 from django.conf import settings
@@ -40,7 +38,7 @@ class TinkoffCredit(Bank):
 
         return response.json()
 
-    def get_items(self) -> list[dict[str, Union[str, int]]]:
+    def get_items(self) -> list[dict[str, str | int]]:
         return [
             {
                 "name": self.order.item.name_receipt,

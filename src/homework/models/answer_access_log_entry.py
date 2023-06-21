@@ -1,5 +1,5 @@
 import contextlib
-from typing import Optional
+from typing import Optional  # NOQA: I251
 
 from django.db.models import Index
 from django.db.models import QuerySet

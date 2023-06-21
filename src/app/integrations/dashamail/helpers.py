@@ -1,12 +1,10 @@
-from typing import Optional
-
 from django.conf import settings
 
 from app.tasks.dashamail import subscribe_to_dashamail
 from users.models import User
 
 
-def subscribe_user_to_dashamail(user: User, list_id: Optional[str] = None, tags: Optional[list[str]] = None) -> None:
+def subscribe_user_to_dashamail(user: User, list_id: str | None = None, tags: list[str] | None = None) -> None:
     if not list_id:
         list_id = settings.DASHAMAIL_LIST_ID
 

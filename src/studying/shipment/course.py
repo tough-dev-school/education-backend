@@ -1,5 +1,3 @@
-from typing import Optional
-
 from app.tasks import invite_to_zoomus
 from mailing.tasks import send_mail
 from products.models import Course
@@ -58,7 +56,7 @@ class CourseShipment(BaseShipment):
         }
 
     @property
-    def welcome_letter_template_id(self) -> Optional[str]:
+    def welcome_letter_template_id(self) -> str | None:
         """Get special gift template letter id if order is a gift and it is present"""
         template_id = self.course.welcome_letter_template_id
 

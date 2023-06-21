@@ -1,3 +1,3 @@
-from typing import Literal, Union
+from typing import Literal
 
-Language = Union[Literal["ru"], Literal["en"], Literal["RU"], Literal["EN"]]
+Language = Literal["ru", "en", "RU", "EN"]

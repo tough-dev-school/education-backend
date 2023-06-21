@@ -1,6 +1,6 @@
 import contextlib
 from decimal import Decimal
-from typing import Optional
+from typing import Optional  # NOQA: I251
 
 from django.core.exceptions import ValidationError
 from django.db.models import Case

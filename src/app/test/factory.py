@@ -1,5 +1,5 @@
 from functools import partial
-from typing import Callable, Dict
+from typing import Callable
 
 from mixer.backend.django import mixer
 
@@ -11,7 +11,7 @@ def register(method):
 
 
 class FixtureRegistry:
-    METHODS: Dict[str, Callable] = {}
+    METHODS: dict[str, Callable] = {}
 
     def get(self, name: str) -> Callable:
         method = self.METHODS.get(name)

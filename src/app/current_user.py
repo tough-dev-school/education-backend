@@ -1,13 +1,12 @@
 from threading import current_thread
 from threading import local
-from typing import Optional
 
 from users.models import User
 
 _thread_locals = local()
 
 
-def get_current_user() -> Optional[User]:
+def get_current_user() -> User | None:
     user = getattr(_thread_locals, _thread_key(), None)
     if user is not None and user.is_authenticated:
         return user

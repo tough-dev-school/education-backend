@@ -1,5 +1,5 @@
 import contextlib
-from typing import Callable, Optional
+from typing import Callable
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.exceptions import APIException
@@ -25,13 +25,13 @@ class UserMiddleware:
         return self.get_response(request)
 
     @staticmethod
-    def get_user(request: Request) -> Optional[User]:
+    def get_user(request: Request) -> User | None:
         raise NotImplementedError("Please implement in subclass")
 
 
 class JWTAuthMiddleware(UserMiddleware):
     @staticmethod
-    def get_user(request: Request) -> Optional[User]:
+    def get_user(request: Request) -> User | None:
         json_auth = JSONWebTokenAuthentication()
 
         with contextlib.suppress(APIException, TypeError):
@@ -40,7 +40,7 @@ class JWTAuthMiddleware(UserMiddleware):
 
 class TokenAuthMiddleware(UserMiddleware):
     @staticmethod
-    def get_user(request: Request) -> Optional[User]:
+    def get_user(request: Request) -> User | None:
         token_authentication = TokenAuthentication()
         with contextlib.suppress(APIException, TypeError):
             return token_authentication.authenticate(request)[0]  # type: ignore

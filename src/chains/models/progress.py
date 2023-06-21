@@ -1,4 +1,4 @@
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING  # NOQA: I251
 
 from app.models import models
 from app.models import TimestampedModel

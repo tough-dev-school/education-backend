@@ -1,6 +1,5 @@
 import contextlib
 from dataclasses import dataclass
-from typing import Optional
 
 from notion.block import NotionBlockList
 from notion.exceptions import NotionResponseError
@@ -24,7 +23,7 @@ class NotionPage:
         )
 
     @property
-    def title(self) -> Optional[str]:
+    def title(self) -> str | None:
         if self.blocks.first_page_block is not None:
             with contextlib.suppress(KeyError, IndexError):
                 return self.blocks.first_page_block.data["value"]["properties"]["title"][0][0]

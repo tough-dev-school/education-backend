@@ -1,5 +1,3 @@
-from typing import Optional
-
 from django.db import transaction
 from django.db.models import Count
 from django.db.models import Q
@@ -34,7 +32,7 @@ class AnswerCrossCheckDispatcher:
                     )
         return crosschecks
 
-    def get_answer_to_check(self, user: User) -> Optional[Answer]:
+    def get_answer_to_check(self, user: User) -> Answer | None:
         return (
             self.get_answers_with_crosscheck_count()
             .filter(id__in=self.unique_author_answers)

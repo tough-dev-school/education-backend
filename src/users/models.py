@@ -1,4 +1,4 @@
-from typing import cast, Optional
+from typing import cast
 from urllib.parse import urljoin
 import uuid
 
@@ -58,7 +58,7 @@ class User(AbstractUser):
         language_values = [cast(Language, language) for language in Languages.values]
         return {language for language in language_values if self.get_printable_name(language) is not None}
 
-    def get_printable_name(self, language: Language) -> Optional[str]:
+    def get_printable_name(self, language: Language) -> str | None:
         if language.lower() == "ru":
             name = f"{self.first_name} {self.last_name}"
         else:

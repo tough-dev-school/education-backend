@@ -1,4 +1,4 @@
-from typing import Any, Dict, Protocol, Type
+from typing import Any, Protocol, Type
 
 from rest_framework.serializers import Serializer
 from rest_framework.viewsets import ModelViewSet
@@ -29,7 +29,7 @@ class ValidationMixin(ViewsetWithValidationProtocol):
         Validator = self.get_validator_class()
         Validator.do(data, context=self.get_validator_context())
 
-    def get_validator_context(self) -> Dict[str, Any]:
+    def get_validator_context(self) -> dict[str, Any]:
         return {
             "request": self.request,  # type: ignore
         }

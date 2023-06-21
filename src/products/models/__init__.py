@@ -1,4 +1,4 @@
-from typing import Type, Union
+from typing import Type, Union  # NOQA: I251
 
 from products.models.bundle import Bundle
 from products.models.course import Course

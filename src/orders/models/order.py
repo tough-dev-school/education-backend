@@ -1,4 +1,4 @@
-from typing import Iterable, Optional
+from typing import Iterable
 
 import shortuuid
 
@@ -20,7 +20,7 @@ class UnknownItemException(Exception):
 
 
 class OrderQuerySet(QuerySet):
-    def paid(self, invert: Optional[bool] = False) -> QuerySet["Order"]:
+    def paid(self, invert: bool | None = False) -> QuerySet["Order"]:
         return self.filter(paid__isnull=invert)
 
     def shipped_without_payment(self) -> QuerySet["Order"]:
@@ -106,7 +106,7 @@ class Order(TimestampedModel):
                 yield field  # type: ignore
 
     @classmethod
-    def get_item_foreignkey(cls, item: Product) -> Optional[str]:
+    def get_item_foreignkey(cls, item: Product) -> str | None:
         """
         Given an item model, returns the ForeignKey to it"""
         for field in cls._iterate_items():
@@ -129,7 +129,7 @@ class Order(TimestampedModel):
 
         raise UnknownItemException(f"There is no foreignKey for {item.__class__}")
 
-    def set_paid(self, silent: Optional[bool] = False) -> None:
+    def set_paid(self, silent: bool | None = False) -> None:
         from orders.services import OrderPaidSetter
 
         OrderPaidSetter(self, silent=silent)()
@@ -139,7 +139,7 @@ class Order(TimestampedModel):
 
         OrderUnpaidSetter(self)()
 
-    def ship(self, silent: Optional[bool] = False) -> None:
+    def ship(self, silent: bool | None = False) -> None:
         from orders.services import OrderShipper
 
         OrderShipper(self, silent=silent)()
