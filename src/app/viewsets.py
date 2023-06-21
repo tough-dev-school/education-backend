@@ -1,6 +1,9 @@
 from typing import Any, Protocol, Type
 
+from rest_framework.mixins import CreateModelMixin
+from rest_framework.mixins import DestroyModelMixin
 from rest_framework.serializers import Serializer
+from rest_framework.viewsets import GenericViewSet
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.viewsets import ReadOnlyModelViewSet as _ReadOnlyModelViewSet
 
@@ -11,6 +14,7 @@ from app.validators import Validator
 __all__ = [
     "AppViewSet",
     "ReadOnlyAppViewSet",
+    "CreateDeleteAppViewSet",
 ]
 
 
@@ -109,3 +113,7 @@ class AppViewSet(MultiSerializerMixin, ModelViewSet):
         response.data = Serializer(self.get_object()).data
 
         return response
+
+
+class CreateDeleteAppViewSet(MultiSerializerMixin, CreateModelMixin, DestroyModelMixin, GenericViewSet):
+    ...

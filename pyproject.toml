@@ -47,6 +47,8 @@ dependencies = [
 
     "httpx[http2]",
     "stripe",
+
+    "emoji",
 ]
 
 
@@ -72,7 +74,7 @@ dev = [
     "black",
 
     "jedi",
-    "autoflake==1.7.0",
+    "autoflake==1.7.8",
     "flake8-absolute-import",
     "flake8-black",
     "flake8-bugbear",
