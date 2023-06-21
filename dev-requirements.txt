@@ -23,7 +23,7 @@ attrs==23.1.0
     #   flake8-bugbear
     #   flake8-eradicate
     #   flake8-multiline-containers
-autoflake==1.7.0
+autoflake==1.7.8
     # via education-backend (pyproject.toml)
 babel==2.12.1
     # via education-backend (pyproject.toml)
