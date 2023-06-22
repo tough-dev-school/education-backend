@@ -58,5 +58,10 @@ def _no_purchase(purchase):
 
 
 @pytest.fixture
-def reaction(mixer, answer, api):
-    return mixer.blend("homework.Reaction", answer=answer, author=api.user)
+def emoji():
+    return "🐍"
+
+
+@pytest.fixture
+def reaction(mixer, answer, api, emoji):
+    return mixer.blend("homework.Reaction", answer=answer, author=api.user, emoji=emoji)

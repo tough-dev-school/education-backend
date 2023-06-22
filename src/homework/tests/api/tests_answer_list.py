@@ -34,6 +34,19 @@ def test_ok(api, question, answer):
     assert got[0]["reactions"] == []
 
 
+def test_has_reaction_fields_if_there_is_reaction(api, question, answer, reaction):
+    got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
+
+    reactions = got[0]["reactions"]
+    assert len(reactions[0]) == 4
+    assert reactions[0]["emoji"] == reaction.emoji
+    assert reactions[0]["slug"] == str(reaction.slug)
+    assert reactions[0]["answer"] == str(reaction.answer.slug)
+    assert reactions[0]["author"]["uuid"] == str(reaction.author.uuid)
+    assert reactions[0]["author"]["first_name"] == reaction.author.first_name
+    assert reactions[0]["author"]["last_name"] == reaction.author.last_name
+
+
 def test_has_descendants_is_true_if_answer_has_children(api, question, answer, another_answer):
     another_answer.parent = answer
     another_answer.save()

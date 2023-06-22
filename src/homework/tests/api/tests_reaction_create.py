@@ -12,11 +12,6 @@ def url(answer):
     return f"/api/v2/homework/answers/{answer.slug}/reactions/"
 
 
-@pytest.fixture
-def emoji():
-    return "🐍"
-
-
 def get_reaction():
     return Reaction.objects.last()
 
