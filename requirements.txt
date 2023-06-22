@@ -101,7 +101,6 @@ django-healthchecks==1.5.0
     # via education-backend (pyproject.toml)
 django-ipware==4.0.2
     # via
-    #   django-axes
     #   drf-recaptcha
     #   education-backend (pyproject.toml)
 django-prettyjson==0.4.1
