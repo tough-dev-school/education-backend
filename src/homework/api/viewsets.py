@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
@@ -108,6 +109,7 @@ class ReactionViewSet(CreateDeleteAppViewSet):
 
     lookup_field = "slug"
 
+    @extend_schema(responses=ReactionDetailedSerializer)
     def create(self, request: Request, *args, **kwargs) -> Response:
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
