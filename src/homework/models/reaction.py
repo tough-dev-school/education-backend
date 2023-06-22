@@ -21,7 +21,7 @@ class Reaction(TimestampedModel):
 
     author = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="reactions")
     answer = models.ForeignKey("homework.Answer", on_delete=models.CASCADE, related_name="reactions")
-    emoji = models.CharField(max_length=256)
+    emoji = models.CharField(max_length=10)
 
     class Meta:
         verbose_name = _("Reaction")
