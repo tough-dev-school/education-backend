@@ -67,13 +67,13 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
         queryset = self.limit_queryset_to_user(queryset)  # type: ignore
         queryset = self.limit_queryset_for_list(queryset)
 
-        return queryset.with_children_count().order_by("created")
+        return queryset.with_children_count().order_by("created").prefetch_reactions()
 
     def limit_queryset_to_user(self, queryset: AnswerQuerySet) -> AnswerQuerySet:
         if self.action != "retrieve":
             return queryset.allowed_for_user(self.request.user)  # type: ignore
 
-        return queryset.prefetch_reactions()
+        return queryset
 
     def limit_queryset_for_list(self, queryset: AnswerQuerySet) -> AnswerQuerySet:
         if self.action == "list":

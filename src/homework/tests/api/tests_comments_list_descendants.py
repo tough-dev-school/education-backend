@@ -104,5 +104,5 @@ def test_only_immediate_siblings_are_included(get_answer_comments):
 
 @pytest.mark.usefixtures("another_answer", "child_of_another_answer", "another_answer_reaction")
 def test_reasonable_nplusone_queries_for_answers_with_descendants(get_answer_comments, django_assert_num_queries, mixer, another_answer):
-    with django_assert_num_queries(13):
+    with django_assert_num_queries(12):
         get_answer_comments()[0]

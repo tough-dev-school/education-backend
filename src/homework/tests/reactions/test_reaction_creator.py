@@ -51,5 +51,5 @@ def test_fail_if_user_rich_limit(create, user, answer, emoji_list):
 def test_fail_if_user_made_same_reaction(create, user, answer, emoji):
     create(emoji=emoji, author=user, answer=answer)
 
-    with pytest.raises(ReactionCreatorException, match="Only one unique emoji per answer from one author"):
+    with pytest.raises(ReactionCreatorException, match="Unique emoji per author"):
         create(emoji=emoji, author=user, answer=answer)

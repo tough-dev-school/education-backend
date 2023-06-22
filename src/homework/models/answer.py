@@ -26,6 +26,10 @@ class AnswerQuerySet(TreeQuerySet):
         return self.with_tree_fields().select_related("author", "question")
 
     def prefetch_reactions(self) -> "AnswerQuerySet":
+        """
+        Must be called after all other queryset methods if needed with allowed_for_user method
+        due to iterator() usage in allowed_for_user
+        """
         return self.prefetch_related(Prefetch("reactions", queryset=Reaction.objects.for_viewset()))
 
     def accessed_by(self, user) -> "AnswerQuerySet":
@@ -56,7 +60,7 @@ class AnswerQuerySet(TreeQuerySet):
         roots_of_accessed_answers = [str(answer.tree_path[0]) for answer in accessed_answers.iterator()]
 
         if len(roots_of_accessed_answers) > 0:
-            return self.prefetch_reactions().with_tree_fields().extra(where=[f'tree_path[1] in ({",".join(roots_of_accessed_answers)})'])
+            return self.with_tree_fields().extra(where=[f'tree_path[1] in ({",".join(roots_of_accessed_answers)})'])
         else:
             return self.none()
 
