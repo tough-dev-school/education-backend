@@ -242,7 +242,7 @@ flake8-todo==0.7
     # via education-backend (pyproject.toml)
 flake8-use-fstring==1.4
     # via education-backend (pyproject.toml)
-flake8-variables-names==0.0.5
+flake8-variables-names==0.0.6
     # via education-backend (pyproject.toml)
 flake8-walrus==1.1.0
     # via education-backend (pyproject.toml)
