@@ -30,6 +30,6 @@ class Reaction(TimestampedModel):
         constraints = [
             models.UniqueConstraint(
                 fields=["author", "answer", "emoji"],
-                name="Only one unique emoji per answer from one author",
+                name="Unique emoji per author",
             ),
         ]
