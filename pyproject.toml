@@ -23,6 +23,7 @@ dependencies = [
     "djangorestframework",
     "django-storages",
     "drf-recaptcha",
+    "drf-spectacular[sidecar]",
     "drf-jwt",
     "django-filter",
     "django-anymail",
@@ -74,7 +75,7 @@ dev = [
     "black",
 
     "jedi",
-    "autoflake==1.7.0",
+    "autoflake==1.7.8",
     "flake8-absolute-import",
     "flake8-black",
     "flake8-bugbear",

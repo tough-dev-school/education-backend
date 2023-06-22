@@ -1,3 +1,6 @@
+from drf_spectacular.views import SpectacularAPIView
+from drf_spectacular.views import SpectacularSwaggerView
+
 from django.urls import include
 from django.urls import path
 
@@ -13,4 +16,13 @@ urlpatterns = [
     path("orders/", include("orders.urls")),
     path("", include("products.urls")),
     path("healthchecks/", include("django_healthchecks.urls")),
+    path(
+        "docs/schema/",
+        SpectacularAPIView.as_view(api_version="v2"),
+        name="schema",
+    ),
+    path(
+        "docs/swagger/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+    ),
 ]
