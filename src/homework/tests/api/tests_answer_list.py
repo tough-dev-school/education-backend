@@ -7,7 +7,8 @@ pytestmark = [
 
 
 @pytest.fixture
-def answer_from_another_user(another_user, another_answer):
+def answer_from_another_user(another_user, another_answer, question):
+    another_answer.question = question
     another_answer.author = another_user
     another_answer.save()
 
@@ -19,7 +20,7 @@ def answer_from_another_user(another_user, another_answer):
 def test_ok(api, question, answer):
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 
-    assert len(got[0]) == 8
+    assert len(got[0]) == 9
     assert got[0]["created"] == "2022-10-09T10:30:12+12:00"
     assert got[0]["modified"] == "2022-10-09T10:30:12+12:00"
     assert got[0]["slug"] == str(answer.slug)
@@ -30,6 +31,20 @@ def test_ok(api, question, answer):
     assert got[0]["author"]["first_name"] == api.user.first_name
     assert got[0]["author"]["last_name"] == api.user.last_name
     assert got[0]["has_descendants"] is False
+    assert got[0]["reactions"] == []
+
+
+def test_has_reaction_fields_if_there_is_reaction(api, question, answer, reaction):
+    got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
+
+    reactions = got[0]["reactions"]
+    assert len(reactions[0]) == 4
+    assert reactions[0]["emoji"] == reaction.emoji
+    assert reactions[0]["slug"] == str(reaction.slug)
+    assert reactions[0]["answer"] == str(reaction.answer.slug)
+    assert reactions[0]["author"]["uuid"] == str(reaction.author.uuid)
+    assert reactions[0]["author"]["first_name"] == reaction.author.first_name
+    assert reactions[0]["author"]["last_name"] == reaction.author.last_name
 
 
 def test_has_descendants_is_true_if_answer_has_children(api, question, answer, another_answer):
@@ -39,6 +54,15 @@ def test_has_descendants_is_true_if_answer_has_children(api, question, answer, a
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 
     assert got[0]["has_descendants"] is True
+
+
+def test_nplusone(api, question, answer, another_answer, django_assert_num_queries, mixer):
+    for _ in range(5):
+        mixer.blend("homework.Reaction", author=api.user, answer=answer)
+        mixer.blend("homework.Reaction", author=api.user, answer=another_answer)
+
+    with django_assert_num_queries(7):
+        api.get(f"/api/v2/homework/answers/?question={question.slug}")
 
 
 @pytest.mark.usefixtures("answer")
