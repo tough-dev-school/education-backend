@@ -11,7 +11,7 @@ pytestmark = [
 def test_ok(api, answer, question):
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
-    assert len(got) == 8
+    assert len(got) == 9
     assert got["created"] == "2022-10-09T11:10:00+12:00"
     assert got["modified"] == "2022-10-09T11:10:00+12:00"
     assert got["slug"] == str(answer.slug)
@@ -20,6 +20,7 @@ def test_ok(api, answer, question):
     assert got["author"]["last_name"] == api.user.last_name
     assert got["question"] == str(question.slug)
     assert got["has_descendants"] is False
+    assert got["reactions"] == []
     assert "text" in got
     assert "src" in got
 
@@ -33,8 +34,22 @@ def test_has_descendants_is_true_if_answer_has_children(api, answer, another_ans
     assert got["has_descendants"] is True
 
 
-def test_query_count_for_answer_without_descendants(api, answer, django_assert_num_queries):
-    with django_assert_num_queries(6):
+def test_reactions_field(api, answer, reaction):
+    got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
+
+    assert len(got["reactions"]) == 1
+    assert got["reactions"][0]["emoji"] == reaction.emoji
+    assert got["reactions"][0]["answer"] == str(answer.slug)
+    assert got["reactions"][0]["author"]["uuid"] == str(reaction.author.uuid)
+    assert got["reactions"][0]["author"]["first_name"] == reaction.author.first_name
+    assert got["reactions"][0]["author"]["last_name"] == reaction.author.last_name
+
+
+def test_query_count_for_answer_without_descendants(api, answer, django_assert_num_queries, mixer):
+    for _ in range(5):
+        mixer.blend("homework.Reaction", author=api.user, answer=answer)
+
+    with django_assert_num_queries(7):
         api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
 

@@ -47,6 +47,8 @@ dependencies = [
 
     "httpx[http2]",
     "stripe",
+
+    "emoji",
 ]
 
 

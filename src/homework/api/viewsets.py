@@ -1,19 +1,28 @@
 from rest_framework.exceptions import MethodNotAllowed
+from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 
+from django.db.models import QuerySet
+from django.utils.functional import cached_property
+
 from app.api.mixins import DisablePaginationWithQueryParamMixin
 from app.viewsets import AppViewSet
+from app.viewsets import CreateDeleteAppViewSet
 from homework.api.filtersets import AnswerFilterSet
 from homework.api.permissions import MayChangeAnswerOnlyForLimitedTime
-from homework.api.permissions import ShouldBeAnswerAuthorOrReadOnly
+from homework.api.permissions import ShouldBeAuthorOrReadOnly
 from homework.api.permissions import ShouldHavePurchasedQuestionCoursePermission
 from homework.api.serializers import AnswerCreateSerializer
 from homework.api.serializers import AnswerDetailedSerializer
+from homework.api.serializers import ReactionCreateSerializer
+from homework.api.serializers import ReactionDetailedSerializer
 from homework.models import Answer
 from homework.models import AnswerAccessLogEntry
 from homework.models.answer import AnswerQuerySet
+from homework.models.reaction import Reaction
+from homework.services import ReactionCreator
 
 
 class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
@@ -26,7 +35,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
 
     lookup_field = "slug"
     permission_classes = [
-        IsAuthenticated & ShouldHavePurchasedQuestionCoursePermission & ShouldBeAnswerAuthorOrReadOnly & MayChangeAnswerOnlyForLimitedTime,
+        IsAuthenticated & ShouldHavePurchasedQuestionCoursePermission & ShouldBeAuthorOrReadOnly & MayChangeAnswerOnlyForLimitedTime,
     ]
     filterset_class = AnswerFilterSet
 
@@ -58,7 +67,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
         queryset = self.limit_queryset_to_user(queryset)  # type: ignore
         queryset = self.limit_queryset_for_list(queryset)
 
-        return queryset.with_children_count().order_by("created")
+        return queryset.with_children_count().order_by("created").prefetch_reactions()
 
     def limit_queryset_to_user(self, queryset: AnswerQuerySet) -> AnswerQuerySet:
         if self.action != "retrieve":
@@ -87,3 +96,30 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
                     user=self.request.user,
                     answer=answer,
                 )
+
+
+class ReactionViewSet(CreateDeleteAppViewSet):
+    queryset = Reaction.objects.for_viewset()
+    serializer_class = ReactionDetailedSerializer
+    serializer_action_classes = {
+        "create": ReactionCreateSerializer,
+    }
+    permission_classes = [IsAuthenticated & ShouldBeAuthorOrReadOnly]
+
+    lookup_field = "slug"
+
+    def create(self, request: Request, *args, **kwargs) -> Response:
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data.copy()
+        reaction = ReactionCreator(emoji=data.get("emoji"), author=self.request.user, answer=self.answer)()  # type: ignore
+
+        Serializer = self.get_serializer_class(action="retrieve")
+        return Response(Serializer(reaction).data, status=201)
+
+    def get_queryset(self) -> QuerySet[Reaction]:
+        return super().get_queryset().filter(answer=self.answer)
+
+    @cached_property
+    def answer(self) -> Answer:
+        return get_object_or_404(Answer, slug=self.kwargs.get("answer_slug"))

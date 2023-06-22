@@ -7,6 +7,7 @@ from tree_queries.query import TreeQuerySet
 
 from django.conf import settings
 from django.db.models import Count
+from django.db.models import Prefetch
 from django.db.models import Q
 from django.db.models.query_utils import FilteredRelation
 from django.utils.translation import gettext_lazy as _
@@ -14,6 +15,7 @@ from django.utils.translation import gettext_lazy as _
 from app.markdown import markdownify
 from app.markdown import remove_html
 from app.models import models
+from homework.models.reaction import Reaction
 from orders.models import Order
 from products.models import Course
 from users.models import User
@@ -22,6 +24,13 @@ from users.models import User
 class AnswerQuerySet(TreeQuerySet):
     def for_viewset(self) -> "AnswerQuerySet":
         return self.with_tree_fields().select_related("author", "question")
+
+    def prefetch_reactions(self) -> "AnswerQuerySet":
+        """
+        Must be called after all other queryset methods if needed with allowed_for_user method
+        due to iterator() usage in allowed_for_user
+        """
+        return self.prefetch_related(Prefetch("reactions", queryset=Reaction.objects.for_viewset()))
 
     def accessed_by(self, user) -> "AnswerQuerySet":
         return (

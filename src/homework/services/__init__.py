@@ -6,4 +6,7 @@ __all__ = [
     "AnswerCrossCheckDispatcher",
     "NewAnswerNotifier",
     "QuestionCrossCheckDispatcher",
+    "ReactionCreator",
 ]
+
+from homework.services.reaction_creator import ReactionCreator
