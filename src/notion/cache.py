@@ -1,12 +1,14 @@
 from typing import Callable
 
-from django.core.cache import cache
+from django.core.cache import caches
+from django.utils.connection import ConnectionProxy
 
 from app.current_user import get_current_user
 from notion.client import NotionClient
 from notion.page import NotionPage
 
 TIMEOUT = 60 * 60 * 24 * 14  # 14 days
+cache: ConnectionProxy = caches["notion"]
 
 
 def cache_key(page_id: str) -> str:

@@ -3,6 +3,7 @@ import pytest
 from pytest_httpx import HTTPXMock
 
 from django.core.cache import cache
+from django.core.cache import caches
 
 from app.test.api_client import DRFClient
 
@@ -74,12 +75,20 @@ def test_request_is_cached(api, httpx_mock: HTTPXMock):
     assert len(httpx_mock.get_requests()) == 1
 
 
-def test_request_is_cached_in_django_cache(api, httpx_mock: HTTPXMock):
+def test_request_is_cached_in_django_notion_cache(api, httpx_mock: HTTPXMock):
+    api.get("/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/")
+    caches["notion"].clear()
+    api.get("/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/")
+
+    assert len(httpx_mock.get_requests()) == 2
+
+
+def test_request_remains_cached_if_clear_default_django_cache(api, httpx_mock: HTTPXMock):
     api.get("/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/")
     cache.clear()
     api.get("/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/")
 
-    assert len(httpx_mock.get_requests()) == 2
+    assert len(httpx_mock.get_requests()) == 1
 
 
 def test_staff_request_returns_uncached_page(api, as_staff, httpx_mock: HTTPXMock):
