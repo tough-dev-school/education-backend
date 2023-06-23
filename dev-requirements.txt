@@ -106,6 +106,7 @@ django==4.1.9
     #   django-debug-toolbar
     #   django-filter
     #   django-healthchecks
+    #   django-picklefield
     #   django-prettyjson
     #   django-storages
     #   django-stubs
@@ -138,6 +139,8 @@ django-ipware==4.0.2
     # via
     #   drf-recaptcha
     #   education-backend (pyproject.toml)
+django-picklefield==3.1
+    # via education-backend (pyproject.toml)
 django-prettyjson==0.4.1
     # via education-backend (pyproject.toml)
 django-split-settings==1.2.0
