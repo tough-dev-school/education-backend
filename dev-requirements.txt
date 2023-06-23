@@ -357,7 +357,7 @@ pyjwt[crypto]==2.7.0
     #   education-backend (pyproject.toml)
 pyrsistent==0.19.3
     # via jsonschema
-pytest==7.3.2
+pytest==7.4.0
     # via
     #   pytest-cov
     #   pytest-deadfixtures
