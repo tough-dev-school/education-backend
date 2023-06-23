@@ -83,7 +83,7 @@ class MaterialFile(TimestampedModel):
         return self.file.url
 
 
-class NotionCache(models.Model):
+class NotionCacheEntry(models.Model):
     """
     Utility model for deploying notion cache
     Generated from SQL via createcachetable command
