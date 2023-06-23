@@ -2,7 +2,7 @@ from app.conf.environ import env
 
 NOTION_CACHE = {
     "BACKEND": "django.core.cache.backends.db.DatabaseCache",
-    "LOCATION": "notion_cache_table",
+    "LOCATION": "notion_notioncacheentry",
 }
 
 if env("NO_CACHE", cast=bool, default=False):

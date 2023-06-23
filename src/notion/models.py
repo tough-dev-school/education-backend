@@ -93,13 +93,7 @@ class NotionCacheEntry(models.Model):
 
     cache_key = models.CharField(max_length=255, primary_key=True)
     value = models.TextField()
-    expires = models.DateTimeField()
-
-    class Meta:
-        db_table = "notion_cache_table"
-        indexes = [
-            models.Index(fields=["expires"], name="notion_cache_table_expires"),
-        ]
+    expires = models.DateTimeField(db_index=True)
 
     def __str__(self):
         return self.cache_key
