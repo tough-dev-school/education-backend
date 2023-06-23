@@ -81,3 +81,25 @@ class MaterialFile(TimestampedModel):
 
     def get_absolute_url(self) -> str:
         return self.file.url
+
+
+class NotionCache(models.Model):
+    """
+    Utility model for deploying notion cache
+    Generated from SQL via createcachetable command
+
+    DO NOT MAKE ANY CHANGES
+    """
+
+    cache_key = models.CharField(max_length=255, primary_key=True)
+    value = models.TextField()
+    expires = models.DateTimeField()
+
+    class Meta:
+        db_table = "notion_cache_table"
+        indexes = [
+            models.Index(fields=["expires"], name="notion_cache_table_expires"),
+        ]
+
+    def __str__(self):
+        return self.cache_key
