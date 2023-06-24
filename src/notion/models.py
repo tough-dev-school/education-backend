@@ -3,8 +3,6 @@ from typing import Optional  # NOQA: I251
 from urllib.parse import urljoin
 import uuid
 
-from picklefield import PickledObjectField
-
 from django.apps import apps
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -88,7 +86,7 @@ class MaterialFile(TimestampedModel):
 class NotionCacheEntry(TimestampedModel):
 
     cache_key = models.CharField(max_length=255, unique=True, db_index=True)
-    content = PickledObjectField()
+    content = models.JSONField()
     expires = models.DateTimeField(db_index=True)
 
     def __str__(self):

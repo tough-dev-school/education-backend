@@ -18,19 +18,20 @@ class NotionCache:
 
     def set(self, cache_key: str, content: NotionPage | Callable[[], NotionPage], timeout: int = TIMEOUT) -> None:
         expires_datetime = self.get_expires_time(timeout)
-        content = self.get_content(content)
-        self.cache.update_or_create(cache_key=cache_key, defaults=dict(content=content, expires=expires_datetime))
+        content = self.content_as_notion_page(content)
+        content_to_save = self.notion_page_to_dict(content)
+        self.cache.update_or_create(cache_key=cache_key, defaults=dict(content=content_to_save, expires=expires_datetime))
 
     def get(self, cache_key) -> NotionPage | None:
         cache_entry = self._get(cache_key)
         if cache_entry:
-            return cache_entry.content
+            return self.dict_to_notion_page(cache_entry.content)
 
     def get_or_set(self, cache_key: str, content: NotionPage | Callable[[], NotionPage], timeout: int = TIMEOUT) -> NotionPage:
         cache_entry = self._get(cache_key)
         if cache_entry:
-            return cache_entry.content
-        content = self.get_content(content)
+            return self.dict_to_notion_page(cache_entry.content)
+        content = self.content_as_notion_page(content)
         self.set(cache_key, content, timeout)
         return content
 
@@ -53,8 +54,16 @@ class NotionCache:
         return timezone.now() + timedelta(seconds=timeout)
 
     @classmethod
-    def get_content(cls, content: NotionPage | Callable[[], NotionPage]) -> NotionPage:
+    def content_as_notion_page(cls, content: NotionPage | Callable[[], NotionPage]) -> NotionPage:
         return content() if callable(content) else content
+
+    @classmethod
+    def notion_page_to_dict(cls, content: NotionPage) -> dict:
+        return content.as_dict()
+
+    @classmethod
+    def dict_to_notion_page(cls, content: dict) -> NotionPage:
+        return NotionPage.from_dict(content)
 
 
 cache = NotionCache()

@@ -13,6 +13,13 @@ class NotionBlock:
     id: BlockId
     data: BlockData
 
+    def as_dict(self) -> dict:
+        return {"id": self.id, "data": self.data}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "NotionBlock":
+        return cls(id=data["id"], data=data["data"])
+
     def get_data(self) -> BlockData:
         return rewrite(self.data)
 
@@ -30,6 +37,11 @@ class NotionBlock:
 
 
 class NotionBlockList(UserList[NotionBlock]):
+    @classmethod
+    def from_dict(cls, data: dict) -> "NotionBlockList":
+        blocks = [NotionBlock.from_dict(block_dict) for block_dict in data]
+        return cls(blocks)
+
     @classmethod
     def from_api_response(cls, api_response: dict[str, BlockData]) -> "NotionBlockList":
         instance = cls()

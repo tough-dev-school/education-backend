@@ -10,7 +10,6 @@ dependencies = [
     "django-ipware",
     "django-split-settings",
     "django-tree-queries",
-    "django-picklefield",
     "django-cachalot",
     "django-prettyjson",
     "whitenoise",
