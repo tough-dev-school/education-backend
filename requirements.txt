@@ -179,7 +179,7 @@ pytz==2023.3
     #   djangorestframework
 pyyaml==6.0
     # via drf-spectacular
-redis==4.5.5
+redis==4.6.0
     # via education-backend (pyproject.toml)
 requests==2.31.0
     # via
