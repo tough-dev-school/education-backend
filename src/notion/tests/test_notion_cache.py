@@ -81,10 +81,11 @@ def expired_cache_entry(cache_entry, expired_datetime):
     return cache_entry
 
 
-def test_set(cache, page):
+def test_set(cache, page, page_as_dict):
     cache.set("some_key", page)
 
-    assert NotionCacheEntry.objects.count() == 1
+    cache_entry = NotionCacheEntry.objects.get()
+    assert cache_entry.content == page_as_dict
 
 
 def test_set_callable(cache, page_as_dict, page_from_callable):
