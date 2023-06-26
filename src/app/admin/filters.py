@@ -1,5 +1,12 @@
+from typing import Any
+
+from rest_framework.request import Request
+
 from django.contrib import admin
+from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
+
+from app.admin import ModelAdmin
 
 
 class BooleanFilter(admin.SimpleListFilter):
@@ -16,36 +23,36 @@ class BooleanFilter(admin.SimpleListFilter):
                 return queryset.filter(classes__isnull=True)
     """
 
-    def lookups(self, request, model_admin):
-        return (
+    def lookups(self, request: Request, model_admin: ModelAdmin) -> list[tuple[Any, str]]:
+        return [
             ("t", _("Yes")),
             ("f", _("No")),
-        )
+        ]
 
-    def queryset(self, request, queryset):
+    def queryset(self, request: Request, queryset: QuerySet) -> QuerySet:
         if not self.value():
             return queryset
 
         if self.value() == "t":
-            return self.t(request, queryset)
+            return self.t(request, queryset)  # type: ignore
 
-        return self.f(request, queryset)
+        return self.f(request, queryset)  # type: ignore
 
 
 class DefaultTrueBooleanFilter(BooleanFilter):
-    def queryset(self, request, queryset):
+    def queryset(self, request: Request, queryset: QuerySet) -> QuerySet:
         if not self.value() or self.value() == "t":
-            return self.t(request, queryset)
+            return self.t(request, queryset)  # type: ignore
 
-        return self.f(request, queryset)
+        return self.f(request, queryset)  # type: ignore
 
 
 class DefaultFalseBooleanFilter(BooleanFilter):
-    def queryset(self, request, queryset):
+    def queryset(self, request: Request, queryset: QuerySet) -> QuerySet:
         if not self.value() or self.value() == "f":
-            return self.f(request, queryset)
+            return self.f(request, queryset)  # type: ignore
 
-        return self.t(request, queryset)
+        return self.t(request, queryset)  # type: ignore
 
 
 __all__ = [

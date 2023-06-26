@@ -45,7 +45,7 @@ class PurchaseSerializer(serializers.Serializer):
         ]
 
     @classmethod
-    def _validate(cls, input: dict):
+    def _validate(cls, input: dict) -> None:
         instance = cls(data=input)
         instance.is_valid(raise_exception=True)
 

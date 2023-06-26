@@ -43,26 +43,26 @@ class Shippable(TimestampedModel):
     class Meta:
         abstract = True
 
-    def get_price_display(self):
+    def get_price_display(self) -> str:
         return format_price(self.price)
 
-    def get_old_price_display(self):
-        return format_price(self.old_price)
+    def get_old_price_display(self) -> str:
+        return format_price(self.old_price)  # type: ignore
 
-    def get_formatted_price_display(self):
-        return format_old_price(self.old_price, self.price)
+    def get_formatted_price_display(self) -> str:
+        return format_old_price(self.old_price, self.price)  # type: ignore
 
-    def ship(self, to: User, order: "Order"):
+    def ship(self, to: User, order: "Order") -> None:
         return ShipmentFactory.ship(self, to=to, order=order)
 
-    def unship(self, order: "Order"):
+    def unship(self, order: "Order") -> None:
         return ShipmentFactory.unship(order=order)
 
-    def get_price(self, promocode=None) -> Decimal:
+    def get_price(self, promocode: str | None = None) -> Decimal:
         promocode = apps.get_model("orders.PromoCode").objects.get_or_nothing(name=promocode)
 
         if promocode is not None:
-            return promocode.apply(self)
+            return promocode.apply(self)  # type: ignore
 
         return self.price
 

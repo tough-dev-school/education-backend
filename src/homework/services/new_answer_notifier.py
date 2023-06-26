@@ -12,11 +12,11 @@ from users.models import User
 class NewAnswerNotifier(BaseService):
     answer: Answer
 
-    def act(self):
+    def act(self) -> None:
         for user_to_notify in self.get_users_to_notify().iterator():
             self.send_mail_to_user(user_to_notify)
 
-    def send_mail_to_user(self, user: User):
+    def send_mail_to_user(self, user: User) -> None:
         send_mail.delay(
             to=user.email,
             template_id="new-answer-notification",

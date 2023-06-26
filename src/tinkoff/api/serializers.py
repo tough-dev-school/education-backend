@@ -38,7 +38,7 @@ class PaymentNotificationSerializer(serializers.ModelSerializer):
             "ExpDate",
         ]
 
-    def validate_Amount(self, validated_data):
+    def validate_Amount(self, validated_data: int) -> float:
         return validated_data / 100
 
 

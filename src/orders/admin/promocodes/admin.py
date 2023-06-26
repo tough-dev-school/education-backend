@@ -1,3 +1,6 @@
+from rest_framework.request import Request
+
+from django.db.models import QuerySet
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
@@ -6,16 +9,17 @@ from app.admin import ModelAdmin
 from app.admin.filters import DefaultTrueBooleanFilter
 from orders.admin.promocodes import actions
 from orders.models import PromoCode
+from orders.models.promocode import PromoCodeQuerySet
 
 
 class PromodeActiveFilter(DefaultTrueBooleanFilter):
     title = _("Active")
     parameter_name = "is_active"
 
-    def t(self, request, queryset):
+    def t(self, request: Request, queryset: PromoCodeQuerySet) -> QuerySet:
         return queryset.active()
 
-    def f(self, request, queryset):
+    def f(self, request: Request, queryset: PromoCodeQuerySet) -> QuerySet:
         return queryset.exclude(
             pk__in=queryset.active().values_list("pk"),
         )
@@ -46,8 +50,8 @@ class PromoCodeAdmin(ModelAdmin):
 
     actions = [actions.deactivate]
 
-    def get_queryset(self, request):
-        return super().get_queryset(request).with_order_count()
+    def get_queryset(self, request: Request) -> QuerySet:  # type: ignore
+        return super().get_queryset(request).with_order_count()  # type: ignore
 
     @admin.display(description=_("Order count"), ordering="order_count")
     def order_count(self, obj: PromoCode | None = None) -> str:

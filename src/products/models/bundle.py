@@ -1,4 +1,4 @@
-from typing import Generator
+from typing import Any, Generator
 
 from django.utils.translation import gettext_lazy as _
 
@@ -20,10 +20,10 @@ class Bundle(Shippable):
         yield from self.records.iterator()
         yield from self.courses.iterator()
 
-    def ship(self, *args, **kwargs):
+    def ship(self, *args: Any, **kwargs: dict[str, Any]) -> None:  # type: ignore
         for item in self.iterate_bundled_items():
-            item.ship(*args, **kwargs)
+            item.ship(*args, **kwargs)  # type: ignore
 
-    def unship(self, *args, **kwargs):
+    def unship(self, *args: Any, **kwargs: dict[str, Any]) -> None:
         for item in self.iterate_bundled_items():
-            item.unship(*args, **kwargs)
+            item.unship(*args, **kwargs)  # type: ignore

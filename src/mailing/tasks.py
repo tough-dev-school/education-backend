@@ -12,7 +12,7 @@ from mailing.owl import Owl
     },
     acks_late=True,
 )
-def send_mail(to: str, template_id: str, subject: str | None = "", ctx: dict | None = None, disable_antispam: bool | None = False):
+def send_mail(to: str, template_id: str, subject: str | None = "", ctx: dict | None = None, disable_antispam: bool | None = False) -> None:
     Owl(
         to=to,
         template_id=template_id,

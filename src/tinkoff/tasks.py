@@ -14,7 +14,7 @@ from tinkoff.dolyame import DolyameRequestException
         "countdown": 5,
     },
 )
-def commit_dolyame_order(order_id: int, idempotency_key: str):
+def commit_dolyame_order(order_id: int, idempotency_key: str) -> None:
     dolyame = Dolyame(
         order=Order.objects.get(pk=order_id),
         idempotency_key=idempotency_key,
@@ -31,7 +31,7 @@ def commit_dolyame_order(order_id: int, idempotency_key: str):
         "countdown": 5,
     },
 )
-def refund_dolyame_order(order_id: int, idempotency_key: str):
+def refund_dolyame_order(order_id: int, idempotency_key: str) -> None:
     dolyame = Dolyame(
         order=Order.objects.get(pk=order_id),
         idempotency_key=idempotency_key,

@@ -1,3 +1,5 @@
+from typing import Any
+
 import boto3
 from botocore.client import Config
 
@@ -9,7 +11,7 @@ class AppS3:
     """App-specific methods for directly calling s3 API"""
 
     @cached_property
-    def client(self):
+    def client(self) -> Any:
         session = boto3.session.Session()
         return session.client(
             "s3",
@@ -20,7 +22,7 @@ class AppS3:
             config=Config(signature_version="s3"),
         )
 
-    def get_presigned_url(self, object_id: str, expires: int):
+    def get_presigned_url(self, object_id: str, expires: int) -> Any:
         return self.client.generate_presigned_url(
             ClientMethod="get_object",
             Params={

@@ -32,7 +32,7 @@ class AnswerQuerySet(TreeQuerySet):
         """
         return self.prefetch_related(Prefetch("reactions", queryset=Reaction.objects.for_viewset()))
 
-    def accessed_by(self, user) -> "AnswerQuerySet":
+    def accessed_by(self, user: User) -> "AnswerQuerySet":
         return (
             self.with_tree_fields()
             .annotate(

@@ -40,7 +40,7 @@ class DiplomaRetrieveSerializer(serializers.ModelSerializer):
             "other_languages",
         ]
 
-    def get_other_languages(self, diploma):
+    def get_other_languages(self, diploma: Diploma) -> dict:
         return DiplomaSerializer(diploma.get_other_languages(), many=True).data
 
 
@@ -57,7 +57,7 @@ class DiplomaCreateSerializer(serializers.ModelSerializer):
             "image",
         ]
 
-    def create(self, validated_data):
+    def create(self, validated_data: dict) -> Diploma:
         validated_study_data = validated_data.pop("study")
 
         validated_data["study"] = self.get_study(
@@ -68,7 +68,7 @@ class DiplomaCreateSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
     @staticmethod
-    def get_study(student_id, course_id):
+    def get_study(student_id: str, course_id: str) -> Study | None:
         try:
             return Study.objects.get(student__id=student_id, course_id=course_id)
         except Study.DoesNotExist:

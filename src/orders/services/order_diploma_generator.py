@@ -15,7 +15,7 @@ from users.models import User
 class OrderDiplomaGenerator(BaseService):
     order: Order
 
-    def act(self):
+    def act(self) -> None:
         for language in self.get_available_languages():
             generate_diploma.delay(
                 student_id=self.student.id,

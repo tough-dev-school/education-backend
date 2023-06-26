@@ -13,7 +13,7 @@ from app.integrations.dashamail import DashamailException
     },
     rate_limit="1/s",
 )
-def subscribe_to_dashamail(list_id: str, email: str, first_name: str, last_name: str, tags: list[str] | None):
+def subscribe_to_dashamail(list_id: str, email: str, first_name: str, last_name: str, tags: list[str] | None) -> None:
     dashamail = AppDashamail()
 
     dashamail.subscribe_user(

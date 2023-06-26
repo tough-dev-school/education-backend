@@ -20,5 +20,5 @@ class Study(TimestampedModel):
             UniqueConstraint(fields=["student", "course"], name="unique_student_course_study"),
         ]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.student} / {self.course}"

@@ -1,6 +1,9 @@
 from datetime import timedelta
+from typing import Any
 
 from rest_framework import permissions
+from rest_framework.request import Request
+from rest_framework.views import APIView
 
 from django.conf import settings
 from django.utils import timezone
@@ -17,7 +20,7 @@ def get_all_purcased_user_ids(question: Question) -> frozenset[int]:
 
 
 class ShouldHavePurchasedCoursePermission(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj) -> bool:
+    def has_object_permission(self, request: Request, view: APIView, obj: Any) -> bool:
         return (
             request.user.has_perm("homework.see_all_questions")
             or settings.DISABLE_HOMEWORK_PERMISSIONS_CHECKING
@@ -26,7 +29,7 @@ class ShouldHavePurchasedCoursePermission(permissions.BasePermission):
 
 
 class ShouldHavePurchasedQuestionCoursePermission(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj) -> bool:
+    def has_object_permission(self, request: Request, view: APIView, obj: Any) -> bool:
         return (
             request.user.has_perm("homework.see_all_questions")
             or settings.DISABLE_HOMEWORK_PERMISSIONS_CHECKING
@@ -35,7 +38,7 @@ class ShouldHavePurchasedQuestionCoursePermission(permissions.BasePermission):
 
 
 class ShouldBeAuthorOrReadOnly(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj) -> bool:
+    def has_object_permission(self, request: Request, view: APIView, obj: Any) -> bool:
         if request.method in permissions.SAFE_METHODS:
             return True
 
@@ -46,7 +49,7 @@ class ShouldBeAuthorOrReadOnly(permissions.BasePermission):
 
 
 class MayChangeAnswerOnlyForLimitedTime(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj) -> bool:
+    def has_object_permission(self, request: Request, view: APIView, obj: Any) -> bool:
         if request.method in permissions.SAFE_METHODS:
             return True
 

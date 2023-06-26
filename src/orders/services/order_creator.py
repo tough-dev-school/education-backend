@@ -39,7 +39,7 @@ class OrderCreator(BaseService):
     gift_message: str | None = None
     desired_bank: str | None = None
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self.price = self.price if self.price is not None else self.item.get_price(promocode=self.promocode)
         self.promocode = self._get_promocode(self.promocode)
         self.desired_shipment_date = self.make_datetime_aware(self.desired_shipment_date)

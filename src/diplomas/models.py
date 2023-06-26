@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING
 from urllib.parse import urljoin
 
 import shortuuid
@@ -13,6 +14,9 @@ from app.models import models
 from app.models import TimestampedModel
 from mailing.tasks import send_mail
 
+if TYPE_CHECKING:
+    from users.models import User
+
 
 class Languages(models.TextChoices):
     RU = "RU", _("Russian")
@@ -20,10 +24,10 @@ class Languages(models.TextChoices):
 
 
 class DiplomaQuerySet(models.QuerySet):
-    def for_viewset(self):
+    def for_viewset(self) -> "DiplomaQuerySet":
         return self.select_related("study", "study__student", "study__course")
 
-    def for_user(self, user):
+    def for_user(self, user: "User") -> "DiplomaQuerySet":
         return self.filter(study__student=user)
 
     def filter_with_template(self) -> "DiplomaQuerySet":
@@ -75,7 +79,7 @@ class Diploma(TimestampedModel):
     def get_absolute_url(self) -> str:
         return urljoin(settings.DIPLOMA_FRONTEND_URL, f"/{self.slug}/")
 
-    def send_to_student(self):
+    def send_to_student(self) -> None:
         send_mail.delay(
             to=self.study.student.email,
             template_id="new-diploma",

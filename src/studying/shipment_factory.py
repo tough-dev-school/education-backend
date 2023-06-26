@@ -19,8 +19,8 @@ class ShipmentAlgorithmNotFound(Exception):
     pass
 
 
-def register(model: "ProductType"):
-    def decorator(klass):
+def register(model: "ProductType"):  # type: ignore
+    def decorator(klass):  # type: ignore
         _registry[model] = klass
 
         return klass
@@ -36,7 +36,7 @@ def get(item: "Product") -> Type["BaseShipment"]:
     return klass
 
 
-def ship(item, to: "User", order: "Order") -> None:
+def ship(item: "Product", to: "User", order: "Order") -> None:
     Shipment = get(item)
 
     Shipment(user=to, product=item, order=order)()
