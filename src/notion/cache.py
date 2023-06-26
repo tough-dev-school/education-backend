@@ -13,11 +13,12 @@ TIMEOUT = 60 * 60 * 24 * 14  # 14 days
 
 
 class NotionCache:
-    def set(self, cache_key: str, content: NotionPage | Callable[[], NotionPage]) -> None:
+    def set(self, cache_key: str, content: NotionPage | Callable[[], NotionPage]) -> NotionPage:
         expires_datetime = self.get_expires_time()
         content = self.get_content_as_notion_page(content)
         content_to_save = content.to_json()
         NotionCacheEntry.objects.update_or_create(cache_key=cache_key, defaults=dict(content=content_to_save, expires=expires_datetime))
+        return content
 
     def get(self, cache_key: str) -> NotionPage | None:
         cache_entry = self._get(cache_key)
@@ -28,18 +29,11 @@ class NotionCache:
         cache_entry = self._get(cache_key)
         if cache_entry:
             return NotionPage.from_json(cache_entry.content)
-        content = self.get_content_as_notion_page(content)
-        self.set(cache_key, content)
-        return content
+        return self.set(cache_key, content)
 
     @staticmethod
     def _get(cache_key: str) -> NotionCacheEntry | None:
-        cache_entry = NotionCacheEntry.objects.filter(cache_key=cache_key).first()
-        if not cache_entry:
-            return None
-        if cache_entry.expires < timezone.now():
-            return None
-        return cache_entry
+        return NotionCacheEntry.objects.not_expired().filter(cache_key=cache_key).first()
 
     @staticmethod
     def get_content_as_notion_page(content: NotionPage | Callable[[], NotionPage]) -> NotionPage:

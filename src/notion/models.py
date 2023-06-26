@@ -9,6 +9,7 @@ from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.db.models import QuerySet
 from django.db.models import UniqueConstraint
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from app.models import models
@@ -83,7 +84,17 @@ class MaterialFile(TimestampedModel):
         return self.file.url
 
 
+class NotionCacheEntryQuerySet(QuerySet):
+    def not_expired(self) -> "NotionCacheEntryQuerySet":
+        time_now = timezone.now()
+        return self.filter(expires__gt=time_now)
+
+
+NotionCacheEntryManager = models.Manager.from_queryset(NotionCacheEntryQuerySet)
+
+
 class NotionCacheEntry(TimestampedModel):
+    objects = NotionCacheEntryManager()
 
     cache_key = models.CharField(max_length=255, unique=True, db_index=True)
     content = models.JSONField()

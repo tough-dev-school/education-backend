@@ -1,5 +1,6 @@
 from datetime import timedelta
 import pytest
+from unittest.mock import MagicMock
 
 from django.utils import timezone
 
@@ -52,10 +53,7 @@ def another_page() -> NotionPage:
 
 @pytest.fixture
 def page_from_callable(page):
-    def get_page():
-        return page
-
-    return get_page
+    return MagicMock(return_value=page)
 
 
 @pytest.fixture
@@ -117,11 +115,12 @@ def test_set_and_get(cache, page):
     assert got == page
 
 
-def test_get_or_set_get_if_exists_and_not_expired(cache, another_page, page, cache_entry):
-    got = cache.get_or_set(cache_entry.cache_key, content=another_page)
+def test_get_or_set_get_if_exists_and_not_expired(cache, page, cache_entry, page_from_callable):
+    got = cache.get_or_set(cache_entry.cache_key, content=page_from_callable)
 
-    assert got != another_page
+    page_from_callable.assert_not_called()
     assert got == page
+    assert got != page_from_callable
 
 
 def test_get_or_set_set_if_expired(cache, another_page, expired_cache_entry):
