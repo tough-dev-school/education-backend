@@ -1,6 +1,5 @@
 from datetime import timedelta
 import pytest
-from unittest.mock import MagicMock
 
 from django.utils import timezone
 
@@ -52,8 +51,8 @@ def another_page() -> NotionPage:
 
 
 @pytest.fixture
-def page_from_callable(page):
-    return MagicMock(return_value=page)
+def page_from_callable(page, mocker):
+    return mocker.MagicMock(return_value=page)
 
 
 @pytest.fixture
