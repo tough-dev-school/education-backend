@@ -11,12 +11,12 @@ from notion.exceptions import NotSharedForWeb
 class NotionPage:
     blocks: NotionBlockList
 
-    def as_dict(self) -> dict:
-        return {"blocks": [block.as_dict() for block in self.blocks]}
+    def to_json(self) -> dict:
+        return {"blocks": [block.to_json() for block in self.blocks]}
 
     @classmethod
-    def from_dict(cls, data: dict) -> "NotionPage":
-        blocks = NotionBlockList([NotionBlock.from_dict(block_dict) for block_dict in data["blocks"]])
+    def from_json(cls, data: dict) -> "NotionPage":
+        blocks = NotionBlockList([NotionBlock.from_json(block_dict) for block_dict in data["blocks"]])
         return cls(blocks=blocks)
 
     @classmethod

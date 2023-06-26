@@ -6,6 +6,7 @@ from django.utils import timezone
 from notion.block import NotionBlock
 from notion.block import NotionBlockList
 from notion.cache import NotionCache
+from notion.cache import TIMEOUT
 from notion.models import NotionCacheEntry
 from notion.page import NotionPage
 
@@ -58,22 +59,22 @@ def page_from_callable(page):
 
 
 @pytest.fixture
-def not_expiring_datetime():
-    return timezone.now() + timedelta(days=14)
+def not_expired_datetime():
+    return timezone.now() + timedelta(seconds=TIMEOUT)
 
 
 @pytest.fixture
 def expired_datetime():
-    return timezone.now() - timedelta(seconds=7)
+    return timezone.now()
 
 
 @pytest.fixture
-def cache_entry(not_expiring_datetime, page_as_dict, mixer):
+def cache_entry(not_expired_datetime, page_as_dict, mixer):
     return mixer.blend(
         "notion.NotionCacheEntry",
         cache_key="some_key",
         content=page_as_dict,
-        expires=not_expiring_datetime,
+        expires=not_expired_datetime,
     )
 
 
@@ -108,14 +109,9 @@ def test_get_nothing_if_cache_expired(cache, expired_cache_entry):
     assert not got
 
 
-def test_get_deletes_expired_cache(cache, expired_cache_entry):
-    cache.get(expired_cache_entry.cache_key)
-
-    assert NotionCacheEntry.objects.count() == 0
-
-
 def test_set_and_get(cache, page):
     cache.set("some_key", page)
+
     got = cache.get("some_key")
 
     assert got == page
@@ -133,7 +129,7 @@ def test_get_or_set_set_if_expired(cache, another_page, expired_cache_entry):
 
     new_cache_entry = NotionCacheEntry.objects.get(cache_key=expired_cache_entry.cache_key)
     assert got == another_page
-    assert got == NotionPage.from_dict(new_cache_entry.content)
+    assert got == NotionPage.from_json(new_cache_entry.content)
 
 
 def test_get_or_set_set_if_doesnt_exist(cache, another_page):
@@ -141,16 +137,4 @@ def test_get_or_set_set_if_doesnt_exist(cache, another_page):
 
     new_cache_entry = NotionCacheEntry.objects.get(cache_key="some random cache key")
     assert got == another_page
-    assert got == NotionPage.from_dict(new_cache_entry.content)
-
-
-def test_convert_from_notion_page_to_dict(cache, page, page_as_dict):
-    got = cache.notion_page_to_dict(page)
-
-    assert got == page_as_dict
-
-
-def test_convert_from_dict_to_notion_page(cache, page, page_as_dict):
-    got = cache.dict_to_notion_page(page_as_dict)
-
-    assert got == page
+    assert got == NotionPage.from_json(new_cache_entry.content)

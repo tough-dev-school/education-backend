@@ -13,11 +13,11 @@ class NotionBlock:
     id: BlockId
     data: BlockData
 
-    def as_dict(self) -> dict:
+    def to_json(self) -> dict:
         return {"id": self.id, "data": self.data}
 
     @classmethod
-    def from_dict(cls, data: dict) -> "NotionBlock":
+    def from_json(cls, data: dict) -> "NotionBlock":
         return cls(id=data["id"], data=data["data"])
 
     def get_data(self) -> BlockData:
@@ -38,8 +38,8 @@ class NotionBlock:
 
 class NotionBlockList(UserList[NotionBlock]):
     @classmethod
-    def from_dict(cls, data: dict) -> "NotionBlockList":
-        blocks = [NotionBlock.from_dict(block_dict) for block_dict in data]
+    def from_json(cls, data: dict) -> "NotionBlockList":
+        blocks = [NotionBlock.from_json(block_dict) for block_dict in data]
         return cls(blocks)
 
     @classmethod
