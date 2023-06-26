@@ -27,7 +27,7 @@ class NotionCache:
         if cache_entry:
             return self.dict_to_notion_page(cache_entry.content)
 
-    def get_or_set(self, cache_key: str, content: NotionPage | Callable[[], NotionPage], timeout: int = TIMEOUT) -> NotionPage:
+    def get_or_set(self, cache_key: str, content: NotionPage | Callable[[], NotionPage]) -> NotionPage:
         cache_entry = self._get(cache_key)
         if cache_entry:
             return self.dict_to_notion_page(cache_entry.content)
