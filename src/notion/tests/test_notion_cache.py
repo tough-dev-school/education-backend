@@ -88,11 +88,12 @@ def test_set(cache, page, page_as_dict):
     assert cache_entry.content == page_as_dict
 
 
-def test_set_callable(cache, page_as_dict, page_from_callable):
+def test_set_callable(cache, page_from_callable, page_as_dict):
     cache.set("some_key", page_from_callable)
 
     cache_entry = NotionCacheEntry.objects.get()
     assert cache_entry.content == page_as_dict
+    page_from_callable.assert_called_once()
 
 
 def test_get(cache, page, cache_entry):
