@@ -222,7 +222,7 @@ flake8-pep3101==2.0.0
     # via education-backend (pyproject.toml)
 flake8-pie==0.16.0
     # via education-backend (pyproject.toml)
-flake8-plugin-utils==1.3.2
+flake8-plugin-utils==1.3.3
     # via flake8-pytest-style
 flake8-print==5.0.0
     # via education-backend (pyproject.toml)
