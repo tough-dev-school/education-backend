@@ -2,13 +2,11 @@ import pytest
 
 from pytest_httpx import HTTPXMock
 
-from django.core.cache import cache
-
 from app.test.api_client import DRFClient
+from notion.models import NotionCacheEntry
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.single_thread,
     pytest.mark.repeat(3),
 ]
 
@@ -74,9 +72,9 @@ def test_request_is_cached(api, httpx_mock: HTTPXMock):
     assert len(httpx_mock.get_requests()) == 1
 
 
-def test_request_is_cached_in_django_cache(api, httpx_mock: HTTPXMock):
+def test_request_is_cached_in_notion_cache_model(api, httpx_mock: HTTPXMock):
     api.get("/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/")
-    cache.clear()
+    NotionCacheEntry.objects.all().delete()
     api.get("/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/")
 
     assert len(httpx_mock.get_requests()) == 2
