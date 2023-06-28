@@ -21,24 +21,6 @@ def cache():
 
 
 @pytest.fixture
-def page_as_dict(page):
-    first_block = page.blocks[0]
-    second_block = page.blocks[1]
-    return {
-        "blocks": [
-            {
-                "id": first_block.id,
-                "data": first_block.data,
-            },
-            {
-                "id": second_block.id,
-                "data": second_block.data,
-            },
-        ]
-    }
-
-
-@pytest.fixture
 def another_page() -> NotionPage:
     return NotionPage(
         blocks=NotionBlockList(
@@ -62,16 +44,6 @@ def not_expired_datetime():
 @pytest.fixture
 def expired_datetime():
     return timezone.now()
-
-
-@pytest.fixture
-def cache_entry(not_expired_datetime, page_as_dict, mixer):
-    return mixer.blend(
-        "notion.NotionCacheEntry",
-        cache_key="some_key",
-        content=page_as_dict,
-        expires=not_expired_datetime,
-    )
 
 
 @pytest.fixture

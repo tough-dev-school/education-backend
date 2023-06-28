@@ -15,11 +15,6 @@ def api(api):
 
 
 @pytest.fixture
-def course(mixer):
-    return mixer.blend("products.Course")
-
-
-@pytest.fixture
 def another_course(mixer):
     return mixer.blend("products.Course")
 

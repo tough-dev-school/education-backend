@@ -70,4 +70,5 @@ def get_cached_page(page_id: str) -> NotionPage:
 
 __all__ = [
     "get_cached_page",
+    "cache",
 ]
