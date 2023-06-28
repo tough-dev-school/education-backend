@@ -10,7 +10,7 @@ def update_cache_notion_material(page_id):
     cache.set(page_id, page)
 
 
-@celery.task
+@celery.task(rate_limit="6/m")
 def update_cache_for_all_active_notion_materials():
     page_ids = Material.objects.active().values_list("page_id", flat=True).distinct()
     for page_id in page_ids:
