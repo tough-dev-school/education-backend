@@ -12,7 +12,6 @@ from notion.page import NotionPage
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.single_thread,
 ]
 
 

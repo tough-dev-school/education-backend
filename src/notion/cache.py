@@ -41,7 +41,7 @@ class NotionCache:
 
     @staticmethod
     def get_expires_time() -> datetime:
-        return timezone.now() + timedelta(seconds=timeout)
+        return timezone.now() + timedelta(seconds=TIMEOUT)
 
 
 cache = NotionCache()

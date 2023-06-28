@@ -7,7 +7,6 @@ from notion.models import NotionCacheEntry
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.single_thread,
     pytest.mark.repeat(3),
 ]
 
