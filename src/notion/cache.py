@@ -40,7 +40,7 @@ class NotionCache:
         return content() if callable(content) else content
 
     @staticmethod
-    def get_expires_time(timeout: int = TIMEOUT) -> datetime:
+    def get_expires_time() -> datetime:
         return timezone.now() + timedelta(seconds=timeout)
 
 
