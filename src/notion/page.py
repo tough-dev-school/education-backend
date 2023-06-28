@@ -1,6 +1,7 @@
 import contextlib
 from dataclasses import dataclass
 
+from notion.block import NotionBlock
 from notion.block import NotionBlockList
 from notion.exceptions import NotionResponseError
 from notion.exceptions import NotSharedForWeb
@@ -9,6 +10,14 @@ from notion.exceptions import NotSharedForWeb
 @dataclass
 class NotionPage:
     blocks: NotionBlockList
+
+    def to_json(self) -> dict:
+        return {"blocks": [block.to_json() for block in self.blocks]}
+
+    @classmethod
+    def from_json(cls, data: dict) -> "NotionPage":
+        blocks = NotionBlockList([NotionBlock.from_json(block_dict) for block_dict in data["blocks"]])
+        return cls(blocks=blocks)
 
     @classmethod
     def from_api_response(cls, api_response: dict) -> "NotionPage":
