@@ -464,7 +464,7 @@ types-markdown==3.4.2.9
     # via
     #   djangorestframework-stubs
     #   education-backend (pyproject.toml)
-types-pillow==9.5.0.4
+types-pillow==9.5.0.5
     # via education-backend (pyproject.toml)
 types-pytz==2023.3.0.0
     # via
@@ -490,7 +490,7 @@ types-stripe==3.5.2.10
     # via education-backend (pyproject.toml)
 types-urllib3==1.26.25.13
     # via types-requests
-typing-extensions==4.6.3
+typing-extensions==4.7.0
     # via
     #   boto3-stubs
     #   django-stubs
