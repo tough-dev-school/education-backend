@@ -47,10 +47,10 @@ class Shippable(TimestampedModel):
         return format_price(self.price)
 
     def get_old_price_display(self) -> str:
-        return format_price(self.old_price)  # type: ignore
+        return format_price(self.old_price)
 
     def get_formatted_price_display(self) -> str:
-        return format_old_price(self.old_price, self.price)  # type: ignore
+        return format_old_price(self.old_price, self.price)
 
     def ship(self, to: User, order: "Order") -> None:
         return ShipmentFactory.ship(self, to=to, order=order)
@@ -59,10 +59,10 @@ class Shippable(TimestampedModel):
         return ShipmentFactory.unship(order=order)
 
     def get_price(self, promocode: str | None = None) -> Decimal:
-        promocode = apps.get_model("orders.PromoCode").objects.get_or_nothing(name=promocode)
+        promocode_obj = apps.get_model("orders.PromoCode").objects.get_or_nothing(name=promocode)
 
-        if promocode is not None:
-            return promocode.apply(self)  # type: ignore
+        if promocode_obj is not None:
+            return promocode_obj.apply(self)
 
         return self.price
 

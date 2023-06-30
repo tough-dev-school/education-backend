@@ -1,4 +1,4 @@
-from typing import Generator
+from typing import Iterator
 
 from users.models import User
 
@@ -23,7 +23,7 @@ class ZoomusUser:
     def email(self) -> str:
         return self.user.email
 
-    def __iter__(self) -> Generator[dict[str, str], None, None]:
+    def __iter__(self) -> Iterator[tuple[str, str]]:
         """Dictionary as accepted within zoom api"""
         yield from {
             "first_name": self.first_name,

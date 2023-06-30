@@ -2,7 +2,7 @@ import contextlib
 from copy import copy
 from functools import reduce
 import operator
-from typing import Any
+from typing import Any, Type
 
 from behaviors.behaviors import Timestamped  # type: ignore
 
@@ -68,11 +68,11 @@ class DefaultModel(models.Model):
         return cls._meta.label_lower.split(".")[-1]
 
     @classmethod
-    def get_foreignkey(cls, Model: models.Model) -> str | None:
+    def get_foreignkey(cls, Model: Type[models.Model]) -> str | None:
         """Given an model, returns the ForeignKey to it"""
         for field in cls._meta.get_fields():
             if isinstance(field, models.fields.related.ForeignKey):
-                if field.related_model == Model:  # type: ignore
+                if field.related_model == Model:
                     return field.name
 
     def clear_cached_properties(self) -> None:

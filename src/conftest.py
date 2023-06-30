@@ -1,5 +1,4 @@
 import pytest
-from typing import Generator
 
 from django.core.cache import cache
 
@@ -13,7 +12,7 @@ pytest_plugins = [
 
 
 @pytest.fixture(autouse=True)
-def _cache(request: pytest.FixtureRequest) -> Generator:
+def _cache(request):
     """Clear django cache after each test run."""
     yield
     cache.clear()
