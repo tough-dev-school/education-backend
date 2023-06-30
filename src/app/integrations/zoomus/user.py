@@ -23,7 +23,7 @@ class ZoomusUser:
     def email(self) -> str:
         return self.user.email
 
-    def __iter__(self) -> Generator:
+    def __iter__(self) -> Generator[dict[str, str], None, None]:
         """Dictionary as accepted within zoom api"""
         yield from {
             "first_name": self.first_name,
