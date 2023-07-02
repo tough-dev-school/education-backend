@@ -8,7 +8,7 @@ from users.models import User
 
 
 class EmailLeadCampaignQuerySet(models.QuerySet):
-    def with_lead_count(self):
+    def with_lead_count(self) -> "EmailLeadCampaignQuerySet":
         return self.annotate(lead_count=Count("leadcampaignlogentry"))
 
 
@@ -29,7 +29,7 @@ class EmailLeadMagnetCampaign(TimestampedModel):
         verbose_name = _("Email Lead Magnet Campaign")
         verbose_name_plural = _("Email Lead Magnet Campaigns")
 
-    def execute(self, user: User):
+    def execute(self, user: User) -> None:
         send_mail.delay(
             to=user.email,
             template_id=self.template_id,

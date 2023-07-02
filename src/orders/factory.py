@@ -1,8 +1,12 @@
+from typing import Any
+
 from app.test.factory import register
+from orders.models import Order
+from products.models import Product
 
 
 @register
-def order(self, is_paid: bool = False, item=None, **kwargs):
+def order(self: Any, is_paid: bool = False, item: Product | None = None, **kwargs: dict[str, Any]) -> Order:
     order = self.mixer.blend("orders.Order", **kwargs)
 
     if item is not None:

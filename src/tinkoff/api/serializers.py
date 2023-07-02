@@ -1,3 +1,4 @@
+from _decimal import Decimal
 from rest_framework import serializers
 
 from tinkoff.models import CreditNotification
@@ -38,8 +39,8 @@ class PaymentNotificationSerializer(serializers.ModelSerializer):
             "ExpDate",
         ]
 
-    def validate_Amount(self, validated_data):
-        return validated_data / 100
+    def validate_Amount(self, validated_data: int) -> Decimal:
+        return Decimal(validated_data / 100)
 
 
 class CreditNotificationSerializer(serializers.ModelSerializer):

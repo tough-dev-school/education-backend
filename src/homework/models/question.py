@@ -1,3 +1,4 @@
+from typing import Any
 from urllib.parse import urljoin
 import uuid
 
@@ -25,9 +26,9 @@ class Question(TimestampedModel):
     def get_absolute_url(self) -> str:
         return urljoin(settings.FRONTEND_URL, f"homework/question-admin/{self.slug}/")
 
-    def dispatch_crosscheck(self, **kwargs) -> int:
+    def dispatch_crosscheck(self, **kwargs: dict[str, Any]) -> int:
         from homework.services import QuestionCrossCheckDispatcher
 
-        dispatcher = QuestionCrossCheckDispatcher(question=self, **kwargs)
+        dispatcher = QuestionCrossCheckDispatcher(question=self, **kwargs)  # type: ignore
 
         return dispatcher()

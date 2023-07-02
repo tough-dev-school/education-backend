@@ -1,9 +1,12 @@
+from typing import Any
+
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import admin
 from app.admin import ModelAdmin
 from users.models import Student
+from users.models import User
 from users.services import UserCreator
 
 
@@ -20,10 +23,10 @@ class PasswordLessUserCreationForm(forms.ModelForm):
             "last_name",
         ]
 
-    def save_m2m(self, *args, **kwargs):
+    def save_m2m(self, *args: Any, **kwargs: dict[str, Any]) -> None:
         pass
 
-    def save(self, commit=True):
+    def save(self, commit: bool = True) -> User:
         return UserCreator(name=f"{self.cleaned_data['first_name']} {self.cleaned_data['last_name']}", email=self.cleaned_data["email"])()
 
 

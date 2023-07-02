@@ -15,7 +15,7 @@ class DashamailHTTP:
     def format_url(self, url: str) -> str:
         return urljoin(self.base_url, url.lstrip("&"))
 
-    def request(self, url, *, method: str, payload: dict | None = None) -> dict:
+    def request(self, url: str, *, method: str, payload: dict | None = None) -> dict:
         if payload is None:
             payload = {}
 

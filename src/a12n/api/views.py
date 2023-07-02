@@ -63,7 +63,7 @@ class ObtainJSONWebTokenViaPasswordlessToken(AnonymousAPIView):
 class ObtainJSONWebTokenViaUserId(APIView):
     permission_classes = [SuperUserOnly]
 
-    def get(self, request, user_id):
+    def get(self, request: Request, user_id: str) -> Response:
         user = get_object_or_404(User, pk=user_id)
 
         return Response(

@@ -1,7 +1,10 @@
 from ipaddress import IPv4Address
 from ipaddress import IPv4Network
+from typing import Any
 
 from rest_framework import permissions
+from rest_framework.request import Request
+from rest_framework.views import APIView
 
 
 class TinkoffCreditNetmaskPermission(permissions.BasePermission):
@@ -11,7 +14,7 @@ class TinkoffCreditNetmaskPermission(permissions.BasePermission):
 
     message = "Tinkoff Credit requests are allowed only from tinkoff network"
 
-    def has_permission(self, request, *args, **kwargs):
+    def has_permission(self, request: Request, view: APIView, *args: Any, **kwargs: dict[str, Any]) -> bool:
         sender_ip = IPv4Address(request.META["REMOTE_ADDR"])
 
         return sender_ip in IPv4Network("91.194.226.0/23")
@@ -24,7 +27,7 @@ class DolyameNetmaskPermission(permissions.BasePermission):
 
     message = "Dolyament requests are allowed only from tinkoff network"
 
-    def has_permission(self, request, *args, **kwargs):
+    def has_permission(self, request: Request, view: APIView, *args: Any, **kwargs: dict[str, Any]) -> bool:
         sender_ip = IPv4Address(request.META["REMOTE_ADDR"])
 
         return sender_ip in IPv4Network("91.194.226.0/23")

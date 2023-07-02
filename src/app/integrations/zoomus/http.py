@@ -34,12 +34,12 @@ class ZoomusClientHTTP:
         return urljoin(self.base_url, url.lstrip("/"))
 
     @property
-    def headers(self):
+    def headers(self) -> dict[str, str]:
         return {
             "Authorization": f"Bearer {self.token}",
         }
 
-    def post(self, url: str, data: dict, expected_status_code=200) -> dict:
+    def post(self, url: str, data: dict, expected_status_code: int = 200) -> dict:
         response = requests.post(
             self.format_url(url),
             timeout=TIMEOUT,
@@ -58,7 +58,7 @@ class ZoomusClientHTTP:
 
         return json
 
-    def get(self, url):
+    def get(self, url: str) -> dict:
         response = requests.get(
             self.format_url(url),
             timeout=TIMEOUT,

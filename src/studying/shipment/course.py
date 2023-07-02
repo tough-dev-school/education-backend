@@ -9,7 +9,7 @@ from studying.shipment.base import BaseShipment
 @factory.register(Course)
 class CourseShipment(BaseShipment):
     @property
-    def course(self):
+    def course(self) -> Course:
         return self.stuff_to_ship
 
     def ship(self) -> None:

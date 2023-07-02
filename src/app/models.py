@@ -2,6 +2,7 @@ import contextlib
 from copy import copy
 from functools import reduce
 import operator
+from typing import Any, Type
 
 from behaviors.behaviors import Timestamped  # type: ignore
 
@@ -25,7 +26,7 @@ class DefaultModel(models.Model):
         return ContentType.objects.get_for_model(cls)
 
     @classmethod
-    def has_field(cls, field) -> bool:
+    def has_field(cls, field: str) -> bool:
         """
         Shortcut to check if model has particular field
         """
@@ -35,19 +36,19 @@ class DefaultModel(models.Model):
         except models.FieldDoesNotExist:
             return False
 
-    def update_from_kwargs(self, **kwargs):
+    def update_from_kwargs(self, **kwargs: dict[str, Any]) -> None:
         """
         A shortcut method to update model instance from the kwargs.
         """
         for (key, value) in kwargs.items():
             setattr(self, key, value)
 
-    def setattr_and_save(self, key, value):
+    def setattr_and_save(self, key: str, value: Any) -> None:
         """Shortcut for testing -- set attribute of the model and save"""
         setattr(self, key, value)
         self.save()
 
-    def copy(self, **kwargs):
+    def copy(self, **kwargs: Any) -> "DefaultModel":
         """Creates new object from current."""
         instance = copy(self)
         kwargs.update(
@@ -67,7 +68,7 @@ class DefaultModel(models.Model):
         return cls._meta.label_lower.split(".")[-1]
 
     @classmethod
-    def get_foreignkey(cls, Model) -> str | None:
+    def get_foreignkey(cls, Model: Type[models.Model]) -> str | None:
         """Given an model, returns the ForeignKey to it"""
         for field in cls._meta.get_fields():
             if isinstance(field, models.fields.related.ForeignKey):

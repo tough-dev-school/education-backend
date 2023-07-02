@@ -1,7 +1,12 @@
+from rest_framework.request import Request
+
 from django import forms
 from django.contrib.admin import action
 from django.contrib.admin.helpers import ActionForm
+from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
+
+from app.admin import ModelAdmin
 
 
 class CourseActionForm(ActionForm):
@@ -20,7 +25,7 @@ class CourseActionForm(ActionForm):
 
 
 @action(description=_("Send email to all purchased_users"))
-def send_email_to_all_purchased_users(modeladmin, request, queryset):
+def send_email_to_all_purchased_users(modeladmin: ModelAdmin, request: Request, queryset: QuerySet) -> None:
     course_count = 0
     purchased_users_count = 0
 
@@ -34,7 +39,7 @@ def send_email_to_all_purchased_users(modeladmin, request, queryset):
 
 
 @action(description=_("Generate diplomas"))
-def generate_deplomas_for_all_purchased_users(modeladmin, request, queryset):
+def generate_deplomas_for_all_purchased_users(modeladmin: ModelAdmin, request: Request, queryset: QuerySet) -> None:
     course_count = 0
     purchased_users_count = 0
     templates_count = 0

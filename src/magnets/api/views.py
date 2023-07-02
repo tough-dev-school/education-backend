@@ -1,3 +1,4 @@
+from rest_framework.request import Request
 from rest_framework.response import Response
 
 from django.shortcuts import get_object_or_404
@@ -14,7 +15,7 @@ class EmailLeadMagnetCampaignView(AnonymousAPIView, ValidationMixin):
 
     validator_class = LeadValidator
 
-    def post(self, request, slug):
+    def post(self, request: Request, slug: str) -> Response:
         self.data = request.POST
 
         self._validate(self.data)
@@ -24,13 +25,13 @@ class EmailLeadMagnetCampaignView(AnonymousAPIView, ValidationMixin):
         campaign = self.get_object()
         return Response({"ok": True, "message": campaign.success_message}, status=201)
 
-    def get_object(self):
+    def get_object(self) -> EmailLeadMagnetCampaign:
         return get_object_or_404(EmailLeadMagnetCampaign, slug=self.kwargs["slug"])
 
-    def create_lead(self):
+    def create_lead(self) -> None:
         lead_creator = LeadCreator(
             name=self.data.get("name"),
-            email=self.data["email"],
+            email=self.data["email"],  # type: ignore
             campaign=self.get_object(),
         )
         return lead_creator()

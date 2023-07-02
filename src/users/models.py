@@ -75,7 +75,7 @@ class User(AbstractUser):
 
         return "male"  # sorry, flex scope
 
-    def add_perm(self, perm):
+    def add_perm(self, perm: str) -> None:
         """Add permission to the user.
         This is a shortcut method for testing, please do not use in production
         """

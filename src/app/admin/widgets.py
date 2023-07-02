@@ -2,7 +2,7 @@ from django.forms.widgets import NumberInput
 
 
 class AppNumberInput(NumberInput):
-    def __init__(self, attrs=None):
+    def __init__(self, attrs: dict | None = None) -> None:
         if attrs is None:
             attrs = dict()
 

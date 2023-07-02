@@ -16,6 +16,6 @@ class LeadValidator(validators.Validator):
             "email",
         ]
 
-    def validate(self, attrs):
+    def validate(self, attrs: dict) -> dict:
         attrs.pop("recaptcha")
         return attrs

@@ -13,13 +13,13 @@ class LeadCreator(BaseService):
     email: str
     name: str | None = None
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self.data = {
             "name": self.name or "",
             "email": self.email,
         }
 
-    def act(self):
+    def act(self) -> None:
         user = self._create_user()
         self._create_log_entry(user)
 
@@ -33,12 +33,12 @@ class LeadCreator(BaseService):
             tags=self.tags,
         )()
 
-    def _create_log_entry(self, user: User):
+    def _create_log_entry(self, user: User) -> None:
         LeadCampaignLogEntry.objects.create(
             user=user,
             campaign=self.campaign,
         )
 
     @property
-    def tags(self):
+    def tags(self) -> list[str]:
         return [f"{self.campaign.slug}-lead-magnet"]

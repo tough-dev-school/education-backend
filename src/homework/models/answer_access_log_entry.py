@@ -1,5 +1,5 @@
 import contextlib
-from typing import Optional  # NOQA: I251
+from typing import Optional, TYPE_CHECKING  # NOQA: I251
 
 from django.db.models import Index
 from django.db.models import QuerySet
@@ -8,9 +8,13 @@ from django.db.models import UniqueConstraint
 from app.models import models
 from app.models import TimestampedModel
 
+if TYPE_CHECKING:
+    from homework.models import Answer
+    from users.models import User
+
 
 class AnswerAccessLogEntryQuerySet(QuerySet):
-    def get_for_user_and_answer(self, answer, user) -> Optional["AnswerAccessLogEntry"]:
+    def get_for_user_and_answer(self, answer: "Answer", user: "User") -> Optional["AnswerAccessLogEntry"]:
         with contextlib.suppress(self.model.DoesNotExist):
             return self.get(answer=answer, user=user)
 

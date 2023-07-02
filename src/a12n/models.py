@@ -1,3 +1,4 @@
+from datetime import datetime
 from datetime import timedelta
 from urllib.parse import urljoin
 import uuid
@@ -9,12 +10,12 @@ from app.models import models
 from app.models import TimestampedModel
 
 
-def default_expiration():
+def default_expiration() -> datetime:
     return timezone.now() + timedelta(hours=2)
 
 
 class PasswordlessAuthTokenQuerySet(models.QuerySet):
-    def valid(self):
+    def valid(self) -> "PasswordlessAuthTokenQuerySet":
         return self.filter(expires__gt=timezone.now(), used__isnull=True)
 
 

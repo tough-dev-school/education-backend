@@ -4,5 +4,5 @@ from django.apps import AppConfig
 class HomeworkConfig(AppConfig):
     name = "homework"
 
-    def ready(self):
+    def ready(self) -> None:
         import homework.signals.handlers  # noqa

@@ -1,3 +1,7 @@
+from rest_framework.request import Request
+
+from django.db.models import QuerySet
+from django.forms import Media
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
@@ -76,14 +80,14 @@ class OrderAdmin(ModelAdmin):
     ]
 
     @property
-    def media(self):
+    def media(self) -> Media:
         media = super().media
 
-        media._css_lists.append({"all": ["admin/order_list.css"]})
+        media._css_lists.append({"all": ["admin/order_list.css"]})  # type: ignore
 
         return media
 
-    def get_queryset(self, request):
+    def get_queryset(self, request: Request) -> QuerySet:  # type: ignore
         return (
             super()
             .get_queryset(request)
@@ -95,11 +99,11 @@ class OrderAdmin(ModelAdmin):
         )
 
     @admin.display(description=_("Date"), ordering="created__id")
-    def date(self, obj: Order):
+    def date(self, obj: Order) -> str:
         return obj.created.strftime("%d.%m.%Y")
 
     @admin.display(description=_("User"), ordering="user__id")
-    def customer(self, obj: Order):
+    def customer(self, obj: Order) -> str:
         name_template = '{name} &lt;<a href="mailto:{email}">{email}</a>&gt;'
         name = str(obj.user)
         email = obj.user.email
@@ -125,11 +129,11 @@ class OrderAdmin(ModelAdmin):
             )
 
     @admin.display(description=_("Item"))
-    def item(self, obj):
+    def item(self, obj: Order) -> str:
         return obj.item.name if obj.item is not None else "—"
 
     @admin.display(description=_("Payment"), ordering="paid")
-    def payment(self, obj: Order):
+    def payment(self, obj: Order) -> str:
         if obj.paid is not None:
             if obj.bank_id:
                 return get_bank(obj.bank_id).name
@@ -153,8 +157,8 @@ class OrderAdmin(ModelAdmin):
 
         return f'<a href="{login_as_url}" target="_blank">Зайти от имени студента</a>'
 
-    def has_pay_permission(self, request):
+    def has_pay_permission(self, request: Request) -> bool:
         return request.user.has_perm("orders.pay_order")
 
-    def has_unpay_permission(self, request):
+    def has_unpay_permission(self, request: Request) -> bool:
         return request.user.has_perm("orders.unpay_order")

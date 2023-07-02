@@ -1,14 +1,17 @@
 from celery import group
+from rest_framework.request import Request
 
+from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import admin
+from app.admin import ModelAdmin
 from orders import tasks
 from studying.models import Study
 
 
 @admin.action(description=_("Set paid"), permissions=["pay"])
-def set_paid(modeladmin, request, queryset):
+def set_paid(modeladmin: ModelAdmin, request: Request, queryset: QuerySet) -> None:
     for order in queryset.iterator():
         order.set_paid()
 
@@ -16,7 +19,7 @@ def set_paid(modeladmin, request, queryset):
 
 
 @admin.action(description=_("Set not paid"), permissions=["unpay"])
-def set_not_paid(modeladmin, request, queryset):
+def set_not_paid(modeladmin: ModelAdmin, request: Request, queryset: QuerySet) -> None:
     for order in queryset.iterator():
         order.set_not_paid()
 
@@ -24,7 +27,7 @@ def set_not_paid(modeladmin, request, queryset):
 
 
 @admin.action(description=_("Ship without payments"), permissions=["pay"])
-def ship_without_payment(modeladmin, request, queryset):
+def ship_without_payment(modeladmin: ModelAdmin, request: Request, queryset: QuerySet) -> None:
     shipped_count = 0
 
     for order in queryset.iterator():
@@ -35,7 +38,7 @@ def ship_without_payment(modeladmin, request, queryset):
 
 
 @admin.action(description=_("Ship again if paid"))
-def ship_again_if_paid(modeladmin, request, queryset):
+def ship_again_if_paid(modeladmin: ModelAdmin, request: Request, queryset: QuerySet) -> None:
     shipped_count = 0
 
     for order in queryset.iterator():
@@ -48,7 +51,7 @@ def ship_again_if_paid(modeladmin, request, queryset):
 
 
 @admin.action(description=_("Generate diplomas"))
-def generate_diplams(modeladmin, request, queryset):
+def generate_diplams(modeladmin: ModelAdmin, request: Request, queryset: QuerySet) -> None:
     order_ids = queryset.values_list("id", flat=True)
 
     generate_diplams = group([tasks.generate_diploma.s(order_id=order_id) for order_id in queryset.values_list("id", flat=True)])
@@ -58,7 +61,7 @@ def generate_diplams(modeladmin, request, queryset):
 
 
 @admin.action(description=_("Accept homework"))
-def accept_homework(modeladmin, request, queryset):
+def accept_homework(modeladmin: ModelAdmin, request: Request, queryset: QuerySet) -> None:
     studies = Study.objects.filter(order__in=queryset)
 
     studies.update(homework_accepted=True)
@@ -67,7 +70,7 @@ def accept_homework(modeladmin, request, queryset):
 
 
 @admin.action(description=_("Disaccept homework"))
-def disaccept_homework(modeladmin, request, queryset):
+def disaccept_homework(modeladmin: ModelAdmin, request: Request, queryset: QuerySet) -> None:
     studies = Study.objects.filter(order__in=queryset)
 
     studies.update(homework_accepted=True)

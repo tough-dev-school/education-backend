@@ -62,9 +62,9 @@ class Order(TimestampedModel):
     ue_rate = models.IntegerField(_("Purchase-time UE rate"))
     acquiring_percent = models.DecimalField(default=0, max_digits=4, decimal_places=2)
 
-    course = ItemField(to="products.Course", verbose_name=_("Course"), null=True, blank=True, on_delete=models.PROTECT)  # type: ignore
-    record = ItemField(to="products.Record", verbose_name=_("Record"), null=True, blank=True, on_delete=models.PROTECT)  # type: ignore
-    bundle = ItemField(to="products.Bundle", verbose_name=_("Bundle"), null=True, blank=True, on_delete=models.PROTECT)  # type: ignore
+    course = ItemField(to="products.Course", verbose_name=_("Course"), null=True, blank=True, on_delete=models.PROTECT)
+    record = ItemField(to="products.Record", verbose_name=_("Record"), null=True, blank=True, on_delete=models.PROTECT)
+    bundle = ItemField(to="products.Bundle", verbose_name=_("Bundle"), null=True, blank=True, on_delete=models.PROTECT)
 
     giver = models.ForeignKey("users.User", verbose_name=_("Giver"), null=True, blank=True, on_delete=models.SET_NULL, related_name="created_gifts")
     desired_shipment_date = models.DateTimeField(_("Date when the gift should be shipped"), null=True, blank=True)
@@ -92,7 +92,7 @@ class Order(TimestampedModel):
         return f"Order #{self.pk}"
 
     @property
-    def item(self):
+    def item(self) -> Product:
         """Find the attached item. Simple replacement for ContentType framework"""
         for field in self.__class__._meta.get_fields():
             if getattr(field, "_is_item", False):
@@ -151,7 +151,7 @@ class Order(TimestampedModel):
 
         return False
 
-    def unship(self):
+    def unship(self) -> None:
         from orders.services import OrderUnshipper
 
         OrderUnshipper(self)()

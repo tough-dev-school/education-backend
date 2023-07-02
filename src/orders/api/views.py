@@ -1,3 +1,5 @@
+from typing import Any
+
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
@@ -14,7 +16,7 @@ class OrderConfirmationView(RetrieveAPIView):
     permission_classes = [AllowAny]
     throttle_classes = [PublicIDThrottle]
 
-    def retrieve(self, request: Request, *args, **kwargs) -> HttpResponseRedirect:  # type: ignore
+    def retrieve(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> HttpResponseRedirect:  # type: ignore
         order = self.get_object()
 
         order.set_paid()  # will be shipped on first confirmation
