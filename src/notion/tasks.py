@@ -4,7 +4,7 @@ from notion.client import NotionClient
 from notion.models import Material
 
 
-@celery.task(rate_limit="6/m")
+@celery.task(rate_limit="6/m", acks_late=True)
 def update_cache_notion_material(page_id: str) -> None:
     page = NotionClient().fetch_page_recursively(page_id)
     cache.set(page_id, page)
