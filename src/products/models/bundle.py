@@ -1,9 +1,13 @@
-from typing import Generator
+from typing import Generator, TYPE_CHECKING
 
 from django.utils.translation import gettext_lazy as _
 
 from app.models import models
 from products.models.base import Shippable
+
+if TYPE_CHECKING:
+    from orders.models import Order
+    from users.models import User
 
 
 class Bundle(Shippable):
@@ -20,10 +24,10 @@ class Bundle(Shippable):
         yield from self.records.iterator()
         yield from self.courses.iterator()
 
-    def ship(self, *args, **kwargs):
+    def ship(self, *args: "User | Order", **kwargs: "User | Order") -> None:
         for item in self.iterate_bundled_items():
-            item.ship(*args, **kwargs)
+            item.ship(*args, **kwargs)  # type: ignore
 
-    def unship(self, *args, **kwargs):
+    def unship(self, *args: "Order", **kwargs: "Order") -> None:
         for item in self.iterate_bundled_items():
             item.unship(*args, **kwargs)

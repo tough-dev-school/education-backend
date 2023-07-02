@@ -16,7 +16,7 @@ class QuestionCrossCheckDispatcher(BaseService):
     question: Question
     answers_per_user: int = 3
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self.dispatcher = AnswerCrossCheckDispatcher(
             answers=self.get_answers_to_check(),
             answers_per_user=self.answers_per_user,
@@ -55,7 +55,7 @@ class QuestionCrossCheckDispatcher(BaseService):
         )
 
     @staticmethod
-    def get_notification_context(checks: list[AnswerCrossCheck]):
+    def get_notification_context(checks: list[AnswerCrossCheck]) -> dict:
         answers = list()
 
         for check in checks:

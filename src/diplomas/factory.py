@@ -1,10 +1,13 @@
+from typing import Any
+
 from app.test.factory import register
+from diplomas.models import Diploma
 from products.models import Course
 from users.models import User
 
 
 @register
-def diploma(self, student: User | None = None, course: Course | None = None, **kwargs):
+def diploma(self: Any, student: User | None = None, course: Course | None = None, **kwargs: dict[str, Any]) -> Diploma:
     order = self.order(
         user=student or self.mixer.blend("users.User"),
         item=course or self.mixer.blend("products.Course"),

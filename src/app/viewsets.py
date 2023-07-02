@@ -2,6 +2,8 @@ from typing import Any, Protocol, Type
 
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.mixins import DestroyModelMixin
+from rest_framework.request import Request
+from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.viewsets import ModelViewSet
@@ -29,7 +31,7 @@ class ValidationMixin(ViewsetWithValidationProtocol):
 
         return self.validator_class
 
-    def _validate(self, data, context: dict | None = None):
+    def _validate(self, data: dict, context: dict | None = None) -> None:
         Validator = self.get_validator_class()
         Validator.do(data, context=self.get_validator_context())
 
@@ -77,7 +79,7 @@ class ReadOnlyAppViewSet(MultiSerializerMixin, _ReadOnlyModelViewSet):
 
 
 class AppViewSet(MultiSerializerMixin, ModelViewSet):
-    def update(self, request, *args, **kwargs):
+    def update(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         """
         Always serialize response with the default serializer.
 
@@ -92,7 +94,7 @@ class AppViewSet(MultiSerializerMixin, ModelViewSet):
 
         return response
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         """
         Always serialize response with the default serializer.
 

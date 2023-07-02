@@ -100,5 +100,5 @@ class NotionCacheEntry(TimestampedModel):
     content = models.JSONField()
     expires = models.DateTimeField(db_index=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.cache_key

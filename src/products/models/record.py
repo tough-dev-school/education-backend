@@ -18,11 +18,11 @@ class Record(Shippable):
         db_table = "courses_record"
 
     @property
-    def name_genitive(self):
+    def name_genitive(self) -> str:
         return self.course.name_genitive
 
-    def get_url(self, expires: int = 30 * 24 * 60 * 60):
+    def get_url(self, expires: int = 30 * 24 * 60 * 60) -> str:
         return AppS3().get_presigned_url(self.s3_object_id, expires=expires)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Запись {self.name_genitive}"

@@ -14,7 +14,7 @@ from app.integrations.zoomus import ZoomusHTTPException
         "countdown": 5,
     },
 )
-def invite_to_zoomus(webinar_id: str, user_id: int):
+def invite_to_zoomus(webinar_id: str, user_id: int) -> None:
     user = apps.get_model("users.User").objects.get(pk=user_id)
 
     client = ZoomusClient()

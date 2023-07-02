@@ -16,7 +16,7 @@ from users.models import User
     max_retries=10,
     soft_time_limit=240,
 )
-def generate_diploma(student_id: int, course_id: int, language: Language):
+def generate_diploma(student_id: int, course_id: int, language: Language) -> None:
     generator = DiplomaGenerator(
         student=User.objects.get(pk=student_id),
         course=Course.objects.get(pk=course_id),
@@ -32,7 +32,7 @@ def generate_diploma(student_id: int, course_id: int, language: Language):
     autoretry_for=[WrongDiplomaServiceResponse],
     max_retries=10,
 )
-def regenerate_diplomas(student_id: int):
+def regenerate_diplomas(student_id: int) -> None:
     DiplomaRegenerator(
         student=User.objects.get(pk=student_id),
     )()

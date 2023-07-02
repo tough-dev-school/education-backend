@@ -1,11 +1,12 @@
 from anymail.backends.console import EmailBackend
+from anymail.message import AnymailMessage
 import simplejson as json
 
 
 class ConsoleEmailBackend(EmailBackend):
     """Dev backend to print external ESP template context along with default django output"""
 
-    def write_message(self, message):
+    def write_message(self, message: AnymailMessage) -> None:
         context = json.dumps(message.merge_global_data, sort_keys=True, indent=4, ensure_ascii=False)
 
         msg = message.message()

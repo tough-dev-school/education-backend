@@ -1,3 +1,5 @@
+from typing import Any
+
 from rest_framework.exceptions import NotFound
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -15,7 +17,7 @@ from notion.models import Material
 class NotionMaterialView(AuthenticatedAPIView):
     throttle_classes = [NotionThrottle]
 
-    def get(self, request: Request, *args, **kwargs) -> Response:
+    def get(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         material = self.get_material()
 
         if material is None:

@@ -1,8 +1,10 @@
 import jwt
 from rest_framework_jwt.settings import api_settings
 
+from users.models import User
 
-def get_jwt(user) -> str:
+
+def get_jwt(user: User) -> str:
     """Make JWT for given user"""
     jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
     jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER

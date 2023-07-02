@@ -1,3 +1,5 @@
+from typing import Any
+
 from app.models import models
 
 
@@ -6,7 +8,7 @@ class ItemField(models.ForeignKey):
     are fields linked to items
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         self._is_item = True
         super().__init__(*args, **kwargs)
 

@@ -1,5 +1,8 @@
+from typing import Any
+
 from rest_framework.decorators import action
 from rest_framework.exceptions import MethodNotAllowed
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
@@ -13,6 +16,7 @@ from orders.api.validators import PurchaseValidator
 from orders.models import Order
 from orders.models import PromoCode
 from orders.services.order_creator import OrderCreator
+from products.models.base import Shippable
 from users.models import User
 from users.services import UserCreator
 
@@ -21,7 +25,7 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
     """Abstract viewset for purchasable items"""
 
     @property
-    def item(self):
+    def item(self) -> Shippable:
         return self.get_object()
 
     @property
@@ -37,7 +41,7 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
         ]
 
     @action(methods=["POST"], detail=True)
-    def purchase(self, request, pk=None, **kwargs):
+    def purchase(self, request: Request, pk: str | None = None, **kwargs: dict[str, Any]) -> HttpResponseRedirect:
         """Direct order purchase"""
         data = request.POST
 
@@ -49,7 +53,7 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
         return HttpResponseRedirect(redirect_to=payment_link)
 
     @action(methods=["POST"], detail=True)
-    def gift(self, request, pk=None, **kwargs):
+    def gift(self, request: Request, pk: str | None = None, **kwargs: dict[str, Any]) -> HttpResponseRedirect:
         """Purchase as a gift"""
         data = request.POST
 
@@ -61,7 +65,7 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
         return HttpResponseRedirect(redirect_to=payment_link)
 
     @action(methods=["GET"], detail=True)
-    def promocode(self, request, pk=None, **kwargs):
+    def promocode(self, request: Request, pk: str | None = None, **kwargs: dict[str, Any]) -> Response:
         promocode = self._get_promocode(request)
 
         price = promocode.apply(self.item) if promocode is not None else self.item.price
@@ -79,7 +83,7 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
             }
         )
 
-    def _create_order(self, data) -> Order:
+    def _create_order(self, data: dict) -> Order:
         creator = OrderCreator(
             user=self._create_user(
                 name=data["name"],
@@ -93,7 +97,7 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
         )
         return creator()
 
-    def _create_gift(self, data) -> Order:
+    def _create_gift(self, data: dict) -> Order:
         order_creator = OrderCreator(
             user=self._create_user(
                 name=data["receiver_name"],
@@ -124,7 +128,7 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
             tags=tags,
         )()
 
-    def _get_promocode(self, request) -> PromoCode | None:
+    def _get_promocode(self, request: Request) -> PromoCode | None:
         try:
             promocode_name = request.GET["promocode"]
         except KeyError:
@@ -132,7 +136,7 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
 
         return PromoCode.objects.get_or_nothing(name=promocode_name)
 
-    def get_payment_link(self, order: Order, data: dict):
+    def get_payment_link(self, order: Order, data: dict) -> str:
         Bank = get_bank(desired=data.get("desired_bank"))
         bank = Bank(
             order=order,
@@ -142,5 +146,5 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
 
         return bank.get_initial_payment_url()
 
-    def list(self, request, *args, **kwargs):
+    def list(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Any:
         raise MethodNotAllowed("list")

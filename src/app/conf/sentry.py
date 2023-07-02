@@ -9,7 +9,7 @@ if not env("DEBUG") and SENTRY_DSN:
     from sentry_sdk.integrations.httpx import HttpxIntegration
     from sentry_sdk.integrations.redis import RedisIntegration
 
-    def strip_transactions(event, hint):
+    def strip_transactions(event, hint):  # type: ignore
         if event["transaction"] in (
             "/api/v2/healthchecks/{service}/",
             "chains.tasks.send_chain_messages",

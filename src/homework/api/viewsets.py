@@ -1,3 +1,5 @@
+from typing import Any
+
 from drf_spectacular.utils import extend_schema
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.generics import get_object_or_404
@@ -40,7 +42,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     ]
     filterset_class = AnswerFilterSet
 
-    def create(self, request: Request, *args, **kwargs) -> Response:
+    def create(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         answer = serializer.save()
@@ -49,11 +51,11 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
         Serializer = self.get_serializer_class(action="retrieve")
         return Response(Serializer(answer).data, status=201)
 
-    def update(self, request: Request, *args, **kwargs) -> Response:
+    def update(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         if not kwargs.get("partial", False):
             raise MethodNotAllowed("Please use patch")
 
-        response = super().update(request, *args, **kwargs)  # type: ignore
+        response = super().update(request, *args, **kwargs)
 
         answer = self.get_object()
         answer.refresh_from_db()
@@ -110,7 +112,7 @@ class ReactionViewSet(CreateDeleteAppViewSet):
     lookup_field = "slug"
 
     @extend_schema(responses=ReactionDetailedSerializer)
-    def create(self, request: Request, *args, **kwargs) -> Response:
+    def create(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data.copy()

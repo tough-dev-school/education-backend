@@ -12,11 +12,11 @@ def get_current_user() -> User | None:
         return user
 
 
-def set_current_user(user: User):
+def set_current_user(user: User) -> None:
     setattr(_thread_locals, _thread_key(), user)
 
 
-def unset_current_user():
+def unset_current_user() -> None:
     thread_key = _thread_key()
 
     if hasattr(_thread_locals, thread_key):

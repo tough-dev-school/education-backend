@@ -24,5 +24,5 @@ class StripeNotificationSerializer(serializers.ModelSerializer):
             "raw",
         ]
 
-    def validate_amount_total(self, validated_data) -> Decimal:
+    def validate_amount_total(self, validated_data: Decimal) -> Decimal:
         return Decimal(int(validated_data) / 100 * StripeBank.ue)

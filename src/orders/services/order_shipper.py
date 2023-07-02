@@ -31,7 +31,6 @@ class OrderShipper(BaseService):
         desired_date = self.order.desired_shipment_date
         if desired_date is None or desired_date <= timezone.now():
             self.order.item.ship(to=self.order.user, order=self.order)
-
             return True
 
         return False

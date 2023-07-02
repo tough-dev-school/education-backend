@@ -83,7 +83,7 @@ class Course(Shippable):
         verbose_name_plural = _("Courses")
         db_table = "courses_course"
 
-    def clean(self):
+    def clean(self) -> None:
         """Check for correct setting of confirmation_template_id and confirmation_success_url"""
         if not self.confirmation_template_id and not self.confirmation_success_url:
             return
@@ -99,7 +99,7 @@ class Course(Shippable):
             pk__in=apps.get_model("studying.Study").objects.filter(course=self).values_list("student", flat=True),
         )
 
-    def send_email_to_all_purchased_users(self, template_id: str):
+    def send_email_to_all_purchased_users(self, template_id: str) -> None:
         for user in self.get_purchased_users().iterator():
             send_mail.delay(
                 to=user.email,

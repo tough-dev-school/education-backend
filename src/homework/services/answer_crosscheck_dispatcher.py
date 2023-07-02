@@ -21,7 +21,7 @@ class AnswerCrossCheckDispatcher(BaseService):
     answers: QuerySet[Answer]
     answers_per_user: int = 3
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self.answers = Answer.objects.filter(pk__in=[answer.pk for answer in self.answers])
         self.unique_author_answers = self.answers.order_by("author_id", "created").distinct("author_id")
         self.users = User.objects.filter(pk__in=[answer.author_id for answer in self.answers]).order_by("?")

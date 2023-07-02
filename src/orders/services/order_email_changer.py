@@ -13,7 +13,7 @@ class OrderEmailChanger(BaseService):
     order: Order
     email: str
 
-    def act(self):
+    def act(self) -> None:
         if self.was_shipped:
             self.order.unship()
 

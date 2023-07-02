@@ -1,4 +1,5 @@
 import boto3
+from botocore.client import BaseClient
 from botocore.client import Config
 
 from django.conf import settings
@@ -9,7 +10,7 @@ class AppS3:
     """App-specific methods for directly calling s3 API"""
 
     @cached_property
-    def client(self):
+    def client(self) -> BaseClient:
         session = boto3.session.Session()
         return session.client(
             "s3",
@@ -20,8 +21,8 @@ class AppS3:
             config=Config(signature_version="s3"),
         )
 
-    def get_presigned_url(self, object_id: str, expires: int):
-        return self.client.generate_presigned_url(
+    def get_presigned_url(self, object_id: str, expires: int) -> str:
+        return self.client.generate_presigned_url(  # type: ignore
             ClientMethod="get_object",
             Params={
                 "Bucket": settings.AWS_STORAGE_BUCKET_NAME,

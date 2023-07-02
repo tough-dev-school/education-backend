@@ -1,3 +1,6 @@
+from rest_framework.request import Request
+
+from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import admin
@@ -22,11 +25,11 @@ class QuestionAdmin(ModelAdmin):
     ]
     save_as = True
 
-    def courses_list(self, obj):
+    def courses_list(self, obj: Question) -> str:
         return ", ".join([course.name for course in obj.courses.all()])
 
     @admin.action(description=_("Dispatch crosscheck"))
-    def dispatch_crosscheck(self, request, queryset):
+    def dispatch_crosscheck(self, request: Request, queryset: QuerySet) -> None:
         for question in queryset.iterator():
             tasks.disptach_crosscheck.delay(question_id=question.id)
 

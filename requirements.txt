@@ -83,7 +83,7 @@ django==4.1.9
     #   education-backend (pyproject.toml)
 django-anymail==10.0
     # via education-backend (pyproject.toml)
-django-axes==6.0.4
+django-axes==6.0.5
     # via education-backend (pyproject.toml)
 django-behaviors==0.5.1
     # via education-backend (pyproject.toml)
@@ -124,7 +124,7 @@ drf-recaptcha==2.2.3
     # via education-backend (pyproject.toml)
 drf-spectacular[sidecar]==0.26.3
     # via education-backend (pyproject.toml)
-drf-spectacular-sidecar==2023.6.1
+drf-spectacular-sidecar==2023.7.1
     # via drf-spectacular
 emoji==2.6.0
     # via education-backend (pyproject.toml)
