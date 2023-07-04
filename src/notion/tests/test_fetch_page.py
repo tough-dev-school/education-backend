@@ -5,6 +5,10 @@ from pytest_httpx import HTTPXMock
 from notion.exceptions import NotionResponseError
 from notion.exceptions import NotSharedForWeb
 
+pytestmark = [
+    pytest.mark.django_db,
+]
+
 
 @pytest.fixture()
 def ok():

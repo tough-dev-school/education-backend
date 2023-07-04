@@ -9,7 +9,7 @@ from notion.client import NotionClient
 from notion.models import NotionCacheEntry
 from notion.page import NotionPage
 
-TIMEOUT = 60 * 60 * 24 * 14  # 14 days
+TIMEOUT = 60 * 60 * 24 * 365 * 5  # 5 years
 
 
 class NotionCache:
