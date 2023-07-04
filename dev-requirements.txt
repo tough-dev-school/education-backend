@@ -94,7 +94,7 @@ decorator==5.1.1
     # via
     #   ipython
     #   retry
-dj-rest-auth==3.0.0
+dj-rest-auth==4.0.1
     # via education-backend (pyproject.toml)
 django==4.1.9
     # via
