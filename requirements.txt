@@ -157,7 +157,7 @@ kombu==5.3.1
     # via celery
 pillow==9.5.0
     # via education-backend (pyproject.toml)
-prompt-toolkit==3.0.38
+prompt-toolkit==3.0.39
     # via click-repl
 psycopg2-binary==2.9.6
     # via education-backend (pyproject.toml)

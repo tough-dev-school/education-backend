@@ -326,7 +326,7 @@ platformdirs==3.8.0
     # via black
 pluggy==1.2.0
     # via pytest
-prompt-toolkit==3.0.38
+prompt-toolkit==3.0.39
     # via
     #   click-repl
     #   ipython
