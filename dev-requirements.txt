@@ -94,7 +94,7 @@ decorator==5.1.1
     # via
     #   ipython
     #   retry
-dj-rest-auth==3.0.0
+dj-rest-auth==4.0.1
     # via education-backend (pyproject.toml)
 django==4.1.9
     # via
@@ -490,7 +490,7 @@ types-stripe==3.5.2.10
     # via education-backend (pyproject.toml)
 types-urllib3==1.26.25.13
     # via types-requests
-typing-extensions==4.7.0
+typing-extensions==4.7.1
     # via
     #   boto3-stubs
     #   django-stubs
