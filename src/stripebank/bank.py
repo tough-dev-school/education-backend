@@ -27,7 +27,7 @@ class StripeBank(Bank):
             client_reference_id=self.order.slug,
         )
 
-        return session.url  # type: ignore
+        return session.url
 
     def get_items(self) -> list[dict[str, Any]]:
         return [

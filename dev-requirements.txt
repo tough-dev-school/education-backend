@@ -85,10 +85,6 @@ cmarkgfm==2022.10.27
     # via education-backend (pyproject.toml)
 cognitive-complexity==1.3.0
     # via flake8-cognitive-complexity
-coreapi==2.3.3
-    # via djangorestframework-stubs
-coreschema==0.0.4
-    # via coreapi
 coverage[toml]==7.2.7
     # via pytest-cov
 cryptography==41.0.1
@@ -147,11 +143,11 @@ django-split-settings==1.2.0
     # via education-backend (pyproject.toml)
 django-storages==1.13.2
     # via education-backend (pyproject.toml)
-django-stubs==1.11.0
+django-stubs==4.2.3
     # via
     #   djangorestframework-stubs
     #   education-backend (pyproject.toml)
-django-stubs-ext==0.8.0
+django-stubs-ext==4.2.2
     # via django-stubs
 django-tree-queries==0.15.0
     # via education-backend (pyproject.toml)
@@ -162,7 +158,7 @@ djangorestframework==3.14.0
     #   drf-recaptcha
     #   drf-spectacular
     #   education-backend (pyproject.toml)
-djangorestframework-stubs==1.7.0
+djangorestframework-stubs==3.14.2
     # via education-backend (pyproject.toml)
 drf-jwt==1.19.2
     # via education-backend (pyproject.toml)
@@ -280,14 +276,10 @@ ipython==8.14.0
     # via education-backend (pyproject.toml)
 isort==5.12.0
     # via flake8-isort
-itypes==1.2.0
-    # via coreapi
 jedi==0.18.2
     # via
     #   education-backend (pyproject.toml)
     #   ipython
-jinja2==3.1.2
-    # via coreschema
 jmespath==1.0.1
     # via
     #   boto3
@@ -300,20 +292,18 @@ kombu==5.3.1
     # via celery
 lazy-object-proxy==1.9.0
     # via astroid
-markupsafe==2.1.3
-    # via jinja2
 matplotlib-inline==0.1.6
     # via ipython
 mccabe==0.7.0
     # via flake8
 mixer==7.2.2
     # via education-backend (pyproject.toml)
-mypy==0.950
+mypy==1.4.1
     # via
     #   django-stubs
     #   djangorestframework-stubs
     #   education-backend (pyproject.toml)
-mypy-extensions==0.4.4
+mypy-extensions==1.0.0
     # via
     #   black
     #   mypy
@@ -415,7 +405,6 @@ referencing==0.29.1
     #   jsonschema-specifications
 requests==2.31.0
     # via
-    #   coreapi
     #   django-anymail
     #   django-healthchecks
     #   djangorestframework-stubs
@@ -459,8 +448,6 @@ standardjson==0.3.1
     # via django-prettyjson
 stripe==5.4.0
     # via education-backend (pyproject.toml)
-tomli==2.0.1
-    # via django-stubs
 traitlets==5.9.0
     # via
     #   ipython
@@ -476,9 +463,7 @@ types-bleach==6.0.0.3
 types-freezegun==1.1.10
     # via education-backend (pyproject.toml)
 types-markdown==3.4.2.9
-    # via
-    #   djangorestframework-stubs
-    #   education-backend (pyproject.toml)
+    # via education-backend (pyproject.toml)
 types-pillow==9.5.0.6
     # via education-backend (pyproject.toml)
 types-pytz==2023.3.0.0
@@ -514,9 +499,7 @@ typing-extensions==4.7.1
     #   flake8-pie
     #   mypy
 uritemplate==4.1.1
-    # via
-    #   coreapi
-    #   drf-spectacular
+    # via drf-spectacular
 urllib3==1.26.16
     # via
     #   botocore
