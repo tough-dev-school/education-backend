@@ -17,7 +17,7 @@ BLEACH_ALLOWED_TAGS = [
 ]
 
 BLEACH_ALLOWED_ATTRIBUTES = {
-    **_ALLOWED_ATTRIBUTES,  # type: ignore
+    **_ALLOWED_ATTRIBUTES,
     "img": {
         "src",
         "alt",

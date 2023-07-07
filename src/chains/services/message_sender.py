@@ -19,6 +19,8 @@ class MessageSender(BaseService):
             self.send()
             return True
 
+        return False
+
     def send(self) -> None:
         log_progress = partial(tasks.log_chain_progress.si, message_id=self.message.pk, study_id=self.study.pk)
 

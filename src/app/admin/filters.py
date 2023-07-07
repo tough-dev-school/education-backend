@@ -1,12 +1,9 @@
 from typing import Any
 
-from rest_framework.request import Request
-
 from django.contrib import admin
 from django.db.models import QuerySet
-from django.utils.translation import gettext_lazy as _
-
-from app.admin import ModelAdmin
+from django.http.request import HttpRequest
+from django.utils.translation import gettext as _
 
 
 class BooleanFilter(admin.SimpleListFilter):
@@ -23,13 +20,13 @@ class BooleanFilter(admin.SimpleListFilter):
                 return queryset.filter(classes__isnull=True)
     """
 
-    def lookups(self, request: Request, model_admin: ModelAdmin) -> list[tuple[Any, str]]:
+    def lookups(self, request: HttpRequest, model_admin: Any) -> list[tuple[Any, str]]:
         return [
             ("t", _("Yes")),
             ("f", _("No")),
         ]
 
-    def queryset(self, request: Request, queryset: QuerySet) -> QuerySet:
+    def queryset(self, request: HttpRequest, queryset: QuerySet) -> QuerySet:
         if not self.value():
             return queryset
 
@@ -40,7 +37,7 @@ class BooleanFilter(admin.SimpleListFilter):
 
 
 class DefaultTrueBooleanFilter(BooleanFilter):
-    def queryset(self, request: Request, queryset: QuerySet) -> QuerySet:
+    def queryset(self, request: HttpRequest, queryset: QuerySet) -> QuerySet:
         if not self.value() or self.value() == "t":
             return self.t(request, queryset)  # type: ignore
 
@@ -48,7 +45,7 @@ class DefaultTrueBooleanFilter(BooleanFilter):
 
 
 class DefaultFalseBooleanFilter(BooleanFilter):
-    def queryset(self, request: Request, queryset: QuerySet) -> QuerySet:
+    def queryset(self, request: HttpRequest, queryset: QuerySet) -> QuerySet:
         if not self.value() or self.value() == "f":
             return self.f(request, queryset)  # type: ignore
 
