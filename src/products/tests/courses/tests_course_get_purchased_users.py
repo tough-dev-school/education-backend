@@ -4,11 +4,6 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def course(mixer):
-    return mixer.blend("products.Course")
-
-
-@pytest.fixture
 def order(factory, course, user):
     order = factory.order(user=user, item=course)
     order.set_paid()

@@ -11,11 +11,6 @@ def student(mixer):
     return mixer.blend("users.User")
 
 
-@pytest.fixture
-def course(mixer):
-    return mixer.blend("products.Course")
-
-
 @pytest.fixture(autouse=True)
 def order(factory, course, student):
     return factory.order(user=student, item=course, is_paid=True)

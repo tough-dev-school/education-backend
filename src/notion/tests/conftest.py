@@ -71,11 +71,6 @@ def cache_entry(not_expired_datetime, page_as_dict, mixer):
 
 
 @pytest.fixture
-def course(mixer):
-    return mixer.blend("products.Course")
-
-
-@pytest.fixture
 def material(mixer, course):
     return mixer.blend(
         "notion.Material",

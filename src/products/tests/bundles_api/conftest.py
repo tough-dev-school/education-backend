@@ -6,8 +6,8 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def bundle(mixer):
-    return mixer.blend("products.Bundle", slug="pinetree-tickets", name="Флаг и билет на ёлку", price=1900)
+def bundle(factory):
+    return factory.bundle(slug="pinetree-tickets", name="Флаг и билет на ёлку", price=1900)
 
 
 @pytest.fixture(autouse=True)

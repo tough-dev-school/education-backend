@@ -34,9 +34,8 @@ def post(mocker):
 
 
 @pytest.fixture
-def record(mixer):
-    return mixer.blend(
-        "products.Record",
+def record(factory):
+    return factory.record(
         name="Пентакли и тентакли",
         name_receipt="Предоставление доступа к записи курса «Пентакли и Тентакли»",
     )

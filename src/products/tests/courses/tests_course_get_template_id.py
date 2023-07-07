@@ -3,11 +3,6 @@ import pytest
 pytestmark = [pytest.mark.django_db]
 
 
-@pytest.fixture
-def course(mixer):
-    return mixer.blend("products.Course")
-
-
 @pytest.mark.parametrize(
     ("template_id", "expected"),
     [

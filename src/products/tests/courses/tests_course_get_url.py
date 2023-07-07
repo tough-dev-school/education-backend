@@ -9,8 +9,8 @@ def get_url(mocker):
 
 
 @pytest.fixture
-def record(mixer):
-    return mixer.blend("products.Record", s3_object_id="homevideo-2032-12-01.mp4")
+def record(factory):
+    return factory.record(s3_object_id="homevideo-2032-12-01.mp4")
 
 
 def test_works(record):

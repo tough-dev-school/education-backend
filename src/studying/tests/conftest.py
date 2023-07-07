@@ -13,8 +13,8 @@ def api(api):
 
 
 @pytest.fixture
-def course(mixer):
-    return mixer.blend("products.Course", name="Ихтеология для 5 класса", slug="ichteology")
+def course(factory):
+    return factory.course(name="Ихтеология для 5 класса", slug="ichteology")
 
 
 @pytest.fixture(autouse=True)

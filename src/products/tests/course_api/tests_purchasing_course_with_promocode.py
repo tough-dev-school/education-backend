@@ -14,8 +14,8 @@ def get_order():
 
 
 @pytest.fixture
-def another_course(mixer):
-    return mixer.blend("products.Course", slug="kamazing-navoza", price=100500)
+def another_course(factory):
+    return factory.course(slug="kamazing-navoza", price=100500)
 
 
 @pytest.mark.parametrize(

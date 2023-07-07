@@ -2,13 +2,13 @@ import pytest
 
 
 @pytest.fixture
-def course(mixer):
-    return mixer.blend("products.Course", price=100500)
+def course(factory):
+    return factory.course(price=100500)
 
 
 @pytest.fixture
-def another_course(mixer):
-    return mixer.blend("products.Course", price=100500)
+def another_course(factory):
+    return factory.course(price=100500)
 
 
 @pytest.fixture

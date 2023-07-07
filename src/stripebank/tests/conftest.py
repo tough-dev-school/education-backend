@@ -22,8 +22,8 @@ def _fix_stripe_course(mocker):
 
 
 @pytest.fixture
-def course(mixer):
-    return mixer.blend("products.Course", name="Курс кройки и шитья", name_international="Cutting and Sewing")
+def course(factory):
+    return factory.course(name="Курс кройки и шитья", name_international="Cutting and Sewing")
 
 
 @pytest.fixture

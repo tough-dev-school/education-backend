@@ -4,9 +4,8 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def course(mixer):
-    return mixer.blend(
-        "products.Course",
+def course(factory):
+    return factory.course(
         price=0,
         confirmation_success_url="https://well.done",
     )
