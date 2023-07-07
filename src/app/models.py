@@ -4,7 +4,7 @@ from functools import reduce
 import operator
 from typing import Any, Type
 
-from behaviors.behaviors import Timestamped  # type: ignore
+from behaviors.behaviors import Timestamped
 
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -20,6 +20,13 @@ __all__ = [
 class DefaultModel(models.Model):
     class Meta:
         abstract = True
+
+    def __str__(self) -> str:
+        name = getattr(self, "name", None)
+        if name is not None:
+            return str(name)
+
+        return super().__str__()
 
     @classmethod
     def get_contenttype(cls) -> ContentType:
@@ -84,13 +91,6 @@ class DefaultModel(models.Model):
 
     def _get_cached_property_names(self) -> list[str]:
         return [func_name for func_name in dir(self.__class__) if type(getattr(self.__class__, func_name)) is cached_property]
-
-    def __str__(self) -> str:
-        name = getattr(self, "name", None)
-        if name is not None:
-            return str(name)
-
-        return super().__str__()
 
 
 class TimestampedModel(DefaultModel, Timestamped):
