@@ -1,6 +1,5 @@
 from typing import Any
 
-from django_jsonform.models.fields import JSONField
 from rest_framework.request import Request
 
 from django import forms
@@ -14,7 +13,7 @@ from users.models import User
 from users.services import UserCreator
 
 
-class TagsFilter(admin.SimpleListFilter):
+class StudentTagsFilter(admin.SimpleListFilter):
     """This is a tag filter based on the values
     from a model's `tags` ArrayField."""
 
@@ -42,7 +41,6 @@ class PasswordLessUserCreationForm(forms.ModelForm):
     email = forms.CharField(label=_("Email"))
     first_name = forms.CharField(label=_("first name"), required=False)
     last_name = forms.CharField(label=_("last name"), required=False)
-    tags = JSONField()
 
     class Meta:
         model = Student
@@ -50,7 +48,6 @@ class PasswordLessUserCreationForm(forms.ModelForm):
             "email",
             "first_name",
             "last_name",
-            "tags",
         ]
 
     def save_m2m(self, *args: Any, **kwargs: dict[str, Any]) -> None:
@@ -80,5 +77,5 @@ class StudentAdmin(ModelAdmin):
         (_("Name in english"), {"fields": ("first_name_en", "last_name_en")}),
         (_("Tags"), {"fields": ("tags",)}),
     )
-    list_filter = ("is_staff", "is_superuser", "is_active", "groups", "order__study__course", TagsFilter)
+    list_filter = ("is_staff", "is_superuser", "is_active", "groups", "order__study__course", StudentTagsFilter)
     list_editable = ("gender",)
