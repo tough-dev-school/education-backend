@@ -16,7 +16,10 @@ class ChainQuerySet(QuerySet):
         return self.filter(archived=True)
 
     def editable(self) -> QuerySet["Chain"]:
-        return self.filter(sending_is_active=False, archived=False,).select_related(
+        return self.filter(
+            sending_is_active=False,
+            archived=False,
+        ).select_related(
             "course",
         )
 

@@ -19,7 +19,9 @@ from products.models import Course
 
 class PromoCodeQuerySet(QuerySet):
     def active(self) -> QuerySet["PromoCode"]:
-        return self.filter(active=True,).filter(
+        return self.filter(
+            active=True,
+        ).filter(
             Q(expires__isnull=True) | Q(expires__gte=timezone.now()),
         )
 

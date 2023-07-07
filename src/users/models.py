@@ -37,6 +37,16 @@ class User(AbstractUser):
     class Meta(AbstractUser.Meta):
         abstract = False
         indexes = [GinIndex(fields=["tags"])]
+        verbose_name = _("user")
+        verbose_name_plural = _("users")
+
+    def __str__(self) -> str:
+        name = f"{self.first_name} {self.last_name}"
+
+        if len(name) < 3:
+            return "Anonymous"
+
+        return name.strip()
 
     @classmethod
     def parse_name(cls, name: str) -> dict:
@@ -49,14 +59,6 @@ class User(AbstractUser):
             return {"first_name": parts[0], "last_name": parts[1]}
 
         return {"first_name": parts[0], "last_name": " ".join(parts[1:])}
-
-    def __str__(self) -> str:
-        name = f"{self.first_name} {self.last_name}"
-
-        if len(name) < 3:
-            return "Anonymous"
-
-        return name.strip()
 
     @cached_property
     def diploma_languages(self) -> set[Language]:
@@ -98,6 +100,9 @@ class Student(User):
         proxy = True
         verbose_name = _("Student")
         verbose_name_plural = _("Students")
+
+    def __str__(self) -> str:
+        return super().__str__()
 
     def get_absolute_url(self) -> str:
         return urljoin(settings.FRONTEND_URL, f"/auth/as/{self.pk}/")
