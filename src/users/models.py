@@ -5,6 +5,8 @@ import uuid
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import Permission
+from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.indexes import GinIndex
 from django.db.models import TextChoices
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
@@ -30,8 +32,11 @@ class User(AbstractUser):
     github_username = models.CharField(max_length=256, blank=True, db_index=True, default="")
     telegram_username = models.CharField(max_length=256, blank=True, db_index=True, default="")
 
+    tags = ArrayField(models.CharField(max_length=512), default=list)
+
     class Meta(AbstractUser.Meta):
         abstract = False
+        indexes = [GinIndex(fields=["tags"])]
 
     @classmethod
     def parse_name(cls, name: str) -> dict:

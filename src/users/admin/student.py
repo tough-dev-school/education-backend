@@ -43,11 +43,17 @@ class StudentAdmin(ModelAdmin):
             },
         ),
     )
-    list_display = ("email", "first_name", "last_name", "gender")
+    list_display = ("email", "first_name", "last_name", "gender", "tags")
     fieldsets = (
         (None, {"fields": ("username",)}),
         (_("Personal info"), {"fields": ("first_name", "last_name", "email", "gender")}),
         (_("Name in english"), {"fields": ("first_name_en", "last_name_en")}),
     )
-    list_filter = ("is_staff", "is_superuser", "is_active", "groups", "order__study__course")
+    list_filter = (
+        "is_staff",
+        "is_superuser",
+        "is_active",
+        "groups",
+        "order__study__course",
+    )
     list_editable = ("gender",)

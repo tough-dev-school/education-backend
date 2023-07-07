@@ -6,6 +6,7 @@ from app.models import TimestampedModel
 
 class Group(TimestampedModel):
     name = models.CharField(max_length=256)
+    slug = models.SlugField(unique=True)
 
     class Meta:
         verbose_name = _("Analytical group")
