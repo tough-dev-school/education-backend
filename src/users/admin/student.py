@@ -1,9 +1,6 @@
 from typing import Any
 
-from rest_framework.request import Request
-
 from django import forms
-from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import admin
@@ -11,30 +8,6 @@ from app.admin import ModelAdmin
 from users.models import Student
 from users.models import User
 from users.services import UserCreator
-
-
-class StudentTagsFilter(admin.SimpleListFilter):
-    """This is a tag filter based on the values
-    from a model's `tags` ArrayField."""
-
-    title = _("Tags")
-    parameter_name = "tags"
-
-    def lookups(self, request: Request, model_admin: ModelAdmin) -> list[tuple[str, str]]:
-        tags = Student.objects.values_list(self.parameter_name, flat=True).distinct()
-        tags = [(tag, tag) for sublist in tags for tag in sublist if tag]  # type: ignore
-        return sorted(set(tags))
-
-    def queryset(self, request: Request, queryset: QuerySet) -> QuerySet:
-        """
-        When user clicks on a filter, this method gets called.
-        The provided queryset with be a queryset of Items, so we need to
-        filter that based on the clicked keyword.
-        """
-
-        lookup_value = self.value()
-        if lookup_value:
-            return queryset.filter(tags__contains=[lookup_value])
 
 
 class PasswordLessUserCreationForm(forms.ModelForm):
@@ -82,6 +55,5 @@ class StudentAdmin(ModelAdmin):
         "is_active",
         "groups",
         "order__study__course",
-        StudentTagsFilter,
     )
     list_editable = ("gender",)
