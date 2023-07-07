@@ -19,7 +19,6 @@ class ReactionCreatorException(AppServiceException):
 
 @dataclass
 class ReactionCreator(BaseService):
-
     emoji: str
     author: User
     answer: Answer

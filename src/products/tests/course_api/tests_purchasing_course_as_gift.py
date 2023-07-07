@@ -60,7 +60,6 @@ def test_order(gift, course, default_gift_data):
     ],
 )
 def test_required_fields(gift, required_field_name, default_gift_data):
-
     del default_gift_data[required_field_name]
     got = gift(default_gift_data, format="multipart", expected_status_code=400)
 

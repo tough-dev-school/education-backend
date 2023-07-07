@@ -25,5 +25,4 @@ def test_ok(api, url, reaction):
 
 
 def test_can_not_destroy_answer_of_another_author(api, url, reaction_of_another_author):
-
     api.delete(f"{url}{reaction_of_another_author.slug}/", expected_status_code=403)

@@ -39,7 +39,6 @@ def test_progress_records_from_another_studies_are_ignored(chain_sender, send_me
 
 
 def test_two_root_messages_are_sent(chain_sender, send_message, parent_message, second_parent_message, study, mocker):
-
     chain_sender()
 
     send_message.assert_has_calls(

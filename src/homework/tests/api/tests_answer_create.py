@@ -108,7 +108,6 @@ def test_create_answer_without_parent_do_not_have_parent_field_in_response(api, 
 @pytest.mark.xfail(reason="WIP: will per-course permissions later")
 @pytest.mark.usefixtures("_no_purchase")
 def test_403_for_not_purchased_users(api, question):
-
     api.post(
         "/api/v2/homework/answers/",
         {
