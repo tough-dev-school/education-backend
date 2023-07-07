@@ -15,11 +15,6 @@ def ship_course(mocker):
     return mocker.patch("studying.shipment.CourseShipment.ship")
 
 
-@pytest.fixture
-def order(mixer):
-    return mixer.blend("orders.Order")
-
-
 def test_record(record, ship_record, user, order):
     factory.ship(record, to=user, order=order)
 
