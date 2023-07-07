@@ -6,10 +6,10 @@ from django.db import models
 
 def set_default_slug_to_group(apps, schema_editor):
     Group = apps.get_model("products", "Group")
+    Course = apps.get_model("products", "Course")
     groups = Group.objects.all()
 
     def get_product_group_slug(group):
-        Course = apps.get_model("products", "Course")
         first_course = Course.objects.filter(group=group).first()
         return '-'.join(first_course.slug.split('-')[:-1])
 
