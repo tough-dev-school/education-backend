@@ -3,14 +3,18 @@
 from django.db import migrations
 from django.db import models
 
-from app.helpers import slugify
-
 
 def set_default_slug_to_group(apps, schema_editor):
     Group = apps.get_model("products", "Group")
     groups = Group.objects.all()
+
+    def get_product_group_slug(group):
+        Course = apps.get_model("products", "Course")
+        first_course = Course.objects.filter(group=group).first()
+        return '-'.join(first_course.slug.split('-')[:-1])
+
     for group in groups:
-        group.slug = slugify(group.name)
+        group.slug = get_product_group_slug(group)
         group.save()
 
 

@@ -75,7 +75,13 @@ class StudentAdmin(ModelAdmin):
         (None, {"fields": ("username",)}),
         (_("Personal info"), {"fields": ("first_name", "last_name", "email", "gender")}),
         (_("Name in english"), {"fields": ("first_name_en", "last_name_en")}),
-        (_("Tags"), {"fields": ("tags",)}),
     )
-    list_filter = ("is_staff", "is_superuser", "is_active", "groups", "order__study__course", StudentTagsFilter)
+    list_filter = (
+        "is_staff",
+        "is_superuser",
+        "is_active",
+        "groups",
+        "order__study__course",
+        StudentTagsFilter,
+    )
     list_editable = ("gender",)

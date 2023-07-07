@@ -75,7 +75,6 @@ django==4.1.9
     #   django-debug-toolbar
     #   django-filter
     #   django-healthchecks
-    #   django-jsonform
     #   django-prettyjson
     #   django-storages
     #   djangorestframework
@@ -106,8 +105,6 @@ django-ipware==4.0.2
     # via
     #   drf-recaptcha
     #   education-backend (pyproject.toml)
-django-jsonform==2.17.2
-    # via education-backend (pyproject.toml)
 django-prettyjson==0.4.1
     # via education-backend (pyproject.toml)
 django-split-settings==1.2.0
