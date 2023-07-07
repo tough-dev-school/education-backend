@@ -32,6 +32,7 @@ dependencies = [
     "dj-rest-auth",
 
     "django-healthchecks",
+    "django-jsonform",
 
     "cmarkgfm",
     "bleach",
