@@ -120,7 +120,7 @@ djangorestframework==3.14.0
     #   education-backend (pyproject.toml)
 drf-jwt==1.19.2
     # via education-backend (pyproject.toml)
-drf-recaptcha==2.2.3
+drf-recaptcha==3.0.0
     # via education-backend (pyproject.toml)
 drf-spectacular[sidecar]==0.26.3
     # via education-backend (pyproject.toml)
