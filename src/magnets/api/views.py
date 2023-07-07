@@ -31,7 +31,7 @@ class EmailLeadMagnetCampaignView(AnonymousAPIView, ValidationMixin):
     def create_lead(self) -> None:
         lead_creator = LeadCreator(
             name=self.data.get("name"),
-            email=self.data["email"],  # type: ignore
+            email=self.data["email"],
             campaign=self.get_object(),
         )
         return lead_creator()

@@ -11,12 +11,10 @@ from django.utils.translation import pgettext_lazy
 from app.models import models
 from app.models import only_one_or_zero_is_set
 from app.models import TimestampedModel
+from orders.exceptions import EmptyOrderException
+from orders.exceptions import UnknownItemException
 from orders.fields import ItemField
 from products.models import Product
-
-
-class UnknownItemException(Exception):
-    pass
 
 
 class OrderQuerySet(QuerySet):
@@ -98,6 +96,8 @@ class Order(TimestampedModel):
             if getattr(field, "_is_item", False):
                 if getattr(self, f"{field.name}_id", None) is not None:
                     return getattr(self, field.name)
+
+        raise EmptyOrderException()
 
     @classmethod
     def _iterate_items(cls) -> Iterable[models.fields.Field]:

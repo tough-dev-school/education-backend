@@ -9,7 +9,7 @@ from banking.atol.exceptions import AtolAuthError
 
 
 def get_atol_token() -> str:
-    return cache.get_or_set(
+    return cache.get_or_set(  # type: ignore
         key="ATOL_AUTH_TOKEN",
         default=fetch,
         timeout=timedelta(hours=14).seconds,

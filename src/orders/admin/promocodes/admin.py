@@ -2,7 +2,7 @@ from rest_framework.request import Request
 
 from django.db.models import QuerySet
 from django.utils import timezone
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext as _
 
 from app.admin import admin
 from app.admin import ModelAdmin

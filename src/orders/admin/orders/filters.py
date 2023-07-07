@@ -1,8 +1,7 @@
 from typing import Any
 
-from rest_framework.request import Request
-
 from django.db.models import QuerySet
+from django.http.request import HttpRequest
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
@@ -21,7 +20,7 @@ class OrderStatusFilter(admin.SimpleListFilter):
             ("shipped_without_payment", _("Shipped without payment")),
         ]
 
-    def queryset(self, request: Request, queryset: QuerySet[Order]) -> QuerySet[Order] | None:
+    def queryset(self, request: HttpRequest, queryset: QuerySet[Order]) -> QuerySet[Order] | None:
         """Types are ignored due to https://github.com/typeddjango/django-stubs/issues/353"""
         value = self.value()
 
