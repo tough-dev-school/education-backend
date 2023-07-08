@@ -414,7 +414,7 @@ requests-mock==1.11.0
     # via education-backend (pyproject.toml)
 retry==0.9.2
     # via education-backend (pyproject.toml)
-rpds-py==0.8.8
+rpds-py==0.8.10
     # via
     #   jsonschema
     #   referencing
