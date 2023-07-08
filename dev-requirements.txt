@@ -14,7 +14,7 @@ asgiref==3.7.2
     # via django
 astor==0.8.1
     # via flake8-simplify
-astroid==2.15.5
+astroid==2.15.6
     # via flake8-django
 asttokens==2.2.1
     # via stack-data
