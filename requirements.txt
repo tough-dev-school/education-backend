@@ -41,7 +41,7 @@ cffi==1.15.1
     # via
     #   cmarkgfm
     #   cryptography
-charset-normalizer==3.1.0
+charset-normalizer==3.2.0
     # via requests
 click==8.1.4
     # via
