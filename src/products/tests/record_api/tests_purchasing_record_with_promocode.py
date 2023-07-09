@@ -30,12 +30,12 @@ def test_purchasing_with_promocode(call_purchase, record, promocode, expected):
     assert placed.price == Decimal(expected)
 
 
-def test_purchasing_with_promocode_attached_to_courses(call_purchase, mixer, testcode):
+def test_purchasing_with_promocode_attached_to_courses(call_purchase, factory, testcode):
     """We need this test just to write down that promocodes attaching
     does not support products, other then courses, and it does not break
     regular purchase
     """
-    testcode.courses.add(mixer.blend("products.Course"))
+    testcode.courses.add(factory.course())
 
     call_purchase(promocode="TESTCODE")
     placed = get_order()

@@ -24,8 +24,8 @@ def test_diploma_with_template_in_query(diploma, query):
     assert diploma in diplomas
 
 
-def test_exclude_diplomas_not_matching_template_course(mixer, query, template, diploma):
-    template.setattr_and_save("course", mixer.blend("products.Course"))
+def test_exclude_diplomas_not_matching_template_course(factory, query, template, diploma):
+    template.setattr_and_save("course", factory.course())
 
     diplomas = query()
 

@@ -6,8 +6,8 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def record(mixer):
-    return lambda template_id: mixer.blend("products.Record", template_id=template_id)
+def record(factory):
+    return lambda template_id: factory.record(template_id=template_id)
 
 
 @pytest.fixture

@@ -4,8 +4,8 @@ from tinkoff.bank import TinkoffBank
 
 
 @pytest.fixture(autouse=True)
-def record(mixer):
-    return mixer.blend("products.Record", slug="home-video", price=1900)
+def record(factory):
+    return factory.record(slug="home-video", price=1900)
 
 
 @pytest.fixture(autouse=True)

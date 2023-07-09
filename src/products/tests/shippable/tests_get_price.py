@@ -5,8 +5,8 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def record(mixer):
-    return mixer.blend("products.Record", name="Запись курсов кройки и шитья", price=100500)
+def record(factory):
+    return factory.record(name="Запись курсов кройки и шитья", price=100500)
 
 
 @pytest.fixture(autouse=True)

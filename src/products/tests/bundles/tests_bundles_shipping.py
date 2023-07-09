@@ -13,11 +13,6 @@ def ship_record(mocker):
     return mocker.patch("products.models.Record.ship")
 
 
-@pytest.fixture
-def another_record(mixer):
-    return mixer.blend("products.Record")
-
-
 def test_shipping_course(bundle, order, user, course, ship_course):
     bundle.courses.add(course)
 

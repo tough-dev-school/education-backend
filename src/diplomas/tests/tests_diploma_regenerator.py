@@ -157,8 +157,8 @@ def test_do_not_update_diplomas_in_languages_when_no_template_in_that_languages(
 
 
 @pytest.mark.usefixtures("diploma_ru", "diploma_en")
-def test_do_not_generate_new_diplomas_for_study_without_at_least_one_diploma(factory, mixer, student, send_mail):
-    order = factory.order(item=mixer.blend("products.Course"), user=student, is_paid=True)  # study for order created
+def test_do_not_generate_new_diplomas_for_study_without_at_least_one_diploma(factory, student, send_mail):
+    order = factory.order(item=factory.course(), user=student, is_paid=True)  # study for order created
 
     DiplomaRegenerator(student)()
 

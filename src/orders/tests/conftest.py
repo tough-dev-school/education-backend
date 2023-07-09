@@ -9,9 +9,8 @@ def user(mixer):
 
 
 @pytest.fixture
-def course(mixer):
-    return mixer.blend(
-        "products.Course",
+def course(factory):
+    return factory.course(
         name="Кройка и шитьё",
         full_name="Курс кройки и шитья",
         name_genitive="Кройки и шитья",
@@ -20,10 +19,5 @@ def course(mixer):
 
 
 @pytest.fixture
-def record(mixer, course):
-    return mixer.blend("products.Record", course=course, price=100500)
-
-
-@pytest.fixture
-def bundle(mixer):
-    return mixer.blend("products.Bundle")
+def record(factory, course):
+    return factory.record(course=course, price=100500)

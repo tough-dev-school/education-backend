@@ -9,21 +9,6 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def record(mixer):
-    return mixer.blend("products.Record")
-
-
-@pytest.fixture
-def course(mixer):
-    return mixer.blend("products.Course")
-
-
-@pytest.fixture
-def bundle(mixer):
-    return mixer.blend("products.Bundle")
-
-
-@pytest.fixture
 def student(mixer):
     return mixer.blend("users.User", first_name="Омон", last_name="Кривомазов", gender=User.GENDERS.MALE)
 

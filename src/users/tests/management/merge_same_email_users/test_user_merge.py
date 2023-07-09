@@ -110,8 +110,8 @@ def test_source_user_preserves_duplicated_relation_answer_cross_check(bob_a, bob
     assert rel_a.checker == bob_a
 
 
-def test_source_user_preserves_duplicated_relation_study(bob_a, bob_b, command):
-    course = mixer.blend("products.Course")
+def test_source_user_preserves_duplicated_relation_study(bob_a, bob_b, command, factory):
+    course = factory.course()
     rel_a = mixer.blend("studying.Study", student=bob_a, course=course)
     mixer.blend("studying.Study", student=bob_b, course=course)
 

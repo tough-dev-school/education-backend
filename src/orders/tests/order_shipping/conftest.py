@@ -19,10 +19,8 @@ def unship(mocker):
 
 
 @pytest.fixture
-def course(mixer):
-    return mixer.blend(
-        "products.Course", name_genitive="курсов катанья и мытья", name="Запись курсов катанья и мытья", full_name="Полная запись курса катанья и мытья"
-    )
+def course(factory):
+    return factory.course(name_genitive="курсов катанья и мытья", name="Запись курсов катанья и мытья", full_name="Полная запись курса катанья и мытья")
 
 
 @pytest.fixture

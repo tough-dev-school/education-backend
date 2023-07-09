@@ -4,16 +4,6 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def course(mixer):
-    return mixer.blend("products.Course")
-
-
-@pytest.fixture
-def record(mixer):
-    return mixer.blend("products.Record")
-
-
-@pytest.fixture
 def order(factory, bundle):
     order = factory.order(item=bundle)
     order.save()
@@ -22,8 +12,8 @@ def order(factory, bundle):
 
 
 @pytest.fixture
-def bundle(mixer, course, record):
-    bundle = mixer.blend("products.Bundle")
+def bundle(factory, course, record):
+    bundle = factory.bundle()
     bundle.courses.add(course)
     bundle.records.add(record)
 

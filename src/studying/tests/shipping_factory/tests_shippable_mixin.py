@@ -9,8 +9,8 @@ def ship(mocker):
 
 
 @pytest.fixture
-def order(mixer):
-    return mixer.blend("orders.Order")
+def order(factory):
+    return factory.order()
 
 
 def test_record(record, ship, user, order):

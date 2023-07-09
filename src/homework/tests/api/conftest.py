@@ -13,11 +13,6 @@ def api(api):
 
 
 @pytest.fixture
-def course(mixer):
-    return mixer.blend("products.Course")
-
-
-@pytest.fixture
 def question(mixer, course):
     question = mixer.blend("homework.Question")
     question.courses.add(course)

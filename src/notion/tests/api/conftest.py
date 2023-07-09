@@ -14,11 +14,6 @@ def api(api):
     return api
 
 
-@pytest.fixture
-def another_course(mixer):
-    return mixer.blend("products.Course")
-
-
 @pytest.fixture(autouse=True)
 def order(factory, course, api):
     return factory.order(
