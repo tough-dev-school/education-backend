@@ -12,7 +12,10 @@ from studying.models import Study
 
 class MessageQuerySet(QuerySet):
     def may_be_parent(self) -> QuerySet["Message"]:
-        return self.filter(chain__sending_is_active=False, children__isnull=True,).select_related(
+        return self.filter(
+            chain__sending_is_active=False,
+            children__isnull=True,
+        ).select_related(
             "chain",
             "chain__course",
         )

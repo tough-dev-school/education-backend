@@ -11,12 +11,9 @@ from django.utils.translation import pgettext_lazy
 from app.models import models
 from app.models import only_one_or_zero_is_set
 from app.models import TimestampedModel
+from orders.exceptions import UnknownItemException
 from orders.fields import ItemField
 from products.models import Product
-
-
-class UnknownItemException(Exception):
-    pass
 
 
 class OrderQuerySet(QuerySet):
@@ -92,7 +89,7 @@ class Order(TimestampedModel):
         return f"Order #{self.pk}"
 
     @property
-    def item(self) -> Product:
+    def item(self) -> Product:  # type: ignore
         """Find the attached item. Simple replacement for ContentType framework"""
         for field in self.__class__._meta.get_fields():
             if getattr(field, "_is_item", False):

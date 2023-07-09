@@ -44,7 +44,6 @@ def mark_order_as_paid_on_stripe_notifications(instance: StripeNotification, cre
 
 @receiver(post_save, sender=DolyameNotification)
 def mark_order_as_paid_on_dolyame_notifications(instance: DolyameNotification, created: bool, **kwargs: dict[str, Any]) -> None:
-
     if not created:
         return
 

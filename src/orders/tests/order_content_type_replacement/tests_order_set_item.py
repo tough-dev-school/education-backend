@@ -1,6 +1,6 @@
 import pytest
 
-from orders.models import UnknownItemException
+from orders.exceptions import UnknownItemException
 
 pytestmark = [pytest.mark.django_db]
 

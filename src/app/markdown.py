@@ -9,7 +9,7 @@ def markdownify(content: str) -> str:
 
     return bleach.clean(
         text=html,
-        tags=settings.BLEACH_ALLOWED_TAGS,  # type: ignore
+        tags=settings.BLEACH_ALLOWED_TAGS,
         attributes=settings.BLEACH_ALLOWED_ATTRIBUTES,
         strip_comments=False,
     )

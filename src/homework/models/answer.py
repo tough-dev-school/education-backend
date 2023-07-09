@@ -75,14 +75,14 @@ class AnswerQuerySet(TreeQuerySet):
 
 
 class Answer(TreeNode):
-    objects = models.Manager.from_queryset(AnswerQuerySet)()
+    objects = AnswerQuerySet.as_manager()
 
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     modified = models.DateTimeField(auto_now=True, db_index=True)
 
     slug = models.UUIDField(db_index=True, unique=True, default=uuid.uuid4)
-    question = models.ForeignKey("homework.Question", on_delete=models.CASCADE)
-    author = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    question = models.ForeignKey("homework.Question", on_delete=models.CASCADE, related_name="+")
+    author = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="+")
     do_not_crosscheck = models.BooleanField(_("Exclude from cross-checking"), default=False)
 
     text = models.TextField()
@@ -95,12 +95,9 @@ class Answer(TreeNode):
             ("see_all_answers", _("May see answers from every user")),
         ]
 
-    def get_root_answer(self) -> "Answer":
-        ancesorts = self.ancestors()
-        if ancesorts.count():
-            return ancesorts[0]
-
-        return self
+    def __str__(self) -> str:
+        text = remove_html(markdownify(self.text))
+        return textwrap.shorten(text, width=40)
 
     def get_absolute_url(self) -> str:
         root = self.get_root_answer()
@@ -112,6 +109,13 @@ class Answer(TreeNode):
 
         return url
 
+    def get_root_answer(self) -> "Answer":
+        ancesorts = self.ancestors()
+        if ancesorts.count():
+            return ancesorts[0]
+
+        return self
+
     def get_purchased_course(self) -> Course | None:
         latest_purchase = Order.objects.paid().filter(user=self.author, course__in=self.question.courses.all()).order_by("-paid").first()
 
@@ -122,7 +126,3 @@ class Answer(TreeNode):
 
     def get_first_level_descendants(self) -> "AnswerQuerySet":
         return self.descendants().filter(parent=self.id)
-
-    def __str__(self) -> str:
-        text = remove_html(markdownify(self.text))
-        return textwrap.shorten(text, width=40)

@@ -25,7 +25,6 @@ class SelfView(GenericAPIView):
         return Response(serializer.data)
 
     def patch(self, request: Request) -> Response:
-
         user_updater = UserUpdater(
             user=self.get_object(),
             user_data=request.data,

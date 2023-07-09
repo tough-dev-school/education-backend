@@ -94,7 +94,6 @@ def test_sibling_answers_are_included(answer_one, answer_two, root_answer, user,
 
 
 def test_children_of_sibling_answers_are_included(answer_one, answer_two, root_answer, user, another_user, child_of_answer_two):
-
     answer_one.parent = root_answer
     answer_one.save()
 

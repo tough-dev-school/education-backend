@@ -14,6 +14,8 @@ asgiref==3.7.2
     # via django
 astor==0.8.1
     # via flake8-simplify
+astroid==2.15.6
+    # via flake8-django
 asttokens==2.2.1
     # via stack-data
 async-timeout==4.0.2
@@ -24,6 +26,7 @@ attrs==23.1.0
     #   flake8-eradicate
     #   flake8-multiline-containers
     #   jsonschema
+    #   referencing
 autoflake==1.7.8
     # via education-backend (pyproject.toml)
 babel==2.12.1
@@ -34,7 +37,7 @@ bcrypt==4.0.1
     # via education-backend (pyproject.toml)
 billiard==3.6.4.0
     # via celery
-black==22.12.0
+black==23.3.0
     # via
     #   education-backend (pyproject.toml)
     #   flake8-black
@@ -63,7 +66,7 @@ cffi==1.15.1
     # via
     #   cmarkgfm
     #   cryptography
-charset-normalizer==3.1.0
+charset-normalizer==3.2.0
     # via requests
 click==8.1.4
     # via
@@ -82,10 +85,6 @@ cmarkgfm==2022.10.27
     # via education-backend (pyproject.toml)
 cognitive-complexity==1.3.0
     # via flake8-cognitive-complexity
-coreapi==2.3.3
-    # via djangorestframework-stubs
-coreschema==0.0.4
-    # via coreapi
 coverage[toml]==7.2.7
     # via pytest-cov
 cryptography==41.0.1
@@ -144,11 +143,11 @@ django-split-settings==1.2.0
     # via education-backend (pyproject.toml)
 django-storages==1.13.2
     # via education-backend (pyproject.toml)
-django-stubs==1.11.0
+django-stubs==4.2.3
     # via
     #   djangorestframework-stubs
     #   education-backend (pyproject.toml)
-django-stubs-ext==0.8.0
+django-stubs-ext==4.2.2
     # via django-stubs
 django-tree-queries==0.15.0
     # via education-backend (pyproject.toml)
@@ -159,7 +158,7 @@ djangorestframework==3.14.0
     #   drf-recaptcha
     #   drf-spectacular
     #   education-backend (pyproject.toml)
-djangorestframework-stubs==1.7.0
+djangorestframework-stubs==3.14.2
     # via education-backend (pyproject.toml)
 drf-jwt==1.19.2
     # via education-backend (pyproject.toml)
@@ -206,7 +205,7 @@ flake8-bugbear==23.3.12
     # via education-backend (pyproject.toml)
 flake8-cognitive-complexity==0.1.0
     # via education-backend (pyproject.toml)
-flake8-django==1.2
+flake8-django==1.3
     # via education-backend (pyproject.toml)
 flake8-eradicate==1.5.0
     # via education-backend (pyproject.toml)
@@ -277,41 +276,41 @@ ipython==8.14.0
     # via education-backend (pyproject.toml)
 isort==5.12.0
     # via flake8-isort
-itypes==1.2.0
-    # via coreapi
 jedi==0.18.2
     # via
     #   education-backend (pyproject.toml)
     #   ipython
-jinja2==3.1.2
-    # via coreschema
 jmespath==1.0.1
     # via
     #   boto3
     #   botocore
 jsonschema==4.18.0
     # via drf-spectacular
+jsonschema-specifications==2023.6.1
+    # via jsonschema
 kombu==5.3.1
     # via celery
-markupsafe==2.1.3
-    # via jinja2
+lazy-object-proxy==1.9.0
+    # via astroid
 matplotlib-inline==0.1.6
     # via ipython
 mccabe==0.7.0
     # via flake8
 mixer==7.2.2
     # via education-backend (pyproject.toml)
-mypy==0.950
+mypy==1.4.1
     # via
     #   django-stubs
     #   djangorestframework-stubs
     #   education-backend (pyproject.toml)
-mypy-extensions==0.4.4
+mypy-extensions==1.0.0
     # via
     #   black
     #   mypy
 packaging==23.1
-    # via pytest
+    # via
+    #   black
+    #   pytest
 parso==0.8.3
     # via jedi
 pathspec==0.11.1
@@ -320,7 +319,7 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
-pillow==9.5.0
+pillow==10.0.0
     # via education-backend (pyproject.toml)
 platformdirs==3.8.1
     # via black
@@ -355,8 +354,6 @@ pyjwt[crypto]==2.7.0
     # via
     #   drf-jwt
     #   education-backend (pyproject.toml)
-pyrsistent==0.19.3
-    # via jsonschema
 pytest==7.4.0
     # via
     #   pytest-cov
@@ -402,9 +399,12 @@ pyyaml==6.0
     # via drf-spectacular
 redis==4.6.0
     # via education-backend (pyproject.toml)
+referencing==0.29.1
+    # via
+    #   jsonschema
+    #   jsonschema-specifications
 requests==2.31.0
     # via
-    #   coreapi
     #   django-anymail
     #   django-healthchecks
     #   djangorestframework-stubs
@@ -414,6 +414,10 @@ requests-mock==1.11.0
     # via education-backend (pyproject.toml)
 retry==0.9.2
     # via education-backend (pyproject.toml)
+rpds-py==0.8.10
+    # via
+    #   jsonschema
+    #   referencing
 s3transfer==0.6.1
     # via boto3
 sentry-sdk==1.27.1
@@ -444,8 +448,6 @@ standardjson==0.3.1
     # via django-prettyjson
 stripe==5.4.0
     # via education-backend (pyproject.toml)
-tomli==2.0.1
-    # via django-stubs
 traitlets==5.9.0
     # via
     #   ipython
@@ -461,10 +463,8 @@ types-bleach==6.0.0.3
 types-freezegun==1.1.10
     # via education-backend (pyproject.toml)
 types-markdown==3.4.2.9
-    # via
-    #   djangorestframework-stubs
-    #   education-backend (pyproject.toml)
-types-pillow==9.5.0.6
+    # via education-backend (pyproject.toml)
+types-pillow==10.0.0.0
     # via education-backend (pyproject.toml)
 types-pytz==2023.3.0.0
     # via
@@ -499,9 +499,7 @@ typing-extensions==4.7.1
     #   flake8-pie
     #   mypy
 uritemplate==4.1.1
-    # via
-    #   coreapi
-    #   drf-spectacular
+    # via drf-spectacular
 urllib3==1.26.16
     # via
     #   botocore
@@ -520,6 +518,8 @@ webencodings==0.5.1
     # via bleach
 whitenoise==6.5.0
     # via education-backend (pyproject.toml)
+wrapt==1.15.0
+    # via astroid
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

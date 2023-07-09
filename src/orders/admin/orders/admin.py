@@ -4,7 +4,7 @@ from django.db.models import QuerySet
 from django.forms import Media
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext as _
 
 from app.admin import admin
 from app.admin import ModelAdmin

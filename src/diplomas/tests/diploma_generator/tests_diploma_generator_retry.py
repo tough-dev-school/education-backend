@@ -27,7 +27,6 @@ def generate_exception_n_times(times: int):
 
 @pytest.fixture(autouse=True)
 def _reset_runs_count():
-
     yield
 
     global RUNS

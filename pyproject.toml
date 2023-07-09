@@ -122,6 +122,8 @@ line-quotes = "\""
 ignore = [
     "B010",  # Do not call setattr(x, 'attr', val), instead use normal property access: x.attr = val
     "DJ01",  # Avoid using null=True on string-based fields such as CharField and TextField
+    "DJ07",  # Allow __all__ in fields for ModelForm
+    "DJ12",  # Field ordering
     "E501",  # Line too long
     "E265",  # Block comments should have one space before the pound sign (#) and the comment itself
     "F811",  # Redefinition of unused name from line n
