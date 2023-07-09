@@ -249,7 +249,7 @@ freezegun==1.2.2
     # via
     #   education-backend (pyproject.toml)
     #   pytest-freezegun
-h11==0.12.0
+h11==0.14.0
     # via httpcore
 h2==4.1.0
     # via httpx

@@ -128,7 +128,7 @@ drf-spectacular-sidecar==2023.7.1
     # via drf-spectacular
 emoji==2.6.0
     # via education-backend (pyproject.toml)
-h11==0.12.0
+h11==0.14.0
     # via httpcore
 h2==4.1.0
     # via httpx
