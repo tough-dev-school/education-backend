@@ -13,7 +13,9 @@ asgiref==3.7.2
 async-timeout==4.0.2
     # via redis
 attrs==23.1.0
-    # via jsonschema
+    # via
+    #   jsonschema
+    #   referencing
 babel==2.12.1
     # via education-backend (pyproject.toml)
 bcrypt==4.0.1
@@ -22,9 +24,9 @@ billiard==3.6.4.0
     # via celery
 bleach==6.0.0
     # via education-backend (pyproject.toml)
-boto3==1.26.85
+boto3==1.28.1
     # via education-backend (pyproject.toml)
-botocore==1.29.85
+botocore==1.31.1
     # via
     #   boto3
     #   s3transfer
@@ -128,13 +130,13 @@ drf-spectacular-sidecar==2023.7.1
     # via drf-spectacular
 emoji==2.6.0
     # via education-backend (pyproject.toml)
-h11==0.12.0
+h11==0.14.0
     # via httpcore
 h2==4.1.0
     # via httpx
 hpack==4.0.0
     # via h2
-httpcore==0.15.0
+httpcore==0.17.3
     # via httpx
 httpx[http2]==0.24.1
     # via education-backend (pyproject.toml)
@@ -153,6 +155,8 @@ jmespath==1.0.1
     #   botocore
 jsonschema==4.18.0
     # via drf-spectacular
+jsonschema-specifications==2023.6.1
+    # via jsonschema
 kombu==5.3.1
     # via celery
 pillow==10.0.0
@@ -169,8 +173,6 @@ pyjwt[crypto]==2.7.0
     # via
     #   drf-jwt
     #   education-backend (pyproject.toml)
-pyrsistent==0.19.3
-    # via jsonschema
 python-dateutil==2.8.2
     # via botocore
 pytz==2023.3
@@ -181,6 +183,10 @@ pyyaml==6.0
     # via drf-spectacular
 redis==4.6.0
     # via education-backend (pyproject.toml)
+referencing==0.29.1
+    # via
+    #   jsonschema
+    #   jsonschema-specifications
 requests==2.31.0
     # via
     #   django-anymail
@@ -188,6 +194,10 @@ requests==2.31.0
     #   stripe
 retry==0.9.2
     # via education-backend (pyproject.toml)
+rpds-py==0.8.10
+    # via
+    #   jsonschema
+    #   referencing
 s3transfer==0.6.1
     # via boto3
 sentry-sdk==1.27.1

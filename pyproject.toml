@@ -41,7 +41,7 @@ dependencies = [
     "babel",
     "boto3",
     "PyJWT",
-    "urllib3>=1.26.5",
+    "urllib3",
 
     "celery",
     "redis",
@@ -57,7 +57,7 @@ dependencies = [
 dev = [
     "ipython",
 
-    "pytest-django>=3.9",
+    "pytest-django",
     "pytest-cov",
     "pytest-deadfixtures",
     "pytest-env",
@@ -69,13 +69,13 @@ dev = [
     "pytest-httpx",
 
     "freezegun",
-    "mixer==7.2.2",
+    "mixer",
     "requests-mock",
 
     "black",
 
     "jedi",
-    "autoflake==1.7.8",
+    "autoflake",
     "flake8-absolute-import",
     "flake8-black",
     "flake8-bugbear",
