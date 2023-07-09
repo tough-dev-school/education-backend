@@ -43,15 +43,15 @@ black==23.3.0
     #   flake8-black
 bleach==6.0.0
     # via education-backend (pyproject.toml)
-boto3==1.26.85
+boto3==1.28.1
     # via education-backend (pyproject.toml)
-boto3-stubs==1.26.85
+boto3-stubs==1.28.1
     # via education-backend (pyproject.toml)
-botocore==1.29.85
+botocore==1.31.1
     # via
     #   boto3
     #   s3transfer
-botocore-stubs==1.29.85
+botocore-stubs==1.29.165
     # via boto3-stubs
 celery==5.2.7
     # via education-backend (pyproject.toml)
@@ -243,19 +243,19 @@ flake8-use-fstring==1.4
     # via education-backend (pyproject.toml)
 flake8-variables-names==0.0.6
     # via education-backend (pyproject.toml)
-flake8-walrus==1.1.0
+flake8-walrus==1.2.0
     # via education-backend (pyproject.toml)
 freezegun==1.2.2
     # via
     #   education-backend (pyproject.toml)
     #   pytest-freezegun
-h11==0.12.0
+h11==0.14.0
     # via httpcore
 h2==4.1.0
     # via httpx
 hpack==4.0.0
     # via h2
-httpcore==0.15.0
+httpcore==0.17.3
     # via httpx
 httpx[http2]==0.24.1
     # via
@@ -492,7 +492,6 @@ types-urllib3==1.26.25.13
     # via types-requests
 typing-extensions==4.7.1
     # via
-    #   boto3-stubs
     #   django-stubs
     #   django-stubs-ext
     #   djangorestframework-stubs
