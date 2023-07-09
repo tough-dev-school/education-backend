@@ -255,7 +255,7 @@ h2==4.1.0
     # via httpx
 hpack==4.0.0
     # via h2
-httpcore==0.15.0
+httpcore==0.17.3
     # via httpx
 httpx[http2]==0.24.1
     # via
