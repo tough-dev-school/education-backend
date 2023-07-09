@@ -172,7 +172,7 @@ emoji==2.6.0
     # via education-backend (pyproject.toml)
 eradicate==2.3.0
     # via flake8-eradicate
-execnet==1.9.0
+execnet==2.0.1
     # via pytest-xdist
 executing==1.2.0
     # via stack-data
