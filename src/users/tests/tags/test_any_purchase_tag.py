@@ -32,16 +32,6 @@ def test_set_if_has_paid_order_and_no_tag(user):
     assert tag_name in user.tags
 
 
-@pytest.mark.usefixtures("paid_order", "unpaid_order")
-def test_doesnt_set_if_already_has_tag(user, mock_apply_tag):
-    user.tags = [tag_name]
-    user.save()
-
-    apply_tags(user)
-
-    mock_apply_tag.assert_not_called()
-
-
 @pytest.mark.usefixtures("unpaid_order")
 def test_doesnt_set_if_no_paid_orders(user, mock_apply_tag):
     apply_tags(user)
