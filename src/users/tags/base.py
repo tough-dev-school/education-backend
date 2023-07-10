@@ -36,8 +36,7 @@ class TagSetterMechanism(metaclass=ABCMeta):
     def should_be_applied(self) -> bool:
         """Check if tag should be applied
 
-        use it to speedup tag pipeline, avoiding orders that are
-        not eligible for particular discount
+        use it to speedup tag pipeline
         """
 
     @abstractmethod
