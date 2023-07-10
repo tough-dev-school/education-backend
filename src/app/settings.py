@@ -37,6 +37,7 @@ include(
     "conf/templates.py",
     "conf/timezone.py",
     "conf/vat.py",
+    "conf/tags.py",
 )
 
 include("conf/integrations/*.py")
