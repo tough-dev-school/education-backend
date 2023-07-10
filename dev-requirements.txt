@@ -235,7 +235,7 @@ flake8-pytest-style==1.7.2
     # via education-backend (pyproject.toml)
 flake8-simplify==0.20.0
     # via education-backend (pyproject.toml)
-flake8-tidy-imports==4.9.0
+flake8-tidy-imports==4.10.0
     # via education-backend (pyproject.toml)
 flake8-todo==0.7
     # via education-backend (pyproject.toml)
