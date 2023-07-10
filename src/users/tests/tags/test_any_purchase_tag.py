@@ -1,23 +1,11 @@
 import pytest
 
-from django.utils import timezone
-
 from users.tags.mechanisms import AnyPurchaseTag
 from users.tags.pipeline import apply_tags
 
 pytestmark = [pytest.mark.django_db]
 
 tag_name = AnyPurchaseTag.tag_name
-
-
-@pytest.fixture
-def paid_order(factory, user):
-    return factory.order(user=user, paid=timezone.now(), unpaid=None, shipped=None)
-
-
-@pytest.fixture
-def unpaid_order(factory, user):
-    return factory.order(user=user, unpaid=timezone.now(), paid=None, shipped=None)
 
 
 @pytest.fixture

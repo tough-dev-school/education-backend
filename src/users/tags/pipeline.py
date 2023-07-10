@@ -21,7 +21,7 @@ def apply_tags(user: User) -> None:
     for tag_class in pipeline:
         tag_class(user=user, metadata=metadata)()  # apply the tag
 
-    subscribe_user_to_dashamail(user, tags=user.tags)
+    subscribe_user_to_dashamail(user=user, tags=user.tags)
 
 
 __all__ = ["apply_tags"]
