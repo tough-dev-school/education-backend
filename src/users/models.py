@@ -92,6 +92,12 @@ class User(AbstractUser):
         if permission is not None:
             self.user_permissions.add(permission)
 
+    def apply_tag(self, tag_name: str) -> None:
+        if tag_name in self.tags:
+            return
+        self.tags.append(tag_name)
+        self.save()
+
 
 class Student(User):
     """Proxy model used for not-trusted administration of the user accounts"""
