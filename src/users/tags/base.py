@@ -52,7 +52,7 @@ class TagSetterMechanism(metaclass=ABCMeta):
         return self.user.tags
 
     @property
-    def orders(self) -> QuerySet[Order]:
+    def user_orders(self) -> QuerySet[Order]:
         """All orders that user has"""
         return Order.objects.filter(user=self.user)  # type: ignore
 
