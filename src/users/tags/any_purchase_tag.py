@@ -10,8 +10,8 @@ if TYPE_CHECKING:
 class AnyPurchaseTag(TagMechanism):
     tag_name = "any-purchase"
 
-    def should_be_applied(self, user: "Student") -> bool:
-        return self.get_user_orders(user).filter(paid__isnull=False).count() > 0
+    def should_be_applied(self, student: "Student") -> bool:
+        return self.get_student_orders(student).filter(paid__isnull=False).count() > 0
 
     def get_tags_to_append(self) -> list[str]:
         return [self.tag_name]

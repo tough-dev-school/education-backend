@@ -9,7 +9,7 @@ tag_name = AnyPurchaseTag.tag_name
 
 @pytest.fixture
 def tag_mechanism():
-    return lambda user: AnyPurchaseTag(user)
+    return lambda student: AnyPurchaseTag(student)
 
 
 @pytest.mark.usefixtures("paid_order", "unpaid_order")

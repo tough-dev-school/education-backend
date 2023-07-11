@@ -15,11 +15,11 @@ if TYPE_CHECKING:
 class TagMechanism(metaclass=ABCMeta):
     """Base tag setter class. All tags in the tag pipeline should be inherited from it"""
 
-    user: "Student"
+    student: "Student"
 
     def __call__(self) -> list[str]:
-        """If tags may be applied to the given user -- return list of them"""
-        if self.should_be_applied(self.user):
+        """If tags may be applied to the given student -- return list of them"""
+        if self.should_be_applied(self.student):
             return self.get_tags_to_append()
         return []
 
@@ -29,7 +29,7 @@ class TagMechanism(metaclass=ABCMeta):
         """Tag name to be recorded in the db"""
 
     @abstractmethod
-    def should_be_applied(self, user: "Student") -> bool:
+    def should_be_applied(self, student: "Student") -> bool:
         """Check if tag should be applied
 
         use it to speedup tag pipeline
@@ -37,12 +37,12 @@ class TagMechanism(metaclass=ABCMeta):
 
     @abstractmethod
     def get_tags_to_append(self) -> list[str]:
-        """Returns list tags which must be appended to user"""
+        """Returns list tags which must be appended to student"""
 
     @staticmethod
-    def get_user_orders(user: "Student") -> QuerySet[Order]:
-        """All orders that user has"""
-        return Order.objects.filter(user=user)
+    def get_student_orders(student: "Student") -> QuerySet[Order]:
+        """All orders that student has"""
+        return Order.objects.filter(user=student)
 
 
 __all__ = [

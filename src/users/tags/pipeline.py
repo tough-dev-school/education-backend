@@ -8,16 +8,18 @@ if TYPE_CHECKING:
     from users.tags.base import TagMechanism
 
 
-def apply_tags(user: "Student") -> None:
-    """Apply configured tag pipeline to the user"""
+def apply_tags(student: "Student") -> None:
+    """Apply configured tag pipeline to the student"""
     pipeline: list[Type["TagMechanism"]] = [import_string(tag_cls) for tag_cls in settings.TAG_PIPELINE]
     new_tags = []
 
     for tag_class in pipeline:
-        new_tags.extend(tag_class(user=user)())
+        new_tags.extend(tag_class(student=student)())
 
-    user.tags = new_tags
-    user.save()
+    new_tags_unique = list(set(new_tags))
+
+    student.tags = new_tags_unique
+    student.save()
 
 
 __all__ = ["apply_tags"]
