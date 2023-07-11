@@ -39,7 +39,7 @@ def paid_order(factory, user, course):
 
 
 @pytest.fixture
-def unpaid_order(factory, user, course):
+def non_paid_order(factory, user, course):
     return factory.order(
         user=user,
         unpaid=timezone.now(),
