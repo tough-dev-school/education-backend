@@ -22,7 +22,7 @@ class PurchasedTag(TagMechanism):
         slugs = paid_orders.values_list("course__slug", "course__group__slug")
         tags_to_append = []
         for course_slug, group_slug in slugs:
-            tags_for_order = [self.get_tag_from_slug(course_slug), self.get_tag_from_slug(group_slug)]
+            tags_for_order = [f'{course_slug}__purchased)', f'{{group_slug}__purchased']
             tags_to_append.extend(tags_for_order)
 
         return tags_to_append
