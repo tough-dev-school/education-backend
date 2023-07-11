@@ -1,27 +1,23 @@
 from typing import Type, TYPE_CHECKING
 
 from django.conf import settings
-from django.db.transaction import atomic
 from django.utils.module_loading import import_string
 
-from app.integrations.dashamail.helpers import subscribe_user_to_dashamail
-from users.models import User
-from users.tags.metadata import TagSetterMetadata
-
 if TYPE_CHECKING:
-    from users.tags.base import TagSetterMechanism
+    from users.models import Student
+    from users.tags.base import TagMechanism
 
 
-@atomic
-def apply_tags(user: User) -> None:
+def apply_tags(user: "Student") -> None:
     """Apply configured tag pipeline to the user"""
-    metadata = TagSetterMetadata(user=user)  # single metadata object for all elements of the pipeline
-    pipeline: list[Type["TagSetterMechanism"]] = [import_string(tag_cls) for tag_cls in settings.TAG_PIPELINE]
+    pipeline: list[Type["TagMechanism"]] = [import_string(tag_cls) for tag_cls in settings.TAG_PIPELINE]
+    new_tags = []
 
     for tag_class in pipeline:
-        tag_class(user=user, metadata=metadata)()  # apply the tag
+        new_tags.extend(tag_class(user=user)())
 
-    subscribe_user_to_dashamail(user=user, tags=user.tags)
+    user.tags = new_tags
+    user.save()
 
 
 __all__ = ["apply_tags"]

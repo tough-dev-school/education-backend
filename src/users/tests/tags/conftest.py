@@ -18,8 +18,3 @@ def paid_order(factory, user):
 @pytest.fixture
 def unpaid_order(factory, user):
     return factory.order(user=user, unpaid=timezone.now(), paid=None, shipped=None)
-
-
-@pytest.fixture(autouse=True)
-def mock_subscribe_to_dashamail(mocker):
-    return mocker.patch("users.tags.pipeline.subscribe_user_to_dashamail")

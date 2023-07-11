@@ -1,7 +1,6 @@
 import pytest
 
-from users.tags.mechanisms import AnyPurchaseTag
-from users.tags.pipeline import apply_tags
+from users.tags import AnyPurchaseTag
 
 pytestmark = [pytest.mark.django_db]
 
@@ -9,20 +8,25 @@ tag_name = AnyPurchaseTag.tag_name
 
 
 @pytest.fixture
-def mock_apply_tag(mocker):
-    return mocker.patch("users.tags.mechanisms.AnyPurchaseTag.apply")
+def tag_mechanism():
+    return lambda user: AnyPurchaseTag(user)
 
 
 @pytest.mark.usefixtures("paid_order", "unpaid_order")
-def test_set_if_has_paid_order_and_no_tag(user):
-    apply_tags(user)
+def test_return_tag_if_has_paid_order(tag_mechanism, user):
+    got = tag_mechanism(user)()
 
-    assert tag_name in user.tags
+    assert got == [tag_name]
 
 
 @pytest.mark.usefixtures("unpaid_order")
-def test_doesnt_set_if_no_paid_orders(user, mock_apply_tag):
-    apply_tags(user)
+def test_return_empty_list_if_no_paid_orders(tag_mechanism, user):
+    got = tag_mechanism(user)()
 
-    assert tag_name not in user.tags
-    mock_apply_tag.assert_not_called()
+    assert got == []
+
+
+def test_return_empty_list_if_no_orders(tag_mechanism, user):
+    got = tag_mechanism(user)()
+
+    assert got == []
