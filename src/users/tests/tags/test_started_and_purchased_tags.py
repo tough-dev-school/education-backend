@@ -1,13 +1,11 @@
 import pytest
 
-from django.utils import timezone
-
 from users.tags.pipeline import apply_tags
 
 pytestmark = [pytest.mark.django_db]
 
 
-@pytest.mark.usefixtures("unpaid_order")
+@pytest.mark.usefixtures("non_paid_order")
 def test_order_started(user):
     apply_tags(user)
 
@@ -23,9 +21,8 @@ def test_order_purchased(user):
     assert "popug-3__purchased" in user.tags
 
 
-def test_order_started_and_then_purchased(user, unpaid_order):
-    unpaid_order.paid = timezone.now()
-    unpaid_order.save()
+def test_order_started_and_then_purchased(user, non_paid_order):
+    non_paid_order.set_paid()
 
     apply_tags(user)
 
@@ -35,24 +32,30 @@ def test_order_started_and_then_purchased(user, unpaid_order):
     assert "popug-3__purchased" in user.tags
 
 
-@pytest.mark.usefixtures("unpaid_order", "paid_order")
-def test_one_unpaid_and_one_paid_order_for_same_course(user):
+def test_started_and_purchased_orders_for_same_course(user, factory):
+    course_no_group = factory.course(slug="how-to-be-007", group=None)
+    factory.order(is_paid=False, item=course_no_group, user=user)
+    factory.order(is_paid=True, item=course_no_group, user=user)
+
     apply_tags(user)
 
-    assert "popug-3-self__started" not in user.tags
-    assert "popug-3__started" not in user.tags
-    assert "popug-3-self__purchased" in user.tags
-    assert "popug-3__purchased" in user.tags
+    assert "how-to-be-007__purchased" in user.tags
+    assert "how-to-be-007__started" not in user.tags
+    assert "how-to-be__purchased" not in user.tags  # there is no group, no tag for no group
+    assert "how-to-be__started" not in user.tags
 
 
 @pytest.mark.usefixtures("paid_order")
-def test_one_unpaid_and_one_paid_order_for_same_product_group(user, unpaid_order, another_course_same_group):
-    unpaid_order.course = another_course_same_group
-    unpaid_order.save()
+def test_started_and_purchased_orders_for_same_product_group(user, course, factory):
+    another_course_same_group = factory.course(slug=f"{course.group.slug}-vip", group=course.group)
+    factory.order(is_paid=False, item=another_course_same_group, user=user)
+    factory.order(is_paid=True, item=course, user=user)
 
     apply_tags(user)
 
+    assert "popug-3-vip__started" not in user.tags
     assert "popug-3-self__started" not in user.tags
-    assert "popug-3__started" not in user.tags
+    assert "popug-3__started" not in user.tags  # user purchased at least one course from this group
+    assert "popug-3-vip__purchased" not in user.tags
     assert "popug-3-self__purchased" in user.tags
     assert "popug-3__purchased" in user.tags

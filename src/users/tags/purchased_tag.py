@@ -13,20 +13,17 @@ if TYPE_CHECKING:
 class PurchasedTag(TagMechanism):
     def get_tags_to_append(self) -> list[str]:
         paid_orders = self.get_paid_orders(self.student)
-        return self.generate_tags_for_unpaid_orders(paid_orders)
+        return self.generate_tags(paid_orders)
 
     def get_paid_orders(self, student: "Student") -> QuerySet["Order"]:
         return self.get_student_orders(student).filter(paid__isnull=False, course__isnull=False)
 
-    def generate_tags_for_unpaid_orders(self, paid_orders: QuerySet["Order"]) -> list[str]:
+    def generate_tags(self, paid_orders: QuerySet["Order"]) -> list[str]:
         slugs = paid_orders.values_list("course__slug", "course__group__slug")
-        tags_to_append = []
+        tags_to_apply = []
         for course_slug, group_slug in slugs:
-            tags_for_order = [f'{course_slug}__purchased)', f'{{group_slug}__purchased']
-            tags_to_append.extend(tags_for_order)
+            tags_to_apply.append(f"{course_slug}__purchased")
+            if group_slug is not None:
+                tags_to_apply.append(f"{group_slug}__purchased")
 
-        return tags_to_append
-
-    @classmethod
-    def get_tag_from_slug(cls, slug: str) -> str:
-        return f"{slug}__purchased"
+        return tags_to_apply

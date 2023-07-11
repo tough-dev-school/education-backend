@@ -1,14 +1,5 @@
 import pytest
 
-from django.utils import timezone
-
-
-@pytest.fixture
-def user(user):
-    user.tags = []
-    user.save()
-    return user
-
 
 @pytest.fixture
 def product_group(factory):
@@ -18,33 +9,22 @@ def product_group(factory):
 @pytest.fixture
 def course(factory, product_group):
     slug = f"{product_group.slug}-self"
-    return factory.course(slug=slug, group=product_group)
-
-
-@pytest.fixture
-def another_course_same_group(factory, product_group):
-    return factory.course(slug=f"{product_group.slug}-vip", group=product_group)
+    return factory.course(slug=slug, group=product_group, price=7)
 
 
 @pytest.fixture
 def paid_order(factory, user, course):
     return factory.order(
+        is_paid=True,
         user=user,
-        paid=timezone.now(),
-        unpaid=None,
-        shipped=None,
-        course=course,
-        price=7,
+        item=course,
     )
 
 
 @pytest.fixture
 def non_paid_order(factory, user, course):
     return factory.order(
+        is_paid=False,
         user=user,
-        unpaid=timezone.now(),
-        paid=None,
-        shipped=None,
-        course=course,
-        price=17,
+        item=course,
     )
