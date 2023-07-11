@@ -16,9 +16,9 @@ def another_unpaid_order(factory, user, another_course_same_group):
     return factory.order(user=user, course=another_course_same_group, paid=None)
 
 
-@pytest.mark.parametrize("orders_quantity", [1, 5])
-def test_should_be_applied_if_has_unpaid_order(tag_mechanism, factory, user, orders_quantity):
-    factory.cycle(orders_quantity).order(user=user, paid=None)
+@pytest.mark.parametrize("unpaid_orders_quantity", [1, 5])
+def test_should_be_applied_if_has_unpaid_order(tag_mechanism, factory, user, unpaid_orders_quantity):
+    factory.cycle(unpaid_orders_quantity).order(user=user, paid=None)
 
     got = tag_mechanism(user).should_be_applied(user)
 
@@ -44,3 +44,13 @@ def test_return_list_tags_for_unpaid_courses_and_groups(tag_mechanism, user, cou
     assert got_counter[course_tag] == 1
     assert got_counter[another_course_tag] == 1
     assert got_counter[product_group_tag] == 2  # courses belongs to same group, unique values are responsibility of apply_tags function
+
+
+@pytest.mark.parametrize("unpaid_orders_quantity", [1, 5, 10])
+def test_nplusone_for_unpaid_courses_and_groups(tag_mechanism, user, django_assert_num_queries, unpaid_orders_quantity, factory):
+    factory.cycle(unpaid_orders_quantity).order(user=user, paid=None)
+
+    with django_assert_num_queries(2):
+        got = tag_mechanism(user)()
+
+    assert len(got) == 2 * unpaid_orders_quantity
