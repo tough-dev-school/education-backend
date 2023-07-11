@@ -33,7 +33,7 @@ def test_order_started_and_then_purchased(user, non_paid_order):
 
 
 def test_started_and_purchased_orders_for_same_course(user, factory):
-    course_no_group = factory.course(slug="how-to-be-007", group=None)
+    course_no_group = factory.course(slug="how-to-be-007", group=None, price=14)
     factory.order(is_paid=False, item=course_no_group, user=user)
     factory.order(is_paid=True, item=course_no_group, user=user)
 
@@ -45,7 +45,6 @@ def test_started_and_purchased_orders_for_same_course(user, factory):
     assert "how-to-be__started" not in user.tags
 
 
-@pytest.mark.usefixtures("paid_order")
 def test_started_and_purchased_orders_for_same_product_group(user, course, factory):
     another_course_same_group = factory.course(slug=f"{course.group.slug}-vip", group=course.group)
     factory.order(is_paid=False, item=another_course_same_group, user=user)

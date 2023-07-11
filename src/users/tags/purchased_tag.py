@@ -16,8 +16,7 @@ class PurchasedTag(TagMechanism):
         return [f"{slug}__purchased" for slug in self.generate_slugs(purchased_courses)]
 
     def get_purchased_courses(self, student: "Student") -> QuerySet[Course]:
-        paid_orders = self.get_student_orders(student).filter(paid__isnull=False)
-        purchased_courses = paid_orders.filter(course__isnull=False).values_list("course_id")
+        purchased_courses = self.get_student_orders(student).filter(paid__isnull=False).values_list("course_id")
 
         return Course.objects.filter(pk__in=purchased_courses)
 
