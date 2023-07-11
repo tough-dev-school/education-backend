@@ -1,31 +1,27 @@
 from abc import ABCMeta
 from abc import abstractmethod
 from dataclasses import dataclass
-from dataclasses import field
+from typing import TYPE_CHECKING
 
 from django.db.models import QuerySet
 
 from orders.models import Order
-from users.models import User
-from users.tags.metadata import TagSetterMetadata
+
+if TYPE_CHECKING:
+    from users.models import Student
 
 
 @dataclass
-class TagSetterMechanism(metaclass=ABCMeta):
+class TagMechanism(metaclass=ABCMeta):
     """Base tag setter class. All tags in the tag pipeline should be inherited from it"""
 
-    user: User
-    metadata: TagSetterMetadata
+    user: "Student"
 
-    incompatible_tags: list[str] = field(default_factory=list)
-
-    def __call__(self) -> None:
-        """If tag in compatible with already applied tags and may be applied to the given user -- apply it"""
-        if self.no_incompatible_tags_already_applied() and self.should_be_applied():
-            self.apply()
-            self.metadata.applied_tags.append(self.name)
-        else:
-            self.execute_if_not_applied()
+    def __call__(self) -> list[str]:
+        """If tags may be applied to the given user -- return list of them"""
+        if self.should_be_applied(self.user):
+            return self.get_tags_to_append()
+        return []
 
     @property
     @abstractmethod
@@ -33,38 +29,22 @@ class TagSetterMechanism(metaclass=ABCMeta):
         """Tag name to be recorded in the db"""
 
     @abstractmethod
-    def should_be_applied(self) -> bool:
+    def should_be_applied(self, user: "Student") -> bool:
         """Check if tag should be applied
 
         use it to speedup tag pipeline
         """
 
     @abstractmethod
-    def apply(self) -> None:
-        """Actualy applies the tag in subclass"""
+    def get_tags_to_append(self) -> list[str]:
+        """Returns list tags which must be appended to user"""
 
-    def execute_if_not_applied(self) -> None:  # NOQA: B027
-        """Some optional actions to execute if tag isn't applied"""
-
-    @property
-    def tags(self) -> list[str]:
-        """Tags that user has"""
-        return self.user.tags
-
-    @property
-    def user_orders(self) -> QuerySet[Order]:
+    @staticmethod
+    def get_user_orders(user: "Student") -> QuerySet[Order]:
         """All orders that user has"""
-        return Order.objects.filter(user=self.user)  # type: ignore
-
-    @property
-    def name(self) -> str:
-        """Name of the tag"""
-        return self.__class__.__name__
-
-    def no_incompatible_tags_already_applied(self) -> bool:
-        return not any(incompatible_tag in self.metadata.applied_tags for incompatible_tag in self.incompatible_tags)
+        return Order.objects.filter(user=user)
 
 
 __all__ = [
-    "TagSetterMechanism",
+    "TagMechanism",
 ]

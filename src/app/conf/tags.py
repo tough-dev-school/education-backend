@@ -1,3 +1,3 @@
 TAG_PIPELINE = [
-    "users.tags.mechanisms.AnyPurchaseTag",
+    "users.tags.AnyPurchaseTag",
 ]
