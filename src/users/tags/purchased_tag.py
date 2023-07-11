@@ -1,29 +1,29 @@
-from typing import final, TYPE_CHECKING
+from typing import final, Generator, TYPE_CHECKING
 
 from django.db.models import QuerySet
 
+from products.models import Course
 from users.tags.base import TagMechanism
 
 if TYPE_CHECKING:
-    from orders.models import Order
     from users.models import Student
 
 
 @final
 class PurchasedTag(TagMechanism):
     def get_tags_to_append(self) -> list[str]:
-        paid_orders = self.get_paid_orders(self.student)
-        return self.generate_tags(paid_orders)
+        purchased_courses = self.get_purchased_courses(self.student)
+        return [f"{slug}__purchased" for slug in self.generate_slugs(purchased_courses)]
 
-    def get_paid_orders(self, student: "Student") -> QuerySet["Order"]:
-        return self.get_student_orders(student).filter(paid__isnull=False, course__isnull=False)
+    def get_purchased_courses(self, student: "Student") -> QuerySet[Course]:
+        paid_orders = self.get_student_orders(student).filter(paid__isnull=False)
+        purchased_courses = paid_orders.filter(course__isnull=False).values_list("course_id")
 
-    def generate_tags(self, paid_orders: QuerySet["Order"]) -> list[str]:
-        slugs = paid_orders.values_list("course__slug", "course__group__slug")
-        tags_to_apply = []
-        for course_slug, group_slug in slugs:
-            tags_to_apply.append(f"{course_slug}__purchased")
-            if group_slug is not None:
-                tags_to_apply.append(f"{group_slug}__purchased")
+        return Course.objects.filter(pk__in=purchased_courses)
 
-        return tags_to_apply
+    def generate_slugs(self, non_paid_courses: QuerySet[Course]) -> Generator[str, None, None]:
+        for course in non_paid_courses:
+            yield course.slug
+
+            if course.group is not None:
+                yield course.group.slug

@@ -1,35 +1,33 @@
-from typing import final, TYPE_CHECKING
+from typing import final, Generator, TYPE_CHECKING
 
-from django.db.models import Q
 from django.db.models import QuerySet
 
+from products.models import Course
 from users.tags.base import TagMechanism
 
 if TYPE_CHECKING:
-    from orders.models import Order
     from users.models import Student
 
 
 @final
 class StartedTag(TagMechanism):
     def get_tags_to_append(self) -> list[str]:
-        unpaid_orders = self.get_unpaid_orders(self.student)
-        return self.generate_tags(unpaid_orders)
+        non_paid_courses = self.get_non_paid_courses(self.student)
+        return [f"{slug}__started" for slug in self.generate_slugs(non_paid_courses)]
 
-    def get_unpaid_orders(self, student: "Student") -> QuerySet["Order"]:
-        groups_purchased_by_student = self.get_student_orders(student).filter(paid__isnull=False, course__isnull=False).values_list("course__group").distinct()
-        courses_purchased_by_student = self.get_student_orders(student).filter(paid__isnull=False, course__isnull=False).values_list("course").distinct()
+    def get_non_paid_courses(self, student: "Student") -> QuerySet[Course]:
+        orders = self.get_student_orders(student)
+        paid_orders = orders.filter(paid__isnull=False)
 
-        return self.get_student_orders(student).filter(
-            Q(paid__isnull=True) & Q(course__isnull=False) & ~Q(course__group__in=groups_purchased_by_student) & ~Q(course__in=courses_purchased_by_student)
-        )
+        groups_with_purchased_courses = paid_orders.values_list("course__group")
+        purchased_courses = set(paid_orders.values_list("course_id", flat=True))
+        started_courses = set(orders.filter(paid__isnull=True).values_list("course_id", flat=True))
 
-    def generate_tags(self, unpaid_orders: QuerySet["Order"]) -> list[str]:
-        slugs = unpaid_orders.values_list("course__slug", "course__group__slug")
-        tags_to_apply = []
-        for course_slug, group_slug in slugs:
-            tags_to_apply.append(f"{course_slug}__started")
-            if group_slug is not None:
-                tags_to_apply.append(f"{group_slug}__started")
+        return Course.objects.filter(pk__in=started_courses.difference(purchased_courses)).exclude(group__in=groups_with_purchased_courses)
 
-        return tags_to_apply
+    def generate_slugs(self, non_paid_courses: QuerySet[Course]) -> Generator[str, None, None]:
+        for course in non_paid_courses:
+            yield course.slug
+
+            if course.group is not None:
+                yield course.group.slug
