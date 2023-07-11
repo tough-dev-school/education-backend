@@ -11,14 +11,12 @@ if TYPE_CHECKING:
 def apply_tags(student: "Student") -> None:
     """Apply configured tag pipeline to the student"""
     pipeline: list[Type["TagMechanism"]] = [import_string(tag_cls) for tag_cls in settings.TAG_PIPELINE]
-    new_tags = []
+    new_tags: set[str] = set()
 
     for tag_class in pipeline:
-        new_tags.extend(tag_class(student=student)())
+        new_tags.update(tag_class(student=student)())
 
-    new_tags_unique = list(set(new_tags))
-
-    student.tags = new_tags_unique
+    student.tags = list(new_tags)
     student.save()
 
 

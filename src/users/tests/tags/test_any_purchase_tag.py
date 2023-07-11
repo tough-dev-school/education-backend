@@ -1,32 +1,39 @@
 import pytest
 
-from users.tags import AnyPurchaseTag
+from django.utils import timezone
+
+from users.tags.pipeline import apply_tags
 
 pytestmark = [pytest.mark.django_db]
 
-tag_name = AnyPurchaseTag.tag_name
-
-
-@pytest.fixture
-def tag_mechanism():
-    return lambda student: AnyPurchaseTag(student)
-
-
-@pytest.mark.usefixtures("paid_order", "unpaid_order")
-def test_return_tag_if_has_paid_order(tag_mechanism, user):
-    got = tag_mechanism(user)()
-
-    assert got == [tag_name]
-
 
 @pytest.mark.usefixtures("unpaid_order")
-def test_return_empty_list_if_no_paid_orders(tag_mechanism, user):
-    got = tag_mechanism(user)()
+def test_order_started(user):
+    apply_tags(user)
 
-    assert got == []
+    assert "any-purchase" not in user.tags
 
 
-def test_return_empty_list_if_no_orders(tag_mechanism, user):
-    got = tag_mechanism(user)()
+def test_free_order_purchased(user, paid_order):
+    paid_order.price = 0
+    paid_order.save()
 
-    assert got == []
+    apply_tags(user)
+
+    assert "any-purchase" not in user.tags
+
+
+@pytest.mark.usefixtures("paid_order")
+def test_order_purchased(user):
+    apply_tags(user)
+
+    assert "any-purchase" in user.tags
+
+
+def test_order_started_and_then_purchased(user, unpaid_order):
+    unpaid_order.paid = timezone.now()
+    unpaid_order.save()
+
+    apply_tags(user)
+
+    assert "any-purchase" in user.tags

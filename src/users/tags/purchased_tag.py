@@ -11,17 +11,12 @@ if TYPE_CHECKING:
 
 @final
 class PurchasedTag(TagMechanism):
-    tag_name = "purchased"
-
-    def should_be_applied(self, student: "Student") -> bool:
-        return self.get_paid_orders(student).count() > 0
-
     def get_tags_to_append(self) -> list[str]:
         paid_orders = self.get_paid_orders(self.student)
         return self.generate_tags_for_unpaid_orders(paid_orders)
 
     def get_paid_orders(self, student: "Student") -> QuerySet["Order"]:
-        return self.get_student_orders(student).filter(paid__isnull=False)
+        return self.get_student_orders(student).filter(paid__isnull=False, course__isnull=False)
 
     def generate_tags_for_unpaid_orders(self, paid_orders: QuerySet["Order"]) -> list[str]:
         slugs = paid_orders.values_list("course__slug", "course__group__slug")
@@ -34,4 +29,4 @@ class PurchasedTag(TagMechanism):
 
     @classmethod
     def get_tag_from_slug(cls, slug: str) -> str:
-        return f"{slug}__{cls.tag_name}"
+        return f"{slug}__purchased"

@@ -11,17 +11,14 @@ if TYPE_CHECKING:
 
 @final
 class StartedTag(TagMechanism):
-    tag_name = "started"
-
-    def should_be_applied(self, student: "Student") -> bool:
-        return self.get_unpaid_orders(student).count() > 0
-
     def get_tags_to_append(self) -> list[str]:
         unpaid_orders = self.get_unpaid_orders(self.student)
         return self.generate_tags_for_unpaid_orders(unpaid_orders)
 
     def get_unpaid_orders(self, student: "Student") -> QuerySet["Order"]:
-        return self.get_student_orders(student).filter(paid__isnull=True)
+        groups_purchased_by_student = self.get_student_orders(student).filter(paid__isnull=False, course__isnull=False).values_list("course__group").distinct()
+
+        return self.get_student_orders(student).filter(paid__isnull=True, course__isnull=False).exclude(course__group__in=groups_purchased_by_student)
 
     def generate_tags_for_unpaid_orders(self, unpaid_orders: QuerySet["Order"]) -> list[str]:
         slugs = unpaid_orders.values_list("course__slug", "course__group__slug")
@@ -34,4 +31,4 @@ class StartedTag(TagMechanism):
 
     @classmethod
     def get_tag_from_slug(cls, slug: str) -> str:
-        return f"{slug}__{cls.tag_name}"
+        return f"{slug}__started"

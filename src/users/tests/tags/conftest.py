@@ -12,7 +12,7 @@ def user(user):
 
 @pytest.fixture
 def product_group(factory):
-    return factory.group(slug="popug-007")
+    return factory.group(slug="popug-3")
 
 
 @pytest.fixture
@@ -23,7 +23,7 @@ def course(factory, product_group):
 
 @pytest.fixture
 def another_course_same_group(factory, product_group):
-    return factory.course(group=product_group)
+    return factory.course(slug=f"{product_group.slug}-vip", group=product_group)
 
 
 @pytest.fixture
@@ -34,6 +34,7 @@ def paid_order(factory, user, course):
         unpaid=None,
         shipped=None,
         course=course,
+        price=7,
     )
 
 
@@ -45,4 +46,5 @@ def unpaid_order(factory, user, course):
         paid=None,
         shipped=None,
         course=course,
+        price=17,
     )
