@@ -10,7 +10,7 @@ from app.services import BaseService
 class IsB2BEmailChecker(BaseService):
     email: str
 
-    COMMON_DOMAINS = (
+    CUSTOMER_DOMAINS = (
         "gmail.com",
         "icloud.com",
         "hotmail.com",
@@ -28,7 +28,7 @@ class IsB2BEmailChecker(BaseService):
     )
 
     def act(self) -> bool:
-        return self.email.split("@")[-1] not in self.COMMON_DOMAINS
+        return self.email.split("@")[-1] not in self.CUSTOMER_DOMAINS
 
     def get_validators(self) -> list[Callable]:
         return [lambda: validate_email(self.email)]
