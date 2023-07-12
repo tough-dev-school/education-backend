@@ -25,8 +25,9 @@ def test_with_company_domain(user, domain):
     assert "b2b" in user.tags
 
 
-def test_with_empty_email(user):
-    user.email = ""
+@pytest.mark.parametrize("email", ["", "1:170/918.10", "myname.mail.ru", '"@"@gmail.com', "\\@@ya.ru"])
+def test_with_incorrect_email(user, email):
+    user.email = email
     user.save()
 
     apply_tags(user)

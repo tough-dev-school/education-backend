@@ -1,6 +1,9 @@
 from typing import final
 
-from users.services import IsB2BEmailChecker
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+
+from mailing.models import PersonalEmailDomain
 from users.tags.base import TagMechanism
 
 
@@ -8,9 +11,13 @@ from users.tags.base import TagMechanism
 class B2BTag(TagMechanism):
     @property
     def should_be_applied(self) -> bool:
-        if self.student.email and len(self.student.email):
-            return IsB2BEmailChecker(self.student.email)()
-        return False
+        try:
+            validate_email(self.student.email)
+        except ValidationError:
+            return False
+
+        personal_domains = PersonalEmailDomain.objects.all().values_list("name", flat=True)
+        return self.student.email.split("@")[-1] not in personal_domains
 
     def get_tags_to_append(self) -> list[str]:
         return ["b2b"] if self.should_be_applied else []
