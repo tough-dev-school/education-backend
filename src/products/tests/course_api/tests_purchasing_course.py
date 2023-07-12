@@ -6,11 +6,6 @@ from orders.models import Order
 pytestmark = [pytest.mark.django_db]
 
 
-@pytest.fixture(autouse=True)
-def subscribe(mocker):
-    return mocker.patch("users.services.user_creator.subscribe_user_to_dashamail")
-
-
 def get_order():
     return Order.objects.last()
 
@@ -48,21 +43,21 @@ def test_user(call_purchase):
         (0, False),
     ],
 )
-def test_user_auto_subscription(call_purchase, wants_to_subscribe, should_be_subscribed, subscribe):
+def test_user_auto_subscription(call_purchase, wants_to_subscribe, should_be_subscribed, rebuild_tags):
     call_purchase(subscribe=wants_to_subscribe)
 
     placed = get_order()
     placed.user.refresh_from_db()
 
-    assert subscribe.called is should_be_subscribed
+    assert rebuild_tags.called is should_be_subscribed
 
 
-def test_subscription_tags(call_purchase, subscribe):
+def test_subscription_tags(call_purchase, rebuild_tags):
     call_purchase(subscribe=True)
 
     placed = get_order()
 
-    subscribe.assert_called_once_with(user=placed.user, tags=["ruloning-oboev"])
+    rebuild_tags.assert_called_once_with(placed.user.id)
 
 
 def test_by_default_user_is_not_subscribed(call_purchase):

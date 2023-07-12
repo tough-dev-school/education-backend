@@ -29,10 +29,6 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
         return self.get_object()
 
     @property
-    def tags(self) -> list[str]:
-        return [self.item.slug]
-
-    @property
     def subscribe(self) -> bool:
         return str(self.request.POST.get("subscribe", False)).lower() in [
             "true",
@@ -89,7 +85,6 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
                 name=data["name"],
                 email=data["email"],
                 subscribe=self.subscribe,
-                tags=self.tags,
             ),
             item=self.item,
             promocode=data.get("promocode"),
@@ -103,13 +98,11 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
                 name=data["receiver_name"],
                 email=data["receiver_email"],
                 subscribe=self.subscribe,
-                tags=[*self.tags, "gift_receiver"],
             ),
             giver=self._create_user(
                 name=data["giver_name"],
                 email=data["giver_email"],
                 subscribe=self.subscribe,
-                tags=[*self.tags, "gift_giver"],
             ),
             item=self.item,
             desired_shipment_date=data["desired_shipment_date"],
@@ -120,12 +113,11 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
 
         return order_creator()
 
-    def _create_user(self, name: str, email: str, subscribe: bool = False, tags: list[str] | None = None) -> User:
+    def _create_user(self, name: str, email: str, subscribe: bool = False) -> User:
         return UserCreator(
             name=name,
             email=email.strip(),
             subscribe=subscribe,
-            tags=tags,
         )()
 
     def _get_promocode(self, request: Request) -> PromoCode | None:

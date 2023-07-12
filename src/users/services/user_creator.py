@@ -5,9 +5,9 @@ from rest_framework import serializers
 
 from django.utils.functional import cached_property
 
-from app.integrations.dashamail.helpers import subscribe_user_to_dashamail
 from app.services import BaseService
 from users.models import User
+from users.tasks import rebuild_tags
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
@@ -27,7 +27,6 @@ class UserCreator(BaseService):
     email: str
     name: str | None = ""
     subscribe: bool | None = False
-    tags: list[str] | None = None
 
     @cached_property
     def username(self) -> str:
@@ -61,4 +60,4 @@ class UserCreator(BaseService):
     def after_creation(self, created_user: User) -> None:
         if self.subscribe:
             if created_user.email and len(created_user.email):
-                subscribe_user_to_dashamail(user=created_user, tags=self.tags or [])
+                rebuild_tags.delay(created_user.id)

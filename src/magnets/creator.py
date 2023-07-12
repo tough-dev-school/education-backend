@@ -30,7 +30,6 @@ class LeadCreator(BaseService):
             name=self.data["name"],
             email=self.data["email"],
             subscribe=True,
-            tags=self.tags,
         )()
 
     def _create_log_entry(self, user: User) -> None:
@@ -38,7 +37,3 @@ class LeadCreator(BaseService):
             user=user,
             campaign=self.campaign,
         )
-
-    @property
-    def tags(self) -> list[str]:
-        return [f"{self.campaign.slug}-lead-magnet"]

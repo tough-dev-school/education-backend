@@ -41,12 +41,12 @@ def test_user_auto_subscription(call_purchase, wants_to_subscribe):
     assert placed.user.subscribed is wants_to_subscribe
 
 
-def test_subscription_tags(call_purchase, subscribe):
+def test_subscription_tags(call_purchase, rebuild_tags):
     call_purchase(subscribe=True)
 
     placed = get_order()
 
-    subscribe.assert_called_once_with(user=placed.user, tags=["pinetree-tickets"])
+    rebuild_tags.assert_called_once_with(placed.user.id)
 
 
 def test_by_default_user_is_not_subscribed(call_purchase):
