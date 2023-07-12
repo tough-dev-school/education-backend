@@ -12,6 +12,7 @@ class IsB2BEmailChecker(BaseService):
     """
     Returns True if email is b2b and False if not
     """
+
     email: str
 
     CUSTOMER_DOMAINS = (
