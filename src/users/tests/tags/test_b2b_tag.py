@@ -23,3 +23,12 @@ def test_with_company_domain(user, domain):
     apply_tags(user)
 
     assert "b2b" in user.tags
+
+
+def test_with_empty_email(user):
+    user.email = ""
+    user.save()
+
+    apply_tags(user)
+
+    assert "b2b" not in user.tags

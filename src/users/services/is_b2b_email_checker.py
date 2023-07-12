@@ -1,11 +1,12 @@
 from dataclasses import dataclass
-from typing import Callable
+from typing import Callable, final
 
 from django.core.validators import validate_email
 
 from app.services import BaseService
 
 
+@final
 @dataclass
 class IsB2BEmailChecker(BaseService):
     email: str
