@@ -176,7 +176,7 @@ execnet==2.0.2
     # via pytest-xdist
 executing==1.2.0
     # via stack-data
-faker==12.0.1
+faker==19.0.0
     # via mixer
 flake8==5.0.4
     # via
