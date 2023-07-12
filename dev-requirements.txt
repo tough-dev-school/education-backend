@@ -344,7 +344,7 @@ pycodestyle==2.9.1
     #   flake8-todo
 pycparser==2.21
     # via cffi
-pyflakes==2.5.0
+pyflakes==3.0.1
     # via
     #   autoflake
     #   flake8
