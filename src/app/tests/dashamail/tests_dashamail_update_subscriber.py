@@ -1,6 +1,6 @@
 import pytest
 
-from app.integrations.dashamail.exceptions import DashamailTagsUpdateFailed
+from app.integrations.dashamail.exceptions import DashamailUpdateFailed
 
 pytestmark = [pytest.mark.django_db]
 
@@ -30,7 +30,7 @@ def test_update_subscriber(dashamail, post, user):
 def test_subscription_failed(dashamail, user, fail_response_json):
     dashamail.httpx_mock.add_response(url="https://api.dashamail.com", method="POST", json=fail_response_json)
 
-    with pytest.raises(DashamailTagsUpdateFailed):
+    with pytest.raises(DashamailUpdateFailed):
         dashamail.update_subscriber(
             list_id="test-list-id",
             member_id=48,

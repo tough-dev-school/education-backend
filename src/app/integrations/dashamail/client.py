@@ -1,5 +1,5 @@
 from app.integrations.dashamail.exceptions import DashamailSubscriptionFailed
-from app.integrations.dashamail.exceptions import DashamailTagsUpdateFailed
+from app.integrations.dashamail.exceptions import DashamailUpdateFailed
 from app.integrations.dashamail.http import DashamailHTTP
 
 
@@ -65,7 +65,7 @@ class AppDashamail:
         )
 
         if response["response"]["msg"]["err_code"] != 0:
-            raise DashamailTagsUpdateFailed(f"{response}")
+            raise DashamailUpdateFailed(f"{response}")
 
 
 __all__ = [

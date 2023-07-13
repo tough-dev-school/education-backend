@@ -14,5 +14,5 @@ class DashamailSubscriptionFailed(DashamailException):
     pass
 
 
-class DashamailTagsUpdateFailed(DashamailException):
+class DashamailUpdateFailed(DashamailException):
     pass
