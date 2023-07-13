@@ -7,7 +7,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture(autouse=True)
 def rebuild_tags(mocker):
-    return mocker.patch("users.tasks.rebuild_tags.delay")
+    return mocker.patch("users.tasks.rebuild_tags.apply_async")
 
 
 def test_user_is_not_subscribed_to_dashamail_by_default(rebuild_tags):
@@ -19,9 +19,7 @@ def test_user_is_not_subscribed_to_dashamail_by_default(rebuild_tags):
 def test_tags_are_passed(rebuild_tags):
     created = UserCreator(name="Рулон Обоев", email="rulon.oboev@gmail.com", subscribe=True)()
 
-    rebuild_tags.assert_called_once_with(
-        created.id,
-    )
+    rebuild_tags.assert_called_once_with([created.id], countdown=1)
 
 
 def test_not_subscribed(rebuild_tags):

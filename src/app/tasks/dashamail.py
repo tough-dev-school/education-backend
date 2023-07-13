@@ -16,7 +16,6 @@ from app.integrations.dashamail.subscription_updater import SubscriptionUpdater
     rate_limit="1/s",
 )
 def update_dashamail_subscription(user_id: int, list_id: str | None = None) -> None:
-    user = apps.get_model("users.User").objects.filter(pk=user_id).first()
+    user = apps.get_model("users.User").objects.get(pk=user_id)
 
-    if user is not None:
-        SubscriptionUpdater(user, list_id)()
+    SubscriptionUpdater(user, list_id)()

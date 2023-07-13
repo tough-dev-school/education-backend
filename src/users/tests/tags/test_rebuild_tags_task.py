@@ -14,7 +14,7 @@ def update_subscription(mocker):
 
 @pytest.fixture(autouse=True)
 def apply_tags(mocker):
-    return mocker.patch("users.tags.tags_synchronizer.apply_tags")
+    return mocker.patch("users.tasks.apply_tags")
 
 
 def test_task(user, apply_tags, update_subscription):

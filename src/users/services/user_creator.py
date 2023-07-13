@@ -60,4 +60,4 @@ class UserCreator(BaseService):
     def after_creation(self, created_user: User) -> None:
         if self.subscribe:
             if created_user.email and len(created_user.email):
-                rebuild_tags.delay(created_user.id)
+                rebuild_tags.apply_async([created_user.id], countdown=1)

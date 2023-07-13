@@ -44,7 +44,7 @@ def test_subscription_tags(call_purchase, rebuild_tags):
 
     placed = get_order()
 
-    rebuild_tags.assert_called_once_with(placed.user.id)
+    rebuild_tags.assert_called_once_with([placed.user.id], countdown=1)
 
 
 def test_by_default_user_is_not_subscribed(call_purchase):
