@@ -101,7 +101,7 @@ def test_when_user_has_tags_and_doesnt_exist(user, subscribe_user, update_subscr
 def test_when_user_exist_and_inactive(user, subscribe_user, update_subscriber, updater):
     updater(user)()
 
-    update_subscriber.assert_called_once_with(  # even if user unsubscribed we keep his profile actual
+    update_subscriber.assert_called_once_with(  # even if user has unsubscribed we keep his profile actual
         list_id="1",
         member_id=1337,
         first_name=user.first_name,
