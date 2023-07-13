@@ -5,6 +5,7 @@ from django.utils import timezone
 
 from notion.block import NotionBlock
 from notion.block import NotionBlockList
+from notion.cache import cache_disabled
 from notion.cache import NotionCache
 from notion.cache import TIMEOUT
 from notion.models import NotionCacheEntry
@@ -109,3 +110,19 @@ def test_get_or_set_set_if_doesnt_exist(cache, another_page):
     new_cache_entry = NotionCacheEntry.objects.get(cache_key="some random cache key")
     assert got == another_page
     assert got == NotionPage.from_json(new_cache_entry.content)
+
+
+@pytest.mark.parametrize(
+    ("env_value", "is_cache_disabled"),
+    [
+        ("On", False),
+        ("", True),
+    ],
+)
+def test_disabled_cache_from_env(settings, user, mocker, env_value, is_cache_disabled):
+    user.is_staff = True
+    user.save()
+    mocker.patch("notion.cache.get_current_user", return_value=user)
+    settings.NOTION_CACHE_ONLY = bool(env_value)
+
+    assert cache_disabled() is is_cache_disabled

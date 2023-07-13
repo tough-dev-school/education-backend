@@ -2,6 +2,7 @@ from datetime import datetime
 from datetime import timedelta
 from typing import Callable
 
+from django.conf import settings
 from django.utils import timezone
 
 from app.current_user import get_current_user
@@ -52,6 +53,8 @@ def fetch_page(page_id: str) -> Callable[[], NotionPage]:
 
 
 def cache_disabled() -> bool:
+    if settings.NOTION_CACHE_ONLY:
+        return False
     user = get_current_user()
     if user:
         return user.is_staff
