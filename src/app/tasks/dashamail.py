@@ -13,13 +13,24 @@ from app.integrations.dashamail import DashamailException
     },
     rate_limit="1/s",
 )
-def subscribe_to_dashamail(list_id: str, email: str, first_name: str, last_name: str, tags: list[str] | None) -> None:
+def manage_subscription_to_dashamail(list_id: str, email: str, first_name: str, last_name: str, tags: list[str]) -> None:
     dashamail = AppDashamail()
 
-    dashamail.subscribe_user(
-        list_id=list_id,
-        email=email,
-        first_name=first_name,
-        last_name=last_name,
-        tags=tags,
-    )
+    member_id, is_active = dashamail.get_subscriber(list_id=list_id, email=email)
+
+    if member_id is None:
+        dashamail.subscribe_user(
+            list_id=list_id,
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            tags=tags,
+        )
+    else:
+        dashamail.update_subscriber(
+            list_id=list_id,
+            member_id=member_id,
+            first_name=first_name,
+            last_name=last_name,
+            tags=tags,
+        )

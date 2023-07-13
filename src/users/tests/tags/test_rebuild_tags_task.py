@@ -9,7 +9,7 @@ pytestmark = [
 
 @pytest.fixture(autouse=True)
 def update_subscription(mocker):
-    return mocker.patch("users.tags.tags_synchronizer.subscribe_user_to_dashamail")
+    return mocker.patch("users.tags.tags_synchronizer.manage_users_subscription_to_dashamail")
 
 
 @pytest.fixture(autouse=True)

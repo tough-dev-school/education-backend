@@ -1,14 +1,14 @@
 import pytest
 
-from app.integrations.dashamail.exceptions import DashamailSubscriptionFailed
+from app.integrations.dashamail.exceptions import DashamailTagsUpdateFailed
 
 pytestmark = [pytest.mark.django_db]
 
 
-def test_subscribe(dashamail, post, user):
-    dashamail.subscribe_user(
+def test_update_subscriber(dashamail, post, user):
+    dashamail.update_subscriber(
         list_id="test-list-id",
-        email=user.email,
+        member_id=48,
         first_name=user.first_name,
         last_name=user.last_name,
         tags=["test", "TEST"],
@@ -17,12 +17,12 @@ def test_subscribe(dashamail, post, user):
     post.assert_called_once_with(
         url="",
         payload={
-            "email": "test@e.mail",
+            "member_id": 48,
             "list_id": "test-list-id",
             "merge_1": "Rulon",
             "merge_2": "Oboev",
             "merge_3": "test;TEST",
-            "method": "lists.add_member",
+            "method": "lists.update_member",
         },
     )
 
@@ -30,10 +30,10 @@ def test_subscribe(dashamail, post, user):
 def test_subscription_failed(dashamail, user, fail_response_json):
     dashamail.httpx_mock.add_response(url="https://api.dashamail.com", method="POST", json=fail_response_json)
 
-    with pytest.raises(DashamailSubscriptionFailed):
-        dashamail.subscribe_user(
+    with pytest.raises(DashamailTagsUpdateFailed):
+        dashamail.update_subscriber(
             list_id="test-list-id",
-            email=user.email,
+            member_id=48,
             first_name=user.first_name,
             last_name=user.last_name,
             tags=["test", "TEST"],
