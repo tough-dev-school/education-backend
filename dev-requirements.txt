@@ -68,7 +68,7 @@ cffi==1.15.1
     #   cryptography
 charset-normalizer==3.2.0
     # via requests
-click==8.1.4
+click==8.1.5
     # via
     #   black
     #   celery
