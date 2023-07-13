@@ -5,13 +5,20 @@ from app.integrations.dashamail.exceptions import DashamailSubscriptionFailed
 pytestmark = [pytest.mark.django_db]
 
 
-def test_subscribe(dashamail, post, user):
+@pytest.mark.parametrize(
+    ("tags", "request_tags"),
+    [
+        ([], ""),
+        (["test", "TEST"], "test;TEST"),
+    ],
+)
+def test_subscribe(dashamail, post, user, tags, request_tags):
     dashamail.subscribe_user(
         list_id="test-list-id",
         email=user.email,
         first_name=user.first_name,
         last_name=user.last_name,
-        tags=["test", "TEST"],
+        tags=tags,
     )
 
     post.assert_called_once_with(
@@ -21,7 +28,7 @@ def test_subscribe(dashamail, post, user):
             "list_id": "test-list-id",
             "merge_1": "Rulon",
             "merge_2": "Oboev",
-            "merge_3": "test;TEST",
+            "merge_3": request_tags,
             "method": "lists.add_member",
         },
     )

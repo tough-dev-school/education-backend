@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import final, TYPE_CHECKING
 
-from app.integrations.dashamail.helpers import manage_users_subscription_to_dashamail
 from app.services import BaseService
+from app.tasks import update_dashamail_subscription
 from users.tags.pipeline import apply_tags
 
 if TYPE_CHECKING:
@@ -21,4 +21,4 @@ class TagsSynchronizer(BaseService):
 
     def act(self) -> None:
         apply_tags(self.student)
-        manage_users_subscription_to_dashamail(user=self.student, tags=self.student.tags, list_id=self.list_id)
+        update_dashamail_subscription.delay(user_id=self.student.pk, list_id=self.list_id)

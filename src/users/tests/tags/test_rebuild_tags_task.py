@@ -9,7 +9,7 @@ pytestmark = [
 
 @pytest.fixture(autouse=True)
 def update_subscription(mocker):
-    return mocker.patch("users.tags.tags_synchronizer.manage_users_subscription_to_dashamail")
+    return mocker.patch("app.tasks.update_dashamail_subscription.delay")
 
 
 @pytest.fixture(autouse=True)
@@ -26,6 +26,5 @@ def test_task(user, apply_tags, update_subscription):
     apply_tags.assert_called_once_with(user)
     update_subscription.assert_called_once_with(
         list_id="1",
-        user=user,
-        tags=user.tags,
+        user_id=user.pk,
     )
