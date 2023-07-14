@@ -14,3 +14,11 @@ def rebuild_tags(student_id: str | int, list_id: str | None = None) -> None:
 
     apply_tags(student)
     update_dashamail_subscription.delay(user_id=student.pk, list_id=list_id)
+
+
+@celery.task(name="users.rebuild_tags_for_all_students")
+def rebuild_tags_for_all_students() -> None:
+    students = apps.get_model("users.Student").objects.filter(is_active=True, is_staff=False).exclude(email="")
+    for student in students:
+        apply_tags(student)
+        update_dashamail_subscription.delay(user_id=student.pk)

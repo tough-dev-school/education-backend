@@ -14,6 +14,7 @@ from app.integrations.dashamail.subscription_updater import SubscriptionUpdater
         "countdown": 5,
     },
     rate_limit="1/s",
+    name="dashamail.update_subscription",
 )
 def update_dashamail_subscription(user_id: int, list_id: str | None = None) -> None:
     user = apps.get_model("users.User").objects.get(pk=user_id)
