@@ -8,6 +8,7 @@ from django.utils.translation import gettext as _
 
 from app.admin import admin
 from app.admin import ModelAdmin
+from app.pricing import format_price
 from banking.selector import get_bank
 from orders.admin.orders import actions
 from orders.admin.orders.filters import OrderStatusFilter
@@ -25,7 +26,7 @@ class OrderAdmin(ModelAdmin):
         "date",
         "customer",
         "item",
-        "price",
+        "formatted_price",
         "payment",
         "promocode",
     ]
@@ -95,6 +96,10 @@ class OrderAdmin(ModelAdmin):
                 "course",
             )
         )
+
+    @admin.display(description=_("Price"), ordering="price")
+    def formatted_price(self, obj: Order) -> str:
+        return format_price(obj.price)
 
     @admin.display(description=_("Date"), ordering="created__id")
     def date(self, obj: Order) -> str:
