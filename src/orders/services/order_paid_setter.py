@@ -5,6 +5,7 @@ from django.utils import timezone
 from app.services import BaseService
 from banking.selector import get_bank
 from orders.models import Order
+from users.tasks import rebuild_tags
 
 
 @dataclass
@@ -23,6 +24,7 @@ class OrderPaidSetter(BaseService):
         self.mark_order_as_paid()
         self.call_bank_successfull_callback()
         self.ship()
+        self.update_user_tags()
 
     def mark_order_as_paid(self) -> None:
         self.order.paid = timezone.now()
@@ -39,3 +41,7 @@ class OrderPaidSetter(BaseService):
         Bank = get_bank(self.order.bank_id)
         bank = Bank(order=self.order)
         bank.successful_payment_callback()
+
+    def update_user_tags(self) -> None:
+        if self.order.user.email and len(self.order.user.email):
+            rebuild_tags.delay(self.order.user.id)

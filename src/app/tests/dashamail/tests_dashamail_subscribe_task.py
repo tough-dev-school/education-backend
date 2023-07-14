@@ -7,24 +7,12 @@ pytestmark = [
 ]
 
 
-@pytest.fixture(autouse=True)
-def update_subscription(mocker):
-    return mocker.patch("app.integrations.dashamail.client.AppDashamail.subscribe_user")
+@pytest.fixture
+def subscription_updater(mocker):
+    return mocker.patch("app.integrations.dashamail.subscription_updater.SubscriptionUpdater.__init__", return_value=None)
 
 
-def test_task(user, update_subscription):
-    tasks.subscribe_to_dashamail.delay(
-        list_id="1",
-        email=user.email,
-        first_name=user.first_name,
-        last_name=user.last_name,
-        tags=["test1", "1test"],
-    )
+def test_task_when_user_exist_and_inactive(user, subscription_updater):
+    tasks.update_dashamail_subscription.delay(user.pk, "123")
 
-    update_subscription.assert_called_once_with(
-        list_id="1",
-        email=user.email,
-        first_name=user.first_name,
-        last_name=user.last_name,
-        tags=["test1", "1test"],
-    )
+    subscription_updater.assert_called_once_with(user, "123")

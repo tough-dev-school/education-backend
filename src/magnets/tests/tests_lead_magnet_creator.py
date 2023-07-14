@@ -7,8 +7,8 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def subscribe(mocker):
-    return mocker.patch("users.services.user_creator.subscribe_user_to_dashamail")
+def rebuild_tags(mocker):
+    return mocker.patch("users.services.user_creator.rebuild_tags.delay")
 
 
 @pytest.fixture
@@ -53,11 +53,11 @@ def test_existing_user(creator, mixer):
     assert get_user() == user
 
 
-def test_user_is_subscribed_with_tags(creator, mixer, subscribe):
+def test_user_is_subscribed_with_tags(creator, mixer, rebuild_tags):
     user = mixer.blend(User, first_name="Фёдор", last_name="Шаляпин", email="support@m1crosoft.com")
     creator(name="r00t", email="support@m1crosoft.com")()
 
-    subscribe.assert_called_once_with(user=user, tags=["eggs-lead-magnet"])
+    rebuild_tags.assert_called_once_with(user.id)
 
 
 def test_log_entry_is_created(creator, campaign):

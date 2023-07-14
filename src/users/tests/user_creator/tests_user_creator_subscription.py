@@ -6,29 +6,26 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def subscribe(mocker):
-    return mocker.patch("users.services.user_creator.subscribe_user_to_dashamail")
+def rebuild_tags(mocker):
+    return mocker.patch("users.tasks.rebuild_tags.delay")
 
 
-def test_user_is_not_subscribed_to_dashamail_by_default(subscribe):
+def test_user_is_not_subscribed_to_dashamail_by_default(rebuild_tags):
     UserCreator(name="Рулон Обоев", email="rulon.oboev@gmail.com")()
 
-    subscribe.assert_not_called()
+    rebuild_tags.assert_not_called()
 
 
-def test_tags_are_passed(subscribe):
-    created = UserCreator(name="Рулон Обоев", email="rulon.oboev@gmail.com", subscribe=True, tags=["aatag", "bbtag"])()
+def test_tags_are_passed(rebuild_tags):
+    created = UserCreator(name="Рулон Обоев", email="rulon.oboev@gmail.com", subscribe=True)()
 
-    subscribe.assert_called_once_with(
-        user=created,
-        tags=["aatag", "bbtag"],
-    )
+    rebuild_tags.assert_called_once_with(created.id)
 
 
-def test_not_subscribed(subscribe):
+def test_not_subscribed(rebuild_tags):
     UserCreator(name="Рулон Обоев", email="rulon.oboev@gmail.com", subscribe=False)()
 
-    subscribe.assert_not_called()
+    rebuild_tags.assert_not_called()
 
 
 @pytest.mark.parametrize("wants_to_subscribe", [True, False])
