@@ -11,6 +11,14 @@ pytestmark = [
 
 
 @pytest.fixture
+def staff_user(mixer):
+    user = mixer.blend("users.User", is_superuser=False, is_staff=True)
+    user.add_perm("notion.material.see_all_materials")
+
+    return user
+
+
+@pytest.fixture
 def notion() -> NotionClient:
     return NotionClient()
 

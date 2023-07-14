@@ -5,7 +5,7 @@ from django.utils import timezone
 
 from notion.block import NotionBlock
 from notion.block import NotionBlockList
-from notion.cache import cache_disabled
+from notion.cache import get_cached_page
 from notion.cache import NotionCache
 from notion.cache import TIMEOUT
 from notion.models import NotionCacheEntry
@@ -14,6 +14,26 @@ from notion.page import NotionPage
 pytestmark = [
     pytest.mark.django_db,
 ]
+
+
+@pytest.fixture
+def current_user_staff(mocker, staff_user):
+    return mocker.patch("notion.cache.get_current_user", return_value=staff_user)
+
+
+@pytest.fixture
+def current_user_casual(mocker, user):
+    return mocker.patch("notion.cache.get_current_user", return_value=user)
+
+
+@pytest.fixture
+def mock_cache_set(mocker):
+    return mocker.patch("notion.cache.NotionCache.set")
+
+
+@pytest.fixture
+def mock_fetch_page(mocker):
+    return mocker.patch("notion.client.NotionClient.fetch_page_recursively")
 
 
 @pytest.fixture
@@ -112,17 +132,36 @@ def test_get_or_set_set_if_doesnt_exist(cache, another_page):
     assert got == NotionPage.from_json(new_cache_entry.content)
 
 
-@pytest.mark.parametrize(
-    ("env_value", "is_cache_disabled"),
-    [
-        ("On", False),
-        ("", True),
-    ],
-)
-def test_disabled_cache_from_env(settings, user, mocker, env_value, is_cache_disabled):
-    user.is_staff = True
-    user.save()
-    mocker.patch("notion.cache.get_current_user", return_value=user)
+@pytest.mark.parametrize("env_value", ["On", ""])
+@pytest.mark.usefixtures("current_user_casual")
+def test_user_get_page_from_existing_cache_always(settings, cache_entry, env_value, mock_cache_set, mock_fetch_page):
     settings.NOTION_CACHE_ONLY = bool(env_value)
 
-    assert cache_disabled() is is_cache_disabled
+    got = get_cached_page(cache_entry.cache_key)
+
+    assert got == NotionPage.from_json(cache_entry.content)
+    mock_cache_set.assert_not_called()
+    mock_fetch_page.assert_not_called()
+
+
+@pytest.mark.usefixtures("current_user_staff")
+def test_staff_user_get_page_from_cache_if_env_cache(settings, cache_entry, mock_cache_set, mock_fetch_page):
+    settings.NOTION_CACHE_ONLY = bool("On")
+
+    got = get_cached_page(cache_entry.cache_key)
+
+    assert got == NotionPage.from_json(cache_entry.content)
+    mock_cache_set.assert_not_called()
+    mock_fetch_page.assert_not_called()
+
+
+@pytest.mark.usefixtures("current_user_staff")
+def test_staff_user_get_page_from_notion_if_not_env_cache(settings, cache_entry, mock_cache_set, mock_fetch_page):
+    settings.NOTION_CACHE_ONLY = bool("")
+
+    got = get_cached_page(cache_entry.cache_key)
+
+    mock_page = mock_fetch_page.return_value
+    assert got == mock_page
+    mock_cache_set.assert_called_once_with(cache_entry.cache_key, mock_page)
+    mock_fetch_page.assert_called_once_with(cache_entry.cache_key)
