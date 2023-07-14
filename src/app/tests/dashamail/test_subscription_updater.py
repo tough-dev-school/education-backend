@@ -50,7 +50,7 @@ def test_user_gets_subscribed_when_he_didnt_exist(user, subscribe_user, update_s
 
 
 @pytest.mark.usefixtures("get_subscriber_active")
-def test_when_user_exist_and_active(user, subscribe_user, update_subscriber, updater):
+def test_user_is_updated_when_he_exists(user, subscribe_user, update_subscriber, updater):
     updater(user)()
 
     update_subscriber.assert_called_once_with(
