@@ -1,18 +1,8 @@
 import pytest
 
-from mailing.models import PersonalEmailDomain
 from users.tags.pipeline import apply_tags
 
 pytestmark = [pytest.mark.django_db]
-
-default_domains = ["mail.ru", "gmail.com", "yandex.ru"]
-
-
-@pytest.fixture(autouse=True)
-def _default_personal_emails(mixer):  # tests are unstable without this due to default values are populated in migration
-    PersonalEmailDomain.objects.all().delete()
-    for default_domain in default_domains:
-        PersonalEmailDomain.objects.create(name=default_domain)
 
 
 @pytest.fixture
