@@ -7,10 +7,9 @@ class AppDashamail:
     def __init__(self) -> None:
         self.http = DashamailHTTP()
 
-    def subscribe_user(self, list_id: str, email: str, first_name: str, last_name: str, tags: list[str]) -> None:
+    def subscribe_user(self, email: str, first_name: str, last_name: str, tags: list[str]) -> None:
         payload = {
             "method": "lists.add_member",
-            "list_id": list_id,
             "email": email,
             "merge_1": first_name,
             "merge_2": last_name,
@@ -25,12 +24,11 @@ class AppDashamail:
         if response["response"]["msg"]["err_code"] != 0:
             raise DashamailSubscriptionFailed(f"{response}")
 
-    def get_subscriber(self, list_id: str, email: str) -> tuple[int | None, bool]:
+    def get_subscriber(self, email: str) -> tuple[int | None, bool]:
         """Return tuple which consists of member_id and is_active"""
 
         payload = {
             "method": "lists.get_members",
-            "list_id": list_id,
             "email": email,
         }
 
@@ -47,12 +45,11 @@ class AppDashamail:
             response["response"]["data"][0]["state"] == "active",
         )
 
-    def update_subscriber(self, list_id: str, member_id: int, first_name: str, last_name: str, tags: list[str]) -> None:
+    def update_subscriber(self, member_id: int, first_name: str, last_name: str, tags: list[str]) -> None:
         """Replace old user's fields with new"""
 
         payload = {
             "method": "lists.update_member",
-            "list_id": list_id,
             "merge_1": first_name,
             "merge_2": last_name,
             "member_id": member_id,

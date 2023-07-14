@@ -7,7 +7,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def updater():
-    return lambda user, list_id=None: SubscriptionUpdater(user, list_id)
+    return lambda user: SubscriptionUpdater(user)
 
 
 @pytest.fixture
@@ -43,7 +43,6 @@ def test_user_is_updated_when_he_exists(user, subscribe_user, update_subscriber,
     updater(user)()
 
     update_subscriber.assert_called_once_with(
-        list_id="1",
         member_id=1337,
         first_name=user.first_name,
         last_name=user.last_name,
@@ -61,7 +60,6 @@ def test_user_gets_subscribed_when_he_didnt_exist(user, subscribe_user, update_s
 
     update_subscriber.assert_not_called()
     subscribe_user.assert_called_once_with(
-        list_id="1",
         email=user.email,
         first_name=user.first_name,
         last_name=user.last_name,
@@ -74,7 +72,6 @@ def test_user_is_updated_when_he_exist_and_inactive(user, subscribe_user, update
     updater(user)()
 
     update_subscriber.assert_called_once_with(  # even if user has unsubscribed we keep his profile in actual state
-        list_id="1",
         member_id=1337,
         first_name=user.first_name,
         last_name=user.last_name,

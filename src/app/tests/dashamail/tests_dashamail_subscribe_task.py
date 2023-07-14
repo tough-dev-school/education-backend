@@ -9,10 +9,11 @@ pytestmark = [
 
 @pytest.fixture
 def subscription_updater(mocker):
+    mocker.patch("app.integrations.dashamail.subscription_updater.SubscriptionUpdater.__call__")
     return mocker.patch("app.integrations.dashamail.subscription_updater.SubscriptionUpdater.__init__", return_value=None)
 
 
-def test_task_when_user_exist_and_inactive(user, subscription_updater):
-    tasks.update_dashamail_subscription.delay(user.pk, "123")
+def test_task(user, subscription_updater):
+    tasks.update_dashamail_subscription.delay(user.pk)
 
-    subscription_updater.assert_called_once_with(user, "123")
+    subscription_updater.assert_called_once_with(user)

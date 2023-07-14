@@ -44,3 +44,11 @@ def test_api_key_in_payload(dashamail, successful_response_json):
     dashamail.http.post("test/", payload={})
 
     assert b"api_key=apikey" in dashamail.httpx_mock.get_request().content
+
+
+def test_list_id_in_payload(dashamail, successful_response_json):
+    dashamail.httpx_mock.add_response(url="https://api.dashamail.com/test/", method="POST", json=successful_response_json)
+
+    dashamail.http.post("test/", payload={})
+
+    assert b"list_id=1" in dashamail.httpx_mock.get_request().content

@@ -14,7 +14,6 @@ pytestmark = [pytest.mark.django_db]
 )
 def test_update_subscriber(dashamail, post, user, tags, request_tags):
     dashamail.update_subscriber(
-        list_id="test-list-id",
         member_id=48,
         first_name=user.first_name,
         last_name=user.last_name,
@@ -25,7 +24,6 @@ def test_update_subscriber(dashamail, post, user, tags, request_tags):
         url="",
         payload={
             "member_id": 48,
-            "list_id": "test-list-id",
             "merge_1": "Rulon",
             "merge_2": "Oboev",
             "merge_3": request_tags,
@@ -39,7 +37,6 @@ def test_subscription_failed(dashamail, user, fail_response_json):
 
     with pytest.raises(DashamailUpdateFailed):
         dashamail.update_subscriber(
-            list_id="test-list-id",
             member_id=48,
             first_name=user.first_name,
             last_name=user.last_name,

@@ -20,6 +20,7 @@ class DashamailHTTP:
             payload = {}
 
         payload["api_key"] = settings.DASHAMAIL_API_KEY
+        payload["list_id"] = settings.DASHAMAIL_LIST_ID
 
         response = httpx.request(
             method=method,
