@@ -44,4 +44,4 @@ class OrderPaidSetter(BaseService):
 
     def update_user_tags(self) -> None:
         if self.order.user.email and len(self.order.user.email):
-            rebuild_tags.apply_async([self.order.user.id], countdown=1)
+            rebuild_tags.delay(self.order.user.id)

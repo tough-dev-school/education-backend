@@ -10,7 +10,7 @@ pytestmark = [
 
 @pytest.fixture(autouse=True)
 def rebuild_tags(mocker):
-    return mocker.patch("users.tasks.rebuild_tags.apply_async")
+    return mocker.patch("users.tasks.rebuild_tags.delay")
 
 
 def test_works(order):
@@ -32,7 +32,7 @@ def test_ships(order, course, user, ship):
 def test_update_user_tags(order, rebuild_tags):
     order.set_paid()
 
-    rebuild_tags.assert_called_once_with([order.user.id], countdown=1)
+    rebuild_tags.assert_called_once_with(order.user.id)
 
 
 def test_not_ships_if_order_is_already_paid(order, ship):
