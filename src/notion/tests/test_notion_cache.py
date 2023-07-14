@@ -134,7 +134,7 @@ def test_get_or_set_set_if_doesnt_exist(cache, another_page):
 
 @pytest.mark.parametrize("env_value", ["On", ""])
 @pytest.mark.usefixtures("current_user_casual")
-def test_user_get_page_from_existing_cache_always(settings, cache_entry, env_value, mock_cache_set, mock_fetch_page):
+def test_user_always_gets_page_from_existing_cache(settings, cache_entry, env_value, mock_cache_set, mock_fetch_page):
     settings.NOTION_CACHE_ONLY = bool(env_value)
 
     got = get_cached_page(cache_entry.cache_key)
