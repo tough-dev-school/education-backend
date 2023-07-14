@@ -8,6 +8,7 @@ from django.utils.translation import gettext as _
 
 from app.admin import admin
 from app.admin import ModelAdmin
+from app.pricing import format_price
 from banking.selector import get_bank
 from orders.admin.orders import actions
 from orders.admin.orders.filters import OrderStatusFilter
@@ -22,15 +23,14 @@ class OrderAdmin(ModelAdmin):
     form = OrderChangeForm
     add_form = OrderAddForm
     list_display = [
-        "id",
         "date",
         "customer",
         "item",
+        "formatted_price",
         "payment",
         "promocode",
     ]
     list_display_links = [
-        "id",
         "date",
     ]
 
@@ -39,7 +39,6 @@ class OrderAdmin(ModelAdmin):
         "course",
     ]
     search_fields = [
-        "id",
         "course__name",
         "record__course__name",
         "user__first_name",
@@ -53,7 +52,7 @@ class OrderAdmin(ModelAdmin):
         actions.ship_again_if_paid,
         actions.accept_homework,
         actions.disaccept_homework,
-        actions.generate_diplams,
+        actions.generate_diplomas,
     ]
     readonly_fields = [
         "slug",
@@ -97,6 +96,10 @@ class OrderAdmin(ModelAdmin):
                 "course",
             )
         )
+
+    @admin.display(description=_("Price"), ordering="price")
+    def formatted_price(self, obj: Order) -> str:
+        return format_price(obj.price)
 
     @admin.display(description=_("Date"), ordering="created__id")
     def date(self, obj: Order) -> str:
