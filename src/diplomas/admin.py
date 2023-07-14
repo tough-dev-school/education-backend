@@ -78,8 +78,8 @@ class DiplomaAdmin(ModelAdmin):
     def regenerate(self, request: Request, queryset: QuerySet) -> None:
         order_ids = queryset.values_list("study__order_id", flat=True).distinct()
 
-        generate_diplams = group([tasks.generate_diploma.s(order_id=order_id) for order_id in order_ids])
-        generate_diplams.skew(step=2).apply_async()
+        generate_diplomas = group([tasks.generate_diploma.s(order_id=order_id) for order_id in order_ids])
+        generate_diplomas.skew(step=2).apply_async()
 
         self.message_user(request, f"Started generation of {len(order_ids)} diplomas")
 

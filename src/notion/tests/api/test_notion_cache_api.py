@@ -12,12 +12,8 @@ pytestmark = [
 
 
 @pytest.fixture
-def as_staff(mixer):
-    user = mixer.blend("users.User", is_superuser=False, is_staff=True)
-
-    user.add_perm("notion.material.see_all_materials")
-
-    return DRFClient(user=user)
+def as_staff(staff_user):
+    return DRFClient(user=staff_user)
 
 
 @pytest.fixture
