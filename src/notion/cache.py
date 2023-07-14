@@ -2,6 +2,7 @@ from datetime import datetime
 from datetime import timedelta
 from typing import Callable
 
+from django.conf import settings
 from django.utils import timezone
 
 from app.current_user import get_current_user
@@ -51,7 +52,10 @@ def fetch_page(page_id: str) -> Callable[[], NotionPage]:
     return lambda: NotionClient().fetch_page_recursively(page_id)
 
 
-def cache_disabled() -> bool:
+def should_bypass_cache() -> bool:
+    if settings.NOTION_CACHE_ONLY:
+        return False
+
     user = get_current_user()
     if user:
         return user.is_staff
@@ -60,7 +64,7 @@ def cache_disabled() -> bool:
 
 
 def get_cached_page(page_id: str) -> NotionPage:
-    if cache_disabled():
+    if should_bypass_cache():
         page = fetch_page(page_id)()
         cache.set(page_id, page)
         return page

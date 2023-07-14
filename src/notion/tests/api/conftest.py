@@ -47,4 +47,4 @@ def mock_notion_response(mocker, page: NotionPage):
 
 @pytest.fixture
 def _disable_notion_cache(mocker):
-    mocker.patch("notion.cache.cache_disabled", return_value=True)
+    mocker.patch("notion.cache.should_bypass_cache", return_value=True)
