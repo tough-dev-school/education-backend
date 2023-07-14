@@ -22,15 +22,14 @@ class OrderAdmin(ModelAdmin):
     form = OrderChangeForm
     add_form = OrderAddForm
     list_display = [
-        "id",
         "date",
         "customer",
         "item",
+        "price",
         "payment",
         "promocode",
     ]
     list_display_links = [
-        "id",
         "date",
     ]
 
@@ -39,7 +38,6 @@ class OrderAdmin(ModelAdmin):
         "course",
     ]
     search_fields = [
-        "id",
         "course__name",
         "record__course__name",
         "user__first_name",
@@ -53,7 +51,7 @@ class OrderAdmin(ModelAdmin):
         actions.ship_again_if_paid,
         actions.accept_homework,
         actions.disaccept_homework,
-        actions.generate_diplams,
+        actions.generate_diplomas,
     ]
     readonly_fields = [
         "slug",
