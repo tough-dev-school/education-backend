@@ -24,6 +24,7 @@ def test_update_subscriber(dashamail, post, user, tags, request_tags):
         url="",
         payload={
             "member_id": 48,
+            "list_id": "1",
             "merge_1": "Rulon",
             "merge_2": "Oboev",
             "merge_3": request_tags,

@@ -23,7 +23,7 @@ def test_get_subscriber(dashamail, post, user):
 
     post.assert_called_once_with(
         url="",
-        payload={"email": "test@e.mail", "method": "lists.get_members"},
+        payload={"email": "test@e.mail", "list_id": "1", "method": "lists.get_members"},
     )
 
 
