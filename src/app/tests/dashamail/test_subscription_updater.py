@@ -7,7 +7,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def updater():
-    return lambda user: SubscriptionUpdater(user)
+    return SubscriptionUpdater
 
 
 @pytest.fixture
