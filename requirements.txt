@@ -45,7 +45,7 @@ cffi==1.15.1
     #   cryptography
 charset-normalizer==3.2.0
     # via requests
-click==8.1.4
+click==8.1.5
     # via
     #   celery
     #   click-didyoumean
@@ -153,7 +153,7 @@ jmespath==1.0.1
     # via
     #   boto3
     #   botocore
-jsonschema==4.18.2
+jsonschema==4.18.3
     # via drf-spectacular
 jsonschema-specifications==2023.6.1
     # via jsonschema
@@ -222,7 +222,7 @@ sqlparse==0.4.4
     #   django-debug-toolbar
 standardjson==0.3.1
     # via django-prettyjson
-stripe==5.4.0
+stripe==5.5.0
     # via education-backend (pyproject.toml)
 uritemplate==4.1.1
     # via drf-spectacular

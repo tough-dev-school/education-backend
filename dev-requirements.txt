@@ -68,7 +68,7 @@ cffi==1.15.1
     #   cryptography
 charset-normalizer==3.2.0
     # via requests
-click==8.1.4
+click==8.1.5
     # via
     #   black
     #   celery
@@ -284,7 +284,7 @@ jmespath==1.0.1
     # via
     #   boto3
     #   botocore
-jsonschema==4.18.2
+jsonschema==4.18.3
     # via drf-spectacular
 jsonschema-specifications==2023.6.1
     # via jsonschema
@@ -446,13 +446,13 @@ stack-data==0.6.2
     # via ipython
 standardjson==0.3.1
     # via django-prettyjson
-stripe==5.4.0
+stripe==5.5.0
     # via education-backend (pyproject.toml)
 traitlets==5.9.0
     # via
     #   ipython
     #   matplotlib-inline
-types-awscrt==0.16.23
+types-awscrt==0.16.24
     # via
     #   botocore-stubs
     #   types-s3transfer
