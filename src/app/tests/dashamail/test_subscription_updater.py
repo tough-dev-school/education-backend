@@ -36,7 +36,7 @@ def update_subscriber(mocker):
 
 
 @pytest.mark.usefixtures("get_subscriber_doesnt_exist")
-def test_when_user_didnt_exist(user, subscribe_user, update_subscriber, updater):
+def test_user_gets_subscribed_when_he_didnt_exist(user, subscribe_user, update_subscriber, updater):
     updater(user)()
 
     subscribe_user.assert_called_once_with(
