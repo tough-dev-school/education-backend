@@ -1,6 +1,6 @@
 import pytest
 
-from users.tags.pipeline import apply_tags
+from users.tags.pipeline import generate_tags
 
 pytestmark = [pytest.mark.django_db]
 
@@ -16,7 +16,7 @@ def test_with_recently_added_personal_domain(user, new_personal_domain, domain):
     user.email = f"myemail@{domain}"
     user.save()
 
-    apply_tags(user)
+    generate_tags(user)
 
     assert "b2b" not in user.tags
 
@@ -26,7 +26,7 @@ def test_with_default_personal_domains(user, domain):
     user.email = f"something@{domain}"
     user.save()
 
-    apply_tags(user)
+    generate_tags(user)
 
     assert "b2b" not in user.tags
 
@@ -36,7 +36,7 @@ def test_with_company_domain(user, domain):
     user.email = f"nothing@{domain}"
     user.save()
 
-    apply_tags(user)
+    generate_tags(user)
 
     assert "b2b" in user.tags
 
@@ -46,6 +46,6 @@ def test_with_incorrect_email(user, email):
     user.email = email
     user.save()
 
-    apply_tags(user)
+    generate_tags(user)
 
     assert "b2b" not in user.tags

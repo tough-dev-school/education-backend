@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from users.tags.base import TagMechanism
 
 
-def apply_tags(student: "Student") -> None:
+def generate_tags(student: "Student") -> None:
     """Apply configured tag pipeline to the student"""
     pipeline: list[Type["TagMechanism"]] = [import_string(tag_cls) for tag_cls in settings.TAG_PIPELINE]
     new_tags: set[str] = set()
@@ -20,4 +20,4 @@ def apply_tags(student: "Student") -> None:
     student.save()
 
 
-__all__ = ["apply_tags"]
+__all__ = ["generate_tags"]

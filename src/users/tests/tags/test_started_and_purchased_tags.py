@@ -1,13 +1,13 @@
 import pytest
 
-from users.tags.pipeline import apply_tags
+from users.tags.pipeline import generate_tags
 
 pytestmark = [pytest.mark.django_db]
 
 
 @pytest.mark.usefixtures("non_paid_order")
 def test_order_started(user):
-    apply_tags(user)
+    generate_tags(user)
 
     assert "popug-3-self__started" in user.tags
     assert "popug-3__started" in user.tags
@@ -15,7 +15,7 @@ def test_order_started(user):
 
 @pytest.mark.usefixtures("paid_order")
 def test_order_purchased(user):
-    apply_tags(user)
+    generate_tags(user)
 
     assert "popug-3-self__purchased" in user.tags
     assert "popug-3__purchased" in user.tags
@@ -24,7 +24,7 @@ def test_order_purchased(user):
 def test_order_started_and_then_purchased(user, non_paid_order):
     non_paid_order.set_paid()
 
-    apply_tags(user)
+    generate_tags(user)
 
     assert "popug-3-self__started" not in user.tags
     assert "popug-3__started" not in user.tags
@@ -37,7 +37,7 @@ def test_started_and_purchased_orders_for_same_course(user, factory):
     factory.order(is_paid=False, item=course_no_group, user=user)
     factory.order(is_paid=True, item=course_no_group, user=user)
 
-    apply_tags(user)
+    generate_tags(user)
 
     assert "how-to-be-007__purchased" in user.tags
     assert "how-to-be-007__started" not in user.tags
@@ -50,7 +50,7 @@ def test_started_and_purchased_orders_for_same_product_group(user, course, facto
     factory.order(is_paid=False, item=another_course_same_group, user=user)
     factory.order(is_paid=True, item=course, user=user)
 
-    apply_tags(user)
+    generate_tags(user)
 
     assert "popug-3-vip__started" not in user.tags
     assert "popug-3-self__started" not in user.tags
