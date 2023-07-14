@@ -20,11 +20,9 @@ def generate_tags(mocker):
 def test_task(user, generate_tags, update_subscription):
     tasks.rebuild_tags.delay(
         student_id=user.id,
-        list_id="1",
     )
 
     generate_tags.assert_called_once_with(user)
     update_subscription.assert_called_once_with(
-        list_id="1",
         user_id=user.pk,
     )
