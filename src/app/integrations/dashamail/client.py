@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from app.integrations.dashamail.exceptions import DashamailSubscriptionFailed, DashamailException
+from app.integrations.dashamail.exceptions import DashamailSubscriptionFailed
 from app.integrations.dashamail.exceptions import DashamailUpdateFailed
 from app.integrations.dashamail.http import DashamailHTTP
 

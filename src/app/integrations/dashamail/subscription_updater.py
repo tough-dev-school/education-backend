@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 from typing import final, TYPE_CHECKING
 
-from django.conf import settings
-
 from app.integrations.dashamail import AppDashamail
 from app.services import BaseService
 
@@ -25,9 +23,6 @@ class SubscriptionUpdater(BaseService):
     dashamail: AppDashamail = AppDashamail()
 
     def act(self) -> None:
-        if not settings.DASHAMAIL_LIST_ID:
-            return
-
         member_id, is_active = self.dashamail.get_subscriber(self.user.email)
 
         if member_id is None:
