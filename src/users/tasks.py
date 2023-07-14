@@ -5,7 +5,7 @@ from app.tasks import update_dashamail_subscription
 from users.tags.pipeline import apply_tags
 
 
-@celery.task()
+@celery.task(name='users.rebuild_tags')
 def rebuild_tags(student_id: str | int, list_id: str | None = None) -> None:
     student = apps.get_model("users.Student").objects.get(pk=student_id)
 
