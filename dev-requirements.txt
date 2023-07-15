@@ -486,7 +486,7 @@ types-setuptools==68.0.0.1
     # via types-babel
 types-simplejson==3.19.0.1
     # via education-backend (pyproject.toml)
-types-stripe==3.5.2.12
+types-stripe==3.5.2.13
     # via education-backend (pyproject.toml)
 types-urllib3==1.26.25.13
     # via types-requests
