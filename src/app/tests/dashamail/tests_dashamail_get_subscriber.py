@@ -27,6 +27,21 @@ def test_get_subscriber(dashamail, post, user):
     )
 
 
+@pytest.mark.parametrize(("email", "expected_email"), [("hehe@ya.ru", "hehe@yandex.ru"), ("simple@yandex.ru", "simple@yandex.ru")])
+def test_get_subscriber_with_yandex_mail(dashamail, post, user, email, expected_email):
+    user.email = email
+    user.save()
+
+    dashamail.get_subscriber(
+        email=user.email,
+    )
+
+    post.assert_called_once_with(
+        url="",
+        payload={"email": expected_email, "list_id": "1", "method": "lists.get_members"},
+    )
+
+
 def test_get_subscriber_correct_values(dashamail, user, successful_response_json):
     dashamail.httpx_mock.add_response(url="https://api.dashamail.com", method="POST", json=successful_response_json)
 
