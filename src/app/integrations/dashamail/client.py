@@ -30,7 +30,7 @@ class AppDashamail:
 
     def get_subscriber(self, email: str) -> tuple[int | None, bool]:
         """Return tuple which consists of member_id and is_active"""
-        if "@ya.ru" in email:
+        if email.endswith("@ya.ru"):
             # Dashamail internally convert ya.ru to yandex.ru, with ya.ru we're going to get nothing
             email = email.replace("@ya.ru", "@yandex.ru")
 
