@@ -76,7 +76,6 @@ def test_target_user_preserves_non_empty_property(bob_a, bob_b, command, prop_na
         ("homework.Answer", "author"),
         ("magnets.LeadCampaignLogEntry", "user"),
         ("orders.Order", "user"),
-        ("orders.Order", "giver"),
     ],
 )
 def test_source_user_relation_merged_into_target_user(bob_a, bob_b, command, model, rel_name):

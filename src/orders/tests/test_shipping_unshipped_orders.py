@@ -20,11 +20,8 @@ def product(factory):
 def order(factory, product, another_user):
     return factory.order(
         paid="2032-12-01 00:01:00+02:00",
-        desired_shipment_date="2032-12-01 00:14:00+02:00",
         shipped=None,
         record=product,
-        giver=another_user,
-        notification_to_giver_is_sent=True,
     )
 
 
@@ -44,7 +41,7 @@ def test_works(order, ship, product):
     ship.assert_called_once_with(product, to=order.user, order=order)
 
 
-def test_only_receiver_gets_notified_during_gift_shipment(order, send_mail):
+def test_only_receiver_gets_notified_during_shipment(order, send_mail):
     tasks.ship_unshipped_orders()
 
     send_mail.assert_called_once()
@@ -64,7 +61,6 @@ def test_order_is_marked_as_shipped(order):
     [
         lambda order: order.setattr_and_save("paid", None),
         lambda order: order.setattr_and_save("shipped", "2032-12-01 12:30+02:00"),
-        lambda order: order.setattr_and_save("desired_shipment_date", None),
     ],
 )
 def test_not_shipping_orders_that_should_not_be_shipped(order, ship, change_order):

@@ -11,7 +11,6 @@ pytestmark = [
 @pytest.fixture
 def order(order):
     order.paid = "2032-12-01 00:01:00-02:00"
-    order.desired_shipment_date = "2032-12-01 00:14:00-02:00"
     order.shipped = None
 
     order.save()
@@ -25,10 +24,6 @@ def order(order):
         (lambda order: None, True),
         (lambda order: order.update_from_kwargs(paid=None), False),
         (lambda order: order.update_from_kwargs(shipped="2032-12-01 00:01:01-02:00"), False),
-        (lambda order: order.update_from_kwargs(desired_shipment_date="2032-12-01 00:16:00-02:00"), False),  # not yet to come
-        (lambda order: order.update_from_kwargs(desired_shipment_date="2032-12-01 01:16:00-01:00"), False),  # not yet to come, other timezone
-        (lambda order: order.update_from_kwargs(desired_shipment_date="2032-12-01 00:15:00-02:00"), True),
-        (lambda order: order.update_from_kwargs(desired_shipment_date=None), False),
     ],
 )
 def test(order, modify_order, should_be_shipped):
