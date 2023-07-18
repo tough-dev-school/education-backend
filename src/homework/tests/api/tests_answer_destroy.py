@@ -33,6 +33,8 @@ def test_destroy_non_root_answer(api, answer, answer_of_another_author):
 
 @pytest.mark.usefixtures("child_answer")
 def test_only_answers_without_descendants_may_be_destroyed(api, answer):
+    Answer.objects.update(created="2032-12-01 15:30:12+03:00")
+
     api.delete(f"/api/v2/homework/answers/{answer.slug}/", expected_status_code=403)
 
 

@@ -85,6 +85,8 @@ def test_answers_created_within_a_day_may_be_updated(api, answer, freezer):
 
 @pytest.mark.usefixtures("child_answer")
 def test_only_answers_without_descendants_may_be_edited(api, answer):
+    Answer.objects.update(created="2032-12-01 15:30:12+03:00")
+
     api.patch(f"/api/v2/homework/answers/{answer.slug}/", {"text": "*patched*"}, expected_status_code=403)
 
 
