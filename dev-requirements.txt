@@ -284,7 +284,7 @@ jmespath==1.0.1
     # via
     #   boto3
     #   botocore
-jsonschema==4.18.3
+jsonschema==4.18.4
     # via drf-spectacular
 jsonschema-specifications==2023.6.1
     # via jsonschema
@@ -399,7 +399,7 @@ pyyaml==6.0.1
     # via drf-spectacular
 redis==4.6.0
     # via education-backend (pyproject.toml)
-referencing==0.29.1
+referencing==0.29.3
     # via
     #   jsonschema
     #   jsonschema-specifications
