@@ -39,6 +39,11 @@ def another_answer(mixer, question, api):
 
 
 @pytest.fixture
+def child_answer(answer, mixer):
+    return mixer.blend("homework.Answer", parent=answer)
+
+
+@pytest.fixture
 def purchase(factory, course, api):
     order = factory.order(user=api.user, item=course)
     order.set_paid()

@@ -69,18 +69,23 @@ def test_405_for_put(api, answer):
     api.put(f"/api/v2/homework/answers/{answer.slug}/", {"text": "*patched*"}, expected_status_code=405)
 
 
-def test_only_answers_not_longer_then_30_minutes_may_be_edited(api, answer, freezer):
-    freezer.move_to("2032-12-01 16:30+03:00")
+def test_only_answers_not_longer_than_a_day_may_be_edited(api, answer, freezer):
+    freezer.move_to("2032-12-02 16:30+03:00")
 
     api.patch(f"/api/v2/homework/answers/{answer.slug}/", {"text": "*patched*"}, expected_status_code=403)
 
 
-def test_answers_modified_within_last_30_minutes_may_be_updated(api, answer, freezer):
-    freezer.move_to("2032-12-01 16:30+03:00")
+def test_answers_created_within_a_day_may_be_updated(api, answer, freezer):
+    freezer.move_to("2032-12-02 16:20+03:00")
 
-    Answer.objects.update(modified="2032-12-01 16:24+03:00")
+    Answer.objects.update(created="2032-12-01 16:24+03:00")
 
     api.patch(f"/api/v2/homework/answers/{answer.slug}/", {"text": "*patched*"}, expected_status_code=200)
+
+
+@pytest.mark.usefixtures("child_answer")
+def test_only_answers_without_descendants_may_be_edited(api, answer):
+    api.patch(f"/api/v2/homework/answers/{answer.slug}/", {"text": "*patched*"}, expected_status_code=403)
 
 
 @pytest.mark.xfail(reason="WIP: will add per-course permissions later")

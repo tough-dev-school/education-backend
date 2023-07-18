@@ -53,9 +53,18 @@ class MayChangeAnswerOnlyForLimitedTime(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        last_update_time = obj.created if obj.modified is None else obj.modified
+        if timezone.now() - obj.created < timedelta(days=1):
+            return True
 
-        if timezone.now() - last_update_time < timedelta(minutes=30):
+        return False
+
+
+class MayChangeAnswerOnlyWithoutDescendants(permissions.BasePermission):
+    def has_object_permission(self, request: Request, view: APIView, obj: Any) -> bool:
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        if obj.get_first_level_descendants().count() == 0:
             return True
 
         return False
