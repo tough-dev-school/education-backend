@@ -24,6 +24,12 @@ def test_looooooong_words(mixer):
     assert str(answer) == "Длинный кот [...]"
 
 
+def test_starts_with_looooooong_word(mixer):
+    answer = mixer.blend("homework.Answer", text="Длиииииииииииииииииииииииииииииииииииииииииииииииииииинееееееееееееееееен длинный кот!")
+
+    assert str(answer) == "Homework answer"
+
+
 def test_html(mixer):
     answer = mixer.blend("homework.Answer", text="## Банзай!")
 

@@ -97,7 +97,8 @@ class Answer(TreeNode):
 
     def __str__(self) -> str:
         text = remove_html(markdownify(self.text))
-        return textwrap.shorten(text, width=40)
+        shorten = textwrap.shorten(text, width=40)
+        return shorten if shorten != "[...]" else "Homework answer"
 
     def get_absolute_url(self) -> str:
         root = self.get_root_answer()
