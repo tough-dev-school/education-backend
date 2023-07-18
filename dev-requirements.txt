@@ -286,7 +286,7 @@ jmespath==1.0.1
     #   botocore
 jsonschema==4.18.4
     # via drf-spectacular
-jsonschema-specifications==2023.6.1
+jsonschema-specifications==2023.7.1
     # via jsonschema
 kombu==5.3.1
     # via celery
