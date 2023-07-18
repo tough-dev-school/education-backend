@@ -399,7 +399,7 @@ pyyaml==6.0.1
     # via drf-spectacular
 redis==4.6.0
     # via education-backend (pyproject.toml)
-referencing==0.29.3
+referencing==0.30.0
     # via
     #   jsonschema
     #   jsonschema-specifications
