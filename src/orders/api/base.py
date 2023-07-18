@@ -11,7 +11,6 @@ from django.http import HttpResponseRedirect
 from app.pricing import format_price
 from banking import price_calculator
 from banking.selector import get_bank
-from orders.api.validators import GiftValidator
 from orders.api.validators import PurchaseValidator
 from orders.models import Order
 from orders.models import PromoCode
@@ -48,18 +47,6 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
 
         return HttpResponseRedirect(redirect_to=payment_link)
 
-    @action(methods=["POST"], detail=True)
-    def gift(self, request: Request, pk: str | None = None, **kwargs: dict[str, Any]) -> HttpResponseRedirect:
-        """Purchase as a gift"""
-        data = request.POST
-
-        GiftValidator.do(data, context={"request": self.request})
-
-        order = self._create_gift(data=data)
-        payment_link = self.get_payment_link(order, data=data)
-
-        return HttpResponseRedirect(redirect_to=payment_link)
-
     @action(methods=["GET"], detail=True)
     def promocode(self, request: Request, pk: str | None = None, **kwargs: dict[str, Any]) -> Response:
         promocode = self._get_promocode(request)
@@ -91,27 +78,6 @@ class PurchaseViewSet(ReadOnlyModelViewSet):
             desired_bank=data.get("desired_bank"),
         )
         return creator()
-
-    def _create_gift(self, data: dict) -> Order:
-        order_creator = OrderCreator(
-            user=self._create_user(
-                name=data["receiver_name"],
-                email=data["receiver_email"],
-                subscribe=self.subscribe,
-            ),
-            giver=self._create_user(
-                name=data["giver_name"],
-                email=data["giver_email"],
-                subscribe=self.subscribe,
-            ),
-            item=self.item,
-            desired_shipment_date=data["desired_shipment_date"],
-            gift_message=data.get("gift_message"),
-            desired_bank=data.get("desired_bank"),
-            promocode=data.get("promocode"),
-        )
-
-        return order_creator()
 
     def _create_user(self, name: str, email: str, subscribe: bool = False) -> User:
         return UserCreator(

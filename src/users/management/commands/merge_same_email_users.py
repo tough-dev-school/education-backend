@@ -30,7 +30,6 @@ class Command(BaseCommand):
         Answer.objects.filter(author=source).update(author=target)
         LeadCampaignLogEntry.objects.filter(user=source).update(user=target)
         Order.objects.filter(user=source).update(user=target)
-        Order.objects.filter(giver=source).update(giver=target)
 
         # We will lowercase username as well as email,
         # but for username, we need to keep it unique.

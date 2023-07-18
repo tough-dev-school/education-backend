@@ -52,16 +52,12 @@ class CourseShipment(BaseShipment):
             "name": self.course.name,
             "slug": self.course.slug,
             "name_genitive": self.course.name_genitive,
-            **self.get_gift_template_context(),
         }
 
     @property
     def welcome_letter_template_id(self) -> str | None:
-        """Get special gift template letter id if order is a gift and it is present"""
+        """Get template letter id if order is present"""
         template_id = self.course.welcome_letter_template_id
-
-        if self.order.giver is not None:  # this is a gift
-            template_id = self.course.gift_welcome_letter_template_id or self.course.welcome_letter_template_id
 
         if template_id is None or not len(template_id):  # fuck this null=True in CharFields
             return None

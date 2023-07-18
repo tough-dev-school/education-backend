@@ -34,16 +34,11 @@ class OrderCreator(BaseService):
     item: Shippable
     price: Decimal | None = None
     promocode: str | None = None
-    giver: User | None = None
-    desired_shipment_date: str | datetime | None = None
-    gift_message: str | None = None
     desired_bank: str | None = None
 
     def __post_init__(self) -> None:
         self.price = self.price if self.price is not None else self.item.get_price(promocode=self.promocode)
         self.promocode = self._get_promocode(self.promocode)
-        self.desired_shipment_date = self.make_datetime_aware(self.desired_shipment_date)
-        self.gift_message = self.gift_message if self.gift_message is not None else ""
         self.desired_bank = self.desired_bank if self.desired_bank is not None else ""
 
     def act(self) -> Order:
@@ -62,9 +57,6 @@ class OrderCreator(BaseService):
             author=get_current_user() or self.user,
             price=self.price,  # type: ignore
             promocode=self.promocode,
-            giver=self.giver,
-            desired_shipment_date=self.desired_shipment_date,
-            gift_message=self.gift_message,
             bank_id=self.desired_bank,
             ue_rate=self.bank.ue,
             acquiring_percent=self.bank.acquiring_percent,
