@@ -21,7 +21,7 @@ def test_ok(api, answer):
         answer.refresh_from_db()
 
 
-def test_destory_non_root_answer(api, answer, answer_of_another_author):
+def test_destroy_non_root_answer(api, answer, answer_of_another_author):
     answer.parent = answer_of_another_author
     answer.save()
 
@@ -31,16 +31,23 @@ def test_destory_non_root_answer(api, answer, answer_of_another_author):
         answer.refresh_from_db()
 
 
-def test_only_answers_not_longer_then_30_minutes_may_be_destroyed(api, answer, freezer):
-    freezer.move_to("2032-12-01 16:30")
+@pytest.mark.usefixtures("child_answer")
+def test_only_answers_without_descendants_may_be_destroyed(api, answer):
+    Answer.objects.update(created="2032-12-01 15:30:12+03:00")
 
     api.delete(f"/api/v2/homework/answers/{answer.slug}/", expected_status_code=403)
 
 
-def test_answers_modified_within_last_30_minutes_may_be_destroyed(api, answer, freezer):
-    freezer.move_to("2032-12-01 16:30+05:00")
+def test_only_answers_not_longer_than_a_day_may_be_destroyed(api, answer, freezer):
+    freezer.move_to("2032-12-02 15:30")
 
-    Answer.objects.update(modified="2032-12-01 16:24+05:00")
+    api.delete(f"/api/v2/homework/answers/{answer.slug}/", expected_status_code=403)
+
+
+def test_answers_created_within_a_day_may_be_destroyed(api, answer, freezer):
+    freezer.move_to("2032-12-02 16:20+05:00")
+
+    Answer.objects.update(created="2032-12-01 16:24+05:00")
 
     api.delete(f"/api/v2/homework/answers/{answer.slug}/", expected_status_code=204)
 
