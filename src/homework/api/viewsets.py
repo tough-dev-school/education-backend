@@ -15,6 +15,7 @@ from app.viewsets import AppViewSet
 from app.viewsets import CreateDeleteAppViewSet
 from homework.api.filtersets import AnswerFilterSet
 from homework.api.permissions import MayChangeAnswerOnlyForLimitedTime
+from homework.api.permissions import MayChangeAnswerOnlyWithoutDescendants
 from homework.api.permissions import ShouldBeAuthorOrReadOnly
 from homework.api.permissions import ShouldHavePurchasedQuestionCoursePermission
 from homework.api.serializers import AnswerCreateSerializer
@@ -38,7 +39,11 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
 
     lookup_field = "slug"
     permission_classes = [
-        IsAuthenticated & ShouldHavePurchasedQuestionCoursePermission & ShouldBeAuthorOrReadOnly & MayChangeAnswerOnlyForLimitedTime,
+        IsAuthenticated
+        & ShouldHavePurchasedQuestionCoursePermission
+        & ShouldBeAuthorOrReadOnly
+        & MayChangeAnswerOnlyForLimitedTime
+        & MayChangeAnswerOnlyWithoutDescendants,
     ]
     filterset_class = AnswerFilterSet
 
