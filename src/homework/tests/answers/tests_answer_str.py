@@ -24,10 +24,18 @@ def test_looooooong_words(mixer):
     assert str(answer) == "Длинный кот [...]"
 
 
-def test_starts_with_looooooong_word(mixer):
-    answer = mixer.blend("homework.Answer", text="Длиииииииииииииииииииииииииииииииииииииииииииииииииииинееееееееееееееееен длинный кот!")
+@pytest.mark.parametrize(
+    ("long_word", "expected_string"),
+    [
+        ("длиииииииииииииииииииииииииииииииииииииииииииииииииииинееееееееееееееееен длиный кот", "Homework answer"),
+        ("https://miro.com/app/board/asdasdzxcasd123=/?share_link_id=604444977722", "Link to miro"),
+        ("1. http://pivo.com:8000/app/board/asdasdzxcasd123=/?share_link_id=604444977722\nNice work bro", "Link to pivo"),
+    ],
+)
+def test_starts_with_looooooong_word(mixer, long_word, expected_string):
+    answer = mixer.blend("homework.Answer", text=long_word)
 
-    assert str(answer) == "Homework answer"
+    assert str(answer) == expected_string
 
 
 def test_html(mixer):
