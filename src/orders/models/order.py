@@ -4,7 +4,6 @@ import shortuuid
 
 from django.db.models import CheckConstraint
 from django.db.models import QuerySet
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
@@ -25,7 +24,7 @@ class OrderQuerySet(QuerySet):
 
     def to_ship(self) -> QuerySet["Order"]:
         """Paid orders that may be shipped right now"""
-        return self.paid().filter(shipped__isnull=True, desired_shipment_date__lte=timezone.now())
+        return self.paid().filter(shipped__isnull=True)
 
     def available_to_confirm(self) -> QuerySet["Order"]:
         return self.filter(
@@ -62,11 +61,6 @@ class Order(TimestampedModel):
     course = ItemField(to="products.Course", verbose_name=_("Course"), null=True, blank=True, on_delete=models.PROTECT)
     record = ItemField(to="products.Record", verbose_name=_("Record"), null=True, blank=True, on_delete=models.PROTECT)
     bundle = ItemField(to="products.Bundle", verbose_name=_("Bundle"), null=True, blank=True, on_delete=models.PROTECT)
-
-    giver = models.ForeignKey("users.User", verbose_name=_("Giver"), null=True, blank=True, on_delete=models.SET_NULL, related_name="created_gifts")
-    desired_shipment_date = models.DateTimeField(_("Date when the gift should be shipped"), null=True, blank=True)
-    gift_message = models.TextField(_("Gift message"), default="", blank=True)
-    notification_to_giver_is_sent = models.BooleanField(default=False)
 
     class Meta:
         ordering = ["-id"]
