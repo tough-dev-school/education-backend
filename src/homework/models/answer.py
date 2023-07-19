@@ -1,5 +1,6 @@
 import textwrap
 from urllib.parse import urljoin
+from urllib.parse import urlparse
 import uuid
 
 from tree_queries.models import TreeNode
@@ -97,6 +98,11 @@ class Answer(TreeNode):
 
     def __str__(self) -> str:
         text = remove_html(markdownify(self.text))
+        first_word = text.split()[0]
+        resource = urlparse(first_word).netloc
+        if resource:
+            return f'Ссылка на {resource.split(".")[-2]}'
+
         return textwrap.shorten(text, width=40)
 
     def get_absolute_url(self) -> str:
