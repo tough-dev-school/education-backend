@@ -97,17 +97,13 @@ class Answer(TreeNode):
         ]
 
     def __str__(self) -> str:
-        width = 40
         text = remove_html(markdownify(self.text))
         first_word = text.split()[0]
-        if len(first_word) <= width:
-            return textwrap.shorten(text, width=width)
-
         resource = urlparse(first_word).netloc
         if resource:
-            return f'Link to {resource.split(".")[-2]}'
+            return f'Ссылка на {resource.split(".")[-2]}'
 
-        return "Homework answer"
+        return textwrap.shorten(text, width=40)
 
     def get_absolute_url(self) -> str:
         root = self.get_root_answer()
