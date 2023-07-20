@@ -22,10 +22,6 @@ class OrderQuerySet(QuerySet):
     def shipped_without_payment(self) -> QuerySet["Order"]:
         return self.paid(invert=True).filter(shipped__isnull=False)
 
-    def to_ship(self) -> QuerySet["Order"]:
-        """Paid orders that may be shipped right now"""
-        return self.paid().filter(shipped__isnull=True)
-
     def available_to_confirm(self) -> QuerySet["Order"]:
         return self.filter(
             price=0,
