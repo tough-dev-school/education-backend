@@ -3,14 +3,6 @@ from orders.api.base import PurchaseViewSet
 from products.api import serializers
 from products.models import Bundle
 from products.models import Course
-from products.models import Record
-
-
-class RecordViewSet(PurchaseViewSet):
-    lookup_field = "slug"
-    serializer_class = serializers.RecordSerializer
-    queryset = Record.objects.all()
-    permission_classes = [AllowAny]
 
 
 class CourseViewSet(PurchaseViewSet):

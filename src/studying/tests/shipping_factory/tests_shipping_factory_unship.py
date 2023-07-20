@@ -6,21 +6,8 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def unship_record(mocker):
-    return mocker.patch("studying.shipment.RecordShipment.unship")
-
-
-@pytest.fixture
 def unship_course(mocker):
     return mocker.patch("studying.shipment.CourseShipment.unship")
-
-
-def test_record(record, unship_record, factory):
-    order = factory.order(item=record)
-
-    shipment_factory.unship(order)
-
-    unship_record.assert_called_once()
 
 
 def test_course(course, unship_course, factory):

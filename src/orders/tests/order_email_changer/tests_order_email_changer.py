@@ -55,15 +55,6 @@ def test_order_is_reshipped_when_it_was_paid(email_changer, factory, course, shi
     unship.assert_called_once_with(order=order)
 
 
-def test_reshipping_with_ununshippable_item(email_changer, factory, record):
-    order = factory.order(item=record, is_paid=True)
-    changer = email_changer(order, email="circus@gmail.com")
-
-    changer()
-
-    assert order.user.email == "circus@gmail.com", "should not break things"
-
-
 def test_first_and_last_name_remain_the_same_after_email_change(email_changer, factory, user, course):
     order = factory.order(user=user, item=course)
     changer = email_changer(order, email="circus@gmail.com")
