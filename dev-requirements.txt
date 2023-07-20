@@ -456,7 +456,7 @@ types-awscrt==0.16.26
     # via
     #   botocore-stubs
     #   types-s3transfer
-types-babel==2.11.0.14
+types-babel==2.11.0.15
     # via education-backend (pyproject.toml)
 types-bleach==6.0.0.3
     # via education-backend (pyproject.toml)
