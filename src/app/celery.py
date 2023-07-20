@@ -25,10 +25,6 @@ celery.conf.update(
     timezone=env("TIME_ZONE", cast=str, default="Europe/Moscow"),
     enable_utc=False,
     beat_schedule={
-        "ship_unshipped_orders": {
-            "task": "orders.tasks.ship_unshipped_orders",
-            "schedule": crontab(hour="*", minute=0),
-        },
         "send_active_chains": {
             "task": "chains.tasks.send_active_chains",
             "schedule": crontab(hour="*", minute="*/5"),

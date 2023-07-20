@@ -43,23 +43,6 @@ def test_not_ships_if_order_is_already_paid(order, ship):
     ship.assert_not_called()
 
 
-def test_not_ships_if_order_has_desired_shipment_date(order, ship):
-    order.setattr_and_save("desired_shipment_date", datetime(2039, 12, 12, 15, 30, tzinfo=timezone.utc))
-
-    order.set_paid()
-
-    ship.assert_not_called()
-
-
-def test_orders_with_desired_shipment_date_do_not_have_shipment_date_set(order, ship):
-    order.setattr_and_save("desired_shipment_date", datetime(2039, 12, 12, 15, 30, tzinfo=timezone.utc))
-
-    order.set_paid()
-    order.refresh_from_db()
-
-    assert order.shipped is None
-
-
 def test_shipment_date(order):
     order.set_paid()
     order.refresh_from_db()
@@ -76,7 +59,7 @@ def test_order_is_not_shipped_again_if_already_shipped(order, ship):
     ship.assert_not_called()
 
 
-def test_shippment_date_is_not_reset(order, ship):
+def test_shipment_date_is_not_reset(order, ship):
     order.shipped = datetime(2000, 11, 12, 1, 13, tzinfo=timezone.utc)
     order.save()
 

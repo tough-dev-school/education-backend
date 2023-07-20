@@ -41,7 +41,6 @@ class CourseAdmin(ModelAdmin):
             {
                 "fields": [
                     "welcome_letter_template_id",
-                    "gift_welcome_letter_template_id",
                     "diploma_template_context",
                 ],
             },

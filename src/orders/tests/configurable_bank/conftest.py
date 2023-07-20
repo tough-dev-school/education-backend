@@ -17,17 +17,6 @@ def default_user_data():
 
 
 @pytest.fixture
-def default_gift_data():
-    return {
-        "receiver_name": "Забой Шахтёров",
-        "receiver_email": "zaboy@gmail.com",
-        "giver_name": "Камаз Помоев",
-        "giver_email": "kamaz@gmail.com",
-        "desired_shipment_date": "2032-12-01 12:35:15",
-    }
-
-
-@pytest.fixture
 def call_purchase(api, default_user_data):
     return lambda as_response=False, **kwargs: api.post(
         "/api/v2/courses/ruloning-oboev/purchase/",
