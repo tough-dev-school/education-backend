@@ -101,7 +101,7 @@ class OrderAdmin(ModelAdmin):
     def formatted_price(self, obj: Order) -> str:
         return format_price(obj.price)
 
-    @admin.display(description=_("Date"), ordering="created__id")
+    @admin.display(description=_("Date"), ordering="created")
     def date(self, obj: Order) -> str:
         return obj.created.strftime("%d.%m.%Y")
 
