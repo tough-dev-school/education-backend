@@ -60,7 +60,7 @@ def test_child_answers_fields(get_answer_comments, answer, another_answer, anoth
     got = get_answer_comments()[0]
 
     descendant = got["descendants"][0]
-    assert len(descendant) == 10
+    assert len(descendant) == 11
     assert descendant["created"] == "2022-10-09T10:30:12+12:00"
     assert descendant["modified"] == "2022-10-09T10:30:12+12:00"
     assert descendant["slug"] == str(another_answer.slug)
@@ -69,6 +69,7 @@ def test_child_answers_fields(get_answer_comments, answer, another_answer, anoth
     assert descendant["author"]["uuid"] == str(another_answer.author.uuid)
     assert descendant["author"]["first_name"] == another_answer.author.first_name
     assert descendant["author"]["last_name"] == another_answer.author.last_name
+    assert "has_descendants" in descendant
     assert "text" in descendant
     assert "src" in descendant
     assert "descendants" in descendant
