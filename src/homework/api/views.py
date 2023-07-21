@@ -19,7 +19,7 @@ class QuestionView(generics.RetrieveAPIView):
 
 
 class AnswerCommentView(generics.ListAPIView):
-    queryset = Answer.objects.for_viewset().with_children_count()
+    queryset = Answer.objects.for_viewset()
     serializer_class = serializers.AnswerCommentTreeSerializer
     filterset_class = AnswerCommentFilterSet
     permission_classes = [IsAuthenticated]
