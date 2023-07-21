@@ -85,11 +85,12 @@ class AnswerTreeSerializer(AnswerDetailedSerializer):
             "text",
             "src",
             "descendants",
+            "has_descendants",
             "reactions",
         ]
 
     def get_descendants(self, obj: Answer) -> list[dict]:
-        queryset = obj.get_first_level_descendants().select_related("question", "author").prefetch_reactions()
+        queryset = obj.get_first_level_descendants().with_children_count().select_related("question", "author").prefetch_reactions()
         serializer = AnswerTreeSerializer(
             queryset,
             many=True,
