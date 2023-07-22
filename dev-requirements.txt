@@ -55,7 +55,7 @@ botocore-stubs==1.29.165
     # via boto3-stubs
 celery==5.2.7
     # via education-backend (pyproject.toml)
-certifi==2023.5.7
+certifi==2023.7.22
     # via
     #   django-healthchecks
     #   httpcore
