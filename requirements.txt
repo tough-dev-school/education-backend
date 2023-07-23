@@ -124,7 +124,7 @@ drf-jwt==1.19.2
     # via education-backend (pyproject.toml)
 drf-recaptcha==3.0.0
     # via education-backend (pyproject.toml)
-drf-spectacular[sidecar]==0.26.3
+drf-spectacular[sidecar]==0.26.4
     # via education-backend (pyproject.toml)
 drf-spectacular-sidecar==2023.7.1
     # via drf-spectacular
