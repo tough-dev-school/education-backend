@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 from typing import Callable
+import uuid
+from uuid import UUID
 
 from emoji import is_emoji
 
@@ -22,6 +24,7 @@ class ReactionCreator(BaseService):
     emoji: str
     author: User
     answer: Answer
+    slug: UUID | None = None
 
     def act(self) -> Reaction:
         return self.create_reaction(self.emoji, self.author, self.answer)
@@ -32,6 +35,7 @@ class ReactionCreator(BaseService):
                 emoji=emoji,
                 author=author,
                 answer=answer,
+                slug=self.slug if self.slug is not None else uuid.uuid4(),
             )
         except IntegrityError as e:
             raise ReactionCreatorException(_(str(e)))
