@@ -33,6 +33,12 @@ def test_success_creation(create, user, answer, emoji):
     assert reaction.answer == answer
 
 
+def test_creation_with_custom_slug(create, user, answer):
+    reaction = create(emoji="👌", slug="3fa85f64-5717-4562-b3fc-2c963f66afa6", author=user, answer=answer)
+
+    assert str(reaction.slug) == "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+
+
 @pytest.mark.parametrize("emoji", ["👌🐍", "snake🐍", "🏝️rest", "🙃🙂", "✄"])
 def test_fail_if_not_a_single_emoji(create, user, answer, emoji):
     with pytest.raises(ReactionCreatorException, match="Invalid emoji symbol"):

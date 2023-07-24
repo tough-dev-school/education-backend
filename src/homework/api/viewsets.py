@@ -121,7 +121,7 @@ class ReactionViewSet(CreateDeleteAppViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data.copy()
-        reaction = ReactionCreator(emoji=data.get("emoji"), author=self.request.user, answer=self.answer)()  # type: ignore
+        reaction = ReactionCreator(emoji=data.get("emoji"), slug=data.get("slug"), author=self.request.user, answer=self.answer)()  # type: ignore
 
         Serializer = self.get_serializer_class(action="retrieve")
         return Response(Serializer(reaction).data, status=201)

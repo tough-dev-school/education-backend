@@ -30,6 +30,7 @@ class ReactionCreateSerializer(serializers.ModelSerializer):
         model = Reaction
         fields = [
             "emoji",
+            "slug",
         ]
 
 

@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 from typing import Callable
+import uuid
+from uuid import UUID
 
 from emoji import is_emoji
 
@@ -22,6 +24,7 @@ class ReactionCreator(BaseService):
     emoji: str
     author: User
     answer: Answer
+    slug: UUID | None = None
 
     def act(self) -> Reaction:
         return self.create_reaction(self.emoji, self.author, self.answer)
@@ -32,6 +35,7 @@ class ReactionCreator(BaseService):
                 emoji=emoji,
                 author=author,
                 answer=answer,
+                slug=self.reaction_slug,
             )
         except IntegrityError as e:
             raise ReactionCreatorException(_(str(e)))
@@ -50,3 +54,9 @@ class ReactionCreator(BaseService):
         authors_reactions_this_answer_count = Reaction.objects.filter(author=self.author, answer=self.answer).count()
         if authors_reactions_this_answer_count >= Reaction.MAX_REACTIONS_FROM_ONE_AUTHOR:
             raise ReactionCreatorException(_(f"Only {Reaction.MAX_REACTIONS_FROM_ONE_AUTHOR} reactions per answer are allowed from one author."))
+
+    @property
+    def reaction_slug(self) -> UUID:
+        if self.slug is not None:
+            return self.slug
+        return uuid.uuid4()
