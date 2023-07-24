@@ -35,7 +35,7 @@ class ReactionCreator(BaseService):
                 emoji=emoji,
                 author=author,
                 answer=answer,
-                slug=self.reaction_slug,
+                slug=self.slug if self.slug is not None else uuid.uuid4(),
             )
         except IntegrityError as e:
             raise ReactionCreatorException(_(str(e)))
@@ -54,9 +54,3 @@ class ReactionCreator(BaseService):
         authors_reactions_this_answer_count = Reaction.objects.filter(author=self.author, answer=self.answer).count()
         if authors_reactions_this_answer_count >= Reaction.MAX_REACTIONS_FROM_ONE_AUTHOR:
             raise ReactionCreatorException(_(f"Only {Reaction.MAX_REACTIONS_FROM_ONE_AUTHOR} reactions per answer are allowed from one author."))
-
-    @property
-    def reaction_slug(self) -> UUID:
-        if self.slug is not None:
-            return self.slug
-        return uuid.uuid4()
