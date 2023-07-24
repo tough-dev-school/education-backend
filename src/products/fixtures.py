@@ -25,8 +25,3 @@ def record(factory) -> "Record":
 @pytest.fixture
 def another_course(factory) -> "Course":
     return factory.course()
-
-
-@pytest.fixture
-def another_record(factory) -> "Record":
-    return factory.record()

@@ -1,6 +1,5 @@
 from rest_framework import serializers
 
-from products.models import Bundle
 from products.models import Course
 
 
@@ -22,11 +21,6 @@ class ShippableSerializer(serializers.ModelSerializer):
 class CourseSerializer(ShippableSerializer):
     class Meta(ShippableSerializer.Meta):
         model = Course
-
-
-class BundleSerializer(ShippableSerializer):
-    class Meta(ShippableSerializer.Meta):
-        model = Bundle
 
 
 class PurchaseSerializer(serializers.Serializer):
