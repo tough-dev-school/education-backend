@@ -6,7 +6,7 @@ from products.models.group import Group
 from products.models.record import Record
 
 Product = Union[Course]
-ProductType = Union[Type[Course]]
+ProductType = Type[Course]
 
 __all__ = [
     "Bundle",
