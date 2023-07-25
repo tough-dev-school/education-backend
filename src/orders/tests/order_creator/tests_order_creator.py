@@ -38,15 +38,6 @@ def test_free_course(create, user, course):
     assert order.paid is None
 
 
-def test_record(create, user, record):
-    order = create(user=user, item=record)
-
-    order.refresh_from_db()
-
-    assert order.price == 100500
-    assert order.item == record
-
-
 def test_course_manual(create, user, course):
     order = create(user=user, item=course)
 

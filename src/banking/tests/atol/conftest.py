@@ -34,8 +34,8 @@ def post(mocker):
 
 
 @pytest.fixture
-def record(factory):
-    return factory.record(
+def course(factory):
+    return factory.course(
         name="Пентакли и тентакли",
         name_receipt="Предоставление доступа к записи курса «Пентакли и Тентакли»",
     )
@@ -47,5 +47,5 @@ def user(mixer):
 
 
 @pytest.fixture
-def order(factory, user, record):
-    return factory.order(user=user, item=record, price="100500")
+def order(factory, user, course):
+    return factory.order(user=user, item=course, price="100500")
