@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.utils.translation import gettext_lazy as _
 
 from app.integrations.s3 import AppS3
@@ -20,6 +22,9 @@ class Record(Shippable):
     @property
     def name_genitive(self) -> str:
         return self.course.name_genitive
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        raise RuntimeError("Deprecated model")
 
     def get_url(self, expires: int = 30 * 24 * 60 * 60) -> str:
         return AppS3().get_presigned_url(self.s3_object_id, expires=expires)
