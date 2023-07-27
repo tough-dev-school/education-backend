@@ -16,8 +16,3 @@ def course(factory):
         name_genitive="Кройки и шитья",
         price=100500,
     )
-
-
-@pytest.fixture
-def record(factory, course):
-    return factory.record(course=course, price=100500)
