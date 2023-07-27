@@ -19,9 +19,7 @@ from orders.api.serializers import PromocodeSerializer
 from orders.api.serializers import PurchaseSerializer
 from orders.models import Order
 from orders.models import PromoCode
-from orders.services.order_creator import OrderCreator
-from users.models import User
-from users.services import UserCreator
+from orders.services.purchase_creator import PurchaseCreator
 
 if TYPE_CHECKING:
     from products.models.base import Shippable
@@ -85,11 +83,24 @@ class PurchaseView(APIView, metaclass=ABCMeta):
         serializer.is_valid(raise_exception=True)
 
         data = serializer.validated_data
+        desired_bank = data.get("desired_bank")
+        promocode = data.get("promocode")
+        success_url = data.get("success_url")
 
-        order = self._create_order(data=data, item=item)
-        payment_link = self.get_payment_link(order, data=data)
+        order = PurchaseCreator(item, data["name"], data["email"], self.subscribe, promocode, desired_bank)()
+        payment_link = self.get_payment_link(order, desired_bank, success_url)
 
         return HttpResponseRedirect(redirect_to=payment_link)
+
+    def get_payment_link(self, order: Order, desired_bank: str | None, success_url: str | None) -> str:
+        Bank = get_bank(desired=desired_bank)
+        bank = Bank(
+            order=order,
+            request=self.request,
+            success_url=success_url,
+        )
+
+        return bank.get_initial_payment_url()
 
     @property
     def subscribe(self) -> bool:
@@ -98,33 +109,3 @@ class PurchaseView(APIView, metaclass=ABCMeta):
             "1",
             "yes",
         ]
-
-    def _create_order(self, data: dict, item: "Shippable") -> Order:
-        creator = OrderCreator(
-            user=self._create_user(
-                name=data["name"],
-                email=data["email"],
-                subscribe=self.subscribe,
-            ),
-            item=item,
-            promocode=data.get("promocode"),
-            desired_bank=data.get("desired_bank"),
-        )
-        return creator()
-
-    def _create_user(self, name: str, email: str, subscribe: bool = False) -> User:
-        return UserCreator(
-            name=name,
-            email=email.strip(),
-            subscribe=subscribe,
-        )()
-
-    def get_payment_link(self, order: Order, data: dict) -> str:
-        Bank = get_bank(desired=data.get("desired_bank"))
-        bank = Bank(
-            order=order,
-            request=self.request,
-            success_url=data.get("success_url"),
-        )
-
-        return bank.get_initial_payment_url()
