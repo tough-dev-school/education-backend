@@ -16,12 +16,16 @@ class PurchaseCreator(BaseService):
     item: "Shippable"
     name: str
     email: str
-    subscribe: bool
+    subscribe: str | bool = False
     promocode: str | None = None
     desired_bank: str | None = None
 
+    def __post_init__(self) -> None:
+        if isinstance(self.subscribe, str):
+            self.subscribe = self.subscribe.lower() in ["true", "1", "yes"]
+
     def act(self) -> "Order":
-        user = self.create_user(self.name, self.email, self.subscribe)
+        user = self.create_user(self.name, self.email, self.subscribe)  # type: ignore
         return self.create_order(self.item, self.promocode, self.desired_bank, user)
 
     @staticmethod
