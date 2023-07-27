@@ -21,6 +21,7 @@ from orders.services.purchase_creator import PurchaseCreator
 
 if TYPE_CHECKING:
     from rest_framework.request import Request
+
     from orders.models import Order
     from products.models.base import Shippable
 
