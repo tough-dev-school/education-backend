@@ -7,13 +7,13 @@ from users.services import UserCreator
 
 if TYPE_CHECKING:
     from orders.models import Order
-    from products.models.base import Shippable
+    from products.models import Product
     from users.models import User
 
 
 @dataclass
 class PurchaseCreator(BaseService):
-    item: "Shippable"
+    item: "Product"
     name: str
     email: str
     subscribe: str | bool = False
@@ -29,7 +29,7 @@ class PurchaseCreator(BaseService):
         return self.create_order(self.item, self.promocode, self.desired_bank, user)
 
     @staticmethod
-    def create_order(item: "Shippable", promocode: str | None, desired_bank: str | None, user: "User") -> "Order":
+    def create_order(item: "Product", promocode: str | None, desired_bank: str | None, user: "User") -> "Order":
         creator = OrderCreator(
             user=user,
             item=item,
