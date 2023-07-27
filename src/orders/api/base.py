@@ -13,6 +13,7 @@ from app.pricing import format_price
 from banking import price_calculator
 from banking.selector import get_bank
 from orders.api.serializers import PromocodeSerializer
+from orders.api.throttling import PromocodeThrottle
 from orders.models import PromoCode
 
 if TYPE_CHECKING:
@@ -22,7 +23,7 @@ if TYPE_CHECKING:
 
 
 class PromocodeView(APIView, metaclass=ABCMeta):
-    throttle_classes = []
+    throttle_classes = [PromocodeThrottle]
     permission_classes = [AllowAny]
 
     @property
