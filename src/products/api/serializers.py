@@ -4,26 +4,6 @@ from banking.selector import BANK_CHOICES
 from products.models import Course
 
 
-class ShippableSerializer(serializers.ModelSerializer):
-    price = serializers.CharField(source="get_price_display")
-    old_price = serializers.CharField(source="get_old_price_display")
-    formatted_price = serializers.CharField(source="get_formatted_price_display")
-
-    class Meta:
-        fields = [
-            "slug",
-            "name",
-            "price",
-            "old_price",
-            "formatted_price",
-        ]
-
-
-class CourseSerializer(ShippableSerializer):
-    class Meta(ShippableSerializer.Meta):
-        model = Course
-
-
 class CourseSimpleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course

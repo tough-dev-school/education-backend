@@ -2,16 +2,13 @@ from typing import Any, TYPE_CHECKING
 
 from drf_spectacular.utils import extend_schema
 from rest_framework.generics import get_object_or_404
-from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
-from rest_framework.viewsets import GenericViewSet
 
 from django.http import HttpResponseRedirect
 
 from banking.selector import get_bank
 from orders.api.base import PromocodeView
-from products.api import serializers
 from products.api.serializers import PurchaseSerializer
 from products.models import Course
 from products.services.purchase_creator import PurchaseCreator
@@ -20,13 +17,6 @@ if TYPE_CHECKING:
     from rest_framework.request import Request
 
     from orders.models import Order
-
-
-class CourseViewSet(GenericViewSet, RetrieveModelMixin):
-    lookup_field = "slug"
-    serializer_class = serializers.CourseSerializer
-    queryset = Course.objects.all()
-    permission_classes = [AllowAny]
 
 
 class CoursePromocodeView(PromocodeView):
