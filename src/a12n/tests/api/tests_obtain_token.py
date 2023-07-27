@@ -72,6 +72,14 @@ def test_getting_token_with_incorrect_password(api, get_token):
     assert "non_field_errors" in got
 
 
+def test_getting_token_when_banned_by_axes(api, get_token, settings):
+    settings.AXES_FAILURE_LIMIT = 0
+
+    got = get_token(api.user.username, api.password, expected_status_code=403)
+
+    assert got == {"detail": "Too many failed login attempts"}
+
+
 @pytest.mark.parametrize(
     ("extract_token", "status_code"),
     [
