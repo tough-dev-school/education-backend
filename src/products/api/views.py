@@ -78,7 +78,11 @@ class PurchaseView(APIView):
         success_url = data.pop("success_url", None)
 
         order = PurchaseCreator(item, **data)()
-        payment_link = self.get_payment_link(order, data.get("desired_bank"), success_url)
+        payment_link = self.get_payment_link(
+            order=order,
+            desired_bank=data.get("desired_bank"),
+            success_url=data.get("success_url"),
+        )
 
         return HttpResponseRedirect(redirect_to=payment_link)
 
