@@ -4,6 +4,8 @@ from app.throttling import ConfigurableThrottlingMixin
 
 
 class PromocodeThrottle(ConfigurableThrottlingMixin, AnonRateThrottle):  # type: ignore
-    """Throttle for any authorization views."""
-
     scope = "promocode"
+
+
+class PurchaseThrottle(ConfigurableThrottlingMixin, AnonRateThrottle):  # type: ignore
+    scope = "purchase"

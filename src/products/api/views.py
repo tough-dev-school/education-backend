@@ -14,6 +14,7 @@ from banking import price_calculator
 from banking.selector import get_bank
 from orders.api.serializers import PromocodeSerializer
 from orders.api.throttling import PromocodeThrottle
+from orders.api.throttling import PurchaseThrottle
 from orders.models import PromoCode
 from orders.services.purchase_creator import PurchaseCreator
 from products.api.serializers import PurchaseSerializer
@@ -65,6 +66,7 @@ class PromocodeView(APIView):
 
 
 class PurchaseView(APIView):
+    throttle_classes = [PurchaseThrottle]
     permission_classes = [AllowAny]
 
     @extend_schema(request=PurchaseSerializer, responses={301: None})
@@ -74,10 +76,10 @@ class PurchaseView(APIView):
         serializer.is_valid(raise_exception=True)
 
         data = serializer.validated_data
-        data.pop("redirect_url", None)
-        success_url = data.pop("success_url", None)
+        purchase_data = {key: value for key, value in data.items() if key not in ("redirect_url", "success_url")}
+        purchase_data["subscribe"] = purchase_data.get("subscribe", "").lower() in ["true", "1", "yes"]
 
-        order = PurchaseCreator(item, **data)()
+        order = PurchaseCreator(item, **purchase_data)()
         payment_link = self.get_payment_link(
             order=order,
             desired_bank=data.get("desired_bank"),
