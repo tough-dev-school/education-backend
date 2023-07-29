@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 class PurchaseCreator(BaseService):
     """
     Entry point for creating purchase by user:
-    - creates user with provided name and email
+    - creates the user if necessary
     - creates order for chosen item
     - returns payment link for this order
     """
