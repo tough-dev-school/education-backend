@@ -17,7 +17,7 @@ class PurchaseCreator(BaseService):
     """
     Entry point for creating purchase by user:
     - creates the user if necessary
-    - creates order for chosen item
+    - creates the order with given item
     - returns payment link for this order
     """
 
