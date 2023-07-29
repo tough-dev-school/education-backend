@@ -20,3 +20,8 @@ class PurchaseSerializer(serializers.Serializer):
     success_url = serializers.CharField(max_length=256, required=False)
     redirect_url = serializers.CharField(max_length=256, required=False)
     subscribe = serializers.CharField(max_length=5, required=False)
+
+    def to_internal_value(self, data: dict) -> dict:
+        data = super().to_internal_value(data)
+        data["subscribe"] = data.get("subscribe", "").lower() in ["true", "1", "yes"]
+        return data

@@ -22,7 +22,7 @@ class PurchaseCreator(BaseService):
     """
 
     item: "Product"
-    name: str
+    user_name: str
     email: str
     subscribe: bool = False
     promocode: str | None = None
@@ -31,9 +31,23 @@ class PurchaseCreator(BaseService):
     redirect_url: str | None = None
 
     def act(self) -> str:
-        user = self.create_user(self.name, self.email, self.subscribe)
-        order = self.create_order(self.item, self.promocode, self.desired_bank, user)
-        return self.get_payment_link(order, self.desired_bank, self.success_url, self.redirect_url)
+        user = self.get_or_create_user(
+            name=self.user_name,
+            email=self.email,
+            subscribe=self.subscribe,
+        )
+        order = self.create_order(
+            item=self.item,
+            promocode=self.promocode,
+            desired_bank=self.desired_bank,
+            user=user,
+        )
+        return self.get_payment_link(
+            order=order,
+            desired_bank=self.desired_bank,
+            success_url=self.success_url,
+            redirect_url=self.redirect_url,
+        )
 
     @staticmethod
     def create_order(item: "Product", promocode: str | None, desired_bank: str | None, user: "User") -> "Order":

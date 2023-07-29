@@ -76,11 +76,10 @@ class PurchaseView(APIView):
 
         data = serializer.validated_data
 
-        subscribe: bool = data.get("subscribe", "").lower() in ["true", "1", "yes"]
         purchase_creator = PurchaseCreator(
             item=item,
-            subscribe=subscribe,
-            name=data.get("name"),
+            subscribe=data.get("subscribe"),
+            user_name=data.get("name"),
             email=data.get("email"),
             promocode=data.get("promocode"),
             desired_bank=data.get("desired_bank"),
