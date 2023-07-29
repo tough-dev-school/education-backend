@@ -1,4 +1,5 @@
 from decimal import Decimal
+from typing import Any
 
 from rest_framework.exceptions import ValidationError
 
@@ -14,12 +15,29 @@ class ZeroPriceBank(Bank):
     acquiring_percent = Decimal(0)
     name = "Бесплатно"
 
+    def __init__(
+        self,
+        order: "Order",
+        success_url: str | None = None,
+        fail_url: str | None = None,
+        idempotency_key: str | None = None,
+        **kwargs: Any,
+    ) -> None:
+        super().__init__(
+            order=order,
+            success_url=success_url,
+            fail_url=fail_url,
+            idempotency_key=idempotency_key,
+            **kwargs,
+        )
+        self.redirect_url = kwargs.get("redirect_url")
+
     def validate_order(self, order: Order) -> None:
         if order.price != 0:
             raise ValidationError("ZeroPriceBank may be used only with zero-priced orders")
 
     def get_initial_payment_url(self) -> str:
-        if self._redirect_url is None:
+        if self.redirect_url is None:
             raise ValidationError("Please provide redirect_url when using ZeroPriceBank")
 
-        return self._redirect_url
+        return self.redirect_url

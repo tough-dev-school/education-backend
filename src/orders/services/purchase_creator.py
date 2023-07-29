@@ -72,8 +72,8 @@ class PurchaseCreator(BaseService):
         Bank = get_bank(desired=desired_bank)
         bank = Bank(
             order=order,
-            redirect_url=redirect_url,
             success_url=success_url,
+            redirect_url=redirect_url,
         )
 
         return bank.get_initial_payment_url()

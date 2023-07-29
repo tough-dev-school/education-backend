@@ -1,7 +1,7 @@
 from abc import ABCMeta
 from abc import abstractmethod
 from decimal import Decimal
-from typing import TYPE_CHECKING
+from typing import Any, TYPE_CHECKING
 from urllib.parse import urljoin
 import uuid
 
@@ -23,13 +23,12 @@ class Bank(metaclass=ABCMeta):
         self,
         order: "Order",
         success_url: str | None = None,
-        redirect_url: str | None = None,  # used for zero-priced orders, redirects user to URL provided by frontend
         fail_url: str | None = None,
         idempotency_key: str | None = None,
+        **kwargs: Any,
     ) -> None:
         self.order = order
         self._success_url = success_url
-        self._redirect_url = redirect_url
         self._fail_url = fail_url
         self.idempotency_key = idempotency_key or str(uuid.uuid4())
 
