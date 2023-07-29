@@ -88,4 +88,5 @@ class PurchaseView(APIView):
             redirect_url=data.get("redirect_url"),
         )
 
-        return HttpResponseRedirect(redirect_to=purchase_creator())
+        payment_link = purchase_creator()
+        return HttpResponseRedirect(redirect_to=payment_link)
