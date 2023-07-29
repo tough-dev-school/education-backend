@@ -11,6 +11,7 @@ from django.http import HttpResponseRedirect
 
 from app.pricing import format_price
 from banking import price_calculator
+from banking.selector import BANK_CHOICES
 from banking.selector import get_bank
 from orders.api.serializers import PromocodeSerializer
 from orders.api.throttling import PromocodeThrottle
@@ -23,8 +24,6 @@ from products.models import Course
 if TYPE_CHECKING:
     from rest_framework.request import Request
 
-    from orders.models import Order
-
 
 class PromocodeView(APIView):
     throttle_classes = [PromocodeThrottle]
@@ -34,7 +33,7 @@ class PromocodeView(APIView):
         responses=PromocodeSerializer,
         parameters=[
             OpenApiParameter(name="promocode", type=str),
-            OpenApiParameter(name="desired_bank", type=str),
+            OpenApiParameter(name="desired_bank", type=str, many=False, enum=BANK_CHOICES),
         ],
     )
     def get(self, request: "Request", slug: str | None = None, **kwargs: dict[str, Any]) -> Response:
@@ -76,24 +75,17 @@ class PurchaseView(APIView):
         serializer.is_valid(raise_exception=True)
 
         data = serializer.validated_data
-        purchase_data = {key: value for key, value in data.items() if key not in ("redirect_url", "success_url")}
-        purchase_data["subscribe"] = purchase_data.get("subscribe", "").lower() in ["true", "1", "yes"]
 
-        order = PurchaseCreator(item, **purchase_data)()
-        payment_link = self.get_payment_link(
-            order=order,
+        subscribe: bool = data.get("subscribe", "").lower() in ["true", "1", "yes"]
+        purchase_creator = PurchaseCreator(
+            item=item,
+            subscribe=subscribe,
+            name=data.get("name"),
+            email=data.get("email"),
+            promocode=data.get("promocode"),
             desired_bank=data.get("desired_bank"),
             success_url=data.get("success_url"),
+            redirect_url=data.get("redirect_url"),
         )
 
-        return HttpResponseRedirect(redirect_to=payment_link)
-
-    def get_payment_link(self, order: "Order", desired_bank: str | None, success_url: str | None) -> str:
-        Bank = get_bank(desired=desired_bank)
-        bank = Bank(
-            order=order,
-            request=self.request,
-            success_url=success_url,
-        )
-
-        return bank.get_initial_payment_url()
+        return HttpResponseRedirect(redirect_to=purchase_creator())
