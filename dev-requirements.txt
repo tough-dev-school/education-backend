@@ -276,7 +276,7 @@ ipython==8.14.0
     # via education-backend (pyproject.toml)
 isort==5.12.0
     # via flake8-isort
-jedi==0.18.2
+jedi==0.19.0
     # via
     #   education-backend (pyproject.toml)
     #   ipython
@@ -313,7 +313,7 @@ packaging==23.1
     #   pytest
 parso==0.8.3
     # via jedi
-pathspec==0.11.1
+pathspec==0.11.2
     # via black
 pexpect==4.8.0
     # via ipython
