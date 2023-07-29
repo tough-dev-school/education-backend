@@ -46,7 +46,7 @@ class PurchaseCreator(BaseService):
         return creator()
 
     @staticmethod
-    def create_user(name: str, email: str, subscribe: bool = False) -> "User":
+    def get_or_create_user(name: str, email: str, subscribe: bool = False) -> "User":
         return UserCreator(
             name=name,
             email=email.strip(),
