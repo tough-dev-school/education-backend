@@ -1,15 +1,12 @@
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
 
 from app.services import BaseService
 from banking.selector import get_bank
+from orders.models import Order
 from orders.services import OrderCreator
+from products.models import Product
+from users.models import User
 from users.services import UserCreator
-
-if TYPE_CHECKING:
-    from orders.models import Order
-    from products.models import Product
-    from users.models import User
 
 
 @dataclass
@@ -21,7 +18,7 @@ class PurchaseCreator(BaseService):
     - returns payment link for this order
     """
 
-    item: "Product"
+    item: Product
     user_name: str
     email: str
     subscribe: bool = False
@@ -50,7 +47,7 @@ class PurchaseCreator(BaseService):
         )
 
     @staticmethod
-    def create_order(item: "Product", promocode: str | None, desired_bank: str | None, user: "User") -> "Order":
+    def create_order(item: Product, promocode: str | None, desired_bank: str | None, user: User) -> Order:
         creator = OrderCreator(
             user=user,
             item=item,
@@ -60,7 +57,7 @@ class PurchaseCreator(BaseService):
         return creator()
 
     @staticmethod
-    def get_or_create_user(name: str, email: str, subscribe: bool = False) -> "User":
+    def get_or_create_user(name: str, email: str, subscribe: bool = False) -> User:
         return UserCreator(
             name=name,
             email=email.strip(),
@@ -68,7 +65,7 @@ class PurchaseCreator(BaseService):
         )()
 
     @staticmethod
-    def get_payment_link(order: "Order", desired_bank: str | None, success_url: str | None, redirect_url: str | None) -> str:
+    def get_payment_link(order: Order, desired_bank: str | None, success_url: str | None, redirect_url: str | None) -> str:
         Bank = get_bank(desired=desired_bank)
         bank = Bank(
             order=order,
