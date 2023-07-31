@@ -18,3 +18,8 @@ def amocrm_client() -> AmoCRMClient:
 @pytest.fixture
 def post(mocker):
     return mocker.patch("amocrm.client.http.AmoCRMHTTP.post")
+
+
+@pytest.fixture
+def patch(mocker):
+    return mocker.patch("amocrm.client.http.AmoCRMHTTP.patch")
