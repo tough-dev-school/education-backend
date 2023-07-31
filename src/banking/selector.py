@@ -25,7 +25,7 @@ def get_bank(desired: str | None = None) -> Type[Bank]:
         return DEFAULT_BANK
 
     try:
-        return BANKS[desired]
+        return BANKS[desired]  # type: ignore
     except KeyError:
         return DEFAULT_BANK
 

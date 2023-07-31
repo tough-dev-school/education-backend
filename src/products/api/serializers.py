@@ -1,41 +1,7 @@
 from rest_framework import serializers
 
+from banking.selector import BANK_CHOICES
 from products.models import Course
-
-
-class ShippableSerializer(serializers.ModelSerializer):
-    price = serializers.CharField(source="get_price_display")
-    old_price = serializers.CharField(source="get_old_price_display")
-    formatted_price = serializers.CharField(source="get_formatted_price_display")
-
-    class Meta:
-        fields = [
-            "slug",
-            "name",
-            "price",
-            "old_price",
-            "formatted_price",
-        ]
-
-
-class CourseSerializer(ShippableSerializer):
-    class Meta(ShippableSerializer.Meta):
-        model = Course
-
-
-class PurchaseSerializer(serializers.Serializer):
-    """Simple serializer used to validate purchases"""
-
-    class Meta:
-        fields = [
-            "name",
-            "email",
-        ]
-
-    @classmethod
-    def _validate(cls, input: dict) -> None:
-        instance = cls(data=input)
-        instance.is_valid(raise_exception=True)
 
 
 class CourseSimpleSerializer(serializers.ModelSerializer):
@@ -44,3 +10,18 @@ class CourseSimpleSerializer(serializers.ModelSerializer):
         fields = [
             "name",
         ]
+
+
+class PurchaseSerializer(serializers.Serializer):
+    name = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True)
+    desired_bank = serializers.ChoiceField(choices=BANK_CHOICES, required=False)
+    promocode = serializers.CharField(max_length=100, required=False)
+    success_url = serializers.CharField(max_length=256, required=False)
+    redirect_url = serializers.CharField(max_length=256, required=False)
+    subscribe = serializers.CharField(max_length=5, default="")
+
+    def validate_subscribe(self, value: str | None) -> bool:
+        if value:
+            return value.lower() in ["true", "1", "yes"]
+        return False

@@ -5,8 +5,6 @@ from typing import TYPE_CHECKING
 from urllib.parse import urljoin
 import uuid
 
-from rest_framework.request import Request
-
 from django.conf import settings
 
 if TYPE_CHECKING:
@@ -24,13 +22,11 @@ class Bank(metaclass=ABCMeta):
     def __init__(
         self,
         order: "Order",
-        request: Request | None = None,
         success_url: str | None = None,
         fail_url: str | None = None,
         idempotency_key: str | None = None,
     ) -> None:
         self.order = order
-        self.request = request
         self._success_url = success_url
         self._fail_url = fail_url
         self.idempotency_key = idempotency_key or str(uuid.uuid4())

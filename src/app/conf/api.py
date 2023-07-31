@@ -22,6 +22,8 @@ REST_FRAMEWORK = {
         "anon-auth": "10/min",
         "public-id": "60/hour",
         "notion-materials": "100/hour",
+        "promocode": "100/hour",
+        "purchase": "100/hour",
     },
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }

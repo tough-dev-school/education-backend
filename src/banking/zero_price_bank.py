@@ -2,8 +2,6 @@ from decimal import Decimal
 
 from rest_framework.exceptions import ValidationError
 
-from django.core.exceptions import ImproperlyConfigured
-
 from banking.base import Bank
 from orders.models import Order
 
@@ -16,15 +14,28 @@ class ZeroPriceBank(Bank):
     acquiring_percent = Decimal(0)
     name = "Бесплатно"
 
+    def __init__(
+        self,
+        order: "Order",
+        success_url: str | None = None,
+        fail_url: str | None = None,
+        idempotency_key: str | None = None,
+        redirect_url: str | None = None,
+    ) -> None:
+        super().__init__(
+            order=order,
+            success_url=success_url,
+            fail_url=fail_url,
+            idempotency_key=idempotency_key,
+        )
+        self.redirect_url = redirect_url
+
     def validate_order(self, order: Order) -> None:
         if order.price != 0:
             raise ValidationError("ZeroPriceBank may be used only with zero-priced orders")
 
     def get_initial_payment_url(self) -> str:
-        if self.request is None:
-            raise ImproperlyConfigured("ZeroPriceBank may be used only with given request")
-
-        if "redirect_url" not in self.request.data:
+        if self.redirect_url is None:
             raise ValidationError("Please provide redirect_url when using ZeroPriceBank")
 
-        return self.request.data["redirect_url"]
+        return self.redirect_url
