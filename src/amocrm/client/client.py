@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.cache import cache
 
 from amocrm.client.http import AmoCRMHTTP
+from amocrm.models import AmoCRMUser
 from users.models import User
 
 
@@ -31,17 +32,24 @@ class AmoCRMClient:
         """Creates customer and returns amocrm_id"""
         response = self.http.post(
             url="/api/v4/customers",
-            data={
-                "name": str(user),
-                "_embedded": {"tags": [{"name": tag} for tag in user.tags]}
-            },
+            data={"name": str(user), "_embedded": {"tags": [{"name": tag} for tag in user.tags]}},
+        )
+
+        return response["_embedded"]["customers"][0]["id"]
+
+    @auto_refresh_token
+    def update_customer(self, amocrm_user: AmoCRMUser) -> int:
+        """Updates existing in amocrm customer and returns amocrm_id"""
+        response = self.http.post(
+            url="/api/v4/customers",
+            data={"id": amocrm_user.amocrm_id, "name": str(amocrm_user.user), "_embedded": {"tags": [{"name": tag} for tag in amocrm_user.user.tags]}},
         )
 
         return response["_embedded"]["customers"][0]["id"]
 
     @auto_refresh_token
     def enable_customers(self) -> None:
-        """Requires to create/update customers"""
+        """Enable customers list is required to create/update customers"""
         self.http.patch(url="/api/v4/customers/mode", data={"mode": "segments", "is_enabled": True})
 
     def refresh_tokens(self) -> None:
