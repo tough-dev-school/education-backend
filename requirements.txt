@@ -83,7 +83,7 @@ django==4.1.10
     #   drf-spectacular
     #   drf-spectacular-sidecar
     #   education-backend (pyproject.toml)
-django-anymail==10.0
+django-anymail==10.1
     # via education-backend (pyproject.toml)
 django-axes==6.1.0
     # via education-backend (pyproject.toml)
