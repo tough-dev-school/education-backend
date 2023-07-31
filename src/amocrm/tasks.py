@@ -7,6 +7,11 @@ client = AmoCRMClient()
 
 
 @celery.task
+def enable_customers() -> None:
+    client.enable_customers()
+
+
+@celery.task
 def create_customer(user_id: int) -> int:
     user = User.objects.get(id=user_id)
     return client.create_customer(user=user)
