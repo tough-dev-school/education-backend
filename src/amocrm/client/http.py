@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import Any
 from urllib.parse import urljoin
 
@@ -5,18 +6,17 @@ import httpx
 from httpx import Response
 
 from django.conf import settings
-
-from amocrm.services.access_token_getter import AmoCRMTokenGetter
+from django.core.cache import cache
 
 
 class AmoCRMClientException(Exception):
     pass
 
 
+@dataclass
 class AmoCRMHTTP:
-    def __init__(self) -> None:
-        self.base_url = settings.AMOCRM_BASE_URL
-        self.client = httpx.Client()
+    base_url = settings.AMOCRM_BASE_URL
+    client = httpx.Client()
 
     def get(self, url: str, params: dict | None = None, expected_status_codes: list[int] | None = None) -> dict[str, Any]:
         response = self.client.get(
@@ -37,28 +37,29 @@ class AmoCRMHTTP:
             method="post",
             url=url,
             data=data,
-            expected_status_codes=expected_status_codes,
+            expected_status_code=expected_status_code,
         )
 
-    def patch(self, url: str, data: dict[str, Any], expected_status_codes: list[int] | None = None) -> dict[str, Any]:
+    def patch(self, url: str, data: dict[str, Any], expected_status_code: list[int] | None = None) -> dict[str, Any]:
         return self.request(
             method="patch",
             url=url,
             data=data,
-            expected_status_codes=expected_status_codes,
+            expected_status_code=expected_status_code,
         )
 
-    def request(self, method: str, url: str, data: dict[str, Any] | None = None, expected_status_codes: list[int] | None = None) -> dict[str, Any]:
-        request = getattr(self.client, method)
-        response = request(
-            url=self.format_url(url),
+    @classmethod
+    def format_url(cls, url: str) -> str:
+        return urljoin(cls.base_url, url.lstrip("/"))
+
+    @classmethod
+    def request(cls, method: str, url: str, data: dict[str, Any] | None = None, expected_status_code: list[int] | None = None) -> dict[str, Any]:
+        method_call = getattr(cls.client, method)
+        response = method_call(
+            cls.format_url(url),
             timeout=3,
             data=data,
-            headers={
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "Authorization": f"Bearer {self.access_token}",
-            },
+            headers={"Content-Type": "application/json", "Accept": "application/json", "Authorization": f"Bearer {cache.get('amocrm_access_token')}"},
         )
 
         return self.get_validated_response(response=response, url=url, expected_status_codes=expected_status_codes)
