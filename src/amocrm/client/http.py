@@ -54,12 +54,16 @@ class AmoCRMHTTP:
 
     @classmethod
     def request(cls, method: str, url: str, data: dict[str, Any] | None = None, expected_status_code: list[int] | None = None) -> dict[str, Any]:
-        method_call = getattr(cls.client, method)
-        response = method_call(
-            cls.format_url(url),
+        request = getattr(cls.client, method)
+        response = request(
+            url=cls.format_url(url),
             timeout=3,
             data=data,
-            headers={"Content-Type": "application/json", "Accept": "application/json", "Authorization": f"Bearer {cache.get('amocrm_access_token')}"},
+            headers={
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": f"Bearer {cache.get('amocrm_access_token')}",
+            },
         )
 
         return self.get_validated_response(response=response, url=url, expected_status_codes=expected_status_codes)
