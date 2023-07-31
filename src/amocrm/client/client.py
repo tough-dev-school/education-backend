@@ -40,7 +40,7 @@ class AmoCRMClient:
     @auto_refresh_token
     def update_customer(self, amocrm_user: AmoCRMUser) -> int:
         """Updates existing in amocrm customer and returns amocrm_id"""
-        response = self.http.post(
+        response = self.http.patch(
             url="/api/v4/customers",
             data={"id": amocrm_user.amocrm_id, "name": str(amocrm_user.user), "_embedded": {"tags": [{"name": tag} for tag in amocrm_user.user.tags]}},
         )

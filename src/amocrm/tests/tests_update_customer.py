@@ -4,8 +4,8 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def _successful_response(post):
-    post.return_value = {
+def _successful_response(patch):
+    patch.return_value = {
         "_links": {"self": {"href": "https://test.amocrm.ru/api/v4/customers"}},
         "_embedded": {
             "customers": [
@@ -32,7 +32,7 @@ def amocrm_user(user, factory):
 
 
 @pytest.mark.usefixtures("_successful_response")
-def test_update_customer_request_fields(amocrm_user, amocrm_client, post):
+def test_update_customer_request_fields(amocrm_user, amocrm_client, patch):
     amocrm_user.user.first_name = "First"
     amocrm_user.user.last_name = "Last"
     amocrm_user.user.tags = ["b2b", "any-purchase"]
@@ -41,7 +41,7 @@ def test_update_customer_request_fields(amocrm_user, amocrm_client, post):
     got = amocrm_client.update_customer(amocrm_user)
 
     assert got == 1369385
-    post.assert_called_once_with(
+    patch.assert_called_once_with(
         url="/api/v4/customers",
         data={
             "id": 1369385,
@@ -52,7 +52,7 @@ def test_update_customer_request_fields(amocrm_user, amocrm_client, post):
 
 
 @pytest.mark.usefixtures("_successful_response")
-def test_update_anonymous_customer(amocrm_user, amocrm_client, post):
+def test_update_anonymous_customer(amocrm_user, amocrm_client, patch):
     amocrm_user.user.first_name = ""
     amocrm_user.user.last_name = ""
     amocrm_user.user.tags = []
@@ -61,7 +61,7 @@ def test_update_anonymous_customer(amocrm_user, amocrm_client, post):
     got = amocrm_client.update_customer(amocrm_user)
 
     assert got == 1369385
-    post.assert_called_once_with(
+    patch.assert_called_once_with(
         url="/api/v4/customers",
         data={
             "id": 1369385,
