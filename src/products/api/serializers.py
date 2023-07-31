@@ -19,9 +19,9 @@ class PurchaseSerializer(serializers.Serializer):
     promocode = serializers.CharField(max_length=100, required=False)
     success_url = serializers.CharField(max_length=256, required=False)
     redirect_url = serializers.CharField(max_length=256, required=False)
-    subscribe = serializers.CharField(max_length=5, required=False)
+    subscribe = serializers.CharField(max_length=5, default="")
 
-    def to_internal_value(self, data: dict) -> dict:
-        data = super().to_internal_value(data)
-        data["subscribe"] = data.get("subscribe", "").lower() in ["true", "1", "yes"]
-        return data
+    def validate_subscribe(self, value: str | None) -> bool:
+        if value:
+            return value.lower() in ["true", "1", "yes"]
+        return False
