@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import Any
 from urllib.parse import urljoin
 
@@ -12,7 +11,6 @@ class AmoCRMClientException(Exception):
     pass
 
 
-@dataclass
 class AmoCRMHTTP:
     base_url = settings.AMOCRM_BASE_URL
     client = httpx.Client()
