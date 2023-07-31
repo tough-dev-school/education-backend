@@ -4,6 +4,10 @@ from django.core.cache import cache
 
 from amocrm.client.http import AmoCRMClientException
 
+pytestmark = [
+    pytest.mark.single_thread,
+]
+
 
 class MockResponse:
     status_code = 200

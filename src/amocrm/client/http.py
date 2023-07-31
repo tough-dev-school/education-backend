@@ -47,21 +47,16 @@ class AmoCRMHTTP:
             expected_status_code=expected_status_code,
         )
 
-    @classmethod
-    def format_url(cls, url: str) -> str:
-        return urljoin(cls.base_url, url.lstrip("/"))
-
-    @classmethod
-    def request(cls, method: str, url: str, data: dict[str, Any] | None = None, expected_status_code: list[int] | None = None) -> dict[str, Any]:
-        request = getattr(cls.client, method)
+    def request(self, method: str, url: str, data: dict[str, Any] | None = None, expected_status_code: list[int] | None = None) -> dict[str, Any]:
+        request = getattr(self.client, method)
         response = request(
-            url=cls.format_url(url),
+            url=self.format_url(url),
             timeout=3,
             data=data,
             headers={
                 "Content-Type": "application/json",
                 "Accept": "application/json",
-                "Authorization": f"Bearer {AmoCRMTokenManager()()}",
+                "Authorization": f"Bearer {self.access_token}",
             },
         )
 
@@ -87,3 +82,11 @@ class AmoCRMHTTP:
             raise AmoCRMClientException(f"Errors in response to {url}: {errors}")
 
         return response_json
+
+    @property
+    def access_token(self) -> str:
+        return AmoCRMTokenManager()()
+
+    @classmethod
+    def format_url(cls, url: str) -> str:
+        return urljoin(cls.base_url, url.lstrip("/"))
