@@ -49,4 +49,5 @@ class AmoCRMClient:
 
     @classmethod
     def enable_customers(cls) -> None:
+        """Requires to create/update customers"""
         cls.http.patch(url="/api/v4/customers/mode", data={"mode": "segments", "is_enabled": True})
