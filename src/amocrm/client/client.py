@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from functools import wraps
 from typing import Any, Callable
 
@@ -22,21 +21,35 @@ def auto_refresh_token(function: Callable) -> Any:
     return wrapper
 
 
-@dataclass
 class AmoCRMClient:
     """
-    Client to deal with amoCRM with autologin.
-
-    client = AmoCRMClient()
-    client.create_company(customer)
+    Client to deal with amoCRM with auto tokens refresh.
     """
 
-    http = AmoCRMHTTP()
+    def __init__(self) -> None:
+        self.http: AmoCRMHTTP = AmoCRMHTTP()
 
-    @classmethod
-    def refresh_tokens(cls) -> None:
+    @auto_refresh_token
+    def create_customer(self, user: User) -> int:
+        """Creates customer and returns amocrm_id"""
+        response = self.http.post(
+            url="/api/v4/customers",
+            data={
+                "name": str(user),
+                "_embedded": {"tags": [{"name": tag} for tag in user.tags]}
+            },
+        )
+
+        return response["_embedded"]["customers"][0]["id"]
+
+    @auto_refresh_token
+    def enable_customers(self) -> None:
+        """Requires to create/update customers"""
+        self.http.patch(url="/api/v4/customers/mode", data={"mode": "segments", "is_enabled": True})
+
+    def refresh_tokens(self) -> None:
         """Refresh auth tokens"""
-        got = cls.http.post(
+        response = self.http.post(
             url="/oauth2/access_token",
             data={
                 "client_id": settings.AMOCRM_INTEGRATION_ID,
