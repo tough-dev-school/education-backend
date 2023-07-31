@@ -4,7 +4,10 @@ from django.core.cache import cache
 
 from amocrm.services.token_manager import AmoCRMTokenManager
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [
+    pytest.mark.django_db,
+    pytest.mark.single_thread,
+]
 
 
 @pytest.fixture
@@ -12,14 +15,11 @@ def manager():
     return AmoCRMTokenManager()
 
 
-@pytest.fixture(autouse=True)
-def _mock_response_check(mocker):
-    mocker.patch("amocrm.services.token_manager.AmoCRMTokenManager.check_response")
-
-
 @pytest.fixture
 def mock_response():
     class MockResponse:
+        status_code = 200
+
         def json(self):
             return {"token_type": "Bearer", "expires_in": 86400, "access_token": "so-accessible", "refresh_token": "even-more-refreshing"}
 
