@@ -1,10 +1,20 @@
 import pytest
 
+from django.core.cache import cache
+
+from amocrm.client import AmoCRMClient
+
 
 @pytest.fixture(autouse=True)
-def _settings_amocrm(settings):
-    settings.AMOCRM_BASE_URL = "https://test.amocrm.ru"
-    settings.AMOCRM_REDIRECT_URL = "https://test-education.ru"
-    settings.AMOCRM_INTEGRATION_ID = "4815162342"
-    settings.AMOCRM_CLIENT_SECRET = "top-secret-007"
-    settings.AMOCRM_AUTHORIZATION_CODE = "1337yep"
+def _cached_tokens():
+    cache.set("amocrm_access_token", "token")
+
+
+@pytest.fixture
+def amocrm_client() -> AmoCRMClient:
+    return AmoCRMClient()
+
+
+@pytest.fixture
+def post(mocker):
+    return mocker.patch("amocrm.client.http.AmoCRMHTTP.post")
