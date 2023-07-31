@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from app.services import BaseService
 from banking.selector import get_bank
+from banking.zero_price_bank import ZeroPriceBank
 from orders.models import Order
 from orders.services import OrderCreator
 from products.models import Product
@@ -67,10 +68,16 @@ class PurchaseCreator(BaseService):
     @staticmethod
     def get_payment_link(order: Order, desired_bank: str | None, success_url: str | None, redirect_url: str | None) -> str:
         Bank = get_bank(desired=desired_bank)
-        bank = Bank(
-            order=order,
-            success_url=success_url,
-            redirect_url=redirect_url,
-        )
+        if Bank is ZeroPriceBank:
+            bank = Bank(
+                order=order,
+                success_url=success_url,
+                redirect_url=redirect_url,  # type: ignore
+            )
+        else:
+            bank = Bank(
+                order=order,
+                success_url=success_url,
+            )
 
         return bank.get_initial_payment_url()

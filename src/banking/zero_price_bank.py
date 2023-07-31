@@ -1,5 +1,4 @@
 from decimal import Decimal
-from typing import Any
 
 from rest_framework.exceptions import ValidationError
 
@@ -21,16 +20,15 @@ class ZeroPriceBank(Bank):
         success_url: str | None = None,
         fail_url: str | None = None,
         idempotency_key: str | None = None,
-        **kwargs: Any,
+        redirect_url: str | None = None,
     ) -> None:
         super().__init__(
             order=order,
             success_url=success_url,
             fail_url=fail_url,
             idempotency_key=idempotency_key,
-            **kwargs,
         )
-        self.redirect_url = kwargs.get("redirect_url")
+        self.redirect_url = redirect_url
 
     def validate_order(self, order: Order) -> None:
         if order.price != 0:

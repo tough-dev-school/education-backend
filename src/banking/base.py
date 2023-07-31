@@ -1,7 +1,7 @@
 from abc import ABCMeta
 from abc import abstractmethod
 from decimal import Decimal
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING
 from urllib.parse import urljoin
 import uuid
 
@@ -25,7 +25,6 @@ class Bank(metaclass=ABCMeta):
         success_url: str | None = None,
         fail_url: str | None = None,
         idempotency_key: str | None = None,
-        **kwargs: Any,
     ) -> None:
         self.order = order
         self._success_url = success_url
