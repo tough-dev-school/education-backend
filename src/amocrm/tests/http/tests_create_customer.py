@@ -1,9 +1,6 @@
 import pytest
 
-pytestmark = [
-    pytest.mark.django_db,
-    pytest.mark.single_thread,
-]
+pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture

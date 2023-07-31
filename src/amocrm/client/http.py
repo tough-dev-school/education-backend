@@ -5,7 +5,8 @@ import httpx
 from httpx import Response
 
 from django.conf import settings
-from django.core.cache import cache
+
+from amocrm.services.token_manager import AmoCRMTokenManager
 
 
 class AmoCRMClientException(Exception):
@@ -60,7 +61,7 @@ class AmoCRMHTTP:
             headers={
                 "Content-Type": "application/json",
                 "Accept": "application/json",
-                "Authorization": f"Bearer {cache.get('amocrm_access_token')}",
+                "Authorization": f"Bearer {AmoCRMTokenManager()()}",
             },
         )
 

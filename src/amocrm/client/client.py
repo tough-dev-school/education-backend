@@ -1,24 +1,8 @@
-from functools import wraps
-from typing import Any, Callable
-
-from django.conf import settings
-from django.core.cache import cache
-
 from amocrm.client.http import AmoCRMHTTP
 from amocrm.models import AmoCRMUser
 from amocrm.types import AmoCRMCatalog
 from amocrm.types import AmoCRMCatalogField
 from users.models import User
-
-
-def auto_refresh_token(function: Callable) -> Any:
-    @wraps(function)
-    def wrapper(client: "AmoCRMClient", *args: Any, **kwargs: Any) -> Any:
-        if cache.get("amocrm_access_token") is None:
-            client.refresh_tokens()
-        return function(client, *args, **kwargs)
-
-    return wrapper
 
 
 class AmoCRMClient:
@@ -29,7 +13,6 @@ class AmoCRMClient:
     def __init__(self) -> None:
         self.http: AmoCRMHTTP = AmoCRMHTTP()
 
-    @auto_refresh_token
     def create_customer(self, user: User) -> int:
         """Creates customer and returns amocrm_id"""
         response = self.http.post(
@@ -39,7 +22,6 @@ class AmoCRMClient:
 
         return response["_embedded"]["customers"][0]["id"]
 
-    @auto_refresh_token
     def update_customer(self, amocrm_user: AmoCRMUser) -> int:
         """Updates existing in amocrm customer and returns amocrm_id"""
         response = self.http.patch(
@@ -49,7 +31,6 @@ class AmoCRMClient:
 
         return response["_embedded"]["customers"][0]["id"]
 
-    @auto_refresh_token
     def enable_customers(self) -> None:
         """Enable customers list is required to create/update customers"""
         self.http.patch(url="/api/v4/customers/mode", data={"mode": "segments", "is_enabled": True})
