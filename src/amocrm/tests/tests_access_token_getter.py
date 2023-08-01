@@ -2,7 +2,7 @@ import pytest
 
 from django.core.cache import cache
 
-from amocrm.services.token_manager import AmoCRMTokenManager
+from amocrm.services.access_token_getter import AmoCRMTokenGetter
 
 pytestmark = [
     pytest.mark.django_db,
@@ -11,8 +11,8 @@ pytestmark = [
 
 
 @pytest.fixture
-def manager():
-    return AmoCRMTokenManager()
+def token_getter():
+    return AmoCRMTokenGetter()
 
 
 @pytest.fixture
@@ -31,11 +31,11 @@ def post(mocker, mock_response):
     return mocker.patch("httpx.Client.post", return_value=mock_response)
 
 
-def test_calls_post_with_correct_params_when_no_access_token(manager, post):
+def test_calls_post_with_correct_params_when_no_access_token(token_getter, post):
     cache.set("amocrm_access_token", None)
     cache.set("amocrm_refresh_token", "so-refreshing")
 
-    manager()
+    token_getter()
 
     post.assert_called_with(
         url="https://test.amocrm.ru/oauth2/access_token",
@@ -49,11 +49,11 @@ def test_calls_post_with_correct_params_when_no_access_token(manager, post):
     )
 
 
-def test_calls_post_with_correct_params_when_no_refresh_token(manager, post):
+def test_calls_post_with_correct_params_when_no_refresh_token(token_getter, post):
     cache.set("amocrm_access_token", None)
     cache.set("amocrm_refresh_token", None)
 
-    manager()
+    token_getter()
 
     post.assert_called_with(
         url="https://test.amocrm.ru/oauth2/access_token",
@@ -67,11 +67,11 @@ def test_calls_post_with_correct_params_when_no_refresh_token(manager, post):
     )
 
 
-def test_update_cached_tokens(manager, post):
+def test_update_cached_tokens(token_getter, post):
     cache.set("amocrm_access_token", None)
     cache.set("amocrm_refresh_token", "so-refreshing")
 
-    manager()
+    token_getter()
 
     assert cache.get("amocrm_access_token") == "so-accessible"
     assert cache.get("amocrm_refresh_token") == "even-more-refreshing"

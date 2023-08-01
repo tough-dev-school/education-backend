@@ -14,7 +14,7 @@ class AmoCRMTokenManagerException(AppServiceException):
     """Raises when it's impossible to get a token"""
 
 
-class AmoCRMTokenManager(BaseService):
+class AmoCRMTokenGetter(BaseService):
     """Returns access_token for amocrm http client"""
 
     def __init__(self) -> None:
@@ -22,17 +22,17 @@ class AmoCRMTokenManager(BaseService):
         self.url = urljoin(settings.AMOCRM_BASE_URL, "/oauth2/access_token")
 
     def act(self) -> str:
-        refresh_token = cache.get("amocrm_refresh_token")
-        if refresh_token is None:
-            self.setup_tokens()
-
         access_token = cache.get("amocrm_access_token")
-        if access_token is None:
-            self.refresh_tokens()
+        if access_token is not None:
+            return access_token
 
-        return cache.get("amocrm_access_token")
+        refresh_token = cache.get("amocrm_refresh_token")
+        if refresh_token is not None:
+            return self.refresh_tokens()
 
-    def refresh_tokens(self) -> None:
+        return self.setup_tokens()
+
+    def refresh_tokens(self) -> str:
         """Refresh auth tokens"""
         response = self.http.post(
             url=self.url,
@@ -48,7 +48,7 @@ class AmoCRMTokenManager(BaseService):
 
         return self.save_tokens(response.json())
 
-    def setup_tokens(self) -> None:
+    def setup_tokens(self) -> str:
         """Setup initial auth tokens"""
         response = self.http.post(
             url=self.url,
@@ -65,10 +65,11 @@ class AmoCRMTokenManager(BaseService):
         return self.save_tokens(response.json())
 
     @staticmethod
-    def save_tokens(data: dict) -> None:
-        timeout = int(data["expires_in"]) - 60 * 5  # refresh tokens 5 min before expiration time
+    def save_tokens(data: dict) -> str:
+        timeout = int(data["expires_in"]) - 60 * 5  # remove token 5 min before expiration time
         cache.set("amocrm_access_token", data["access_token"], timeout=timeout)
         cache.set("amocrm_refresh_token", data["refresh_token"])
+        return data["access_token"]
 
     @staticmethod
     def check_response(response: Response) -> None:
