@@ -1,5 +1,7 @@
 from httpx import TransportError
 
+from django.conf import settings
+
 from amocrm.client import AmoCRMClient
 from amocrm.client.http import AmoCRMClientException
 from amocrm.models import AmoCRMUser
@@ -7,7 +9,9 @@ from amocrm.services.access_token_getter import AmoCRMTokenGetterException
 from app.celery import celery
 from users.models import User
 
-client = AmoCRMClient()
+
+def amocrm_enabled() -> bool:
+    return settings.AMOCRM_BASE_URL != ""
 
 
 @celery.task(
@@ -20,6 +24,7 @@ client = AmoCRMClient()
     acks_late=True,
 )
 def enable_customers() -> None:
+    client = AmoCRMClient()
     client.enable_customers()
 
 
@@ -33,6 +38,7 @@ def enable_customers() -> None:
     acks_late=True,
 )
 def create_customer(user_id: int) -> int:
+    client = AmoCRMClient()
     user = User.objects.get(id=user_id)
     return client.create_customer(user=user)
 
@@ -47,5 +53,6 @@ def create_customer(user_id: int) -> int:
     acks_late=True,
 )
 def update_customer(amocrm_user_id: int) -> int:
+    client = AmoCRMClient()
     amocrm_user = AmoCRMUser.objects.get(amocrm_id=amocrm_user_id)
     return client.update_customer(amocrm_user=amocrm_user)
