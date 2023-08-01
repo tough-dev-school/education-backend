@@ -10,7 +10,7 @@ from app.exceptions import AppServiceException
 from app.services import BaseService
 
 
-class AmoCRMTokenGetterException(AppServiceException):
+class AmoCRMTokenManagerException(AppServiceException):
     """Raises when it's impossible to get a token"""
 
 
@@ -74,4 +74,4 @@ class AmoCRMTokenGetter(BaseService):
     @staticmethod
     def check_response(response: Response) -> None:
         if response.status_code != 200:
-            raise AmoCRMTokenGetterException("Non-ok HTTP response when retrieving access token")
+            raise AmoCRMTokenManagerException("Non-ok HTTP response when retrieving access token")
