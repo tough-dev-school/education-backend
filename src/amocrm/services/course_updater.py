@@ -18,7 +18,7 @@ class AmoCRMCourseUpdaterException(AppServiceException):
 @dataclass
 class AmoCRMCourseUpdater(BaseService):
     """
-    Creates course as element of products catalog in amocrm
+    Updates course as element of products catalog in amocrm
     """
 
     amocrm_course: AmoCRMCourse
