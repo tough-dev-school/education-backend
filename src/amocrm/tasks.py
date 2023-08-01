@@ -9,8 +9,13 @@ from amocrm.services.access_token_getter import AmoCRMTokenGetterException
 from app.celery import celery
 from users.models import User
 
-client = AmoCRMClient()
-amocrm_enabled: bool = settings.AMOCRM_BASE_URL != ""
+
+def amocrm_enabled() -> bool:
+    return settings.AMOCRM_BASE_URL != ""
+
+
+def get_client() -> AmoCRMClient:
+    return AmoCRMClient()
 
 
 @celery.task(
@@ -23,6 +28,7 @@ amocrm_enabled: bool = settings.AMOCRM_BASE_URL != ""
     acks_late=True,
 )
 def enable_customers() -> None:
+    client = get_client()
     client.enable_customers()
 
 
@@ -36,6 +42,7 @@ def enable_customers() -> None:
     acks_late=True,
 )
 def create_customer(user_id: int) -> int:
+    client = get_client()
     user = User.objects.get(id=user_id)
     return client.create_customer(user=user)
 
@@ -50,5 +57,6 @@ def create_customer(user_id: int) -> int:
     acks_late=True,
 )
 def update_customer(amocrm_user_id: int) -> int:
+    client = get_client()
     amocrm_user = AmoCRMUser.objects.get(amocrm_id=amocrm_user_id)
     return client.update_customer(amocrm_user=amocrm_user)
