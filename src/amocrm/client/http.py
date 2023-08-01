@@ -83,10 +83,3 @@ class AmoCRMHTTP:
             raise AmoCRMClientException(f"Errors in response to {url}: {errors}")
 
         return response_json
-
-    @property
-    def access_token(self) -> str:
-        return AmoCRMTokenGetter()()
-
-    def format_url(self, url: str) -> str:
-        return urljoin(self.base_url, url.lstrip("/"))
