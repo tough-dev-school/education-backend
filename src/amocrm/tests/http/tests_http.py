@@ -83,7 +83,7 @@ def test_ok_with_expected_status_code(amocrm_client, httpx_mock, method):
     httpx_mock.add_response(url="https://test.amocrm.ru/api/v4/companies", json={"ok": True}, method=method, status_code=100500)
     request = getattr(amocrm_client.http, method)
 
-    got = request("api/v4/companies", {}, expected_status_code=[100500])
+    got = request("api/v4/companies", {}, expected_status_codes=[100500])
 
     assert "ok" in got
 

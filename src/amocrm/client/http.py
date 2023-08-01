@@ -6,7 +6,7 @@ from httpx import Response
 
 from django.conf import settings
 
-from amocrm.services.token_manager import AmoCRMTokenManager
+from amocrm.services.access_token_getter import AmoCRMTokenGetter
 
 
 class AmoCRMClientException(Exception):
@@ -14,8 +14,9 @@ class AmoCRMClientException(Exception):
 
 
 class AmoCRMHTTP:
-    base_url = settings.AMOCRM_BASE_URL
-    client = httpx.Client()
+    def __init__(self) -> None:
+        self.base_url = settings.AMOCRM_BASE_URL
+        self.client = httpx.Client()
 
     def get(self, url: str, params: dict | None = None, expected_status_codes: list[int] | None = None) -> dict[str, Any]:
         response = self.client.get(
@@ -36,18 +37,18 @@ class AmoCRMHTTP:
             method="post",
             url=url,
             data=data,
-            expected_status_code=expected_status_code,
+            expected_status_codes=expected_status_codes,
         )
 
-    def patch(self, url: str, data: dict[str, Any], expected_status_code: list[int] | None = None) -> dict[str, Any]:
+    def patch(self, url: str, data: dict[str, Any], expected_status_codes: list[int] | None = None) -> dict[str, Any]:
         return self.request(
             method="patch",
             url=url,
             data=data,
-            expected_status_code=expected_status_code,
+            expected_status_codes=expected_status_codes,
         )
 
-    def request(self, method: str, url: str, data: dict[str, Any] | None = None, expected_status_code: list[int] | None = None) -> dict[str, Any]:
+    def request(self, method: str, url: str, data: dict[str, Any] | None = None, expected_status_codes: list[int] | None = None) -> dict[str, Any]:
         request = getattr(self.client, method)
         response = request(
             url=self.format_url(url),
@@ -85,8 +86,7 @@ class AmoCRMHTTP:
 
     @property
     def access_token(self) -> str:
-        return AmoCRMTokenManager()()
+        return AmoCRMTokenGetter()()
 
-    @classmethod
-    def format_url(cls, url: str) -> str:
-        return urljoin(cls.base_url, url.lstrip("/"))
+    def format_url(self, url: str) -> str:
+        return urljoin(self.base_url, url.lstrip("/"))

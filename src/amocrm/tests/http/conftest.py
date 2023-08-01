@@ -12,7 +12,7 @@ def _cached_tokens():
 
 
 @pytest.fixture
-def amocrm_client() -> AmoCRMClient:
+def amocrm_client(settings) -> AmoCRMClient:
     return AmoCRMClient()
 
 
