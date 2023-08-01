@@ -40,7 +40,7 @@ class AmoCRMTokenGetter(BaseService):
                 "client_id": settings.AMOCRM_INTEGRATION_ID,
                 "client_secret": settings.AMOCRM_CLIENT_SECRET,
                 "grant_type": "refresh_token",
-                "code": cache.get("amocrm_refresh_token"),
+                "refresh_token": cache.get("amocrm_refresh_token"),
                 "redirect_uri": settings.AMOCRM_REDIRECT_URL,
             },
         )
