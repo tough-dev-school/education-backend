@@ -1,6 +1,7 @@
 from amocrm.client.http import AmoCRMHTTP
 from amocrm.models import AmoCRMUser
 from amocrm.types import AmoCRMCatalog
+from amocrm.types import AmoCRMCatalogElement
 from amocrm.types import AmoCRMCatalogField
 from amocrm.types import AmoCRMCatalogFieldValue
 from users.models import User
@@ -82,7 +83,18 @@ class AmoCRMClient:
         returns list of AmoCRMCatalogFieldValue, every value has id from amocrm
         """
         response = self.http.patch(
-            url=f"/api/v4/catalogs/{catalog_id}/custom_fields", data=[{"id": field_id, "nested": [field_value.to_json() for field_value in field_values]}]
+            url=f"/api/v4/catalogs/{catalog_id}/custom_fields",
+            data=[
+                {"id": field_id, "nested": [field_value.to_json() for field_value in field_values]},
+            ],
         )
         updated_field = response["_embedded"]["custom_fields"][0]
         return [AmoCRMCatalogFieldValue(id=updated_value["id"], value=updated_value["value"]) for updated_value in updated_field["nested"]]
+
+    def create_catalog_element(self, catalog_id: int, element: AmoCRMCatalogElement) -> AmoCRMCatalogElement:
+        """Creates catalog element in amocrm and returns it with amocrm_id"""
+        response = self.http.post(
+            url=f"/api/v4/catalogs/{catalog_id}/elements",
+            data=[element.to_json()],
+        )
+        return AmoCRMCatalogElement.from_json(response["_embedded"]["elements"][0])

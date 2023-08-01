@@ -51,13 +51,19 @@ def field_values():
 
 
 @pytest.mark.usefixtures("_successful_response")
-def test_update_catalog_field(user, amocrm_client, patch, field_values):
+def test_update_catalog_field(user, amocrm_client, field_values):
     got = amocrm_client.update_catalog_field(catalog_id=777, field_id=333, field_values=field_values)
 
     assert got == [
         AmoCRMCatalogFieldValue(id=6453, value="popug"),
         AmoCRMCatalogFieldValue(id=6457, value="hehe"),
     ]
+
+
+@pytest.mark.usefixtures("_successful_response")
+def test_update_catalog_field_correct_params(user, amocrm_client, patch, field_values):
+    amocrm_client.update_catalog_field(catalog_id=777, field_id=333, field_values=field_values)
+
     patch.assert_called_once_with(
         url="/api/v4/catalogs/777/custom_fields",
         data=[
