@@ -1,3 +1,4 @@
+from dataclasses import asdict
 from dataclasses import dataclass
 
 
@@ -12,6 +13,9 @@ class AmoCRMCatalog:
 class AmoCRMCatalogFieldValue:
     value: str
     id: int | None = None
+
+    def to_json(self) -> dict:
+        return {key: value for key, value in asdict(self).items() if value is not None}
 
 
 @dataclass(frozen=True)
