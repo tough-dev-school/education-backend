@@ -22,6 +22,7 @@ celery.conf.update(
     task_ignore_result=True,
     task_store_errors_even_if_ignored=True,
     task_acks_late=True,
+    task_routes={"amocrm.tasks.*": {"queue": "amocrm"}},
     timezone=env("TIME_ZONE", cast=str, default="Europe/Moscow"),
     enable_utc=False,
     beat_schedule={
