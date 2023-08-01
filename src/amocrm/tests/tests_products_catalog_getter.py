@@ -2,9 +2,9 @@ import pytest
 
 from django.core.cache import cache
 
-from amocrm.services import AmoCRMSProductsCatalogGetter
-from amocrm.services.amocrm_products_catalog_getter import AmoCRMSProductsCatalogGetterException
-from amocrm.types import AmoCRMCatalogField
+from amocrm.services.products_catalog_getter import AmoCRMSProductsCatalogGetter
+from amocrm.services.products_catalog_getter import AmoCRMSProductsCatalogGetterException
+from amocrm.types import AmoCRMCatalog
 
 pytestmark = [
     pytest.mark.django_db,
@@ -14,12 +14,12 @@ pytestmark = [
 
 @pytest.fixture
 def products_catalog():
-    return AmoCRMCatalogField(id=333, name="Products", type="products")
+    return AmoCRMCatalog(id=333, name="Products", type="products")
 
 
 @pytest.fixture
 def catalogs(products_catalog):
-    return [products_catalog, AmoCRMCatalogField(id=123, name="Useless", type="meh")]
+    return [products_catalog, AmoCRMCatalog(id=123, name="Useless", type="meh")]
 
 
 @pytest.fixture(autouse=True)
@@ -51,9 +51,9 @@ def test_return_catalog_from_response_if_not_in_cache(products_catalog_getter, p
     mock_get_catalogs.assert_called_once()
 
 
-def test_fail_if_not_in_cache_and_not_in_response(products_catalog_getter, products_catalog, mock_get_catalogs):
+def test_fail_if_not_in_cache_and_not_in_response(products_catalog_getter, mock_get_catalogs):
     cache.set("amocrm_products_catalog", None)
-    mock_get_catalogs.return_value = [AmoCRMCatalogField(id=111, name="NotWhatINeed", type="sad-story")]
+    mock_get_catalogs.return_value = [AmoCRMCatalog(id=111, name="NotWhatINeed", type="sad-story")]
 
     with pytest.raises(AmoCRMSProductsCatalogGetterException):
         products_catalog_getter()

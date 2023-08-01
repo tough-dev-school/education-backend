@@ -1,6 +1,6 @@
 import pytest
 
-from amocrm.types import AmoCRMCatalogField
+from amocrm.types import AmoCRMCatalog
 
 pytestmark = [
     pytest.mark.django_db,
@@ -48,12 +48,12 @@ def _successful_response(get):
 
 
 @pytest.mark.usefixtures("_successful_response")
-def test_create_customer_request_fields(user, amocrm_client, get):
+def test_get_catalogs(user, amocrm_client, get):
     got = amocrm_client.get_catalogs()
 
     assert got == [
-        AmoCRMCatalogField(id=11271, name="Товары", type="products"),
-        AmoCRMCatalogField(id=11273, name="Мои юр. лица", type="suppliers"),
+        AmoCRMCatalog(id=11271, name="Товары", type="products"),
+        AmoCRMCatalog(id=11273, name="Мои юр. лица", type="suppliers"),
     ]
     get.assert_called_once_with(
         url="/api/v2/catalogs",
