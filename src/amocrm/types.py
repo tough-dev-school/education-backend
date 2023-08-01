@@ -67,13 +67,17 @@ class AmoCRMCatalogElement:
     id: int | None = None
 
     def to_json(self) -> dict:
-        data = {
-            "name": self.name,
-            "custom_fields_values": [field_value.to_json() for field_value in self.custom_fields_values],
-        }
-        if self.id is not None:
-            data["id"] = self.id
-        return data
+        if self.id is None:
+            return {
+                "name": self.name,
+                "custom_fields_values": [field_value.to_json() for field_value in self.custom_fields_values],
+            }
+        else:
+            return {
+                "id": self.id,
+                "name": self.name,
+                "custom_fields_values": [field_value.to_json() for field_value in self.custom_fields_values],
+            }
 
     @classmethod
     def from_json(cls, data: dict) -> "AmoCRMCatalogElement":

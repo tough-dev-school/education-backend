@@ -3,45 +3,12 @@ import pytest
 from amocrm.models import AmoCRMCourse
 from amocrm.services.course_creator import AmoCRMCourseCreator
 from amocrm.services.course_creator import AmoCRMCourseCreatorException
-from amocrm.types import AmoCRMCatalog
 from amocrm.types import AmoCRMCatalogElement
-from amocrm.types import AmoCRMCatalogElementField
-from amocrm.types import AmoCRMCatalogElementFieldValue
-from amocrm.types import AmoCRMCatalogField
 
 pytestmark = [
     pytest.mark.django_db,
     pytest.mark.single_thread,
 ]
-
-
-@pytest.fixture(autouse=True)
-def _mock_fields_id(mocker):
-    mocker.patch(
-        "amocrm.services.product_catalog_fields_manager.AmoCRMProductCatalogFieldsManager.get_product_field",
-        return_value=AmoCRMCatalogField(id=333, name="aa", type="bb", code="EVERYTHING"),
-    )
-    mocker.patch(
-        "amocrm.services.products_catalog_getter.AmoCRMSProductsCatalogGetter.__call__", return_value=AmoCRMCatalog(id=777, name="products", type="products")
-    )
-
-
-@pytest.fixture
-def course(factory):
-    group = factory.group(slug="top-group")
-    return factory.course(name="TopCourse", slug="top-course", price=99, group=group)
-
-
-@pytest.fixture
-def element_fields():
-    price_value = AmoCRMCatalogElementFieldValue(value=99)
-    sku_value = AmoCRMCatalogElementFieldValue(value="top-course")
-    group_value = AmoCRMCatalogElementFieldValue(value="top-group")
-    return [
-        AmoCRMCatalogElementField(field_id=333, values=[price_value]),
-        AmoCRMCatalogElementField(field_id=333, values=[sku_value]),
-        AmoCRMCatalogElementField(field_id=333, values=[group_value]),
-    ]
 
 
 @pytest.fixture

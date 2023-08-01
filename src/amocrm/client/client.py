@@ -98,3 +98,11 @@ class AmoCRMClient:
             data=[element.to_json()],
         )
         return AmoCRMCatalogElement.from_json(response["_embedded"]["elements"][0])
+
+    def update_catalog_element(self, catalog_id: int, element: AmoCRMCatalogElement) -> AmoCRMCatalogElement:
+        """Updates catalog element in amocrm and returns it with amocrm_id"""
+        response = self.http.patch(
+            url=f"/api/v4/catalogs/{catalog_id}/elements",
+            data=[element.to_json()],
+        )
+        return AmoCRMCatalogElement.from_json(response["_embedded"]["elements"][0])
