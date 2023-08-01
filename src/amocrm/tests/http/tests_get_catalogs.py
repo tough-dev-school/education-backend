@@ -1,5 +1,7 @@
 import pytest
 
+from amocrm.types import AmoCRMCatalogField
+
 pytestmark = [
     pytest.mark.django_db,
     pytest.mark.single_thread,
@@ -7,61 +9,53 @@ pytestmark = [
 
 
 @pytest.fixture
-def _successful_response(post):
-    post.return_value = {
-        "_links": {"self": {"href": "https://test.amocrm.ru/api/v4/customers"}},
+def _successful_response(get):
+    get.return_value = {
+        "_links": {"self": {"href": "/api/v2/catalogs", "method": "get"}},
         "_embedded": {
-            "customers": [
+            "items": [
                 {
-                    "id": 1369385,
-                    "name": "Some name",
-                    "status_id": 25008378,
-                    "created_by": 0,
-                    "updated_by": 0,
-                    "created_at": 1690793002,
-                    "updated_at": 1690793002,
-                    "account_id": 31204626,
-                    "request_id": "0",
-                    "_links": {"self": {"href": "https://test.amocrm.ru/api/v4/customers/1369385"}},
-                }
+                    "id": 11271,
+                    "name": "Товары",
+                    "created_by": 9898394,
+                    "created_at": 1690790026,
+                    "sort": 0,
+                    "type": "products",
+                    "can_add_elements": True,
+                    "can_show_in_cards": True,
+                    "can_link_multiple": True,
+                    "sdk_widget_code": None,
+                    "widgets": [],
+                    "_links": {"self": {"href": "/api/v2/catalogs?id=11271", "method": "get"}},
+                },
+                {
+                    "id": 11273,
+                    "name": "Мои юр. лица",
+                    "created_by": 9898394,
+                    "created_at": 1690790026,
+                    "sort": 0,
+                    "type": "suppliers",
+                    "can_add_elements": True,
+                    "can_show_in_cards": True,
+                    "can_link_multiple": True,
+                    "sdk_widget_code": None,
+                    "widgets": [],
+                    "_links": {"self": {"href": "/api/v2/catalogs?id=11273", "method": "get"}},
+                },
             ]
         },
     }
 
 
 @pytest.mark.usefixtures("_successful_response")
-def test_create_customer_request_fields(user, amocrm_client, post):
-    user.first_name = "First"
-    user.last_name = "Last"
-    user.tags = ["b2b", "any-purchase"]
-    user.save()
+def test_create_customer_request_fields(user, amocrm_client, get):
+    got = amocrm_client.get_catalogs()
 
-    got = amocrm_client.create_customer(user)
-
-    assert got == 1369385
-    post.assert_called_once_with(
-        url="/api/v4/customers",
-        data={
-            "name": "First Last",
-            "_embedded": {"tags": [{"name": "b2b"}, {"name": "any-purchase"}]},
-        },
-    )
-
-
-@pytest.mark.usefixtures("_successful_response")
-def test_create_anonymous_customer(user, amocrm_client, post):
-    user.first_name = ""
-    user.last_name = ""
-    user.tags = []
-    user.save()
-
-    got = amocrm_client.create_customer(user)
-
-    assert got == 1369385
-    post.assert_called_once_with(
-        url="/api/v4/customers",
-        data={
-            "name": "Anonymous",
-            "_embedded": {"tags": []},
-        },
+    assert got == [
+        AmoCRMCatalogField(id=11271, name="Товары", type="products"),
+        AmoCRMCatalogField(id=11273, name="Мои юр. лица", type="suppliers"),
+    ]
+    get.assert_called_once_with(
+        url="/api/v2/catalogs",
+        params={"limit": 250},
     )
