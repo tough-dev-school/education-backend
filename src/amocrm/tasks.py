@@ -1,5 +1,7 @@
 from httpx import TransportError
 
+from django.conf import settings
+
 from amocrm.client import AmoCRMClient
 from amocrm.client.http import AmoCRMClientException
 from amocrm.models import AmoCRMUser
@@ -8,6 +10,7 @@ from app.celery import celery
 from users.models import User
 
 client = AmoCRMClient()
+amocrm_enabled: bool = settings.AMOCRM_BASE_URL != ""
 
 
 @celery.task(
