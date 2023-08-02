@@ -31,7 +31,7 @@ def get_field_id_from_amocrm(field_code: FIELDS_CODES) -> int:
 
 def get_product_field_id(field_code: FIELDS_CODES) -> int:
     cache_key = FIELDS_TO_CACHE[field_code]
-    return cache.get_or_set(cache_key, lambda: get_field_id_from_amocrm(field_code))  # type: ignore
+    return cache.get_or_set(cache_key, lambda: get_field_id_from_amocrm(field_code), timeout=None)  # type: ignore
 
 
 __all__ = ["get_product_field_id"]
