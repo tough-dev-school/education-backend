@@ -39,12 +39,12 @@ class AmoCRMClient:
 
     def get_catalogs(self) -> list[AmoCRMCatalog]:
         """Returns all catalogs from amocrm"""
-        response = self.http.get(url="/api/v2/catalogs", params={"limit": 250})  # request max amount of catalogs
-        return [AmoCRMCatalog(id=catalog["id"], name=catalog["name"], type=catalog["type"]) for catalog in response["_embedded"]["items"]]
+        response = self.http.get(url="/api/v4/catalogs", params={"limit": 250})  # request max amount of catalogs
+        return [AmoCRMCatalog.from_json(catalog) for catalog in response["_embedded"]["items"]]
 
     def get_catalog_fields(self, catalog_id: int) -> list[AmoCRMCatalogField]:
         """Returns chosen catalog's fields"""
-        response = self.http.get(url=f"/api/v2/catalogs/{catalog_id}/custom_fields", params={"limit": 250})  # request max amount of fields for catalog
+        response = self.http.get(url=f"/api/v4/catalogs/{catalog_id}/custom_fields", params={"limit": 250})  # request max amount of fields for catalog
         return [AmoCRMCatalogField.from_json(catalog) for catalog in response["_embedded"]["custom_fields"]]
 
     def update_catalog_field(self, catalog_id: int, field_id: int, field_values: list[AmoCRMCatalogFieldValue]) -> list[AmoCRMCatalogFieldValue]:
@@ -59,7 +59,7 @@ class AmoCRMClient:
             ],
         )
         updated_field = response["_embedded"]["custom_fields"][0]
-        return [AmoCRMCatalogFieldValue(id=updated_value["id"], value=updated_value["value"]) for updated_value in updated_field["nested"]]
+        return [AmoCRMCatalogFieldValue.from_json(updated_value) for updated_value in updated_field["nested"]]
 
     def create_catalog_element(self, catalog_id: int, element: AmoCRMCatalogElement) -> AmoCRMCatalogElement:
         """Creates catalog element in amocrm and returns it with amocrm_id"""
