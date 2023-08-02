@@ -56,6 +56,6 @@ def test_get_catalogs(user, amocrm_client, get):
         AmoCRMCatalog(id=11273, name="Мои юр. лица", type="suppliers"),
     ]
     get.assert_called_once_with(
-        url="/api/v2/catalogs",
+        url="/api/v4/catalogs",
         params={"limit": 250},
     )
