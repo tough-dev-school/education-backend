@@ -2,8 +2,8 @@ import pytest
 
 from django.core.cache import cache
 
-from amocrm.services.products_catalog_getter import AmoCRMProductsCatalogIdGetter
-from amocrm.services.products_catalog_getter import AmoCRMProductsCatalogIdGetterException
+from amocrm.services.products_catalog_id_getter import AmoCRMProductsCatalogIdGetter
+from amocrm.services.products_catalog_id_getter import AmoCRMProductsCatalogIdGetterException
 from amocrm.types import AmoCRMCatalog
 
 pytestmark = [

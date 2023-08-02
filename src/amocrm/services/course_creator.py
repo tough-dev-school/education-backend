@@ -3,8 +3,8 @@ from typing import Callable
 
 from amocrm.client import AmoCRMClient
 from amocrm.models import AmoCRMCourse
-from amocrm.services.product_catalog_fields_manager import AmoCRMProductCatalogFieldsManager
-from amocrm.services.products_catalog_getter import AmoCRMProductsCatalogIdGetter
+from amocrm.services.product_catalog_fields_ids_manager import AmoCRMProductCatalogFieldsIdsManager
+from amocrm.services.products_catalog_id_getter import AmoCRMProductsCatalogIdGetter
 from amocrm.types import AmoCRMCatalogElement
 from amocrm.types import AmoCRMCatalogElementField
 from amocrm.types import AmoCRMCatalogElementFieldValue
@@ -62,15 +62,15 @@ class AmoCRMCourseCreator(BaseService):
 
     @property
     def group_field_id(self) -> int:
-        return AmoCRMProductCatalogFieldsManager().get_product_field("GROUP").id
+        return AmoCRMProductCatalogFieldsIdsManager().get_product_field_id("GROUP")
 
     @property
     def sku_field_id(self) -> int:
-        return AmoCRMProductCatalogFieldsManager().get_product_field("SKU").id
+        return AmoCRMProductCatalogFieldsIdsManager().get_product_field_id("SKU")
 
     @property
     def price_field_id(self) -> int:
-        return AmoCRMProductCatalogFieldsManager().get_product_field("PRICE").id
+        return AmoCRMProductCatalogFieldsIdsManager().get_product_field_id("PRICE")
 
     @property
     def product_catalog_id(self) -> int:

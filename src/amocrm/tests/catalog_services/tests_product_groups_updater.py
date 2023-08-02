@@ -2,7 +2,6 @@ import pytest
 
 from amocrm.models import AmoCRMProductGroup
 from amocrm.services.product_groups_updater import AmoCRMProductGroupsUpdater
-from amocrm.types import AmoCRMCatalogField
 from amocrm.types import AmoCRMCatalogFieldValue
 
 pytestmark = [
@@ -40,14 +39,14 @@ def mock_get_catalogs(mocker, group_field_values):
 
 @pytest.fixture(autouse=True)
 def mock_catalog_getter(mocker):
-    return mocker.patch("amocrm.services.products_catalog_getter.AmoCRMProductsCatalogIdGetter.__call__", return_value=777)
+    return mocker.patch("amocrm.services.products_catalog_id_getter.AmoCRMProductsCatalogIdGetter.__call__", return_value=777)
 
 
 @pytest.fixture(autouse=True)
 def mock_catalog_field_manager(mocker):
     return mocker.patch(
-        "amocrm.services.product_catalog_fields_manager.AmoCRMProductCatalogFieldsManager.get_product_field",
-        return_value=AmoCRMCatalogField(id=333, name="meh", type="epyt", code="GROUP"),
+        "amocrm.services.product_catalog_fields_ids_manager.AmoCRMProductCatalogFieldsIdsManager.get_product_field_id",
+        return_value=333,
     )
 
 
