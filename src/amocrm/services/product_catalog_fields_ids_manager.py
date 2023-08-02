@@ -1,4 +1,4 @@
-from typing import Literal
+import typing
 
 from django.core.cache import cache
 
@@ -6,8 +6,8 @@ from amocrm.services.products_catalog_id_getter import AmoCRMProductsCatalogIdGe
 from amocrm.types import AmoCRMCatalogField
 from app.exceptions import AppServiceException
 
-FIELDS_CODES_LITERAL = Literal["SKU", "PRICE", "SPECIAL_PRICE_1", "GROUP", "DESCRIPTION", "EXTERNAL_ID"]
-FIELDS_CODES = {"SKU", "PRICE", "SPECIAL_PRICE_1", "GROUP", "DESCRIPTION", "EXTERNAL_ID"}
+FIELDS_CODES_LITERAL = typing.Literal["SKU", "PRICE", "SPECIAL_PRICE_1", "GROUP", "DESCRIPTION", "EXTERNAL_ID"]
+FIELDS_CODES = set(typing.get_args(FIELDS_CODES_LITERAL))
 FIELDS_TO_CACHE = {
     "SKU": "amocrm_products_sku_id",
     "PRICE": "amocrm_products_price_id",

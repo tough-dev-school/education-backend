@@ -53,17 +53,17 @@ def test_request_has_authorization_header(amocrm_client, method, token, mocker):
 
 
 def test_get_ok(amocrm_client, httpx_mock):
-    httpx_mock.add_response(url="https://test.amocrm.ru/api/v4/companies", method="GET", json={"ok": True})
+    httpx_mock.add_response(url="https://test.amocrm.ru/api/v4/companies?limit=100500", method="GET", json={"ok": True})
 
-    got = amocrm_client.http.get("api/v4/companies")
+    got = amocrm_client.http.get("api/v4/companies", params={"limit": 100500})
 
     assert "ok" in got
 
 
 def test_get_ok_with_expected_status_code(amocrm_client, httpx_mock):
-    httpx_mock.add_response(url="https://test.amocrm.ru/api/v4/companies", method="GET", json={"ok": True}, status_code=321)
+    httpx_mock.add_response(url="https://test.amocrm.ru/api/v4/companies?limit=100500", method="GET", json={"ok": True}, status_code=321)
 
-    got = amocrm_client.http.get("api/v4/companies", expected_status_codes=[321])
+    got = amocrm_client.http.get("api/v4/companies", expected_status_codes=[321], params={"limit": 100500})
 
     assert "ok" in got
 

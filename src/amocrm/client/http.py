@@ -19,18 +19,12 @@ class AmoCRMHTTP:
         self.client = httpx.Client()
 
     def get(self, url: str, params: dict | None = None, expected_status_codes: list[int] | None = None) -> dict[str, Any]:
-        response = self.client.get(
-            url=self.format_url(url),
-            timeout=3,
+        return self.request(
+            method="get",
+            url=url,
             params=params,
-            headers={
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "Authorization": f"Bearer {self.access_token}",
-            },
+            expected_status_codes=expected_status_codes,
         )
-
-        return self.get_validated_response(response=response, url=url, expected_status_codes=expected_status_codes)
 
     def post(self, url: str, data: dict | list, expected_status_codes: list[int] | None = None) -> dict[str, Any]:
         return self.request(
@@ -48,18 +42,21 @@ class AmoCRMHTTP:
             expected_status_codes=expected_status_codes,
         )
 
-    def request(self, method: str, url: str, data: dict | list | None = None, expected_status_codes: list[int] | None = None) -> dict[str, Any]:
+    def request(
+        self, method: str, url: str, data: dict | list | None = None, params: dict | None = None, expected_status_codes: list[int] | None = None
+    ) -> dict[str, Any]:
         request = getattr(self.client, method)
-        response = request(
-            url=self.format_url(url),
-            timeout=3,
-            json=data,
-            headers={
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "Authorization": f"Bearer {self.access_token}",
-            },
-        )
+        headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": f"Bearer {self.access_token}",
+        }
+        url = self.format_url(url)
+
+        if method == "get":
+            response = request(url=url, timeout=3, params=params, headers=headers)
+        else:
+            response = request(url=url, timeout=3, json=data, headers=headers)
 
         return self.get_validated_response(response=response, url=url, expected_status_codes=expected_status_codes)
 
