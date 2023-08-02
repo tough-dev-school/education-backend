@@ -67,8 +67,9 @@ class AmoCRMTokenGetter(BaseService):
     @staticmethod
     def save_tokens(data: dict) -> str:
         timeout = int(data["expires_in"]) - 60 * 5  # remove token 5 min before expiration time
+        refresh_token_timeout = 60 * 60 * 24 * 30  # refresh token lives till first usage or 30 days
         cache.set("amocrm_access_token", data["access_token"], timeout=timeout)
-        cache.set("amocrm_refresh_token", data["refresh_token"])
+        cache.set("amocrm_refresh_token", data["refresh_token"], timeout=refresh_token_timeout)
         return data["access_token"]
 
     @staticmethod
