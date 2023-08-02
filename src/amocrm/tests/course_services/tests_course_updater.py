@@ -9,6 +9,12 @@ pytestmark = [
 ]
 
 
+@pytest.fixture(autouse=True)
+def _mock_fields_id(mocker):
+    mocker.patch("amocrm.services.course_updater.get_product_field_id", return_value=333)
+    mocker.patch("amocrm.services.course_updater.get_catalog_id", return_value=777)
+
+
 @pytest.fixture
 def amocrm_course(factory, course):
     return factory.amocrm_course(course=course, amocrm_id=999)
