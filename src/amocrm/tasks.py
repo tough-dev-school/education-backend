@@ -4,7 +4,6 @@ from django.conf import settings
 
 from amocrm.client import AmoCRMClient
 from amocrm.client.http import AmoCRMClientException
-from amocrm.models import AmoCRMCourse
 from amocrm.models import AmoCRMUser
 from amocrm.services.access_token_getter import AmoCRMTokenGetterException
 from amocrm.services.course_creator import AmoCRMCourseCreator
@@ -42,10 +41,14 @@ def enable_customers() -> None:
     rate_limit="3/s",
     acks_late=True,
 )
-def create_customer(user_id: int) -> int:
+def push_customer(user_id: int) -> None:
     client = AmoCRMClient()
     user = User.objects.get(id=user_id)
-    return client.create_customer(user=user)
+    if hasattr(user, "amocrm_user"):
+        client.update_customer(amocrm_user=user.amocrm_user)
+    else:
+        amocrm_id = client.create_customer(user=user)
+        AmoCRMUser.objects.create(user=user, amocrm_id=amocrm_id)
 
 
 @celery.task(
@@ -57,22 +60,7 @@ def create_customer(user_id: int) -> int:
     rate_limit="3/s",
     acks_late=True,
 )
-def update_customer(amocrm_user_id: int) -> int:
-    client = AmoCRMClient()
-    amocrm_user = AmoCRMUser.objects.get(amocrm_id=amocrm_user_id)
-    return client.update_customer(amocrm_user=amocrm_user)
-
-
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    rate_limit="3/s",
-    acks_late=True,
-)
-def update_product_groups() -> None:
+def push_product_groups() -> None:
     AmoCRMProductGroupsUpdater()()
 
 
@@ -85,20 +73,9 @@ def update_product_groups() -> None:
     rate_limit="3/s",
     acks_late=True,
 )
-def create_course(course_id: int) -> None:
+def push_course(course_id: int) -> None:
     course = Course.objects.get(id=course_id)
-    AmoCRMCourseCreator(course)()
-
-
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    rate_limit="3/s",
-    acks_late=True,
-)
-def update_course(amocrm_course_id: int) -> None:
-    amocrm_course = AmoCRMCourse.objects.get(id=amocrm_course_id)
-    AmoCRMCourseUpdater(amocrm_course)()
+    if hasattr(course, "amocrm_course"):
+        AmoCRMCourseUpdater(amocrm_course=course.amocrm_course)()
+    else:
+        AmoCRMCourseCreator(course=course)()
