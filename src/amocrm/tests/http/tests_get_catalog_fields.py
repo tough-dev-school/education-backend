@@ -79,6 +79,6 @@ def test_get_catalog_fields(user, amocrm_client, get):
         ),
     ]
     get.assert_called_once_with(
-        url="/api/v2/catalogs/777/custom_fields",
+        url="/api/v4/catalogs/777/custom_fields",
         params={"limit": 250},
     )
