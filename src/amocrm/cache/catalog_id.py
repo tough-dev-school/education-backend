@@ -8,7 +8,7 @@ CATALOG_TYPES = Literal["products"]
 CATALOGS_TO_CACHE = {"products": "amocrm_products_catalog_id"}
 
 
-def get_catalog_id_amocrm(catalog_type) -> int:
+def get_catalog_id_amocrm(catalog_type: CATALOG_TYPES) -> int:
     from amocrm.client import AmoCRMClient
 
     client = AmoCRMClient()

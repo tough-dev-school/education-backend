@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from amocrm.cache.product_catalog_fields_ids_manager import AmoCRMProductCatalogFieldsIdsManager
-from amocrm.cache.products_catalog_id_getter import AmoCRMProductsCatalogIdGetter
+from amocrm.cache.catalog_id import get_catalog_id
+from amocrm.cache.product_fields_ids import get_product_field_id
 from amocrm.client import AmoCRMClient
 from amocrm.exceptions import AmoCRMServiceException
 from amocrm.models import AmoCRMCourse
@@ -59,17 +59,17 @@ class AmoCRMCourseUpdater(BaseService):
         return fields_values
 
     @property
-    def group_field_id(self) -> int:
-        return AmoCRMProductCatalogFieldsIdsManager().get_product_field_id("GROUP")
-
-    @property
     def sku_field_id(self) -> int:
-        return AmoCRMProductCatalogFieldsIdsManager().get_product_field_id("SKU")
+        return get_product_field_id(field_code="SKU")
 
     @property
     def price_field_id(self) -> int:
-        return AmoCRMProductCatalogFieldsIdsManager().get_product_field_id("PRICE")
+        return get_product_field_id(field_code="PRICE")
+
+    @property
+    def group_field_id(self) -> int:
+        return get_product_field_id(field_code="GROUP")
 
     @property
     def product_catalog_id(self) -> int:
-        return AmoCRMProductsCatalogIdGetter()()
+        return get_catalog_id(catalog_type="products")
