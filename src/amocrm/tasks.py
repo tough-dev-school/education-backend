@@ -1,5 +1,6 @@
 from httpx import TransportError
 
+from django.apps import apps
 from django.conf import settings
 
 from amocrm.client import AmoCRMClient
@@ -10,8 +11,6 @@ from amocrm.services.course_creator import AmoCRMCourseCreator
 from amocrm.services.course_updater import AmoCRMCourseUpdater
 from amocrm.services.product_groups_updater import AmoCRMProductGroupsUpdater
 from app.celery import celery
-from products.models import Course
-from users.models import User
 
 
 def amocrm_enabled() -> bool:
@@ -43,7 +42,7 @@ def enable_customers() -> None:
 )
 def push_customer(user_id: int) -> None:
     client = AmoCRMClient()
-    user = User.objects.get(id=user_id)
+    user = apps.get_model("users.User").objects.get(id=user_id)
     if hasattr(user, "amocrm_user"):
         client.update_customer(amocrm_user=user.amocrm_user)
     else:
@@ -74,7 +73,7 @@ def push_product_groups() -> None:
     acks_late=True,
 )
 def push_course(course_id: int) -> None:
-    course = Course.objects.get(id=course_id)
+    course = apps.get_model("products.Course").objects.get(id=course_id)
     if hasattr(course, "amocrm_course"):
         AmoCRMCourseUpdater(amocrm_course=course.amocrm_course)()
     else:

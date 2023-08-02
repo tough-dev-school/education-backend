@@ -1,7 +1,6 @@
 import pytest
 
 from amocrm import tasks
-from amocrm.models import AmoCRMUser
 
 pytestmark = [
     pytest.mark.django_db,

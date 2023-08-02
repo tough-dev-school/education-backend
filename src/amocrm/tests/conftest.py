@@ -14,6 +14,7 @@ def _settings_amocrm(settings):
 def amocrm_user(factory, user):
     return factory.amocrm_user(user=user)
 
+
 @pytest.fixture
 def amocrm_course(factory, course):
     return factory.amocrm_course(course=course)
