@@ -1,6 +1,5 @@
 import pytest
 
-from amocrm.types import AmoCRMCatalog
 from amocrm.types import AmoCRMCatalogElementField
 from amocrm.types import AmoCRMCatalogElementFieldValue
 from amocrm.types import AmoCRMCatalogField
@@ -12,9 +11,7 @@ def _mock_fields_id(mocker):
         "amocrm.services.product_catalog_fields_manager.AmoCRMProductCatalogFieldsManager.get_product_field",
         return_value=AmoCRMCatalogField(id=333, name="aa", type="bb", code="EVERYTHING"),
     )
-    mocker.patch(
-        "amocrm.services.products_catalog_getter.AmoCRMSProductsCatalogGetter.__call__", return_value=AmoCRMCatalog(id=777, name="products", type="products")
-    )
+    mocker.patch("amocrm.services.products_catalog_getter.AmoCRMProductsCatalogIdGetter.__call__", return_value=777)
 
 
 @pytest.fixture

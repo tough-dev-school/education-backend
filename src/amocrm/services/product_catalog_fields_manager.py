@@ -2,12 +2,12 @@ from typing import Literal
 
 from django.core.cache import cache
 
-from amocrm.services.products_catalog_getter import AmoCRMSProductsCatalogGetter
+from amocrm.services.products_catalog_getter import AmoCRMProductsCatalogIdGetter
 from amocrm.types import AmoCRMCatalogField
 from app.exceptions import AppServiceException
 
 FIELDS_CODES_LITERAL = Literal["SKU", "PRICE", "SPECIAL_PRICE_1", "GROUP", "DESCRIPTION", "EXTERNAL_ID"]
-FIELDS_CODES = ["SKU", "PRICE", "SPECIAL_PRICE_1", "GROUP", "DESCRIPTION", "EXTERNAL_ID"]
+FIELDS_CODES = {"SKU", "PRICE", "SPECIAL_PRICE_1", "GROUP", "DESCRIPTION", "EXTERNAL_ID"}
 FIELDS_TO_CACHE = {
     "SKU": "amocrm_products_sku",
     "PRICE": "amocrm_products_price",
@@ -60,4 +60,4 @@ class AmoCRMProductCatalogFieldsManager:
 
     @property
     def _product_catalog_id(self) -> int:
-        return AmoCRMSProductsCatalogGetter()().id
+        return AmoCRMProductsCatalogIdGetter()()

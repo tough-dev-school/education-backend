@@ -4,7 +4,7 @@ from typing import Callable
 from amocrm.client import AmoCRMClient
 from amocrm.models import AmoCRMCourse
 from amocrm.services.product_catalog_fields_manager import AmoCRMProductCatalogFieldsManager
-from amocrm.services.products_catalog_getter import AmoCRMSProductsCatalogGetter
+from amocrm.services.products_catalog_getter import AmoCRMProductsCatalogIdGetter
 from amocrm.types import AmoCRMCatalogElement
 from amocrm.types import AmoCRMCatalogElementField
 from amocrm.types import AmoCRMCatalogElementFieldValue
@@ -74,7 +74,7 @@ class AmoCRMCourseCreator(BaseService):
 
     @property
     def product_catalog_id(self) -> int:
-        return AmoCRMSProductsCatalogGetter()().id
+        return AmoCRMProductsCatalogIdGetter()()
 
     def get_validators(self) -> list[Callable]:
         return [self.validate_amocrm_course_doesnt_exist]

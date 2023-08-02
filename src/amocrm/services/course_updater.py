@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from amocrm.client import AmoCRMClient
 from amocrm.models import AmoCRMCourse
 from amocrm.services.product_catalog_fields_manager import AmoCRMProductCatalogFieldsManager
-from amocrm.services.products_catalog_getter import AmoCRMSProductsCatalogGetter
+from amocrm.services.products_catalog_getter import AmoCRMProductsCatalogIdGetter
 from amocrm.types import AmoCRMCatalogElement
 from amocrm.types import AmoCRMCatalogElementField
 from amocrm.types import AmoCRMCatalogElementFieldValue
@@ -72,4 +72,4 @@ class AmoCRMCourseUpdater(BaseService):
 
     @property
     def product_catalog_id(self) -> int:
-        return AmoCRMSProductsCatalogGetter()().id
+        return AmoCRMProductsCatalogIdGetter()()

@@ -17,7 +17,7 @@ pytestmark = [
 @pytest.fixture
 def mock_product_catalog_getter(mocker):
     return mocker.patch(
-        "amocrm.services.products_catalog_getter.AmoCRMSProductsCatalogGetter.__call__", return_value=AmoCRMCatalog(id=123, name="mock", type="Mock")
+        "amocrm.services.products_catalog_getter.AmoCRMProductsCatalogIdGetter.__call__", return_value=AmoCRMCatalog(id=123, name="mock", type="Mock")
     )
 
 

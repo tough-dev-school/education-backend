@@ -2,8 +2,8 @@ import pytest
 
 from django.core.cache import cache
 
-from amocrm.services.products_catalog_getter import AmoCRMSProductsCatalogGetter
-from amocrm.services.products_catalog_getter import AmoCRMSProductsCatalogGetterException
+from amocrm.services.products_catalog_getter import AmoCRMProductsCatalogIdGetter
+from amocrm.services.products_catalog_getter import AmoCRMProductsCatalogIdGetterException
 from amocrm.types import AmoCRMCatalog
 
 pytestmark = [
@@ -29,31 +29,31 @@ def mock_get_catalogs(mocker, catalogs):
 
 @pytest.fixture
 def products_catalog_getter():
-    return AmoCRMSProductsCatalogGetter()
+    return AmoCRMProductsCatalogIdGetter()
 
 
 def test_return_catalog_if_in_cache(products_catalog_getter, products_catalog, mock_get_catalogs):
-    cache.set("amocrm_products_catalog", products_catalog)
+    cache.set("amocrm_products_catalog_id", products_catalog.id)
 
     got = products_catalog_getter()
 
-    assert got == products_catalog
+    assert got == products_catalog.id
     mock_get_catalogs.assert_not_called()
 
 
 def test_return_catalog_from_response_if_not_in_cache(products_catalog_getter, products_catalog, mock_get_catalogs):
-    cache.set("amocrm_products_catalog", None)
+    cache.set("amocrm_products_catalog_id", None)
 
     got = products_catalog_getter()
 
-    assert got == products_catalog
-    assert cache.get("amocrm_products_catalog") == products_catalog
+    assert got == products_catalog.id
+    assert cache.get("amocrm_products_catalog_id") == products_catalog.id
     mock_get_catalogs.assert_called_once()
 
 
 def test_fail_if_not_in_cache_and_not_in_response(products_catalog_getter, mock_get_catalogs):
-    cache.set("amocrm_products_catalog", None)
+    cache.set("amocrm_products_catalog_id", None)
     mock_get_catalogs.return_value = [AmoCRMCatalog(id=111, name="NotWhatINeed", type="sad-story")]
 
-    with pytest.raises(AmoCRMSProductsCatalogGetterException):
+    with pytest.raises(AmoCRMProductsCatalogIdGetterException):
         products_catalog_getter()
