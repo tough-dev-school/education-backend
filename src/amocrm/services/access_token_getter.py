@@ -6,11 +6,11 @@ from httpx import Response
 from django.conf import settings
 from django.core.cache import cache
 
-from app.exceptions import AppServiceException
+from amocrm.exceptions import AmoCRMServiceException
 from app.services import BaseService
 
 
-class AmoCRMTokenGetterException(AppServiceException):
+class AmoCRMTokenGetterException(AmoCRMServiceException):
     """Raises when it's impossible to get a token"""
 
 

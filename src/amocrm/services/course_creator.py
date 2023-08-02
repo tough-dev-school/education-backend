@@ -1,19 +1,19 @@
 from dataclasses import dataclass
 from typing import Callable
 
+from amocrm.cache.products_catalog_id_getter import AmoCRMProductsCatalogIdGetter
 from amocrm.client import AmoCRMClient
+from amocrm.exceptions import AmoCRMServiceException
 from amocrm.models import AmoCRMCourse
 from amocrm.services.product_catalog_fields_ids_manager import AmoCRMProductCatalogFieldsIdsManager
-from amocrm.services.products_catalog_id_getter import AmoCRMProductsCatalogIdGetter
 from amocrm.types import AmoCRMCatalogElement
 from amocrm.types import AmoCRMCatalogElementField
 from amocrm.types import AmoCRMCatalogElementFieldValue
-from app.exceptions import AppServiceException
 from app.services import BaseService
 from products.models import Course
 
 
-class AmoCRMCourseCreatorException(AppServiceException):
+class AmoCRMCourseCreatorException(AmoCRMServiceException):
     """Raises when it's impossible to create amocrm course"""
 
 

@@ -2,9 +2,9 @@ import typing
 
 from django.core.cache import cache
 
-from amocrm.services.products_catalog_id_getter import AmoCRMProductsCatalogIdGetter
+from amocrm.cache.products_catalog_id_getter import AmoCRMProductsCatalogIdGetter
+from amocrm.exceptions import AmoCRMServiceException
 from amocrm.types import AmoCRMCatalogField
-from app.exceptions import AppServiceException
 
 FIELDS_CODES_LITERAL = typing.Literal["SKU", "PRICE", "SPECIAL_PRICE_1", "GROUP", "DESCRIPTION", "EXTERNAL_ID"]
 FIELDS_CODES = set(typing.get_args(FIELDS_CODES_LITERAL))
@@ -18,7 +18,7 @@ FIELDS_TO_CACHE = {
 }
 
 
-class AmoCRMProductCatalogFieldsIdsManagerException(AppServiceException):
+class AmoCRMProductCatalogFieldsIdsManagerException(AmoCRMServiceException):
     """Raises when it's impossible to retrieve AmoCRM products field id"""
 
 
