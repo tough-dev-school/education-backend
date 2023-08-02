@@ -43,7 +43,7 @@ def test_request_has_authorization_header(amocrm_client, method, token, mocker):
     mock_request.assert_called_once_with(
         url="https://test.amocrm.ru/api/v4/companies",
         timeout=3,
-        data={},
+        json={},
         headers={
             "Content-Type": "application/json",
             "Accept": "application/json",

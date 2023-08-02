@@ -19,7 +19,7 @@ class AmoCRMClient:
         """Creates customer and returns amocrm_id"""
         response = self.http.post(
             url="/api/v4/customers",
-            data={"name": str(user), "_embedded": {"tags": [{"name": tag} for tag in user.tags]}},
+            data=[{"name": str(user), "_embedded": {"tags": [{"name": tag} for tag in user.tags]}}],
         )
 
         return response["_embedded"]["customers"][0]["id"]
@@ -28,7 +28,7 @@ class AmoCRMClient:
         """Updates existing in amocrm customer and returns amocrm_id"""
         response = self.http.patch(
             url="/api/v4/customers",
-            data={"id": amocrm_user.amocrm_id, "name": str(amocrm_user.user), "_embedded": {"tags": [{"name": tag} for tag in amocrm_user.user.tags]}},
+            data=[{"id": amocrm_user.amocrm_id, "name": str(amocrm_user.user), "_embedded": {"tags": [{"name": tag} for tag in amocrm_user.user.tags]}}],
         )
 
         return response["_embedded"]["customers"][0]["id"]
