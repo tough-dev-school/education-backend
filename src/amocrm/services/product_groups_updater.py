@@ -1,7 +1,7 @@
+from amocrm.cache.catalog_id import get_catalog_id
+from amocrm.cache.product_fields_ids import get_product_field_id
 from amocrm.client import AmoCRMClient
 from amocrm.models import AmoCRMProductGroup
-from amocrm.services.product_catalog_fields_ids_manager import AmoCRMProductCatalogFieldsIdsManager
-from amocrm.services.products_catalog_id_getter import AmoCRMProductsCatalogIdGetter
 from amocrm.types import AmoCRMCatalogFieldValue
 from app.services import BaseService
 from products.models import Group
@@ -47,8 +47,8 @@ class AmoCRMProductGroupsUpdater(BaseService):
 
     @property
     def product_catalog_id(self) -> int:
-        return AmoCRMProductsCatalogIdGetter()()
+        return get_catalog_id(catalog_type="products")
 
     @property
     def group_field_id(self) -> int:
-        return AmoCRMProductCatalogFieldsIdsManager().get_product_field_id("GROUP")
+        return get_product_field_id(field_code="GROUP")

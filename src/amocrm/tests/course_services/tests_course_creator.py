@@ -11,6 +11,12 @@ pytestmark = [
 ]
 
 
+@pytest.fixture(autouse=True)
+def _mock_fields_id(mocker):
+    mocker.patch("amocrm.services.course_creator.get_product_field_id", return_value=333)
+    mocker.patch("amocrm.services.course_creator.get_catalog_id", return_value=777)
+
+
 @pytest.fixture
 def created_element(element_fields):
     return AmoCRMCatalogElement(id=999, name="TopCourse", custom_fields_values=element_fields)
