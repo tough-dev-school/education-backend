@@ -32,7 +32,7 @@ class AmoCRMHTTP:
 
         return self.get_validated_response(response=response, url=url, expected_status_codes=expected_status_codes)
 
-    def post(self, url: str, data: dict[str, Any], expected_status_codes: list[int] | None = None) -> dict[str, Any]:
+    def post(self, url: str, data: dict | list, expected_status_codes: list[int] | None = None) -> dict[str, Any]:
         return self.request(
             method="post",
             url=url,
@@ -40,7 +40,7 @@ class AmoCRMHTTP:
             expected_status_codes=expected_status_codes,
         )
 
-    def patch(self, url: str, data: dict[str, Any], expected_status_codes: list[int] | None = None) -> dict[str, Any]:
+    def patch(self, url: str, data: dict | list, expected_status_codes: list[int] | None = None) -> dict[str, Any]:
         return self.request(
             method="patch",
             url=url,
@@ -48,7 +48,7 @@ class AmoCRMHTTP:
             expected_status_codes=expected_status_codes,
         )
 
-    def request(self, method: str, url: str, data: dict[str, Any] | None = None, expected_status_codes: list[int] | None = None) -> dict[str, Any]:
+    def request(self, method: str, url: str, data: dict | list | None = None, expected_status_codes: list[int] | None = None) -> dict[str, Any]:
         request = getattr(self.client, method)
         response = request(
             url=self.format_url(url),

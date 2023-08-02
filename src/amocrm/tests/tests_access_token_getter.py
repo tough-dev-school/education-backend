@@ -43,7 +43,7 @@ def test_calls_post_with_correct_params_when_no_access_token(token_getter, post)
             "client_id": "4815162342",
             "client_secret": "top-secret-007",
             "grant_type": "refresh_token",
-            "code": "so-refreshing",
+            "refresh_token": "so-refreshing",
             "redirect_uri": "https://test-education.ru",
         },
     )
