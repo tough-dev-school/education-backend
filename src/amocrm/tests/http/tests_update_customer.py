@@ -46,11 +46,13 @@ def test_update_customer_request_fields(amocrm_user, amocrm_client, patch):
     assert got == 1369385
     patch.assert_called_once_with(
         url="/api/v4/customers",
-        data={
-            "id": 1369385,
-            "name": "First Last",
-            "_embedded": {"tags": [{"name": "b2b"}, {"name": "any-purchase"}]},
-        },
+        data=[
+            {
+                "id": 1369385,
+                "name": "First Last",
+                "_embedded": {"tags": [{"name": "b2b"}, {"name": "any-purchase"}]},
+            },
+        ],
     )
 
 
@@ -66,9 +68,11 @@ def test_update_anonymous_customer(amocrm_user, amocrm_client, patch):
     assert got == 1369385
     patch.assert_called_once_with(
         url="/api/v4/customers",
-        data={
-            "id": 1369385,
-            "name": "Anonymous",
-            "_embedded": {"tags": []},
-        },
+        data=[
+            {
+                "id": 1369385,
+                "name": "Anonymous",
+                "_embedded": {"tags": []},
+            },
+        ],
     )

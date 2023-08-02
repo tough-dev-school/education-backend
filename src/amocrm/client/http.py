@@ -53,7 +53,7 @@ class AmoCRMHTTP:
         response = request(
             url=self.format_url(url),
             timeout=3,
-            data=data,
+            json=data,
             headers={
                 "Content-Type": "application/json",
                 "Accept": "application/json",

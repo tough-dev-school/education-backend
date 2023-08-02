@@ -41,10 +41,12 @@ def test_create_customer_request_fields(user, amocrm_client, post):
     assert got == 1369385
     post.assert_called_once_with(
         url="/api/v4/customers",
-        data={
-            "name": "First Last",
-            "_embedded": {"tags": [{"name": "b2b"}, {"name": "any-purchase"}]},
-        },
+        data=[
+            {
+                "name": "First Last",
+                "_embedded": {"tags": [{"name": "b2b"}, {"name": "any-purchase"}]},
+            },
+        ],
     )
 
 
@@ -60,8 +62,10 @@ def test_create_anonymous_customer(user, amocrm_client, post):
     assert got == 1369385
     post.assert_called_once_with(
         url="/api/v4/customers",
-        data={
-            "name": "Anonymous",
-            "_embedded": {"tags": []},
-        },
+        data=[
+            {
+                "name": "Anonymous",
+                "_embedded": {"tags": []},
+            },
+        ],
     )
