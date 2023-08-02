@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 from typing import Callable
 
+from amocrm.cache.product_catalog_fields_ids_manager import AmoCRMProductCatalogFieldsIdsManager
 from amocrm.cache.products_catalog_id_getter import AmoCRMProductsCatalogIdGetter
 from amocrm.client import AmoCRMClient
 from amocrm.exceptions import AmoCRMServiceException
 from amocrm.models import AmoCRMCourse
-from amocrm.services.product_catalog_fields_ids_manager import AmoCRMProductCatalogFieldsIdsManager
 from amocrm.types import AmoCRMCatalogElement
 from amocrm.types import AmoCRMCatalogElementField
 from amocrm.types import AmoCRMCatalogElementFieldValue
