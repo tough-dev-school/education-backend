@@ -10,6 +10,10 @@ class AmoCRMCatalog:
     name: str
     type: str
 
+    @classmethod
+    def from_json(cls, data: dict) -> "AmoCRMCatalog":
+        return cls(id=data["id"], name=data["name"], type=data["type"])
+
 
 @dataclass(frozen=True)
 class AmoCRMCatalogFieldValue:
@@ -18,6 +22,10 @@ class AmoCRMCatalogFieldValue:
 
     def to_json(self) -> dict:
         return {key: value for key, value in asdict(self).items() if value is not None}
+
+    @classmethod
+    def from_json(cls, data: dict) -> "AmoCRMCatalogFieldValue":
+        return cls(id=data["id"], value=data["value"])
 
 
 @dataclass(frozen=True)
@@ -32,7 +40,7 @@ class AmoCRMCatalogField:
     def from_json(cls, data: dict) -> "AmoCRMCatalogField":
         nested = data["nested"]
         if nested is not None:
-            nested = [AmoCRMCatalogFieldValue(value=nested_data["value"], id=nested_data["id"]) for nested_data in nested]
+            nested = [AmoCRMCatalogFieldValue.from_json(nested_data) for nested_data in nested]
         return cls(
             id=data["id"],
             name=data["name"],
@@ -46,6 +54,13 @@ class AmoCRMCatalogField:
 class AmoCRMCatalogElementFieldValue:
     value: str | int | Decimal
 
+    def to_json(self) -> dict:
+        return asdict(self)
+
+    @classmethod
+    def from_json(cls, data: dict) -> "AmoCRMCatalogElementFieldValue":
+        return cls(value=data["value"])
+
 
 @dataclass(frozen=True)
 class AmoCRMCatalogElementField:
@@ -53,11 +68,11 @@ class AmoCRMCatalogElementField:
     values: list[AmoCRMCatalogElementFieldValue]
 
     def to_json(self) -> dict:
-        return {"field_id": self.field_id, "values": [asdict(value) for value in self.values]}
+        return {"field_id": self.field_id, "values": [value.to_json() for value in self.values]}
 
     @classmethod
     def from_json(cls, data: dict) -> "AmoCRMCatalogElementField":
-        return cls(field_id=data["field_id"], values=[AmoCRMCatalogElementFieldValue(value=nested_data["value"]) for nested_data in data["values"]])
+        return cls(field_id=data["field_id"], values=[AmoCRMCatalogElementFieldValue.from_json(nested_data) for nested_data in data["values"]])
 
 
 @dataclass(frozen=True)
