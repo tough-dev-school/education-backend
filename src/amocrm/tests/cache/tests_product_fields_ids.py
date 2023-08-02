@@ -50,11 +50,14 @@ def test_return_id_if_in_cache(mock_get_catalog_fields):
 
 @pytest.mark.usefixtures("mock_get_catalog_id")
 def test_return_field_from_response_if_not_in_cache(mock_get_catalog_fields, mock_get_catalog_id):
+    cache.clear()
+
     got = get_product_field_id("GROUP")
-    mock_get_catalog_id.assert_called_once()
+
     assert got == 333
     assert cache.get("amocrm_products_group_id") == 333
     mock_get_catalog_fields.assert_called_once()
+    mock_get_catalog_id.assert_called_once()
 
 
 @pytest.mark.usefixtures("mock_get_catalog_id")
