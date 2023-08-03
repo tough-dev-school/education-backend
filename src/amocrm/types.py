@@ -55,7 +55,7 @@ class AmoCRMCatalogElementFieldValue:
     value: str | int | Decimal
 
     def to_json(self) -> dict:
-        return asdict(self)
+        return {"value": str(self.value)}  # it stores as string in amocrm
 
     @classmethod
     def from_json(cls, data: dict) -> "AmoCRMCatalogElementFieldValue":

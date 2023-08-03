@@ -2,6 +2,7 @@ from typing import Literal
 
 from django.core.cache import cache
 
+from amocrm.client import AmoCRMClient
 from amocrm.exceptions import AmoCRMCacheException
 
 CATALOG_TYPES = Literal["products"]
@@ -9,8 +10,6 @@ CATALOGS_TO_CACHE = {"products": "amocrm_products_catalog_id"}
 
 
 def get_catalog_id_amocrm(catalog_type: CATALOG_TYPES) -> int:
-    from amocrm.client import AmoCRMClient
-
     client = AmoCRMClient()
     catalogs = [catalog for catalog in client.get_catalogs() if catalog.type == catalog_type]
     if len(catalogs) != 1:

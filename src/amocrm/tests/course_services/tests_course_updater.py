@@ -42,3 +42,10 @@ def test_updates_correct_call(course_updater, amocrm_course, mock_update_catalog
         catalog_id=777,
         element=updated_element,
     )
+
+
+@pytest.mark.usefixtures("mock_update_catalog_element")
+def test_update_amocrm_course(course_updater, amocrm_course):
+    got = course_updater(amocrm_course)
+
+    assert got == amocrm_course.amocrm_id

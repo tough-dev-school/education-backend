@@ -21,6 +21,7 @@ class AmoCRMCourseCreatorException(AmoCRMServiceException):
 class AmoCRMCourseCreator(BaseService):
     """
     Creates course as element of products catalog in amocrm
+    Returns id of created AmoCRM product catalog entity
     """
 
     course: Course
@@ -28,7 +29,7 @@ class AmoCRMCourseCreator(BaseService):
     def __post_init__(self) -> None:
         self.client = AmoCRMClient()
 
-    def act(self) -> None:
+    def act(self) -> int:
         course_as_element = AmoCRMCatalogElement(
             name=self.course.name,
             custom_fields_values=self.get_fields_values(),
@@ -39,7 +40,8 @@ class AmoCRMCourseCreator(BaseService):
             element=course_as_element,
         )
 
-        AmoCRMCourse.objects.create(course=self.course, amocrm_id=element_with_amocrm_id.id)  # type: ignore
+        amocrm_course = AmoCRMCourse.objects.create(course=self.course, amocrm_id=element_with_amocrm_id.id)  # type: ignore
+        return amocrm_course.amocrm_id
 
     def get_fields_values(self) -> list[AmoCRMCatalogElementField]:
         price_field = AmoCRMCatalogElementField(

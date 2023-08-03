@@ -3,6 +3,7 @@ import typing
 from django.core.cache import cache
 
 from amocrm.cache.catalog_id import get_catalog_id
+from amocrm.client import AmoCRMClient
 from amocrm.exceptions import AmoCRMCacheException
 
 FIELDS_CODES = typing.Literal["SKU", "PRICE", "SPECIAL_PRICE_1", "GROUP", "DESCRIPTION", "EXTERNAL_ID"]
@@ -17,8 +18,6 @@ FIELDS_TO_CACHE = {
 
 
 def get_field_id_from_amocrm(field_code: FIELDS_CODES) -> int:
-    from amocrm.client import AmoCRMClient
-
     client = AmoCRMClient()
     product_catalog_id = get_catalog_id(catalog_type="products")
 

@@ -40,7 +40,7 @@ class AmoCRMClient:
     def get_catalogs(self) -> list[AmoCRMCatalog]:
         """Returns all catalogs from amocrm"""
         response = self.http.get(url="/api/v4/catalogs", params={"limit": 250})  # request max amount of catalogs
-        return [AmoCRMCatalog.from_json(catalog) for catalog in response["_embedded"]["items"]]
+        return [AmoCRMCatalog.from_json(catalog) for catalog in response["_embedded"]["catalogs"]]
 
     def get_catalog_fields(self, catalog_id: int) -> list[AmoCRMCatalogField]:
         """Returns chosen catalog's fields"""
