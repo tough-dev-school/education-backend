@@ -13,7 +13,7 @@ def _successful_response(get):
     get.return_value = {
         "_links": {"self": {"href": "/api/v2/catalogs", "method": "get"}},
         "_embedded": {
-            "items": [
+            "catalogs": [
                 {
                     "id": 11271,
                     "name": "Товары",
