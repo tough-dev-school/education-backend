@@ -55,7 +55,7 @@ class AmoCRMCourseUpdater(BaseService):
 
         if self.course.group is not None:
             group_field = AmoCRMCatalogElementField(
-                field_id=self.sku_field_id,
+                field_id=self.group_field_id,
                 values=[AmoCRMCatalogElementFieldValue(value=self.course.group.slug)],
             )
             fields_values.append(group_field)
