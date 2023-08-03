@@ -19,6 +19,7 @@ class AmoCRMCourseUpdaterException(AmoCRMServiceException):
 class AmoCRMCourseUpdater(BaseService):
     """
     Updates course as element of products catalog in amocrm
+    Returns id of updated AmoCRM product catalog entity
     """
 
     amocrm_course: AmoCRMCourse
@@ -27,7 +28,7 @@ class AmoCRMCourseUpdater(BaseService):
         self.client = AmoCRMClient()
         self.course = self.amocrm_course.course
 
-    def act(self) -> None:
+    def act(self) -> int:
         course_as_element = AmoCRMCatalogElement(
             id=self.amocrm_course.amocrm_id,
             name=self.course.name,
@@ -38,6 +39,8 @@ class AmoCRMCourseUpdater(BaseService):
             catalog_id=self.product_catalog_id,
             element=course_as_element,
         )
+
+        return self.amocrm_course.amocrm_id
 
     def get_fields_values(self) -> list[AmoCRMCatalogElementField]:
         price_field = AmoCRMCatalogElementField(

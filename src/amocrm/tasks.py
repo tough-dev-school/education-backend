@@ -72,9 +72,9 @@ def push_product_groups() -> None:
     rate_limit="3/s",
     acks_late=True,
 )
-def push_course(course_id: int) -> None:
+def push_course(course_id: int) -> int:
     course = apps.get_model("products.Course").objects.get(id=course_id)
     if hasattr(course, "amocrm_course"):
-        AmoCRMCourseUpdater(amocrm_course=course.amocrm_course)()
+        return AmoCRMCourseUpdater(amocrm_course=course.amocrm_course)()
     else:
-        AmoCRMCourseCreator(course=course)()
+        return AmoCRMCourseCreator(course=course)()

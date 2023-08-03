@@ -33,9 +33,10 @@ def course_creator():
 
 
 def test_creates_amocrm_course(course_creator, course):
-    course_creator(course)
+    got = course_creator(course)
 
     amocrm_course = AmoCRMCourse.objects.get()
+    assert got == amocrm_course.amocrm_id
     assert amocrm_course.course == course
     assert amocrm_course.amocrm_id == 999
 
