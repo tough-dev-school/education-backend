@@ -60,4 +60,4 @@ class UserUpdater(BaseService):
         regenerate_diplomas.delay(student_id=self.user.id)
 
     def update_in_amocrm(self) -> None:
-        push_customer.delay(user_id=self.user.id).set(queue="amocrm")
+        push_customer.delay(user_id=self.user.id)
