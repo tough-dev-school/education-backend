@@ -26,6 +26,8 @@ class AmoCRMCourseCreator(BaseService):
 
     course: Course
 
+    unit = "шт"  # hardcoded unit type for all courses
+
     def __post_init__(self) -> None:
         self.client = AmoCRMClient()
 
@@ -52,11 +54,15 @@ class AmoCRMCourseCreator(BaseService):
             field_id=self.sku_field_id,
             values=[AmoCRMCatalogElementFieldValue(value=self.course.slug)],
         )
-        fields_values = [price_field, sku_field]
+        unit_field = AmoCRMCatalogElementField(
+            field_id=self.unit_field_id,
+            values=[AmoCRMCatalogElementFieldValue(value=self.unit)],
+        )
+        fields_values = [price_field, sku_field, unit_field]
 
         if self.course.group is not None:
             group_field = AmoCRMCatalogElementField(
-                field_id=self.sku_field_id,
+                field_id=self.group_field_id,
                 values=[AmoCRMCatalogElementFieldValue(value=self.course.group.slug)],
             )
             fields_values.append(group_field)
@@ -73,6 +79,10 @@ class AmoCRMCourseCreator(BaseService):
     @property
     def group_field_id(self) -> int:
         return get_product_field_id(field_code="GROUP")
+
+    @property
+    def unit_field_id(self) -> int:
+        return get_product_field_id(field_code="UNIT")
 
     @property
     def product_catalog_id(self) -> int:

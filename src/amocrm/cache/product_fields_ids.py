@@ -6,7 +6,7 @@ from amocrm.cache.catalog_id import get_catalog_id
 from amocrm.client import AmoCRMClient
 from amocrm.exceptions import AmoCRMCacheException
 
-FIELDS_CODES = typing.Literal["SKU", "PRICE", "SPECIAL_PRICE_1", "GROUP", "DESCRIPTION", "EXTERNAL_ID"]
+FIELDS_CODES = typing.Literal["SKU", "PRICE", "SPECIAL_PRICE_1", "GROUP", "DESCRIPTION", "EXTERNAL_ID", "UNIT"]
 FIELDS_TO_CACHE = {
     "SKU": "amocrm_products_sku_id",
     "PRICE": "amocrm_products_price_id",
@@ -14,6 +14,7 @@ FIELDS_TO_CACHE = {
     "GROUP": "amocrm_products_group_id",
     "DESCRIPTION": "amocrm_products_description_id",
     "EXTERNAL_ID": "amocrm_products_external_id_id",
+    "UNIT": "amocrm_products_unit_id",
 }
 
 
