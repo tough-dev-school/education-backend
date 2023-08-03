@@ -26,8 +26,8 @@ def _successful_response(post):
                     "is_deleted": None,
                     "custom_fields_values": [
                         {"field_id": 2235143, "field_name": "Артикул", "field_code": "SKU", "field_type": "text", "values": [{"value": "not-hehe"}]},
-                        {"field_id": 2235147, "field_name": "Цена", "field_code": "PRICE", "field_type": "price", "values": [{"value": 999.12}]},
-                        {"field_id": 2235151, "field_name": "External ID", "field_code": "EXTERNAL_ID", "field_type": "text", "values": [{"value": 333}]},
+                        {"field_id": 2235147, "field_name": "Цена", "field_code": "PRICE", "field_type": "price", "values": [{"value": "999.12"}]},
+                        {"field_id": 2235151, "field_name": "External ID", "field_code": "EXTERNAL_ID", "field_type": "text", "values": [{"value": "333"}]},
                     ],
                     "catalog_id": 11271,
                     "account_id": 31204626,
@@ -60,7 +60,15 @@ def element(element_fields):
 def test_create_catalog_element(user, amocrm_client, element, element_fields):
     got = amocrm_client.create_catalog_element(catalog_id=777, element=element)
 
-    assert got == AmoCRMCatalogElement(id=14229449, name="PopugFields", custom_fields_values=element_fields)
+    assert got == AmoCRMCatalogElement(
+        id=14229449,
+        name="PopugFields",
+        custom_fields_values=[
+            AmoCRMCatalogElementField(field_id=2235143, values=[AmoCRMCatalogElementFieldValue(value="not-hehe")]),
+            AmoCRMCatalogElementField(field_id=2235147, values=[AmoCRMCatalogElementFieldValue(value="999.12")]),
+            AmoCRMCatalogElementField(field_id=2235151, values=[AmoCRMCatalogElementFieldValue(value="333")]),
+        ],
+    )
 
 
 @pytest.mark.usefixtures("_successful_response")
@@ -74,8 +82,8 @@ def test_create_catalog_element_post_correct_params(user, amocrm_client, post, e
                 "name": "PopugFields",
                 "custom_fields_values": [
                     {"field_id": 2235143, "values": [{"value": "not-hehe"}]},
-                    {"field_id": 2235147, "values": [{"value": 999.12}]},
-                    {"field_id": 2235151, "values": [{"value": 333}]},
+                    {"field_id": 2235147, "values": [{"value": "999.12"}]},
+                    {"field_id": 2235151, "values": [{"value": "333"}]},
                 ],
             },
         ],

@@ -11,7 +11,7 @@ pytestmark = [
 @pytest.fixture
 def _successful_response(get):
     get.return_value = {
-        "_links": {"self": {"href": "/api/v2/catalogs", "method": "get"}},
+        "_links": {"self": {"href": "/api/v4/catalogs", "method": "get"}},
         "_embedded": {
             "catalogs": [
                 {
@@ -26,7 +26,7 @@ def _successful_response(get):
                     "can_link_multiple": True,
                     "sdk_widget_code": None,
                     "widgets": [],
-                    "_links": {"self": {"href": "/api/v2/catalogs?id=11271", "method": "get"}},
+                    "_links": {"self": {"href": "/api/v4/catalogs?id=11271", "method": "get"}},
                 },
                 {
                     "id": 11273,
@@ -40,7 +40,7 @@ def _successful_response(get):
                     "can_link_multiple": True,
                     "sdk_widget_code": None,
                     "widgets": [],
-                    "_links": {"self": {"href": "/api/v2/catalogs?id=11273", "method": "get"}},
+                    "_links": {"self": {"href": "/api/v4/catalogs?id=11273", "method": "get"}},
                 },
             ]
         },
