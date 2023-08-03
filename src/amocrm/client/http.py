@@ -6,11 +6,12 @@ from httpx import Response
 
 from django.conf import settings
 
+from amocrm.exceptions import AmoCRMException
 from amocrm.services.access_token_getter import AmoCRMTokenGetter
 
 
-class AmoCRMClientException(Exception):
-    pass
+class AmoCRMClientException(AmoCRMException):
+    """Raises when client cannot make successful request"""
 
 
 class AmoCRMHTTP:

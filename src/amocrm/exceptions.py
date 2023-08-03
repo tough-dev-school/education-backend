@@ -16,4 +16,5 @@ class AmoCRMServiceException(AppServiceException, AmoCRMException):
 __all__ = [
     "AmoCRMCacheException",
     "AmoCRMServiceException",
+    "AmoCRMException",
 ]
