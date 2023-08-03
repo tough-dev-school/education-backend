@@ -1,5 +1,9 @@
+from typing import Any
+
+from django.http import HttpRequest
 from django.utils.translation import gettext as _
 
+from amocrm import tasks
 from app.admin import admin
 from app.admin import ModelAdmin
 from mailing.admin.email_configuration import EmailConfigurationAdmin
@@ -87,3 +91,9 @@ class CourseAdmin(ModelAdmin):
     @admin.display(boolean=True)
     def has_cover(self, course: Course) -> bool:
         return bool(course.cover)
+
+    def save_model(self, request: HttpRequest, obj: Course, form: Any, change: Any) -> None:
+        super().save_model(request, obj, form, change)
+
+        if tasks.amocrm_enabled():
+            tasks.push_course.delay(course_id=obj.pk)
