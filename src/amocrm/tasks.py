@@ -79,3 +79,12 @@ def push_course(course_id: int) -> int:
         return AmoCRMCourseUpdater(amocrm_course=course.amocrm_course)()
     else:
         return AmoCRMCourseCreator(course=course)()
+
+
+@celery.task(
+    acks_late=True,
+)
+def push_all_courses() -> None:
+    courses = apps.get_model("products.Course").objects.all()
+    for course in courses:
+        push_course.delay(course_id=course.id)
