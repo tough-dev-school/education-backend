@@ -17,6 +17,12 @@ def amocrm_enabled() -> bool:
     return settings.AMOCRM_BASE_URL != ""
 
 
+@celery.task(acks_late=True)
+def push_customer(user_id: int) -> None:
+    """Parent task to save task settings for child task in chain"""
+    _push_customer.delay(user_id=user_id)
+
+
 @celery.task(
     autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
     retry_kwargs={
@@ -40,7 +46,7 @@ def enable_customers() -> None:
     rate_limit="3/s",
     acks_late=True,
 )
-def push_customer(user_id: int) -> int:
+def _push_customer(user_id: int) -> int:
     client = AmoCRMClient()
     user = apps.get_model("users.User").objects.get(id=user_id)
     if hasattr(user, "amocrm_user"):
