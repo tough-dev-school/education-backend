@@ -30,6 +30,14 @@ celery.conf.update(
             "task": "chains.tasks.send_active_chains",
             "schedule": crontab(hour="*", minute="*/5"),
         },
+        "amocrm_push_all_courses": {
+            "task": "amocrm.tasks.push_all_courses",
+            "schedule": crontab(minute="15", hour="*/2"),
+        },
+        "amocrm_push_all_product_groups": {
+            "task": "amocrm.tasks.push_product_groups",
+            "schedule": crontab(minute="5", hour="*/2"),
+        },
     },
 )
 
