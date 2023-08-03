@@ -20,7 +20,7 @@ def get_catalog_id_amocrm(catalog_type: CATALOG_TYPES) -> int:
 
 def get_catalog_id(catalog_type: CATALOG_TYPES) -> int:
     cache_key = CATALOGS_TO_CACHE[catalog_type]
-    return cache.get_or_set(cache_key, lambda: get_catalog_id_amocrm(catalog_type))  # type: ignore
+    return cache.get_or_set(cache_key, lambda: get_catalog_id_amocrm(catalog_type), timeout=None)  # type: ignore
 
 
 __all__ = ["get_catalog_id"]
