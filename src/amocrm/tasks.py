@@ -40,14 +40,15 @@ def enable_customers() -> None:
     rate_limit="3/s",
     acks_late=True,
 )
-def push_customer(user_id: int) -> None:
+def push_customer(user_id: int) -> int:
     client = AmoCRMClient()
     user = apps.get_model("users.User").objects.get(id=user_id)
     if hasattr(user, "amocrm_user"):
-        client.update_customer(amocrm_user=user.amocrm_user)
+        return client.update_customer(amocrm_user=user.amocrm_user)
     else:
         amocrm_id = client.create_customer(user=user)
-        AmoCRMUser.objects.create(user=user, amocrm_id=amocrm_id)
+        amocrm_user = AmoCRMUser.objects.create(user=user, amocrm_id=amocrm_id)
+        return amocrm_user.amocrm_id
 
 
 @celery.task(
