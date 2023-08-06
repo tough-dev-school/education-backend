@@ -348,7 +348,7 @@ pyflakes==2.5.0
     # via
     #   autoflake
     #   flake8
-pygments==2.15.1
+pygments==2.16.0
     # via ipython
 pyjwt[crypto]==2.8.0
     # via
