@@ -1,10 +1,13 @@
 from dataclasses import dataclass
 import uuid
 
+from celery import chain
 from rest_framework import serializers
 
 from django.utils.functional import cached_property
 
+from amocrm.tasks import amocrm_enabled
+from amocrm.tasks import push_customer
 from app.services import BaseService
 from users.models import User
 from users.tasks import rebuild_tags
@@ -58,6 +61,21 @@ class UserCreator(BaseService):
         return serializer.instance  # type: ignore
 
     def after_creation(self, created_user: User) -> None:
-        if self.subscribe:
-            if created_user.email and len(created_user.email):
-                rebuild_tags.delay(created_user.id)
+        if not self.subscribe and not amocrm_enabled():
+            rebuild_tags.delay(student_id=created_user.id, subscribe=False)
+            return None
+
+        can_be_subscribed = self.subscribe and created_user.email and len(created_user.email)
+        if can_be_subscribed:
+            if amocrm_enabled():
+                tasks_chain = chain(
+                    rebuild_tags.si(student_id=created_user.id, subscribe=True),
+                    push_customer.si(user_id=created_user.id).set(queue="amocrm"),
+                )
+                tasks_chain.delay()
+                return None
+
+            rebuild_tags.delay(student_id=created_user.id, subscribe=True)
+
+        else:
+            push_customer.delay(user_id=created_user.id)

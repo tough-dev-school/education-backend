@@ -57,7 +57,7 @@ def test_user_is_subscribed_with_tags(creator, mixer, rebuild_tags):
     user = mixer.blend(User, first_name="Фёдор", last_name="Шаляпин", email="support@m1crosoft.com")
     creator(name="r00t", email="support@m1crosoft.com")()
 
-    rebuild_tags.assert_called_once_with(user.id)
+    rebuild_tags.assert_called_once_with(student_id=user.id, subscribe=True)
 
 
 def test_log_entry_is_created(creator, campaign):

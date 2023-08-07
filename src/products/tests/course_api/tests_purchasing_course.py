@@ -49,7 +49,7 @@ def test_user_auto_subscription(call_purchase, wants_to_subscribe, should_be_sub
     placed = get_order()
     placed.user.refresh_from_db()
 
-    assert rebuild_tags.called is should_be_subscribed
+    rebuild_tags.assert_called_once_with(student_id=placed.user.id, subscribe=should_be_subscribed)
 
 
 def test_subscription_tags(call_purchase, rebuild_tags):
@@ -57,7 +57,7 @@ def test_subscription_tags(call_purchase, rebuild_tags):
 
     placed = get_order()
 
-    rebuild_tags.assert_called_once_with(placed.user.id)
+    rebuild_tags.assert_called_once_with(student_id=placed.user.id, subscribe=True)
 
 
 def test_by_default_user_is_not_subscribed(call_purchase):

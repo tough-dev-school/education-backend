@@ -11,21 +11,21 @@ def rebuild_tags(mocker):
 
 
 def test_user_is_not_subscribed_to_dashamail_by_default(rebuild_tags):
-    UserCreator(name="Рулон Обоев", email="rulon.oboev@gmail.com")()
+    created = UserCreator(name="Рулон Обоев", email="rulon.oboev@gmail.com")()
 
-    rebuild_tags.assert_not_called()
+    rebuild_tags.assert_called_once_with(student_id=created.id, subscribe=False)
 
 
 def test_tags_are_passed(rebuild_tags):
     created = UserCreator(name="Рулон Обоев", email="rulon.oboev@gmail.com", subscribe=True)()
 
-    rebuild_tags.assert_called_once_with(created.id)
+    rebuild_tags.assert_called_once_with(student_id=created.id, subscribe=True)
 
 
 def test_not_subscribed(rebuild_tags):
-    UserCreator(name="Рулон Обоев", email="rulon.oboev@gmail.com", subscribe=False)()
+    created = UserCreator(name="Рулон Обоев", email="rulon.oboev@gmail.com", subscribe=False)()
 
-    rebuild_tags.assert_not_called()
+    rebuild_tags.assert_called_once_with(student_id=created.id, subscribe=False)
 
 
 @pytest.mark.parametrize("wants_to_subscribe", [True, False])

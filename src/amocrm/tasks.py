@@ -17,6 +17,16 @@ def amocrm_enabled() -> bool:
     return settings.AMOCRM_BASE_URL != ""
 
 
+@celery.task(acks_late=True)
+def push_customer(user_id: int) -> int:
+    """
+    Parent task to save task settings for child task in chain
+    https://github.com/celery/celery/issues/5219
+    """
+    amocrm_customer_id = _push_customer.delay(user_id=user_id)
+    return amocrm_customer_id.get()
+
+
 @celery.task(
     autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
     retry_kwargs={
@@ -40,7 +50,7 @@ def enable_customers() -> None:
     rate_limit="3/s",
     acks_late=True,
 )
-def push_customer(user_id: int) -> int:
+def _push_customer(user_id: int) -> int:
     client = AmoCRMClient()
     user = apps.get_model("users.User").objects.get(id=user_id)
     if hasattr(user, "amocrm_user"):
@@ -79,3 +89,16 @@ def push_course(course_id: int) -> int:
         return AmoCRMCourseUpdater(amocrm_course=course.amocrm_course)()
     else:
         return AmoCRMCourseCreator(course=course)()
+
+
+@celery.task(acks_late=True)
+def _push_all_courses() -> None:
+    courses = apps.get_model("products.Course").objects.all()
+    for course in courses:
+        push_course.delay(course_id=course.id)
+
+
+@celery.task(acks_late=True)
+def push_all_products_and_product_groups() -> None:
+    push_product_groups.delay()
+    _push_all_courses.apply_async(countdown=30)

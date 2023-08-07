@@ -2,6 +2,8 @@ from dataclasses import dataclass
 
 from rest_framework import serializers
 
+from amocrm.tasks import amocrm_enabled
+from amocrm.tasks import push_customer
 from app.services import BaseService
 from diplomas.tasks import regenerate_diplomas
 from users.models import User
@@ -51,5 +53,11 @@ class UserUpdater(BaseService):
         if fields_used_in_diplomas.intersection(updated_fields):
             self.regenerate_diplomas()
 
+        if amocrm_enabled():
+            self.update_in_amocrm()
+
     def regenerate_diplomas(self) -> None:
         regenerate_diplomas.delay(student_id=self.user.id)
+
+    def update_in_amocrm(self) -> None:
+        push_customer.delay(user_id=self.user.id)
