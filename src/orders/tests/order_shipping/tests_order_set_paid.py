@@ -47,7 +47,7 @@ def test_ships(order, course, user, ship):
 def test_update_user_tags(order, rebuild_tags):
     order.set_paid()
 
-    rebuild_tags.assert_called_once_with(student_id=order.user.id)
+    rebuild_tags.assert_called_once_with(student_id=order.user.id, subscribe=True)
 
 
 def test_call_update_user_celery_chain(order, mock_update_user_chain, mock_rebuild_tags, mock_push_customer, settings):

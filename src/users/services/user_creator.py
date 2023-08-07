@@ -62,19 +62,20 @@ class UserCreator(BaseService):
 
     def after_creation(self, created_user: User) -> None:
         if not self.subscribe and not amocrm_enabled():
+            rebuild_tags.delay(student_id=created_user.id, subscribe=False)
             return None
 
         can_be_subscribed = self.subscribe and created_user.email and len(created_user.email)
         if can_be_subscribed:
             if amocrm_enabled():
                 tasks_chain = chain(
-                    rebuild_tags.si(student_id=created_user.id),
+                    rebuild_tags.si(student_id=created_user.id, subscribe=True),
                     push_customer.si(user_id=created_user.id).set(queue="amocrm"),
                 )
                 tasks_chain.delay()
                 return None
 
-            rebuild_tags.delay(student_id=created_user.id)
+            rebuild_tags.delay(student_id=created_user.id, subscribe=True)
 
         else:
             push_customer.delay(user_id=created_user.id)
