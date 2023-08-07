@@ -18,9 +18,13 @@ def amocrm_enabled() -> bool:
 
 
 @celery.task(acks_late=True)
-def push_customer(user_id: int) -> None:
-    """Parent task to save task settings for child task in chain"""
-    _push_customer.delay(user_id=user_id)
+def push_customer(user_id: int) -> int:
+    """
+    Parent task to save task settings for child task in chain
+    https://github.com/celery/celery/issues/5219
+    """
+    amocrm_customer_id = _push_customer.delay(user_id=user_id)
+    return amocrm_customer_id.get()
 
 
 @celery.task(
@@ -88,7 +92,13 @@ def push_course(course_id: int) -> int:
 
 
 @celery.task(acks_late=True)
-def push_all_courses() -> None:
+def _push_all_courses() -> None:
     courses = apps.get_model("products.Course").objects.all()
     for course in courses:
         push_course.delay(course_id=course.id)
+
+
+@celery.task(acks_late=True)
+def push_all_products_and_product_groups() -> None:
+    push_product_groups.delay()
+    _push_all_courses.apply_async(countdown=30)
