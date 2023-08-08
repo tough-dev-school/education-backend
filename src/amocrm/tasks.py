@@ -1,4 +1,4 @@
-from celery import chord
+from celery import chain
 from httpx import TransportError
 
 from django.apps import apps
@@ -31,15 +31,12 @@ def amocrm_enabled() -> bool:
     acks_late=True,
 )
 def push_user_to_amocrm(user_id: int) -> None:
-    tasks_chord = chord(
-        [
-            _push_customer.si(user_id=user_id),
-            _push_contact.si(user_id=user_id),
-        ]
-    )(
+    tasks_chain = chain(
+        _push_customer.si(user_id=user_id),
+        _push_contact.si(user_id=user_id),
         _link_contact_to_user.si(user_id=user_id),
     )
-    return tasks_chord.get()
+    return tasks_chain.delay()
 
 
 @celery.task(
