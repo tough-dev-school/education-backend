@@ -1,3 +1,5 @@
+from _decimal import Decimal
+
 from amocrm.client.http import AmoCRMHTTP
 from amocrm.models import AmoCRMUser
 from amocrm.types import AmoCRMCatalog
@@ -5,6 +7,7 @@ from amocrm.types import AmoCRMCatalogElement
 from amocrm.types import AmoCRMCatalogField
 from amocrm.types import AmoCRMCatalogFieldValue
 from amocrm.types import AmoCRMEntityLink
+from amocrm.types import AmoCRMTransactionElement
 from amocrm.types import ENTITY_TYPES
 from users.models import User
 
@@ -109,3 +112,61 @@ class AmoCRMClient:
         contact to customer | product to lead | contact to lead | etc
         """
         self.http.post(url=f"/api/v4/{entity_type}/{entity_id}/link", data=[entity_to_link.to_json()])
+
+    def create_lead(self, status_id: int, pipeline_id: int, contact_id: int, price: int | float | Decimal) -> int:
+        """
+        Creates lead with contact in amocrm and returns its amocrm_id
+
+        https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-complex-add
+        """
+        response = self.http.post(
+            url="/api/v4/leads/complex",
+            data=[
+                {
+                    "status_id": status_id,
+                    "pipeline_id": pipeline_id,
+                    "price": int(price),  # amocrm api requirement to send only integer
+                    "_embedded": {"contacts": [{"id": contact_id}]},
+                }
+            ],
+        )
+
+        return response[0]["id"]  # type: ignore
+
+    def update_lead(self, lead_id: int, status_id: int, price: int | float | Decimal) -> int:
+        """
+        Updates lead in amocrm and returns its amocrm_id
+
+        https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-edit
+        """
+        response = self.http.patch(
+            url="/api/v4/leads",
+            data=[
+                {
+                    "id": lead_id,
+                    "status_id": status_id,
+                    "price": int(price),  # amocrm api requirement to send only integer
+                }
+            ],
+        )
+
+        return response["_embedded"]["leads"][0]["id"]
+
+    def create_customer_transaction(self, customer_id: int, price: int | float | Decimal, order_id: int, purchased_product: AmoCRMTransactionElement) -> int:
+        """
+        Creates transaction for customer and returns its amocrm_id
+
+        https://www.amocrm.ru/developers/content/crm_platform/customers-api#transactions-add
+        """
+        response = self.http.post(
+            url=f"/api/v4/customers/{customer_id}/transactions",
+            data=[
+                {
+                    "comment": f"Order ID in lms: {order_id}",
+                    "price": int(price),  # amocrm api requirement to send only integer
+                    "_embedded": {"catalog_elements": [purchased_product.to_json()]},
+                }
+            ],
+        )
+
+        return response["_embedded"]["transactions"][0]["id"]

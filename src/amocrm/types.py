@@ -139,3 +139,24 @@ class AmoCRMEntityLink:
             }
         else:
             return {"to_entity_id": self.to_entity_id, "to_entity_type": self.to_entity_type, "metadata": self.metadata.to_json()}
+
+
+@dataclass(frozen=True)
+class AmoCRMTransactionElementMetadata:
+    quantity: int | None = None
+    catalog_id: int | None = None
+
+    def to_json(self) -> dict:
+        return {key: value for key, value in asdict(self).items() if value is not None}
+
+
+@dataclass(frozen=True)
+class AmoCRMTransactionElement:
+    id: int
+    metadata: AmoCRMTransactionElementMetadata
+
+    def to_json(self) -> dict:
+        return {
+            "id": self.id,
+            "metadata": self.metadata.to_json(),
+        }
