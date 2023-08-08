@@ -36,7 +36,7 @@ def push_user_to_amocrm(user_id: int) -> None:
         _push_contact.si(user_id=user_id),
         _link_contact_to_user.si(user_id=user_id),
     )
-    return tasks_chain.get()
+    return tasks_chain.delay()
 
 
 @celery.task(
