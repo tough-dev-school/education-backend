@@ -7,9 +7,11 @@ from amocrm.client import AmoCRMClient
 from amocrm.client.http import AmoCRMClientException
 from amocrm.models import AmoCRMUser
 from amocrm.services.access_token_getter import AmoCRMTokenGetterException
-from amocrm.services.course_creator import AmoCRMCourseCreator
-from amocrm.services.course_updater import AmoCRMCourseUpdater
-from amocrm.services.product_groups_updater import AmoCRMProductGroupsUpdater
+from amocrm.services.contacts.contact_creator import AmoCRMContactCreator
+from amocrm.services.contacts.contact_updater import AmoCRMContactUpdater
+from amocrm.services.products.course_creator import AmoCRMCourseCreator
+from amocrm.services.products.course_updater import AmoCRMCourseUpdater
+from amocrm.services.products.product_groups_updater import AmoCRMProductGroupsUpdater
 from app.celery import celery
 
 
@@ -70,6 +72,23 @@ def _push_customer(user_id: int) -> int:
     rate_limit="3/s",
     acks_late=True,
 )
+def _push_contact(user_id: int) -> int:
+    user = apps.get_model("users.User").objects.get(id=user_id)
+    if hasattr(user, "amocrm_user_contact"):
+        return AmoCRMContactUpdater(amocrm_user_contact=user.amocrm_user_contact)()
+    else:
+        return AmoCRMContactCreator(user=user)()
+
+
+@celery.task(
+    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
+    retry_kwargs={
+        "max_retries": 10,
+        "countdown": 1,
+    },
+    rate_limit="3/s",
+    acks_late=True,
+)
 def push_product_groups() -> None:
     AmoCRMProductGroupsUpdater()()
 
@@ -100,5 +119,4 @@ def _push_all_courses() -> None:
 
 @celery.task(acks_late=True)
 def push_all_products_and_product_groups() -> None:
-    push_product_groups.delay()
-    _push_all_courses.apply_async(countdown=30)
+    push_product_groups.apply_async(link=_push_all_courses.si())

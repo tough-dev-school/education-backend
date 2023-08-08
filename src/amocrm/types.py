@@ -1,7 +1,10 @@
 from dataclasses import asdict
 from dataclasses import dataclass
+from typing import Literal
 
 from _decimal import Decimal
+
+ENTITY_TYPES = Literal["leads", "contacts", "companies", "customers", "catalog_elements"]
 
 
 @dataclass(frozen=True)
@@ -64,6 +67,10 @@ class AmoCRMCatalogElementFieldValue:
 
 @dataclass(frozen=True)
 class AmoCRMCatalogElementField:
+    """
+    https://www.amocrm.ru/developers/content/crm_platform/custom-fields
+    """
+
     field_id: int
     values: list[AmoCRMCatalogElementFieldValue]
 
@@ -101,3 +108,34 @@ class AmoCRMCatalogElement:
             name=data["name"],
             custom_fields_values=[AmoCRMCatalogElementField.from_json(field_value) for field_value in data["custom_fields_values"]],
         )
+
+
+@dataclass(frozen=True)
+class AmoCRMEntityLinkMetadata:
+    main_contact: bool | None = None
+    quantity: int | float | None = None
+    catalog_id: int | None = None
+    price_id: int | None = None
+
+    def to_json(self) -> dict:
+        return {key: value for key, value in asdict(self).items() if value is not None}
+
+
+@dataclass(frozen=True)
+class AmoCRMEntityLink:
+    """
+    https://www.amocrm.ru/developers/content/crm_platform/entity-links-api#links-link
+    """
+
+    to_entity_id: int
+    to_entity_type: ENTITY_TYPES
+    metadata: AmoCRMEntityLinkMetadata | None = None
+
+    def to_json(self) -> dict:
+        if self.metadata is None:
+            return {
+                "to_entity_id": self.to_entity_id,
+                "to_entity_type": self.to_entity_type,
+            }
+        else:
+            return {"to_entity_id": self.to_entity_id, "to_entity_type": self.to_entity_type, "metadata": self.metadata.to_json()}

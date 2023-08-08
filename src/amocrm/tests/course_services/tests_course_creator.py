@@ -1,8 +1,8 @@
 import pytest
 
 from amocrm.models import AmoCRMCourse
-from amocrm.services.course_creator import AmoCRMCourseCreator
-from amocrm.services.course_creator import AmoCRMCourseCreatorException
+from amocrm.services.products.course_creator import AmoCRMCourseCreator
+from amocrm.services.products.course_creator import AmoCRMCourseCreatorException
 from amocrm.types import AmoCRMCatalogElement
 
 pytestmark = [
@@ -13,8 +13,8 @@ pytestmark = [
 
 @pytest.fixture(autouse=True)
 def _mock_fields_id(mocker):
-    mocker.patch("amocrm.services.course_creator.get_product_field_id", return_value=333)
-    mocker.patch("amocrm.services.course_creator.get_catalog_id", return_value=777)
+    mocker.patch("amocrm.services.products.course_creator.get_product_field_id", return_value=333)
+    mocker.patch("amocrm.services.products.course_creator.get_catalog_id", return_value=777)
 
 
 @pytest.fixture

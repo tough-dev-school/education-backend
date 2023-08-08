@@ -9,14 +9,14 @@ pytestmark = [
 
 @pytest.fixture
 def mock_course_creator(mocker):
-    mocker.patch("amocrm.services.course_creator.AmoCRMCourseCreator.__call__", return_value=111)
-    return mocker.patch("amocrm.services.course_creator.AmoCRMCourseCreator.__init__", return_value=None)
+    mocker.patch("amocrm.services.products.course_creator.AmoCRMCourseCreator.__call__", return_value=111)
+    return mocker.patch("amocrm.services.products.course_creator.AmoCRMCourseCreator.__init__", return_value=None)
 
 
 @pytest.fixture
 def mock_course_updater(mocker):
-    mocker.patch("amocrm.services.course_updater.AmoCRMCourseUpdater.__call__", return_value=222)
-    return mocker.patch("amocrm.services.course_updater.AmoCRMCourseUpdater.__init__", return_value=None)
+    mocker.patch("amocrm.services.products.course_updater.AmoCRMCourseUpdater.__call__", return_value=222)
+    return mocker.patch("amocrm.services.products.course_updater.AmoCRMCourseUpdater.__init__", return_value=None)
 
 
 def test_call_course_creator_if_not_amocrm_course(course, mock_course_creator, mock_course_updater):
