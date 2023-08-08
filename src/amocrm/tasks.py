@@ -1,3 +1,4 @@
+from celery import chord
 from httpx import TransportError
 
 from django.apps import apps
@@ -29,17 +30,16 @@ def amocrm_enabled() -> bool:
     rate_limit="3/s",
     acks_late=True,
 )
-def push_user_to_amocrm(user_id: int) -> dict:
-    amocrm_customer_id = _push_customer.delay(user_id=user_id)
-    amocrm_contact_id = _push_contact.delay(user_id=user_id)
-
-    success_message = dict(
-        amocrm_customer_id=amocrm_customer_id.get(),
-        amocrm_contact_id=amocrm_contact_id.get(),
+def push_user_to_amocrm(user_id: int) -> None:
+    tasks_chord = chord(
+        [
+            _push_customer.si(user_id=user_id),
+            _push_contact.si(user_id=user_id),
+        ]
+    )(
+        _link_contact_to_user.si(user_id=user_id),
     )
-
-    _link_contact_to_user.delay(user_id=user_id)
-    return success_message
+    return tasks_chord.get()
 
 
 @celery.task(
