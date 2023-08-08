@@ -7,6 +7,7 @@ from amocrm.types import AmoCRMCatalogElement
 from amocrm.types import AmoCRMCatalogField
 from amocrm.types import AmoCRMCatalogFieldValue
 from amocrm.types import AmoCRMEntityLink
+from amocrm.types import AmoCRMTransactionElement
 from amocrm.types import ENTITY_TYPES
 from users.models import User
 
@@ -114,7 +115,7 @@ class AmoCRMClient:
 
     def create_lead(self, status_id: int, pipeline_id: int, contact_id: int, price: int | float | Decimal) -> int:
         """
-        Creates lead with contact in amocrm and returns it with amocrm_id
+        Creates lead with contact in amocrm and returns its amocrm_id
 
         https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-complex-add
         """
@@ -134,7 +135,7 @@ class AmoCRMClient:
 
     def update_lead(self, lead_id: int, status_id: int, price: int | float | Decimal) -> int:
         """
-        Updates lead in amocrm and returns it with amocrm_id
+        Updates lead in amocrm and returns its amocrm_id
 
         https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-edit
         """
@@ -150,3 +151,22 @@ class AmoCRMClient:
         )
 
         return response["_embedded"]["leads"][0]["id"]
+
+    def create_customer_transaction(self, customer_id: int, price: int | float | Decimal, order_id: int, purchased_product: AmoCRMTransactionElement) -> int:
+        """
+        Creates transaction for customer and returns its amocrm_id
+
+        https://www.amocrm.ru/developers/content/crm_platform/customers-api#transactions-add
+        """
+        response = self.http.post(
+            url=f"/api/v4/customers/{customer_id}/transactions",
+            data=[
+                {
+                    "comment": f"Order ID in lms: {order_id}",
+                    "price": int(price),  # amocrm api requirement to send only integer
+                    "_embedded": {"catalog_elements": [purchased_product.to_json()]},
+                }
+            ],
+        )
+
+        return response["_embedded"]["transactions"][0]["id"]
