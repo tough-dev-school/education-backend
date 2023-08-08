@@ -72,7 +72,7 @@ class AmoCRMHTTP:
     def get_validated_response(response: Response, url: str, expected_status_codes: list[int] | None = None) -> dict[str, Any]:
         expected_status_codes = expected_status_codes or [200]
         if response.status_code not in expected_status_codes:
-            raise AmoCRMClientException(f"Non-ok HTTP response from amocrm: {response.status_code}")
+            raise AmoCRMClientException(f"Non-ok HTTP response from amocrm: {response.status_code}\n Content: {response.json()}")
 
         response_json = response.json()
 
