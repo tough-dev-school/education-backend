@@ -1,6 +1,6 @@
 import pytest
 
-from amocrm.services.contact_updater import AmoCRMContactUpdater
+from amocrm.services.contacts.contact_updater import AmoCRMContactUpdater
 from amocrm.types import AmoCRMCatalogElement
 
 pytestmark = [

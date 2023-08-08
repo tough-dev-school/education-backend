@@ -1,7 +1,7 @@
 import pytest
 
 from amocrm.models import AmoCRMProductGroup
-from amocrm.services.product_groups_updater import AmoCRMProductGroupsUpdater
+from amocrm.services.products.product_groups_updater import AmoCRMProductGroupsUpdater
 from amocrm.types import AmoCRMCatalogFieldValue
 
 pytestmark = [

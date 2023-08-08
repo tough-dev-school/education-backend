@@ -1,6 +1,6 @@
 import pytest
 
-from amocrm.services.course_updater import AmoCRMCourseUpdater
+from amocrm.services.products.course_updater import AmoCRMCourseUpdater
 from amocrm.types import AmoCRMCatalogElement
 
 pytestmark = [

@@ -1,8 +1,8 @@
 import pytest
 
 from amocrm.models import AmoCRMCourse
-from amocrm.services.course_creator import AmoCRMCourseCreator
-from amocrm.services.course_creator import AmoCRMCourseCreatorException
+from amocrm.services.products.course_creator import AmoCRMCourseCreator
+from amocrm.services.products.course_creator import AmoCRMCourseCreatorException
 from amocrm.types import AmoCRMCatalogElement
 
 pytestmark = [

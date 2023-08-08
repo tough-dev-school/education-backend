@@ -1,8 +1,8 @@
 import pytest
 
 from amocrm.models import AmoCRMUserContact
-from amocrm.services.contact_creator import AmoCRMContactCreator
-from amocrm.services.contact_creator import AmoCRMContactCreatorException
+from amocrm.services.contacts.contact_creator import AmoCRMContactCreator
+from amocrm.services.contacts.contact_creator import AmoCRMContactCreatorException
 from amocrm.types import AmoCRMCatalogElement
 
 pytestmark = [

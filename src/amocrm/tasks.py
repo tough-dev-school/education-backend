@@ -7,11 +7,11 @@ from amocrm.client import AmoCRMClient
 from amocrm.client.http import AmoCRMClientException
 from amocrm.models import AmoCRMUser
 from amocrm.services.access_token_getter import AmoCRMTokenGetterException
-from amocrm.services.contact_creator import AmoCRMContactCreator
-from amocrm.services.contact_updater import AmoCRMContactUpdater
-from amocrm.services.course_creator import AmoCRMCourseCreator
-from amocrm.services.course_updater import AmoCRMCourseUpdater
-from amocrm.services.product_groups_updater import AmoCRMProductGroupsUpdater
+from amocrm.services.contacts.contact_creator import AmoCRMContactCreator
+from amocrm.services.contacts.contact_updater import AmoCRMContactUpdater
+from amocrm.services.products.course_creator import AmoCRMCourseCreator
+from amocrm.services.products.course_updater import AmoCRMCourseUpdater
+from amocrm.services.products.product_groups_updater import AmoCRMProductGroupsUpdater
 from app.celery import celery
 
 
