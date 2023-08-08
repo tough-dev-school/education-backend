@@ -118,13 +118,13 @@ class AmoCRMClient:
 
         https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-complex-add
         """
-        response = self.http.patch(
+        response = self.http.post(
             url="/api/v4/leads/complex",
             data=[
                 {
                     "status_id": status_id,
                     "pipeline_id": pipeline_id,
-                    "price": int(price),
+                    "price": int(price),  # amocrm api requirement to send only integer
                     "_embedded": {"contacts": [{"id": contact_id}]},
                 }
             ],
@@ -144,7 +144,7 @@ class AmoCRMClient:
                 {
                     "id": lead_id,
                     "status_id": status_id,
-                    "price": int(price),
+                    "price": int(price),  # amocrm api requirement to send only integer
                 }
             ],
         )
