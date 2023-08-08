@@ -23,5 +23,5 @@ def user(user):
 
 @pytest.fixture(autouse=True)
 def _mock_fields_id(mocker):
-    mocker.patch("amocrm.services.contact_creator.get_contact_field_id", return_value=333)
-    mocker.patch("amocrm.services.contact_updater.get_contact_field_id", return_value=333)
+    mocker.patch("amocrm.services.contacts.contact_creator.get_contact_field_id", return_value=333)
+    mocker.patch("amocrm.services.contacts.contact_updater.get_contact_field_id", return_value=333)

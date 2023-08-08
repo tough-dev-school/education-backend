@@ -39,12 +39,12 @@ def mock_get_catalogs(mocker, group_field_values):
 
 @pytest.fixture(autouse=True)
 def mock_get_catalog_id(mocker):
-    return mocker.patch("amocrm.services.product_groups_updater.get_catalog_id", return_value=777)
+    return mocker.patch("amocrm.services.products.product_groups_updater.get_catalog_id", return_value=777)
 
 
 @pytest.fixture(autouse=True)
 def mock_get_product_field_id(mocker):
-    return mocker.patch("amocrm.services.product_groups_updater.get_product_field_id", return_value=333)
+    return mocker.patch("amocrm.services.products.product_groups_updater.get_product_field_id", return_value=333)
 
 
 @pytest.fixture
