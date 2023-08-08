@@ -6,9 +6,9 @@ from amocrm.cache.product_fields_ids import get_product_field_id
 from amocrm.client import AmoCRMClient
 from amocrm.exceptions import AmoCRMServiceException
 from amocrm.models import AmoCRMCourse
-from amocrm.types import AmoCRMElement
-from amocrm.types import AmoCRMElementField
-from amocrm.types import AmoCRMElementFieldValue
+from amocrm.types import AmoCRMCatalogElement
+from amocrm.types import AmoCRMCatalogElementField
+from amocrm.types import AmoCRMCatalogElementFieldValue
 from app.services import BaseService
 from products.models import Course
 
@@ -32,7 +32,7 @@ class AmoCRMCourseCreator(BaseService):
         self.client = AmoCRMClient()
 
     def act(self) -> int:
-        course_as_element = AmoCRMElement(
+        course_as_element = AmoCRMCatalogElement(
             name=self.course.name,
             custom_fields_values=self.get_fields_values(),
         )
@@ -45,25 +45,25 @@ class AmoCRMCourseCreator(BaseService):
         amocrm_course = AmoCRMCourse.objects.create(course=self.course, amocrm_id=element_with_amocrm_id.id)  # type: ignore
         return amocrm_course.amocrm_id
 
-    def get_fields_values(self) -> list[AmoCRMElementField]:
-        price_field = AmoCRMElementField(
+    def get_fields_values(self) -> list[AmoCRMCatalogElementField]:
+        price_field = AmoCRMCatalogElementField(
             field_id=self.price_field_id,
-            values=[AmoCRMElementFieldValue(value=self.course.price)],
+            values=[AmoCRMCatalogElementFieldValue(value=self.course.price)],
         )
-        sku_field = AmoCRMElementField(
+        sku_field = AmoCRMCatalogElementField(
             field_id=self.sku_field_id,
-            values=[AmoCRMElementFieldValue(value=self.course.slug)],
+            values=[AmoCRMCatalogElementFieldValue(value=self.course.slug)],
         )
-        unit_field = AmoCRMElementField(
+        unit_field = AmoCRMCatalogElementField(
             field_id=self.unit_field_id,
-            values=[AmoCRMElementFieldValue(value=self.unit)],
+            values=[AmoCRMCatalogElementFieldValue(value=self.unit)],
         )
         fields_values = [price_field, sku_field, unit_field]
 
         if self.course.group is not None:
-            group_field = AmoCRMElementField(
+            group_field = AmoCRMCatalogElementField(
                 field_id=self.group_field_id,
-                values=[AmoCRMElementFieldValue(value=self.course.group.slug)],
+                values=[AmoCRMCatalogElementFieldValue(value=self.course.group.slug)],
             )
             fields_values.append(group_field)
         return fields_values

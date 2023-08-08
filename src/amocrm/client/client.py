@@ -1,9 +1,9 @@
 from amocrm.client.http import AmoCRMHTTP
 from amocrm.models import AmoCRMUser
 from amocrm.types import AmoCRMCatalog
+from amocrm.types import AmoCRMCatalogElement
 from amocrm.types import AmoCRMCatalogField
 from amocrm.types import AmoCRMCatalogFieldValue
-from amocrm.types import AmoCRMElement
 from users.models import User
 
 
@@ -33,7 +33,7 @@ class AmoCRMClient:
 
         return response["_embedded"]["customers"][0]["id"]
 
-    def create_contact(self, user_as_contact_element: AmoCRMElement) -> int:
+    def create_contact(self, user_as_contact_element: AmoCRMCatalogElement) -> int:
         """Creates contact and returns amocrm_id"""
         response = self.http.post(
             url="/api/v4/contacts",
@@ -42,7 +42,7 @@ class AmoCRMClient:
 
         return response["_embedded"]["contacts"][0]["id"]
 
-    def update_contact(self, user_as_contact_element: AmoCRMElement) -> int:
+    def update_contact(self, user_as_contact_element: AmoCRMCatalogElement) -> int:
         """Updates existing in amocrm contact and returns amocrm_id"""
         response = self.http.patch(
             url="/api/v4/contacts",
@@ -84,18 +84,18 @@ class AmoCRMClient:
         updated_field = response["_embedded"]["custom_fields"][0]
         return [AmoCRMCatalogFieldValue.from_json(updated_value) for updated_value in updated_field["nested"]]
 
-    def create_catalog_element(self, catalog_id: int, element: AmoCRMElement) -> AmoCRMElement:
+    def create_catalog_element(self, catalog_id: int, element: AmoCRMCatalogElement) -> AmoCRMCatalogElement:
         """Creates catalog element in amocrm and returns it with amocrm_id"""
         response = self.http.post(
             url=f"/api/v4/catalogs/{catalog_id}/elements",
             data=[element.to_json()],
         )
-        return AmoCRMElement.from_json(response["_embedded"]["elements"][0])
+        return AmoCRMCatalogElement.from_json(response["_embedded"]["elements"][0])
 
-    def update_catalog_element(self, catalog_id: int, element: AmoCRMElement) -> AmoCRMElement:
+    def update_catalog_element(self, catalog_id: int, element: AmoCRMCatalogElement) -> AmoCRMCatalogElement:
         """Updates catalog element in amocrm and returns it with amocrm_id"""
         response = self.http.patch(
             url=f"/api/v4/catalogs/{catalog_id}/elements",
             data=[element.to_json()],
         )
-        return AmoCRMElement.from_json(response["_embedded"]["elements"][0])
+        return AmoCRMCatalogElement.from_json(response["_embedded"]["elements"][0])

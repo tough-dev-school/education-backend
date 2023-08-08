@@ -1,7 +1,7 @@
 import pytest
 
 from amocrm.services.course_updater import AmoCRMCourseUpdater
-from amocrm.types import AmoCRMElement
+from amocrm.types import AmoCRMCatalogElement
 
 pytestmark = [
     pytest.mark.django_db,
@@ -22,7 +22,7 @@ def amocrm_course(factory, course):
 
 @pytest.fixture
 def updated_element(element_fields):
-    return AmoCRMElement(id=999, name="TopCourse", custom_fields_values=element_fields)
+    return AmoCRMCatalogElement(id=999, name="TopCourse", custom_fields_values=element_fields)
 
 
 @pytest.fixture

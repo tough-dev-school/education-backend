@@ -3,7 +3,7 @@ import pytest
 from amocrm.models import AmoCRMCourse
 from amocrm.services.course_creator import AmoCRMCourseCreator
 from amocrm.services.course_creator import AmoCRMCourseCreatorException
-from amocrm.types import AmoCRMElement
+from amocrm.types import AmoCRMCatalogElement
 
 pytestmark = [
     pytest.mark.django_db,
@@ -19,7 +19,7 @@ def _mock_fields_id(mocker):
 
 @pytest.fixture
 def created_element(element_fields):
-    return AmoCRMElement(id=999, name="TopCourse", custom_fields_values=element_fields)
+    return AmoCRMCatalogElement(id=999, name="TopCourse", custom_fields_values=element_fields)
 
 
 @pytest.fixture(autouse=True)
@@ -46,7 +46,7 @@ def test_creates_correct_call(course_creator, course, mock_create_catalog_elemen
 
     mock_create_catalog_element.assert_called_once_with(
         catalog_id=777,
-        element=AmoCRMElement(name="TopCourse", custom_fields_values=element_fields),
+        element=AmoCRMCatalogElement(name="TopCourse", custom_fields_values=element_fields),
     )
 
 

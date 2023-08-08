@@ -1,7 +1,7 @@
 import pytest
 
-from amocrm.types import AmoCRMElementField
-from amocrm.types import AmoCRMElementFieldValue
+from amocrm.types import AmoCRMCatalogElementField
+from amocrm.types import AmoCRMCatalogElementFieldValue
 
 
 @pytest.fixture
@@ -12,13 +12,13 @@ def course(factory):
 
 @pytest.fixture
 def element_fields():
-    price_value = AmoCRMElementFieldValue(value=99)
-    sku_value = AmoCRMElementFieldValue(value="top-course")
-    group_value = AmoCRMElementFieldValue(value="top-group")
-    unit_value = AmoCRMElementFieldValue(value="шт")
+    price_value = AmoCRMCatalogElementFieldValue(value=99)
+    sku_value = AmoCRMCatalogElementFieldValue(value="top-course")
+    group_value = AmoCRMCatalogElementFieldValue(value="top-group")
+    unit_value = AmoCRMCatalogElementFieldValue(value="шт")
     return [
-        AmoCRMElementField(field_id=333, values=[price_value]),
-        AmoCRMElementField(field_id=333, values=[sku_value]),
-        AmoCRMElementField(field_id=333, values=[unit_value]),
-        AmoCRMElementField(field_id=333, values=[group_value]),
+        AmoCRMCatalogElementField(field_id=333, values=[price_value]),
+        AmoCRMCatalogElementField(field_id=333, values=[sku_value]),
+        AmoCRMCatalogElementField(field_id=333, values=[unit_value]),
+        AmoCRMCatalogElementField(field_id=333, values=[group_value]),
     ]

@@ -1,8 +1,8 @@
 import pytest
 
-from amocrm.types import AmoCRMElement
-from amocrm.types import AmoCRMElementField
-from amocrm.types import AmoCRMElementFieldValue
+from amocrm.types import AmoCRMCatalogElement
+from amocrm.types import AmoCRMCatalogElementField
+from amocrm.types import AmoCRMCatalogElementFieldValue
 
 pytestmark = [
     pytest.mark.django_db,
@@ -30,15 +30,15 @@ def _successful_response(post):
 
 @pytest.fixture
 def contact_fields():
-    email_field_value = AmoCRMElementFieldValue(value="dada@da.net")
+    email_field_value = AmoCRMCatalogElementFieldValue(value="dada@da.net")
     return [
-        AmoCRMElementField(field_id=2235143, values=[email_field_value]),
+        AmoCRMCatalogElementField(field_id=2235143, values=[email_field_value]),
     ]
 
 
 @pytest.fixture
 def contact(contact_fields):
-    return AmoCRMElement(name="Some Contact", custom_fields_values=contact_fields)
+    return AmoCRMCatalogElement(name="Some Contact", custom_fields_values=contact_fields)
 
 
 @pytest.mark.usefixtures("_successful_response")
