@@ -5,7 +5,7 @@ from celery import chain
 from django.utils import timezone
 
 from amocrm.tasks import amocrm_enabled
-from amocrm.tasks import push_customer
+from amocrm.tasks import push_user_to_amocrm
 from app.services import BaseService
 from banking.selector import get_bank
 from orders.models import Order
@@ -55,7 +55,7 @@ class OrderPaidSetter(BaseService):
             if amocrm_enabled():
                 tasks_chain = chain(
                     rebuild_tags.si(student_id=self.order.user.id, subscribe=True),
-                    push_customer.si(user_id=self.order.user.id).set(queue="amocrm"),
+                    push_user_to_amocrm.si(user_id=self.order.user.id).set(queue="amocrm"),
                 )
                 tasks_chain.delay()
             else:
