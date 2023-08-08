@@ -38,7 +38,7 @@ class AmoCRMCatalogField:
 
     @classmethod
     def from_json(cls, data: dict) -> "AmoCRMCatalogField":
-        nested = data["nested"]
+        nested = data.get("nested")
         if nested is not None:
             nested = [AmoCRMCatalogFieldValue.from_json(nested_data) for nested_data in nested]
         return cls(
