@@ -4,6 +4,8 @@ from amocrm.types import AmoCRMCatalog
 from amocrm.types import AmoCRMCatalogElement
 from amocrm.types import AmoCRMCatalogField
 from amocrm.types import AmoCRMCatalogFieldValue
+from amocrm.types import AmoCRMEntityLink
+from amocrm.types import ENTITY_TYPES
 from users.models import User
 
 
@@ -99,3 +101,11 @@ class AmoCRMClient:
             data=[element.to_json()],
         )
         return AmoCRMCatalogElement.from_json(response["_embedded"]["elements"][0])
+
+    def link_entity_to_another_entity(self, entity_type: ENTITY_TYPES, entity_id: int, entity_to_link: AmoCRMEntityLink) -> None:
+        """
+        Setup link in AmoCRM between two different type entities
+
+        contact to customer | product to lead | contact to lead | etc
+        """
+        self.http.post(url=f"/api/v4/{entity_type}/{entity_id}/link", data=[entity_to_link.to_json()])
