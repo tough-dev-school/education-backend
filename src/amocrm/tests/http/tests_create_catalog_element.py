@@ -1,8 +1,8 @@
 import pytest
 
-from amocrm.types import AmoCRMCatalogElement
-from amocrm.types import AmoCRMCatalogElementField
-from amocrm.types import AmoCRMCatalogElementFieldValue
+from amocrm.types import AmoCRMElement
+from amocrm.types import AmoCRMElementField
+from amocrm.types import AmoCRMElementFieldValue
 
 pytestmark = [
     pytest.mark.django_db,
@@ -41,32 +41,32 @@ def _successful_response(post):
 
 @pytest.fixture
 def element_fields():
-    int_field_value = AmoCRMCatalogElementFieldValue(value=333)
-    str_field_value = AmoCRMCatalogElementFieldValue(value="not-hehe")
-    decimal_field_value = AmoCRMCatalogElementFieldValue(value=999.12)
+    int_field_value = AmoCRMElementFieldValue(value=333)
+    str_field_value = AmoCRMElementFieldValue(value="not-hehe")
+    decimal_field_value = AmoCRMElementFieldValue(value=999.12)
     return [
-        AmoCRMCatalogElementField(field_id=2235143, values=[str_field_value]),
-        AmoCRMCatalogElementField(field_id=2235147, values=[decimal_field_value]),
-        AmoCRMCatalogElementField(field_id=2235151, values=[int_field_value]),
+        AmoCRMElementField(field_id=2235143, values=[str_field_value]),
+        AmoCRMElementField(field_id=2235147, values=[decimal_field_value]),
+        AmoCRMElementField(field_id=2235151, values=[int_field_value]),
     ]
 
 
 @pytest.fixture
 def element(element_fields):
-    return AmoCRMCatalogElement(name="PopugFields", custom_fields_values=element_fields)
+    return AmoCRMElement(name="PopugFields", custom_fields_values=element_fields)
 
 
 @pytest.mark.usefixtures("_successful_response")
 def test_create_catalog_element(user, amocrm_client, element, element_fields):
     got = amocrm_client.create_catalog_element(catalog_id=777, element=element)
 
-    assert got == AmoCRMCatalogElement(
+    assert got == AmoCRMElement(
         id=14229449,
         name="PopugFields",
         custom_fields_values=[
-            AmoCRMCatalogElementField(field_id=2235143, values=[AmoCRMCatalogElementFieldValue(value="not-hehe")]),
-            AmoCRMCatalogElementField(field_id=2235147, values=[AmoCRMCatalogElementFieldValue(value="999.12")]),
-            AmoCRMCatalogElementField(field_id=2235151, values=[AmoCRMCatalogElementFieldValue(value="333")]),
+            AmoCRMElementField(field_id=2235143, values=[AmoCRMElementFieldValue(value="not-hehe")]),
+            AmoCRMElementField(field_id=2235147, values=[AmoCRMElementFieldValue(value="999.12")]),
+            AmoCRMElementField(field_id=2235151, values=[AmoCRMElementFieldValue(value="333")]),
         ],
     )
 

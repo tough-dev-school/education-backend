@@ -51,34 +51,36 @@ class AmoCRMCatalogField:
 
 
 @dataclass(frozen=True)
-class AmoCRMCatalogElementFieldValue:
+class AmoCRMElementFieldValue:
     value: str | int | Decimal
 
     def to_json(self) -> dict:
         return {"value": str(self.value)}  # it stores as string in amocrm
 
     @classmethod
-    def from_json(cls, data: dict) -> "AmoCRMCatalogElementFieldValue":
+    def from_json(cls, data: dict) -> "AmoCRMElementFieldValue":
         return cls(value=data["value"])
 
 
 @dataclass(frozen=True)
-class AmoCRMCatalogElementField:
+class AmoCRMElementField:
     field_id: int
-    values: list[AmoCRMCatalogElementFieldValue]
+    values: list[AmoCRMElementFieldValue]
 
     def to_json(self) -> dict:
         return {"field_id": self.field_id, "values": [value.to_json() for value in self.values]}
 
     @classmethod
-    def from_json(cls, data: dict) -> "AmoCRMCatalogElementField":
-        return cls(field_id=data["field_id"], values=[AmoCRMCatalogElementFieldValue.from_json(nested_data) for nested_data in data["values"]])
+    def from_json(cls, data: dict) -> "AmoCRMElementField":
+        return cls(field_id=data["field_id"], values=[AmoCRMElementFieldValue.from_json(nested_data) for nested_data in data["values"]])
 
 
 @dataclass(frozen=True)
-class AmoCRMCatalogElement:
+class AmoCRMElement:
+    """Dataclass for AmoCRM catalog and contacts elements"""
+
     name: str
-    custom_fields_values: list[AmoCRMCatalogElementField]
+    custom_fields_values: list[AmoCRMElementField]
     id: int | None = None
 
     def to_json(self) -> dict:
@@ -95,9 +97,9 @@ class AmoCRMCatalogElement:
             }
 
     @classmethod
-    def from_json(cls, data: dict) -> "AmoCRMCatalogElement":
+    def from_json(cls, data: dict) -> "AmoCRMElement":
         return cls(
             id=data["id"],
             name=data["name"],
-            custom_fields_values=[AmoCRMCatalogElementField.from_json(field_value) for field_value in data["custom_fields_values"]],
+            custom_fields_values=[AmoCRMElementField.from_json(field_value) for field_value in data["custom_fields_values"]],
         )
