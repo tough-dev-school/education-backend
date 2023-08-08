@@ -152,7 +152,7 @@ class AmoCRMClient:
 
         return response["_embedded"]["leads"][0]["id"]
 
-    def create_customer_transaction(self, customer_id: int, price: int | float | Decimal, order_id: int, purchased_product: AmoCRMTransactionElement) -> int:
+    def create_customer_transaction(self, customer_id: int, price: int | float | Decimal, order_slug: str, purchased_product: AmoCRMTransactionElement) -> int:
         """
         Creates transaction for customer and returns its amocrm_id
 
@@ -162,7 +162,7 @@ class AmoCRMClient:
             url=f"/api/v4/customers/{customer_id}/transactions",
             data=[
                 {
-                    "comment": f"Order ID in lms: {order_id}",
+                    "comment": f"Order slug in lms: {order_slug}",
                     "price": int(price),  # amocrm api requirement to send only integer
                     "_embedded": {"catalog_elements": [purchased_product.to_json()]},
                 }
