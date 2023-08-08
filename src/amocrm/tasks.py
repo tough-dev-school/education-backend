@@ -27,7 +27,6 @@ def amocrm_enabled() -> bool:
         "max_retries": 10,
         "countdown": 1,
     },
-    rate_limit="3/s",
     acks_late=True,
 )
 def push_user_to_amocrm(user_id: int) -> None:
