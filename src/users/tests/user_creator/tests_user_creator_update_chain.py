@@ -17,12 +17,12 @@ def mock_rebuild_tags(mocker):
 
 @pytest.fixture
 def mock_push_customer(mocker):
-    return mocker.patch("amocrm.tasks.push_customer.si")
+    return mocker.patch("amocrm.tasks.push_user_to_amocrm.si")
 
 
 @pytest.fixture
 def push_customer(mocker):
-    return mocker.patch("amocrm.tasks.push_customer.delay")
+    return mocker.patch("amocrm.tasks.push_user_to_amocrm.delay")
 
 
 def test_call_create_user_celery_chain_if_subscribe_and_amocrm_enabled(mock_update_user_chain, mock_rebuild_tags, mock_push_customer, settings):

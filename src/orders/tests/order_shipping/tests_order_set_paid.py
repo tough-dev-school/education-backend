@@ -25,7 +25,7 @@ def mock_rebuild_tags(mocker):
 
 @pytest.fixture
 def mock_push_customer(mocker):
-    return mocker.patch("amocrm.tasks.push_customer.si")
+    return mocker.patch("amocrm.tasks.push_user_to_amocrm.si")
 
 
 def test_works(order):

@@ -8,6 +8,7 @@ from amocrm.client.http import AmoCRMClientException
 from amocrm.models import AmoCRMUser
 from amocrm.services.access_token_getter import AmoCRMTokenGetterException
 from amocrm.services.contacts.contact_creator import AmoCRMContactCreator
+from amocrm.services.contacts.contact_to_customer_linker import AmoCRMContactToCustomerLinker
 from amocrm.services.contacts.contact_updater import AmoCRMContactUpdater
 from amocrm.services.products.course_creator import AmoCRMCourseCreator
 from amocrm.services.products.course_updater import AmoCRMCourseUpdater
@@ -19,14 +20,26 @@ def amocrm_enabled() -> bool:
     return settings.AMOCRM_BASE_URL != ""
 
 
-@celery.task(acks_late=True)
-def push_customer(user_id: int) -> int:
-    """
-    Parent task to save task settings for child task in chain
-    https://github.com/celery/celery/issues/5219
-    """
+@celery.task(
+    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
+    retry_kwargs={
+        "max_retries": 10,
+        "countdown": 1,
+    },
+    rate_limit="3/s",
+    acks_late=True,
+)
+def push_user_to_amocrm(user_id: int) -> dict:
     amocrm_customer_id = _push_customer.delay(user_id=user_id)
-    return amocrm_customer_id.get()
+    amocrm_contact_id = _push_contact.delay(user_id=user_id)
+
+    success_message = dict(
+        amocrm_customer_id=amocrm_customer_id.get(),
+        amocrm_contact_id=amocrm_contact_id.get(),
+    )
+
+    _link_contact_to_user.delay(user_id=user_id)
+    return success_message
 
 
 @celery.task(
@@ -78,6 +91,20 @@ def _push_contact(user_id: int) -> int:
         return AmoCRMContactUpdater(amocrm_user_contact=user.amocrm_user_contact)()
     else:
         return AmoCRMContactCreator(user=user)()
+
+
+@celery.task(
+    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
+    retry_kwargs={
+        "max_retries": 10,
+        "countdown": 1,
+    },
+    rate_limit="3/s",
+    acks_late=True,
+)
+def _link_contact_to_user(user_id: int) -> None:
+    user = apps.get_model("users.User").objects.get(id=user_id)
+    AmoCRMContactToCustomerLinker(user=user)()
 
 
 @celery.task(
