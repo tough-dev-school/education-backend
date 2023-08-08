@@ -40,7 +40,7 @@ def test_create_lead_request_fields(amocrm_client, post, purchased_product):
     got = amocrm_client.create_customer_transaction(
         customer_id=1369371,
         price=Decimal(100.00),
-        order_id=8674674657,
+        order_slug="Gu2g7SXFxfepif4UkLNhzx",
         purchased_product=purchased_product,
     )
 
@@ -49,7 +49,7 @@ def test_create_lead_request_fields(amocrm_client, post, purchased_product):
         url="/api/v4/customers/1369371/transactions",
         data=[
             {
-                "comment": "Order ID in lms: 8674674657",
+                "comment": "Order slug in lms: Gu2g7SXFxfepif4UkLNhzx",
                 "price": 100,
                 "_embedded": {
                     "catalog_elements": [
