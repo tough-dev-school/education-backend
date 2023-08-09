@@ -24,11 +24,6 @@ def lead_updater():
     return lambda amocrm_lead: AmoCRMOrderLeadUpdater(amocrm_lead=amocrm_lead)()
 
 
-@pytest.fixture
-def amocrm_lead(factory, order):
-    return factory.amocrm_order_lead(order=order, amocrm_id=481516)
-
-
 def test_updates_amocrm_order_lead(lead_updater, amocrm_lead):
     got = lead_updater(amocrm_lead)
 
