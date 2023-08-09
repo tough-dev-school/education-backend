@@ -51,7 +51,6 @@ def test_call_with_lead(order_with_lead, mock_push_lead, mock_push_transaction, 
     tasks.push_order_to_amocrm(order_id=order_with_lead.id)
 
     mock_chain.assert_called_once_with(
-        mock_link_course_to_lead(order_id=99),
         mock_push_lead(order_id=99),
         mock_push_transaction(order_id=99),
     )
@@ -63,6 +62,7 @@ def test_call_without_lead_and_transaction(order_without_lead_and_transaction, m
     mock_chain.assert_called_once_with(
         mock_push_lead(order_id=99),
         mock_link_course_to_lead(order_id=99),
+        mock_push_lead(order_id=99),
         mock_push_transaction(order_id=99),
     )
 
