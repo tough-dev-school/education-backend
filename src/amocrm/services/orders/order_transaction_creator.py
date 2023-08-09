@@ -19,7 +19,7 @@ class AmoCRMOrderTransactionCreatorException(AmoCRMServiceException):
 class AmoCRMOrderTransactionCreator(BaseService):
     """
     Creates customer's transaction for given order if it's paid
-    Returns amocrm_id for transaction
+    Returns amocrm_id for transaction when creates one or None if order is not paid
     """
 
     order: Order
@@ -29,7 +29,10 @@ class AmoCRMOrderTransactionCreator(BaseService):
     def __post_init__(self) -> None:
         self.client = AmoCRMClient()
 
-    def act(self) -> int:
+    def act(self) -> int | None:
+        if self.order.paid is None:
+            return None
+
         transaction_metadata = AmoCRMTransactionElementMetadata(
             quantity=self.quantity,
             catalog_id=self.product_catalog_id,
@@ -55,7 +58,6 @@ class AmoCRMOrderTransactionCreator(BaseService):
 
     def get_validators(self) -> list[Callable]:
         return [
-            self.validate_order_is_paid,
             self.validate_transaction_doesnt_exist,
             self.validate_order_with_course,
             self.validate_amocrm_course_exist,
@@ -73,10 +75,6 @@ class AmoCRMOrderTransactionCreator(BaseService):
     def validate_transaction_doesnt_exist(self) -> None:
         if hasattr(self.order, "amocrm_transaction"):
             raise AmoCRMOrderTransactionCreatorException("Transaction already exist")
-
-    def validate_order_is_paid(self) -> None:
-        if self.order.paid is None:
-            raise AmoCRMOrderTransactionCreatorException("Order is not paid")
 
     def validate_amocrm_customer_exist(self) -> None:
         if not hasattr(self.order.user, "amocrm_user"):
