@@ -76,7 +76,7 @@ class AmoCRMHTTP:
 
         response_json = response.json()
 
-        errors = response_json.get("_embedded", {}).get("errors")
+        errors = response_json.get("_embedded", {}).get("errors") if isinstance(response_json, dict) else None
         if errors:
             raise AmoCRMClientException(f"Errors in response to {url}: {errors}")
 
