@@ -52,17 +52,18 @@ def test_creates_correct_call(transaction_creator, order, mock_create_transactio
     )
 
 
+def test_return_none_if_not_paid(transaction_creator, order):
+    order.set_not_paid()
+
+    got = transaction_creator(order)
+
+    assert got is None
+
+
 def test_fails_if_already_exist(transaction_creator, order, factory):
     factory.amocrm_order_transaction(order=order)
 
     with pytest.raises(AmoCRMOrderTransactionCreatorException, match="Transaction already exist"):
-        transaction_creator(order)
-
-
-def test_fails_if_not_paid(transaction_creator, order):
-    order.set_not_paid()
-
-    with pytest.raises(AmoCRMOrderTransactionCreatorException, match="not paid"):
         transaction_creator(order)
 
 
