@@ -11,7 +11,7 @@ from magnets.models import EmailLeadMagnetCampaign
 
 
 class EmailLeadMagnetCampaignView(AnonymousAPIView, ValidationMixin):
-    """Create a lead for lead campaign"""
+    """Create a amocrm_lead for amocrm_lead campaign"""
 
     validator_class = LeadValidator
 
