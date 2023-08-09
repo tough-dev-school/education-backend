@@ -57,18 +57,17 @@ def push_order_to_amocrm(order_id: int) -> None:
         return None
 
     if hasattr(order, "amocrm_lead"):
-        tasks_chain = chain(
+        chain(
             _link_course_to_lead.si(order_id=order_id),
             _push_lead.si(order_id=order_id),
             _push_transaction.si(order_id=order_id),
-        )
+        ).delay()
     else:
-        tasks_chain = chain(
+        chain(
             _push_lead.si(order_id=order_id),
             _link_course_to_lead.si(order_id=order_id),
             _push_transaction.si(order_id=order_id),
-        )
-    return tasks_chain.delay()
+        ).delay()
 
 
 @celery.task(
