@@ -110,13 +110,13 @@ class AmoCRMClient:
         """
         Setup link in AmoCRM between two different type entities
 
-        contact to customer | product to lead | contact to lead | etc
+        contact to customer | product to amocrm_lead | contact to amocrm_lead | etc
         """
         self.http.post(url=f"/api/v4/{entity_type}/{entity_id}/link", data=[entity_to_link.to_json()])
 
     def create_lead(self, status_id: int, pipeline_id: int, contact_id: int, price: int | float | Decimal) -> int:
         """
-        Creates lead with contact in amocrm and returns its amocrm_id
+        Creates amocrm_lead with contact in amocrm and returns its amocrm_id
 
         https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-complex-add
         """
@@ -136,7 +136,7 @@ class AmoCRMClient:
 
     def update_lead(self, lead_id: int, status_id: int, price: int | float | Decimal) -> int:
         """
-        Updates lead in amocrm and returns its amocrm_id
+        Updates amocrm_lead in amocrm and returns its amocrm_id
 
         https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-edit
         """
@@ -174,7 +174,7 @@ class AmoCRMClient:
 
     def get_pipelines(self) -> list[AmoCRMPipeline]:
         """
-        Returns all lead pipelines from amocrm
+        Returns all amocrm_lead pipelines from amocrm
 
         https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines
         """

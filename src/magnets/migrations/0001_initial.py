@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(blank=True, db_index=True, null=True)),
                 ('name', models.CharField(max_length=32, verbose_name='Name')),
                 ('slug', models.SlugField(unique=True)),
-                ('template_id', models.CharField(help_text='Will be sent upon lead registration', max_length=255,verbose_name='Letter template id')),
+                ('template_id', models.CharField(help_text='Will be sent upon amocrm_lead registration', max_length=255,verbose_name='Letter template id')),
             ],
             options={
                 'verbose_name': 'Email Lead Magnet Campaign',

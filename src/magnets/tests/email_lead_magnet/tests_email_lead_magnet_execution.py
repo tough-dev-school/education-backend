@@ -14,7 +14,7 @@ def _enable_outgoing_email(settings):
 
 @pytest.fixture
 def user(mixer):
-    return mixer.blend("users.User", email="lead@magnet.tester")
+    return mixer.blend("users.User", email="amocrm_lead@magnet.tester")
 
 
 def test_emaiL_is_sent(user, campaign):
@@ -24,7 +24,7 @@ def test_emaiL_is_sent(user, campaign):
 
 
 def test_email_is_sent_even_if_the_letter_was_sent_already(user, campaign):
-    EmailLogEntry.objects.create(email="lead@magnet.tester", template_id=campaign.template_id)
+    EmailLogEntry.objects.create(email="amocrm_lead@magnet.tester", template_id=campaign.template_id)
 
     campaign.execute(user)
 
@@ -34,7 +34,7 @@ def test_email_is_sent_even_if_the_letter_was_sent_already(user, campaign):
 def test_email_is_sent_to_the_right_place_with_the_right_template_id(user, campaign, send_mail):
     campaign.execute(user)
 
-    assert send_mail.call_args[1]["to"] == "lead@magnet.tester"
+    assert send_mail.call_args[1]["to"] == "amocrm_lead@magnet.tester"
     assert send_mail.call_args[1]["template_id"] == campaign.template_id
 
 

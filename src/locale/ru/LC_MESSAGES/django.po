@@ -229,7 +229,7 @@ msgid "Letter template id"
 msgstr "ID почтового шаблона"
 
 #: magnets/models.py:24
-msgid "Will be sent upon lead registration"
+msgid "Will be sent upon amocrm_lead registration"
 msgstr "Автоматически уходит юзеру, когда он зарегился"
 
 #: magnets/models.py:26

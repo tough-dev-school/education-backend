@@ -3,7 +3,6 @@ from typing import Callable
 
 from django.utils.functional import cached_property
 
-from amocrm.cache.catalog_id import get_catalog_id
 from amocrm.cache.lead_b2b_pipeline_statuses_ids import get_b2b_pipeline_status_id
 from amocrm.cache.lead_b2c_pipeline_statuses_ids import get_b2c_pipeline_status_id
 from amocrm.cache.lead_pipeline_id import get_pipeline_id
@@ -15,23 +14,21 @@ from orders.models import Order
 
 
 class AmoCRMOrderLeadCreatorException(AmoCRMServiceException):
-    """Raises when it's impossible to create customer's lead"""
+    """Raises when it's impossible to create customer's amocrm_lead"""
 
 
 @dataclass
 class AmoCRMOrderLeadCreator(BaseService):
     """
-    Creates customer's lead for given order
+    Creates amocrm_lead for given order and with user's amocrm contact
 
-    - if user has b2b tag lead goes to b2b pipeline - else in b2c
-    - if order is paid new lead creates with 'purchased' status - else 'chosen_course' for b2c and 'first_contact' for b2b
+    - if user has b2b tag amocrm_lead goes to b2b pipeline - else in b2c
+    - if order is paid new amocrm_lead creates with 'purchased' status - else 'chosen_course' for b2c and 'first_contact' for b2b
 
-    Returns amocrm_id for lead
+    Returns amocrm_id for amocrm_lead
     """
 
     order: Order
-
-    quantity: int = 1  # order cannot have multiple courses
 
     def __post_init__(self) -> None:
         self.client = AmoCRMClient()
@@ -67,10 +64,6 @@ class AmoCRMOrderLeadCreator(BaseService):
     @property
     def _not_paid_status_id(self) -> int:
         return get_b2b_pipeline_status_id(status_name="first_contact") if self.is_b2b else get_b2c_pipeline_status_id(status_name="chosen_course")
-
-    @property
-    def product_catalog_id(self) -> int:
-        return get_catalog_id(catalog_type="products")
 
     def get_validators(self) -> list[Callable]:
         return [

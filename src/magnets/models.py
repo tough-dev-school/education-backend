@@ -21,7 +21,7 @@ class EmailLeadMagnetCampaign(TimestampedModel):
     name = models.CharField(_("Name"), max_length=32)
     slug = models.SlugField(unique=True)
 
-    template_id = models.CharField(_("Letter template id"), max_length=255, help_text=_("Will be sent upon lead registration"))
+    template_id = models.CharField(_("Letter template id"), max_length=255, help_text=_("Will be sent upon amocrm_lead registration"))
 
     success_message = models.CharField(_("Success Message"), max_length=255, help_text=_("Will be shown under tilda form"))
 
