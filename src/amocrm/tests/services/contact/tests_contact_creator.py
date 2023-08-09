@@ -7,7 +7,6 @@ from amocrm.types import AmoCRMCatalogElement
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.single_thread,
 ]
 
 

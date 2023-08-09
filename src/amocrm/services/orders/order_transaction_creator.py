@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import Callable
 
 from amocrm.cache.catalog_id import get_catalog_id
@@ -14,6 +15,7 @@ class AmoCRMOrderTransactionCreatorException(AmoCRMServiceException):
     """Raises when it's impossible to create customer's transaction"""
 
 
+@dataclass
 class AmoCRMOrderTransactionCreator(BaseService):
     """
     Creates customer's transaction for given order if it's paid
@@ -62,7 +64,7 @@ class AmoCRMOrderTransactionCreator(BaseService):
 
     def validate_order_with_course(self) -> None:
         if self.order.course is None:
-            raise AmoCRMOrderTransactionCreatorException("Order doesnt have a course")
+            raise AmoCRMOrderTransactionCreatorException("Order doesn't have a course")
 
     def validate_amocrm_course_exist(self) -> None:
         if not hasattr(self.order.course, "amocrm_course"):

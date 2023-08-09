@@ -1,6 +1,7 @@
 from typing import Any
 
 from amocrm.models import AmoCRMCourse
+from amocrm.models import AmoCRMOrderTransaction
 from amocrm.models import AmoCRMProductGroup
 from amocrm.models import AmoCRMUser
 from amocrm.models import AmoCRMUserContact
@@ -25,3 +26,8 @@ def amocrm_course(self: Any, **kwargs: Any) -> AmoCRMCourse:
 @register
 def amocrm_user_contact(self: Any, **kwargs: Any) -> AmoCRMUserContact:
     return self.mixer.blend("amocrm.AmoCRMUserContact", **kwargs)
+
+
+@register
+def amocrm_order_transaction(self: Any, **kwargs: Any) -> AmoCRMOrderTransaction:
+    return self.mixer.blend("amocrm.AmoCRMOrderTransaction", **kwargs)
