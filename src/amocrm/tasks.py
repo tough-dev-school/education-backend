@@ -58,6 +58,7 @@ def push_order_to_amocrm(order_id: int) -> None:
 
     if hasattr(order, "amocrm_lead"):
         chain(
+            _link_course_to_lead.si(order_id=order_id),
             _push_lead.si(order_id=order_id),
             _push_transaction.si(order_id=order_id),
         ).delay()
