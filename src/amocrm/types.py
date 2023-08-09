@@ -160,3 +160,24 @@ class AmoCRMTransactionElement:
             "id": self.id,
             "metadata": self.metadata.to_json(),
         }
+
+
+@dataclass(frozen=True)
+class AmoCRMPipelineStatus:
+    id: int
+    name: str
+
+    @classmethod
+    def from_json(cls, data: dict) -> "AmoCRMPipelineStatus":
+        return cls(id=data["id"], name=data["name"])
+
+
+@dataclass(frozen=True)
+class AmoCRMPipeline:
+    id: int
+    name: str
+    statuses: list[AmoCRMPipelineStatus]
+
+    @classmethod
+    def from_json(cls, data: dict) -> "AmoCRMPipeline":
+        return cls(id=data["id"], name=data["name"], statuses=[AmoCRMPipelineStatus.from_json(status) for status in data["_embedded"]["statuses"]])

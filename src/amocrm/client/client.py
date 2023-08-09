@@ -7,6 +7,7 @@ from amocrm.types import AmoCRMCatalogElement
 from amocrm.types import AmoCRMCatalogField
 from amocrm.types import AmoCRMCatalogFieldValue
 from amocrm.types import AmoCRMEntityLink
+from amocrm.types import AmoCRMPipeline
 from amocrm.types import AmoCRMTransactionElement
 from amocrm.types import ENTITY_TYPES
 from users.models import User
@@ -170,3 +171,12 @@ class AmoCRMClient:
         )
 
         return response["_embedded"]["transactions"][0]["id"]
+
+    def get_pipelines(self) -> list[AmoCRMPipeline]:
+        """
+        Returns all lead pipelines from amocrm
+
+        https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines
+        """
+        response = self.http.get(url="/api/v4/leads/pipelines")
+        return [AmoCRMPipeline.from_json(pipeline) for pipeline in response["_embedded"]["pipelines"]]
