@@ -3,7 +3,7 @@ import pytest
 
 @pytest.fixture(autouse=True)
 def _mock_tasks_with_paid_setter(mocker):
-    mocker.patch("orders.services.order_paid_setter.OrderPaidSetter.update_user_tags", return_value=None)
+    mocker.patch("orders.services.order_paid_setter.OrderPaidSetter.after_shipment", return_value=None)
 
 
 @pytest.fixture

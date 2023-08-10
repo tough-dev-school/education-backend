@@ -5,6 +5,7 @@ from celery import chain
 from django.utils import timezone
 
 from amocrm.tasks import amocrm_enabled
+from amocrm.tasks import push_order_to_amocrm
 from amocrm.tasks import push_user_to_amocrm
 from app.services import BaseService
 from banking.selector import get_bank
@@ -28,7 +29,7 @@ class OrderPaidSetter(BaseService):
         self.mark_order_as_paid()
         self.call_bank_successfull_callback()
         self.ship()
-        self.update_user_tags()
+        self.after_shipment()
 
     def mark_order_as_paid(self) -> None:
         self.order.paid = timezone.now()
@@ -46,17 +47,16 @@ class OrderPaidSetter(BaseService):
         bank = Bank(order=self.order)
         bank.successful_payment_callback()
 
-    def update_user_tags(self) -> None:
-        can_be_subscribed = self.order.user.email and len(self.order.user.email)
+    def after_shipment(self) -> None:
+        can_be_subscribed = bool(self.order.user.email and len(self.order.user.email))
+
         if not can_be_subscribed and not amocrm_enabled():
             rebuild_tags.delay(student_id=self.order.user.id, subscribe=False)
+            return None
 
-        if can_be_subscribed:
-            if amocrm_enabled():
-                tasks_chain = chain(
-                    rebuild_tags.si(student_id=self.order.user.id, subscribe=True),
-                    push_user_to_amocrm.si(user_id=self.order.user.id).set(queue="amocrm"),
-                )
-                tasks_chain.delay()
-            else:
-                rebuild_tags.delay(student_id=self.order.user.id, subscribe=True)
+        if amocrm_enabled():
+            chain(
+                rebuild_tags.si(student_id=self.order.user.id, subscribe=can_be_subscribed),
+                push_user_to_amocrm.si(user_id=self.order.user.id),
+                push_order_to_amocrm.si(order_id=self.order.id),
+            ).delay()

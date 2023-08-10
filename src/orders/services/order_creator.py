@@ -4,6 +4,8 @@ from decimal import Decimal
 from typing import Type
 from urllib.parse import urljoin
 
+from celery import chain
+
 from django.conf import settings
 from django.urls import reverse
 from django.utils.dateparse import parse_datetime
@@ -11,6 +13,9 @@ from django.utils.functional import cached_property
 from django.utils.timezone import is_naive
 from django.utils.timezone import make_aware
 
+from amocrm.tasks import amocrm_enabled
+from amocrm.tasks import push_order_to_amocrm
+from amocrm.tasks import push_user_to_amocrm
 from app.current_user import get_current_user
 from app.exceptions import AppServiceException
 from app.helpers import lower_first
@@ -22,6 +27,7 @@ from orders.models import Order
 from orders.models import PromoCode
 from products.models.base import Shippable
 from users.models import User
+from users.tasks import rebuild_tags
 
 
 class OrderCreatorException(AppServiceException):
@@ -36,6 +42,9 @@ class OrderCreator(BaseService):
     promocode: str | None = None
     desired_bank: str | None = None
 
+    subscribe_user: bool = False
+    push_to_amocrm: bool = True
+
     def __post_init__(self) -> None:
         self.price = self.price if self.price is not None else self.item.get_price(promocode=self.promocode)
         self.promocode = self._get_promocode(self.promocode)
@@ -48,6 +57,7 @@ class OrderCreator(BaseService):
         order.save()
 
         self.send_confirmation_message(order)
+        self.after_creation(order=order)
 
         return order
 
@@ -79,6 +89,20 @@ class OrderCreator(BaseService):
                     template_id=order.item.confirmation_template_id,
                     ctx=self.get_template_context(order),
                 )
+
+    def after_creation(self, order: Order) -> None:
+        push_to_amocrm = self.push_to_amocrm and amocrm_enabled()
+
+        can_be_subscribed = bool(self.subscribe_user and order.user.email and len(order.user.email))
+        if push_to_amocrm:
+            chain(
+                rebuild_tags.si(student_id=order.user.id, subscribe=can_be_subscribed),
+                push_user_to_amocrm.si(user_id=order.user.id),
+                push_order_to_amocrm.si(order_id=order.id),
+            ).delay()
+            return None
+
+        rebuild_tags.delay(student_id=order.user.id, subscribe=can_be_subscribed)
 
     @staticmethod
     def get_template_context(order: Order) -> dict[str, str]:
