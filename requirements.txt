@@ -10,7 +10,7 @@ anyio==3.7.1
     # via httpcore
 asgiref==3.7.2
     # via django
-async-timeout==4.0.2
+async-timeout==4.0.3
     # via redis
 attrs==23.1.0
     # via
