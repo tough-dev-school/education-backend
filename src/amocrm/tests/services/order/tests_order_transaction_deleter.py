@@ -22,6 +22,7 @@ def transaction_deleter():
 @pytest.fixture
 def order(factory, order):
     factory.amocrm_order_transaction(order=order, amocrm_id=876)
+    order.set_not_paid()
     return order
 
 
@@ -39,7 +40,7 @@ def test_deletes_correct_call(transaction_deleter, order, mock_delete_transactio
     )
 
 
-def test_fails_if_dosent_exist(transaction_deleter, order):
+def test_fails_if_doesnt_exist(transaction_deleter, order):
     order.amocrm_transaction.delete()
     order.refresh_from_db()
 
@@ -47,9 +48,9 @@ def test_fails_if_dosent_exist(transaction_deleter, order):
         transaction_deleter(order)
 
 
-def test_fails_if_no_amocrm_customer(transaction_deleter, order):
-    order.user.amocrm_user.delete()
-    order.refresh_from_db()
+def test_fails_if_order_is_not_unpaid(transaction_deleter, order):
+    order.unpaid = None
+    order.save()
 
-    with pytest.raises(AmoCRMOrderTransactionDeleterException, match="AmoCRM customer for order's user doesn't exist"):
+    with pytest.raises(AmoCRMOrderTransactionDeleterException, match="Order must be unpaid"):
         transaction_deleter(order)

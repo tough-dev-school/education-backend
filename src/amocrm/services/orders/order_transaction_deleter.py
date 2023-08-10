@@ -44,3 +44,7 @@ class AmoCRMOrderTransactionDeleter(BaseService):
     def validate_amocrm_customer_exist(self) -> None:
         if not hasattr(self.order.user, "amocrm_user"):
             raise AmoCRMOrderTransactionDeleterException("AmoCRM customer for order's user doesn't exist")
+
+    def validate_order_is_unpaid(self) -> None:
+        if self.order.unpaid is None:
+            raise AmoCRMOrderTransactionDeleterException("Order must be unpaid")

@@ -11,5 +11,5 @@ def test_delete_transaction(user, amocrm_client, delete):
 
     delete.assert_called_once_with(
         url="/api/v4/customers/transactions/789",
-        excpected_status_codes=[204],
+        expected_status_codes=[204],
     )
