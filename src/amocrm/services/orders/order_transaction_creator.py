@@ -19,7 +19,7 @@ class AmoCRMOrderTransactionCreatorException(AmoCRMServiceException):
 class AmoCRMOrderTransactionCreator(BaseService):
     """
     Creates customer's transaction for given order if it's paid
-    Returns amocrm_id for transaction when creates one or None if order is not paid
+    Returns amocrm_id for transaction when creates one
     """
 
     order: Order
@@ -29,10 +29,7 @@ class AmoCRMOrderTransactionCreator(BaseService):
     def __post_init__(self) -> None:
         self.client = AmoCRMClient()
 
-    def act(self) -> int | None:
-        if self.order.paid is None:
-            return None
-
+    def act(self) -> int:
         transaction_metadata = AmoCRMTransactionElementMetadata(
             quantity=self.quantity,
             catalog_id=self.product_catalog_id,

@@ -27,6 +27,14 @@ class AmoCRMHTTP:
             expected_status_codes=expected_status_codes,
         )
 
+    def delete(self, url: str, params: dict | None = None, expected_status_codes: list[int] | None = None) -> dict[str, Any]:
+        return self.request(
+            method="delete",
+            url=url,
+            params=params,
+            expected_status_codes=expected_status_codes,
+        )
+
     def post(self, url: str, data: dict | list, expected_status_codes: list[int] | None = None) -> dict[str, Any]:
         return self.request(
             method="post",
@@ -54,7 +62,7 @@ class AmoCRMHTTP:
         }
         url = self.format_url(url)
 
-        if method == "get":
+        if method in {"get", "delete"}:
             response = request(url=url, timeout=3, params=params, headers=headers)
         else:
             response = request(url=url, timeout=3, json=data, headers=headers)

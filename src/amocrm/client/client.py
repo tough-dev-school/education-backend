@@ -172,6 +172,17 @@ class AmoCRMClient:
 
         return response["_embedded"]["transactions"][0]["id"]
 
+    def delete_transaction(self, transaction_id: int) -> None:
+        """
+        Deletes transaction for customer
+
+        https://www.amocrm.ru/developers/content/crm_platform/customers-api#transactions-delete
+        """
+        self.http.delete(
+            url=f"/api/v4/customers/transactions/{transaction_id}",
+            expected_status_codes=[204],
+        )
+
     def get_pipelines(self) -> list[AmoCRMPipeline]:
         """
         Returns all amocrm_lead pipelines from amocrm

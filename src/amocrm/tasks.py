@@ -18,6 +18,7 @@ from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreatorExce
 from amocrm.services.orders.order_lead_to_course_linker import AmoCRMOrderLeadToCourseLinker
 from amocrm.services.orders.order_lead_updater import AmoCRMOrderLeadUpdater
 from amocrm.services.orders.order_transaction_creator import AmoCRMOrderTransactionCreator
+from amocrm.services.orders.order_transaction_deleter import AmoCRMOrderTransactionDeleter
 from amocrm.services.products.course_creator import AmoCRMCourseCreator
 from amocrm.services.products.course_updater import AmoCRMCourseUpdater
 from amocrm.services.products.product_groups_updater import AmoCRMProductGroupsUpdater
@@ -62,9 +63,6 @@ def push_order_to_amocrm(order_id: int) -> None:
     time.sleep(1)  # avoid race condition when order is not saved yet
 
     order = apps.get_model("orders.Order").objects.get(id=order_id)
-
-    if hasattr(order, "amocrm_transaction"):
-        return None
 
     if hasattr(order, "amocrm_lead"):
         chain(
@@ -219,7 +217,10 @@ def _push_lead(order_id: int) -> int:
 )
 def _push_transaction(order_id: int) -> int | None:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
-    return AmoCRMOrderTransactionCreator(order=order)()
+    if order.is_unpaid is not None:
+        return AmoCRMOrderTransactionDeleter(order=order)()
+    if order.is_paid is not None:
+        return AmoCRMOrderTransactionCreator(order=order)()
 
 
 @celery.task(
