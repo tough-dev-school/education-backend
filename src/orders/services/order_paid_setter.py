@@ -48,22 +48,15 @@ class OrderPaidSetter(BaseService):
         bank.successful_payment_callback()
 
     def after_shipment(self) -> None:
-        can_be_subscribed = self.order.user.email and len(self.order.user.email)
+        can_be_subscribed = bool(self.order.user.email and len(self.order.user.email))
+
         if not can_be_subscribed and not amocrm_enabled():
             rebuild_tags.delay(student_id=self.order.user.id, subscribe=False)
+            return None
 
-        if can_be_subscribed and amocrm_enabled():
+        if amocrm_enabled():
             chain(
-                rebuild_tags.si(student_id=self.order.user.id, subscribe=True),
+                rebuild_tags.si(student_id=self.order.user.id, subscribe=can_be_subscribed),
                 push_user_to_amocrm.si(user_id=self.order.user.id),
                 push_order_to_amocrm.si(order_id=self.order.id),
             ).delay()
-            return None
-
-        if not can_be_subscribed and amocrm_enabled():
-            chain(
-                rebuild_tags.si(student_id=self.order.user.id, subscribe=False),
-                push_user_to_amocrm.si(user_id=self.order.user.id),
-                push_order_to_amocrm.si(order_id=self.order.id),
-            ).delay()
-            return None

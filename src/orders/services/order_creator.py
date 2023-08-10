@@ -42,6 +42,7 @@ class OrderCreator(BaseService):
     promocode: str | None = None
     desired_bank: str | None = None
 
+    subscribe_user: bool = False
     push_to_amocrm: bool = True
 
     def __post_init__(self) -> None:
@@ -91,29 +92,17 @@ class OrderCreator(BaseService):
 
     def after_creation(self, order: Order) -> None:
         push_to_amocrm = self.push_to_amocrm and amocrm_enabled()
-        user_can_be_subscribed = order.user.email and len(order.user.email)
 
-        if user_can_be_subscribed:
-            if push_to_amocrm:
-                chain(
-                    rebuild_tags.si(student_id=order.user.id, subscribe=True),
-                    push_user_to_amocrm.si(user_id=order.user.id),
-                    push_order_to_amocrm.si(order_id=order.id),
-                ).delay()
-                return None
-
-            rebuild_tags.delay(student_id=order.user.id, subscribe=True)
-            return None
-
+        can_be_subscribed = bool(self.subscribe_user and order.user.email and len(order.user.email))
         if push_to_amocrm:
             chain(
-                rebuild_tags.si(student_id=order.user.id, subscribe=False),
+                rebuild_tags.si(student_id=order.user.id, subscribe=can_be_subscribed),
                 push_user_to_amocrm.si(user_id=order.user.id),
                 push_order_to_amocrm.si(order_id=order.id),
             ).delay()
             return None
 
-        rebuild_tags.delay(student_id=order.user.id, subscribe=False)
+        rebuild_tags.delay(student_id=order.user.id, subscribe=can_be_subscribed)
 
     @staticmethod
     def get_template_context(order: Order) -> dict[str, str]:

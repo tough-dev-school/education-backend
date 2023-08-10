@@ -63,23 +63,12 @@ class UserCreator(BaseService):
 
     def after_creation(self, created_user: User) -> None:
         push_to_amocrm = self.push_to_amocrm and amocrm_enabled()
-        if not self.subscribe and not push_to_amocrm:
-            rebuild_tags.delay(student_id=created_user.id, subscribe=False)
+        can_be_subscribed = bool(self.subscribe and created_user.email and len(created_user.email))
+        if push_to_amocrm:
+            chain(
+                rebuild_tags.si(student_id=created_user.id, subscribe=can_be_subscribed),
+                push_user_to_amocrm.si(user_id=created_user.id),
+            ).delay()
             return None
 
-        can_be_subscribed = self.subscribe and created_user.email and len(created_user.email)
-        if can_be_subscribed:
-            if push_to_amocrm:
-                chain(
-                    rebuild_tags.si(student_id=created_user.id, subscribe=True),
-                    push_user_to_amocrm.si(user_id=created_user.id),
-                ).delay()
-                return None
-
-            rebuild_tags.delay(student_id=created_user.id, subscribe=True)
-            return None
-
-        chain(
-            rebuild_tags.si(student_id=created_user.id, subscribe=False),
-            push_user_to_amocrm.si(user_id=created_user.id),
-        ).delay()
+        rebuild_tags.delay(student_id=created_user.id, subscribe=self.subscribe)
