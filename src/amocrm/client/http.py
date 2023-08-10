@@ -1,3 +1,4 @@
+from json import JSONDecodeError
 from typing import Any
 from urllib.parse import urljoin
 
@@ -82,10 +83,13 @@ class AmoCRMHTTP:
         if response.status_code not in expected_status_codes:
             raise AmoCRMClientException(f"Non-ok HTTP response from amocrm: {response.status_code}")
 
-        response_json = response.json()
+        try:
+            response_json = response.json()
 
-        errors = response_json.get("_embedded", {}).get("errors") if isinstance(response_json, dict) else None
-        if errors:
-            raise AmoCRMClientException(f"Errors in response to {url}: {errors}")
+            errors = response_json.get("_embedded", {}).get("errors") if isinstance(response_json, dict) else None
+            if errors:
+                raise AmoCRMClientException(f"Errors in response to {url}: {errors}")
 
-        return response_json
+            return response_json
+        except JSONDecodeError:
+            return {}

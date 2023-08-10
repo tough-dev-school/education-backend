@@ -68,6 +68,22 @@ def test_get_ok_with_expected_status_code(amocrm_client, httpx_mock):
     assert "ok" in got
 
 
+def test_delete_ok(amocrm_client, httpx_mock):
+    httpx_mock.add_response(url="https://test.amocrm.ru/api/v4/transactions/444", method="DELETE")
+
+    got = amocrm_client.http.delete("api/v4/transactions/444")
+
+    assert got == {}
+
+
+def test_delete_ok_with_expected_status_code(amocrm_client, httpx_mock):
+    httpx_mock.add_response(url="https://test.amocrm.ru/api/v4/transactions/444", method="DELETE", status_code=321)
+
+    got = amocrm_client.http.delete("api/v4/transactions/444", expected_status_codes=[321])
+
+    assert got == {}
+
+
 @pytest.mark.parametrize("method", ["post", "patch"])
 def test_request_ok(amocrm_client, httpx_mock, method):
     httpx_mock.add_response(url="https://test.amocrm.ru/api/v4/companies", method=method, json={"ok": True})
