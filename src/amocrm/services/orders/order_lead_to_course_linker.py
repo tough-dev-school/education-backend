@@ -53,13 +53,8 @@ class AmoCRMOrderLeadToCourseLinker(BaseService):
 
     def get_validators(self) -> list[Callable]:
         return [
-            self.validate_transaction_doesnt_exist,
             self.validate_amocrm_course_exist,
         ]
-
-    def validate_transaction_doesnt_exist(self) -> None:
-        if hasattr(self.order, "amocrm_transaction"):
-            raise AmoCRMOrderLeadToCourseLinkerException("Transaction for this lead already exists")
 
     def validate_amocrm_course_exist(self) -> None:
         if not hasattr(self.order.course, "amocrm_course"):

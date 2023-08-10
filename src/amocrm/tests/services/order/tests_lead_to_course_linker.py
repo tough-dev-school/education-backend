@@ -48,11 +48,3 @@ def test_fails_if_no_course(lead_course_linker, amocrm_lead):
 
     with pytest.raises(AmoCRMOrderLeadToCourseLinkerException):
         lead_course_linker(amocrm_lead)
-
-
-@pytest.mark.usefixtures("amocrm_course")
-def test_fails_if_transaction_exist(lead_course_linker, amocrm_lead, factory):
-    factory.amocrm_order_transaction(order=amocrm_lead.order)
-
-    with pytest.raises(AmoCRMOrderLeadToCourseLinkerException):
-        lead_course_linker(amocrm_lead)
