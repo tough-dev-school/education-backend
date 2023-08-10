@@ -30,6 +30,7 @@ class UserCreator(BaseService):
     email: str
     name: str | None = ""
     subscribe: bool | None = False
+    push_to_amocrm: bool = True
 
     @cached_property
     def username(self) -> str:
@@ -61,21 +62,24 @@ class UserCreator(BaseService):
         return serializer.instance  # type: ignore
 
     def after_creation(self, created_user: User) -> None:
-        if not self.subscribe and not amocrm_enabled():
+        push_to_amocrm = self.push_to_amocrm and amocrm_enabled()
+        if not self.subscribe and not push_to_amocrm:
             rebuild_tags.delay(student_id=created_user.id, subscribe=False)
             return None
 
         can_be_subscribed = self.subscribe and created_user.email and len(created_user.email)
         if can_be_subscribed:
-            if amocrm_enabled():
-                tasks_chain = chain(
+            if push_to_amocrm:
+                chain(
                     rebuild_tags.si(student_id=created_user.id, subscribe=True),
-                    push_user_to_amocrm.si(user_id=created_user.id).set(queue="amocrm"),
-                )
-                tasks_chain.delay()
+                    push_user_to_amocrm.si(user_id=created_user.id),
+                ).delay()
                 return None
 
             rebuild_tags.delay(student_id=created_user.id, subscribe=True)
+            return None
 
-        else:
-            push_user_to_amocrm.delay(user_id=created_user.id)
+        chain(
+            rebuild_tags.si(student_id=created_user.id, subscribe=False),
+            push_user_to_amocrm.si(user_id=created_user.id),
+        ).delay()
