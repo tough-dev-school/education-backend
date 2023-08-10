@@ -9,7 +9,7 @@ from amocrm.tasks import push_order_to_amocrm
 
 
 class Command(BaseCommand):
-    help = "Export orders to AmoCRM"
+    help = "Export orders with courses to AmoCRM"
 
     def handle(self, *args, **kwargs):
         Order = apps.get_model("orders.Order")
@@ -17,7 +17,13 @@ class Command(BaseCommand):
 
         paid_orders_ids = (
             Order.objects.filter(
-                ~Q(user__email=""), unpaid__isnull=True, user__is_active=True, user__is_staff=False, user__email__isnull=False, paid__isnull=False
+                ~Q(user__email=""),
+                unpaid__isnull=True,
+                user__is_active=True,
+                user__is_staff=False,
+                user__email__isnull=False,
+                paid__isnull=False,
+                course__isnull=False,
             )
             .select_related("user")
             .values_list("id", flat=True)
@@ -31,6 +37,7 @@ class Command(BaseCommand):
                 user__email__isnull=False,
                 paid__isnull=True,
                 created__gte=three_months_ago,
+                course__isnull=False,
             )
             .select_related("user")
             .values_list("id", flat=True)
