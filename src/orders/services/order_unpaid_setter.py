@@ -1,9 +1,15 @@
 from dataclasses import dataclass
 
+from celery import chain
+
 from django.utils import timezone
 
+from amocrm.tasks import amocrm_enabled
+from amocrm.tasks import push_order_to_amocrm
+from amocrm.tasks import push_user_to_amocrm
 from app.services import BaseService
 from orders.models import Order
+from users.tasks import rebuild_tags
 
 
 @dataclass
@@ -18,6 +24,7 @@ class OrderUnpaidSetter(BaseService):
     def act(self) -> None:
         self.mark_order_as_not_paid()
         self.unship()
+        self.after_unshipment()
 
     def mark_order_as_not_paid(self) -> None:
         self.order.paid = None
@@ -29,3 +36,17 @@ class OrderUnpaidSetter(BaseService):
     def unship(self) -> None:
         if self.was_paid_before_service_call and self.order.item is not None:
             self.order.unship()
+
+    def after_unshipment(self) -> None:
+        can_be_subscribed = bool(self.order.user.email and len(self.order.user.email))
+
+        if not can_be_subscribed and not amocrm_enabled():
+            rebuild_tags.delay(student_id=self.order.user.id, subscribe=False)
+            return None
+
+        if amocrm_enabled():
+            chain(
+                rebuild_tags.si(student_id=self.order.user.id, subscribe=can_be_subscribed),
+                push_user_to_amocrm.si(user_id=self.order.user.id),
+                push_order_to_amocrm.si(order_id=self.order.id),
+            ).delay()

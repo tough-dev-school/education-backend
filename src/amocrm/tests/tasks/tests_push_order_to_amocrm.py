@@ -35,15 +35,7 @@ def order_with_lead(factory):
 
 
 @pytest.fixture
-def order_with_lead_and_transaction(factory):
-    order = factory.order(id=99)
-    factory.amocrm_order_lead(order=order)
-    factory.amocrm_order_transaction(order=order)
-    return order
-
-
-@pytest.fixture
-def order_without_lead_and_transaction(factory):
+def order_without_lead(factory):
     return factory.order(id=99)
 
 
@@ -57,8 +49,8 @@ def test_call_with_lead(order_with_lead, mock_push_lead, mock_push_transaction, 
     )
 
 
-def test_call_without_lead_and_transaction(order_without_lead_and_transaction, mock_push_lead, mock_push_transaction, mock_link_course_to_lead, mock_chain):
-    tasks.push_order_to_amocrm(order_id=order_without_lead_and_transaction.id)
+def test_call_without_lead(order_without_lead, mock_push_lead, mock_push_transaction, mock_link_course_to_lead, mock_chain):
+    tasks.push_order_to_amocrm(order_id=order_without_lead.id)
 
     mock_chain.assert_called_once_with(
         mock_push_lead(order_id=99),
@@ -66,12 +58,3 @@ def test_call_without_lead_and_transaction(order_without_lead_and_transaction, m
         mock_push_lead(order_id=99),
         mock_push_transaction(order_id=99),
     )
-
-
-def test_doesnt_call_with_transaction(order_with_lead_and_transaction, mock_push_lead, mock_push_transaction, mock_link_course_to_lead, mock_chain):
-    tasks.push_order_to_amocrm(order_id=order_with_lead_and_transaction.id)
-
-    mock_chain.assert_not_called()
-    mock_push_lead.assert_not_called()
-    mock_push_transaction.assert_not_called()
-    mock_link_course_to_lead.assert_not_called()

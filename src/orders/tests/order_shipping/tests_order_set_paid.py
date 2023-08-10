@@ -8,29 +8,9 @@ pytestmark = [
 ]
 
 
-@pytest.fixture(autouse=True)
-def rebuild_tags(mocker):
-    return mocker.patch("users.tasks.rebuild_tags.delay")
-
-
 @pytest.fixture
 def mock_update_user_chain(mocker):
     return mocker.patch("orders.services.order_paid_setter.chain")
-
-
-@pytest.fixture
-def mock_rebuild_tags(mocker):
-    return mocker.patch("users.tasks.rebuild_tags.si")
-
-
-@pytest.fixture
-def mock_push_customer(mocker):
-    return mocker.patch("amocrm.tasks.push_user_to_amocrm.si")
-
-
-@pytest.fixture
-def mock_push_order(mocker):
-    return mocker.patch("amocrm.tasks.push_order_to_amocrm.si")
 
 
 def test_works(order):
