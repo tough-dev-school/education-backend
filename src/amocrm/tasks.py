@@ -1,3 +1,5 @@
+import time
+
 from celery import chain
 from httpx import TransportError
 
@@ -34,12 +36,17 @@ def amocrm_enabled() -> bool:
     acks_late=True,
 )
 def push_user_to_amocrm(user_id: int) -> None:
-    tasks_chain = chain(
-        _push_customer.si(user_id=user_id),
-        _push_contact.si(user_id=user_id),
-        _link_contact_to_user.si(user_id=user_id),
-    )
-    return tasks_chain.delay()
+    time.sleep(1)  # avoid race condition when user is not saved yet
+
+    user = apps.get_model("users.User").objects.get(id=user_id)
+    Order = apps.get_model("orders.Order")
+
+    if Order.objects.filter(user=user).count() > 0:
+        chain(
+            _push_customer.si(user_id=user_id),
+            _push_contact.si(user_id=user_id),
+            _link_contact_to_user.si(user_id=user_id),
+        ).delay()
 
 
 @celery.task(
@@ -81,6 +88,7 @@ def push_order_to_amocrm(order_id: int) -> None:
     acks_late=True,
 )
 def push_product_groups() -> None:
+    time.sleep(1)  # avoid race condition when groups are not saved yet
     AmoCRMProductGroupsUpdater()()
 
 
@@ -94,6 +102,8 @@ def push_product_groups() -> None:
     acks_late=True,
 )
 def push_course(course_id: int) -> int:
+    time.sleep(1)  # avoid race condition when course is not saved yet
+
     course = apps.get_model("products.Course").objects.get(id=course_id)
     if hasattr(course, "amocrm_course"):
         return AmoCRMCourseUpdater(amocrm_course=course.amocrm_course)()
