@@ -17,7 +17,6 @@ class AmoCRMOrderTransactionDeleterException(AmoCRMServiceException):
 class AmoCRMOrderTransactionDeleter(BaseService):
     """
     Deletes customer's transaction for given order if it's unpaid
-    Returns amocrm_id for transaction when deletes one or None if order is not paid
     """
 
     order: Order
