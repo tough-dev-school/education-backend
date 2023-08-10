@@ -36,7 +36,6 @@ def test_call_push_customer_if_not_subscribe_and_amocrm_enabled(mock_push_custom
 
     user = UserCreator(name="Рулон Обоев", email="rulon.oboev@gmail.com")()
 
-
     mock_update_user_chain.assert_called_once_with(
         mock_rebuild_tags(student_id=user.id, subscribe=False),
         mock_push_customer(user_id=user.id),
