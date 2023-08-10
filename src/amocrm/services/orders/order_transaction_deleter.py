@@ -35,6 +35,7 @@ class AmoCRMOrderTransactionDeleter(BaseService):
         return [
             self.validate_transaction_exist,
             self.validate_amocrm_customer_exist,
+            self.validate_order_is_unpaid,
         ]
 
     def validate_transaction_exist(self) -> None:
