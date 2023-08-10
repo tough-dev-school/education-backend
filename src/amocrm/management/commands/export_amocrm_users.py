@@ -1,5 +1,6 @@
 from django.apps import apps
 from django.core.management.base import BaseCommand
+
 from amocrm.tasks import push_user_to_amocrm
 
 
@@ -13,4 +14,4 @@ class Command(BaseCommand):
         for user_id in set(users_ids_with_orders):
             push_user_to_amocrm.delay(user_id=user_id)
 
-        self.stdout.write(self.style.SUCCESS(f"Tasks for exporting users has been successfully created."))
+        self.stdout.write(self.style.SUCCESS("Tasks for exporting users has been successfully created."))
