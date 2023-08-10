@@ -217,9 +217,9 @@ def _push_lead(order_id: int) -> int:
 )
 def _push_transaction(order_id: int) -> int | None:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
-    if order.is_unpaid is not None:
+    if order.unpaid is not None:
         return AmoCRMOrderTransactionDeleter(order=order)()
-    if order.is_paid is not None:
+    if order.paid is not None:
         return AmoCRMOrderTransactionCreator(order=order)()
 
 
