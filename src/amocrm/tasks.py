@@ -14,6 +14,7 @@ from amocrm.services.contacts.contact_creator import AmoCRMContactCreator
 from amocrm.services.contacts.contact_to_customer_linker import AmoCRMContactToCustomerLinker
 from amocrm.services.contacts.contact_updater import AmoCRMContactUpdater
 from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreator
+from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreatorException
 from amocrm.services.orders.order_lead_to_course_linker import AmoCRMOrderLeadToCourseLinker
 from amocrm.services.orders.order_lead_updater import AmoCRMOrderLeadUpdater
 from amocrm.services.orders.order_transaction_creator import AmoCRMOrderTransactionCreator
@@ -58,6 +59,8 @@ def push_user_to_amocrm(user_id: int) -> None:
     acks_late=True,
 )
 def push_order_to_amocrm(order_id: int) -> None:
+    time.sleep(1)  # avoid race condition when order is not saved yet
+
     order = apps.get_model("orders.Order").objects.get(id=order_id)
 
     if hasattr(order, "amocrm_transaction"):
@@ -189,7 +192,7 @@ def _push_all_courses() -> None:
 
 
 @celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
+    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException, AmoCRMOrderLeadCreatorException],
     retry_kwargs={
         "max_retries": 10,
         "countdown": 1,
