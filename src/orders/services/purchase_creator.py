@@ -1,5 +1,10 @@
 from dataclasses import dataclass
 
+from celery import chain
+
+from amocrm.tasks import amocrm_enabled
+from amocrm.tasks import push_order_to_amocrm
+from amocrm.tasks import push_user_to_amocrm
 from app.services import BaseService
 from banking.selector import get_bank
 from banking.zero_price_bank import ZeroPriceBank
@@ -8,6 +13,7 @@ from orders.services import OrderCreator
 from products.models import Product
 from users.models import User
 from users.services import UserCreator
+from users.tasks import rebuild_tags
 
 
 @dataclass
@@ -32,7 +38,6 @@ class PurchaseCreator(BaseService):
         user = self.get_or_create_user(
             name=self.user_name,
             email=self.email,
-            subscribe=self.subscribe,
         )
         order = self.create_order(
             item=self.item,
@@ -40,6 +45,9 @@ class PurchaseCreator(BaseService):
             desired_bank=self.desired_bank,
             user=user,
         )
+
+        self.after_creation(order=order)
+
         return self.get_payment_link(
             order=order,
             desired_bank=self.desired_bank,
@@ -54,15 +62,16 @@ class PurchaseCreator(BaseService):
             item=item,
             promocode=promocode,
             desired_bank=desired_bank,
+            push_to_amocrm=False,
         )
         return creator()
 
     @staticmethod
-    def get_or_create_user(name: str, email: str, subscribe: bool = False) -> User:
+    def get_or_create_user(name: str, email: str) -> User:
         return UserCreator(
             name=name,
             email=email.strip(),
-            subscribe=subscribe,
+            push_to_amocrm=False,
         )()
 
     @staticmethod
@@ -81,3 +90,11 @@ class PurchaseCreator(BaseService):
             )
 
         return bank.get_initial_payment_url()
+
+    def after_creation(self, order: Order) -> None:
+        if amocrm_enabled():
+            chain(
+                rebuild_tags.si(student_id=order.user.id, subscribe=self.subscribe),
+                push_user_to_amocrm.si(user_id=order.user.id),
+                push_order_to_amocrm.si(order_id=order.id),
+            ).delay()

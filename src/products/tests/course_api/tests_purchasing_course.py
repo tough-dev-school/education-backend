@@ -6,6 +6,31 @@ from orders.models import Order
 pytestmark = [pytest.mark.django_db]
 
 
+@pytest.fixture
+def mock_update_chain(mocker):
+    return mocker.patch("orders.services.purchase_creator.chain")
+
+
+@pytest.fixture
+def mock_rebuild_tags(mocker):
+    return mocker.patch("users.tasks.rebuild_tags.si")
+
+
+@pytest.fixture
+def rebuild_tags(mocker):
+    return mocker.patch("users.tasks.rebuild_tags.delay")
+
+
+@pytest.fixture
+def mock_push_customer(mocker):
+    return mocker.patch("amocrm.tasks.push_user_to_amocrm.si")
+
+
+@pytest.fixture
+def mock_push_order(mocker):
+    return mocker.patch("amocrm.tasks.push_order_to_amocrm.si")
+
+
 def get_order():
     return Order.objects.last()
 
@@ -43,21 +68,20 @@ def test_user(call_purchase):
         (0, False),
     ],
 )
-def test_user_auto_subscription(call_purchase, wants_to_subscribe, should_be_subscribed, rebuild_tags):
+def test_update_chain_called_with_correct_args(
+    call_purchase, wants_to_subscribe, should_be_subscribed, mock_update_chain, mock_rebuild_tags, mock_push_customer, mock_push_order, settings
+):
+    settings.AMOCRM_BASE_URL = "https://mamo.amo.criminal"
+
     call_purchase(subscribe=wants_to_subscribe)
 
     placed = get_order()
     placed.user.refresh_from_db()
 
-    rebuild_tags.assert_called_once_with(student_id=placed.user.id, subscribe=should_be_subscribed)
-
-
-def test_subscription_tags(call_purchase, rebuild_tags):
-    call_purchase(subscribe=True)
-
-    placed = get_order()
-
-    rebuild_tags.assert_called_once_with(student_id=placed.user.id, subscribe=True)
+    mock_update_chain.assert_called_once()
+    mock_rebuild_tags.assert_called_once_with(student_id=placed.user.id, subscribe=should_be_subscribed)
+    mock_push_customer.assert_called_once_with(user_id=placed.user.id)
+    mock_push_order.assert_called_once_with(order_id=placed.id)
 
 
 def test_by_default_user_is_not_subscribed(call_purchase):
