@@ -78,18 +78,10 @@ def test_updates_correct_call_for_unpaid(lead_updater, amocrm_lead, mock_update_
     )
 
 
-def test_fails_if_order_not_paid(lead_updater, amocrm_lead):
-    amocrm_lead.order.paid = None
-    amocrm_lead.order.save()
-
-    with pytest.raises(AmoCRMOrderLeadUpdaterException, match="Order must be paid"):
-        lead_updater(amocrm_lead)
-
-
-def test_fails_if_transaction_already_exist(lead_updater, amocrm_lead, factory):
+def test_fails_if_paid_and_transaction_already_exist(lead_updater, amocrm_lead, factory):
     factory.amocrm_order_transaction(order=amocrm_lead.order)
 
-    with pytest.raises(AmoCRMOrderLeadUpdaterException, match="Transaction for this order already exists"):
+    with pytest.raises(AmoCRMOrderLeadUpdaterException, match="Transaction for this paid order already exists"):
         lead_updater(amocrm_lead)
 
 
@@ -114,14 +106,4 @@ def test_fails_if_no_amocrm_contact(lead_updater, amocrm_lead):
     amocrm_lead.order.refresh_from_db()
 
     with pytest.raises(AmoCRMOrderLeadUpdaterException, match="AmoCRM contact for order's user doesn't exist"):
-        lead_updater(amocrm_lead)
-
-
-def test_fails_if_is_not_paid_and_not_unpaid(lead_updater, amocrm_lead):
-    amocrm_lead.order.paid = None
-    amocrm_lead.order.unpaid = None
-    amocrm_lead.order.save()
-    amocrm_lead.order.refresh_from_db()
-
-    with pytest.raises(AmoCRMOrderLeadUpdaterException, match="Order must be paid or unpaid"):
         lead_updater(amocrm_lead)
