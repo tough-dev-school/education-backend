@@ -44,11 +44,12 @@ class AmoCRMOrderLeadUpdater(BaseService):
         return "b2b" in self.order.user.tags
 
     @property
-    def status_id(self) -> int:  # type: ignore
+    def status_id(self) -> int:
         if self.is_unpaid:
             return self._unpaid_status_id
         elif self.is_paid:
             return self._paid_status_id
+        return self._not_paid_or_unpaid_status_id
 
     @property
     def _paid_status_id(self) -> int:
@@ -58,22 +59,21 @@ class AmoCRMOrderLeadUpdater(BaseService):
     def _unpaid_status_id(self) -> int:
         return get_b2b_pipeline_status_id(status_name="closed") if self.is_b2b else get_b2c_pipeline_status_id(status_name="closed")
 
+    @property
+    def _not_paid_or_unpaid_status_id(self) -> int:
+        return get_b2b_pipeline_status_id(status_name="first_contact") if self.is_b2b else get_b2c_pipeline_status_id(status_name="chosen_course")
+
     def get_validators(self) -> list[Callable]:
         return [
-            self.validate_order_is_paid_or_unpaid,
             self.validate_transaction_doesnt_exist_if_paid,
             self.validate_order_with_course,
             self.validate_amocrm_course_exist,
             self.validate_amocrm_contact_exist,
         ]
 
-    def validate_order_is_paid_or_unpaid(self) -> None:
-        if self.order.paid is None and self.order.unpaid is None:
-            raise AmoCRMOrderLeadUpdaterException("Order must be paid or unpaid")
-
     def validate_transaction_doesnt_exist_if_paid(self) -> None:
         if hasattr(self.order, "amocrm_transaction") and self.is_paid:
-            raise AmoCRMOrderLeadUpdaterException("Transaction for this order already exists")
+            raise AmoCRMOrderLeadUpdaterException("Transaction for this paid order already exists")
 
     def validate_order_with_course(self) -> None:
         if self.order.course is None:
