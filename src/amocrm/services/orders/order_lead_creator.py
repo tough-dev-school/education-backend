@@ -40,6 +40,7 @@ class AmoCRMOrderLeadCreator(BaseService):
             pipeline_id=self.pipeline_id,
             contact_id=self.order.user.amocrm_user_contact.amocrm_id,
             price=self.order.price,
+            created_at=self.order.created,
         )
 
         amocrm_order_lead = AmoCRMOrderLead.objects.create(order=self.order, amocrm_id=amocrm_id)

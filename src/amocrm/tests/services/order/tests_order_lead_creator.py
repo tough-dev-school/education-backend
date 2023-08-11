@@ -47,6 +47,7 @@ def test_creates_correct_call(lead_creator, order, mock_create_lead, user_tags, 
         pipeline_id=777,
         contact_id=order.user.amocrm_user_contact.amocrm_id,
         price=order.price,
+        created_at=order.created,
     )
 
 
