@@ -24,6 +24,11 @@ def mock_unpaid_status_id(mocker):
     return mocker.patch("amocrm.services.orders.order_lead_updater.AmoCRMOrderLeadUpdater._unpaid_status_id", return_value=333)
 
 
+@pytest.fixture
+def mock_not_paid_or_unpaid(mocker):
+    return mocker.patch("amocrm.services.orders.order_lead_updater.AmoCRMOrderLeadUpdater._not_paid_or_unpaid_status_id", return_value=444)
+
+
 @pytest.fixture(autouse=True)
 def mock_update_lead(mocker):
     return mocker.patch("amocrm.client.AmoCRMClient.update_lead", return_value=481516)
@@ -74,6 +79,20 @@ def test_updates_correct_call_for_unpaid(lead_updater, amocrm_lead, mock_update_
     mock_update_lead.assert_called_once_with(
         lead_id=amocrm_lead.amocrm_id,
         status_id=mock_unpaid_status_id,
+        price=amocrm_lead.order.price,
+    )
+
+
+def test_updates_correct_call_for_not_paid_or_unpaid(lead_updater, amocrm_lead, mock_update_lead, mock_not_paid_or_unpaid):
+    amocrm_lead.order.unpaid = None
+    amocrm_lead.order.paid = None
+    amocrm_lead.order.save()
+
+    lead_updater(amocrm_lead)
+
+    mock_update_lead.assert_called_once_with(
+        lead_id=amocrm_lead.amocrm_id,
+        status_id=mock_not_paid_or_unpaid,
         price=amocrm_lead.order.price,
     )
 

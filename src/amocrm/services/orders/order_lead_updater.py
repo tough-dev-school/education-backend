@@ -49,6 +49,7 @@ class AmoCRMOrderLeadUpdater(BaseService):
             return self._unpaid_status_id
         elif self.is_paid:
             return self._paid_status_id
+        return self._not_paid_or_unpaid_status_id
 
     @property
     def _paid_status_id(self) -> int:
@@ -57,6 +58,10 @@ class AmoCRMOrderLeadUpdater(BaseService):
     @property
     def _unpaid_status_id(self) -> int:
         return get_b2b_pipeline_status_id(status_name="closed") if self.is_b2b else get_b2c_pipeline_status_id(status_name="closed")
+
+    @property
+    def _not_paid_or_unpaid_status_id(self) -> int:
+        return get_b2b_pipeline_status_id(status_name="first_contact") if self.is_b2b else get_b2c_pipeline_status_id(status_name="chosen_course")
 
     def get_validators(self) -> list[Callable]:
         return [
