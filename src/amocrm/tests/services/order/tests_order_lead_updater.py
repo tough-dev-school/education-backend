@@ -56,6 +56,7 @@ def test_updates_correct_call_b2b_or_b2c(lead_updater, amocrm_lead, mock_update_
         lead_id=amocrm_lead.amocrm_id,
         status_id=status,
         price=amocrm_lead.order.price,
+        created_at=amocrm_lead.order.created,
     )
 
 
@@ -68,6 +69,7 @@ def test_updates_correct_call_for_paid(lead_updater, amocrm_lead, mock_update_le
         lead_id=amocrm_lead.amocrm_id,
         status_id=mock_paid_status_id,
         price=amocrm_lead.order.price,
+        created_at=amocrm_lead.order.created,
     )
 
 
@@ -80,6 +82,7 @@ def test_updates_correct_call_for_unpaid(lead_updater, amocrm_lead, mock_update_
         lead_id=amocrm_lead.amocrm_id,
         status_id=mock_unpaid_status_id,
         price=amocrm_lead.order.price,
+        created_at=amocrm_lead.order.created,
     )
 
 
@@ -94,6 +97,7 @@ def test_updates_correct_call_for_not_paid_or_unpaid(lead_updater, amocrm_lead, 
         lead_id=amocrm_lead.amocrm_id,
         status_id=mock_not_paid_or_unpaid,
         price=amocrm_lead.order.price,
+        created_at=amocrm_lead.order.created,
     )
 
 

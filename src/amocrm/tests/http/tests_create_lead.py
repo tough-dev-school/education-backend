@@ -1,3 +1,4 @@
+from datetime import datetime
 import pytest
 
 from _decimal import Decimal
@@ -20,6 +21,7 @@ def test_create_lead_request_fields(amocrm_client, post):
         pipeline_id=14,
         contact_id=28,
         price=Decimal(100.00),
+        created_at=datetime(2023, 1, 1),
     )
 
     assert got == 41353987
@@ -30,6 +32,7 @@ def test_create_lead_request_fields(amocrm_client, post):
                 "status_id": 7,
                 "pipeline_id": 14,
                 "price": 100,
+                "created_at": 1672520400,
                 "_embedded": {"contacts": [{"id": 28}]},
             },
         ],

@@ -37,6 +37,7 @@ class AmoCRMOrderLeadUpdater(BaseService):
             lead_id=self.amocrm_lead.amocrm_id,
             status_id=self.status_id,
             price=self.order.price,
+            created_at=self.order.created,
         )
 
     @cached_property

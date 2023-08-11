@@ -1,3 +1,4 @@
+from datetime import datetime
 import pytest
 
 from _decimal import Decimal
@@ -22,6 +23,7 @@ def test_update_lead_request_fields(amocrm_client, patch):
         lead_id=3,
         status_id=6,
         price=Decimal(90.00),
+        created_at=datetime(2023, 1, 1),
     )
 
     assert got == 3
@@ -32,6 +34,7 @@ def test_update_lead_request_fields(amocrm_client, patch):
                 "id": 3,
                 "status_id": 6,
                 "price": 90,
+                "created_at": 1672520400,
             },
         ],
     )
