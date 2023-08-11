@@ -44,7 +44,7 @@ class AmoCRMOrderLeadUpdater(BaseService):
         return "b2b" in self.order.user.tags
 
     @property
-    def status_id(self) -> int:  # type: ignore
+    def status_id(self) -> int:
         if self.is_unpaid:
             return self._unpaid_status_id
         elif self.is_paid:
