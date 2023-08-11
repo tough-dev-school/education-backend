@@ -219,7 +219,7 @@ def _push_transaction(order_id: int) -> int | None:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
     if order.unpaid is not None:
         return AmoCRMOrderTransactionDeleter(order=order)()
-    if order.paid is not None:
+    if order.paid is not None and not hasattr(order, "amocrm_transaction"):
         return AmoCRMOrderTransactionCreator(order=order)()
 
 
