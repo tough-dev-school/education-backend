@@ -102,10 +102,22 @@ def test_updates_correct_call_for_not_paid_or_unpaid(lead_updater, amocrm_lead, 
 
 
 def test_fails_if_paid_and_transaction_already_exist(lead_updater, amocrm_lead, factory):
+    amocrm_lead.order.price = 100500
+    amocrm_lead.order.save()
     factory.amocrm_order_transaction(order=amocrm_lead.order)
 
     with pytest.raises(AmoCRMOrderLeadUpdaterException, match="Transaction for this paid order already exists"):
         lead_updater(amocrm_lead)
+
+
+def test_doesnt_fail_if_paid_and_transaction_already_exist_but_free(lead_updater, amocrm_lead, factory, mock_update_lead):
+    amocrm_lead.order.price = 0
+    amocrm_lead.order.save()
+    factory.amocrm_order_transaction(order=amocrm_lead.order)
+
+    lead_updater(amocrm_lead)
+
+    mock_update_lead.assert_called_once()
 
 
 def test_fails_if_no_course(lead_updater, amocrm_lead):
