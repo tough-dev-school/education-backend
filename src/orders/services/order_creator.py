@@ -94,7 +94,7 @@ class OrderCreator(BaseService):
         push_to_amocrm = self.push_to_amocrm and amocrm_enabled()
 
         can_be_subscribed = bool(self.subscribe_user and order.user.email and len(order.user.email))
-        if push_to_amocrm:
+        if push_to_amocrm and order.price > 0:  # do not push free unshipped orders
             chain(
                 rebuild_tags.si(student_id=order.user.id, subscribe=can_be_subscribed),
                 push_user_to_amocrm.si(user_id=order.user.id),

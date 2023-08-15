@@ -1,5 +1,7 @@
 import pytest
 
+from _decimal import Decimal
+
 pytestmark = [pytest.mark.django_db]
 
 
@@ -61,6 +63,20 @@ def test_if_not_subscribe_and_amocrm_disabled(
     user.save()
 
     create(user=user, item=course)
+
+    rebuild_tags.assert_called_once_with(student_id=user.id, subscribe=False)
+    mock_update_user_chain.assert_not_called()
+    mock_rebuild_tags.assert_not_called()
+    mock_push_customer.assert_not_called()
+    mock_push_order.assert_not_called()
+
+
+def test_dont_call_if_free_order(create, user, course, mock_update_user_chain, mock_rebuild_tags, mock_push_customer, settings, mock_push_order, rebuild_tags):
+    settings.AMOCRM_BASE_URL = "https://amo.amo.amo"
+    user.email = ""
+    user.save()
+
+    create(user=user, item=course, price=Decimal(0))
 
     rebuild_tags.assert_called_once_with(student_id=user.id, subscribe=False)
     mock_update_user_chain.assert_not_called()
