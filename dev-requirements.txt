@@ -168,7 +168,7 @@ drf-spectacular[sidecar]==0.26.4
     # via education-backend (pyproject.toml)
 drf-spectacular-sidecar==2023.8.1
     # via drf-spectacular
-emoji==2.7.0
+emoji==2.8.0
     # via education-backend (pyproject.toml)
 eradicate==2.3.0
     # via flake8-eradicate
