@@ -49,7 +49,7 @@ class AmoCRMOrderLeadUpdater(BaseService):
             return self._unpaid_status_id
         elif self.is_paid:
             return self._paid_status_id
-        return self._not_paid_or_unpaid_status_id if self.order.price != 0 else self._unpaid_status_id
+        return self._not_paid_or_unpaid_status_id
 
     @property
     def _paid_status_id(self) -> int:
@@ -72,7 +72,7 @@ class AmoCRMOrderLeadUpdater(BaseService):
         ]
 
     def validate_transaction_doesnt_exist_if_paid(self) -> None:
-        if hasattr(self.order, "amocrm_transaction") and self.is_paid and self.order.price != 0:
+        if hasattr(self.order, "amocrm_transaction") and self.is_paid:
             raise AmoCRMOrderLeadUpdaterException("Transaction for this paid order already exists")
 
     def validate_order_with_course(self) -> None:
