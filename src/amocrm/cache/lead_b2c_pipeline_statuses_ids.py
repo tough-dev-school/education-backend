@@ -5,24 +5,16 @@ from django.core.cache import cache
 from amocrm.client import AmoCRMClient
 from amocrm.exceptions import AmoCRMCacheException
 
-STATUSES_NAMES = Literal["unsorted", "first_contact", "chosen_course", "negotiation", "get_paid", "course_shipped", "purchased", "closed"]
+STATUSES_NAMES = Literal["unsorted", "first_contact", "purchased", "closed"]
 STATUSES_NAMES_TRANSLATE = {
     "unsorted": "Неразобранное",
     "first_contact": "новое обращение",
-    "chosen_course": "выбран курс",
-    "negotiation": "Переговоры",
-    "get_paid": "поступила ОПЛАТА",
-    "course_shipped": "выдан доступ к курсу",
     "purchased": "Успешно реализовано",
     "closed": "Закрыто и не реализовано",
 }
 STATUSES_TO_CACHE = {
     "unsorted": "amocrm_b2c_unsorted_status_id",
     "first_contact": "amocrm_b2c_first_contact_status_id",
-    "chosen_course": "amocrm_b2c_chosen_course_status_id",
-    "negotiation": "amocrm_b2c_negotiation_status_id",
-    "get_paid": "amocrm_b2c_get_paid_status_id",
-    "course_shipped": "amocrm_b2c_course_shipped_status_id",
     "purchased": "amocrm_b2c_purchased_status_id",
     "closed": "amocrm_b2c_closed_status_id",
 }

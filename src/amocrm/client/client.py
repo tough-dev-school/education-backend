@@ -137,7 +137,7 @@ class AmoCRMClient:
 
         return response[0]["id"]  # type: ignore
 
-    def update_lead(self, lead_id: int, status_id: int, price: int | float | Decimal, created_at: datetime) -> int:
+    def update_lead(self, lead_id: int, status_id: int, pipeline_id: int, price: int | float | Decimal, created_at: datetime) -> int:
         """
         Updates amocrm_lead in amocrm and returns its amocrm_id
 
@@ -149,6 +149,7 @@ class AmoCRMClient:
                 {
                     "id": lead_id,
                     "status_id": status_id,
+                    "pipeline_id": pipeline_id,
                     "price": int(price),  # amocrm api requirement to send only integer
                     "created_at": int(created_at.timestamp()),  # amocrm api requirement to send only integer timestamp
                 }

@@ -1,9 +1,6 @@
 from dataclasses import dataclass
 from typing import Callable
 
-from django.utils.functional import cached_property
-
-from amocrm.cache.lead_b2b_pipeline_statuses_ids import get_b2b_pipeline_status_id
 from amocrm.cache.lead_b2c_pipeline_statuses_ids import get_b2c_pipeline_status_id
 from amocrm.cache.lead_pipeline_id import get_pipeline_id
 from amocrm.client import AmoCRMClient
@@ -22,8 +19,7 @@ class AmoCRMOrderLeadCreator(BaseService):
     """
     Creates amocrm_lead for given order and with user's amocrm contact
 
-    - if user has b2b tag amocrm_lead goes to b2b pipeline - else in b2c
-    - if order is paid new amocrm_lead creates with 'purchased' status - else 'chosen_course' for b2c and 'first_contact' for b2b
+    - if order is paid new amocrm_lead creates with 'purchased' status - else 'first_contact'
 
     Returns amocrm_id for amocrm_lead
     """
@@ -46,13 +42,9 @@ class AmoCRMOrderLeadCreator(BaseService):
         amocrm_order_lead = AmoCRMOrderLead.objects.create(order=self.order, amocrm_id=amocrm_id)
         return amocrm_order_lead.amocrm_id
 
-    @cached_property
-    def is_b2b(self) -> bool:
-        return "b2b" in self.order.user.tags
-
     @property
     def pipeline_id(self) -> int:
-        return get_pipeline_id(pipeline_name="b2b") if self.is_b2b else get_pipeline_id(pipeline_name="b2c")
+        return get_pipeline_id(pipeline_name="b2c")
 
     @property
     def status_id(self) -> int:
@@ -60,11 +52,11 @@ class AmoCRMOrderLeadCreator(BaseService):
 
     @property
     def _paid_status_id(self) -> int:
-        return get_b2b_pipeline_status_id(status_name="purchased") if self.is_b2b else get_b2c_pipeline_status_id(status_name="purchased")
+        return get_b2c_pipeline_status_id(status_name="purchased")
 
     @property
     def _not_paid_status_id(self) -> int:
-        return get_b2b_pipeline_status_id(status_name="first_contact") if self.is_b2b else get_b2c_pipeline_status_id(status_name="chosen_course")
+        return get_b2c_pipeline_status_id(status_name="first_contact")
 
     def get_validators(self) -> list[Callable]:
         return [

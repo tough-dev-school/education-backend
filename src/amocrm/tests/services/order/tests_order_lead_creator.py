@@ -12,7 +12,6 @@ pytestmark = [
 @pytest.fixture(autouse=True)
 def _mock_fields_id(mocker):
     mocker.patch("amocrm.services.orders.order_lead_creator.get_pipeline_id", return_value=777)
-    mocker.patch("amocrm.services.orders.order_lead_creator.get_b2b_pipeline_status_id", return_value=888)
     mocker.patch("amocrm.services.orders.order_lead_creator.get_b2c_pipeline_status_id", return_value=999)
 
 
@@ -35,15 +34,11 @@ def test_creates_amocrm_order_lead(lead_creator, order):
     assert amocrm_lead.amocrm_id == 481516
 
 
-@pytest.mark.parametrize(("user_tags", "status"), [(["b2b", "any-purchase"], 888), (["any-purchase"], 999)])
-def test_creates_correct_call(lead_creator, order, mock_create_lead, user_tags, status):
-    order.user.tags = user_tags
-    order.user.save()
-
+def test_creates_correct_call(lead_creator, order, mock_create_lead):
     lead_creator(order)
 
     mock_create_lead.assert_called_once_with(
-        status_id=status,
+        status_id=999,
         pipeline_id=777,
         contact_id=order.user.amocrm_user_contact.amocrm_id,
         price=order.price,
