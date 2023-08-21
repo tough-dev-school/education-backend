@@ -66,15 +66,14 @@ class AmoCRMOrderLeadUpdater(BaseService):
 
     def get_validators(self) -> list[Callable]:
         return [
-            self.validate_transaction_doesnt_exist_if_paid_and_not_free,
+            self.validate_transaction_doesnt_exist_if_paid,
             self.validate_order_with_course,
             self.validate_amocrm_course_exist,
             self.validate_amocrm_contact_exist,
         ]
 
-    def validate_transaction_doesnt_exist_if_paid_and_not_free(self) -> None:
-        """N.B. Free orders are paid almost as soon as they have been created"""
-        if hasattr(self.order, "amocrm_transaction") and self.is_paid and self.order.price > 0:
+    def validate_transaction_doesnt_exist_if_paid(self) -> None:
+        if hasattr(self.order, "amocrm_transaction") and self.is_paid:
             raise AmoCRMOrderLeadUpdaterException("Transaction for this paid order already exists")
 
     def validate_order_with_course(self) -> None:

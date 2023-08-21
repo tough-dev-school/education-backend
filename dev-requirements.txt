@@ -453,9 +453,7 @@ traitlets==5.9.0
     #   ipython
     #   matplotlib-inline
 types-awscrt==0.19.0
-    # via
-    #   botocore-stubs
-    #   types-s3transfer
+    # via botocore-stubs
 types-babel==2.11.0.15
     # via education-backend (pyproject.toml)
 types-bleach==6.0.0.4

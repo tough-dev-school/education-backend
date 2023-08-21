@@ -1,5 +1,7 @@
 import pytest
 
+from _decimal import Decimal
+
 from amocrm import tasks
 
 pytestmark = [
@@ -28,20 +30,21 @@ def mock_chain(mocker):
 
 
 @pytest.fixture
-def order_with_lead(factory):
-    order = factory.order(id=99)
+def order_with_lead(factory, user):
+    order = factory.order(id=99, price=100, user=user, author=user)
     factory.amocrm_order_lead(order=order)
     return order
 
 
 @pytest.fixture
-def order_without_lead(factory):
-    return factory.order(id=99)
+def order_without_lead(factory, user):
+    return factory.order(id=99, price=100, user=user, author=user)
 
 
 def test_call_with_lead(order_with_lead, mock_push_lead, mock_push_transaction, mock_link_course_to_lead, mock_chain):
-    tasks.push_order_to_amocrm(order_id=order_with_lead.id)
+    got = tasks.push_order_to_amocrm(order_id=order_with_lead.id)
 
+    assert got is None
     mock_chain.assert_called_once_with(
         mock_link_course_to_lead(order_id=99),
         mock_push_lead(order_id=99),
@@ -50,11 +53,32 @@ def test_call_with_lead(order_with_lead, mock_push_lead, mock_push_transaction, 
 
 
 def test_call_without_lead(order_without_lead, mock_push_lead, mock_push_transaction, mock_link_course_to_lead, mock_chain):
-    tasks.push_order_to_amocrm(order_id=order_without_lead.id)
+    got = tasks.push_order_to_amocrm(order_id=order_without_lead.id)
 
+    assert got is None
     mock_chain.assert_called_once_with(
         mock_push_lead(order_id=99),
         mock_link_course_to_lead(order_id=99),
         mock_push_lead(order_id=99),
         mock_push_transaction(order_id=99),
     )
+
+
+def test_not_push_if_author_not_equal_to_user(order_without_lead, mock_chain, another_user):
+    order_without_lead.author = another_user
+    order_without_lead.save()
+
+    got = tasks.push_order_to_amocrm(order_id=order_without_lead.id)
+
+    assert got == "not for amocrm"
+    mock_chain.assert_not_called()
+
+
+def test_not_push_if_free_order(order_without_lead, mock_chain):
+    order_without_lead.price = Decimal(0)
+    order_without_lead.save()
+
+    got = tasks.push_order_to_amocrm(order_id=order_without_lead.id)
+
+    assert got == "not for amocrm"
+    mock_chain.assert_not_called()
