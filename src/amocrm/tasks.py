@@ -35,6 +35,7 @@ __all__ = [
     "push_product_groups",
     "push_course",
     "push_all_products_and_product_groups",
+    "drop_free_order_amocrm",
 ]
 
 
@@ -100,6 +101,21 @@ def push_order_to_amocrm(order_id: int) -> None | str:
             _push_lead.si(order_id=order_id),  # push again cause linking course returns lead to default status
             _push_transaction.si(order_id=order_id),
         ).delay()
+
+
+@celery.task(
+    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
+    retry_kwargs={
+        "max_retries": 10,
+        "countdown": 1,
+    },
+    acks_late=True,
+)
+def drop_free_order_amocrm(order_id: int) -> None | str:
+    chain(
+        _push_lead.si(order_id=order_id),
+        _push_transaction.si(order_id=order_id),
+    ).delay()
 
 
 @celery.task(
@@ -240,7 +256,7 @@ def _push_lead(order_id: int) -> int:
 )
 def _push_transaction(order_id: int) -> int | None:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
-    if order.unpaid is not None:
+    if order.unpaid is not None or (order.price == 0 and hasattr(order, "amocrm_transaction")):
         return AmoCRMOrderTransactionDeleter(order=order)()
     if order.paid is not None and not hasattr(order, "amocrm_transaction"):
         return AmoCRMOrderTransactionCreator(order=order)()
