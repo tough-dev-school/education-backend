@@ -109,7 +109,16 @@ def test_request_fail(amocrm_client, httpx_mock, method):
     httpx_mock.add_response(url="https://test.amocrm.ru/api/v4/companies", method=method, status_code=210)
     request = getattr(amocrm_client.http, method)
 
-    with pytest.raises(AmoCRMClientException):
+    with pytest.raises(AmoCRMClientException, match="Non-ok HTTP response from amocrm: 210"):
+        request("api/v4/companies", {})
+
+
+@pytest.mark.parametrize("method", ["post", "patch"])
+def test_request_fail_with_body(amocrm_client, httpx_mock, method):
+    httpx_mock.add_response(url="https://test.amocrm.ru/api/v4/companies", method=method, status_code=210, json={"info": "damn we lost"})
+    request = getattr(amocrm_client.http, method)
+
+    with pytest.raises(AmoCRMClientException, match="Non-ok HTTP response from amocrm: 210\nResponse data: {'info': 'damn we lost'}"):
         request("api/v4/companies", {})
 
 
@@ -122,5 +131,5 @@ def test_request_fail_because_of_errors_in_response(amocrm_client, httpx_mock, m
     )
     request = getattr(amocrm_client.http, method)
 
-    with pytest.raises(AmoCRMClientException):
+    with pytest.raises(AmoCRMClientException, match="Errors in response to https://test.amocrm.ru/api/v4/companies:"):
         request("api/v4/companies", {})
