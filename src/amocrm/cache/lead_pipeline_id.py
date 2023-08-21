@@ -5,11 +5,11 @@ from django.core.cache import cache
 from amocrm.client import AmoCRMClient
 from amocrm.exceptions import AmoCRMCacheException
 
-PIPELINE_NAMES = Literal["b2c", "b2b", "individual"]
+PIPELINE_NAMES = Literal["b2c", "b2b", "b2c-new"]
 PIPELINE_TO_CACHE = {
     "b2c": "amocrm_b2c_pipeline_id",
+    "b2c-new": "amocrm_b2c_new_pipeline_id",
     "b2b": "amocrm_b2b_pipeline_id",
-    "individual": "amocrm_individual_pipeline_id",
 }
 
 
