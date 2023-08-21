@@ -10,6 +10,7 @@ pytestmark = [
 
 @pytest.fixture(autouse=True)
 def _mock_b2c_fields_id(mocker):
+    mocker.patch("amocrm.services.orders.order_lead_updater.get_pipeline_id", return_value=777)
     mocker.patch("amocrm.services.orders.order_lead_updater.get_b2c_pipeline_status_id", return_value=999)
 
 
@@ -52,6 +53,7 @@ def test_updates_correct_call_for_paid(lead_updater, amocrm_lead, mock_update_le
     mock_update_lead.assert_called_once_with(
         lead_id=amocrm_lead.amocrm_id,
         status_id=mock_paid_status_id,
+        pipeline_id=777,
         price=amocrm_lead.order.price,
         created_at=amocrm_lead.order.created,
     )
@@ -65,6 +67,7 @@ def test_updates_correct_call_for_unpaid(lead_updater, amocrm_lead, mock_update_
     mock_update_lead.assert_called_once_with(
         lead_id=amocrm_lead.amocrm_id,
         status_id=mock_unpaid_status_id,
+        pipeline_id=777,
         price=amocrm_lead.order.price,
         created_at=amocrm_lead.order.created,
     )
@@ -80,6 +83,7 @@ def test_updates_correct_call_for_not_paid_or_unpaid(lead_updater, amocrm_lead, 
     mock_update_lead.assert_called_once_with(
         lead_id=amocrm_lead.amocrm_id,
         status_id=mock_not_paid_or_unpaid,
+        pipeline_id=777,
         price=amocrm_lead.order.price,
         created_at=amocrm_lead.order.created,
     )

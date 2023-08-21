@@ -22,6 +22,7 @@ def test_update_lead_request_fields(amocrm_client, patch):
     got = amocrm_client.update_lead(
         lead_id=3,
         status_id=6,
+        pipeline_id=78,
         price=Decimal(90.00),
         created_at=datetime(2023, 1, 1),
     )
@@ -33,6 +34,7 @@ def test_update_lead_request_fields(amocrm_client, patch):
             {
                 "id": 3,
                 "status_id": 6,
+                "pipeline_id": 78,
                 "price": 90,
                 "created_at": 1672520400,
             },
