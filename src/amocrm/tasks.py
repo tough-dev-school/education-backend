@@ -16,6 +16,7 @@ from amocrm.services.contacts.contact_to_customer_linker import AmoCRMContactToC
 from amocrm.services.contacts.contact_updater import AmoCRMContactUpdater
 from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreator
 from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreatorException
+from amocrm.services.orders.order_lead_deleter import AmoCRMOrderLeadDeleter
 from amocrm.services.orders.order_lead_to_course_linker import AmoCRMOrderLeadToCourseLinker
 from amocrm.services.orders.order_lead_updater import AmoCRMOrderLeadUpdater
 from amocrm.services.orders.order_transaction_creator import AmoCRMOrderTransactionCreator
@@ -100,6 +101,23 @@ def push_order_to_amocrm(order_id: int) -> None | str:
             _push_lead.si(order_id=order_id),  # push again cause linking course returns lead to default status
             _push_transaction.si(order_id=order_id),
         ).delay()
+
+
+@celery.task(
+    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
+    retry_kwargs={
+        "max_retries": 10,
+        "countdown": 1,
+    },
+    acks_late=True,
+)
+def delete_order_from_amocrm(order_id: int) -> None:
+    order = apps.get_model("orders.Order").objects.get(id=order_id)
+
+    if hasattr(order, "amocrm_lead"):
+        _delete_lead.delay(order_id=order_id)
+    if hasattr(order, "amocrm_transaction"):
+        _delete_transaction.delay(order_id=order_id)
 
 
 @celery.task(
@@ -244,6 +262,34 @@ def _push_transaction(order_id: int) -> int | None:
         return AmoCRMOrderTransactionDeleter(order=order)()
     if order.paid is not None and not hasattr(order, "amocrm_transaction"):
         return AmoCRMOrderTransactionCreator(order=order)()
+
+
+@celery.task(
+    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
+    retry_kwargs={
+        "max_retries": 10,
+        "countdown": 1,
+    },
+    rate_limit="3/s",
+    acks_late=True,
+)
+def _delete_lead(order_id: int) -> int:
+    order = apps.get_model("orders.Order").objects.get(id=order_id)
+    return AmoCRMOrderLeadDeleter(amocrm_lead=order.amocrm_lead)()
+
+
+@celery.task(
+    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
+    retry_kwargs={
+        "max_retries": 10,
+        "countdown": 1,
+    },
+    rate_limit="3/s",
+    acks_late=True,
+)
+def _delete_transaction(order_id: int) -> None:
+    order = apps.get_model("orders.Order").objects.get(id=order_id)
+    return AmoCRMOrderTransactionDeleter(order=order)()
 
 
 @celery.task(
