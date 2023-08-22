@@ -21,8 +21,6 @@ class Command(BaseCommand):
 
             duplicated_orders_ids.update(self.get_duplicated_orders_ids_with_lead(orders_with_same_user_and_course, finished_order))
 
-        self.stdout.write(self.style.SUCCESS(f"{len(duplicated_orders_ids)} Tasks for delete duplicated leads have been successfully created.\n{duplicated_orders_ids}"))
-
         for order_id in duplicated_orders_ids:
             delete_order_from_amocrm.delay(order_id=order_id)
 
