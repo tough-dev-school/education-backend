@@ -14,6 +14,7 @@ from amocrm.services.access_token_getter import AmoCRMTokenGetterException
 from amocrm.services.contacts.contact_creator import AmoCRMContactCreator
 from amocrm.services.contacts.contact_to_customer_linker import AmoCRMContactToCustomerLinker
 from amocrm.services.contacts.contact_updater import AmoCRMContactUpdater
+from amocrm.services.orders.order_duplicate_checker import AmoCRMOrderDuplicateChecker
 from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreator
 from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreatorException
 from amocrm.services.orders.order_lead_deleter import AmoCRMOrderLeadDeleter
@@ -47,6 +48,8 @@ def order_must_be_pushed(order: "Order") -> bool:
     if order.author_id != order.user_id:
         return False
     if order.price == 0:
+        return False
+    if AmoCRMOrderDuplicateChecker(order=order)() is None:
         return False
     return True
 
