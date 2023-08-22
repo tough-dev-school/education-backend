@@ -51,6 +51,13 @@ def test_new_order_if_no_same_orders(duplicate_checker, not_paid_order):
     assert not hasattr(got, "amocrm_lead")
 
 
+def test_new_paid_order_if_no_same_orders(duplicate_checker, paid_order):
+    got = duplicate_checker(order=paid_order)
+
+    assert got == paid_order
+    assert not hasattr(got, "amocrm_lead")
+
+
 def test_new_order_linked_to_old_unfinished_lead(duplicate_checker, not_paid_order, unfinished_lead):
     got = duplicate_checker(order=not_paid_order)
 

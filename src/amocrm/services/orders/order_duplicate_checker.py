@@ -28,7 +28,7 @@ class AmoCRMOrderDuplicateChecker(BaseService):
         user = self.order.user
 
         paid_order = Order.objects.filter(user=user, course=course, paid__isnull=False, unpaid__isnull=True).last()
-        if paid_order is not None:
+        if paid_order is not None and paid_order != self.order:
             return None
 
         orders_with_same_user_and_course = Order.objects.filter(user=user, course=course, paid__isnull=True, unpaid__isnull=True).exclude(pk=self.order.pk)

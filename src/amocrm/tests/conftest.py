@@ -18,3 +18,9 @@ def amocrm_user(factory, user):
 @pytest.fixture
 def amocrm_course(factory, course):
     return factory.amocrm_course(course=course)
+
+
+@pytest.fixture(autouse=True)
+def _mock_tasks_with_paid_setter(mocker):
+    mocker.patch("orders.services.order_paid_setter.OrderPaidSetter.after_shipment", return_value=None)
+    mocker.patch("orders.services.order_unpaid_setter.OrderUnpaidSetter.after_unshipment", return_value=None)
