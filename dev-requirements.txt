@@ -446,7 +446,7 @@ stack-data==0.6.2
     # via ipython
 standardjson==0.3.1
     # via django-prettyjson
-stripe==5.5.0
+stripe==6.0.0
     # via education-backend (pyproject.toml)
 traitlets==5.9.0
     # via
