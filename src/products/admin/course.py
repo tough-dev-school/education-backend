@@ -96,4 +96,4 @@ class CourseAdmin(ModelAdmin):
         super().save_model(request, obj, form, change)
 
         if tasks.amocrm_enabled():
-            tasks.push_course.delay(course_id=obj.pk)
+            tasks.push_course.apply_async(kwargs={"course_id": obj.pk}, countdown=1)
