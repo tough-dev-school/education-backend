@@ -31,14 +31,14 @@ def mock_chain(mocker):
 
 @pytest.fixture
 def order_with_lead(factory, user, course):
-    order = factory.order(id=99, price=100, user=user, course=course, author=user)
+    order = factory.order(id=299, price=100, user=user, course=course, author=user, is_paid=False)
     factory.amocrm_order_lead(order=order)
     return order
 
 
 @pytest.fixture
 def order_without_lead(factory, user, course):
-    return factory.order(id=99, price=100, user=user, course=course, author=user)
+    return factory.order(id=99, price=100, user=user, course=course, author=user, is_paid=False)
 
 
 @pytest.fixture
@@ -51,9 +51,9 @@ def test_call_with_lead(order_with_lead, mock_push_lead, mock_push_transaction, 
 
     assert got is None
     mock_chain.assert_called_once_with(
-        mock_link_course_to_lead(order_id=99),
-        mock_push_lead(order_id=99),
-        mock_push_transaction(order_id=99),
+        mock_link_course_to_lead(order_id=299),
+        mock_push_lead(order_id=299),
+        mock_push_transaction(order_id=299),
     )
 
 
@@ -79,6 +79,21 @@ def test_call_paid(paid_order, mock_push_lead, mock_push_transaction, mock_link_
         mock_push_lead(order_id=199),
         mock_push_transaction(order_id=199),
     )
+
+
+def test_get_linked_to_old_duplicate_orders_lead(
+    order_without_lead, order_with_lead, mock_push_lead, mock_push_transaction, mock_link_course_to_lead, mock_chain
+):
+    got = tasks.push_order_to_amocrm(order_id=order_without_lead.id)
+
+    order_without_lead.refresh_from_db()
+    assert order_without_lead.amocrm_lead == order_with_lead.amocrm_lead
+    mock_chain.assert_called_once_with(
+        mock_link_course_to_lead(order_id=99),
+        mock_push_lead(order_id=99),
+        mock_push_transaction(order_id=99),
+    )
+    assert got is None
 
 
 def test_not_push_if_author_not_equal_to_user(order_without_lead, mock_chain, another_user):

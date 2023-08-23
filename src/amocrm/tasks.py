@@ -49,8 +49,12 @@ def order_must_be_pushed(order: "Order") -> bool:
         return False
     if order.price == 0:
         return False
-    if AmoCRMOrderDuplicateChecker(order=order)() is None:
+
+    Order = apps.get_model("orders.Order")
+    paid_order = Order.objects.filter(user=order.user, course=order.course, paid__isnull=False, unpaid__isnull=True).last()
+    if paid_order is not None and paid_order != order:
         return False
+
     return True
 
 
@@ -90,6 +94,12 @@ def push_order_to_amocrm(order_id: int) -> None | str:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
     if not order_must_be_pushed(order=order):
         return "not for amocrm"
+
+    duplicate_order = AmoCRMOrderDuplicateChecker(order=order)()
+    if duplicate_order is not None:
+        amocrm_lead = duplicate_order.amocrm_lead
+        amocrm_lead.order = order
+        amocrm_lead.save()
 
     if hasattr(order, "amocrm_lead"):
         chain(
