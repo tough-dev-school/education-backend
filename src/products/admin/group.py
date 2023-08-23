@@ -17,4 +17,4 @@ class GroupAdmin(ModelAdmin):
         super().save_model(request, obj, form, change)
 
         if tasks.amocrm_enabled():
-            tasks.push_product_groups.delay()
+            tasks.push_product_groups.apply_async(countdown=1)

@@ -143,7 +143,6 @@ def delete_order_from_amocrm(order_id: int) -> None:
     acks_late=True,
 )
 def push_product_groups() -> None:
-    time.sleep(1)  # avoid race condition when groups are not saved yet
     AmoCRMProductGroupsUpdater()()
 
 
@@ -157,8 +156,6 @@ def push_product_groups() -> None:
     acks_late=True,
 )
 def push_course(course_id: int) -> int:
-    time.sleep(1)  # avoid race condition when course is not saved yet
-
     course = apps.get_model("products.Course").objects.get(id=course_id)
     if hasattr(course, "amocrm_course"):
         return AmoCRMCourseUpdater(amocrm_course=course.amocrm_course)()
