@@ -92,7 +92,8 @@ class AmoCRMOrderPusher(BaseService):
         if order.price == 0:
             return False
 
-        paid_order = Order.objects.filter(user=order.user, course=order.course, paid__isnull=False, unpaid__isnull=True).last()
+        if Order.objects.paid().filter(user=order.user, course=order.course).excude(pk=self.order.pk).exists()  # we have other paid orders for the same deal
+           return False
         if paid_order is not None and paid_order != order:
             return False
 
