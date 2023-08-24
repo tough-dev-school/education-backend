@@ -21,12 +21,13 @@ class AmoCRMOrderPusher(BaseService):
 
     def __post_init__(self) -> None:
         self.is_paid = self.order.paid is not None
+        self.is_unpaid = self.order.unpaid is not None
 
     def act(self) -> None:
         if not self.order_must_be_pushed(order=self.order):
             return
 
-        if self.is_paid:
+        if self.is_paid or self.is_unpaid:
             self.push_order()
         else:
             self.push_lead()

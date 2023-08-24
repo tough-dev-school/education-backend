@@ -91,6 +91,12 @@ def test_call_update_with_lead_paid(order_pusher, paid_order_with_lead, mock_pus
     mock_push_existing_order_to_amocrm.assert_called_once_with(order_id=paid_order_with_lead.id)
 
 
+def test_call_update_with_lead_returned(order_pusher, returned_order_with_lead, mock_push_existing_order_to_amocrm):
+    order_pusher(order=returned_order_with_lead)
+
+    mock_push_existing_order_to_amocrm.assert_called_once_with(order_id=returned_order_with_lead.id)
+
+
 def test_new_not_paid_order_linked_to_existing_lead_calls_update(
     order_pusher, not_paid_order_without_lead, not_paid_order_with_lead, mock_update_amocrm_lead, mock_create_amocrm_lead
 ):
