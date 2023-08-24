@@ -15,9 +15,6 @@ class AmoCRMOrderPusherException(AmoCRMServiceException):
 class AmoCRMOrderPusher(BaseService):
     """
     Push given order to amocrm
-
-    if order already is in amocrm - update it
-    else - create lead and if paid also transaction
     """
 
     order: Order
@@ -52,19 +49,16 @@ class AmoCRMOrderPusher(BaseService):
         if hasattr(self.order, "amocrm_lead"):
             return self.order.amocrm_lead
 
-        course = self.order.course
-        user = self.order.user
-
-        orders_with_same_user_and_course = Order.objects.filter(user=user, course=course).exclude(pk=self.order.pk)
+        orders_with_same_user_and_course = Order.objects.filter(user=self.order.user, course=self.order.course).exclude(pk=self.order.pk)
         orders_with_lead = [order for order in orders_with_same_user_and_course if hasattr(order, "amocrm_lead")]
-
-        if len(orders_with_lead) > 1:
-            raise AmoCRMOrderPusherException("There are duplicates leads for such order with same course and user")
 
         if len(orders_with_lead) == 1:
             existing_lead = orders_with_lead[0].amocrm_lead
             self.link_lead_to_new_order(existing_lead=existing_lead)
             return existing_lead
+
+        if len(orders_with_lead) > 1:
+            raise AmoCRMOrderPusherException("There are duplicates leads for such order with same course and user")
 
     def link_lead_to_new_order(self, existing_lead: AmoCRMOrderLead) -> None:
         existing_lead.order = self.order
