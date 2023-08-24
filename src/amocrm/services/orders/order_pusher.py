@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Callable
 
 from amocrm.exceptions import AmoCRMServiceException
+from amocrm.models import AmoCRMOrderLead
 from app.services import BaseService
 from orders.models import Order
 
@@ -16,28 +17,80 @@ class AmoCRMOrderPusher(BaseService):
     Push given order to amocrm
 
     if order already is in amocrm - update it
-    else - create lead and transaction if needed
+    else - create lead and if paid also transaction
     """
 
     order: Order
 
+    def __post_init__(self) -> None:
+        self.is_paid = self.order.paid is not None
+
     def act(self) -> None:
         if not self.order_must_be_pushed(order=self.order):
-            return None
+            return
 
-        duplicate_order = self.look_for_duplicate_order(order=self.order)
-        if duplicate_order is not None:
-            self.link_lead_to_new_order(duplicate_order_with_lead=duplicate_order)
-
-        if hasattr(self.order, "amocrm_lead"):
-            self.push_existing_order_to_amocrm(order=self.order)
+        if self.is_paid:
+            self.push_order()
         else:
-            self.push_new_order_to_amocrm(order=self.order)
+            self.push_lead()
 
-    def link_lead_to_new_order(self, duplicate_order_with_lead: Order) -> None:
-        amocrm_lead = duplicate_order_with_lead.amocrm_lead
-        amocrm_lead.order = self.order
-        amocrm_lead.save()
+    def push_order(self) -> None:
+        existing_lead = self.get_lead()
+        if existing_lead is not None:
+            self.update_order_in_amocrm(existing_lead=existing_lead)
+        else:
+            self.create_order_in_amocrm()
+
+    def push_lead(self) -> None:
+        existing_lead = self.get_lead()
+        if existing_lead is not None:
+            self.update_lead(existing_lead=existing_lead)
+        else:
+            self.create_lead()
+
+    def get_lead(self) -> AmoCRMOrderLead | None:
+        if hasattr(self.order, "amocrm_lead"):
+            return self.order.amocrm_lead
+
+        course = self.order.course
+        user = self.order.user
+
+        orders_with_same_user_and_course = Order.objects.filter(user=user, course=course, paid__isnull=True, unpaid__isnull=True).exclude(pk=self.order.pk)
+        orders_with_lead = [order for order in orders_with_same_user_and_course if hasattr(order, "amocrm_lead")]
+
+        if len(orders_with_lead) > 1:
+            raise AmoCRMOrderPusherException("There are duplicates leads for such order with same course and user")
+
+        if len(orders_with_lead) == 1:
+            existing_lead = orders_with_lead[0].amocrm_lead
+            self.link_lead_to_new_order(existing_lead=existing_lead)
+            return existing_lead
+
+    def link_lead_to_new_order(self, existing_lead: AmoCRMOrderLead) -> None:
+        existing_lead.order = self.order
+        existing_lead.save()
+
+    def update_lead(self, existing_lead: AmoCRMOrderLead) -> None:
+        from amocrm.tasks import update_amocrm_lead
+
+        self.link_lead_to_new_order(existing_lead=existing_lead)
+        update_amocrm_lead.delay(order_id=self.order.id)
+
+    def create_lead(self) -> None:
+        from amocrm.tasks import create_amocrm_lead
+
+        create_amocrm_lead.delay(order_id=self.order.id)
+
+    def update_order_in_amocrm(self, existing_lead: AmoCRMOrderLead) -> None:
+        from amocrm.tasks import push_existing_order_to_amocrm
+
+        self.link_lead_to_new_order(existing_lead=existing_lead)
+        push_existing_order_to_amocrm.delay(order_id=self.order.id)
+
+    def create_order_in_amocrm(self) -> None:
+        from amocrm.tasks import push_new_order_to_amocrm
+
+        push_new_order_to_amocrm.delay(order_id=self.order.id)
 
     @staticmethod
     def order_must_be_pushed(order: Order) -> bool:
@@ -51,31 +104,6 @@ class AmoCRMOrderPusher(BaseService):
             return False
 
         return True
-
-    @staticmethod
-    def look_for_duplicate_order(order: Order) -> Order | None:
-        """Returns duplicate order if exists else None"""
-        course = order.course
-        user = order.user
-
-        orders_with_same_user_and_course = Order.objects.filter(user=user, course=course, paid__isnull=True, unpaid__isnull=True).exclude(pk=order.pk)
-        orders_with_lead = [order for order in orders_with_same_user_and_course if hasattr(order, "amocrm_lead")]
-        if len(orders_with_lead) > 1:
-            raise AmoCRMOrderPusherException("There are duplicates for such order with same course and user")
-
-        return orders_with_lead[0] if len(orders_with_lead) == 1 else None
-
-    @staticmethod
-    def push_existing_order_to_amocrm(order: Order) -> None:
-        from amocrm.tasks import push_existing_order_to_amocrm
-
-        push_existing_order_to_amocrm.delay(order_id=order.id)
-
-    @staticmethod
-    def push_new_order_to_amocrm(order: Order) -> None:
-        from amocrm.tasks import push_new_order_to_amocrm
-
-        push_new_order_to_amocrm.delay(order_id=order.id)
 
     def get_validators(self) -> list[Callable]:
         return [

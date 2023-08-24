@@ -63,7 +63,7 @@ def push_user_to_amocrm(user_id: int) -> None:
 
 
 @celery.task(acks_late=True)
-def push_order_to_amocrm(order_id: int) -> None | str:
+def push_order_to_amocrm(order_id: int) -> None:
     time.sleep(1)  # avoid race condition when order is not saved yet
     order = apps.get_model("orders.Order").objects.get(id=order_id)
     AmoCRMOrderPusher(order=order)()
@@ -89,9 +89,7 @@ def delete_order_from_amocrm(order_id: int) -> None:
 )
 def push_new_order_to_amocrm(order_id: int) -> None:
     chain(
-        _push_lead.si(order_id=order_id),
-        _link_course_to_lead.si(order_id=order_id),
-        _push_lead.si(order_id=order_id),  # push again cause linking course sets lead to default status
+        create_amocrm_lead.si(order_id=order_id),
         _push_transaction.si(order_id=order_id),
     ).delay()
 
@@ -106,9 +104,38 @@ def push_new_order_to_amocrm(order_id: int) -> None:
 )
 def push_existing_order_to_amocrm(order_id: int) -> None:
     chain(
-        _link_course_to_lead.si(order_id=order_id),
-        _push_lead.si(order_id=order_id),
+        update_amocrm_lead.si(order_id=order_id),
         _push_transaction.si(order_id=order_id),
+    ).delay()
+
+
+@celery.task(
+    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException, AmoCRMOrderLeadCreatorException],
+    retry_kwargs={
+        "max_retries": 10,
+        "countdown": 1,
+    },
+    rate_limit="3/s",
+    acks_late=True,
+)
+def update_amocrm_lead(order_id: int) -> int:
+    order = apps.get_model("orders.Order").objects.get(id=order_id)
+    return AmoCRMOrderLeadUpdater(amocrm_lead=order.amocrm_lead)()
+
+
+@celery.task(
+    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
+    retry_kwargs={
+        "max_retries": 10,
+        "countdown": 1,
+    },
+    acks_late=True,
+)
+def create_amocrm_lead(order_id: int) -> None:
+    chain(
+        _create_lead.si(order_id=order_id),
+        _link_course_to_lead.si(order_id=order_id),
+        update_amocrm_lead.si(order_id=order_id),  # update cause linking course sets lead to default status
     ).delay()
 
 
@@ -228,12 +255,9 @@ def _push_all_courses() -> None:
     rate_limit="3/s",
     acks_late=True,
 )
-def _push_lead(order_id: int) -> int:
+def _create_lead(order_id: int) -> int:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
-    if hasattr(order, "amocrm_lead"):
-        return AmoCRMOrderLeadUpdater(amocrm_lead=order.amocrm_lead)()
-    else:
-        return AmoCRMOrderLeadCreator(order=order)()
+    return AmoCRMOrderLeadCreator(order=order)()
 
 
 @celery.task(
