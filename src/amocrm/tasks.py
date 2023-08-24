@@ -1,5 +1,4 @@
 import time
-from typing import TYPE_CHECKING
 
 from celery import chain
 from httpx import TransportError
@@ -26,9 +25,6 @@ from amocrm.services.products.course_creator import AmoCRMCourseCreator
 from amocrm.services.products.course_updater import AmoCRMCourseUpdater
 from amocrm.services.products.product_groups_updater import AmoCRMProductGroupsUpdater
 from app.celery import celery
-
-if TYPE_CHECKING:
-    pass
 
 __all__ = [
     "amocrm_enabled",
