@@ -140,7 +140,7 @@ class OrderAdmin(ModelAdmin):
         if obj.paid is not None:
             if obj.bank_id:
                 return get_bank(obj.bank_id).name
-            if obj.author_id != obj.user_id:
+            if obj.is_b2b:
                 return _("B2B")
 
             return _("Is paid")

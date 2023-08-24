@@ -79,6 +79,10 @@ class Order(TimestampedModel):
         return f"Order #{self.pk}"
 
     @property
+    def is_b2b(self) -> bool:
+        return self.author_id != self.user_id
+
+    @property
     def item(self) -> Product:  # type: ignore
         """Find the attached item. Simple replacement for ContentType framework"""
         for field in self.__class__._meta.get_fields():
