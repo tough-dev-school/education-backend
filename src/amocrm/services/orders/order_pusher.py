@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Callable
 
 from amocrm.exceptions import AmoCRMServiceException
 from amocrm.models import AmoCRMOrderLead
@@ -24,7 +23,7 @@ class AmoCRMOrderPusher(BaseService):
         self.is_unpaid = self.order.unpaid is not None
 
     def act(self) -> None:
-        if not self.order_must_be_pushed(order=self.order):
+        if not self.order_must_be_pushed():
             return
 
         if self.is_paid or self.is_unpaid:
@@ -33,18 +32,24 @@ class AmoCRMOrderPusher(BaseService):
             self.push_lead()
 
     def push_order(self) -> None:
+        from amocrm.tasks import push_existing_order_to_amocrm
+        from amocrm.tasks import push_new_order_to_amocrm
+
         existing_lead = self.get_lead()
         if existing_lead is not None:
-            self.update_order_in_amocrm()
+            push_existing_order_to_amocrm.delay(order_id=self.order.id)
         else:
-            self.create_order_in_amocrm()
+            push_new_order_to_amocrm.delay(order_id=self.order.id)
 
     def push_lead(self) -> None:
+        from amocrm.tasks import create_amocrm_lead
+        from amocrm.tasks import update_amocrm_lead
+
         existing_lead = self.get_lead()
         if existing_lead is not None:
-            self.update_lead()
+            update_amocrm_lead.delay(order_id=self.order.id)
         else:
-            self.create_lead()
+            create_amocrm_lead.delay(order_id=self.order.id)
 
     def get_lead(self) -> AmoCRMOrderLead | None:
         if hasattr(self.order, "amocrm_lead"):
@@ -65,45 +70,15 @@ class AmoCRMOrderPusher(BaseService):
         existing_lead.order = self.order
         existing_lead.save()
 
-    def update_lead(self) -> None:
-        from amocrm.tasks import update_amocrm_lead
-
-        update_amocrm_lead.delay(order_id=self.order.id)
-
-    def create_lead(self) -> None:
-        from amocrm.tasks import create_amocrm_lead
-
-        create_amocrm_lead.delay(order_id=self.order.id)
-
-    def update_order_in_amocrm(self) -> None:
-        from amocrm.tasks import push_existing_order_to_amocrm
-
-        push_existing_order_to_amocrm.delay(order_id=self.order.id)
-
-    def create_order_in_amocrm(self) -> None:
-        from amocrm.tasks import push_new_order_to_amocrm
-
-        push_new_order_to_amocrm.delay(order_id=self.order.id)
-
-    @staticmethod
-    def order_must_be_pushed(order: Order) -> bool:
-        if order.is_b2b:
+    def order_must_be_pushed(self) -> bool:
+        if self.order.is_b2b:
             return False
-        if order.price == 0:
+        if self.order.price == 0:
             return False
 
-        if Order.objects.paid().filter(user=order.user, course=order.course).excude(pk=self.order.pk).exists()  # we have other paid orders for the same deal
-           return False
-        if paid_order is not None and paid_order != order:
+        if (
+            Order.objects.paid().filter(user=self.order.user, course=self.order.course).exclude(pk=self.order.pk).exists()
+        ):  # we have other paid orders for the same deal
             return False
 
         return True
-
-    def get_validators(self) -> list[Callable]:
-        return [
-            self.validate_order_with_course,
-        ]
-
-    def validate_order_with_course(self) -> None:
-        if self.order.course is None:
-            raise AmoCRMOrderPusherException("Order has no course")

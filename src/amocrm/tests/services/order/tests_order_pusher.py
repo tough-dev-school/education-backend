@@ -205,11 +205,3 @@ def test_fails_if_many_lead_for_same_course_and_user(order_pusher, factory, not_
 
     with pytest.raises(AmoCRMOrderPusherException, match="There are duplicates leads for such order with same course and user"):
         order_pusher(not_paid_order_without_lead)
-
-
-def test_fails_if_order_without_course(order_pusher, not_paid_order_without_lead):
-    not_paid_order_without_lead.course = None
-    not_paid_order_without_lead.save()
-
-    with pytest.raises(AmoCRMOrderPusherException, match="Order has no course"):
-        order_pusher(not_paid_order_without_lead)
