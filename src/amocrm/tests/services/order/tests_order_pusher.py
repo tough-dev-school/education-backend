@@ -55,6 +55,14 @@ def not_paid_order_with_lead(factory, user, course):
 
 
 @pytest.fixture
+def returned_order_with_lead(factory, user, course):
+    order = factory.order(user=user, course=course, is_paid=True, author=user)
+    factory.amocrm_order_lead(order=order)
+    order.set_not_paid()
+    return order
+
+
+@pytest.fixture
 def order_pusher():
     return lambda order: AmoCRMOrderPusher(order=order)()
 
@@ -95,7 +103,13 @@ def test_new_not_paid_order_linked_to_existing_lead_calls_update(
 
 
 def test_new_paid_order_linked_to_existing_lead_calls_update(
-    order_pusher, paid_order_without_lead, not_paid_order_with_lead, mock_push_existing_order_to_amocrm, mock_push_new_order_to_amocrm
+    order_pusher,
+    paid_order_without_lead,
+    not_paid_order_with_lead,
+    mock_push_existing_order_to_amocrm,
+    mock_push_new_order_to_amocrm,
+    mock_update_amocrm_lead,
+    mock_create_amocrm_lead,
 ):
     order_pusher(order=paid_order_without_lead)
 
@@ -105,8 +119,31 @@ def test_new_paid_order_linked_to_existing_lead_calls_update(
     mock_push_new_order_to_amocrm.assert_not_called()
 
 
+def test_new_order_linked_to_existing_lead_from_returned_order_calls_update(
+    order_pusher,
+    paid_order_without_lead,
+    returned_order_with_lead,
+    mock_push_existing_order_to_amocrm,
+    mock_push_new_order_to_amocrm,
+    mock_update_amocrm_lead,
+    mock_create_amocrm_lead,
+):
+    order_pusher(order=paid_order_without_lead)
+
+    paid_order_without_lead.refresh_from_db()
+    mock_push_existing_order_to_amocrm.assert_called_once_with(order_id=paid_order_without_lead.id)
+    mock_push_new_order_to_amocrm.assert_not_called()
+    assert paid_order_without_lead.amocrm_lead == returned_order_with_lead.amocrm_lead
+
+
 def test_not_push_if_author_not_equal_to_user(
-    order_pusher, not_paid_order_without_lead, mock_push_new_order_to_amocrm, mock_push_existing_order_to_amocrm, another_user
+    order_pusher,
+    not_paid_order_without_lead,
+    mock_push_new_order_to_amocrm,
+    mock_push_existing_order_to_amocrm,
+    another_user,
+    mock_update_amocrm_lead,
+    mock_create_amocrm_lead,
 ):
     not_paid_order_without_lead.author = another_user
     not_paid_order_without_lead.save()
@@ -115,9 +152,18 @@ def test_not_push_if_author_not_equal_to_user(
 
     mock_push_new_order_to_amocrm.assert_not_called()
     mock_push_existing_order_to_amocrm.assert_not_called()
+    mock_update_amocrm_lead.assert_not_called()
+    mock_create_amocrm_lead.assert_not_called()
 
 
-def test_not_push_if_free_order(order_pusher, not_paid_order_without_lead, mock_push_new_order_to_amocrm, mock_push_existing_order_to_amocrm):
+def test_not_push_if_free_order(
+    order_pusher,
+    not_paid_order_without_lead,
+    mock_push_new_order_to_amocrm,
+    mock_push_existing_order_to_amocrm,
+    mock_update_amocrm_lead,
+    mock_create_amocrm_lead,
+):
     not_paid_order_without_lead.price = Decimal(0)
     not_paid_order_without_lead.save()
 
@@ -125,15 +171,25 @@ def test_not_push_if_free_order(order_pusher, not_paid_order_without_lead, mock_
 
     mock_push_new_order_to_amocrm.assert_not_called()
     mock_push_existing_order_to_amocrm.assert_not_called()
+    mock_update_amocrm_lead.assert_not_called()
+    mock_create_amocrm_lead.assert_not_called()
 
 
 def test_not_push_if_there_is_already_paid_order(
-    order_pusher, not_paid_order_without_lead, paid_order_with_lead, mock_push_new_order_to_amocrm, mock_push_existing_order_to_amocrm
+    order_pusher,
+    not_paid_order_without_lead,
+    paid_order_with_lead,
+    mock_push_new_order_to_amocrm,
+    mock_push_existing_order_to_amocrm,
+    mock_update_amocrm_lead,
+    mock_create_amocrm_lead,
 ):
     order_pusher(order=not_paid_order_without_lead)
 
     mock_push_new_order_to_amocrm.assert_not_called()
     mock_push_existing_order_to_amocrm.assert_not_called()
+    mock_update_amocrm_lead.assert_not_called()
+    mock_create_amocrm_lead.assert_not_called()
 
 
 def test_fails_if_many_lead_for_same_course_and_user(order_pusher, factory, not_paid_order_without_lead):

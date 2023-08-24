@@ -55,7 +55,7 @@ class AmoCRMOrderPusher(BaseService):
         course = self.order.course
         user = self.order.user
 
-        orders_with_same_user_and_course = Order.objects.filter(user=user, course=course, paid__isnull=True, unpaid__isnull=True).exclude(pk=self.order.pk)
+        orders_with_same_user_and_course = Order.objects.filter(user=user, course=course).exclude(pk=self.order.pk)
         orders_with_lead = [order for order in orders_with_same_user_and_course if hasattr(order, "amocrm_lead")]
 
         if len(orders_with_lead) > 1:
