@@ -52,11 +52,10 @@ class AmoCRMOrderPusher(BaseService):
             create_amocrm_lead.delay(order_id=self.order.id)
 
     def get_lead(self) -> AmoCRMOrderLead | None:
-        if hasattr(self.order, "amocrm_lead"):
+        if self.order.amocrm_lead is not None:
             return self.order.amocrm_lead
 
-        orders_with_same_user_and_course = Order.objects.filter(user=self.order.user, course=self.order.course).exclude(pk=self.order.pk)
-        orders_with_lead = [order for order in orders_with_same_user_and_course if hasattr(order, "amocrm_lead")]
+        orders_with_lead = Order.objects.filter(user=self.order.user, course=self.order.course, amocrm_lead__isnull=False).exclude(pk=self.order.pk)
 
         if len(orders_with_lead) == 1:
             existing_lead = orders_with_lead[0].amocrm_lead
