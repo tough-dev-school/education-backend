@@ -90,6 +90,7 @@ def test_call_update_with_lead_returned(order_pusher, returned_order_with_lead, 
 def test_new_not_paid_order_linked_to_existing_lead_calls_update(order_pusher, not_paid_order_without_lead, mock_update_amocrm_lead, amocrm_lead):
     order_pusher(order=not_paid_order_without_lead)
 
+    not_paid_order_without_lead.amocrm_lead.refresh_from_db()
     assert not_paid_order_without_lead.amocrm_lead == amocrm_lead
     mock_update_amocrm_lead.assert_called_once_with(kwargs=dict(order_id=not_paid_order_without_lead.id), countdown=1)
 
@@ -103,6 +104,7 @@ def test_new_paid_order_linked_to_existing_lead_calls_update(
 ):
     order_pusher(order=paid_order_without_lead)
 
+    paid_order_without_lead.amocrm_lead.refresh_from_db()
     assert paid_order_without_lead.amocrm_lead == amocrm_lead
     mock_push_existing_order_to_amocrm.assert_called_once_with(kwargs=dict(order_id=paid_order_without_lead.id), countdown=1)
 
@@ -116,6 +118,7 @@ def test_new_order_linked_to_existing_lead_from_returned_order_calls_update(
 ):
     order_pusher(order=paid_order_without_lead)
 
+    paid_order_without_lead.amocrm_lead.refresh_from_db()
     mock_push_existing_order_to_amocrm.assert_called_once_with(kwargs=dict(order_id=paid_order_without_lead.id), countdown=1)
     assert paid_order_without_lead.amocrm_lead == amocrm_lead
 

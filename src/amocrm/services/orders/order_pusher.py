@@ -59,11 +59,8 @@ class AmoCRMOrderPusher(BaseService):
             return order_with_lead.amocrm_lead
 
     def link_existing_lead_to_current_order(self, existing_lead: AmoCRMOrderLead) -> None:
-        old_order = existing_lead.order
-        old_order.amocrm_lead = None
-        old_order.save()
-        self.order.amocrm_lead = existing_lead
-        self.order.save()
+        existing_lead.order = self.order
+        existing_lead.save()
 
     def order_must_be_pushed(self) -> bool:
         if self.order.is_b2b:
