@@ -73,9 +73,9 @@ def push_order_to_amocrm(order_id: int) -> None:
 def delete_order_from_amocrm(order_id: int) -> None:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
 
-    if hasattr(order, "amocrm_lead"):
+    if order.amocrm_lead is not None:
         _delete_lead.delay(order_id=order_id)
-    if hasattr(order, "amocrm_transaction"):
+    if order.amocrm_transaction is not None:
         _delete_transaction.delay(order_id=order_id)
 
 
@@ -258,7 +258,7 @@ def _push_transaction(order_id: int) -> int | None:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
     if order.unpaid is not None:
         return AmoCRMOrderTransactionDeleter(order=order)()
-    if order.paid is not None and not hasattr(order, "amocrm_transaction"):
+    if order.paid is not None and order.amocrm_transaction is None:
         return AmoCRMOrderTransactionCreator(order=order)()
 
 

@@ -224,6 +224,8 @@ standardjson==0.3.1
     # via django-prettyjson
 stripe==6.1.0
     # via education-backend (pyproject.toml)
+typing-extensions==4.7.1
+    # via stripe
 uritemplate==4.1.1
     # via drf-spectacular
 urllib3==1.26.16
