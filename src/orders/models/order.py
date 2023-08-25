@@ -16,16 +16,19 @@ from products.models import Product
 
 
 class OrderQuerySet(QuerySet):
-    def paid(self, invert: bool | None = False) -> QuerySet["Order"]:
+    def paid(self, invert: bool | None = False) -> "OrderQuerySet":
         return self.filter(paid__isnull=invert)
 
-    def shipped_without_payment(self) -> QuerySet["Order"]:
+    def shipped_without_payment(self) -> "OrderQuerySet":
         return self.paid(invert=True).filter(shipped__isnull=False)
 
-    def available_to_confirm(self) -> QuerySet["Order"]:
+    def available_to_confirm(self) -> "OrderQuerySet":
         return self.filter(
             price=0,
         )
+
+    def same_deal(self, order: "Order") -> "OrderQuerySet":
+        return self.filter(user=order.user, course=order.course).exclude(pk=order.pk)
 
 
 OrderManager = models.Manager.from_queryset(OrderQuerySet)

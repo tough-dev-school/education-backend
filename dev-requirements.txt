@@ -495,7 +495,6 @@ typing-extensions==4.7.1
     #   djangorestframework-stubs
     #   flake8-pie
     #   mypy
-    #   stripe
 uritemplate==4.1.1
     # via drf-spectacular
 urllib3==1.26.16
