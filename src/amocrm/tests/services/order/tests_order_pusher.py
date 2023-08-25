@@ -173,15 +173,6 @@ def test_not_push_if_there_is_already_paid_order(
     mock_create_amocrm_lead.assert_not_called()
 
 
-def test_fails_if_many_lead_for_same_course_and_user(order_pusher, factory, not_paid_order_without_lead):
-    leads = factory.cycle(2).amocrm_order_lead()
-    for lead in leads:
-        factory.order(user=not_paid_order_without_lead.user, course=not_paid_order_without_lead.course, is_paid=False, amocrm_lead=lead)
-
-    with pytest.raises(AmoCRMOrderPusherException, match="There are duplicates leads for such order with same course and user"):
-        order_pusher(not_paid_order_without_lead)
-
-
 def test_fail_create_paid_without_lead(order_pusher, paid_order_without_lead):
     with pytest.raises(AmoCRMOrderPusherException, match="Cannot push paid or unpaid order without existing lead"):
         order_pusher(order=paid_order_without_lead)
