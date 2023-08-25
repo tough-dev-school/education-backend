@@ -372,7 +372,7 @@ pytest-deadfixtures==2.2.1
     # via education-backend (pyproject.toml)
 pytest-django==4.5.2
     # via education-backend (pyproject.toml)
-pytest-env==1.0.0
+pytest-env==1.0.1
     # via education-backend (pyproject.toml)
 pytest-freezegun==0.4.2
     # via education-backend (pyproject.toml)
@@ -446,7 +446,7 @@ stack-data==0.6.2
     # via ipython
 standardjson==0.3.1
     # via django-prettyjson
-stripe==6.0.0
+stripe==6.1.0
     # via education-backend (pyproject.toml)
 traitlets==5.9.0
     # via
