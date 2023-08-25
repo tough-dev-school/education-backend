@@ -27,9 +27,9 @@ class AmoCRMOrderTransactionDeleter(BaseService):
     @atomic
     def act(self) -> None:
         self.client.delete_transaction(
-            transaction_id=self.order.amocrm_transaction.amocrm_id,
+            transaction_id=self.order.amocrm_transaction.amocrm_id,  # type: ignore
         )
-        self.order.amocrm_transaction.delete()
+        self.order.amocrm_transaction.delete()  # type: ignore
 
     def get_validators(self) -> list[Callable]:
         return [
@@ -39,7 +39,7 @@ class AmoCRMOrderTransactionDeleter(BaseService):
         ]
 
     def validate_transaction_exist(self) -> None:
-        if not hasattr(self.order, "amocrm_transaction"):
+        if self.order.amocrm_transaction is None:
             raise AmoCRMOrderTransactionDeleterException("Transaction doesnt exist")
 
     def validate_amocrm_customer_exist(self) -> None:

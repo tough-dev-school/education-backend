@@ -39,8 +39,9 @@ class AmoCRMOrderLeadCreator(BaseService):
             created_at=self.order.created,
         )
 
-        amocrm_order_lead = AmoCRMOrderLead.objects.create(order=self.order, amocrm_id=amocrm_id)
-        return amocrm_order_lead.amocrm_id
+        self.order.amocrm_lead = AmoCRMOrderLead.objects.create(amocrm_id=amocrm_id)
+        self.order.save()
+        return self.order.amocrm_lead.amocrm_id
 
     @property
     def pipeline_id(self) -> int:
@@ -68,11 +69,11 @@ class AmoCRMOrderLeadCreator(BaseService):
         ]
 
     def validate_lead_doesnt_exist(self) -> None:
-        if hasattr(self.order, "amocrm_lead"):
+        if self.order.amocrm_lead is not None:
             raise AmoCRMOrderLeadCreatorException("Lead already exists")
 
     def validate_transaction_doesnt_exist(self) -> None:
-        if hasattr(self.order, "amocrm_transaction"):
+        if self.order.amocrm_transaction is not None:
             raise AmoCRMOrderLeadCreatorException("Transaction for this order already exists")
 
     def validate_order_with_course(self) -> None:

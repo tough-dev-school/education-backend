@@ -46,8 +46,9 @@ class AmoCRMOrderTransactionCreator(BaseService):
             purchased_product=course_as_transaction_element,
         )
 
-        amocrm_order_transaction = AmoCRMOrderTransaction.objects.create(order=self.order, amocrm_id=amocrm_id)
-        return amocrm_order_transaction.amocrm_id
+        self.order.amocrm_transaction = AmoCRMOrderTransaction.objects.create(amocrm_id=amocrm_id)
+        self.order.save()
+        return self.order.amocrm_transaction.amocrm_id
 
     @property
     def product_catalog_id(self) -> int:
@@ -70,7 +71,7 @@ class AmoCRMOrderTransactionCreator(BaseService):
             raise AmoCRMOrderTransactionCreatorException("Course doesn't exist in AmoCRM")
 
     def validate_transaction_doesnt_exist(self) -> None:
-        if hasattr(self.order, "amocrm_transaction"):
+        if self.order.amocrm_transaction is not None:
             raise AmoCRMOrderTransactionCreatorException("Transaction already exist")
 
     def validate_amocrm_customer_exist(self) -> None:

@@ -1,5 +1,4 @@
 import time
-from typing import TYPE_CHECKING
 
 from celery import chain
 from httpx import TransportError
@@ -14,21 +13,18 @@ from amocrm.services.access_token_getter import AmoCRMTokenGetterException
 from amocrm.services.contacts.contact_creator import AmoCRMContactCreator
 from amocrm.services.contacts.contact_to_customer_linker import AmoCRMContactToCustomerLinker
 from amocrm.services.contacts.contact_updater import AmoCRMContactUpdater
-from amocrm.services.orders.order_duplicate_checker import AmoCRMOrderDuplicateChecker
 from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreator
 from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreatorException
 from amocrm.services.orders.order_lead_deleter import AmoCRMOrderLeadDeleter
 from amocrm.services.orders.order_lead_to_course_linker import AmoCRMOrderLeadToCourseLinker
 from amocrm.services.orders.order_lead_updater import AmoCRMOrderLeadUpdater
+from amocrm.services.orders.order_pusher import AmoCRMOrderPusher
 from amocrm.services.orders.order_transaction_creator import AmoCRMOrderTransactionCreator
 from amocrm.services.orders.order_transaction_deleter import AmoCRMOrderTransactionDeleter
 from amocrm.services.products.course_creator import AmoCRMCourseCreator
 from amocrm.services.products.course_updater import AmoCRMCourseUpdater
 from amocrm.services.products.product_groups_updater import AmoCRMProductGroupsUpdater
 from app.celery import celery
-
-if TYPE_CHECKING:
-    from orders.models import Order
 
 __all__ = [
     "amocrm_enabled",
@@ -42,20 +38,6 @@ __all__ = [
 
 def amocrm_enabled() -> bool:
     return settings.AMOCRM_BASE_URL != ""
-
-
-def order_must_be_pushed(order: "Order") -> bool:
-    if order.author_id != order.user_id:
-        return False
-    if order.price == 0:
-        return False
-
-    Order = apps.get_model("orders.Order")
-    paid_order = Order.objects.filter(user=order.user, course=order.course, paid__isnull=False, unpaid__isnull=True).last()
-    if paid_order is not None and paid_order != order:
-        return False
-
-    return True
 
 
 @celery.task(
@@ -80,57 +62,66 @@ def push_user_to_amocrm(user_id: int) -> None:
         ).delay()
 
 
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    acks_late=True,
-)
-def push_order_to_amocrm(order_id: int) -> None | str:
+@celery.task(acks_late=True)
+def push_order_to_amocrm(order_id: int) -> None:
     time.sleep(1)  # avoid race condition when order is not saved yet
-
     order = apps.get_model("orders.Order").objects.get(id=order_id)
-    if not order_must_be_pushed(order=order):
-        return "not for amocrm"
-
-    duplicate_order = AmoCRMOrderDuplicateChecker(order=order)()
-    if duplicate_order is not None:
-        amocrm_lead = duplicate_order.amocrm_lead
-        amocrm_lead.order = order
-        amocrm_lead.save()
-
-    if hasattr(order, "amocrm_lead"):
-        chain(
-            _link_course_to_lead.si(order_id=order_id),
-            _push_lead.si(order_id=order_id),
-            _push_transaction.si(order_id=order_id),
-        ).delay()
-    else:
-        chain(
-            _push_lead.si(order_id=order_id),
-            _link_course_to_lead.si(order_id=order_id),
-            _push_lead.si(order_id=order_id),  # push again cause linking course returns lead to default status
-            _push_transaction.si(order_id=order_id),
-        ).delay()
+    AmoCRMOrderPusher(order=order)()
 
 
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    acks_late=True,
-)
+@celery.task(acks_late=True)
 def delete_order_from_amocrm(order_id: int) -> None:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
 
-    if hasattr(order, "amocrm_lead"):
+    if order.amocrm_lead is not None:
         _delete_lead.delay(order_id=order_id)
-    if hasattr(order, "amocrm_transaction"):
+    if order.amocrm_transaction is not None:
         _delete_transaction.delay(order_id=order_id)
+
+
+@celery.task(
+    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
+    retry_kwargs={
+        "max_retries": 10,
+        "countdown": 1,
+    },
+    acks_late=True,
+)
+def push_existing_order_to_amocrm(order_id: int) -> None:
+    chain(
+        update_amocrm_lead.si(order_id=order_id),
+        _push_transaction.si(order_id=order_id),
+    ).delay()
+
+
+@celery.task(
+    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException, AmoCRMOrderLeadCreatorException],
+    retry_kwargs={
+        "max_retries": 10,
+        "countdown": 1,
+    },
+    rate_limit="3/s",
+    acks_late=True,
+)
+def update_amocrm_lead(order_id: int) -> int:
+    order = apps.get_model("orders.Order").objects.get(id=order_id)
+    return AmoCRMOrderLeadUpdater(amocrm_lead=order.amocrm_lead)()
+
+
+@celery.task(
+    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
+    retry_kwargs={
+        "max_retries": 10,
+        "countdown": 1,
+    },
+    acks_late=True,
+)
+def create_amocrm_lead(order_id: int) -> None:
+    chain(
+        _create_lead.si(order_id=order_id),
+        _link_course_to_lead.si(order_id=order_id),
+        update_amocrm_lead.si(order_id=order_id),  # update cause linking course sets lead to default status
+    ).delay()
 
 
 @celery.task(
@@ -249,12 +240,9 @@ def _push_all_courses() -> None:
     rate_limit="3/s",
     acks_late=True,
 )
-def _push_lead(order_id: int) -> int:
+def _create_lead(order_id: int) -> int:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
-    if hasattr(order, "amocrm_lead"):
-        return AmoCRMOrderLeadUpdater(amocrm_lead=order.amocrm_lead)()
-    else:
-        return AmoCRMOrderLeadCreator(order=order)()
+    return AmoCRMOrderLeadCreator(order=order)()
 
 
 @celery.task(
@@ -270,7 +258,7 @@ def _push_transaction(order_id: int) -> int | None:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
     if order.unpaid is not None:
         return AmoCRMOrderTransactionDeleter(order=order)()
-    if order.paid is not None and not hasattr(order, "amocrm_transaction"):
+    if order.paid is not None and order.amocrm_transaction is None:
         return AmoCRMOrderTransactionCreator(order=order)()
 
 

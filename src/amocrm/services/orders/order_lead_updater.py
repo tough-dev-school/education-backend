@@ -72,7 +72,7 @@ class AmoCRMOrderLeadUpdater(BaseService):
         ]
 
     def validate_transaction_doesnt_exist_if_paid(self) -> None:
-        if hasattr(self.order, "amocrm_transaction") and self.is_paid:
+        if self.order.amocrm_transaction is not None and self.is_paid:
             raise AmoCRMOrderLeadUpdaterException("Transaction for this paid order already exists")
 
     def validate_order_with_course(self) -> None:

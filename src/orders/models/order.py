@@ -16,16 +16,19 @@ from products.models import Product
 
 
 class OrderQuerySet(QuerySet):
-    def paid(self, invert: bool | None = False) -> QuerySet["Order"]:
+    def paid(self, invert: bool | None = False) -> "OrderQuerySet":
         return self.filter(paid__isnull=invert)
 
-    def shipped_without_payment(self) -> QuerySet["Order"]:
+    def shipped_without_payment(self) -> "OrderQuerySet":
         return self.paid(invert=True).filter(shipped__isnull=False)
 
-    def available_to_confirm(self) -> QuerySet["Order"]:
+    def available_to_confirm(self) -> "OrderQuerySet":
         return self.filter(
             price=0,
         )
+
+    def same_deal(self, order: "Order") -> "OrderQuerySet":
+        return self.filter(user=order.user, course=order.course).exclude(pk=order.pk)
 
 
 OrderManager = models.Manager.from_queryset(OrderQuerySet)
@@ -58,6 +61,9 @@ class Order(TimestampedModel):
     record = ItemField(to="products.Record", verbose_name=_("Record"), null=True, blank=True, on_delete=models.PROTECT)
     bundle = ItemField(to="products.Bundle", verbose_name=_("Bundle"), null=True, blank=True, on_delete=models.PROTECT)
 
+    amocrm_lead = models.OneToOneField("amocrm.AmoCRMOrderLead", on_delete=models.SET_NULL, null=True, blank=True, related_name="order")
+    amocrm_transaction = models.OneToOneField("amocrm.AmoCRMOrderTransaction", on_delete=models.SET_NULL, null=True, blank=True, related_name="order")
+
     class Meta:
         ordering = ["-id"]
         verbose_name = pgettext_lazy("orders", "Order")
@@ -77,6 +83,10 @@ class Order(TimestampedModel):
 
     def __str__(self) -> str:
         return f"Order #{self.pk}"
+
+    @property
+    def is_b2b(self) -> bool:
+        return self.author_id != self.user_id
 
     @property
     def item(self) -> Product:  # type: ignore
