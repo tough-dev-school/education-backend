@@ -12,17 +12,17 @@ pytestmark = [
 
 @pytest.fixture
 def mock_push_existing_order_to_amocrm(mocker):
-    return mocker.patch("amocrm.tasks.push_existing_order_to_amocrm.delay")
+    return mocker.patch("amocrm.tasks.push_existing_order_to_amocrm.apply_async")
 
 
 @pytest.fixture
 def mock_create_amocrm_lead(mocker):
-    return mocker.patch("amocrm.tasks.create_amocrm_lead.delay")
+    return mocker.patch("amocrm.tasks.create_amocrm_lead.apply_async")
 
 
 @pytest.fixture
 def mock_update_amocrm_lead(mocker):
-    return mocker.patch("amocrm.tasks.update_amocrm_lead.delay")
+    return mocker.patch("amocrm.tasks.update_amocrm_lead.apply_async")
 
 
 @pytest.fixture
@@ -65,25 +65,25 @@ def order_pusher():
 def test_call_update_with_lead_not_paid(order_pusher, not_paid_order_with_lead, mock_update_amocrm_lead):
     order_pusher(order=not_paid_order_with_lead)
 
-    mock_update_amocrm_lead.assert_called_once_with(order_id=not_paid_order_with_lead.id)
+    mock_update_amocrm_lead.assert_called_once_with(kwargs=dict(order_id=not_paid_order_with_lead.id), countdown=1)
 
 
 def test_call_create_without_lead_not_paid(order_pusher, not_paid_order_without_lead, mock_create_amocrm_lead):
     order_pusher(order=not_paid_order_without_lead)
 
-    mock_create_amocrm_lead.assert_called_once_with(order_id=not_paid_order_without_lead.id)
+    mock_create_amocrm_lead.assert_called_once_with(kwargs=dict(order_id=not_paid_order_without_lead.id), countdown=1)
 
 
 def test_call_update_with_lead_paid(order_pusher, paid_order_with_lead, mock_push_existing_order_to_amocrm):
     order_pusher(order=paid_order_with_lead)
 
-    mock_push_existing_order_to_amocrm.assert_called_once_with(order_id=paid_order_with_lead.id)
+    mock_push_existing_order_to_amocrm.assert_called_once_with(kwargs=dict(order_id=paid_order_with_lead.id), countdown=1)
 
 
 def test_call_update_with_lead_returned(order_pusher, returned_order_with_lead, mock_push_existing_order_to_amocrm):
     order_pusher(order=returned_order_with_lead)
 
-    mock_push_existing_order_to_amocrm.assert_called_once_with(order_id=returned_order_with_lead.id)
+    mock_push_existing_order_to_amocrm.assert_called_once_with(kwargs=dict(order_id=returned_order_with_lead.id), countdown=1)
 
 
 @pytest.mark.usefixtures("not_paid_order_with_lead")
@@ -92,7 +92,7 @@ def test_new_not_paid_order_linked_to_existing_lead_calls_update(order_pusher, n
 
     not_paid_order_without_lead.amocrm_lead.refresh_from_db()
     assert not_paid_order_without_lead.amocrm_lead == amocrm_lead
-    mock_update_amocrm_lead.assert_called_once_with(order_id=not_paid_order_without_lead.id)
+    mock_update_amocrm_lead.assert_called_once_with(kwargs=dict(order_id=not_paid_order_without_lead.id), countdown=1)
 
 
 @pytest.mark.usefixtures("not_paid_order_with_lead")
@@ -106,7 +106,7 @@ def test_new_paid_order_linked_to_existing_lead_calls_update(
 
     paid_order_without_lead.amocrm_lead.refresh_from_db()
     assert paid_order_without_lead.amocrm_lead == amocrm_lead
-    mock_push_existing_order_to_amocrm.assert_called_once_with(order_id=paid_order_without_lead.id)
+    mock_push_existing_order_to_amocrm.assert_called_once_with(kwargs=dict(order_id=paid_order_without_lead.id), countdown=1)
 
 
 @pytest.mark.usefixtures("returned_order_with_lead")
@@ -119,7 +119,7 @@ def test_new_order_linked_to_existing_lead_from_returned_order_calls_update(
     order_pusher(order=paid_order_without_lead)
 
     paid_order_without_lead.amocrm_lead.refresh_from_db()
-    mock_push_existing_order_to_amocrm.assert_called_once_with(order_id=paid_order_without_lead.id)
+    mock_push_existing_order_to_amocrm.assert_called_once_with(kwargs=dict(order_id=paid_order_without_lead.id), countdown=1)
     assert paid_order_without_lead.amocrm_lead == amocrm_lead
 
 

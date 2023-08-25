@@ -36,7 +36,7 @@ class AmoCRMOrderPusher(BaseService):
         if existing_lead.order != self.order:
             self.link_existing_lead_to_new_order(existing_lead=existing_lead)
 
-        push_existing_order_to_amocrm.delay(order_id=self.order.id)
+        push_existing_order_to_amocrm.apply_async(kwargs=dict(order_id=self.order.id), countdown=1)
 
     def push_lead(self) -> None:
         from amocrm.tasks import create_amocrm_lead
@@ -46,9 +46,9 @@ class AmoCRMOrderPusher(BaseService):
         if existing_lead is not None:
             if existing_lead.order != self.order:
                 self.link_existing_lead_to_new_order(existing_lead=existing_lead)
-            update_amocrm_lead.delay(order_id=self.order.id)
+            update_amocrm_lead.apply_async(kwargs=dict(order_id=self.order.id), countdown=1)
         else:
-            create_amocrm_lead.delay(order_id=self.order.id)
+            create_amocrm_lead.apply_async(kwargs=dict(order_id=self.order.id), countdown=1)
 
     def get_lead(self) -> AmoCRMOrderLead | None:
         if self.order.amocrm_lead is not None:
