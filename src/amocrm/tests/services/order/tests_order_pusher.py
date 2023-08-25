@@ -92,7 +92,7 @@ def test_update_if_with_lead_returned(returned_order_with_lead, mock_push_existi
 
 
 @pytest.mark.usefixtures("not_paid_order_with_lead")
-def test_not_paid_order_linked_to_existing_lead_calls_update(not_paid_order_without_lead, mock_update_amocrm_lead, amocrm_lead):
+def test_update_not_paid_order_linked_to_existing_lead(not_paid_order_without_lead, mock_update_amocrm_lead, amocrm_lead):
     AmoCRMOrderPusher(order=not_paid_order_without_lead)()
 
     assert not_paid_order_without_lead.amocrm_lead == amocrm_lead
@@ -100,7 +100,7 @@ def test_not_paid_order_linked_to_existing_lead_calls_update(not_paid_order_with
 
 
 @pytest.mark.usefixtures("not_paid_order_with_lead")
-def test_paid_order_linked_to_existing_lead_calls_update(paid_order_without_lead, amocrm_lead, mock_push_existing_order_to_amocrm):
+def test_update_paid_order_linked_to_existing_lead(paid_order_without_lead, amocrm_lead, mock_push_existing_order_to_amocrm):
     AmoCRMOrderPusher(order=paid_order_without_lead)()
 
     assert paid_order_without_lead.amocrm_lead == amocrm_lead
@@ -108,7 +108,7 @@ def test_paid_order_linked_to_existing_lead_calls_update(paid_order_without_lead
 
 
 @pytest.mark.usefixtures("returned_order_with_lead")
-def test_linked_to_existing_lead_from_returned_order_calls_update(paid_order_without_lead, amocrm_lead, mock_push_existing_order_to_amocrm):
+def test_update_linked_to_existing_lead_from_returned_order_(paid_order_without_lead, amocrm_lead, mock_push_existing_order_to_amocrm):
     AmoCRMOrderPusher(order=paid_order_without_lead)()
 
     assert paid_order_without_lead.amocrm_lead == amocrm_lead
