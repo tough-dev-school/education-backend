@@ -33,13 +33,14 @@ class AmoCRMOrderPusher(BaseService):
 
     def push_order(self) -> None:
         from amocrm.tasks import push_existing_order_to_amocrm
-        from amocrm.tasks import push_new_order_to_amocrm
 
         existing_lead = self.get_lead()
-        if existing_lead is not None:
-            push_existing_order_to_amocrm.delay(order_id=self.order.id)
-        else:
-            push_new_order_to_amocrm.delay(order_id=self.order.id)
+        if existing_lead is None:
+            raise AmoCRMOrderPusherException("Cannot push paid or unpaid order without existing lead")
+        if existing_lead.order != self.order:
+            self.link_existing_lead_to_new_order(existing_lead=existing_lead)
+
+        push_existing_order_to_amocrm.delay(order_id=self.order.id)
 
     def push_lead(self) -> None:
         from amocrm.tasks import create_amocrm_lead
@@ -47,6 +48,8 @@ class AmoCRMOrderPusher(BaseService):
 
         existing_lead = self.get_lead()
         if existing_lead is not None:
+            if existing_lead.order != self.order:
+                self.link_existing_lead_to_new_order(existing_lead=existing_lead)
             update_amocrm_lead.delay(order_id=self.order.id)
         else:
             create_amocrm_lead.delay(order_id=self.order.id)
@@ -58,14 +61,12 @@ class AmoCRMOrderPusher(BaseService):
         orders_with_lead = Order.objects.filter(user=self.order.user, course=self.order.course, amocrm_lead__isnull=False).exclude(pk=self.order.pk)
 
         if len(orders_with_lead) == 1:
-            existing_lead = orders_with_lead[0].amocrm_lead
-            self.link_lead_to_new_order(existing_lead=existing_lead)
-            return existing_lead
+            return orders_with_lead[0].amocrm_lead
 
         if len(orders_with_lead) > 1:
             raise AmoCRMOrderPusherException("There are duplicates leads for such order with same course and user")
 
-    def link_lead_to_new_order(self, existing_lead: AmoCRMOrderLead) -> None:
+    def link_existing_lead_to_new_order(self, existing_lead: AmoCRMOrderLead) -> None:
         existing_lead.order = self.order
         existing_lead.save()
 

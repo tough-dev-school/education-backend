@@ -11,11 +11,6 @@ pytestmark = [
 
 
 @pytest.fixture
-def mock_push_new_order_to_amocrm(mocker):
-    return mocker.patch("amocrm.tasks.push_new_order_to_amocrm.delay")
-
-
-@pytest.fixture
 def mock_push_existing_order_to_amocrm(mocker):
     return mocker.patch("amocrm.tasks.push_existing_order_to_amocrm.delay")
 
@@ -79,12 +74,6 @@ def test_call_create_without_lead_not_paid(order_pusher, not_paid_order_without_
     mock_create_amocrm_lead.assert_called_once_with(order_id=not_paid_order_without_lead.id)
 
 
-def test_call_create_without_lead_paid(order_pusher, paid_order_without_lead, mock_push_new_order_to_amocrm):
-    order_pusher(order=paid_order_without_lead)
-
-    mock_push_new_order_to_amocrm.assert_called_once_with(order_id=paid_order_without_lead.id)
-
-
 def test_call_update_with_lead_paid(order_pusher, paid_order_with_lead, mock_push_existing_order_to_amocrm):
     order_pusher(order=paid_order_with_lead)
 
@@ -113,7 +102,6 @@ def test_new_paid_order_linked_to_existing_lead_calls_update(
     paid_order_without_lead,
     not_paid_order_with_lead,
     mock_push_existing_order_to_amocrm,
-    mock_push_new_order_to_amocrm,
     mock_update_amocrm_lead,
     mock_create_amocrm_lead,
     amocrm_lead,
@@ -123,7 +111,6 @@ def test_new_paid_order_linked_to_existing_lead_calls_update(
     paid_order_without_lead.amocrm_lead.refresh_from_db()
     assert paid_order_without_lead.amocrm_lead == amocrm_lead
     mock_push_existing_order_to_amocrm.assert_called_once_with(order_id=paid_order_without_lead.id)
-    mock_push_new_order_to_amocrm.assert_not_called()
 
 
 def test_new_order_linked_to_existing_lead_from_returned_order_calls_update(
@@ -131,7 +118,6 @@ def test_new_order_linked_to_existing_lead_from_returned_order_calls_update(
     paid_order_without_lead,
     returned_order_with_lead,
     mock_push_existing_order_to_amocrm,
-    mock_push_new_order_to_amocrm,
     mock_update_amocrm_lead,
     mock_create_amocrm_lead,
     amocrm_lead,
@@ -140,14 +126,12 @@ def test_new_order_linked_to_existing_lead_from_returned_order_calls_update(
 
     paid_order_without_lead.amocrm_lead.refresh_from_db()
     mock_push_existing_order_to_amocrm.assert_called_once_with(order_id=paid_order_without_lead.id)
-    mock_push_new_order_to_amocrm.assert_not_called()
     assert paid_order_without_lead.amocrm_lead == amocrm_lead
 
 
 def test_not_push_if_author_not_equal_to_user(
     order_pusher,
     not_paid_order_without_lead,
-    mock_push_new_order_to_amocrm,
     mock_push_existing_order_to_amocrm,
     another_user,
     mock_update_amocrm_lead,
@@ -158,7 +142,6 @@ def test_not_push_if_author_not_equal_to_user(
 
     order_pusher(order=not_paid_order_without_lead)
 
-    mock_push_new_order_to_amocrm.assert_not_called()
     mock_push_existing_order_to_amocrm.assert_not_called()
     mock_update_amocrm_lead.assert_not_called()
     mock_create_amocrm_lead.assert_not_called()
@@ -167,7 +150,6 @@ def test_not_push_if_author_not_equal_to_user(
 def test_not_push_if_free_order(
     order_pusher,
     not_paid_order_without_lead,
-    mock_push_new_order_to_amocrm,
     mock_push_existing_order_to_amocrm,
     mock_update_amocrm_lead,
     mock_create_amocrm_lead,
@@ -177,7 +159,6 @@ def test_not_push_if_free_order(
 
     order_pusher(order=not_paid_order_without_lead)
 
-    mock_push_new_order_to_amocrm.assert_not_called()
     mock_push_existing_order_to_amocrm.assert_not_called()
     mock_update_amocrm_lead.assert_not_called()
     mock_create_amocrm_lead.assert_not_called()
@@ -187,14 +168,12 @@ def test_not_push_if_there_is_already_paid_order(
     order_pusher,
     not_paid_order_without_lead,
     paid_order_with_lead,
-    mock_push_new_order_to_amocrm,
     mock_push_existing_order_to_amocrm,
     mock_update_amocrm_lead,
     mock_create_amocrm_lead,
 ):
     order_pusher(order=not_paid_order_without_lead)
 
-    mock_push_new_order_to_amocrm.assert_not_called()
     mock_push_existing_order_to_amocrm.assert_not_called()
     mock_update_amocrm_lead.assert_not_called()
     mock_create_amocrm_lead.assert_not_called()

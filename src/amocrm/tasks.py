@@ -87,21 +87,6 @@ def delete_order_from_amocrm(order_id: int) -> None:
     },
     acks_late=True,
 )
-def push_new_order_to_amocrm(order_id: int) -> None:
-    chain(
-        create_amocrm_lead.si(order_id=order_id),
-        _push_transaction.si(order_id=order_id),
-    ).delay()
-
-
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    acks_late=True,
-)
 def push_existing_order_to_amocrm(order_id: int) -> None:
     chain(
         update_amocrm_lead.si(order_id=order_id),
