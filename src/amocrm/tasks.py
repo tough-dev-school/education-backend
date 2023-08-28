@@ -22,8 +22,6 @@ from amocrm.services.orders.order_pusher import AmoCRMOrderPusher
 from amocrm.services.products.course_creator import AmoCRMCourseCreator
 from amocrm.services.products.course_updater import AmoCRMCourseUpdater
 from amocrm.services.products.product_groups_updater import AmoCRMProductGroupsUpdater
-from amocrm.types import AmoCRMTransactionElement
-from amocrm.types import AmoCRMTransactionElementMetadata
 from app.celery import celery
 
 __all__ = [
@@ -77,11 +75,22 @@ def push_order_to_amocrm(order_id: int) -> None:
     },
     acks_late=True,
 )
-def push_existing_order_to_amocrm(order_id: int) -> None:
-    chain(
-        update_amocrm_lead.si(order_id=order_id),
-        _push_transaction.si(order_id=order_id),
-    ).delay()
+def create_order_in_amocrm(order_id: int) -> None:
+    order = apps.get_model("orders.Order").objects.get(id=order_id)
+    AmoCRMOrderCreator(order=order)()
+
+
+@celery.task(
+    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
+    retry_kwargs={
+        "max_retries": 10,
+        "countdown": 1,
+    },
+    acks_late=True,
+)
+def delete_order_in_amocrm(order_id: int) -> None:
+    order = apps.get_model("orders.Order").objects.get(id=order_id)
+    AmoCRMOrderDeleter(order=order)()
 
 
 @celery.task(
@@ -93,9 +102,8 @@ def push_existing_order_to_amocrm(order_id: int) -> None:
     rate_limit="3/s",
     acks_late=True,
 )
-def update_amocrm_lead(order_id: int) -> int:
-    order = apps.get_model("orders.Order").objects.get(id=order_id)
-    return AmoCRMOrderCreator(amocrm_lead=order.amocrm_lead)()
+def update_amocrm_lead(order_id: int) -> None:
+    ...
 
 
 @celery.task(
@@ -233,41 +241,6 @@ def _push_all_courses() -> None:
 def _create_lead(order_id: int) -> int:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
     return AmoCRMOrderLeadCreator(order=order)()
-
-
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    rate_limit="3/s",
-    acks_late=True,
-)
-def create_transaction(order_id: int, catalog_id: int, quantity: int) -> int | None:
-    client = AmoCRMClient()
-    AmoCRMOrderTransaction = apps.get_model("amocrm.AmoCRMOrderTransaction")
-    order = apps.get_model("orders.Order").objects.get(id=order_id)
-
-    transaction_metadata = AmoCRMTransactionElementMetadata(
-        quantity=quantity,
-        catalog_id=catalog_id,
-    )
-    course_as_transaction_element = AmoCRMTransactionElement(
-        id=order.course.amocrm_course.amocrm_id,
-        metadata=transaction_metadata,
-    )
-
-    amocrm_id = client.create_customer_transaction(
-        customer_id=order.user.amocrm_user.amocrm_id,
-        price=order.price,
-        order_slug=order.slug,
-        purchased_product=course_as_transaction_element,
-    )
-
-    order.amocrm_transaction = AmoCRMOrderTransaction.objects.create(amocrm_id=amocrm_id)
-    order.save()
-    return order.amocrm_transaction.amocrm_id
 
 
 @celery.task(

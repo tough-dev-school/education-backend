@@ -11,8 +11,13 @@ pytestmark = [
 
 
 @pytest.fixture
-def mock_push_existing_order_to_amocrm(mocker):
-    return mocker.patch("amocrm.tasks.push_existing_order_to_amocrm.apply_async")
+def mock_create_order_in_amocrm(mocker):
+    return mocker.patch("amocrm.tasks.create_order_in_amocrm.apply_async")
+
+
+@pytest.fixture
+def mock_delete_order_in_amocrm(mocker):
+    return mocker.patch("amocrm.tasks.delete_order_in_amocrm.apply_async")
 
 
 @pytest.fixture
@@ -76,18 +81,18 @@ def test_update_if_with_lead_not_paid(not_paid_order_with_lead, mock_update_amoc
     mock_update_amocrm_lead.assert_called_once_with(kwargs=dict(order_id=not_paid_order_with_lead.id), countdown=1)
 
 
-def test_update_if_with_lead_paid(paid_order_with_lead, mock_push_existing_order_to_amocrm):
+def test_update_if_with_lead_paid(paid_order_with_lead, mock_create_order_in_amocrm):
     """Поступила оплата заказа - пушим весь заказ (обновляем Сделку и создаем Покупку)"""
     AmoCRMOrderPusher(order=paid_order_with_lead)()
 
-    mock_push_existing_order_to_amocrm.assert_called_once_with(kwargs=dict(order_id=paid_order_with_lead.id), countdown=1)
+    mock_create_order_in_amocrm.assert_called_once_with(kwargs=dict(order_id=paid_order_with_lead.id), countdown=1)
 
 
-def test_update_if_with_lead_returned(returned_order_with_lead, mock_push_existing_order_to_amocrm):
+def test_update_if_with_lead_returned(returned_order_with_lead, mock_delete_order_in_amocrm):
     """Заказ возвращен - пушим весь заказ (обновляем Сделку и удаляем Покупку)"""
     AmoCRMOrderPusher(order=returned_order_with_lead)()
 
-    mock_push_existing_order_to_amocrm.assert_called_once_with(kwargs=dict(order_id=returned_order_with_lead.id), countdown=1)
+    mock_delete_order_in_amocrm.assert_called_once_with(kwargs=dict(order_id=returned_order_with_lead.id), countdown=1)
 
 
 @pytest.mark.usefixtures("not_paid_order_with_lead")
@@ -100,16 +105,16 @@ def test_update_not_paid_order_linked_to_existing_lead(not_paid_order_without_le
 
 
 @pytest.mark.usefixtures("not_paid_order_with_lead")
-def test_update_paid_order_linked_to_existing_lead(paid_order_without_lead, amocrm_lead, mock_push_existing_order_to_amocrm):
+def test_update_paid_order_linked_to_existing_lead(paid_order_without_lead, amocrm_lead, mock_create_order_in_amocrm):
     """Поступила оплата по заказу, но соответствующая сделка привязана к другому аналогичному заказу - привязываем сделку к текущему заказу и пушим в Амо"""
     AmoCRMOrderPusher(order=paid_order_without_lead)()
 
     assert paid_order_without_lead.amocrm_lead == amocrm_lead
-    mock_push_existing_order_to_amocrm.assert_called_once_with(kwargs=dict(order_id=paid_order_without_lead.id), countdown=1)
+    mock_create_order_in_amocrm.assert_called_once_with(kwargs=dict(order_id=paid_order_without_lead.id), countdown=1)
 
 
 @pytest.mark.usefixtures("returned_order_with_lead")
-def test_update_linked_to_existing_lead_from_returned_order_(paid_order_without_lead, amocrm_lead, mock_push_existing_order_to_amocrm):
+def test_update_linked_to_existing_lead_from_returned_order_(paid_order_without_lead, amocrm_lead, mock_create_order_in_amocrm):
     """
     Поступила оплата по заказу, но соответствующая сделка привязана к другому аналогичному возвращенному заказу -
     привязываем сделку к текущему заказу и пушим в Амо
@@ -117,7 +122,7 @@ def test_update_linked_to_existing_lead_from_returned_order_(paid_order_without_
     AmoCRMOrderPusher(order=paid_order_without_lead)()
 
     assert paid_order_without_lead.amocrm_lead == amocrm_lead
-    mock_push_existing_order_to_amocrm.assert_called_once_with(kwargs=dict(order_id=paid_order_without_lead.id), countdown=1)
+    mock_create_order_in_amocrm.assert_called_once_with(kwargs=dict(order_id=paid_order_without_lead.id), countdown=1)
 
 
 def test_not_push_if_author_not_equal_to_user(not_paid_order_without_lead, another_user, mock_push_lead, mock_push_order):

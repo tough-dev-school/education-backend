@@ -34,7 +34,7 @@ class AmoCRMOrderDeleter(BaseService):
 
     def update_lead(self) -> int:
         return self.client.update_lead(
-            lead_id=self.order.amocrm_lead.amocrm_id,
+            lead_id=self.order.amocrm_lead.amocrm_id,  # type: ignore
             status_id=self.status_id,
             pipeline_id=self.pipeline_id,
             price=self.order.price,
@@ -42,8 +42,8 @@ class AmoCRMOrderDeleter(BaseService):
         )
 
     def delete_transaction(self) -> None:
-        self.client.delete_transaction(transaction_id=self.order.amocrm_transaction.amocrm_id)
-        self.order.amocrm_transaction.delete()
+        self.client.delete_transaction(transaction_id=self.order.amocrm_transaction.amocrm_id)  # type: ignore
+        self.order.amocrm_transaction.delete()  # type: ignore
 
     @property
     def pipeline_id(self) -> int:
