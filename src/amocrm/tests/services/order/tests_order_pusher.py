@@ -157,8 +157,8 @@ def test_child_service_gets_order_with_linked_lead(not_paid_order_without_lead, 
     Поступил новый заказ, но есть аналогичный неоплаченный заказ с открытой сделкой -
     сделка привязывается к новому заказу, и обновляется в Амо, чтобы была указана актуальная стоимость и время создания
     """
-    mock_status = mocker.patch("amocrm.services.orders.order_lead_updater.AmoCRMOrderLeadUpdater.status_id")
-    mock_pipeline = mocker.patch("amocrm.services.orders.order_lead_updater.AmoCRMOrderLeadUpdater.pipeline_id")
+    mock_status = mocker.patch("amocrm.services.orders.lead_updater.AmoCRMLeadUpdater.status_id")
+    mock_pipeline = mocker.patch("amocrm.services.orders.lead_updater.AmoCRMLeadUpdater.pipeline_id")
     mock_update = mocker.patch("amocrm.client.AmoCRMClient.update_lead")
 
     AmoCRMOrderPusher(order=not_paid_order_without_lead)()

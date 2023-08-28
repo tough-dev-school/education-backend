@@ -13,11 +13,11 @@ from amocrm.services.access_token_getter import AmoCRMTokenGetterException
 from amocrm.services.contacts.contact_creator import AmoCRMContactCreator
 from amocrm.services.contacts.contact_to_customer_linker import AmoCRMContactToCustomerLinker
 from amocrm.services.contacts.contact_updater import AmoCRMContactUpdater
+from amocrm.services.orders.lead_creator import AmoCRMLeadCreator
+from amocrm.services.orders.lead_creator import AmoCRMLeadCreatorException
+from amocrm.services.orders.lead_updater import AmoCRMLeadUpdater
 from amocrm.services.orders.order_creator import AmoCRMOrderCreator
 from amocrm.services.orders.order_deleter import AmoCRMOrderDeleter
-from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreator
-from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreatorException
-from amocrm.services.orders.order_lead_updater import AmoCRMOrderLeadUpdater
 from amocrm.services.orders.order_pusher import AmoCRMOrderPusher
 from amocrm.services.products.course_creator import AmoCRMCourseCreator
 from amocrm.services.products.course_updater import AmoCRMCourseUpdater
@@ -94,7 +94,7 @@ def delete_order_in_amocrm(order_id: int) -> None:
 
 
 @celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException, AmoCRMOrderLeadCreatorException],
+    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException, AmoCRMLeadCreatorException],
     retry_kwargs={
         "max_retries": 10,
         "countdown": 1,
@@ -104,11 +104,11 @@ def delete_order_in_amocrm(order_id: int) -> None:
 )
 def create_amocrm_lead(order_id: int) -> int:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
-    return AmoCRMOrderLeadCreator(order=order)()
+    return AmoCRMLeadCreator(order=order)()
 
 
 @celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException, AmoCRMOrderLeadCreatorException],
+    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException, AmoCRMLeadCreatorException],
     retry_kwargs={
         "max_retries": 10,
         "countdown": 1,
@@ -118,7 +118,7 @@ def create_amocrm_lead(order_id: int) -> int:
 )
 def update_amocrm_lead(order_id: int) -> int:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
-    return AmoCRMOrderLeadUpdater(amocrm_lead=order.amocrm_lead)()
+    return AmoCRMLeadUpdater(order=order)()
 
 
 @celery.task(

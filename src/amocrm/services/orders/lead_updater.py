@@ -8,7 +8,7 @@ from orders.models import Order
 
 
 @dataclass
-class AmoCRMOrderLeadUpdater(BaseService):
+class AmoCRMLeadUpdater(BaseService):
     """
     Updates amocrm_lead for given order
 

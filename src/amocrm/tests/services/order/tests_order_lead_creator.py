@@ -1,8 +1,8 @@
 import pytest
 
 from amocrm.models import AmoCRMOrderLead
-from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreator
-from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreatorException
+from amocrm.services.orders.lead_creator import AmoCRMLeadCreator
+from amocrm.services.orders.lead_creator import AmoCRMLeadCreatorException
 from amocrm.types import AmoCRMEntityLink
 from amocrm.types import AmoCRMEntityLinkMetadata
 
@@ -13,9 +13,9 @@ pytestmark = [
 
 @pytest.fixture(autouse=True)
 def _mock_fields_id(mocker):
-    mocker.patch("amocrm.services.orders.order_lead_creator.get_pipeline_id", return_value=777)
-    mocker.patch("amocrm.services.orders.order_lead_creator.get_b2c_pipeline_status_id", return_value=999)
-    mocker.patch("amocrm.services.orders.order_lead_creator.get_catalog_id", return_value=555)
+    mocker.patch("amocrm.services.orders.lead_creator.get_pipeline_id", return_value=777)
+    mocker.patch("amocrm.services.orders.lead_creator.get_b2c_pipeline_status_id", return_value=999)
+    mocker.patch("amocrm.services.orders.lead_creator.get_catalog_id", return_value=555)
 
 
 @pytest.fixture(autouse=True)
@@ -35,7 +35,7 @@ def mock_link_entity_to_another_entity(mocker):
 
 @pytest.fixture
 def lead_creator():
-    return lambda order: AmoCRMOrderLeadCreator(order=order)()
+    return lambda order: AmoCRMLeadCreator(order=order)()
 
 
 def test_creates_amocrm_order_lead(lead_creator, order):
@@ -81,14 +81,14 @@ def test_creates_correct_call(lead_creator, order, mock_create_lead, mock_update
 def test_fails_if_already_exist(lead_creator, order, factory):
     factory.amocrm_order_lead(order=order)
 
-    with pytest.raises(AmoCRMOrderLeadCreatorException, match="Lead already exist"):
+    with pytest.raises(AmoCRMLeadCreatorException, match="Lead already exist"):
         lead_creator(order)
 
 
 def test_fails_if_transaction_already_exist(lead_creator, order, factory):
     factory.amocrm_order_transaction(order=order)
 
-    with pytest.raises(AmoCRMOrderLeadCreatorException, match="Transaction for this order already exists"):
+    with pytest.raises(AmoCRMLeadCreatorException, match="Transaction for this order already exists"):
         lead_creator(order)
 
 
@@ -96,7 +96,7 @@ def test_fails_if_no_amocrm_course(lead_creator, order):
     order.course.amocrm_course.delete()
     order.refresh_from_db()
 
-    with pytest.raises(AmoCRMOrderLeadCreatorException, match="Course doesn't exist in AmoCRM"):
+    with pytest.raises(AmoCRMLeadCreatorException, match="Course doesn't exist in AmoCRM"):
         lead_creator(order)
 
 
@@ -104,5 +104,5 @@ def test_fails_if_no_amocrm_contact(lead_creator, order):
     order.user.amocrm_user_contact.delete()
     order.refresh_from_db()
 
-    with pytest.raises(AmoCRMOrderLeadCreatorException, match="AmoCRM contact for order's user doesn't exist"):
+    with pytest.raises(AmoCRMLeadCreatorException, match="AmoCRM contact for order's user doesn't exist"):
         lead_creator(order)

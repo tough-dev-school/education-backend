@@ -2,8 +2,6 @@ import pytest
 
 from amocrm.services.orders.order_creator import AmoCRMOrderCreator
 from amocrm.services.orders.order_creator import AmoCRMOrderCreatorException
-from amocrm.types import AmoCRMTransactionElement
-from amocrm.types import AmoCRMTransactionElementMetadata
 
 pytestmark = [
     pytest.mark.django_db,
