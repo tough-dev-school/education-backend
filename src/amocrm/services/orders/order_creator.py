@@ -4,18 +4,11 @@ from amocrm.cache.catalog_id import get_catalog_id
 from amocrm.cache.lead_b2c_pipeline_statuses_ids import get_b2c_pipeline_status_id
 from amocrm.cache.lead_pipeline_id import get_pipeline_id
 from amocrm.client import AmoCRMClient
-from amocrm.exceptions import AmoCRMServiceException
 from amocrm.models import AmoCRMOrderTransaction
 from amocrm.types import AmoCRMTransactionElement
 from amocrm.types import AmoCRMTransactionElementMetadata
 from app.services import BaseService
 from orders.models import Order
-
-COURSES_IN_ORDER_QUANTITY: int = 1  # order can contain only 1 course
-
-
-class AmoCRMOrderCreatorException(AmoCRMServiceException):
-    """Raises when it's impossible to create order in AmoCRM"""
 
 
 @dataclass
@@ -48,7 +41,7 @@ class AmoCRMOrderCreator(BaseService):
 
     def create_transaction(self) -> None:
         transaction_metadata = AmoCRMTransactionElementMetadata(
-            quantity=COURSES_IN_ORDER_QUANTITY,
+            quantity=1,  # order can contain only 1 course
             catalog_id=self.product_catalog_id,
         )
         course_as_transaction_element = AmoCRMTransactionElement(

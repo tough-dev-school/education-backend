@@ -12,8 +12,6 @@ from amocrm.types import AmoCRMEntityLinkMetadata
 from app.services import BaseService
 from orders.models import Order
 
-COURSES_IN_ORDER_QUANTITY: int = 1  # order can contain only 1 course
-
 
 class AmoCRMLeadCreatorException(AmoCRMServiceException):
     """Raises when it's impossible to create customer's amocrm_lead"""
@@ -57,7 +55,7 @@ class AmoCRMLeadCreator(BaseService):
             to_entity_id=self.order.course.amocrm_course.amocrm_id,
             to_entity_type="catalog_elements",
             metadata=AmoCRMEntityLinkMetadata(
-                quantity=COURSES_IN_ORDER_QUANTITY,
+                quantity=1,  # order can contain only 1 course
                 catalog_id=self.products_catalog_id,
             ),
         )
