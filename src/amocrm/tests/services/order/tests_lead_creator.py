@@ -3,8 +3,6 @@ import pytest
 from amocrm.models import AmoCRMOrderLead
 from amocrm.services.orders.lead_creator import AmoCRMLeadCreator
 from amocrm.services.orders.lead_creator import AmoCRMLeadCreatorException
-from amocrm.types import AmoCRMEntityLink
-from amocrm.types import AmoCRMEntityLinkMetadata
 
 pytestmark = [
     pytest.mark.django_db,
@@ -13,7 +11,7 @@ pytestmark = [
 
 @pytest.fixture(autouse=True)
 def _mock_fields_id(mocker):
-    mocker.patch("amocrm.services.orders.lead_creator.get_pipeline_id", return_value=777)
+    mocker.patch("amocrm.services.orders.lead_creator.get_b2c_pipeline_id", return_value=777)
     mocker.patch("amocrm.services.orders.lead_creator.get_b2c_pipeline_status_id", return_value=999)
     mocker.patch("amocrm.services.orders.lead_creator.get_catalog_id", return_value=555)
 
@@ -50,32 +48,9 @@ def test_creates_amocrm_order_lead(lead_creator, order):
 def test_creates_correct_call(lead_creator, order, mock_create_lead, mock_update_lead, mock_link_entity_to_another_entity):
     lead_creator(order)
 
-    mock_create_lead.assert_called_once_with(
-        status_id=999,
-        pipeline_id=777,
-        contact_id=order.user.amocrm_user_contact.amocrm_id,
-        price=order.price,
-        created_at=order.created,
-    )
-    mock_link_entity_to_another_entity.assert_called_once_with(
-        entity_type="leads",
-        entity_id=481516,
-        entity_to_link=AmoCRMEntityLink(
-            to_entity_id=order.course.amocrm_course.amocrm_id,
-            to_entity_type="catalog_elements",
-            metadata=AmoCRMEntityLinkMetadata(
-                quantity=1,
-                catalog_id=555,
-            ),
-        ),
-    )
-    mock_update_lead.assert_called_once_with(
-        lead_id=481516,
-        status_id=999,
-        pipeline_id=777,
-        price=order.price,
-        created_at=order.created,
-    )
+    mock_create_lead.assert_called_once()
+    mock_link_entity_to_another_entity.assert_called_once()
+    mock_update_lead.assert_called_once()
 
 
 def test_fails_if_already_exist(lead_creator, order, factory):

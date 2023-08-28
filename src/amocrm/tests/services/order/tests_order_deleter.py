@@ -9,7 +9,7 @@ pytestmark = [
 
 @pytest.fixture(autouse=True)
 def _mock_b2c_fields_id(mocker):
-    mocker.patch("amocrm.services.orders.order_deleter.get_pipeline_id", return_value=777)
+    mocker.patch("amocrm.services.orders.order_deleter.get_b2c_pipeline_id", return_value=777)
     mocker.patch("amocrm.services.orders.order_deleter.get_b2c_pipeline_status_id", return_value=999)
 
 

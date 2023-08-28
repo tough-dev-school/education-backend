@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
+from amocrm.cache.lead_b2c_pipeline_id import get_b2c_pipeline_id
 from amocrm.cache.lead_b2c_pipeline_statuses_ids import get_b2c_pipeline_status_id
-from amocrm.cache.lead_pipeline_id import get_pipeline_id
 from amocrm.client import AmoCRMClient
 from amocrm.exceptions import AmoCRMServiceException
 from app.services import BaseService
@@ -46,7 +46,7 @@ class AmoCRMOrderDeleter(BaseService):
 
     @property
     def pipeline_id(self) -> int:
-        return get_pipeline_id(pipeline_name="b2c")
+        return get_b2c_pipeline_id()
 
     @property
     def status_id(self) -> int:
