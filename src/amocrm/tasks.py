@@ -22,8 +22,6 @@ from amocrm.services.orders.order_transaction_deleter import AmoCRMOrderTransact
 from amocrm.services.products.course_creator import AmoCRMCourseCreator
 from amocrm.services.products.course_updater import AmoCRMCourseUpdater
 from amocrm.services.products.product_groups_updater import AmoCRMProductGroupsUpdater
-from amocrm.types import AmoCRMEntityLink
-from amocrm.types import AmoCRMEntityLinkMetadata
 from app.celery import celery
 
 __all__ = [
@@ -93,24 +91,23 @@ def push_existing_order_to_amocrm(order_id: int) -> None:
     rate_limit="3/s",
     acks_late=True,
 )
-def update_amocrm_lead(order_id: int) -> int:
+def create_amocrm_lead(order_id: int) -> int:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
-    return AmoCRMOrderLeadUpdater(amocrm_lead=order.amocrm_lead)()
+    return AmoCRMOrderLeadCreator(order=order)()
 
 
 @celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
+    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException, AmoCRMOrderLeadCreatorException],
     retry_kwargs={
         "max_retries": 10,
         "countdown": 1,
     },
+    rate_limit="3/s",
     acks_late=True,
 )
-def create_amocrm_lead(order_id: int) -> None:
-    chain(
-        _create_lead.si(order_id=order_id),
-        update_amocrm_lead.si(order_id=order_id),  # update cause linking course sets lead to default status
-    ).delay()
+def update_amocrm_lead(order_id: int) -> int:
+    order = apps.get_model("orders.Order").objects.get(id=order_id)
+    return AmoCRMOrderLeadUpdater(amocrm_lead=order.amocrm_lead)()
 
 
 @celery.task(
@@ -221,20 +218,6 @@ def _push_all_courses() -> None:
 
 
 @celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException, AmoCRMOrderLeadCreatorException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    rate_limit="3/s",
-    acks_late=True,
-)
-def _create_lead(order_id: int) -> int:
-    order = apps.get_model("orders.Order").objects.get(id=order_id)
-    return AmoCRMOrderLeadCreator(order=order)()
-
-
-@celery.task(
     autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
     retry_kwargs={
         "max_retries": 10,
@@ -249,31 +232,3 @@ def _push_transaction(order_id: int) -> int | None:
         return AmoCRMOrderTransactionDeleter(order=order)()
     if order.paid is not None and order.amocrm_transaction is None:
         return AmoCRMOrderTransactionCreator(order=order)()
-
-
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    rate_limit="3/s",
-    acks_late=True,
-)
-def link_course_to_lead(course_amocrm_id: int, catalog_id: int, lead_amocrm_id: int, quantity: int) -> None:
-    client = AmoCRMClient()
-
-    amocrm_course_to_link = AmoCRMEntityLink(
-        to_entity_id=course_amocrm_id,
-        to_entity_type="catalog_elements",
-        metadata=AmoCRMEntityLinkMetadata(
-            quantity=quantity,
-            catalog_id=catalog_id,
-        ),
-    )
-
-    client.link_entity_to_another_entity(
-        entity_type="leads",
-        entity_id=lead_amocrm_id,
-        entity_to_link=amocrm_course_to_link,
-    )

@@ -7,8 +7,12 @@ from amocrm.cache.lead_pipeline_id import get_pipeline_id
 from amocrm.client import AmoCRMClient
 from amocrm.exceptions import AmoCRMServiceException
 from amocrm.models import AmoCRMOrderLead
+from amocrm.types import AmoCRMEntityLink
+from amocrm.types import AmoCRMEntityLinkMetadata
 from app.services import BaseService
 from orders.models import Order
+
+COURSES_IN_ORDER_QUANTITY: int = 1  # order can contain only 1 course
 
 
 class AmoCRMOrderLeadCreatorException(AmoCRMServiceException):
@@ -27,22 +31,13 @@ class AmoCRMOrderLeadCreator(BaseService):
 
     order: Order
 
-    courses_in_order_quantity: int = 1  # order can contain only 1 course
-
     def __post_init__(self) -> None:
         self.client = AmoCRMClient()
 
     def act(self) -> int:
-        from amocrm.tasks import link_course_to_lead
-
-        lead_amocrm_id = self.create_lead()
-        link_course_to_lead.delay(
-            course_amocrm_id=self.order.course.amocrm_course.amocrm_id,
-            catalog_id=self.products_catalog_id,
-            lead_amocrm_id=lead_amocrm_id,
-            quantity=self.courses_in_order_quantity,
-        )
-        return lead_amocrm_id
+        self.create_lead()
+        self.link_course_to_lead()
+        return self.update_lead_price()
 
     def create_lead(self) -> int:
         amocrm_id = self.client.create_lead(
@@ -56,6 +51,31 @@ class AmoCRMOrderLeadCreator(BaseService):
         self.order.amocrm_lead = AmoCRMOrderLead.objects.create(amocrm_id=amocrm_id)
         self.order.save()
         return self.order.amocrm_lead.amocrm_id
+
+    def link_course_to_lead(self) -> None:
+        amocrm_course_to_link = AmoCRMEntityLink(
+            to_entity_id=self.order.course.amocrm_course.amocrm_id,
+            to_entity_type="catalog_elements",
+            metadata=AmoCRMEntityLinkMetadata(
+                quantity=COURSES_IN_ORDER_QUANTITY,
+                catalog_id=self.products_catalog_id,
+            ),
+        )
+
+        self.client.link_entity_to_another_entity(
+            entity_type="leads",
+            entity_id=self.order.amocrm_lead.amocrm_id,  # type: ignore
+            entity_to_link=amocrm_course_to_link,
+        )
+
+    def update_lead_price(self) -> int:
+        return self.client.update_lead(
+            lead_id=self.order.amocrm_lead.amocrm_id,  # type: ignore
+            status_id=self.status_id,
+            pipeline_id=self.pipeline_id,
+            price=self.order.price,
+            created_at=self.order.created,
+        )
 
     @property
     def pipeline_id(self) -> int:

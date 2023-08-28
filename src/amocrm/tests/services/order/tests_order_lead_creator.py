@@ -24,6 +24,11 @@ def mock_create_lead(mocker):
 
 
 @pytest.fixture(autouse=True)
+def mock_update_lead(mocker):
+    return mocker.patch("amocrm.client.AmoCRMClient.update_lead", return_value=481516)
+
+
+@pytest.fixture(autouse=True)
 def mock_link_entity_to_another_entity(mocker):
     return mocker.patch("amocrm.client.AmoCRMClient.link_entity_to_another_entity", return_value=None)
 
@@ -42,7 +47,7 @@ def test_creates_amocrm_order_lead(lead_creator, order):
     assert amocrm_lead.amocrm_id == 481516
 
 
-def test_creates_correct_call(lead_creator, order, mock_create_lead, mock_link_entity_to_another_entity):
+def test_creates_correct_call(lead_creator, order, mock_create_lead, mock_update_lead, mock_link_entity_to_another_entity):
     lead_creator(order)
 
     mock_create_lead.assert_called_once_with(
@@ -63,6 +68,13 @@ def test_creates_correct_call(lead_creator, order, mock_create_lead, mock_link_e
                 catalog_id=555,
             ),
         ),
+    )
+    mock_update_lead.assert_called_once_with(
+        lead_id=481516,
+        status_id=999,
+        pipeline_id=777,
+        price=order.price,
+        created_at=order.created,
     )
 
 
