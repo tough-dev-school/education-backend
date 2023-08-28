@@ -18,6 +18,11 @@ def mock_push_order(mocker):
     return mocker.patch("amocrm.tasks.push_order_to_amocrm.si")
 
 
+@pytest.fixture
+def mock_delete_order_amocrm(mocker):
+    return mocker.patch("amocrm.tasks.delete_order_in_amocrm.si")
+
+
 @pytest.fixture(autouse=True)
 def rebuild_tags(mocker):
     return mocker.patch("users.tasks.rebuild_tags.delay")

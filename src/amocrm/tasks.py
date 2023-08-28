@@ -28,6 +28,7 @@ __all__ = [
     "amocrm_enabled",
     "push_user_to_amocrm",
     "push_order_to_amocrm",
+    "delete_order_in_amocrm",
     "push_product_groups",
     "push_course",
     "push_all_products_and_product_groups",

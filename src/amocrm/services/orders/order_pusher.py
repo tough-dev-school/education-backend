@@ -22,25 +22,21 @@ class AmoCRMOrderPusher(BaseService):
         if not self.order_must_be_pushed():
             return
 
-        if self.order.paid is not None or self.order.unpaid is not None:
+        if self.order.paid is not None:
             self.push_order()
         else:
             self.push_lead()
 
     def push_order(self) -> None:
         from amocrm.tasks import create_order_in_amocrm
-        from amocrm.tasks import delete_order_in_amocrm
 
         existing_lead = self.get_lead()
         if existing_lead is None:
-            raise AmoCRMOrderPusherException("Cannot push paid or unpaid order without existing lead")
+            raise AmoCRMOrderPusherException("Cannot push paid order without existing lead")
         if existing_lead.order != self.order:
             self.link_existing_lead_to_current_order(existing_lead=existing_lead)
 
-        if self.order.paid is not None:
-            create_order_in_amocrm.apply_async(kwargs=dict(order_id=self.order.id), countdown=1)
-        else:
-            delete_order_in_amocrm.apply_async(kwargs=dict(order_id=self.order.id), countdown=1)
+        create_order_in_amocrm.apply_async(kwargs=dict(order_id=self.order.id), countdown=1)
 
     def push_lead(self) -> None:
         from amocrm.tasks import create_amocrm_lead

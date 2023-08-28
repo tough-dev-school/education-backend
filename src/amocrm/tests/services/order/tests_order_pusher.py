@@ -16,11 +16,6 @@ def mock_create_order_in_amocrm(mocker):
 
 
 @pytest.fixture
-def mock_delete_order_in_amocrm(mocker):
-    return mocker.patch("amocrm.tasks.delete_order_in_amocrm.apply_async")
-
-
-@pytest.fixture
 def mock_create_amocrm_lead(mocker):
     return mocker.patch("amocrm.tasks.create_amocrm_lead.apply_async")
 
@@ -86,13 +81,6 @@ def test_update_if_with_lead_paid(paid_order_with_lead, mock_create_order_in_amo
     AmoCRMOrderPusher(order=paid_order_with_lead)()
 
     mock_create_order_in_amocrm.assert_called_once_with(kwargs=dict(order_id=paid_order_with_lead.id), countdown=1)
-
-
-def test_update_if_with_lead_returned(returned_order_with_lead, mock_delete_order_in_amocrm):
-    """Заказ возвращен - пушим весь заказ (обновляем Сделку и удаляем Покупку)"""
-    AmoCRMOrderPusher(order=returned_order_with_lead)()
-
-    mock_delete_order_in_amocrm.assert_called_once_with(kwargs=dict(order_id=returned_order_with_lead.id), countdown=1)
 
 
 @pytest.mark.usefixtures("not_paid_order_with_lead")
@@ -174,5 +162,5 @@ def test_child_service_gets_order_with_linked_lead(not_paid_order_without_lead, 
 
 
 def test_fail_create_paid_order_without_lead(paid_order_without_lead):
-    with pytest.raises(AmoCRMOrderPusherException, match="Cannot push paid or unpaid order without existing lead"):
+    with pytest.raises(AmoCRMOrderPusherException, match="Cannot push paid order without existing lead"):
         AmoCRMOrderPusher(order=paid_order_without_lead)()
