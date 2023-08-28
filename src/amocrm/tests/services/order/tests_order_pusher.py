@@ -35,6 +35,11 @@ def mock_push_order(mocker):
     return mocker.patch("amocrm.services.orders.order_pusher.AmoCRMOrderPusher.push_order")
 
 
+@pytest.fixture(autouse=True)
+def _amocrm_entities(amocrm_course, amocrm_user, amocrm_contact):
+    return
+
+
 @pytest.fixture
 def amocrm_lead(factory):
     return factory.amocrm_order_lead()
@@ -149,6 +154,18 @@ def test_not_push_if_there_is_already_paid_order(not_paid_order_without_lead, mo
 
     mock_push_lead.assert_not_called()
     mock_push_order.assert_not_called()
+
+
+@pytest.mark.usefixtures("not_paid_order_with_lead")
+def test_child_service_gets_order_with_linked_lead(not_paid_order_without_lead, amocrm_lead, mocker):
+    mock_updater_init = mocker.patch("amocrm.services.orders.order_lead_updater.AmoCRMOrderLeadUpdater.__init__", return_value=None)
+    mock_update = mocker.patch("amocrm.services.orders.order_lead_updater.AmoCRMOrderLeadUpdater.__call__")
+
+    AmoCRMOrderPusher(order=not_paid_order_without_lead)()
+
+    assert not_paid_order_without_lead.amocrm_lead == amocrm_lead
+    mock_updater_init.assert_called_once_with(amocrm_lead=amocrm_lead)
+    mock_update.assert_called_once()
 
 
 def test_fail_create_paid_order_without_lead(paid_order_without_lead):
