@@ -162,7 +162,7 @@ def test_child_service_gets_order_with_linked_lead(not_paid_order_without_lead, 
 
     AmoCRMOrderPusher(order=not_paid_order_without_lead)()
 
-    assert paid_order_without_lead.amocrm_lead == amocrm_lead
+    assert not_paid_order_without_lead.amocrm_lead == amocrm_lead
     mock_updater_init.assert_called_once_with(amocrm_lead=amocrm_lead)
     mock_update.assert_called_once()
 
