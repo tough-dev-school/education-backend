@@ -1,11 +1,14 @@
 from dataclasses import dataclass
 from typing import Callable
 
+from amocrm.cache.catalog_id import get_catalog_id
 from amocrm.cache.lead_b2c_pipeline_statuses_ids import get_b2c_pipeline_status_id
 from amocrm.cache.lead_pipeline_id import get_pipeline_id
 from amocrm.client import AmoCRMClient
 from amocrm.exceptions import AmoCRMServiceException
 from amocrm.models import AmoCRMOrderLead
+from amocrm.types import AmoCRMEntityLink
+from amocrm.types import AmoCRMEntityLinkMetadata
 from app.services import BaseService
 from orders.models import Order
 
@@ -26,11 +29,17 @@ class AmoCRMOrderLeadCreator(BaseService):
 
     order: Order
 
+    courses_in_order_quantity: int = 1  # order can contain only 1 course
+
     def __post_init__(self) -> None:
         self.client = AmoCRMClient()
-        self.is_paid = self.order.paid is not None
 
     def act(self) -> int:
+        lead_amocrm_id = self.create_lead()
+        self.link_course_to_lead()
+        return lead_amocrm_id
+
+    def create_lead(self) -> int:
         amocrm_id = self.client.create_lead(
             status_id=self.status_id,
             pipeline_id=self.pipeline_id,
@@ -43,27 +52,38 @@ class AmoCRMOrderLeadCreator(BaseService):
         self.order.save()
         return self.order.amocrm_lead.amocrm_id
 
+    def link_course_to_lead(self) -> None:
+        amocrm_course_to_link = AmoCRMEntityLink(
+            to_entity_id=self.order.course.amocrm_course.amocrm_id,
+            to_entity_type="catalog_elements",
+            metadata=AmoCRMEntityLinkMetadata(
+                quantity=self.courses_in_order_quantity,
+                catalog_id=self.products_catalog_id,
+            ),
+        )
+
+        self.client.link_entity_to_another_entity(
+            entity_type="leads",
+            entity_id=self.order.amocrm_lead.amocrm_id,
+            entity_to_link=amocrm_course_to_link,
+        )
+
     @property
     def pipeline_id(self) -> int:
         return get_pipeline_id(pipeline_name="b2c")
 
     @property
     def status_id(self) -> int:
-        return self._paid_status_id if self.is_paid else self._not_paid_status_id
-
-    @property
-    def _paid_status_id(self) -> int:
-        return get_b2c_pipeline_status_id(status_name="purchased")
-
-    @property
-    def _not_paid_status_id(self) -> int:
         return get_b2c_pipeline_status_id(status_name="first_contact")
+
+    @property
+    def products_catalog_id(self) -> int:
+        return get_catalog_id(catalog_type="products")
 
     def get_validators(self) -> list[Callable]:
         return [
             self.validate_lead_doesnt_exist,
             self.validate_transaction_doesnt_exist,
-            self.validate_order_with_course,
             self.validate_amocrm_course_exist,
             self.validate_amocrm_contact_exist,
         ]
@@ -75,10 +95,6 @@ class AmoCRMOrderLeadCreator(BaseService):
     def validate_transaction_doesnt_exist(self) -> None:
         if self.order.amocrm_transaction is not None:
             raise AmoCRMOrderLeadCreatorException("Transaction for this order already exists")
-
-    def validate_order_with_course(self) -> None:
-        if self.order.course is None:
-            raise AmoCRMOrderLeadCreatorException("Order doesn't have a course")
 
     def validate_amocrm_course_exist(self) -> None:
         if not hasattr(self.order.course, "amocrm_course"):
