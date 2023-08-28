@@ -35,11 +35,6 @@ def mock_push_order(mocker):
     return mocker.patch("amocrm.services.orders.order_pusher.AmoCRMOrderPusher.push_order")
 
 
-@pytest.fixture(autouse=True)
-def _amocrm_entities(amocrm_course, amocrm_user, amocrm_contact):
-    return
-
-
 @pytest.fixture
 def amocrm_lead(factory):
     return factory.amocrm_order_lead()
