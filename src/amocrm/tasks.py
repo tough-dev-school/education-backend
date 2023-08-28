@@ -15,7 +15,6 @@ from amocrm.services.contacts.contact_to_customer_linker import AmoCRMContactToC
 from amocrm.services.contacts.contact_updater import AmoCRMContactUpdater
 from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreator
 from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreatorException
-from amocrm.services.orders.order_lead_to_course_linker import AmoCRMOrderLeadToCourseLinker
 from amocrm.services.orders.order_lead_updater import AmoCRMOrderLeadUpdater
 from amocrm.services.orders.order_pusher import AmoCRMOrderPusher
 from amocrm.services.orders.order_transaction_creator import AmoCRMOrderTransactionCreator
@@ -23,6 +22,8 @@ from amocrm.services.orders.order_transaction_deleter import AmoCRMOrderTransact
 from amocrm.services.products.course_creator import AmoCRMCourseCreator
 from amocrm.services.products.course_updater import AmoCRMCourseUpdater
 from amocrm.services.products.product_groups_updater import AmoCRMProductGroupsUpdater
+from amocrm.types import AmoCRMEntityLink
+from amocrm.types import AmoCRMEntityLinkMetadata
 from app.celery import celery
 
 __all__ = [
@@ -108,7 +109,6 @@ def update_amocrm_lead(order_id: int) -> int:
 def create_amocrm_lead(order_id: int) -> None:
     chain(
         _create_lead.si(order_id=order_id),
-        _link_course_to_lead.si(order_id=order_id),
         update_amocrm_lead.si(order_id=order_id),  # update cause linking course sets lead to default status
     ).delay()
 
@@ -260,6 +260,20 @@ def _push_transaction(order_id: int) -> int | None:
     rate_limit="3/s",
     acks_late=True,
 )
-def _link_course_to_lead(order_id: int) -> None:
-    order = apps.get_model("orders.Order").objects.get(id=order_id)
-    return AmoCRMOrderLeadToCourseLinker(amocrm_lead=order.amocrm_lead)()
+def link_course_to_lead(course_amocrm_id: int, catalog_id: int, lead_amocrm_id: int, quantity: int) -> None:
+    client = AmoCRMClient()
+
+    amocrm_course_to_link = AmoCRMEntityLink(
+        to_entity_id=course_amocrm_id,
+        to_entity_type="catalog_elements",
+        metadata=AmoCRMEntityLinkMetadata(
+            quantity=quantity,
+            catalog_id=catalog_id,
+        ),
+    )
+
+    client.link_entity_to_another_entity(
+        entity_type="leads",
+        entity_id=lead_amocrm_id,
+        entity_to_link=amocrm_course_to_link,
+    )

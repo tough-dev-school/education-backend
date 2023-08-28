@@ -7,8 +7,6 @@ from amocrm.cache.lead_pipeline_id import get_pipeline_id
 from amocrm.client import AmoCRMClient
 from amocrm.exceptions import AmoCRMServiceException
 from amocrm.models import AmoCRMOrderLead
-from amocrm.types import AmoCRMEntityLink
-from amocrm.types import AmoCRMEntityLinkMetadata
 from app.services import BaseService
 from orders.models import Order
 
@@ -35,8 +33,15 @@ class AmoCRMOrderLeadCreator(BaseService):
         self.client = AmoCRMClient()
 
     def act(self) -> int:
+        from amocrm.tasks import link_course_to_lead
+
         lead_amocrm_id = self.create_lead()
-        self.link_course_to_lead()
+        link_course_to_lead.delay(
+            course_amocrm_id=self.order.course.amocrm_course.amocrm_id,
+            catalog_id=self.products_catalog_id,
+            lead_amocrm_id=lead_amocrm_id,
+            quantity=self.courses_in_order_quantity,
+        )
         return lead_amocrm_id
 
     def create_lead(self) -> int:
@@ -51,22 +56,6 @@ class AmoCRMOrderLeadCreator(BaseService):
         self.order.amocrm_lead = AmoCRMOrderLead.objects.create(amocrm_id=amocrm_id)
         self.order.save()
         return self.order.amocrm_lead.amocrm_id
-
-    def link_course_to_lead(self) -> None:
-        amocrm_course_to_link = AmoCRMEntityLink(
-            to_entity_id=self.order.course.amocrm_course.amocrm_id,
-            to_entity_type="catalog_elements",
-            metadata=AmoCRMEntityLinkMetadata(
-                quantity=self.courses_in_order_quantity,
-                catalog_id=self.products_catalog_id,
-            ),
-        )
-
-        self.client.link_entity_to_another_entity(
-            entity_type="leads",
-            entity_id=self.order.amocrm_lead.amocrm_id,
-            entity_to_link=amocrm_course_to_link,
-        )
 
     @property
     def pipeline_id(self) -> int:
