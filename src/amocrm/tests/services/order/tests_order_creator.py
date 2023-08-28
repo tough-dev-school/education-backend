@@ -1,7 +1,6 @@
 import pytest
 
 from amocrm.services.orders.order_creator import AmoCRMOrderCreator
-from amocrm.services.orders.order_creator import AmoCRMOrderCreatorException
 
 pytestmark = [
     pytest.mark.django_db,
@@ -35,18 +34,3 @@ def test_updates_correct_calls(order_creator, paid_order_with_lead, mock_update_
 
     mock_update_lead.assert_called_once()
     mock_create_transaction.assert_called_once()
-
-
-def test_fails_if_transaction_already_exist(order_creator, paid_order_with_lead, factory):
-    factory.amocrm_order_transaction(order=paid_order_with_lead)
-
-    with pytest.raises(AmoCRMOrderCreatorException, match="Transaction for this paid order already exists"):
-        order_creator(paid_order_with_lead)
-
-
-def test_fails_if_no_customer(order_creator, paid_order_with_lead):
-    paid_order_with_lead.user.amocrm_user.delete()
-    paid_order_with_lead.refresh_from_db()
-
-    with pytest.raises(AmoCRMOrderCreatorException, match="AmoCRM customer for order's user doesn't exist"):
-        order_creator(paid_order_with_lead)

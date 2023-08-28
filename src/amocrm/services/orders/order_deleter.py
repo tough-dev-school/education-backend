@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Callable
 
 from amocrm.cache.lead_b2c_pipeline_statuses_ids import get_b2c_pipeline_status_id
 from amocrm.cache.lead_pipeline_id import get_pipeline_id
@@ -52,12 +51,3 @@ class AmoCRMOrderDeleter(BaseService):
     @property
     def status_id(self) -> int:
         return get_b2c_pipeline_status_id(status_name="closed")
-
-    def get_validators(self) -> list[Callable]:
-        return [
-            self.validate_transaction_exist_if_paid,
-        ]
-
-    def validate_transaction_exist_if_paid(self) -> None:
-        if self.order.amocrm_transaction is None:
-            raise AmoCRMOrderDeleterException("Transaction for this unpaid order doesn't exists")

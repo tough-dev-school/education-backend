@@ -1,7 +1,6 @@
 import pytest
 
 from amocrm.services.orders.order_deleter import AmoCRMOrderDeleter
-from amocrm.services.orders.order_deleter import AmoCRMOrderDeleterException
 
 pytestmark = [
     pytest.mark.django_db,
@@ -41,11 +40,3 @@ def test_correct_calls(order_deleter, unpaid_order, mock_update_lead, mock_delet
 
     mock_update_lead.assert_called_once()
     mock_delete_transaction.assert_called_once()
-
-
-def test_fails_if_transaction_doesnt_exist(order_deleter, unpaid_order, factory):
-    unpaid_order.amocrm_transaction.delete()
-    unpaid_order.refresh_from_db()
-
-    with pytest.raises(AmoCRMOrderDeleterException, match="Transaction for this unpaid order doesn't exists"):
-        order_deleter(unpaid_order)

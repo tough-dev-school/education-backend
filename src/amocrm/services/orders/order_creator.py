@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Callable
 
 from amocrm.cache.catalog_id import get_catalog_id
 from amocrm.cache.lead_b2c_pipeline_statuses_ids import get_b2c_pipeline_status_id
@@ -78,17 +77,3 @@ class AmoCRMOrderCreator(BaseService):
     @property
     def product_catalog_id(self) -> int:
         return get_catalog_id(catalog_type="products")
-
-    def get_validators(self) -> list[Callable]:
-        return [
-            self.validate_transaction_doesnt_exist_if_paid,
-            self.validate_amocrm_customer_exist,
-        ]
-
-    def validate_transaction_doesnt_exist_if_paid(self) -> None:
-        if self.order.amocrm_transaction is not None:
-            raise AmoCRMOrderCreatorException("Transaction for this paid order already exists")
-
-    def validate_amocrm_customer_exist(self) -> None:
-        if not hasattr(self.order.user, "amocrm_user"):
-            raise AmoCRMOrderCreatorException("AmoCRM customer for order's user doesn't exist")
