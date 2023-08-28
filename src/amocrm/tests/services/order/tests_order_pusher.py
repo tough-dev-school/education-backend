@@ -157,14 +157,20 @@ def test_child_service_gets_order_with_linked_lead(not_paid_order_without_lead, 
     Поступил новый заказ, но есть аналогичный неоплаченный заказ с открытой сделкой -
     сделка привязывается к новому заказу, и обновляется в Амо, чтобы была указана актуальная стоимость и время создания
     """
-    mock_updater_init = mocker.patch("amocrm.services.orders.order_lead_updater.AmoCRMOrderLeadUpdater.__init__", return_value=None)
-    mock_update = mocker.patch("amocrm.services.orders.order_lead_updater.AmoCRMOrderLeadUpdater.__call__")
+    mock_status = mocker.patch("amocrm.services.orders.order_lead_updater.AmoCRMOrderLeadUpdater.status_id")
+    mock_pipeline = mocker.patch("amocrm.services.orders.order_lead_updater.AmoCRMOrderLeadUpdater.pipeline_id")
+    mock_update = mocker.patch("amocrm.client.AmoCRMClient.update_lead")
 
     AmoCRMOrderPusher(order=not_paid_order_without_lead)()
 
     assert not_paid_order_without_lead.amocrm_lead == amocrm_lead
-    mock_updater_init.assert_called_once_with(amocrm_lead=amocrm_lead)
-    mock_update.assert_called_once()
+    mock_update.assert_called_once_with(
+        lead_id=amocrm_lead.amocrm_id,
+        status_id=mock_status,
+        pipeline_id=mock_pipeline,
+        price=not_paid_order_without_lead.price,
+        created_at=not_paid_order_without_lead.created,
+    )
 
 
 def test_fail_create_paid_order_without_lead(paid_order_without_lead):
