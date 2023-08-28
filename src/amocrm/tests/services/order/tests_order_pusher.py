@@ -151,6 +151,22 @@ def test_not_push_if_there_is_already_paid_order(not_paid_order_without_lead, mo
     mock_push_order.assert_not_called()
 
 
+@pytest.mark.usefixtures("not_paid_order_with_lead")
+def test_child_service_gets_order_with_linked_lead(not_paid_order_without_lead, amocrm_lead, mocker):
+    """
+    Поступил новый заказ, но есть аналогичный неоплаченный заказ с открытой сделкой -
+    сделка привязывается к новому заказу, и обновляется в Амо, чтобы была указана актуальная стоимость и время создания
+    """
+    mock_updater_init = mocker.patch("amocrm.services.orders.order_lead_updater.AmoCRMOrderLeadUpdater.__init__", return_value=None)
+    mock_update = mocker.patch("amocrm.services.orders.order_lead_updater.AmoCRMOrderLeadUpdater.__call__")
+
+    AmoCRMOrderPusher(order=not_paid_order_without_lead)()
+
+    assert not_paid_order_without_lead.amocrm_lead == amocrm_lead
+    mock_updater_init.assert_called_once_with(amocrm_lead=amocrm_lead)
+    mock_update.assert_called_once()
+
+
 def test_fail_create_paid_order_without_lead(paid_order_without_lead):
     with pytest.raises(AmoCRMOrderPusherException, match="Cannot push paid or unpaid order without existing lead"):
         AmoCRMOrderPusher(order=paid_order_without_lead)()
