@@ -17,7 +17,6 @@ from amocrm.services.orders.order_creator import AmoCRMOrderCreator
 from amocrm.services.orders.order_deleter import AmoCRMOrderDeleter
 from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreator
 from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreatorException
-from amocrm.services.orders.order_lead_to_course_linker import AmoCRMOrderLeadToCourseLinker
 from amocrm.services.orders.order_lead_updater import AmoCRMOrderLeadUpdater
 from amocrm.services.orders.order_pusher import AmoCRMOrderPusher
 from amocrm.services.products.course_creator import AmoCRMCourseCreator
@@ -103,25 +102,23 @@ def delete_order_in_amocrm(order_id: int) -> None:
     rate_limit="3/s",
     acks_late=True,
 )
-def update_amocrm_lead(order_id: int) -> None:
+def create_amocrm_lead(order_id: int) -> int:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
-    AmoCRMOrderLeadUpdater(order=order)()
+    return AmoCRMOrderLeadCreator(order=order)()
 
 
 @celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
+    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException, AmoCRMOrderLeadCreatorException],
     retry_kwargs={
         "max_retries": 10,
         "countdown": 1,
     },
+    rate_limit="3/s",
     acks_late=True,
 )
-def create_amocrm_lead(order_id: int) -> None:
-    chain(
-        _create_lead.si(order_id=order_id),
-        _link_course_to_lead.si(order_id=order_id),
-        update_amocrm_lead.si(order_id=order_id),  # update cause linking course sets lead to default status
-    ).delay()
+def update_amocrm_lead(order_id: int) -> int:
+    order = apps.get_model("orders.Order").objects.get(id=order_id)
+    return AmoCRMOrderLeadUpdater(amocrm_lead=order.amocrm_lead)()
 
 
 @celery.task(
@@ -229,31 +226,3 @@ def _push_all_courses() -> None:
     courses = apps.get_model("products.Course").objects.all()
     for course in courses:
         push_course.delay(course_id=course.id)
-
-
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException, AmoCRMOrderLeadCreatorException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    rate_limit="3/s",
-    acks_late=True,
-)
-def _create_lead(order_id: int) -> int:
-    order = apps.get_model("orders.Order").objects.get(id=order_id)
-    return AmoCRMOrderLeadCreator(order=order)()
-
-
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    rate_limit="3/s",
-    acks_late=True,
-)
-def _link_course_to_lead(order_id: int) -> None:
-    order = apps.get_model("orders.Order").objects.get(id=order_id)
-    return AmoCRMOrderLeadToCourseLinker(amocrm_lead=order.amocrm_lead)()
