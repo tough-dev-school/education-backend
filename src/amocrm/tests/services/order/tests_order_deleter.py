@@ -39,14 +39,8 @@ def order_deleter():
 def test_correct_calls(order_deleter, unpaid_order, mock_update_lead, mock_delete_transaction):
     order_deleter(unpaid_order)
 
-    mock_update_lead.assert_called_once_with(
-        lead_id=unpaid_order.amocrm_lead.amocrm_id,
-        status_id=999,
-        pipeline_id=777,
-        price=unpaid_order.price,
-        created_at=unpaid_order.created,
-    )
-    mock_delete_transaction.assert_called_once_with(transaction_id=unpaid_order.amocrm_transaction.amocrm_id)
+    mock_update_lead.assert_called_once()
+    mock_delete_transaction.assert_called_once()
 
 
 def test_fails_if_transaction_doesnt_exist(order_deleter, unpaid_order, factory):

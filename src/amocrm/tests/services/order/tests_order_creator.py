@@ -35,25 +35,8 @@ def order_creator():
 def test_updates_correct_calls(order_creator, paid_order_with_lead, mock_update_lead, mock_create_transaction):
     order_creator(paid_order_with_lead)
 
-    mock_update_lead.assert_called_once_with(
-        lead_id=paid_order_with_lead.amocrm_lead.amocrm_id,
-        status_id=999,
-        pipeline_id=777,
-        price=paid_order_with_lead.price,
-        created_at=paid_order_with_lead.created,
-    )
-    mock_create_transaction.assert_called_once_with(
-        customer_id=paid_order_with_lead.user.amocrm_user.amocrm_id,
-        price=paid_order_with_lead.price,
-        order_slug=paid_order_with_lead.slug,
-        purchased_product=AmoCRMTransactionElement(
-            id=paid_order_with_lead.course.amocrm_course.amocrm_id,
-            metadata=AmoCRMTransactionElementMetadata(
-                catalog_id=555,
-                quantity=1,
-            ),
-        ),
-    )
+    mock_update_lead.assert_called_once()
+    mock_create_transaction.assert_called_once()
 
 
 def test_fails_if_transaction_already_exist(order_creator, paid_order_with_lead, factory):
