@@ -9,15 +9,14 @@ from amocrm.models import AmoCRMOrderLead
 from app.services import BaseService
 
 
-class AmoCRMOrderLeadUpdaterException(AmoCRMServiceException):
-    """Raises when it's impossible to update amocrm_lead"""
+class AmoCRMOrderCreatorException(AmoCRMServiceException):
+    """Raises when it's impossible to create order in AmoCRM"""
 
 
 @dataclass
-class AmoCRMOrderLeadUpdater(BaseService):
+class AmoCRMOrderCreator(BaseService):
     """
-    Updates amocrm_lead for given order
-    Move to purchased status and updates price
+    Updates amocrm_lead for given order and creates transaction
 
     Returns amocrm_id for amocrm_lead
     """
@@ -73,16 +72,16 @@ class AmoCRMOrderLeadUpdater(BaseService):
 
     def validate_transaction_doesnt_exist_if_paid(self) -> None:
         if self.order.amocrm_transaction is not None and self.is_paid:
-            raise AmoCRMOrderLeadUpdaterException("Transaction for this paid order already exists")
+            raise AmoCRMOrderCreatorException("Transaction for this paid order already exists")
 
     def validate_order_with_course(self) -> None:
         if self.order.course is None:
-            raise AmoCRMOrderLeadUpdaterException("Order doesn't have a course")
+            raise AmoCRMOrderCreatorException("Order doesn't have a course")
 
     def validate_amocrm_course_exist(self) -> None:
         if not hasattr(self.order.course, "amocrm_course"):
-            raise AmoCRMOrderLeadUpdaterException("Course doesn't exist in AmoCRM")
+            raise AmoCRMOrderCreatorException("Course doesn't exist in AmoCRM")
 
     def validate_amocrm_contact_exist(self) -> None:
         if not hasattr(self.order.user, "amocrm_user_contact"):
-            raise AmoCRMOrderLeadUpdaterException("AmoCRM contact for order's user doesn't exist")
+            raise AmoCRMOrderCreatorException("AmoCRM contact for order's user doesn't exist")

@@ -13,10 +13,10 @@ from amocrm.services.access_token_getter import AmoCRMTokenGetterException
 from amocrm.services.contacts.contact_creator import AmoCRMContactCreator
 from amocrm.services.contacts.contact_to_customer_linker import AmoCRMContactToCustomerLinker
 from amocrm.services.contacts.contact_updater import AmoCRMContactUpdater
+from amocrm.services.orders.order_creator import AmoCRMOrderCreator
 from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreator
 from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreatorException
 from amocrm.services.orders.order_lead_to_course_linker import AmoCRMOrderLeadToCourseLinker
-from amocrm.services.orders.order_lead_updater import AmoCRMOrderLeadUpdater
 from amocrm.services.orders.order_pusher import AmoCRMOrderPusher
 from amocrm.services.orders.order_transaction_creator import AmoCRMOrderTransactionCreator
 from amocrm.services.orders.order_transaction_deleter import AmoCRMOrderTransactionDeleter
@@ -94,7 +94,7 @@ def push_existing_order_to_amocrm(order_id: int) -> None:
 )
 def update_amocrm_lead(order_id: int) -> int:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
-    return AmoCRMOrderLeadUpdater(amocrm_lead=order.amocrm_lead)()
+    return AmoCRMOrderCreator(amocrm_lead=order.amocrm_lead)()
 
 
 @celery.task(
