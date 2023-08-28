@@ -69,6 +69,11 @@ class AmoCRMOrderLeadCreator(BaseService):
         )
 
     def update_lead(self) -> int:
+        """
+        После связывания Сделки и Товара, у сделки автоматически выставляется бюджет равный цене товара
+        У нас цена Заказа и Курса вполне может различаться при использовании промокода
+        Поэтому после связывания нужно отправить еще запрос и установить актуальную цену Заказа
+        """
         return self.client.update_lead(
             lead_id=self.order.amocrm_lead.amocrm_id,  # type: ignore
             status_id=self.status_id,
