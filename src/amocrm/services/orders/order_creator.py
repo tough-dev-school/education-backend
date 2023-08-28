@@ -1,13 +1,17 @@
 from dataclasses import dataclass
 from typing import Callable
 
+from amocrm.cache.catalog_id import get_catalog_id
 from amocrm.cache.lead_b2c_pipeline_statuses_ids import get_b2c_pipeline_status_id
 from amocrm.cache.lead_pipeline_id import get_pipeline_id
 from amocrm.client import AmoCRMClient
 from amocrm.exceptions import AmoCRMServiceException
-from amocrm.models import AmoCRMOrderLead
+from amocrm.models import AmoCRMOrderTransaction
+from amocrm.types import AmoCRMTransactionElementMetadata, AmoCRMTransactionElement
 from app.services import BaseService
+from orders.models import Order
 
+COURSES_IN_ORDER_QUANTITY: int = 1  # order can contain only 1 course
 
 class AmoCRMOrderCreatorException(AmoCRMServiceException):
     """Raises when it's impossible to create order in AmoCRM"""
@@ -16,27 +20,51 @@ class AmoCRMOrderCreatorException(AmoCRMServiceException):
 @dataclass
 class AmoCRMOrderCreator(BaseService):
     """
-    Updates amocrm_lead for given order and creates transaction
+    Updates amocrm_lead for given paid order and creates transaction
 
     Returns amocrm_id for amocrm_lead
     """
 
-    amocrm_lead: AmoCRMOrderLead
+    order: Order
 
     def __post_init__(self) -> None:
         self.client = AmoCRMClient()
-        self.order = self.amocrm_lead.order
-        self.is_paid = self.order.paid is not None
-        self.is_unpaid = self.order.unpaid is not None
 
     def act(self) -> int:
+        lead_amocrm_id = self.update_lead()
+        self.create_transaction()
+
+        return lead_amocrm_id
+
+    def update_lead(self) -> int:
         return self.client.update_lead(
-            lead_id=self.amocrm_lead.amocrm_id,
+            lead_id=self.order.amocrm_lead.amocrm_id,
             status_id=self.status_id,
             pipeline_id=self.pipeline_id,
             price=self.order.price,
             created_at=self.order.created,
         )
+
+    def create_transaction(self) -> None:
+
+        transaction_metadata = AmoCRMTransactionElementMetadata(
+            quantity=COURSES_IN_ORDER_QUANTITY,
+            catalog_id=self.product_catalog_id,
+        )
+        course_as_transaction_element = AmoCRMTransactionElement(
+            id=self.order.course.amocrm_course.amocrm_id,
+            metadata=transaction_metadata,
+        )
+
+        amocrm_id = self.client.create_customer_transaction(
+            customer_id=self.order.user.amocrm_user.amocrm_id,
+            price=self.order.price,
+            order_slug=self.order.slug,
+            purchased_product=course_as_transaction_element,
+        )
+
+        self.order.amocrm_transaction = AmoCRMOrderTransaction.objects.create(amocrm_id=amocrm_id)
+        self.order.save()
 
     @property
     def pipeline_id(self) -> int:
@@ -44,44 +72,22 @@ class AmoCRMOrderCreator(BaseService):
 
     @property
     def status_id(self) -> int:
-        if self.is_unpaid:
-            return self._unpaid_status_id
-        elif self.is_paid:
-            return self._paid_status_id
-        return self._not_paid_or_unpaid_status_id
-
-    @property
-    def _paid_status_id(self) -> int:
         return get_b2c_pipeline_status_id(status_name="purchased")
 
     @property
-    def _unpaid_status_id(self) -> int:
-        return get_b2c_pipeline_status_id(status_name="closed")
-
-    @property
-    def _not_paid_or_unpaid_status_id(self) -> int:
-        return get_b2c_pipeline_status_id(status_name="first_contact")
+    def product_catalog_id(self) -> int:
+        return get_catalog_id(catalog_type="products")
 
     def get_validators(self) -> list[Callable]:
         return [
             self.validate_transaction_doesnt_exist_if_paid,
-            self.validate_order_with_course,
-            self.validate_amocrm_course_exist,
-            self.validate_amocrm_contact_exist,
+            self.validate_amocrm_customer_exist,
         ]
 
     def validate_transaction_doesnt_exist_if_paid(self) -> None:
-        if self.order.amocrm_transaction is not None and self.is_paid:
+        if self.order.amocrm_transaction is not None:
             raise AmoCRMOrderCreatorException("Transaction for this paid order already exists")
 
-    def validate_order_with_course(self) -> None:
-        if self.order.course is None:
-            raise AmoCRMOrderCreatorException("Order doesn't have a course")
-
-    def validate_amocrm_course_exist(self) -> None:
-        if not hasattr(self.order.course, "amocrm_course"):
-            raise AmoCRMOrderCreatorException("Course doesn't exist in AmoCRM")
-
-    def validate_amocrm_contact_exist(self) -> None:
-        if not hasattr(self.order.user, "amocrm_user_contact"):
-            raise AmoCRMOrderCreatorException("AmoCRM contact for order's user doesn't exist")
+    def validate_amocrm_customer_exist(self) -> None:
+        if not hasattr(self.order.user, "amocrm_user"):
+            raise AmoCRMOrderCreatorException("AmoCRM customer for order's user doesn't exist")

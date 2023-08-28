@@ -14,15 +14,16 @@ from amocrm.services.contacts.contact_creator import AmoCRMContactCreator
 from amocrm.services.contacts.contact_to_customer_linker import AmoCRMContactToCustomerLinker
 from amocrm.services.contacts.contact_updater import AmoCRMContactUpdater
 from amocrm.services.orders.order_creator import AmoCRMOrderCreator
+from amocrm.services.orders.order_deleter import AmoCRMOrderDeleter
 from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreator
 from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreatorException
 from amocrm.services.orders.order_lead_to_course_linker import AmoCRMOrderLeadToCourseLinker
 from amocrm.services.orders.order_pusher import AmoCRMOrderPusher
-from amocrm.services.orders.order_transaction_creator import AmoCRMOrderTransactionCreator
-from amocrm.services.orders.order_transaction_deleter import AmoCRMOrderTransactionDeleter
 from amocrm.services.products.course_creator import AmoCRMCourseCreator
 from amocrm.services.products.course_updater import AmoCRMCourseUpdater
 from amocrm.services.products.product_groups_updater import AmoCRMProductGroupsUpdater
+from amocrm.types import AmoCRMTransactionElement
+from amocrm.types import AmoCRMTransactionElementMetadata
 from app.celery import celery
 
 __all__ = [
@@ -243,12 +244,30 @@ def _create_lead(order_id: int) -> int:
     rate_limit="3/s",
     acks_late=True,
 )
-def _push_transaction(order_id: int) -> int | None:
+def create_transaction(order_id: int, catalog_id: int, quantity: int) -> int | None:
+    client = AmoCRMClient()
+    AmoCRMOrderTransaction = apps.get_model("amocrm.AmoCRMOrderTransaction")
     order = apps.get_model("orders.Order").objects.get(id=order_id)
-    if order.unpaid is not None:
-        return AmoCRMOrderTransactionDeleter(order=order)()
-    if order.paid is not None and order.amocrm_transaction is None:
-        return AmoCRMOrderTransactionCreator(order=order)()
+
+    transaction_metadata = AmoCRMTransactionElementMetadata(
+        quantity=quantity,
+        catalog_id=catalog_id,
+    )
+    course_as_transaction_element = AmoCRMTransactionElement(
+        id=order.course.amocrm_course.amocrm_id,
+        metadata=transaction_metadata,
+    )
+
+    amocrm_id = client.create_customer_transaction(
+        customer_id=order.user.amocrm_user.amocrm_id,
+        price=order.price,
+        order_slug=order.slug,
+        purchased_product=course_as_transaction_element,
+    )
+
+    order.amocrm_transaction = AmoCRMOrderTransaction.objects.create(amocrm_id=amocrm_id)
+    order.save()
+    return order.amocrm_transaction.amocrm_id
 
 
 @celery.task(

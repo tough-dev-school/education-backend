@@ -46,11 +46,6 @@ def paid_order_without_lead(user, course, factory):
 
 
 @pytest.fixture
-def paid_order_with_lead(user, course, factory, amocrm_lead):
-    return factory.order(user=user, course=course, is_paid=True, author=user, amocrm_lead=amocrm_lead)
-
-
-@pytest.fixture
 def not_paid_order_without_lead(factory, user, course):
     return factory.order(user=user, course=course, is_paid=False, author=user)
 
