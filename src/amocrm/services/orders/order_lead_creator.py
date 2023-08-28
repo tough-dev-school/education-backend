@@ -37,7 +37,7 @@ class AmoCRMOrderLeadCreator(BaseService):
     def act(self) -> int:
         self.create_lead()
         self.link_course_to_lead()
-        return self.update_lead_price()
+        return self.update_lead()
 
     def create_lead(self) -> int:
         amocrm_id = self.client.create_lead(
@@ -68,7 +68,7 @@ class AmoCRMOrderLeadCreator(BaseService):
             entity_to_link=amocrm_course_to_link,
         )
 
-    def update_lead_price(self) -> int:
+    def update_lead(self) -> int:
         return self.client.update_lead(
             lead_id=self.order.amocrm_lead.amocrm_id,  # type: ignore
             status_id=self.status_id,
