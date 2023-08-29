@@ -9,16 +9,13 @@ from django.conf import settings
 
 from amocrm.client import AmoCRMClient
 from amocrm.client.http import AmoCRMClientException
-from amocrm.models import AmoCRMUser
 from amocrm.services.access_token_getter import AmoCRMTokenGetterException
-from amocrm.services.contacts.contact_creator import AmoCRMContactCreator
-from amocrm.services.contacts.contact_to_customer_linker import AmoCRMContactToCustomerLinker
-from amocrm.services.contacts.contact_updater import AmoCRMContactUpdater
 from amocrm.services.orders.order_pusher import AmoCRMOrderPusher
 from amocrm.services.orders.order_returner import AmoCRMOrderReturner
 from amocrm.services.products.course_creator import AmoCRMCourseCreator
 from amocrm.services.products.course_updater import AmoCRMCourseUpdater
 from amocrm.services.products.product_groups_updater import AmoCRMProductGroupsUpdater
+from amocrm.services.user_pusher import AmoCRMUserPusher
 from app.celery import celery
 
 __all__ = [
@@ -49,16 +46,8 @@ def amocrm_enabled() -> bool:
 @celery.task(base=AmoTask)
 def push_user(user_id: int) -> None:
     time.sleep(1)  # avoid race condition when user is not saved yet
-
     user = apps.get_model("users.User").objects.get(id=user_id)
-    Order = apps.get_model("orders.Order")
-
-    if Order.objects.filter(user=user).count() > 0:
-        chain(
-            _push_customer.si(user_id=user_id),
-            _push_contact.si(user_id=user_id),
-            _link_contact_to_user.si(user_id=user_id),
-        ).delay()
+    AmoCRMUserPusher(user=user)()
 
 
 @celery.task(base=AmoTask)
@@ -97,33 +86,6 @@ def push_all_products_and_product_groups() -> None:
 def enable_customers() -> None:
     client = AmoCRMClient()
     client.enable_customers()
-
-
-@celery.task(base=AmoTask)
-def _push_customer(user_id: int) -> int:
-    client = AmoCRMClient()
-    user = apps.get_model("users.User").objects.get(id=user_id)
-    if hasattr(user, "amocrm_user"):
-        return client.update_customer(amocrm_user=user.amocrm_user)
-    else:
-        amocrm_id = client.create_customer(user=user)
-        amocrm_user = AmoCRMUser.objects.create(user=user, amocrm_id=amocrm_id)
-        return amocrm_user.amocrm_id
-
-
-@celery.task(base=AmoTask)
-def _push_contact(user_id: int) -> int:
-    user = apps.get_model("users.User").objects.get(id=user_id)
-    if hasattr(user, "amocrm_user_contact"):
-        return AmoCRMContactUpdater(amocrm_user_contact=user.amocrm_user_contact)()
-    else:
-        return AmoCRMContactCreator(user=user)()
-
-
-@celery.task(base=AmoTask)
-def _link_contact_to_user(user_id: int) -> None:
-    user = apps.get_model("users.User").objects.get(id=user_id)
-    AmoCRMContactToCustomerLinker(user=user)()
 
 
 @celery.task(base=AmoTask)
