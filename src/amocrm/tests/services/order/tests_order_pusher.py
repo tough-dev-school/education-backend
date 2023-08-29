@@ -72,13 +72,6 @@ def test_create_if_no_lead_not_paid(not_paid_order_without_lead, mock_create_amo
     mock_create_amocrm_lead.assert_called_once_with(order=not_paid_order_without_lead)
 
 
-def test_update_if_with_lead_not_paid(not_paid_order_with_lead, mock_update_amocrm_lead):
-    """Сделка уже есть в АмоБ обновился заказ в лмс - обновляем сделку в Амо"""
-    AmoCRMOrderPusher(order=not_paid_order_with_lead)()
-
-    mock_update_amocrm_lead.assert_called_once_with(order=not_paid_order_with_lead)
-
-
 def test_update_if_with_lead_paid(paid_order_with_lead, mock_create_order_in_amocrm):
     """Поступила оплата заказа - пушим весь заказ (обновляем Сделку и создаем Покупку)"""
     AmoCRMOrderPusher(order=paid_order_with_lead)()
