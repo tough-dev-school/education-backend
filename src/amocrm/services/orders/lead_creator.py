@@ -55,7 +55,6 @@ class AmoCRMLeadCreator(BaseService):
             to_entity_id=self.order.course.amocrm_course.amocrm_id,
             to_entity_type="catalog_elements",
             metadata=AmoCRMEntityLinkMetadata(
-                quantity=1,  # order can contain only 1 course
                 catalog_id=get_catalog_id(catalog_type="products"),
             ),
         )

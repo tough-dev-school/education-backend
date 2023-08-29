@@ -41,7 +41,6 @@ class AmoCRMOrderCreator(BaseService):
 
     def create_transaction(self) -> None:
         transaction_metadata = AmoCRMTransactionElementMetadata(
-            quantity=1,  # order can contain only 1 course
             catalog_id=get_catalog_id(catalog_type="products"),
         )
         course_as_transaction_element = AmoCRMTransactionElement(

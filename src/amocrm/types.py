@@ -113,9 +113,9 @@ class AmoCRMCatalogElement:
 @dataclass(frozen=True)
 class AmoCRMEntityLinkMetadata:
     main_contact: bool | None = None
-    quantity: int | float | None = None
     catalog_id: int | None = None
     price_id: int | None = None
+    quantity: int = 1
 
     def to_json(self) -> dict:
         return {key: value for key, value in asdict(self).items() if value is not None}
@@ -143,8 +143,8 @@ class AmoCRMEntityLink:
 
 @dataclass(frozen=True)
 class AmoCRMTransactionElementMetadata:
-    quantity: int | None = None
     catalog_id: int | None = None
+    quantity: int = 1
 
     def to_json(self) -> dict:
         return {key: value for key, value in asdict(self).items() if value is not None}
