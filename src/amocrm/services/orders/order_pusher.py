@@ -2,6 +2,9 @@ from dataclasses import dataclass
 
 from amocrm.exceptions import AmoCRMServiceException
 from amocrm.models import AmoCRMOrderLead
+from amocrm.services.orders.lead_creator import AmoCRMLeadCreator
+from amocrm.services.orders.lead_updater import AmoCRMLeadUpdater
+from amocrm.services.orders.order_creator import AmoCRMOrderCreator
 from app.services import BaseService
 from orders.models import Order
 
@@ -22,35 +25,33 @@ class AmoCRMOrderPusher(BaseService):
         if not self.order_must_be_pushed():
             return
 
-        if self.order.paid is not None or self.order.unpaid is not None:
+        if self.order.paid is not None:
             self.push_order()
         else:
             self.push_lead()
 
     def push_order(self) -> None:
-        from amocrm.tasks import push_existing_order_to_amocrm
-
         existing_lead = self.get_lead()
         if existing_lead is None:
-            raise AmoCRMOrderPusherException("Cannot push paid or unpaid order without existing lead")
+            raise AmoCRMOrderPusherException("Cannot push paid order without existing lead")
         if existing_lead.order != self.order:
-            self.link_existing_lead_to_current_order(existing_lead=existing_lead)
-
-        push_existing_order_to_amocrm.apply_async(kwargs=dict(order_id=self.order.id), countdown=1)
+            self.relink_lead(order=self.order, lead=existing_lead)
+        AmoCRMOrderCreator(order=self.order)()
 
     def push_lead(self) -> None:
-        from amocrm.tasks import create_amocrm_lead
-        from amocrm.tasks import update_amocrm_lead
-
         existing_lead = self.get_lead()
         if existing_lead is None:
-            create_amocrm_lead.apply_async(kwargs=dict(order_id=self.order.id), countdown=1)
+            AmoCRMLeadCreator(order=self.order)()
         else:
             if existing_lead.order != self.order:
-                self.link_existing_lead_to_current_order(existing_lead=existing_lead)
-            update_amocrm_lead.apply_async(kwargs=dict(order_id=self.order.id), countdown=1)
+                self.relink_lead(order=self.order, lead=existing_lead)
+                AmoCRMLeadUpdater(order=self.order)()
 
     def get_lead(self) -> AmoCRMOrderLead | None:
+        """
+        Search for existing leads in AmoCRM with same user and course as in given order
+        to guarantee that there will be only one AmoCRM Lead for one deal
+        """
         if self.order.amocrm_lead is not None:
             return self.order.amocrm_lead
 
@@ -58,12 +59,12 @@ class AmoCRMOrderPusher(BaseService):
         if order_with_lead is not None:
             return order_with_lead.amocrm_lead
 
-    def link_existing_lead_to_current_order(self, existing_lead: AmoCRMOrderLead) -> None:
-        old_order = existing_lead.order
+    def relink_lead(self, order: Order, lead: AmoCRMOrderLead) -> None:
+        old_order = lead.order
         old_order.amocrm_lead = None
         old_order.save()
-        self.order.amocrm_lead = existing_lead
-        self.order.save()
+        order.amocrm_lead = lead
+        order.save()
 
     def order_must_be_pushed(self) -> bool:
         if self.order.is_b2b:

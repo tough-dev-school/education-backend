@@ -31,7 +31,7 @@ def mock_chain(mocker):
 def test_call_with_orders(user, mock_push_contact, mock_link_contact_to_user, mock_push_customer, mock_chain, orders_count, factory):
     factory.cycle(orders_count).order(user=user)
 
-    tasks.push_user_to_amocrm(user_id=user.id)
+    tasks.push_user(user_id=user.id)
 
     mock_chain.assert_called_once_with(
         mock_push_customer(user_id=99),
@@ -41,7 +41,7 @@ def test_call_with_orders(user, mock_push_contact, mock_link_contact_to_user, mo
 
 
 def test_doesnt_call_without_orders(user, mock_push_contact, mock_link_contact_to_user, mock_push_customer, mock_chain):
-    tasks.push_user_to_amocrm(user_id=user.id)
+    tasks.push_user(user_id=user.id)
 
     mock_chain.assert_not_called()
     mock_push_customer.assert_not_called()

@@ -1,5 +1,6 @@
 from typing import Literal
 
+from django.conf import settings
 from django.core.cache import cache
 
 from amocrm.client import AmoCRMClient
@@ -18,7 +19,7 @@ STATUSES_TO_CACHE = {
     "purchased": "amocrm_b2c_purchased_status_id",
     "closed": "amocrm_b2c_closed_status_id",
 }
-B2C_PIPELINE = "b2c"
+B2C_PIPELINE = settings.AMOCRM_B2C_PIPELINE_NAME
 
 
 def get_pipeline_status_id_amocrm(status_name: STATUSES_NAMES) -> int:

@@ -14,11 +14,8 @@ from amocrm.services.access_token_getter import AmoCRMTokenGetterException
 from amocrm.services.contacts.contact_creator import AmoCRMContactCreator
 from amocrm.services.contacts.contact_to_customer_linker import AmoCRMContactToCustomerLinker
 from amocrm.services.contacts.contact_updater import AmoCRMContactUpdater
-from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreator
-from amocrm.services.orders.order_lead_updater import AmoCRMOrderLeadUpdater
 from amocrm.services.orders.order_pusher import AmoCRMOrderPusher
-from amocrm.services.orders.order_transaction_creator import AmoCRMOrderTransactionCreator
-from amocrm.services.orders.order_transaction_deleter import AmoCRMOrderTransactionDeleter
+from amocrm.services.orders.order_returner import AmoCRMOrderReturner
 from amocrm.services.products.course_creator import AmoCRMCourseCreator
 from amocrm.services.products.course_updater import AmoCRMCourseUpdater
 from amocrm.services.products.product_groups_updater import AmoCRMProductGroupsUpdater
@@ -26,8 +23,9 @@ from app.celery import celery
 
 __all__ = [
     "amocrm_enabled",
-    "push_user_to_amocrm",
-    "push_order_to_amocrm",
+    "push_user",
+    "push_order",
+    "return_order",
     "push_product_groups",
     "push_course",
     "push_all_products_and_product_groups",
@@ -49,7 +47,7 @@ def amocrm_enabled() -> bool:
 
 
 @celery.task(base=AmoTask)
-def push_user_to_amocrm(user_id: int) -> None:
+def push_user(user_id: int) -> None:
     time.sleep(1)  # avoid race condition when user is not saved yet
 
     user = apps.get_model("users.User").objects.get(id=user_id)
@@ -64,30 +62,16 @@ def push_user_to_amocrm(user_id: int) -> None:
 
 
 @celery.task(base=AmoTask)
-def push_order_to_amocrm(order_id: int) -> None:
-    time.sleep(1)  # avoid race condition when order is not saved yet
+def push_order(order_id: int) -> None:
+    time.sleep(3)  # avoid race condition when order is not saved yet
     order = apps.get_model("orders.Order").objects.get(id=order_id)
     AmoCRMOrderPusher(order=order)()
 
 
 @celery.task(base=AmoTask)
-def push_existing_order_to_amocrm(order_id: int) -> None:
-    chain(
-        update_amocrm_lead.si(order_id=order_id),
-        _push_transaction.si(order_id=order_id),
-    ).delay()
-
-
-@celery.task(base=AmoTask)
-def create_amocrm_lead(order_id: int) -> int:
+def return_order(order_id: int) -> None:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
-    return AmoCRMOrderLeadCreator(order=order)()
-
-
-@celery.task(base=AmoTask)
-def update_amocrm_lead(order_id: int) -> int:
-    order = apps.get_model("orders.Order").objects.get(id=order_id)
-    return AmoCRMOrderLeadUpdater(amocrm_lead=order.amocrm_lead)()
+    AmoCRMOrderReturner(order=order)()
 
 
 @celery.task(base=AmoTask)
@@ -147,12 +131,3 @@ def _push_all_courses() -> None:
     courses = apps.get_model("products.Course").objects.all()
     for course in courses:
         push_course.delay(course_id=course.id)
-
-
-@celery.task(base=AmoTask)
-def _push_transaction(order_id: int) -> int | None:
-    order = apps.get_model("orders.Order").objects.get(id=order_id)
-    if order.unpaid is not None:
-        return AmoCRMOrderTransactionDeleter(order=order)()
-    if order.paid is not None and order.amocrm_transaction is None:
-        return AmoCRMOrderTransactionCreator(order=order)()

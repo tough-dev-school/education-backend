@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from rest_framework import serializers
 
 from amocrm.tasks import amocrm_enabled
-from amocrm.tasks import push_user_to_amocrm
+from amocrm.tasks import push_user
 from app.services import BaseService
 from diplomas.tasks import regenerate_diplomas
 from users.models import User
@@ -60,4 +60,4 @@ class UserUpdater(BaseService):
         regenerate_diplomas.delay(student_id=self.user.id)
 
     def update_in_amocrm(self) -> None:
-        push_user_to_amocrm.delay(user_id=self.user.id)
+        push_user.delay(user_id=self.user.id)
