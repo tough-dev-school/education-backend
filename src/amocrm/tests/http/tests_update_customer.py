@@ -29,11 +29,6 @@ def _successful_response(patch):
     }
 
 
-@pytest.fixture
-def amocrm_user(user, factory):
-    return factory.amocrm_user(amocrm_id=1369385)
-
-
 @pytest.mark.usefixtures("_successful_response")
 def test_update_customer_request_fields(amocrm_user, amocrm_client, patch):
     amocrm_user.user.first_name = "First"
