@@ -1,6 +1,5 @@
 import time
 
-from celery import chain
 from celery import Task
 from httpx import TransportError
 
