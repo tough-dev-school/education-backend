@@ -34,7 +34,7 @@ __all__ = [
 ]
 
 
-class BaseAmoTask(Task):
+class AmoTask(Task):
     autoretry_for = [TransportError, AmoCRMTokenGetterException, AmoCRMClientException]
     retry_kwargs = {
         "max_retries": 10,
