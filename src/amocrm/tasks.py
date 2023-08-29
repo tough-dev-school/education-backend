@@ -57,7 +57,14 @@ def push_user_to_amocrm(user_id: int) -> None:
         ).delay()
 
 
-@celery.task(acks_late=True)
+@celery.task(
+    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
+    retry_kwargs={
+        "max_retries": 10,
+        "countdown": 1,
+    },
+    acks_late=True,
+)
 def push_order_to_amocrm(order_id: int) -> None:
     time.sleep(1)  # avoid race condition when order is not saved yet
     order = apps.get_model("orders.Order").objects.get(id=order_id)
