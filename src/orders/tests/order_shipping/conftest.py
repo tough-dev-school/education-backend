@@ -19,8 +19,8 @@ def mock_push_order(mocker):
 
 
 @pytest.fixture
-def mock_delete_order_amocrm(mocker):
-    return mocker.patch("amocrm.tasks.delete_order_in_amocrm.si")
+def mock_return_order_in_amocrm(mocker):
+    return mocker.patch("amocrm.tasks.return_order_in_amocrm.si")
 
 
 @pytest.fixture(autouse=True)

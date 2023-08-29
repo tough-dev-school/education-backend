@@ -7,6 +7,12 @@ pytestmark = [
 ]
 
 
+@pytest.fixture(autouse=True)
+def _mock_fields_id(mocker):
+    mocker.patch("amocrm.services.orders.order_returner.get_b2c_pipeline_id", return_value=777)
+    mocker.patch("amocrm.services.orders.order_returner.get_b2c_pipeline_status_id", return_value=999)
+
+
 @pytest.fixture
 def mock_update_lead(mocker):
     return mocker.patch("amocrm.client.AmoCRMClient.update_lead", return_value=481516)

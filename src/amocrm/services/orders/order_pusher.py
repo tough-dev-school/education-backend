@@ -2,6 +2,9 @@ from dataclasses import dataclass
 
 from amocrm.exceptions import AmoCRMServiceException
 from amocrm.models import AmoCRMOrderLead
+from amocrm.services.orders.lead_creator import AmoCRMLeadCreator
+from amocrm.services.orders.lead_updater import AmoCRMLeadUpdater
+from amocrm.services.orders.order_creator import AmoCRMOrderCreator
 from app.services import BaseService
 from orders.models import Order
 
@@ -28,27 +31,21 @@ class AmoCRMOrderPusher(BaseService):
             self.push_lead()
 
     def push_order(self) -> None:
-        from amocrm.tasks import create_order_in_amocrm
-
         existing_lead = self.get_lead()
         if existing_lead is None:
             raise AmoCRMOrderPusherException("Cannot push paid order without existing lead")
         if existing_lead.order != self.order:
             self.link_existing_lead_to_current_order(existing_lead=existing_lead)
-
-        create_order_in_amocrm.apply_async(kwargs=dict(order_id=self.order.id), countdown=1)
+        AmoCRMOrderCreator(order=self.order)()
 
     def push_lead(self) -> None:
-        from amocrm.tasks import create_amocrm_lead
-        from amocrm.tasks import update_amocrm_lead
-
         existing_lead = self.get_lead()
         if existing_lead is None:
-            create_amocrm_lead.apply_async(kwargs=dict(order_id=self.order.id), countdown=1)
+            AmoCRMLeadCreator(order=self.order)()
         else:
             if existing_lead.order != self.order:
                 self.link_existing_lead_to_current_order(existing_lead=existing_lead)
-            update_amocrm_lead.apply_async(kwargs=dict(order_id=self.order.id), countdown=1)
+            AmoCRMLeadUpdater(order=self.order)()
 
     def get_lead(self) -> AmoCRMOrderLead | None:
         if self.order.amocrm_lead is not None:

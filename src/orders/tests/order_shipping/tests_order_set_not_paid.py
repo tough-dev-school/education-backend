@@ -31,7 +31,7 @@ def test_update_user_tags(order, rebuild_tags):
 
 
 def test_call_update_user_celery_chain_with_subscription(
-    order, mock_update_user_chain, mock_rebuild_tags, mock_push_customer, mock_delete_order_amocrm, settings
+    order, mock_update_user_chain, mock_rebuild_tags, mock_push_customer, mock_return_order_in_amocrm, settings
 ):
     settings.AMOCRM_BASE_URL = "https://amo.amo.amo"
 
@@ -40,7 +40,7 @@ def test_call_update_user_celery_chain_with_subscription(
     mock_update_user_chain.assert_called_once_with(
         mock_rebuild_tags(student_id=order.user.id, subscribe=True),
         mock_push_customer(user_id=order.user.id),
-        mock_delete_order_amocrm(order_id=order.id),
+        mock_return_order_in_amocrm(order_id=order.id),
     )
 
 

@@ -1,16 +1,5 @@
 import pytest
 
-from django.core.cache import cache
-
-
-@pytest.fixture(autouse=True)
-def _mock_cache_fields_id():
-    cache.set("amocrm_products_catalog_id", 555)
-    cache.set("amocrm_b2c_pipeline_id", 777)
-    cache.set("amocrm_b2c_first_contact_status_id", 888)
-    cache.set("amocrm_b2c_purchased_status_id", 999)
-    cache.set("amocrm_b2c_closed_status_id", 1000)
-
 
 @pytest.fixture
 def order(factory, amocrm_course, amocrm_user):
