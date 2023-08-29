@@ -69,14 +69,6 @@ def push_order_to_amocrm(order_id: int) -> None:
 
 
 @celery.task(base=AmoTask)
-def push_existing_order_to_amocrm(order_id: int) -> None:
-    chain(
-        update_amocrm_lead.si(order_id=order_id),
-        _push_transaction.si(order_id=order_id),
-    ).delay()
-
-
-@celery.task(base=AmoTask)
 def return_order_in_amocrm(order_id: int) -> None:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
     AmoCRMOrderReturner(order=order)()
