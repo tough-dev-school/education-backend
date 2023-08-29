@@ -35,12 +35,12 @@ class AmoCRMLeadCreator(BaseService):
     def act(self) -> int:
         self.create_lead()
         self.link_course_to_lead()
-        return self.update_lead()
+        return self.update_lead_price()
 
     def create_lead(self) -> int:
         amocrm_id = self.client.create_lead(
-            status_id=self.status_id,
-            pipeline_id=self.pipeline_id,
+            status_id=get_b2c_pipeline_status_id(status_name="first_contact"),
+            pipeline_id=get_b2c_pipeline_id(),
             contact_id=self.order.user.amocrm_user_contact.amocrm_id,
             price=self.order.price,
             created_at=self.order.created,
@@ -56,7 +56,7 @@ class AmoCRMLeadCreator(BaseService):
             to_entity_type="catalog_elements",
             metadata=AmoCRMEntityLinkMetadata(
                 quantity=1,  # order can contain only 1 course
-                catalog_id=self.products_catalog_id,
+                catalog_id=get_catalog_id(catalog_type="products"),
             ),
         )
 
@@ -66,7 +66,7 @@ class AmoCRMLeadCreator(BaseService):
             entity_to_link=amocrm_course_to_link,
         )
 
-    def update_lead(self) -> int:
+    def update_lead_price(self) -> int:
         """
         После связывания Сделки и Товара, у сделки автоматически выставляется бюджет равный цене товара
         У нас цена Заказа и Курса вполне может различаться при использовании промокода
@@ -74,23 +74,11 @@ class AmoCRMLeadCreator(BaseService):
         """
         return self.client.update_lead(
             lead_id=self.order.amocrm_lead.amocrm_id,  # type: ignore
-            status_id=self.status_id,
-            pipeline_id=self.pipeline_id,
+            status_id=get_b2c_pipeline_status_id(status_name="first_contact"),
+            pipeline_id=get_b2c_pipeline_id(),
             price=self.order.price,
             created_at=self.order.created,
         )
-
-    @property
-    def pipeline_id(self) -> int:
-        return get_b2c_pipeline_id()
-
-    @property
-    def status_id(self) -> int:
-        return get_b2c_pipeline_status_id(status_name="first_contact")
-
-    @property
-    def products_catalog_id(self) -> int:
-        return get_catalog_id(catalog_type="products")
 
     def get_validators(self) -> list[Callable]:
         return [

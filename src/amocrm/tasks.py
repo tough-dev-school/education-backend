@@ -17,8 +17,8 @@ from amocrm.services.orders.lead_creator import AmoCRMLeadCreator
 from amocrm.services.orders.lead_creator import AmoCRMLeadCreatorException
 from amocrm.services.orders.lead_updater import AmoCRMLeadUpdater
 from amocrm.services.orders.order_creator import AmoCRMOrderCreator
-from amocrm.services.orders.order_deleter import AmoCRMOrderDeleter
 from amocrm.services.orders.order_pusher import AmoCRMOrderPusher
+from amocrm.services.orders.order_returner import AmoCRMOrderReturner
 from amocrm.services.products.course_creator import AmoCRMCourseCreator
 from amocrm.services.products.course_updater import AmoCRMCourseUpdater
 from amocrm.services.products.product_groups_updater import AmoCRMProductGroupsUpdater
@@ -91,7 +91,7 @@ def create_order_in_amocrm(order_id: int) -> None:
 )
 def delete_order_in_amocrm(order_id: int) -> None:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
-    AmoCRMOrderDeleter(order=order)()
+    AmoCRMOrderReturner(order=order)()
 
 
 @celery.task(

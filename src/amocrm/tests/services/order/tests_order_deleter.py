@@ -1,6 +1,6 @@
 import pytest
 
-from amocrm.services.orders.order_deleter import AmoCRMOrderDeleter
+from amocrm.services.orders.order_returner import AmoCRMOrderReturner
 
 pytestmark = [
     pytest.mark.django_db,
@@ -32,7 +32,7 @@ def unpaid_order(factory, paid_order_with_lead):
 
 @pytest.fixture
 def order_deleter():
-    return lambda order: AmoCRMOrderDeleter(order=order)()
+    return lambda order: AmoCRMOrderReturner(order=order)()
 
 
 def test_correct_calls(order_deleter, unpaid_order, mock_update_lead, mock_delete_transaction):

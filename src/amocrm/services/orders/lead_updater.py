@@ -23,16 +23,8 @@ class AmoCRMLeadUpdater(BaseService):
     def act(self) -> int:
         return self.client.update_lead(
             lead_id=self.order.amocrm_lead.amocrm_id,  # type: ignore
-            status_id=self.status_id,
-            pipeline_id=self.pipeline_id,
+            status_id=get_b2c_pipeline_status_id(status_name="first_contact"),
+            pipeline_id=get_b2c_pipeline_id(),
             price=self.order.price,
             created_at=self.order.created,
         )
-
-    @property
-    def pipeline_id(self) -> int:
-        return get_b2c_pipeline_id()
-
-    @property
-    def status_id(self) -> int:
-        return get_b2c_pipeline_status_id(status_name="first_contact")

@@ -25,16 +25,16 @@ class AmoCRMOrderCreator(BaseService):
         self.client = AmoCRMClient()
 
     def act(self) -> int:
-        lead_amocrm_id = self.update_lead()
+        lead_amocrm_id = self.update_lead_status()
         self.create_transaction()
 
         return lead_amocrm_id
 
-    def update_lead(self) -> int:
+    def update_lead_status(self) -> int:
         return self.client.update_lead(
             lead_id=self.order.amocrm_lead.amocrm_id,  # type: ignore
-            status_id=self.status_id,
-            pipeline_id=self.pipeline_id,
+            status_id=get_b2c_pipeline_status_id(status_name="purchased"),
+            pipeline_id=get_b2c_pipeline_id(),
             price=self.order.price,
             created_at=self.order.created,
         )
@@ -42,7 +42,7 @@ class AmoCRMOrderCreator(BaseService):
     def create_transaction(self) -> None:
         transaction_metadata = AmoCRMTransactionElementMetadata(
             quantity=1,  # order can contain only 1 course
-            catalog_id=self.product_catalog_id,
+            catalog_id=get_catalog_id(catalog_type="products"),
         )
         course_as_transaction_element = AmoCRMTransactionElement(
             id=self.order.course.amocrm_course.amocrm_id,
@@ -58,15 +58,3 @@ class AmoCRMOrderCreator(BaseService):
 
         self.order.amocrm_transaction = AmoCRMOrderTransaction.objects.create(amocrm_id=amocrm_id)
         self.order.save()
-
-    @property
-    def pipeline_id(self) -> int:
-        return get_b2c_pipeline_id()
-
-    @property
-    def status_id(self) -> int:
-        return get_b2c_pipeline_status_id(status_name="purchased")
-
-    @property
-    def product_catalog_id(self) -> int:
-        return get_catalog_id(catalog_type="products")
