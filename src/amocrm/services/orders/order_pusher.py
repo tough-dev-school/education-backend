@@ -48,6 +48,10 @@ class AmoCRMOrderPusher(BaseService):
                 AmoCRMLeadUpdater(order=self.order)()
 
     def get_lead(self) -> AmoCRMOrderLead | None:
+        """
+        Search for existing leads in AmoCRM with same user and course as in given order
+        to guarantee that there will be only one AmoCRM Lead for one deal
+        """
         if self.order.amocrm_lead is not None:
             return self.order.amocrm_lead
 

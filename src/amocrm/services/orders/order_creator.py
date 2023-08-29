@@ -38,6 +38,11 @@ class AmoCRMOrderCreator(BaseService):
         )
 
     def create_transaction(self) -> None:
+        """
+        Create transaction for related customer with order's price and course
+
+        https://www.amocrm.ru/support/customers/create_purchase
+        """
         transaction_metadata = AmoCRMTransactionElementMetadata(
             catalog_id=get_catalog_id(catalog_type="products"),
         )
