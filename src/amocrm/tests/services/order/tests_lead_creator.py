@@ -37,10 +37,9 @@ def lead_creator():
 
 
 def test_creates_amocrm_order_lead(lead_creator, order):
-    got = lead_creator(order)
+    lead_creator(order)
 
     amocrm_lead = AmoCRMOrderLead.objects.get()
-    assert got == amocrm_lead.amocrm_id
     assert amocrm_lead.order == order
     assert amocrm_lead.amocrm_id == 481516
 

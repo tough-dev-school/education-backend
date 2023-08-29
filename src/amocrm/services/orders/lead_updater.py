@@ -20,8 +20,8 @@ class AmoCRMLeadUpdater(BaseService):
     def __post_init__(self) -> None:
         self.client = AmoCRMClient()
 
-    def act(self) -> int:
-        return self.client.update_lead(
+    def act(self) -> None:
+        self.client.update_lead(
             lead_id=self.order.amocrm_lead.amocrm_id,  # type: ignore
             status_id=get_b2c_pipeline_status_id(status_name="first_contact"),
             pipeline_id=get_b2c_pipeline_id(),

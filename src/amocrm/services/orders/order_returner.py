@@ -20,11 +20,9 @@ class AmoCRMOrderReturner(BaseService):
     def __post_init__(self) -> None:
         self.client = AmoCRMClient()
 
-    def act(self) -> int:
-        lead_amocrm_id = self.update_lead_status()
+    def act(self) -> None:
+        self.update_lead_status()
         self.delete_transaction()
-
-        return lead_amocrm_id
 
     def update_lead_status(self) -> int:
         return self.client.update_lead(

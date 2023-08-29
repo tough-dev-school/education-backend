@@ -32,13 +32,14 @@ class AmoCRMLeadCreator(BaseService):
     def __post_init__(self) -> None:
         self.client = AmoCRMClient()
 
-    def act(self) -> int:
-        self.create_lead()
-        self.link_course_to_lead()
-        return self.update_lead_price()
+    def act(self) -> None:
+        lead_id = self.create_lead_id()
+        self.link_course_to_lead(lead_id=lead_id)
+        self.update_lead_price(lead_id=lead_id)  # update lead price, cuz the particular order price might be different from the course price
+        self.save_lead_id(lead_id=lead_id)
 
-    def create_lead(self) -> int:
-        amocrm_id = self.client.create_lead(
+    def create_lead_id(self) -> int:
+        return self.client.create_lead(
             status_id=get_b2c_pipeline_status_id(status_name="first_contact"),
             pipeline_id=get_b2c_pipeline_id(),
             contact_id=self.order.user.amocrm_user_contact.amocrm_id,
@@ -46,11 +47,11 @@ class AmoCRMLeadCreator(BaseService):
             created_at=self.order.created,
         )
 
-        self.order.amocrm_lead = AmoCRMOrderLead.objects.create(amocrm_id=amocrm_id)
+    def save_lead_id(self, lead_id: int) -> None:
+        self.order.amocrm_lead = AmoCRMOrderLead.objects.create(amocrm_id=lead_id)
         self.order.save()
-        return self.order.amocrm_lead.amocrm_id
 
-    def link_course_to_lead(self) -> None:
+    def link_course_to_lead(self, lead_id: int) -> None:
         amocrm_course_to_link = AmoCRMEntityLink(
             to_entity_id=self.order.course.amocrm_course.amocrm_id,
             to_entity_type="catalog_elements",
@@ -61,18 +62,18 @@ class AmoCRMLeadCreator(BaseService):
 
         self.client.link_entity_to_another_entity(
             entity_type="leads",
-            entity_id=self.order.amocrm_lead.amocrm_id,  # type: ignore
+            entity_id=lead_id,
             entity_to_link=amocrm_course_to_link,
         )
 
-    def update_lead_price(self) -> int:
+    def update_lead_price(self, lead_id: int) -> int:
         """
         После связывания Сделки и Товара, у сделки автоматически выставляется бюджет равный цене товара
         У нас цена Заказа и Курса вполне может различаться при использовании промокода
         Поэтому после связывания нужно отправить еще запрос и установить актуальную цену Заказа
         """
         return self.client.update_lead(
-            lead_id=self.order.amocrm_lead.amocrm_id,  # type: ignore
+            lead_id=lead_id,
             status_id=get_b2c_pipeline_status_id(status_name="first_contact"),
             pipeline_id=get_b2c_pipeline_id(),
             price=self.order.price,
