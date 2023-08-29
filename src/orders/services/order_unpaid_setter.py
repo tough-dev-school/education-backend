@@ -5,8 +5,8 @@ from celery import chain
 from django.utils import timezone
 
 from amocrm.tasks import amocrm_enabled
-from amocrm.tasks import push_user_to_amocrm
-from amocrm.tasks import return_order_in_amocrm
+from amocrm.tasks import push_user
+from amocrm.tasks import return_order
 from app.services import BaseService
 from orders.models import Order
 from users.tasks import rebuild_tags
@@ -47,6 +47,6 @@ class OrderUnpaidSetter(BaseService):
         if amocrm_enabled():
             chain(
                 rebuild_tags.si(student_id=self.order.user.id, subscribe=can_be_subscribed),
-                push_user_to_amocrm.si(user_id=self.order.user.id),
-                return_order_in_amocrm.si(order_id=self.order.id),
+                push_user.si(user_id=self.order.user.id),
+                return_order.si(order_id=self.order.id),
             ).delay()

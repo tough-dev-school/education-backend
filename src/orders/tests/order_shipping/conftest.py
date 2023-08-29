@@ -10,17 +10,17 @@ def mock_rebuild_tags(mocker):
 
 @pytest.fixture
 def mock_push_customer(mocker):
-    return mocker.patch("amocrm.tasks.push_user_to_amocrm.si")
+    return mocker.patch("amocrm.tasks.push_user.si")
 
 
 @pytest.fixture
 def mock_push_order(mocker):
-    return mocker.patch("amocrm.tasks.push_order_to_amocrm.si")
+    return mocker.patch("amocrm.tasks.push_order.si")
 
 
 @pytest.fixture
 def mock_return_order_in_amocrm(mocker):
-    return mocker.patch("amocrm.tasks.return_order_in_amocrm.si")
+    return mocker.patch("amocrm.tasks.return_order.si")
 
 
 @pytest.fixture(autouse=True)

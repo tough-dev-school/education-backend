@@ -23,9 +23,9 @@ from app.celery import celery
 
 __all__ = [
     "amocrm_enabled",
-    "push_user_to_amocrm",
-    "push_order_to_amocrm",
-    "return_order_in_amocrm",
+    "push_user",
+    "push_order",
+    "return_order",
     "push_product_groups",
     "push_course",
     "push_all_products_and_product_groups",
@@ -47,7 +47,7 @@ def amocrm_enabled() -> bool:
 
 
 @celery.task(base=AmoTask)
-def push_user_to_amocrm(user_id: int) -> None:
+def push_user(user_id: int) -> None:
     time.sleep(1)  # avoid race condition when user is not saved yet
 
     user = apps.get_model("users.User").objects.get(id=user_id)
@@ -62,14 +62,14 @@ def push_user_to_amocrm(user_id: int) -> None:
 
 
 @celery.task(base=AmoTask)
-def push_order_to_amocrm(order_id: int) -> None:
-    time.sleep(1)  # avoid race condition when order is not saved yet
+def push_order(order_id: int) -> None:
+    time.sleep(3)  # avoid race condition when order is not saved yet
     order = apps.get_model("orders.Order").objects.get(id=order_id)
     AmoCRMOrderPusher(order=order)()
 
 
 @celery.task(base=AmoTask)
-def return_order_in_amocrm(order_id: int) -> None:
+def return_order(order_id: int) -> None:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
     AmoCRMOrderReturner(order=order)()
 

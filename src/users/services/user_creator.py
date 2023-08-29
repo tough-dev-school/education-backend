@@ -7,7 +7,7 @@ from rest_framework import serializers
 from django.utils.functional import cached_property
 
 from amocrm.tasks import amocrm_enabled
-from amocrm.tasks import push_user_to_amocrm
+from amocrm.tasks import push_user
 from app.services import BaseService
 from users.models import User
 from users.tasks import rebuild_tags
@@ -67,7 +67,7 @@ class UserCreator(BaseService):
         if push_to_amocrm:
             chain(
                 rebuild_tags.si(student_id=created_user.id, subscribe=can_be_subscribed),
-                push_user_to_amocrm.si(user_id=created_user.id),
+                push_user.si(user_id=created_user.id),
             ).delay()
             return None
 

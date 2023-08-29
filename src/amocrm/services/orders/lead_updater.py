@@ -11,8 +11,6 @@ from orders.models import Order
 class AmoCRMLeadUpdater(BaseService):
     """
     Updates amocrm_lead for given order
-
-    Returns amocrm_id for amocrm_lead
     """
 
     order: Order

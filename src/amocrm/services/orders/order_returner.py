@@ -11,8 +11,6 @@ from orders.models import Order
 class AmoCRMOrderReturner(BaseService):
     """
     Updates amocrm_lead for given order and deletes transaction
-
-    Returns amocrm_id for amocrm_lead
     """
 
     order: Order

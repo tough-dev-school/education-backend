@@ -21,10 +21,6 @@ class AmoCRMLeadCreatorException(AmoCRMServiceException):
 class AmoCRMLeadCreator(BaseService):
     """
     Creates amocrm_lead for given order and with user's amocrm contact
-
-    - if order is paid new amocrm_lead creates with 'purchased' status - else 'first_contact'
-
-    Returns amocrm_id for amocrm_lead
     """
 
     order: Order

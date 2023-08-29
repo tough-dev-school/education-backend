@@ -14,8 +14,8 @@ from django.utils.timezone import is_naive
 from django.utils.timezone import make_aware
 
 from amocrm.tasks import amocrm_enabled
-from amocrm.tasks import push_order_to_amocrm
-from amocrm.tasks import push_user_to_amocrm
+from amocrm.tasks import push_order
+from amocrm.tasks import push_user
 from app.current_user import get_current_user
 from app.exceptions import AppServiceException
 from app.helpers import lower_first
@@ -97,8 +97,8 @@ class OrderCreator(BaseService):
         if push_to_amocrm and order.price > 0:  # do not push free unshipped orders
             chain(
                 rebuild_tags.si(student_id=order.user.id, subscribe=can_be_subscribed),
-                push_user_to_amocrm.si(user_id=order.user.id),
-                push_order_to_amocrm.si(order_id=order.id),
+                push_user.si(user_id=order.user.id),
+                push_order.si(order_id=order.id),
             ).delay()
             return None
 

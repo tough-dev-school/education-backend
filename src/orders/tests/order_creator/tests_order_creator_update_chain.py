@@ -22,12 +22,12 @@ def rebuild_tags(mocker):
 
 @pytest.fixture
 def mock_push_customer(mocker):
-    return mocker.patch("amocrm.tasks.push_user_to_amocrm.si")
+    return mocker.patch("amocrm.tasks.push_user.si")
 
 
 @pytest.fixture
 def mock_push_order(mocker):
-    return mocker.patch("amocrm.tasks.push_order_to_amocrm.si")
+    return mocker.patch("amocrm.tasks.push_order.si")
 
 
 def test_if_subscribe_and_amocrm_enabled(create, user, course, mock_update_user_chain, mock_rebuild_tags, mock_push_customer, settings, mock_push_order):

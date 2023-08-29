@@ -15,8 +15,6 @@ from orders.models import Order
 class AmoCRMOrderCreator(BaseService):
     """
     Updates amocrm_lead for given paid order and creates transaction
-
-    Returns amocrm_id for amocrm_lead
     """
 
     order: Order
