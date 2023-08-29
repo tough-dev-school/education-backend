@@ -1,6 +1,7 @@
 import time
 
 from celery import chain
+from celery import Task
 from httpx import TransportError
 
 from django.apps import apps
@@ -14,7 +15,6 @@ from amocrm.services.contacts.contact_creator import AmoCRMContactCreator
 from amocrm.services.contacts.contact_to_customer_linker import AmoCRMContactToCustomerLinker
 from amocrm.services.contacts.contact_updater import AmoCRMContactUpdater
 from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreator
-from amocrm.services.orders.order_lead_creator import AmoCRMOrderLeadCreatorException
 from amocrm.services.orders.order_lead_updater import AmoCRMOrderLeadUpdater
 from amocrm.services.orders.order_pusher import AmoCRMOrderPusher
 from amocrm.services.orders.order_transaction_creator import AmoCRMOrderTransactionCreator
@@ -34,18 +34,21 @@ __all__ = [
 ]
 
 
+class BaseAmoTask(Task):
+    autoretry_for = [TransportError, AmoCRMTokenGetterException, AmoCRMClientException]
+    retry_kwargs = {
+        "max_retries": 10,
+        "countdown": 1,
+    }
+    rate_limit = "3/s"
+    acks_late = True
+
+
 def amocrm_enabled() -> bool:
     return settings.AMOCRM_BASE_URL != ""
 
 
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    acks_late=True,
-)
+@celery.task(base=BaseAmoTask)
 def push_user_to_amocrm(user_id: int) -> None:
     time.sleep(1)  # avoid race condition when user is not saved yet
 
@@ -60,21 +63,14 @@ def push_user_to_amocrm(user_id: int) -> None:
         ).delay()
 
 
-@celery.task(acks_late=True)
+@celery.task(base=BaseAmoTask)
 def push_order_to_amocrm(order_id: int) -> None:
     time.sleep(1)  # avoid race condition when order is not saved yet
     order = apps.get_model("orders.Order").objects.get(id=order_id)
     AmoCRMOrderPusher(order=order)()
 
 
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    acks_late=True,
-)
+@celery.task(base=BaseAmoTask)
 def push_existing_order_to_amocrm(order_id: int) -> None:
     chain(
         update_amocrm_lead.si(order_id=order_id),
@@ -82,56 +78,24 @@ def push_existing_order_to_amocrm(order_id: int) -> None:
     ).delay()
 
 
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException, AmoCRMOrderLeadCreatorException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    rate_limit="3/s",
-    acks_late=True,
-)
+@celery.task(base=BaseAmoTask)
 def create_amocrm_lead(order_id: int) -> int:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
     return AmoCRMOrderLeadCreator(order=order)()
 
 
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException, AmoCRMOrderLeadCreatorException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    rate_limit="3/s",
-    acks_late=True,
-)
+@celery.task(base=BaseAmoTask)
 def update_amocrm_lead(order_id: int) -> int:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
     return AmoCRMOrderLeadUpdater(amocrm_lead=order.amocrm_lead)()
 
 
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    rate_limit="3/s",
-    acks_late=True,
-)
+@celery.task(base=BaseAmoTask)
 def push_product_groups() -> None:
     AmoCRMProductGroupsUpdater()()
 
 
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    rate_limit="3/s",
-    acks_late=True,
-)
+@celery.task(base=BaseAmoTask)
 def push_course(course_id: int) -> int:
     course = apps.get_model("products.Course").objects.get(id=course_id)
     if hasattr(course, "amocrm_course"):
@@ -140,34 +104,18 @@ def push_course(course_id: int) -> int:
         return AmoCRMCourseCreator(course=course)()
 
 
-@celery.task(acks_late=True)
+@celery.task(base=BaseAmoTask)
 def push_all_products_and_product_groups() -> None:
     push_product_groups.apply_async(link=_push_all_courses.si())
 
 
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    rate_limit="3/s",
-    acks_late=True,
-)
+@celery.task(base=BaseAmoTask)
 def enable_customers() -> None:
     client = AmoCRMClient()
     client.enable_customers()
 
 
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    rate_limit="3/s",
-    acks_late=True,
-)
+@celery.task(base=BaseAmoTask)
 def _push_customer(user_id: int) -> int:
     client = AmoCRMClient()
     user = apps.get_model("users.User").objects.get(id=user_id)
@@ -179,15 +127,7 @@ def _push_customer(user_id: int) -> int:
         return amocrm_user.amocrm_id
 
 
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    rate_limit="3/s",
-    acks_late=True,
-)
+@celery.task(base=BaseAmoTask)
 def _push_contact(user_id: int) -> int:
     user = apps.get_model("users.User").objects.get(id=user_id)
     if hasattr(user, "amocrm_user_contact"):
@@ -196,36 +136,20 @@ def _push_contact(user_id: int) -> int:
         return AmoCRMContactCreator(user=user)()
 
 
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    rate_limit="3/s",
-    acks_late=True,
-)
+@celery.task(base=BaseAmoTask)
 def _link_contact_to_user(user_id: int) -> None:
     user = apps.get_model("users.User").objects.get(id=user_id)
     AmoCRMContactToCustomerLinker(user=user)()
 
 
-@celery.task(acks_late=True)
+@celery.task(base=BaseAmoTask)
 def _push_all_courses() -> None:
     courses = apps.get_model("products.Course").objects.all()
     for course in courses:
         push_course.delay(course_id=course.id)
 
 
-@celery.task(
-    autoretry_for=[TransportError, AmoCRMTokenGetterException, AmoCRMClientException],
-    retry_kwargs={
-        "max_retries": 10,
-        "countdown": 1,
-    },
-    rate_limit="3/s",
-    acks_late=True,
-)
+@celery.task(base=BaseAmoTask)
 def _push_transaction(order_id: int) -> int | None:
     order = apps.get_model("orders.Order").objects.get(id=order_id)
     if order.unpaid is not None:
