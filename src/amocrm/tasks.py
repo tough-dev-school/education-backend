@@ -51,7 +51,7 @@ def push_user(user_id: int) -> None:
 
 @celery.task(base=AmoTask)
 def push_order(order_id: int) -> None:
-    time.sleep(3)  # avoid race condition when order is not saved yet
+    time.sleep(1)  # avoid race condition when order is not saved yet
     order = apps.get_model("orders.Order").objects.get(id=order_id)
     AmoCRMOrderPusher(order=order)()
 
