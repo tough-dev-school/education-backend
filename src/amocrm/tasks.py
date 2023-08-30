@@ -44,7 +44,7 @@ def amocrm_enabled() -> bool:
 @celery.task(base=AmoTask)
 def push_user(user_id: int) -> None:
     time.sleep(1)  # avoid race condition when user is not saved yet
-    user = apps.get_model("users.User").objects.get(id=user_id)
+    apps.get_model("users.User").objects.get(id=user_id)
     ...
 
 

@@ -50,7 +50,7 @@ class AmoCRMOrderCreator(BaseService):
         )
 
         amocrm_id = self.client.create_customer_transaction(
-            customer_id=self.order.user.amocrm_user.amocrm_id,
+            customer_id=self.order.user.amocrm_user.customer_id,
             price=self.order.price,
             order_slug=self.order.slug,
             purchased_product=course_as_transaction_element,

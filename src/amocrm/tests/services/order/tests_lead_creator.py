@@ -75,7 +75,7 @@ def test_fails_if_no_amocrm_course(lead_creator, order):
 
 
 def test_fails_if_no_amocrm_contact(lead_creator, order):
-    order.user.amocrm_user_contact.delete()
+    order.user.amocrm_user.delete()
     order.refresh_from_db()
 
     with pytest.raises(AmoCRMLeadCreatorException, match="AmoCRM contact for order's user doesn't exist"):
