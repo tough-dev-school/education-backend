@@ -9,7 +9,22 @@ from users.models import User
 class AmoCRMCustomer(AmoDTO):
     user: User
 
-    def create_customer(self) -> int:
+    def create(self) -> tuple[int, int]:
+        """
+        Create related Customer and Contact
+        returns customer_id and contact_id
+        """
+        customer_id = self._create_customer()
+        contact_id = self._create_contact()
+        self._link_customer_to_contact(customer_id=customer_id, contact_id=contact_id)
+        return customer_id, contact_id
+
+    def update(self, customer_id: int, contact_id: int) -> None:
+        """Update given customer and contact"""
+        self._update_customer(customer_id=customer_id)
+        self._update_contact(contact_id=contact_id)
+
+    def _create_customer(self) -> int:
         """
         Creates customer and returns amocrm_id
         https://www.amocrm.ru/developers/content/crm_platform/customers-api#customers-add
@@ -21,7 +36,7 @@ class AmoCRMCustomer(AmoDTO):
 
         return response["_embedded"]["customers"][0]["id"]
 
-    def update_customer(self, customer_id: int) -> None:
+    def _update_customer(self, customer_id: int) -> None:
         """
         Updates existing in amocrm customer
         https://www.amocrm.ru/developers/content/crm_platform/customers-api#customers-edit
@@ -34,7 +49,7 @@ class AmoCRMCustomer(AmoDTO):
             data=[data],
         )
 
-    def create_contact(self) -> int:
+    def _create_contact(self) -> int:
         """
         Creates contact and returns amocrm_id
         https://www.amocrm.ru/developers/content/crm_platform/contacts-api#contacts-add
@@ -46,7 +61,7 @@ class AmoCRMCustomer(AmoDTO):
 
         return response["_embedded"]["contacts"][0]["id"]
 
-    def update_contact(self, contact_id: int) -> None:
+    def _update_contact(self, contact_id: int) -> None:
         """
         Updates existing in amocrm contact
         https://www.amocrm.ru/developers/content/crm_platform/contacts-api#contacts-edit
@@ -59,7 +74,7 @@ class AmoCRMCustomer(AmoDTO):
             data=[data],
         )
 
-    def link_customer_to_contact(self, customer_id: int, contact_id: int) -> None:
+    def _link_customer_to_contact(self, customer_id: int, contact_id: int) -> None:
         """
         Link given customer to given contact
         https://www.amocrm.ru/developers/content/crm_platform/entity-links-api#links-link
