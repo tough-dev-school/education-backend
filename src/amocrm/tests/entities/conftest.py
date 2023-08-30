@@ -1,6 +1,11 @@
 import pytest
 
 
+@pytest.fixture(autouse=True)
+def _mock_contact_field_id(mocker):
+    mocker.patch("amocrm.entities.customer.get_contact_field_id", return_value=2235143)
+
+
 @pytest.fixture
 def user(user):
     user.email = "dada@da.net"

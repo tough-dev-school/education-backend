@@ -8,8 +8,8 @@ pytestmark = [
 
 
 @pytest.fixture
-def successful_response():
-    return {
+def _successful_create_customer_response(post):
+    post.return_value = {
         "_links": {"self": {"href": "https://test.amocrm.ru/api/v4/customers"}},
         "_embedded": {
             "customers": [
@@ -31,13 +31,21 @@ def successful_response():
 
 
 @pytest.fixture
-def _successful_create_response(post, successful_response):
-    post.return_value = successful_response
-
-
-@pytest.fixture
-def _successful_update_response(patch, successful_response):
-    patch.return_value = successful_response
+def _successful_create_contact_response(post):
+    post.return_value = {
+        "_links": {"self": {"href": "https://test.amocrm.ru/api/v4/contacts"}},
+        "_embedded": {
+            "contacts": [
+                {
+                    "id": 72845935,
+                    "is_deleted": False,
+                    "is_unsorted": False,
+                    "request_id": "0",
+                    "_links": {"self": {"href": "https://test.amocrm.ru/api/v4/contacts/72845935"}},
+                }
+            ]
+        },
+    }
 
 
 @pytest.fixture
@@ -52,11 +60,56 @@ def _successful_link_response(post):
     }
 
 
-@pytest.mark.usefixtures("_successful_create_response")
-def test_create_customer(user, post):
-    got = AmoCRMCustomer(user=user).create()
+@pytest.mark.usefixtures("_successful_create_contact_response")
+def test_create_contact_response(user, post):
+    got = AmoCRMCustomer(user=user).create_contact()
+
+    assert got == 72845935
+
+
+def test_create_contact(user, post):
+    AmoCRMCustomer(user=user).create_contact()
+
+    post.assert_called_once_with(
+        url="/api/v4/contacts",
+        data=[
+            {
+                "name": "First Last",
+                "custom_fields_values": [
+                    {"field_id": 2235143, "values": [{"value": "dada@da.net"}]},
+                ],
+            },
+        ],
+    )
+
+
+def test_update_contact(user, patch):
+    AmoCRMCustomer(user=user).update_contact(contact_id=5555)
+
+    patch.assert_called_once_with(
+        url="/api/v4/contacts",
+        data=[
+            {
+                "id": 5555,
+                "name": "First Last",
+                "custom_fields_values": [
+                    {"field_id": 2235143, "values": [{"value": "dada@da.net"}]},
+                ],
+            },
+        ],
+    )
+
+
+@pytest.mark.usefixtures("_successful_create_customer_response")
+def test_create_customer_response(user, post):
+    got = AmoCRMCustomer(user=user).create_customer()
 
     assert got == 1369385
+
+
+def test_create_customer(user, post):
+    AmoCRMCustomer(user=user).create_customer()
+
     post.assert_called_once_with(
         url="/api/v4/customers",
         data=[
@@ -68,9 +121,8 @@ def test_create_customer(user, post):
     )
 
 
-@pytest.mark.usefixtures("_successful_update_response")
 def test_update_customer(user, patch):
-    AmoCRMCustomer(user=user).update(customer_id=5555)
+    AmoCRMCustomer(user=user).update_customer(customer_id=5555)
 
     patch.assert_called_once_with(
         url="/api/v4/customers",
@@ -84,9 +136,8 @@ def test_update_customer(user, patch):
     )
 
 
-@pytest.mark.usefixtures("_successful_link_response")
-def test_link_to_contact(user, post):
-    AmoCRMCustomer(user=user).link_to_contact(customer_id=5555, contact_id=8888)
+def test_link_customer_to_contact(user, post):
+    AmoCRMCustomer(user=user).link_customer_to_contact(customer_id=5555, contact_id=8888)
 
     post.assert_called_once_with(
         url="/api/v4/customers/5555/link",
