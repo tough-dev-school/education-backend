@@ -49,7 +49,7 @@ class AmoCRMCustomer(BaseAmoEntity):
         )
 
     @property
-    def _user_as_customer_data(self) -> dict:
+    def _user_as_customer(self) -> dict:
         return {
             "name": str(self.user),
             "_embedded": {
