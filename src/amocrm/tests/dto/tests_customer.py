@@ -73,11 +73,11 @@ def test_create(user):
     assert contact_id == 22222
 
 
-def test_update(user, mock_update_customer, mock_update_contact):
-    AmoCRMCustomer(user=user).update(customer_id=11111, contact_id=22222)
+def test_update(user, amocrm_user, mock_update_customer, mock_update_contact):
+    AmoCRMCustomer(user=user).update()
 
-    mock_update_customer.assert_called_once_with(customer_id=11111)
-    mock_update_contact.assert_called_once_with(contact_id=22222)
+    mock_update_customer.assert_called_once_with(customer_id=4444)
+    mock_update_contact.assert_called_once_with(contact_id=5555)
 
 
 @pytest.mark.usefixtures("_successful_create_contact_response")

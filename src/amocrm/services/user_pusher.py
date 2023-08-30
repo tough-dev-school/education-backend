@@ -27,7 +27,4 @@ class AmoCRMUserPusher(BaseService):
         )
 
     def update_user(self, user: User) -> None:
-        AmoCRMCustomer(user=user).update(
-            customer_id=user.amocrm_user.customer_id,
-            contact_id=user.amocrm_user.contact_id,
-        )
+        AmoCRMCustomer(user=user).update()

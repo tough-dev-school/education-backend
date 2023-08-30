@@ -27,7 +27,8 @@ def test_create_user(user):
     assert amocrm_user.contact_id == 5555
 
 
-def test_update_user(user, amocrm_user, mock_update):
+@pytest.mark.usefixtures("amocrm_user")
+def test_update_user(user, mock_update):
     AmoCRMUserPusher(user=user)()
 
-    mock_update.assert_called_once_with(customer_id=4444, contact_id=5555)
+    mock_update.assert_called_once()

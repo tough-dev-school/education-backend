@@ -19,10 +19,10 @@ class AmoCRMCustomer(AmoDTO):
         self._link_customer_to_contact(customer_id=customer_id, contact_id=contact_id)
         return customer_id, contact_id
 
-    def update(self, customer_id: int, contact_id: int) -> None:
-        """Update given customer and contact"""
-        self._update_customer(customer_id=customer_id)
-        self._update_contact(contact_id=contact_id)
+    def update(self) -> None:
+        """Update customer and contact for given user"""
+        self._update_customer(customer_id=self.user.amocrm_user.customer_id)
+        self._update_contact(contact_id=self.user.amocrm_user.contact_id)
 
     def _create_customer(self) -> int:
         """
