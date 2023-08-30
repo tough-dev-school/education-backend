@@ -95,7 +95,7 @@ django-cors-headers==4.2.0
     # via education-backend (pyproject.toml)
 django-debug-toolbar==4.2.0
     # via education-backend (pyproject.toml)
-django-environ==0.10.0
+django-environ==0.11.0
     # via education-backend (pyproject.toml)
 django-filter==23.2
     # via education-backend (pyproject.toml)
