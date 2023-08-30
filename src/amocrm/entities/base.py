@@ -4,6 +4,6 @@ from amocrm.client.http import AmoCRMHTTP
 
 
 @dataclass
-class BaseAmoEntity:
+class AmoDTO:
     def __post_init__(self) -> None:
         self.http = AmoCRMHTTP()
