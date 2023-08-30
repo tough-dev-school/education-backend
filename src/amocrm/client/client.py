@@ -3,7 +3,6 @@ from datetime import datetime
 from _decimal import Decimal
 
 from amocrm.client.http import AmoCRMHTTP
-from amocrm.models import AmoCRMUser
 from amocrm.types import AmoCRMCatalog
 from amocrm.types import AmoCRMCatalogElement
 from amocrm.types import AmoCRMCatalogField
@@ -12,7 +11,6 @@ from amocrm.types import AmoCRMEntityLink
 from amocrm.types import AmoCRMPipeline
 from amocrm.types import AmoCRMTransactionElement
 from amocrm.types import ENTITY_TYPES
-from users.models import User
 
 
 class AmoCRMClient:
@@ -22,42 +20,6 @@ class AmoCRMClient:
 
     def __init__(self) -> None:
         self.http: AmoCRMHTTP = AmoCRMHTTP()
-
-    def create_customer(self, user: User) -> int:
-        """Creates customer and returns amocrm_id"""
-        response = self.http.post(
-            url="/api/v4/customers",
-            data=[{"name": str(user), "_embedded": {"tags": [{"name": tag} for tag in user.tags]}}],
-        )
-
-        return response["_embedded"]["customers"][0]["id"]
-
-    def update_customer(self, amocrm_user: AmoCRMUser) -> int:
-        """Updates existing in amocrm customer and returns amocrm_id"""
-        response = self.http.patch(
-            url="/api/v4/customers",
-            data=[{"id": amocrm_user.amocrm_id, "name": str(amocrm_user.user), "_embedded": {"tags": [{"name": tag} for tag in amocrm_user.user.tags]}}],
-        )
-
-        return response["_embedded"]["customers"][0]["id"]
-
-    def create_contact(self, user_as_contact_element: AmoCRMCatalogElement) -> int:
-        """Creates contact and returns amocrm_id"""
-        response = self.http.post(
-            url="/api/v4/contacts",
-            data=[user_as_contact_element.to_json()],
-        )
-
-        return response["_embedded"]["contacts"][0]["id"]
-
-    def update_contact(self, user_as_contact_element: AmoCRMCatalogElement) -> int:
-        """Updates existing in amocrm contact and returns amocrm_id"""
-        response = self.http.patch(
-            url="/api/v4/contacts",
-            data=[user_as_contact_element.to_json()],
-        )
-
-        return response["_embedded"]["contacts"][0]["id"]
 
     def get_contact_fields(self) -> list[AmoCRMCatalogField]:
         """Returns contacts fields"""
