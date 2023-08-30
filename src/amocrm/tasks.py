@@ -14,6 +14,7 @@ from amocrm.services.orders.order_returner import AmoCRMOrderReturner
 from amocrm.services.products.course_creator import AmoCRMCourseCreator
 from amocrm.services.products.course_updater import AmoCRMCourseUpdater
 from amocrm.services.products.product_groups_updater import AmoCRMProductGroupsUpdater
+from amocrm.services.user_pusher import AmoCRMUserPusher
 from app.celery import celery
 
 __all__ = [
@@ -44,8 +45,8 @@ def amocrm_enabled() -> bool:
 @celery.task(base=AmoTask)
 def push_user(user_id: int) -> None:
     time.sleep(1)  # avoid race condition when user is not saved yet
-    apps.get_model("users.User").objects.get(id=user_id)
-    ...
+    user = apps.get_model("users.User").objects.get(id=user_id)
+    AmoCRMUserPusher(user=user)()
 
 
 @celery.task(base=AmoTask)

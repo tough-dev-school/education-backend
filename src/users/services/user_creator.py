@@ -1,13 +1,10 @@
 from dataclasses import dataclass
 import uuid
 
-from celery import chain
 from rest_framework import serializers
 
 from django.utils.functional import cached_property
 
-from amocrm.tasks import amocrm_enabled
-from amocrm.tasks import push_user
 from app.services import BaseService
 from users.models import User
 from users.tasks import rebuild_tags
@@ -62,13 +59,5 @@ class UserCreator(BaseService):
         return serializer.instance  # type: ignore
 
     def after_creation(self, created_user: User) -> None:
-        push_to_amocrm = self.push_to_amocrm and amocrm_enabled()
         can_be_subscribed = bool(self.subscribe and created_user.email and len(created_user.email))
-        if push_to_amocrm:
-            chain(
-                rebuild_tags.si(student_id=created_user.id, subscribe=can_be_subscribed),
-                push_user.si(user_id=created_user.id),
-            ).delay()
-            return None
-
-        rebuild_tags.delay(student_id=created_user.id, subscribe=self.subscribe)
+        rebuild_tags.delay(student_id=created_user.id, subscribe=can_be_subscribed)
