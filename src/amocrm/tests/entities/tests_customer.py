@@ -48,18 +48,6 @@ def _successful_create_contact_response(post):
     }
 
 
-@pytest.fixture
-def _successful_link_response(post):
-    post.return_value = {
-        "_links": {"self": {"href": "https://test.amocrm.ru/api/v4/customers/5555/links"}},
-        "_embedded": {
-            "links": [
-                {"to_entity_id": 8888, "to_entity_type": "contacts", "metadata": None},
-            ],
-        },
-    }
-
-
 @pytest.mark.usefixtures("_successful_create_contact_response")
 def test_create_contact_response(user, post):
     got = AmoCRMCustomer(user=user).create_contact()
