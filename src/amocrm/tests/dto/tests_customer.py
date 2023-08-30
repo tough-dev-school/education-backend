@@ -1,6 +1,6 @@
 import pytest
 
-from amocrm.entities import AmoCRMCustomer
+from amocrm.dto import AmoCRMCustomer
 
 pytestmark = [
     pytest.mark.django_db,

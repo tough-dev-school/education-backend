@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from amocrm.cache.contact_fields_ids import get_contact_field_id
-from amocrm.entities.base import AmoDTO
+from amocrm.dto.base import AmoDTO
 from users.models import User
 
 
