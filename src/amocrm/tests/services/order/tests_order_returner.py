@@ -7,20 +7,14 @@ pytestmark = [
 ]
 
 
-@pytest.fixture(autouse=True)
-def _mock_fields_id(mocker):
-    mocker.patch("amocrm.services.orders.order_returner.get_b2c_pipeline_id", return_value=777)
-    mocker.patch("amocrm.services.orders.order_returner.get_b2c_pipeline_status_id", return_value=999)
-
-
 @pytest.fixture
 def mock_update_lead(mocker):
-    return mocker.patch("amocrm.client.AmoCRMClient.update_lead", return_value=481516)
+    return mocker.patch("amocrm.dto.lead.AmoCRMLead.update")
 
 
 @pytest.fixture
 def mock_delete_transaction(mocker):
-    return mocker.patch("amocrm.client.AmoCRMClient.delete_transaction", return_value=None)
+    return mocker.patch("amocrm.dto.transaction.AmoCRMTransaction.delete")
 
 
 @pytest.fixture
@@ -38,5 +32,5 @@ def order_deleter():
 def test_correct_calls(order_deleter, unpaid_order, mock_update_lead, mock_delete_transaction):
     order_deleter(unpaid_order)
 
-    mock_update_lead.assert_called_once()
+    mock_update_lead.assert_called_once_with(status="closed")
     mock_delete_transaction.assert_called_once()
