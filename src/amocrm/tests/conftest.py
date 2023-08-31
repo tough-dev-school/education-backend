@@ -17,7 +17,7 @@ def amocrm_user(factory, user):
 
 @pytest.fixture
 def amocrm_course(factory, course):
-    return factory.amocrm_course(course=course)
+    return factory.amocrm_course(course=course, amocrm_id=999111)
 
 
 @pytest.fixture(autouse=True)

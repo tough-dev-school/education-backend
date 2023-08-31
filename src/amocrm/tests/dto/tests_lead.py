@@ -1,9 +1,4 @@
-from datetime import datetime
 import pytest
-
-from _decimal import Decimal
-
-from django.utils import timezone
 
 from amocrm.dto import AmoCRMLead
 
@@ -38,17 +33,6 @@ def mock_link_course_to_lead(mocker):
 @pytest.fixture
 def mock_update_lead(mocker):
     return mocker.patch("amocrm.dto.lead.AmoCRMLead._update_lead")
-
-
-@pytest.fixture
-def order(user, course, factory):
-    order = factory.order(user=user, course=course, price=Decimal(100))
-    order.created = datetime.fromtimestamp(1672520400, tz=timezone.get_current_timezone())
-    factory.amocrm_user(contact_id=8800555, user=order.user)
-    factory.amocrm_course(amocrm_id=999111, course=order.course)
-    factory.amocrm_order_lead(amocrm_id=11111, order=order)
-    order.save()
-    return order
 
 
 @pytest.mark.usefixtures("mock_create_lead", "mock_link_course_to_lead", "mock_update_lead")
@@ -91,7 +75,7 @@ def test_create_lead(order, post):
                 "pipeline_id": 555,
                 "price": 100,
                 "created_at": 1672520400,
-                "_embedded": {"contacts": [{"id": 8800555}]},
+                "_embedded": {"contacts": [{"id": 5555}]},
             },
         ],
     )

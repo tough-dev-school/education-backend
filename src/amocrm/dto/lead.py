@@ -21,7 +21,7 @@ class AmoCRMLead(AmoDTO):
 
     def update(self, status: STATUSES_NAMES) -> None:
         """Update lead for given order"""
-        self._update_lead(lead_id=self.order.amocrm_lead.amocrm_id, status=status)
+        self._update_lead(lead_id=self.order.amocrm_lead.amocrm_id, status=status)  # type: ignore
 
     def _create_lead(self) -> int:
         """
@@ -74,6 +74,6 @@ class AmoCRMLead(AmoDTO):
         return {
             "status_id": get_b2c_pipeline_status_id(status_name=status),
             "pipeline_id": get_b2c_pipeline_id(),
-            "price": int(self.order.price),  # amocrm api requirement to send only integer
+            "price": int(self.order.price),  # amocrm api requirement field to be integer
             "created_at": int(self.order.created.timestamp()),  # amocrm api requirement to send integer timestamp
         }
