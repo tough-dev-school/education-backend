@@ -29,8 +29,3 @@ def patch(mocker):
 @pytest.fixture
 def get(mocker):
     return mocker.patch("amocrm.client.http.AmoCRMHTTP.get")
-
-
-@pytest.fixture
-def delete(mocker):
-    return mocker.patch("amocrm.client.http.AmoCRMHTTP.delete")
