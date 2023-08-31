@@ -2,8 +2,11 @@ import pytest
 
 
 @pytest.fixture(autouse=True)
-def _mock_contact_field_id(mocker):
+def _mock_cached_fields_id(mocker):
     mocker.patch("amocrm.dto.customer.get_contact_field_id", return_value=2235143)
+    mocker.patch("amocrm.dto.lead.get_catalog_id", return_value=777)
+    mocker.patch("amocrm.dto.lead.get_b2c_pipeline_id", return_value=555)
+    mocker.patch("amocrm.dto.lead.get_b2c_pipeline_status_id", return_value=333)
 
 
 @pytest.fixture
