@@ -43,7 +43,7 @@ class AmoCRMOrderPusher(BaseService):
         else:
             if existing_lead.order != self.order:
                 self.relink_lead(order=self.order, lead=existing_lead)
-                AmoCRMLead(order=self.order).update(status="first_contact")
+                AmoCRMLead(order=self.order).update(status="first_contact")  # actualize lead's price and created_at
 
     def create_lead(self) -> None:
         lead_id = AmoCRMLead(order=self.order).create()
