@@ -31,30 +31,23 @@ def mock_link_course_to_lead(mocker):
 
 
 @pytest.fixture
-def mock_update_lead(mocker):
-    return mocker.patch("amocrm.dto.lead.AmoCRMLead._update_lead")
+def mock_update_price(mocker):
+    return mocker.patch("amocrm.dto.lead.AmoCRMLead._update_price")
 
 
-@pytest.mark.usefixtures("mock_create_lead", "mock_link_course_to_lead", "mock_update_lead")
+@pytest.mark.usefixtures("mock_create_lead", "mock_link_course_to_lead", "mock_update_price")
 def test_create_return_lead_id(order):
     lead_id = AmoCRMLead(order=order).create()
 
     assert lead_id == 11111
 
 
-def test_create(order, mock_create_lead, mock_link_course_to_lead, mock_update_lead):
+def test_create(order, mock_create_lead, mock_link_course_to_lead, mock_update_price):
     AmoCRMLead(order=order).create()
 
     mock_create_lead.assert_called_once()
     mock_link_course_to_lead.assert_called_once_with(lead_id=11111, course_id=999111)
-    mock_update_lead.assert_called_once_with(lead_id=11111, status="first_contact")
-
-
-@pytest.mark.parametrize("status", ["first_contact", "purchased", "closed"])
-def test_update(order, status, mock_update_lead):
-    AmoCRMLead(order=order).update(status=status)
-
-    mock_update_lead.assert_called_once_with(lead_id=11111, status=status)
+    mock_update_price.assert_called_once_with(lead_id=11111)
 
 
 @pytest.mark.usefixtures("_successful_create_lead_response")
@@ -81,15 +74,31 @@ def test_create_lead(order, post):
     )
 
 
-def test_update_lead(order, patch):
-    AmoCRMLead(order=order)._update_lead(lead_id=5555, status="anything")
+def test_update_lead_status(order, patch):
+    AmoCRMLead(order=order).update(status="closed")
 
     patch.assert_called_once_with(
         url="/api/v4/leads",
         data=[
             {
-                "id": 5555,
+                "id": 11111,
                 "status_id": 333,
+                "pipeline_id": 555,
+                "price": 100,
+                "created_at": 1672520400,
+            },
+        ],
+    )
+
+
+def test_update_lead(order, patch):
+    AmoCRMLead(order=order).update()
+
+    patch.assert_called_once_with(
+        url="/api/v4/leads",
+        data=[
+            {
+                "id": 11111,
                 "pipeline_id": 555,
                 "price": 100,
                 "created_at": 1672520400,

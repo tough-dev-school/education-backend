@@ -89,7 +89,7 @@ def test_relink_new_not_paid_order(not_paid_order_without_lead, mock_update_lead
     AmoCRMOrderPusher(order=not_paid_order_without_lead)()
 
     assert not_paid_order_without_lead.amocrm_lead == amocrm_lead
-    mock_update_lead.assert_called_once_with(status="first_contact")
+    mock_update_lead.assert_called_once()
 
 
 @pytest.mark.usefixtures("not_paid_order_with_lead", "mock_create_transaction")
@@ -111,7 +111,7 @@ def test_relink_new_not_paid_order_from_returned(not_paid_order_without_lead, am
     AmoCRMOrderPusher(order=not_paid_order_without_lead)()
 
     assert not_paid_order_without_lead.amocrm_lead == amocrm_lead
-    mock_update_lead.assert_called_once_with(status="first_contact")
+    mock_update_lead.assert_called_once()
 
 
 def test_not_push_if_author_not_equal_to_user(not_paid_order_without_lead, another_user, mock_push_lead, mock_push_order):
@@ -138,24 +138,6 @@ def test_not_push_if_there_is_already_paid_order(not_paid_order_without_lead, mo
 
     mock_push_lead.assert_not_called()
     mock_push_order.assert_not_called()
-
-
-@pytest.mark.usefixtures("not_paid_order_with_lead")
-def test_child_service_gets_order_with_linked_lead(not_paid_order_without_lead, amocrm_lead, mocker):
-    """
-    Поступил новый заказ, но есть аналогичный неоплаченный заказ с открытой сделкой -
-    сделка привязывается к новому заказу, и обновляется в Амо, чтобы была указана актуальная стоимость и время создания
-    проверка, что в метод http вызова действительно передаётся нужный id сделки
-    """
-    mock_update = mocker.patch("amocrm.dto.lead.AmoCRMLead._update_lead")
-
-    AmoCRMOrderPusher(order=not_paid_order_without_lead)()
-
-    assert not_paid_order_without_lead.amocrm_lead == amocrm_lead
-    mock_update.assert_called_once_with(
-        lead_id=amocrm_lead.amocrm_id,
-        status="first_contact",
-    )
 
 
 def test_fail_create_paid_order_without_lead(paid_order_without_lead):

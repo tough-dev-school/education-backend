@@ -16,12 +16,23 @@ class AmoCRMLead(AmoDTO):
         """Create lead for given order and returns lead_id"""
         lead_id = self._create_lead()
         self._link_course_to_lead(lead_id=lead_id, course_id=self.order.course.amocrm_course.amocrm_id)
-        self._update_lead(lead_id=lead_id, status="first_contact")  # update lead price, cuz the particular order price might be different from the course price
+        self._update_price(lead_id=lead_id)  # update lead price, cuz the particular order price might be different from the course price
         return lead_id
 
-    def update(self, status: STATUSES_NAMES) -> None:
-        """Update lead for given order"""
-        self._update_lead(lead_id=self.order.amocrm_lead.amocrm_id, status=status)  # type: ignore
+    def update(self, status: STATUSES_NAMES | None = None) -> None:
+        """
+        Updates existing lead for given order
+        https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-edit
+        """
+        data = self._get_order_as_lead()
+        data.update({"id": self.order.amocrm_lead.amocrm_id})  # type: ignore
+        if status is not None:
+            data.update({"status_id": get_b2c_pipeline_status_id(status_name=status)})
+
+        self.http.patch(
+            url="/api/v4/leads",
+            data=[data],
+        )
 
     def _create_lead(self) -> int:
         """
@@ -43,18 +54,10 @@ class AmoCRMLead(AmoDTO):
 
         return response[0]["id"]  # type: ignore
 
-    def _update_lead(self, lead_id: int, status: STATUSES_NAMES) -> None:
-        """
-        Updates existing lead
-        https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-edit
-        """
+    def _update_price(self, lead_id: int) -> None:
+        """Update lead's price to match order's price"""
         data = self._get_order_as_lead()
-        data.update(
-            {
-                "id": lead_id,
-                "status_id": get_b2c_pipeline_status_id(status_name=status),
-            }
-        )
+        data.update({"id": lead_id})
 
         self.http.patch(
             url="/api/v4/leads",
