@@ -74,6 +74,6 @@ class AmoCRMLead(AmoDTO):
         return {
             "status_id": get_b2c_pipeline_status_id(status_name=status),
             "pipeline_id": get_b2c_pipeline_id(),
-            "price": int(self.order.price),  # amocrm api requirement field to be integer
-            "created_at": int(self.order.created.timestamp()),  # amocrm api requirement to send integer timestamp
+            "price": int(self.order.price),  # amocrm api requires field to be integer
+            "created_at": int(self.order.created.timestamp()),  # amocrm api requires to send integer timestamp
         }

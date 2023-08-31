@@ -19,7 +19,7 @@ class AmoCRMTransaction(AmoDTO):
             data=[
                 {
                     "comment": f"Order slug in lms: {self.order.slug}",
-                    "price": int(self.order.price),  # amocrm api requirement field to be integer
+                    "price": int(self.order.price),  # amocrm api requires field to be integer
                     "_embedded": {
                         "catalog_elements": [
                             {
