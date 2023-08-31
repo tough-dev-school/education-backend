@@ -38,7 +38,7 @@ class AmoCRMLeadCreator(BaseService):
         return self.client.create_lead(
             status_id=get_b2c_pipeline_status_id(status_name="first_contact"),
             pipeline_id=get_b2c_pipeline_id(),
-            contact_id=self.order.user.amocrm_user_contact.amocrm_id,
+            contact_id=self.order.user.amocrm_user.contact_id,
             price=self.order.price,
             created_at=self.order.created,
         )
@@ -97,5 +97,5 @@ class AmoCRMLeadCreator(BaseService):
             raise AmoCRMLeadCreatorException("Course doesn't exist in AmoCRM")
 
     def validate_amocrm_contact_exist(self) -> None:
-        if not hasattr(self.order.user, "amocrm_user_contact"):
+        if not hasattr(self.order.user, "amocrm_user"):
             raise AmoCRMLeadCreatorException("AmoCRM contact for order's user doesn't exist")

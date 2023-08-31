@@ -12,7 +12,7 @@ def _settings_amocrm(settings):
 
 @pytest.fixture
 def amocrm_user(factory, user):
-    return factory.amocrm_user(user=user)
+    return factory.amocrm_user(user=user, customer_id=4444, contact_id=5555)
 
 
 @pytest.fixture

@@ -9,4 +9,5 @@ class AmoCRMUser(TimestampedModel):
     """
 
     user = models.OneToOneField("users.User", on_delete=models.PROTECT, related_name="amocrm_user")
-    amocrm_id = models.PositiveIntegerField(null=False, blank=False, unique=True)
+    customer_id = models.PositiveIntegerField(null=False, blank=False, unique=True)
+    contact_id = models.PositiveIntegerField(null=False, blank=False, unique=True)
