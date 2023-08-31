@@ -1,5 +1,6 @@
 import pytest
 
+from amocrm.models import AmoCRMOrderTransaction
 from amocrm.services.orders.order_returner import AmoCRMOrderReturner
 
 pytestmark = [
@@ -34,3 +35,9 @@ def test_correct_calls(order_deleter, unpaid_order, mock_update_lead, mock_delet
 
     mock_update_lead.assert_called_once_with(status="closed")
     mock_delete_transaction.assert_called_once()
+
+
+def test_delete_transaction(order_deleter, unpaid_order, mock_update_lead, mock_delete_transaction):
+    order_deleter(unpaid_order)
+
+    assert AmoCRMOrderTransaction.objects.count() == 0
