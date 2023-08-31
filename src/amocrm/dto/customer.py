@@ -31,7 +31,7 @@ class AmoCRMCustomer(AmoDTO):
         """
         response = self.http.post(
             url="/api/v4/customers",
-            data=[self._user_as_customer],
+            data=[self._get_user_as_customer()],
         )
 
         return response["_embedded"]["customers"][0]["id"]
@@ -41,7 +41,7 @@ class AmoCRMCustomer(AmoDTO):
         Updates existing in amocrm customer
         https://www.amocrm.ru/developers/content/crm_platform/customers-api#customers-edit
         """
-        data = self._user_as_customer
+        data = self._get_user_as_customer()
         data.update({"id": customer_id})
 
         self.http.patch(
@@ -56,7 +56,7 @@ class AmoCRMCustomer(AmoDTO):
         """
         response = self.http.post(
             url="/api/v4/contacts",
-            data=[self._user_as_contact],
+            data=[self._get_user_as_contact()],
         )
 
         return response["_embedded"]["contacts"][0]["id"]
@@ -66,7 +66,7 @@ class AmoCRMCustomer(AmoDTO):
         Updates existing in amocrm contact
         https://www.amocrm.ru/developers/content/crm_platform/contacts-api#contacts-edit
         """
-        data = self._user_as_contact
+        data = self._get_user_as_contact()
         data.update({"id": contact_id})
 
         self.http.patch(
@@ -89,8 +89,7 @@ class AmoCRMCustomer(AmoDTO):
             ],
         )
 
-    @property
-    def _user_as_customer(self) -> dict:
+    def _get_user_as_customer(self) -> dict:
         return {
             "name": str(self.user),
             "_embedded": {
@@ -98,8 +97,7 @@ class AmoCRMCustomer(AmoDTO):
             },
         }
 
-    @property
-    def _user_as_contact(self) -> dict:
+    def _get_user_as_contact(self) -> dict:
         return {
             "name": str(self.user),
             "custom_fields_values": [
