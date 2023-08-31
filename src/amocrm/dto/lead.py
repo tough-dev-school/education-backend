@@ -28,8 +28,13 @@ class AmoCRMLead(AmoDTO):
         Create lead and returns amocrm_id
         https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-complex-add
         """
-        data = self._get_order_as_lead(status="first_contact")
-        data.update({"_embedded": {"contacts": [{"id": self.order.user.amocrm_user.contact_id}]}})
+        data = self._get_order_as_lead()
+        data.update(
+            {
+                "_embedded": {"contacts": [{"id": self.order.user.amocrm_user.contact_id}]},
+                "status_id": get_b2c_pipeline_status_id(status_name="first_contact"),
+            }
+        )
 
         response = self.http.post(
             url="/api/v4/leads/complex",
@@ -43,8 +48,13 @@ class AmoCRMLead(AmoDTO):
         Updates existing lead
         https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-edit
         """
-        data = self._get_order_as_lead(status=status)
-        data.update({"id": lead_id})
+        data = self._get_order_as_lead()
+        data.update(
+            {
+                "id": lead_id,
+                "status_id": get_b2c_pipeline_status_id(status_name=status),
+            }
+        )
 
         self.http.patch(
             url="/api/v4/leads",
@@ -70,9 +80,8 @@ class AmoCRMLead(AmoDTO):
             ],
         )
 
-    def _get_order_as_lead(self, status: STATUSES_NAMES) -> dict:
+    def _get_order_as_lead(self) -> dict:
         return {
-            "status_id": get_b2c_pipeline_status_id(status_name=status),
             "pipeline_id": get_b2c_pipeline_id(),
             "price": int(self.order.price),  # amocrm api requires field to be integer
             "created_at": int(self.order.created.timestamp()),  # amocrm api requires to send integer timestamp
