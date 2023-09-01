@@ -42,18 +42,11 @@ def _successful_response(patch):
     }
 
 
-@pytest.fixture
-def _groups(factory):
-    factory.group(slug="popug")
-    group_with_amo = factory.group(slug="hehe")
-    factory.amocrm_group(group=group_with_amo, amocrm_id=333)
-
-
 @pytest.mark.usefixtures("_successful_response")
 def test_response(patch):
     groups = Group.objects.all()
 
-    got = AmoCRMGroup(groups=groups).push_groups()
+    got = AmoCRMGroup(groups=groups).push()
 
     assert got == {"popug": 6453, "hehe": 6457}
 
@@ -62,7 +55,7 @@ def test_response(patch):
 def test_call(patch):
     groups = Group.objects.all()
 
-    AmoCRMGroup(groups=groups).push_groups()
+    AmoCRMGroup(groups=groups).push()
 
     patch.assert_called_once_with(
         url="/api/v4/catalogs/900/custom_fields",

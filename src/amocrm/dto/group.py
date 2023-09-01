@@ -17,7 +17,7 @@ class AmoCRMGroup(AmoDTO):
 
     groups: QuerySet[Group]
 
-    def push_groups(self) -> dict[str, int]:
+    def push(self) -> dict[str, int]:
         """
         Updates product catalog field
         returns list of pairs of group_slug: amocrm_id
