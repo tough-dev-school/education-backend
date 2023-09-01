@@ -11,7 +11,7 @@ class AmoCRMProduct(AmoDTO):
     course: Course
 
     def create(self) -> int:
-        """Create product in amocrm and returns it's amocrm_id"""
+        """Create product in amocrm and returns its amocrm_id"""
         response = self.http.post(
             url=f"/api/v4/catalogs/{get_catalog_id(catalog_type='products')}/elements",
             data=[self._get_course_as_product()],
