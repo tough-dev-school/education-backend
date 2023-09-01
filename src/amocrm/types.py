@@ -51,60 +51,55 @@ class AmoCRMCatalogField:
 
 
 @dataclass(frozen=True)
-class AmoCRMCatalogElementFieldValue:
-    value: str | int | Decimal
+class AmoCRMEntityLinkMetadata:
+    main_contact: bool | None = None
+    catalog_id: int | None = None
+    price_id: int | None = None
+    quantity: int = 1
 
     def to_json(self) -> dict:
-        return {"value": str(self.value)}  # it stores as string in amocrm
-
-    @classmethod
-    def from_json(cls, data: dict) -> "AmoCRMCatalogElementFieldValue":
-        return cls(value=data["value"])
+        return {key: value for key, value in asdict(self).items() if value is not None}
 
 
 @dataclass(frozen=True)
-class AmoCRMCatalogElementField:
+class AmoCRMEntityLink:
     """
-    https://www.amocrm.ru/developers/content/crm_platform/custom-fields
+    https://www.amocrm.ru/developers/content/crm_platform/entity-links-api#links-link
     """
 
-    field_id: int
-    values: list[AmoCRMCatalogElementFieldValue]
+    to_entity_id: int
+    to_entity_type: ENTITY_TYPES
+    metadata: AmoCRMEntityLinkMetadata | None = None
 
     def to_json(self) -> dict:
-        return {"field_id": self.field_id, "values": [value.to_json() for value in self.values]}
-
-    @classmethod
-    def from_json(cls, data: dict) -> "AmoCRMCatalogElementField":
-        return cls(field_id=data["field_id"], values=[AmoCRMCatalogElementFieldValue.from_json(nested_data) for nested_data in data["values"]])
-
-
-@dataclass(frozen=True)
-class AmoCRMCatalogElement:
-    name: str
-    custom_fields_values: list[AmoCRMCatalogElementField]
-    id: int | None = None
-
-    def to_json(self) -> dict:
-        if self.id is None:
+        if self.metadata is None:
             return {
-                "name": self.name,
-                "custom_fields_values": [field_value.to_json() for field_value in self.custom_fields_values],
+                "to_entity_id": self.to_entity_id,
+                "to_entity_type": self.to_entity_type,
             }
         else:
-            return {
-                "id": self.id,
-                "name": self.name,
-                "custom_fields_values": [field_value.to_json() for field_value in self.custom_fields_values],
-            }
+            return {"to_entity_id": self.to_entity_id, "to_entity_type": self.to_entity_type, "metadata": self.metadata.to_json()}
 
-    @classmethod
-    def from_json(cls, data: dict) -> "AmoCRMCatalogElement":
-        return cls(
-            id=data["id"],
-            name=data["name"],
-            custom_fields_values=[AmoCRMCatalogElementField.from_json(field_value) for field_value in data["custom_fields_values"]],
-        )
+
+@dataclass(frozen=True)
+class AmoCRMTransactionElementMetadata:
+    catalog_id: int | None = None
+    quantity: int = 1
+
+    def to_json(self) -> dict:
+        return {key: value for key, value in asdict(self).items() if value is not None}
+
+
+@dataclass(frozen=True)
+class AmoCRMTransactionElement:
+    id: int
+    metadata: AmoCRMTransactionElementMetadata
+
+    def to_json(self) -> dict:
+        return {
+            "id": self.id,
+            "metadata": self.metadata.to_json(),
+        }
 
 
 @dataclass(frozen=True)
