@@ -64,6 +64,7 @@ def test_create_lead_if_no_lead_not_paid(not_paid_order_without_lead):
     """Поступил новый открытый заказ, аналогичной сделки в Амо еще нет - создается новая сделка в Амо"""
     AmoCRMOrderPusher(order=not_paid_order_without_lead)()
 
+    not_paid_order_without_lead.refresh_from_db()
     assert not_paid_order_without_lead.amocrm_lead.amocrm_id == 11111
 
 
@@ -72,6 +73,7 @@ def test_create_order_if_paid(paid_order_with_lead, mock_update_lead):
     """Поступила оплата заказа - пушим весь заказ (обновляем Сделку и создаем Покупку)"""
     AmoCRMOrderPusher(order=paid_order_with_lead)()
 
+    paid_order_with_lead.refresh_from_db()
     assert paid_order_with_lead.amocrm_transaction.amocrm_id == 22222
     mock_update_lead.assert_called_once_with(status="purchased")
 
@@ -81,6 +83,7 @@ def test_relink_new_not_paid_order(not_paid_order_without_lead, mock_update_lead
     """Поступил новый открытый заказ, но аналогичная сделка уже есть в Амо - привязываем сделку к текущему заказу и обновляем сделку в Амо"""
     AmoCRMOrderPusher(order=not_paid_order_without_lead)()
 
+    not_paid_order_without_lead.refresh_from_db()
     assert not_paid_order_without_lead.amocrm_lead == amocrm_lead
     mock_update_lead.assert_called_once()
 
@@ -90,6 +93,7 @@ def test_relink_and_create_order_if_paid(paid_order_without_lead, amocrm_lead, m
     """Поступила оплата по заказу, но соответствующая сделка привязана к другому аналогичному заказу - привязываем сделку к текущему заказу и пушим в Амо"""
     AmoCRMOrderPusher(order=paid_order_without_lead)()
 
+    paid_order_without_lead.refresh_from_db()
     assert paid_order_without_lead.amocrm_lead == amocrm_lead
     assert paid_order_without_lead.amocrm_transaction.amocrm_id == 22222
     mock_update_lead.assert_called_once_with(status="purchased")
@@ -103,6 +107,7 @@ def test_relink_new_not_paid_order_from_returned(not_paid_order_without_lead, am
     """
     AmoCRMOrderPusher(order=not_paid_order_without_lead)()
 
+    not_paid_order_without_lead.refresh_from_db()
     assert not_paid_order_without_lead.amocrm_lead == amocrm_lead
     mock_update_lead.assert_called_once()
 
