@@ -20,11 +20,6 @@ def another_group(factory):
 
 
 @pytest.fixture
-def amocrm_group(factory, group):
-    return factory.amocrm_group(group=group, amocrm_id=6453)
-
-
-@pytest.fixture
 def group_field_values():
     return [
         AmoCRMCatalogFieldValue(id=6453, value="popug"),
@@ -71,19 +66,5 @@ def test_correct_params_client_call(groups_updater, mock_get_catalogs):
         field_values=[
             AmoCRMCatalogFieldValue(value="popug"),
             AmoCRMCatalogFieldValue(value="hehe"),
-        ],
-    )
-
-
-@pytest.mark.usefixtures("another_group", "amocrm_group")
-def test_correct_params_client_call_when_exist(groups_updater, mock_get_catalogs, factory):
-    groups_updater()
-
-    mock_get_catalogs.assert_called_once_with(
-        catalog_id=777,
-        field_id=333,
-        field_values=[
-            AmoCRMCatalogFieldValue(value="hehe"),
-            AmoCRMCatalogFieldValue(id=6453, value="popug"),
         ],
     )

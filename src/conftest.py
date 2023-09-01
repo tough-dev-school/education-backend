@@ -10,7 +10,6 @@ pytest_plugins = [
     "diplomas.factory",
     "products.factory",
     "products.fixtures",
-    "amocrm.factory",
 ]
 
 

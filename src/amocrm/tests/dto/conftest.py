@@ -27,10 +27,15 @@ def user(user):
 
 @pytest.fixture
 def order(amocrm_user, amocrm_course, factory):
-    order = factory.order(user=amocrm_user.user, course=amocrm_course.course, price=Decimal(100), slug="Gu2g7SXFxfepif4UkLNhzx")
+    order = factory.order(
+        user=amocrm_user.user,
+        course=amocrm_course.course,
+        price=Decimal(100),
+        slug="Gu2g7SXFxfepif4UkLNhzx",
+        amocrm_transaction__amocrm_id=22222,
+        amocrm_lead__amocrm_id=11111,
+    )
     order.created = datetime.fromtimestamp(1672520400, tz=timezone.get_current_timezone())
-    factory.amocrm_order_transaction(amocrm_id=22222, order=order)
-    factory.amocrm_order_lead(amocrm_id=11111, order=order)
     order.save()
     return order
 

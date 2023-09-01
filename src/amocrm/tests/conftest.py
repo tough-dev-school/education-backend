@@ -11,13 +11,13 @@ def _settings_amocrm(settings):
 
 
 @pytest.fixture
-def amocrm_user(factory, user):
-    return factory.amocrm_user(user=user, customer_id=4444, contact_id=5555)
+def amocrm_user(mixer, user):
+    return mixer.blend("amocrm.AmoCRMUser", user=user, customer_id=4444, contact_id=5555)
 
 
 @pytest.fixture
-def amocrm_course(factory, course):
-    return factory.amocrm_course(course=course, amocrm_id=999111)
+def amocrm_course(mixer, course):
+    return mixer.blend("amocrm.AmoCRMCourse", course=course, amocrm_id=999111)
 
 
 @pytest.fixture(autouse=True)

@@ -2,8 +2,6 @@ import pytest
 
 from _decimal import Decimal
 
-from amocrm.models import AmoCRMOrderLead
-from amocrm.models import AmoCRMOrderTransaction
 from amocrm.services.orders.order_pusher import AmoCRMOrderPusher
 from amocrm.services.orders.order_pusher import AmoCRMOrderPusherException
 
@@ -40,11 +38,6 @@ def mock_push_order(mocker):
 
 
 @pytest.fixture
-def amocrm_lead(factory):
-    return factory.amocrm_order_lead()
-
-
-@pytest.fixture
 def paid_order_without_lead(user, course, factory):
     return factory.order(user=user, course=course, is_paid=True, author=user)
 
@@ -71,7 +64,7 @@ def test_create_lead_if_no_lead_not_paid(not_paid_order_without_lead):
     """Поступил новый открытый заказ, аналогичной сделки в Амо еще нет - создается новая сделка в Амо"""
     AmoCRMOrderPusher(order=not_paid_order_without_lead)()
 
-    assert AmoCRMOrderLead.objects.get().amocrm_id == 11111
+    assert not_paid_order_without_lead.amocrm_lead.amocrm_id == 11111
 
 
 @pytest.mark.usefixtures("mock_create_transaction")
@@ -79,7 +72,7 @@ def test_create_order_if_paid(paid_order_with_lead, mock_update_lead):
     """Поступила оплата заказа - пушим весь заказ (обновляем Сделку и создаем Покупку)"""
     AmoCRMOrderPusher(order=paid_order_with_lead)()
 
-    assert AmoCRMOrderTransaction.objects.get().amocrm_id == 22222
+    assert paid_order_with_lead.amocrm_transaction.amocrm_id == 22222
     mock_update_lead.assert_called_once_with(status="purchased")
 
 
@@ -98,7 +91,7 @@ def test_relink_and_create_order_if_paid(paid_order_without_lead, amocrm_lead, m
     AmoCRMOrderPusher(order=paid_order_without_lead)()
 
     assert paid_order_without_lead.amocrm_lead == amocrm_lead
-    assert AmoCRMOrderTransaction.objects.get().amocrm_id == 22222
+    assert paid_order_without_lead.amocrm_transaction.amocrm_id == 22222
     mock_update_lead.assert_called_once_with(status="purchased")
 
 
