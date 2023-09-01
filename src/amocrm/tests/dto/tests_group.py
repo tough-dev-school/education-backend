@@ -1,0 +1,78 @@
+import pytest
+
+from amocrm.dto import AmoCRMGroup
+from products.models import Group
+
+pytestmark = [
+    pytest.mark.django_db,
+]
+
+
+@pytest.fixture
+def _successful_response(patch):
+    patch.return_value = {
+        "_total_items": 1,
+        "_embedded": {
+            "custom_fields": [
+                {
+                    "id": 2235149,
+                    "name": "Группа",
+                    "type": "category",
+                    "account_id": 31204626,
+                    "code": "GROUP",
+                    "sort": 511,
+                    "is_api_only": False,
+                    "enums": None,
+                    "request_id": "0",
+                    "catalog_id": 11271,
+                    "is_visible": True,
+                    "triggers": [],
+                    "is_deletable": False,
+                    "is_required": False,
+                    "search_in": None,
+                    "nested": [
+                        {"id": 6453, "parent_id": None, "value": "popug", "sort": 0},
+                        {"id": 6457, "parent_id": None, "value": "hehe", "sort": 1},
+                    ],
+                    "entity_type": "catalogs",
+                    "_links": {"self": {"href": "https://test.amocrm.ru/api/v4/catalogs/11271/custom_fields/2235149"}},
+                }
+            ]
+        },
+    }
+
+
+@pytest.fixture
+def _groups(factory):
+    factory.group(slug="popug")
+    group_with_amo = factory.group(slug="hehe")
+    factory.amocrm_group(group=group_with_amo, amocrm_id=333)
+
+
+@pytest.mark.usefixtures("_successful_response")
+def test_response(patch):
+    groups = Group.objects.all()
+
+    got = AmoCRMGroup(groups=groups).push_groups()
+
+    assert got == {"popug": 6453, "hehe": 6457}
+
+
+@pytest.mark.usefixtures("_groups")
+def test_call(patch):
+    groups = Group.objects.all()
+
+    AmoCRMGroup(groups=groups).push_groups()
+
+    patch.assert_called_once_with(
+        url="/api/v4/catalogs/900/custom_fields",
+        data=[
+            {
+                "id": 800,
+                "nested": [
+                    {"value": "popug"},
+                    {"id": 333, "value": "hehe"},
+                ],
+            },
+        ],
+    )

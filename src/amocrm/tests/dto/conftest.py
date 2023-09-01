@@ -11,6 +11,8 @@ def _mock_cached_fields_id(mocker):
     mocker.patch("amocrm.dto.customer.get_contact_field_id", return_value=2235143)
     mocker.patch("amocrm.dto.product.get_product_field_id", return_value=800)
     mocker.patch("amocrm.dto.product.get_catalog_id", return_value=900)
+    mocker.patch("amocrm.dto.group.get_product_field_id", return_value=800)
+    mocker.patch("amocrm.dto.group.get_catalog_id", return_value=900)
 
 
 @pytest.fixture
