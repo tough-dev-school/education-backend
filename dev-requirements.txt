@@ -117,7 +117,7 @@ django==4.1.10
     #   education-backend (pyproject.toml)
 django-anymail==10.1
     # via education-backend (pyproject.toml)
-django-axes==6.1.0
+django-axes==6.1.1
     # via education-backend (pyproject.toml)
 django-behaviors==0.5.1
     # via education-backend (pyproject.toml)
