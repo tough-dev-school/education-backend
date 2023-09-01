@@ -13,6 +13,10 @@ def _mock_cached_fields_id(mocker):
     mocker.patch("amocrm.dto.product.get_catalog_id", return_value=900)
     mocker.patch("amocrm.dto.group.get_product_field_id", return_value=800)
     mocker.patch("amocrm.dto.group.get_catalog_id", return_value=900)
+    mocker.patch("amocrm.dto.lead.get_catalog_id", return_value=777)
+    mocker.patch("amocrm.dto.transaction.get_catalog_id", return_value=777)
+    mocker.patch("amocrm.dto.lead.get_b2c_pipeline_id", return_value=555)
+    mocker.patch("amocrm.dto.lead.get_b2c_pipeline_status_id", return_value=333)
 
 
 @pytest.fixture
@@ -27,13 +31,28 @@ def user(user):
 
 @pytest.fixture
 def course(amocrm_course, factory):
-    group = factory.group(slug="popug-group")
-    amocrm_course.course.name = "Popug"
-    amocrm_course.course.slug = "popug-003"
-    amocrm_course.course.price = 200
-    amocrm_course.course.group = group
-    amocrm_course.course.save()
-    return amocrm_course.course
+    return factory.course(
+        name="Popug",
+        slug="popug-003",
+        price=200,
+        group__slug="popug-group",
+        amocrm_course=amocrm_course,
+    )
+
+
+@pytest.fixture
+def order(amocrm_user, course, factory):
+    order = factory.order(
+        user=amocrm_user.user,
+        course=course,
+        price=Decimal(100),
+        slug="Gu2g7SXFxfepif4UkLNhzx",
+        amocrm_transaction__amocrm_id=22222,
+        amocrm_lead__amocrm_id=11111,
+    )
+    order.created = datetime.fromtimestamp(1672520400, tz=timezone.get_current_timezone())
+    order.save()
+    return order
 
 
 @pytest.fixture

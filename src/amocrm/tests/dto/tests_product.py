@@ -69,7 +69,7 @@ def test_update(course, patch):
         url="/api/v4/catalogs/900/elements",
         data=[
             {
-                "id": 7777,
+                "id": 999111,
                 "name": "Popug",
                 "custom_fields_values": [
                     {"field_id": 800, "values": [{"value": "200"}]},

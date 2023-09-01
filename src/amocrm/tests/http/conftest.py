@@ -12,18 +12,8 @@ def _cached_tokens():
 
 
 @pytest.fixture
-def amocrm_client(settings) -> AmoCRMClient:
+def amocrm_client() -> AmoCRMClient:
     return AmoCRMClient()
-
-
-@pytest.fixture
-def post(mocker):
-    return mocker.patch("amocrm.client.http.AmoCRMHTTP.post")
-
-
-@pytest.fixture
-def patch(mocker):
-    return mocker.patch("amocrm.client.http.AmoCRMHTTP.patch")
 
 
 @pytest.fixture

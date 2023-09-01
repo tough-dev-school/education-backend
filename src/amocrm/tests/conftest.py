@@ -16,8 +16,8 @@ def amocrm_user(mixer, user):
 
 
 @pytest.fixture
-def amocrm_course(factory, course):
-    return factory.amocrm_course(course=course, amocrm_id=7777)
+def amocrm_course(mixer, course):
+    return mixer.blend("amocrm.AmoCRMCourse", course=course, amocrm_id=999111)
 
 
 @pytest.fixture(autouse=True)
@@ -28,7 +28,7 @@ def _mock_tasks_with_paid_setter(mocker):
 
 
 @pytest.fixture
-def _groups(factory):
+def _groups(factory, mixer):
     factory.group(slug="popug")
-    group_with_amo = factory.group(slug="hehe")
-    factory.amocrm_group(group=group_with_amo, amocrm_id=333)
+    group_with_amocrm_group = factory.group(slug="hehe")
+    mixer.blend("amocrm.AmoCRMProductGroup", group=group_with_amocrm_group, amocrm_id=333)
