@@ -16,8 +16,8 @@ def amocrm_user(mixer, user):
 
 
 @pytest.fixture
-def amocrm_course(mixer, course):
-    return mixer.blend("amocrm.AmoCRMCourse", course=course, amocrm_id=999111)
+def amocrm_course(factory, course):
+    return factory.amocrm_course(course=course, amocrm_id=7777)
 
 
 @pytest.fixture(autouse=True)
