@@ -1,16 +1,9 @@
-from datetime import datetime
-
-from _decimal import Decimal
-
 from amocrm.client.http import AmoCRMHTTP
 from amocrm.types import AmoCRMCatalog
 from amocrm.types import AmoCRMCatalogElement
 from amocrm.types import AmoCRMCatalogField
 from amocrm.types import AmoCRMCatalogFieldValue
-from amocrm.types import AmoCRMEntityLink
 from amocrm.types import AmoCRMPipeline
-from amocrm.types import AmoCRMTransactionElement
-from amocrm.types import ENTITY_TYPES
 
 
 class AmoCRMClient:
@@ -69,86 +62,6 @@ class AmoCRMClient:
             data=[element.to_json()],
         )
         return AmoCRMCatalogElement.from_json(response["_embedded"]["elements"][0])
-
-    def link_entity_to_another_entity(self, entity_type: ENTITY_TYPES, entity_id: int, entity_to_link: AmoCRMEntityLink) -> None:
-        """
-        Setup link in AmoCRM between two different type entities
-
-        contact to customer | product to amocrm_lead | contact to amocrm_lead | etc
-        """
-        self.http.post(url=f"/api/v4/{entity_type}/{entity_id}/link", data=[entity_to_link.to_json()])
-
-    def create_lead(self, status_id: int, pipeline_id: int, contact_id: int, price: int | float | Decimal, created_at: datetime) -> int:
-        """
-        Creates amocrm_lead with contact in amocrm and returns its amocrm_id
-
-        https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-complex-add
-        """
-        response = self.http.post(
-            url="/api/v4/leads/complex",
-            data=[
-                {
-                    "status_id": status_id,
-                    "pipeline_id": pipeline_id,
-                    "price": int(price),  # amocrm api requirement to send only integer
-                    "created_at": int(created_at.timestamp()),  # amocrm api requirement to send only integer timestamp
-                    "_embedded": {"contacts": [{"id": contact_id}]},
-                }
-            ],
-        )
-
-        return response[0]["id"]  # type: ignore
-
-    def update_lead(self, lead_id: int, status_id: int, pipeline_id: int, price: int | float | Decimal, created_at: datetime) -> int:
-        """
-        Updates amocrm_lead in amocrm and returns its amocrm_id
-
-        https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-edit
-        """
-        response = self.http.patch(
-            url="/api/v4/leads",
-            data=[
-                {
-                    "id": lead_id,
-                    "status_id": status_id,
-                    "pipeline_id": pipeline_id,
-                    "price": int(price),  # amocrm api requirement to send only integer
-                    "created_at": int(created_at.timestamp()),  # amocrm api requirement to send only integer timestamp
-                }
-            ],
-        )
-
-        return response["_embedded"]["leads"][0]["id"]
-
-    def create_customer_transaction(self, customer_id: int, price: int | float | Decimal, order_slug: str, purchased_product: AmoCRMTransactionElement) -> int:
-        """
-        Creates transaction for customer and returns its amocrm_id
-
-        https://www.amocrm.ru/developers/content/crm_platform/customers-api#transactions-add
-        """
-        response = self.http.post(
-            url=f"/api/v4/customers/{customer_id}/transactions",
-            data=[
-                {
-                    "comment": f"Order slug in lms: {order_slug}",
-                    "price": int(price),  # amocrm api requirement to send only integer
-                    "_embedded": {"catalog_elements": [purchased_product.to_json()]},
-                }
-            ],
-        )
-
-        return response["_embedded"]["transactions"][0]["id"]
-
-    def delete_transaction(self, transaction_id: int) -> None:
-        """
-        Deletes transaction for customer
-
-        https://www.amocrm.ru/developers/content/crm_platform/customers-api#transactions-delete
-        """
-        self.http.delete(
-            url=f"/api/v4/customers/transactions/{transaction_id}",
-            expected_status_codes=[204],
-        )
 
     def get_pipelines(self) -> list[AmoCRMPipeline]:
         """

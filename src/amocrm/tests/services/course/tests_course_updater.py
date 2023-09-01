@@ -15,8 +15,8 @@ def _mock_fields_id(mocker):
 
 
 @pytest.fixture
-def amocrm_course(factory, course):
-    return factory.amocrm_course(course=course, amocrm_id=999)
+def amocrm_course(mixer, course):
+    return mixer.blend("amocrm.AmoCRMCourse", course=course, amocrm_id=999)
 
 
 @pytest.fixture

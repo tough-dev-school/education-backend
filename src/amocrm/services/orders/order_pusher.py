@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 
+from amocrm.dto import AmoCRMLead
+from amocrm.dto import AmoCRMTransaction
 from amocrm.exceptions import AmoCRMServiceException
 from amocrm.models import AmoCRMOrderLead
-from amocrm.services.orders.lead_creator import AmoCRMLeadCreator
-from amocrm.services.orders.lead_updater import AmoCRMLeadUpdater
-from amocrm.services.orders.order_creator import AmoCRMOrderCreator
+from amocrm.models import AmoCRMOrderTransaction
 from app.services import BaseService
 from orders.models import Order
 
@@ -15,9 +15,7 @@ class AmoCRMOrderPusherException(AmoCRMServiceException):
 
 @dataclass
 class AmoCRMOrderPusher(BaseService):
-    """
-    Push given order to amocrm
-    """
+    """Push given order to amocrm"""
 
     order: Order
 
@@ -36,16 +34,26 @@ class AmoCRMOrderPusher(BaseService):
             raise AmoCRMOrderPusherException("Cannot push paid order without existing lead")
         if existing_lead.order != self.order:
             self.relink_lead(order=self.order, lead=existing_lead)
-        AmoCRMOrderCreator(order=self.order)()
+        self.create_order()
 
     def push_lead(self) -> None:
         existing_lead = self.get_lead()
         if existing_lead is None:
-            AmoCRMLeadCreator(order=self.order)()
+            self.create_lead()
         else:
             if existing_lead.order != self.order:
                 self.relink_lead(order=self.order, lead=existing_lead)
-                AmoCRMLeadUpdater(order=self.order)()
+                AmoCRMLead(order=self.order).update()  # actualize lead's price and created_at
+
+    def create_lead(self) -> None:
+        lead_id = AmoCRMLead(order=self.order).create()
+        AmoCRMOrderLead.objects.create(amocrm_id=lead_id, order=self.order)  # type: ignore
+
+    def create_order(self) -> None:
+        AmoCRMLead(order=self.order).update(status="purchased")
+        transaction_id = AmoCRMTransaction(order=self.order).create()
+
+        AmoCRMOrderTransaction.objects.create(amocrm_id=transaction_id, order=self.order)  # type: ignore
 
     def get_lead(self) -> AmoCRMOrderLead | None:
         """

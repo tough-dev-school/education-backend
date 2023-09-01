@@ -49,8 +49,6 @@ def test_creates_correct_call(course_creator, course, mock_create_catalog_elemen
     )
 
 
-def test_fails_if_already_exist(course_creator, course, factory):
-    factory.amocrm_course(course=course)
-
+def test_fails_if_already_exist(course_creator, course, amocrm_course):
     with pytest.raises(AmoCRMCourseCreatorException):
         course_creator(course)

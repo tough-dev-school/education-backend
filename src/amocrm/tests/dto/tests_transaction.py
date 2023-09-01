@@ -1,18 +1,14 @@
 import pytest
 
-from _decimal import Decimal
-
-from amocrm.types import AmoCRMTransactionElement
-from amocrm.types import AmoCRMTransactionElementMetadata
+from amocrm.dto import AmoCRMTransaction
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.single_thread,
 ]
 
 
 @pytest.fixture
-def _successful_response(post):
+def _successful_create_transaction_response(post):
     post.return_value = {
         "_total_items": 1,
         "_embedded": {
@@ -29,24 +25,18 @@ def _successful_response(post):
     }
 
 
-@pytest.fixture
-def purchased_product():
-    metadata = AmoCRMTransactionElementMetadata(catalog_id=777, quantity=1)
-    return AmoCRMTransactionElement(id=684537, metadata=metadata)
+@pytest.mark.usefixtures("_successful_create_transaction_response")
+def test_create(order):
+    transaction_id = AmoCRMTransaction(order=order).create()
+
+    assert transaction_id == 684537
 
 
-@pytest.mark.usefixtures("_successful_response")
-def test_create_lead_request_fields(amocrm_client, post, purchased_product):
-    got = amocrm_client.create_customer_transaction(
-        customer_id=1369371,
-        price=Decimal(100.00),
-        order_slug="Gu2g7SXFxfepif4UkLNhzx",
-        purchased_product=purchased_product,
-    )
+def test_create_call(order, post):
+    AmoCRMTransaction(order=order).create()
 
-    assert got == 684537
     post.assert_called_once_with(
-        url="/api/v4/customers/1369371/transactions",
+        url="/api/v4/customers/4444/transactions",
         data=[
             {
                 "comment": "Order slug in lms: Gu2g7SXFxfepif4UkLNhzx",
@@ -54,7 +44,7 @@ def test_create_lead_request_fields(amocrm_client, post, purchased_product):
                 "_embedded": {
                     "catalog_elements": [
                         {
-                            "id": 684537,
+                            "id": 999111,
                             "metadata": {
                                 "catalog_id": 777,
                                 "quantity": 1,
@@ -64,4 +54,13 @@ def test_create_lead_request_fields(amocrm_client, post, purchased_product):
                 },
             },
         ],
+    )
+
+
+def test_delete_call(order, delete):
+    AmoCRMTransaction(order=order).delete()
+
+    delete.assert_called_once_with(
+        url="/api/v4/customers/transactions/22222",
+        expected_status_codes=[204],
     )

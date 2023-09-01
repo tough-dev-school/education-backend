@@ -9,8 +9,8 @@ def order(factory, amocrm_course, amocrm_user):
 
 
 @pytest.fixture
-def amocrm_lead(factory, order):
-    return factory.amocrm_order_lead(order=order, amocrm_id=481516)
+def amocrm_lead(mixer, order):
+    return mixer.blend("amocrm.AmoCRMOrderLead", order=order, amocrm_id=481516)
 
 
 @pytest.fixture
