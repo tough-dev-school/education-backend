@@ -47,13 +47,14 @@ class AmoCRMOrderPusher(BaseService):
 
     def create_lead(self) -> None:
         lead_id = AmoCRMLead(order=self.order).create()
-        AmoCRMOrderLead.objects.create(amocrm_id=lead_id, order=self.order)  # type: ignore
+        self.order.amocrm_lead = AmoCRMOrderLead.objects.create(amocrm_id=lead_id)
+        self.order.save()
 
     def create_order(self) -> None:
         AmoCRMLead(order=self.order).update(status="purchased")
         transaction_id = AmoCRMTransaction(order=self.order).create()
-
-        AmoCRMOrderTransaction.objects.create(amocrm_id=transaction_id, order=self.order)  # type: ignore
+        self.order.amocrm_transaction = AmoCRMOrderTransaction.objects.create(amocrm_id=transaction_id)
+        self.order.save()
 
     def get_lead(self) -> AmoCRMOrderLead | None:
         """
