@@ -2,6 +2,8 @@ import pytest
 
 from _decimal import Decimal
 
+from amocrm.models import AmoCRMOrderLead
+from amocrm.models import AmoCRMOrderTransaction
 from amocrm.services.orders.order_pusher import AmoCRMOrderPusher
 from amocrm.services.orders.order_pusher import AmoCRMOrderPusherException
 
@@ -76,6 +78,22 @@ def test_create_order_if_paid(paid_order_with_lead, mock_update_lead):
     paid_order_with_lead.refresh_from_db()
     assert paid_order_with_lead.amocrm_transaction.amocrm_id == 22222
     mock_update_lead.assert_called_once_with(status="purchased")
+
+
+@pytest.mark.usefixtures("mock_create_lead")
+def test_created_lead_is_linked(not_paid_order_without_lead):
+    """Созданная сделка должна быть прикреплена к заказу"""
+    AmoCRMOrderPusher(order=not_paid_order_without_lead)()
+
+    assert AmoCRMOrderLead.objects.get().order == not_paid_order_without_lead
+
+
+@pytest.mark.usefixtures("mock_create_transaction", "mock_update_lead")
+def test_created_transaction_is_linked(paid_order_with_lead):
+    """Созданная транзакция должна быть прикреплена к заказу"""
+    AmoCRMOrderPusher(order=paid_order_with_lead)()
+
+    assert AmoCRMOrderTransaction.objects.get().order == paid_order_with_lead
 
 
 @pytest.mark.usefixtures("not_paid_order_with_lead")
