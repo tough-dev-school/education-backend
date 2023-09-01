@@ -16,7 +16,7 @@ class AmoCRMLead(AmoDTO):
         """Create lead for given order and returns lead_id"""
         lead_id = self._create_lead()
         self._link_course_to_lead(lead_id=lead_id, course_id=self.order.course.amocrm_course.amocrm_id)
-        self._update_price(lead_id=lead_id)  # update lead price, cuz the particular order price might be different from the course price
+        self._set_price_from_order(lead_id=lead_id)  # update lead price, cuz the particular order price might be different from the course price
         return lead_id
 
     def update(self, status: STATUSES_NAMES | None = None) -> None:
@@ -54,7 +54,7 @@ class AmoCRMLead(AmoDTO):
 
         return response[0]["id"]  # type: ignore
 
-    def _update_price(self, lead_id: int) -> None:
+    def _set_price_from_order(self, lead_id: int) -> None:
         """Update lead's price to match order's price"""
         data = self._get_order_as_lead()
         data.update({"id": lead_id})

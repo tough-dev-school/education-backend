@@ -32,7 +32,7 @@ def mock_link_course_to_lead(mocker):
 
 @pytest.fixture
 def mock_update_price(mocker):
-    return mocker.patch("amocrm.dto.lead.AmoCRMLead._update_price")
+    return mocker.patch("amocrm.dto.lead.AmoCRMLead._set_price_from_order")
 
 
 @pytest.mark.usefixtures("mock_create_lead", "mock_link_course_to_lead", "mock_update_price")
