@@ -9,7 +9,7 @@ class AmoCRMGroupPusher(BaseService):
     Push all Groups to AmoCRM as ENUM options field for product
     it's necessary to save amocrm_id for ProductGroups,
     if not - next updating will set new field options with new ids but same values
-    witch will break consistency
+    which will break consistency
     """
 
     def act(self) -> None:
