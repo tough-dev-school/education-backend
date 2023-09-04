@@ -1,9 +1,25 @@
 from dataclasses import dataclass
+from typing import Annotated, NotRequired, TypedDict
 
 from amocrm.cache.catalog_id import get_catalog_id
 from amocrm.cache.product_fields_ids import get_product_field_id
 from amocrm.dto.base import AmoDTO
 from products.models import Course
+
+
+class ProductFieldValue(TypedDict):
+    value: str  # any product's value stores as string in amo
+
+
+class ProductField(TypedDict):
+    field_id: int
+    values: Annotated[list[ProductFieldValue], 1]  # we don't need to use more than 1 value per field
+
+
+class Product(TypedDict):
+    id: NotRequired[int]
+    name: str
+    custom_fields_values: list[ProductField]
 
 
 @dataclass
@@ -28,30 +44,29 @@ class AmoCRMProduct(AmoDTO):
             data=[data],
         )
 
-    def _get_course_as_product(self) -> dict:
-        price_field = {
-            "field_id": get_product_field_id(field_code="PRICE"),
-            "values": [{"value": str(self.course.price)}],  # it's stored as string in amo
-        }
-        slug_field = {
-            "field_id": get_product_field_id(field_code="SKU"),
-            "values": [{"value": self.course.slug}],
-        }
-        unit_field = {
-            "field_id": get_product_field_id(field_code="UNIT"),
-            "values": [{"value": "шт"}],  # 'piece' as unit type suits best for courses
-        }
+    def _get_course_as_product(self) -> Product:
+        price_field = ProductField(
+            field_id=get_product_field_id(field_code="PRICE"),
+            values=[ProductFieldValue(value=str(self.course.price))],
+        )
+        slug_field = ProductField(
+            field_id=get_product_field_id(field_code="SKU"),
+            values=[ProductFieldValue(value=self.course.slug)],
+        )
+        unit_field = ProductField(
+            field_id=get_product_field_id(field_code="UNIT"),
+            values=[ProductFieldValue(value="шт")],  # 'piece' as unit type suits best for courses
+        )
         fields_values = [price_field, slug_field, unit_field]
 
         if self.course.group is not None:
             fields_values.append(
-                {
-                    "field_id": get_product_field_id(field_code="GROUP"),
-                    "values": [{"value": self.course.group.slug}],
-                }
+                ProductField(
+                    field_id=get_product_field_id(field_code="GROUP"),
+                    values=[ProductFieldValue(value=self.course.group.slug)],
+                )
             )
-
-        return {
-            "name": self.course.name,
-            "custom_fields_values": fields_values,
-        }
+        return Product(
+            name=self.course.name,
+            custom_fields_values=fields_values,
+        )
