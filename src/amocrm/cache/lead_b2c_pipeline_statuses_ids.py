@@ -3,7 +3,7 @@ from typing import Literal
 from django.conf import settings
 from django.core.cache import cache
 
-from amocrm.client import AmoCRMClient
+from amocrm.dto.pipeline import AmoCRMPipeline
 from amocrm.exceptions import AmoCRMCacheException
 
 STATUSES_NAMES = Literal["unsorted", "first_contact", "purchased", "closed"]
@@ -23,16 +23,16 @@ B2C_PIPELINE = settings.AMOCRM_B2C_PIPELINE_NAME
 
 
 def get_pipeline_status_id_amocrm(status_name: STATUSES_NAMES) -> int:
-    client = AmoCRMClient()
+    amocrm_pipelines = AmoCRMPipeline().get()
 
-    pipelines = [pipeline for pipeline in client.get_pipelines() if pipeline.name == B2C_PIPELINE]
+    pipelines = [pipeline for pipeline in amocrm_pipelines if pipeline["name"] == B2C_PIPELINE]
     if len(pipelines) != 1:
         raise AmoCRMCacheException(f"Cannot retrieve {B2C_PIPELINE} pipeline")
 
     ru_status = STATUSES_NAMES_TRANSLATE[status_name]
-    for status in pipelines[0].statuses:
-        if status.name == ru_status:
-            return status.id
+    for status in pipelines[0]["statuses"]:
+        if status["name"] == ru_status:
+            return status["id"]
 
     raise AmoCRMCacheException(f"Cannot retrieve {status_name} ({ru_status}) status in {B2C_PIPELINE} pipeline")
 

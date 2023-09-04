@@ -3,9 +3,9 @@ import pytest
 from django.core.cache import cache
 
 from amocrm.cache.lead_b2c_pipeline_statuses_ids import get_b2c_pipeline_status_id
+from amocrm.dto.pipeline import Pipeline
+from amocrm.dto.pipeline import PipelineStatus
 from amocrm.exceptions import AmoCRMCacheException
-from amocrm.types import AmoCRMPipeline
-from amocrm.types import AmoCRMPipelineStatus
 
 pytestmark = [
     pytest.mark.django_db,
@@ -15,30 +15,30 @@ pytestmark = [
 
 @pytest.fixture
 def chosen_course_status():
-    return AmoCRMPipelineStatus(id=5, name="новое обращение")
+    return PipelineStatus(id=5, name="новое обращение")
 
 
 @pytest.fixture
 def b2c_pipeline(chosen_course_status):
-    return AmoCRMPipeline(id=333, name="b2c", statuses=[chosen_course_status])
+    return Pipeline(id=333, name="b2c", statuses=[chosen_course_status])
 
 
 @pytest.fixture
 def pipelines(b2c_pipeline):
-    return [b2c_pipeline, AmoCRMPipeline(id=111, name="b2b", statuses=[AmoCRMPipelineStatus(id=10, name="hm status")])]
+    return [b2c_pipeline, Pipeline(id=111, name="b2b", statuses=[PipelineStatus(id=10, name="hm status")])]
 
 
 @pytest.fixture(autouse=True)
 def mock_get_pipelines(mocker, pipelines):
-    return mocker.patch("amocrm.client.AmoCRMClient.get_pipelines", return_value=pipelines)
+    return mocker.patch("amocrm.dto.pipeline.AmoCRMPipeline.get", return_value=pipelines)
 
 
 def test_return_pipeline_status_if_in_cache(chosen_course_status, mock_get_pipelines):
-    cache.set("amocrm_b2c_first_contact_status_id", chosen_course_status.id)
+    cache.set("amocrm_b2c_first_contact_status_id", chosen_course_status["id"])
 
     got = get_b2c_pipeline_status_id(status_name="first_contact")
 
-    assert got == chosen_course_status.id
+    assert got == chosen_course_status["id"]
     mock_get_pipelines.assert_not_called()
 
 
@@ -46,14 +46,14 @@ def test_return_pipeline_from_response_if_not_in_cache(chosen_course_status, moc
     cache.clear()
 
     got = get_b2c_pipeline_status_id(status_name="first_contact")
-    assert got == chosen_course_status.id
-    assert cache.get("amocrm_b2c_first_contact_status_id") == chosen_course_status.id
+    assert got == chosen_course_status["id"]
+    assert cache.get("amocrm_b2c_first_contact_status_id") == chosen_course_status["id"]
     mock_get_pipelines.assert_called_once()
 
 
 def test_fail_if_not_in_cache_and_pipeline_not_in_response(mock_get_pipelines):
     cache.clear()
-    mock_get_pipelines.return_value = [AmoCRMPipeline(id=111, name="b2b", statuses=[AmoCRMPipelineStatus(id=10, name="hm status")])]
+    mock_get_pipelines.return_value = [Pipeline(id=111, name="b2b", statuses=[PipelineStatus(id=10, name="hm status")])]
 
     with pytest.raises(AmoCRMCacheException, match="Cannot retrieve b2c pipeline"):
         get_b2c_pipeline_status_id(status_name="first_contact")
@@ -61,7 +61,7 @@ def test_fail_if_not_in_cache_and_pipeline_not_in_response(mock_get_pipelines):
 
 def test_fail_if_not_in_cache_and_status_not_in_response(mock_get_pipelines):
     cache.clear()
-    mock_get_pipelines.return_value = [AmoCRMPipeline(id=333, name="b2c", statuses=[AmoCRMPipelineStatus(id=7, name="Переговоры")])]
+    mock_get_pipelines.return_value = [Pipeline(id=333, name="b2c", statuses=[PipelineStatus(id=7, name="Переговоры")])]
 
     with pytest.raises(AmoCRMCacheException, match="Cannot retrieve first_contact"):
         get_b2c_pipeline_status_id(status_name="first_contact")

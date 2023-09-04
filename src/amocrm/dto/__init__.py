@@ -10,4 +10,7 @@ __all__ = [
     "AmoCRMGroups",
     "AmoCRMLead",
     "AmoCRMTransaction",
+    "AmoCRMPipeline",
 ]
+
+from amocrm.types import AmoCRMPipeline
