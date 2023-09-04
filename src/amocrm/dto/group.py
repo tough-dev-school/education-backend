@@ -12,7 +12,7 @@ from products.models import Group
 class AmoCRMGroup(AmoDTO):
     """
     Product group is just a ENUM field for Product in amocrm
-    This DTO create and update product groups in one request
+    This DTO creates and updates product groups with single request
     """
 
     groups: QuerySet[Group]
