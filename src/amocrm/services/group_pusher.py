@@ -4,7 +4,7 @@ from app.services import BaseService
 from products.models import Group
 
 
-class AmoCRMGroupPusher(BaseService):
+class AmoCRMGroupsPusher(BaseService):
     """
     Push all Groups to AmoCRM as ENUM options field for product
     it's necessary to save amocrm_id for ProductGroups,
