@@ -18,14 +18,14 @@ def mock_update(mocker):
     return mocker.patch("amocrm.dto.product.AmoCRMProduct.update")
 
 
-def test_create_call(course, mock_create):
+def test_call_create_if_amocrm_course_not_exist(course, mock_create):
     AmoCRMCoursePusher(course=course)()
 
     mock_create.assert_called_once()
 
 
 @pytest.mark.usefixtures("mock_create")
-def test_create(course):
+def test_save_amocrm_course_if_not_exist(course):
     AmoCRMCoursePusher(course=course)()
 
     amocrm_course = AmoCRMCourse.objects.get()
@@ -34,7 +34,7 @@ def test_create(course):
 
 
 @pytest.mark.usefixtures("amocrm_course")
-def test_update(course, mock_update):
+def test_update_amocrm_course_if_exist(course, mock_update):
     AmoCRMCoursePusher(course=course)()
 
     mock_update.assert_called_once()

@@ -48,7 +48,7 @@ def test_response(patch):
 
     got = AmoCRMGroup(groups=groups).push()
 
-    assert got == {"popug": 6453, "hehe": 6457}
+    assert got == [("popug", 6453), ("hehe", 6457)]
 
 
 @pytest.mark.usefixtures("_groups")

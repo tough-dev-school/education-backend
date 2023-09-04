@@ -8,7 +8,7 @@ from amocrm.client import AmoCRMClient
 from amocrm.client.http import AmoCRMClientException
 from amocrm.services.access_token_getter import AmoCRMTokenGetterException
 from amocrm.services.course_pusher import AmoCRMCoursePusher
-from amocrm.services.group_pusher import AmoCRMGroupPusher
+from amocrm.services.group_pusher import AmoCRMGroupsPusher
 from amocrm.services.orders.order_pusher import AmoCRMOrderPusher
 from amocrm.services.orders.order_returner import AmoCRMOrderReturner
 from amocrm.services.user_pusher import AmoCRMUserPusher
@@ -59,7 +59,7 @@ def return_order(order_id: int) -> None:
 
 @celery.task(base=AmoTask)
 def push_product_groups() -> None:
-    AmoCRMGroupPusher()()
+    AmoCRMGroupsPusher()()
 
 
 @celery.task(base=AmoTask)
