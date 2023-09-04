@@ -15,7 +15,7 @@ class AmoCRMGroup(AmoDTO):
     This DTO creates and updates product groups with single request
     """
 
-    groups: QuerySet[Group]
+    groups: Sequence[Group]
 
     def push(self) -> dict[str, int]:
         """
