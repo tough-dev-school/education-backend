@@ -143,7 +143,7 @@ django-split-settings==1.2.0
     # via education-backend (pyproject.toml)
 django-storages==1.14
     # via education-backend (pyproject.toml)
-django-stubs==4.2.4
+django-stubs==4.2.3
     # via
     #   djangorestframework-stubs
     #   education-backend (pyproject.toml)
