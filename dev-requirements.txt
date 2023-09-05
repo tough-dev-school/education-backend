@@ -391,7 +391,7 @@ python-dateutil==2.8.2
     #   botocore
     #   faker
     #   freezegun
-pytz==2023.3
+pytz==2023.3.post1
     # via
     #   celery
     #   djangorestframework

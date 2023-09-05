@@ -175,7 +175,7 @@ pyjwt[crypto]==2.8.0
     #   education-backend (pyproject.toml)
 python-dateutil==2.8.2
     # via botocore
-pytz==2023.3
+pytz==2023.3.post1
     # via
     #   celery
     #   djangorestframework
