@@ -16,7 +16,7 @@ astor==0.8.1
     # via flake8-simplify
 astroid==2.15.6
     # via flake8-django
-asttokens==2.3.0
+asttokens==2.4.0
     # via stack-data
 async-timeout==4.0.3
     # via redis
