@@ -1,4 +1,5 @@
 from amocrm.dto import AmoCRMGroups
+from amocrm.models import AmoCRMProductGroup
 from app.services import BaseService
 from products.models import Group
 
@@ -13,11 +14,16 @@ class AmoCRMGroupsPusher(BaseService):
 
     def act(self) -> None:
         pushed_groups = self.push_all_groups()
-
-        for group_slug, amocrm_id in pushed_groups:
-            Group.objects.filter(slug=group_slug).update(amocrm_id=amocrm_id)
+        self.save_new_groups_ids(pushed_groups=pushed_groups)
 
     @staticmethod
     def push_all_groups() -> list[tuple[str, int]]:
         groups_to_push = Group.objects.all()
         return AmoCRMGroups(groups=groups_to_push).push()
+
+    @staticmethod
+    def save_new_groups_ids(pushed_groups: list[tuple[str, int]]) -> None:
+        existing_groups_slugs = set(AmoCRMProductGroup.objects.all().select_related("group").values_list("group__slug", flat=True))
+        for group_slug, amocrm_id in pushed_groups:
+            if group_slug not in existing_groups_slugs:
+                AmoCRMProductGroup.objects.create(amocrm_id=amocrm_id, group=Group.objects.get(slug=group_slug))

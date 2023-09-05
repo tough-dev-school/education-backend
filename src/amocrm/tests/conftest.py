@@ -28,6 +28,7 @@ def _mock_tasks_with_paid_setter(mocker):
 
 
 @pytest.fixture
-def _amo_groups(factory):
+def _amocrm_groups(factory, mixer):
     factory.group(slug="popug")
-    factory.group(slug="hehe", amocrm_id=333)
+    group_with_amo = factory.group(slug="hehe")
+    mixer.blend("amocrm.AmoCRMProductGroup", amocrm_id=333, group=group_with_amo)

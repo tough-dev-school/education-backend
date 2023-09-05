@@ -13,9 +13,9 @@ def mock_group_push(mocker):
     return mocker.patch("amocrm.dto.groups.AmoCRMGroups.push", return_value=[("popug", 444), ("hehe", 333)])
 
 
-@pytest.mark.usefixtures("_amo_groups")
+@pytest.mark.usefixtures("_amocrm_groups")
 def test_save_amocrm_groups():
     AmoCRMGroupsPusher()()
 
-    assert Group.objects.get(slug="popug").amocrm_id == 444
-    assert Group.objects.get(slug="hehe").amocrm_id == 333
+    assert Group.objects.get(slug="popug").amocrm_group.amocrm_id == 444
+    assert Group.objects.get(slug="hehe").amocrm_group.amocrm_id == 333

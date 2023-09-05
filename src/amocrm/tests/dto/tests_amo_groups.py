@@ -43,7 +43,7 @@ def _successful_response(patch):
 
 
 @pytest.mark.usefixtures("_successful_response")
-def test_response(patch):
+def test_response_as_list_of_pairs(patch):
     groups = Group.objects.all()
 
     got = AmoCRMGroups(groups=groups).push()
@@ -51,8 +51,8 @@ def test_response(patch):
     assert got == [("popug", 6453), ("hehe", 6457)]
 
 
-@pytest.mark.usefixtures("_amo_groups")
-def test_call(patch):
+@pytest.mark.usefixtures("_amocrm_groups")
+def test_call_with_id_if_already_exist(patch):
     groups = Group.objects.all()
 
     AmoCRMGroups(groups=groups).push()

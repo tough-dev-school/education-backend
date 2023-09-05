@@ -37,6 +37,6 @@ class AmoCRMGroups(AmoDTO):
     @staticmethod
     def _get_group_as_product_field(group: Group) -> dict[str, str | int]:
         data: dict[str, str | int] = {"value": group.slug}
-        if group.amocrm_id is not None:
-            data.update({"id": group.amocrm_id})
+        if hasattr(group, "amocrm_group"):
+            data.update({"id": group.amocrm_group.amocrm_id})
         return data
