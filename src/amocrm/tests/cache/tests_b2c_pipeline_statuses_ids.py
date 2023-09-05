@@ -3,8 +3,6 @@ import pytest
 from django.core.cache import cache
 
 from amocrm.cache.lead_b2c_pipeline_statuses_ids import get_b2c_pipeline_status_id
-from amocrm.dto.pipelines import Pipeline
-from amocrm.dto.pipelines import PipelineStatus
 from amocrm.exceptions import AmoCRMCacheException
 
 pytestmark = [
@@ -15,17 +13,17 @@ pytestmark = [
 
 @pytest.fixture
 def chosen_course_status():
-    return PipelineStatus(id=5, name="новое обращение")
+    return dict(id=5, name="новое обращение")
 
 
 @pytest.fixture
 def b2c_pipeline(chosen_course_status):
-    return Pipeline(id=333, name="b2c", statuses=[chosen_course_status])
+    return dict(id=333, name="b2c", statuses=[chosen_course_status])
 
 
 @pytest.fixture
 def pipelines(b2c_pipeline):
-    return [b2c_pipeline, Pipeline(id=111, name="b2b", statuses=[PipelineStatus(id=10, name="hm status")])]
+    return [b2c_pipeline, dict(id=111, name="b2b", statuses=[dict(id=10, name="hm status")])]
 
 
 @pytest.fixture(autouse=True)
@@ -53,7 +51,7 @@ def test_return_pipeline_from_response_if_not_in_cache(chosen_course_status, moc
 
 def test_fail_if_not_in_cache_and_pipeline_not_in_response(mock_get_pipelines):
     cache.clear()
-    mock_get_pipelines.return_value = [Pipeline(id=111, name="b2b", statuses=[PipelineStatus(id=10, name="hm status")])]
+    mock_get_pipelines.return_value = [dict(id=111, name="b2b", statuses=[dict(id=10, name="hm status")])]
 
     with pytest.raises(AmoCRMCacheException, match="Cannot retrieve b2c pipeline"):
         get_b2c_pipeline_status_id(status_name="first_contact")
@@ -61,7 +59,7 @@ def test_fail_if_not_in_cache_and_pipeline_not_in_response(mock_get_pipelines):
 
 def test_fail_if_not_in_cache_and_status_not_in_response(mock_get_pipelines):
     cache.clear()
-    mock_get_pipelines.return_value = [Pipeline(id=333, name="b2c", statuses=[PipelineStatus(id=7, name="Переговоры")])]
+    mock_get_pipelines.return_value = [dict(id=333, name="b2c", statuses=[dict(id=7, name="Переговоры")])]
 
     with pytest.raises(AmoCRMCacheException, match="Cannot retrieve first_contact"):
         get_b2c_pipeline_status_id(status_name="first_contact")

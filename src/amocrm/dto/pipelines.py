@@ -23,15 +23,10 @@ class AmoCRMPipelines(AmoDTO):
         response = self.http.get(url="/api/v4/leads/pipelines")
         return [self._pipeline_from_response(data=pipeline) for pipeline in response["_embedded"]["pipelines"]]
 
-    def _pipeline_from_response(self, data: dict) -> Pipeline:
+    @staticmethod
+    def _pipeline_from_response(data: dict) -> Pipeline:
         return Pipeline(
             id=data["id"],
             name=data["name"],
-            statuses=[self._pipeline_status_from_response(data=status) for status in data["_embedded"]["statuses"]],
-        )
-
-    def _pipeline_status_from_response(self, data: dict) -> PipelineStatus:
-        return PipelineStatus(
-            id=data["id"],
-            name=data["name"],
+            statuses=[PipelineStatus(id=status["id"], name=status["name"]) for status in data["_embedded"]["statuses"]],
         )
