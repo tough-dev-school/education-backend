@@ -45,19 +45,19 @@ class AmoCRMProduct(AmoDTO):
         )
 
     def _get_course_as_product(self) -> Product:
-        price_field = ProductField(
+        price = ProductField(
             field_id=get_product_field_id(field_code="PRICE"),
             values=[ProductFieldValue(value=str(self.course.price))],
         )
-        slug_field = ProductField(
+        slug = ProductField(
             field_id=get_product_field_id(field_code="SKU"),
             values=[ProductFieldValue(value=self.course.slug)],
         )
-        unit_field = ProductField(
+        unit = ProductField(
             field_id=get_product_field_id(field_code="UNIT"),
             values=[ProductFieldValue(value="шт")],  # 'piece' as unit type suits best for courses
         )
-        fields_values = [price_field, slug_field, unit_field]
+        fields_values = [price, slug, unit]
 
         if self.course.group is not None:
             fields_values.append(

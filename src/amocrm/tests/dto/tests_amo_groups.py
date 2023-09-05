@@ -1,6 +1,6 @@
 import pytest
 
-from amocrm.dto import AmoCRMGroup
+from amocrm.dto import AmoCRMGroups
 from products.models import Group
 
 pytestmark = [
@@ -46,16 +46,16 @@ def _successful_response(patch):
 def test_response(patch):
     groups = Group.objects.all()
 
-    got = AmoCRMGroup(groups=groups).push()
+    got = AmoCRMGroups(groups=groups).push()
 
     assert got == [("popug", 6453), ("hehe", 6457)]
 
 
-@pytest.mark.usefixtures("_groups")
+@pytest.mark.usefixtures("_amo_groups")
 def test_call(patch):
     groups = Group.objects.all()
 
-    AmoCRMGroup(groups=groups).push()
+    AmoCRMGroups(groups=groups).push()
 
     patch.assert_called_once_with(
         url="/api/v4/catalogs/900/custom_fields",

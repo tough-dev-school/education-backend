@@ -1,4 +1,4 @@
-from amocrm.dto import AmoCRMGroup
+from amocrm.dto import AmoCRMGroups
 from app.services import BaseService
 from products.models import Group
 
@@ -20,4 +20,4 @@ class AmoCRMGroupsPusher(BaseService):
     @staticmethod
     def push_all_groups() -> list[tuple[str, int]]:
         groups_to_push = Group.objects.all()
-        return AmoCRMGroup(groups=groups_to_push).push()
+        return AmoCRMGroups(groups=groups_to_push).push()

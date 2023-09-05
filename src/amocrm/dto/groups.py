@@ -8,7 +8,7 @@ from products.models import Group
 
 
 @dataclass
-class AmoCRMGroup(AmoDTO):
+class AmoCRMGroups(AmoDTO):
     """
     Product group is just a ENUM field for Product in amocrm
     This DTO creates and updates product groups with single request
@@ -35,7 +35,7 @@ class AmoCRMGroup(AmoDTO):
         return [(group_field["value"], group_field["id"]) for group_field in updated_fields]
 
     @staticmethod
-    def _get_group_as_product_field(group: Group) -> dict:
+    def _get_group_as_product_field(group: Group) -> dict[str, str | int]:
         data: dict[str, str | int] = {"value": group.slug}
         if group.amocrm_id is not None:
             data.update({"id": group.amocrm_id})

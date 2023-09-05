@@ -28,6 +28,6 @@ def _mock_tasks_with_paid_setter(mocker):
 
 
 @pytest.fixture
-def _groups(factory):
+def _amo_groups(factory):
     factory.group(slug="popug")
     factory.group(slug="hehe", amocrm_id=333)

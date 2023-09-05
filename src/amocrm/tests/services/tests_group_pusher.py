@@ -8,12 +8,12 @@ pytestmark = [
 ]
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def mock_group_push(mocker):
-    return mocker.patch("amocrm.dto.group.AmoCRMGroup.push", return_value=[("popug", 444), ("hehe", 333)])
+    return mocker.patch("amocrm.dto.groups.AmoCRMGroups.push", return_value=[("popug", 444), ("hehe", 333)])
 
 
-@pytest.mark.usefixtures("_groups", "mock_group_push")
+@pytest.mark.usefixtures("_amo_groups")
 def test_save_amocrm_groups():
     AmoCRMGroupsPusher()()
 
