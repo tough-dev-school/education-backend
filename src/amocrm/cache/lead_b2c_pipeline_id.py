@@ -1,13 +1,12 @@
 from django.conf import settings
 from django.core.cache import cache
 
-from amocrm.dto.pipeline import AmoCRMPipeline
+from amocrm.dto.pipelines import AmoCRMPipelines
 from amocrm.exceptions import AmoCRMCacheException
 
 
 def get_pipeline_id_amocrm() -> int:
-    amocrm_pipelines = AmoCRMPipeline().get()
-    pipelines = [pipeline for pipeline in amocrm_pipelines if pipeline["name"] == settings.AMOCRM_B2C_PIPELINE_NAME]
+    pipelines = [pipeline for pipeline in AmoCRMPipelines().get() if pipeline["name"] == settings.AMOCRM_B2C_PIPELINE_NAME]
     if len(pipelines) != 1:
         raise AmoCRMCacheException("Cannot retrieve b2c pipeline id")
 

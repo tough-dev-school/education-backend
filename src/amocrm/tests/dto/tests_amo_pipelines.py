@@ -1,6 +1,6 @@
 import pytest
 
-from amocrm.dto.pipeline import AmoCRMPipeline
+from amocrm.dto.pipelines import AmoCRMPipelines
 
 pytestmark = [
     pytest.mark.django_db,
@@ -104,7 +104,7 @@ def _successful_response(get):
 
 @pytest.mark.usefixtures("_successful_response")
 def test_get_pipelines_return_list_of_pipelines(get):
-    got = AmoCRMPipeline().get()
+    got = AmoCRMPipelines().get()
 
     assert got == [
         dict(
@@ -130,6 +130,6 @@ def test_get_pipelines_return_list_of_pipelines(get):
 
 @pytest.mark.usefixtures("_successful_response")
 def test_get_pipelines_call_url(get):
-    AmoCRMPipeline().get()
+    AmoCRMPipelines().get()
 
     get.assert_called_once_with(url="/api/v4/leads/pipelines")

@@ -14,7 +14,7 @@ class Pipeline(TypedDict):
     statuses: list[PipelineStatus]
 
 
-class AmoCRMPipeline(AmoDTO):
+class AmoCRMPipelines(AmoDTO):
     def get(self) -> list[Pipeline]:
         """
         Returns all amocrm pipelines

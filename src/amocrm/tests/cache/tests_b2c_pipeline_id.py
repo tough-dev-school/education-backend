@@ -3,8 +3,8 @@ import pytest
 from django.core.cache import cache
 
 from amocrm.cache.lead_b2c_pipeline_id import get_b2c_pipeline_id
-from amocrm.dto.pipeline import Pipeline
-from amocrm.dto.pipeline import PipelineStatus
+from amocrm.dto.pipelines import Pipeline
+from amocrm.dto.pipelines import PipelineStatus
 from amocrm.exceptions import AmoCRMCacheException
 
 pytestmark = [
@@ -25,7 +25,7 @@ def pipelines(b2c_pipeline):
 
 @pytest.fixture(autouse=True)
 def mock_get_pipelines(mocker, pipelines):
-    return mocker.patch("amocrm.dto.pipeline.AmoCRMPipeline.get", return_value=pipelines)
+    return mocker.patch("amocrm.dto.pipelines.AmoCRMPipelines.get", return_value=pipelines)
 
 
 def test_return_pipeline_if_in_cache(b2c_pipeline, mock_get_pipelines):
