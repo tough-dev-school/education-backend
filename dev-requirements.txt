@@ -446,7 +446,7 @@ stack-data==0.6.2
     # via ipython
 standardjson==0.3.1
     # via django-prettyjson
-stripe==6.2.0
+stripe==6.3.0
     # via education-backend (pyproject.toml)
 traitlets==5.9.0
     # via
@@ -462,7 +462,7 @@ types-freezegun==1.1.10
     # via education-backend (pyproject.toml)
 types-markdown==3.4.2.10
     # via education-backend (pyproject.toml)
-types-pillow==10.0.0.2
+types-pillow==10.0.0.3
     # via education-backend (pyproject.toml)
 types-pytz==2023.3.0.1
     # via
