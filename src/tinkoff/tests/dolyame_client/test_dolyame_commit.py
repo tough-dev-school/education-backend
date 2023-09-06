@@ -15,13 +15,13 @@ def test_dolyame_commit_send_correct_request(order, add_commit_response, idempot
 
     tasks.commit_dolyame_order(order_id=order.id, idempotency_key=idempotency_key)
 
-    request_json = retrieve_request_json()
-    assert request_json["amount"] == "100500"
-    assert len(request_json["items"]) == 1
-    assert request_json["fiscalization_settings"]["type"] == "enabled"
-    assert request_json["fiscalization_settings"]["params"]["create_receipt_for_committed_items"] is True
-    assert request_json["fiscalization_settings"]["params"]["create_receipt_for_added_items"] is True
-    assert request_json["fiscalization_settings"]["params"]["create_receipt_for_returned_items"] is True
+    commit_request = retrieve_request_json()
+    assert commit_request["amount"] == "100500"
+    assert len(commit_request["items"]) == 1
+    assert commit_request["fiscalization_settings"]["type"] == "enabled"
+    assert commit_request["fiscalization_settings"]["params"]["create_receipt_for_committed_items"] is True
+    assert commit_request["fiscalization_settings"]["params"]["create_receipt_for_added_items"] is True
+    assert commit_request["fiscalization_settings"]["params"]["create_receipt_for_returned_items"] is True
 
 
 def test_dolyame_commit_correct_per_items_data(order, add_commit_response, idempotency_key, retrieve_request_json):

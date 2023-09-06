@@ -8,7 +8,6 @@ from amocrm.tasks import amocrm_enabled
 from amocrm.tasks import push_order
 from amocrm.tasks import push_user
 from app.services import BaseService
-from banking.selector import get_bank
 from orders.models import Order
 from users.tasks import rebuild_tags
 
@@ -27,7 +26,6 @@ class OrderPaidSetter(BaseService):
 
     def act(self) -> None:
         self.mark_order_as_paid()
-        self.call_bank_successfull_callback()
         self.ship()
         self.after_shipment()
 
@@ -41,11 +39,6 @@ class OrderPaidSetter(BaseService):
     def ship(self) -> None:
         if not self.is_already_shipped and not self.is_already_paid and self.order.item is not None:
             self.order.ship(silent=self.silent)
-
-    def call_bank_successfull_callback(self) -> None:
-        Bank = get_bank(self.order.bank_id)
-        bank = Bank(order=self.order)
-        bank.successful_payment_callback()
 
     def after_shipment(self) -> None:
         can_be_subscribed = bool(self.order.user.email and len(self.order.user.email))
