@@ -3,6 +3,7 @@ from typing import Any
 from urllib.parse import urljoin
 
 import httpx
+import httpx_cache
 from httpx import Response
 
 from django.conf import settings
