@@ -38,10 +38,6 @@ class Migration(migrations.Migration):
                 ('email', models.CharField(max_length=255)),
                 ('template_id', models.CharField(max_length=255)),
             ],
-            options={
-                'unique_together': {('email', 'template_id')},
-                'index_together': {('email', 'template_id')},
-            },
         ),
         migrations.RunPython(migrate_from_previous_table),
     ]
