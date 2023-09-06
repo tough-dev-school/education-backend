@@ -4,6 +4,7 @@ from httpx import TransportError
 from django.apps import apps
 from django.conf import settings
 
+from amocrm.client.client import AmoCRMClient
 from amocrm.client.http import AmoCRMClientException
 from amocrm.services.access_token_getter import AmoCRMTokenGetterException
 from amocrm.services.course_pusher import AmoCRMCoursePusher
@@ -70,6 +71,12 @@ def push_course(course_id: int) -> None:
 @celery.task(base=AmoTask)
 def push_all_products_and_product_groups() -> None:
     push_product_groups.apply_async(link=_push_all_courses.si())
+
+
+@celery.task(base=AmoTask)
+def enable_customers() -> None:
+    client = AmoCRMClient()
+    client.enable_customers()
 
 
 @celery.task(base=AmoTask)
