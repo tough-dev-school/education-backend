@@ -23,10 +23,8 @@ class AmoCRMGroupsPusher(BaseService):
 
     @staticmethod
     def save_new_groups_ids(pushed_groups: list[tuple[str, int]]) -> None:
-        existing_groups_slugs = set(AmoCRMProductGroup.objects.all().select_related("group").values_list("group__slug", flat=True))
         for group_slug, amocrm_id in pushed_groups:
-            if group_slug not in existing_groups_slugs:
-                AmoCRMProductGroup.objects.create(
-                    amocrm_id=amocrm_id,
-                    group=Group.objects.get(slug=group_slug),
-                )
+            AmoCRMProductGroup.objects.get_or_create(
+                amocrm_id=amocrm_id,
+                group=Group.objects.get(slug=group_slug),
+            )
