@@ -1,11 +1,11 @@
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from amocrm.dto.base import AmoDTO
-from amocrm.ids.catalog_id import get_catalog_id
-from amocrm.ids.lead_b2c_pipeline_id import get_b2c_pipeline_id
-from amocrm.ids.lead_b2c_pipeline_id import get_b2c_pipeline_status_id
-from amocrm.ids.lead_b2c_pipeline_id import STATUSES_NAMES
 from orders.models import Order
+
+if TYPE_CHECKING:
+    from amocrm.ids import STATUSES_NAMES
 
 
 @dataclass
@@ -19,11 +19,14 @@ class AmoCRMLead(AmoDTO):
         self._set_price_from_order(lead_id=lead_id)  # update lead price, cuz the particular order price might be different from the course price
         return lead_id
 
-    def update(self, status: STATUSES_NAMES | None = None) -> None:
+    def update(self, status: "STATUSES_NAMES | None" = None) -> None:
         """
         Updates existing lead for given order
         https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-edit
         """
+
+        from amocrm.ids import get_b2c_pipeline_status_id
+
         data = self._get_order_as_lead()
         data.update({"id": self.order.amocrm_lead.amocrm_id})  # type: ignore
         if status is not None:
@@ -39,6 +42,8 @@ class AmoCRMLead(AmoDTO):
         Create lead and returns amocrm_id
         https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-complex-add
         """
+        from amocrm.ids import get_b2c_pipeline_status_id
+
         data = self._get_order_as_lead()
         data.update(
             {
@@ -69,6 +74,8 @@ class AmoCRMLead(AmoDTO):
         Link given customer to given contact
         https://www.amocrm.ru/developers/content/crm_platform/entity-links-api#links-link
         """
+        from amocrm.ids import get_products_catalog_id
+
         self.http.post(
             url=f"/api/v4/leads/{lead_id}/link",
             data=[
@@ -77,13 +84,15 @@ class AmoCRMLead(AmoDTO):
                     "to_entity_type": "catalog_elements",
                     "metadata": {
                         "quantity": 1,  # only 1 course per order
-                        "catalog_id": get_catalog_id(catalog_type="products"),
+                        "catalog_id": get_products_catalog_id(),
                     },
                 },
             ],
         )
 
     def _get_order_as_lead(self) -> dict:
+        from amocrm.ids import get_b2c_pipeline_id
+
         return {
             "pipeline_id": get_b2c_pipeline_id(),
             "price": int(self.order.price),  # amocrm api requires field to be integer

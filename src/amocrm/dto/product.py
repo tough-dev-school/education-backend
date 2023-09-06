@@ -2,8 +2,6 @@ from dataclasses import dataclass
 from typing import Annotated, NotRequired, TypedDict
 
 from amocrm.dto.base import AmoDTO
-from amocrm.ids.catalog_id import get_catalog_id
-from amocrm.ids.product_fields_ids import get_product_field_id
 from products.models import Course
 
 
@@ -28,8 +26,9 @@ class AmoCRMProduct(AmoDTO):
 
     def create(self) -> int:
         """Create product in amocrm and returns its amocrm_id"""
+
         response = self.http.post(
-            url=f"/api/v4/catalogs/{get_catalog_id(catalog_type='products')}/elements",
+            url=f"/api/v4/catalogs/{self._get_catalog_id()}/elements",
             data=[self._get_course_as_product()],
         )
         return response["_embedded"]["elements"][0]["id"]
@@ -40,11 +39,13 @@ class AmoCRMProduct(AmoDTO):
         data.update({"id": self.course.amocrm_course.amocrm_id})
 
         self.http.patch(
-            url=f"/api/v4/catalogs/{get_catalog_id(catalog_type='products')}/elements",
+            url=f"/api/v4/catalogs/{self._get_catalog_id()}/elements",
             data=[data],
         )
 
     def _get_course_as_product(self) -> Product:
+        from amocrm.ids import get_product_field_id
+
         price = ProductField(
             field_id=get_product_field_id(field_code="PRICE"),
             values=[ProductFieldValue(value=str(self.course.price))],
@@ -70,3 +71,9 @@ class AmoCRMProduct(AmoDTO):
             name=self.course.name,
             custom_fields_values=fields_values,
         )
+
+    @staticmethod
+    def _get_catalog_id() -> int:
+        from amocrm.ids import get_products_catalog_id
+
+        return get_products_catalog_id()

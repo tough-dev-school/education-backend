@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
 from amocrm.dto.base import AmoDTO
-from amocrm.ids.contact_fields_ids import get_contact_field_id
 from users.models import User
 
 
@@ -98,6 +97,8 @@ class AmoCRMCustomer(AmoDTO):
         }
 
     def _get_user_as_contact(self) -> dict:
+        from amocrm.ids import get_contact_field_id
+
         return {
             "name": str(self.user),
             "custom_fields_values": [

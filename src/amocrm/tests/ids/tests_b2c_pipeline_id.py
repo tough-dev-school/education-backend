@@ -3,8 +3,8 @@ import pytest
 from amocrm.dto.pipelines import Pipeline
 from amocrm.dto.pipelines import PipelineStatus
 from amocrm.exceptions import AmoCRMCacheException
-from amocrm.ids.lead_b2c_pipeline_id import get_b2c_pipeline_id
-from amocrm.ids.lead_b2c_pipeline_id import get_b2c_pipeline_status_id
+from amocrm.ids import get_b2c_pipeline_id
+from amocrm.ids import get_b2c_pipeline_status_id
 
 
 @pytest.fixture

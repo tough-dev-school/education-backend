@@ -82,7 +82,9 @@ class AmoCRMHTTP:
     @staticmethod
     def get_client(cached: bool = False) -> httpx.Client | httpx_cache.Client:
         cache_url = settings.HTTP_CACHE_REDIS_URL
-        if cached and len(cache_url):
+        if cached:
+            if len(cache_url) == 0:
+                raise AmoCRMClientException("No cache url for client")
             return httpx_cache.Client(
                 cache=RedisCache(redis_url=cache_url),
                 always_cache=True,

@@ -1,12 +1,12 @@
 import pytest
 
 from amocrm.exceptions import AmoCRMCacheException
-from amocrm.ids.product_fields_ids import get_product_field_id
+from amocrm.ids import get_product_field_id
 
 
 @pytest.fixture(autouse=True)
 def mock_get_catalog_id(mocker):
-    return mocker.patch("amocrm.ids.product_fields_ids.get_catalog_id", return_value=123)
+    return mocker.patch("amocrm.ids.get_products_catalog_id", return_value=123)
 
 
 @pytest.fixture

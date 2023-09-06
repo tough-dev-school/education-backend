@@ -1,7 +1,7 @@
 import pytest
 
 from amocrm.exceptions import AmoCRMCacheException
-from amocrm.ids.contact_fields_ids import get_contact_field_id
+from amocrm.ids import get_contact_field_id
 
 
 @pytest.fixture
