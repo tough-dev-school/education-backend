@@ -35,7 +35,7 @@ class User(AbstractUser):
     tags = ArrayField(models.CharField(max_length=512), default=list)
 
     class Meta(AbstractUser.Meta):
-        abstract = False
+        abstract = False  # type: ignore[assignment]
         indexes = [GinIndex(fields=["tags"])]
         verbose_name = _("user")
         verbose_name_plural = _("users")
