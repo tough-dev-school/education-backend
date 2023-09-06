@@ -42,7 +42,15 @@ class Dolyame(Bank):
             method=f"orders/{self.order.slug}/commit",
             payload={
                 "amount": self.price,
-                "items": self.get_items(),
+                "items": self.get_items_with_receipt_data(),
+                "fiscalization_settings": {
+                    "type": "enabled",
+                    "params": {
+                        "create_receipt_for_committed_items": True,
+                        "create_receipt_for_added_items": True,
+                        "create_receipt_for_returned_items": True,
+                    },
+                },
             },
         )
 
@@ -51,7 +59,8 @@ class Dolyame(Bank):
             method=f"orders/{self.order.slug}/refund",
             payload={
                 "amount": self.price,
-                "returned_items": self.get_items(),
+                "returned_items": self.get_items_with_receipt_data(),
+                "fiscalization_settings": {"type": "enabled"},
             },
         )
 
@@ -83,6 +92,20 @@ class Dolyame(Bank):
                 "price": self.price,
                 "quantity": 1,
             },
+        ]
+
+    def get_items_with_receipt_data(self) -> list[dict]:
+        return [
+            {
+                "receipt": {
+                    "payment_method": "full_payment",
+                    "tax": None,
+                    "payment_object": "service",
+                    "measurement_unit": "шт",
+                },
+                **item,
+            }
+            for item in self.get_items()
         ]
 
     def get_client_info(self) -> dict:
