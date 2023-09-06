@@ -7,11 +7,10 @@ from django.conf import settings
 from amocrm.client import AmoCRMClient
 from amocrm.client.http import AmoCRMClientException
 from amocrm.services.access_token_getter import AmoCRMTokenGetterException
+from amocrm.services.course_pusher import AmoCRMCoursePusher
+from amocrm.services.group_pusher import AmoCRMGroupsPusher
 from amocrm.services.orders.order_pusher import AmoCRMOrderPusher
 from amocrm.services.orders.order_returner import AmoCRMOrderReturner
-from amocrm.services.products.course_creator import AmoCRMCourseCreator
-from amocrm.services.products.course_updater import AmoCRMCourseUpdater
-from amocrm.services.products.product_groups_updater import AmoCRMProductGroupsUpdater
 from amocrm.services.user_pusher import AmoCRMUserPusher
 from app.celery import celery
 
@@ -60,16 +59,13 @@ def return_order(order_id: int) -> None:
 
 @celery.task(base=AmoTask)
 def push_product_groups() -> None:
-    AmoCRMProductGroupsUpdater()()
+    AmoCRMGroupsPusher()()
 
 
 @celery.task(base=AmoTask)
-def push_course(course_id: int) -> int:
+def push_course(course_id: int) -> None:
     course = apps.get_model("products.Course").objects.get(id=course_id)
-    if hasattr(course, "amocrm_course"):
-        return AmoCRMCourseUpdater(amocrm_course=course.amocrm_course)()
-    else:
-        return AmoCRMCourseCreator(course=course)()
+    AmoCRMCoursePusher(course=course)()
 
 
 @celery.task(base=AmoTask)

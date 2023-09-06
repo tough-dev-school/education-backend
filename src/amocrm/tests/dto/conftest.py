@@ -9,6 +9,10 @@ from django.utils import timezone
 @pytest.fixture(autouse=True)
 def _mock_cached_fields_id(mocker):
     mocker.patch("amocrm.dto.customer.get_contact_field_id", return_value=2235143)
+    mocker.patch("amocrm.dto.product.get_product_field_id", return_value=800)
+    mocker.patch("amocrm.dto.product.get_catalog_id", return_value=900)
+    mocker.patch("amocrm.dto.groups.get_product_field_id", return_value=800)
+    mocker.patch("amocrm.dto.groups.get_catalog_id", return_value=900)
     mocker.patch("amocrm.dto.lead.get_catalog_id", return_value=777)
     mocker.patch("amocrm.dto.transaction.get_catalog_id", return_value=777)
     mocker.patch("amocrm.dto.lead.get_b2c_pipeline_id", return_value=555)
@@ -26,10 +30,21 @@ def user(user):
 
 
 @pytest.fixture
-def order(amocrm_user, amocrm_course, factory):
+def course(amocrm_course, factory):
+    return factory.course(
+        name="Popug",
+        slug="popug-003",
+        price=200,
+        group__slug="popug-group",
+        amocrm_course=amocrm_course,
+    )
+
+
+@pytest.fixture
+def order(amocrm_user, course, factory):
     order = factory.order(
         user=amocrm_user.user,
-        course=amocrm_course.course,
+        course=course,
         price=Decimal(100),
         slug="Gu2g7SXFxfepif4UkLNhzx",
         amocrm_transaction__amocrm_id=22222,

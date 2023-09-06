@@ -1,10 +1,10 @@
 import pytest
 
-from amocrm.types import AmoCRMCatalogFieldValue
+from amocrm.dto import AmoCRMGroups
+from products.models import Group
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.single_thread,
 ]
 
 
@@ -42,36 +42,29 @@ def _successful_response(patch):
     }
 
 
-@pytest.fixture
-def field_values():
-    return [
-        AmoCRMCatalogFieldValue(id=6453, value="popug"),
-        AmoCRMCatalogFieldValue(value="hehe"),
-    ]
-
-
 @pytest.mark.usefixtures("_successful_response")
-def test_update_catalog_field(user, amocrm_client, field_values):
-    got = amocrm_client.update_catalog_field(catalog_id=777, field_id=333, field_values=field_values)
+def test_response_as_list_of_pairs(patch):
+    groups = Group.objects.all()
 
-    assert got == [
-        AmoCRMCatalogFieldValue(id=6453, value="popug"),
-        AmoCRMCatalogFieldValue(id=6457, value="hehe"),
-    ]
+    got = AmoCRMGroups(groups=groups).push()
+
+    assert got == [("popug", 6453), ("hehe", 6457)]
 
 
-@pytest.mark.usefixtures("_successful_response")
-def test_update_catalog_field_correct_params(user, amocrm_client, patch, field_values):
-    amocrm_client.update_catalog_field(catalog_id=777, field_id=333, field_values=field_values)
+@pytest.mark.usefixtures("_amocrm_groups")
+def test_call_with_id_if_already_exist(patch):
+    groups = Group.objects.all()
+
+    AmoCRMGroups(groups=groups).push()
 
     patch.assert_called_once_with(
-        url="/api/v4/catalogs/777/custom_fields",
+        url="/api/v4/catalogs/900/custom_fields",
         data=[
             {
-                "id": 333,
+                "id": 800,
                 "nested": [
-                    {"id": 6453, "value": "popug"},
-                    {"value": "hehe"},
+                    {"value": "popug"},
+                    {"id": 333, "value": "hehe"},
                 ],
             },
         ],
