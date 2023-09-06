@@ -1,6 +1,15 @@
 from app.conf.environ import env
 
-DEFAULT_FILE_STORAGE = env("DEFAULT_FILE_STORAGE", cast=str, default="django.core.files.storage.FileSystemStorage")
+# https://docs.djangoproject.com/en/4.2/ref/settings/#storages
+STORAGES = {
+    "default": {
+        "BACKEND": env("DEFAULT_FILE_STORAGE", cast=str, default="django.core.files.storage.FileSystemStorage"),
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
 AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID", default=None)
 AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY", default=None)
 AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME", default=None)
