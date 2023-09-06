@@ -15,13 +15,15 @@ class Pipeline(TypedDict):
 
 
 class AmoCRMPipelines(AmoDTO):
-    def get(self) -> list[Pipeline]:
+    @classmethod
+    def get(cls) -> list[Pipeline]:
         """
         Returns all amocrm pipelines
         https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines
         """
-        response = self.http.get(url="/api/v4/leads/pipelines")
-        return [self._pipeline_from_response(data=pipeline) for pipeline in response["_embedded"]["pipelines"]]
+        http = cls._get_http_client()
+        response = http.get(url="/api/v4/leads/pipelines")
+        return [cls._pipeline_from_response(data=pipeline) for pipeline in response["_embedded"]["pipelines"]]
 
     @staticmethod
     def _pipeline_from_response(data: dict) -> Pipeline:

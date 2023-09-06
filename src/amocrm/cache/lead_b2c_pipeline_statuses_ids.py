@@ -23,7 +23,7 @@ B2C_PIPELINE = settings.AMOCRM_B2C_PIPELINE_NAME
 
 
 def get_pipeline_status_id_amocrm(status_name: STATUSES_NAMES) -> int:
-    pipelines = [pipeline for pipeline in AmoCRMPipelines().get() if pipeline["name"] == B2C_PIPELINE]
+    pipelines = [pipeline for pipeline in AmoCRMPipelines.get() if pipeline["name"] == B2C_PIPELINE]
     if len(pipelines) != 1:
         raise AmoCRMCacheException(f"Cannot retrieve {B2C_PIPELINE} pipeline")
 

@@ -10,7 +10,7 @@ CATALOGS_TO_CACHE = {"products": "amocrm_products_catalog_id"}
 
 
 def get_catalog_id_amocrm(catalog_type: CATALOG_TYPES) -> int:
-    catalogs = [catalog for catalog in AmoCRMCatalogs().get() if catalog["type"] == catalog_type]
+    catalogs = [catalog for catalog in AmoCRMCatalogs.get() if catalog["type"] == catalog_type]
     if len(catalogs) != 1:
         raise AmoCRMCacheException(f"Cannot retrieve {catalog_type} catalog id")
 

@@ -100,7 +100,7 @@ def _successful_get_fields_response(get):
 
 @pytest.mark.usefixtures("_successful_get_catalogs_response")
 def test_get_returns_list_of_catalogs(get):
-    got = AmoCRMCatalogs().get()
+    got = AmoCRMCatalogs.get()
 
     assert got == [
         dict(id=11271, name="Товары", type="products"),
@@ -113,7 +113,7 @@ def test_get_returns_list_of_catalogs(get):
 
 
 def test_get_catalogs_call_url(get):
-    AmoCRMCatalogs().get()
+    AmoCRMCatalogs.get()
 
     get.assert_called_once_with(
         url="/api/v4/catalogs",
@@ -123,7 +123,7 @@ def test_get_catalogs_call_url(get):
 
 @pytest.mark.usefixtures("_successful_get_fields_response")
 def test_get_fields_returns_list_of_fields(get):
-    got = AmoCRMCatalogs().get_fields(catalog_id=777)
+    got = AmoCRMCatalogs.get_fields(catalog_id=777)
 
     assert got == [
         dict(id=2235143, code="SKU"),
@@ -132,7 +132,7 @@ def test_get_fields_returns_list_of_fields(get):
 
 
 def test_get_fields_call_url(get):
-    AmoCRMCatalogs().get_fields(catalog_id=777)
+    AmoCRMCatalogs.get_fields(catalog_id=777)
 
     get.assert_called_once_with(
         url="/api/v4/catalogs/777/custom_fields",
