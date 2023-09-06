@@ -5,9 +5,7 @@ from amocrm.client.http import AmoCRMHTTP
 
 @dataclass
 class AmoDTO:
-    def __post_init__(self) -> None:
-        self.http = self._get_http_client()
-
-    @staticmethod
-    def _get_http_client() -> AmoCRMHTTP:
+    @classmethod  # type: ignore
+    @property
+    def http(cls) -> AmoCRMHTTP:
         return AmoCRMHTTP()

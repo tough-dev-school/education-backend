@@ -21,8 +21,7 @@ class AmoCRMPipelines(AmoDTO):
         Returns all amocrm pipelines
         https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines
         """
-        http = cls._get_http_client()
-        response = http.get(url="/api/v4/leads/pipelines")
+        response = cls.http.get(url="/api/v4/leads/pipelines")  # type: ignore
         return [cls._pipeline_from_response(data=pipeline) for pipeline in response["_embedded"]["pipelines"]]
 
     @staticmethod

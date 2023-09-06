@@ -269,6 +269,7 @@ httpx[http2]==0.24.1
     #   education-backend (pyproject.toml)
     #   httpx-cache
     #   pytest-httpx
+    #   respx
 httpx-cache[redis]==0.12.0
     # via education-backend (pyproject.toml)
 hyperframe==6.0.1
@@ -425,6 +426,8 @@ requests==2.31.0
     #   requests-mock
     #   stripe
 requests-mock==1.11.0
+    # via education-backend (pyproject.toml)
+respx==0.20.2
     # via education-backend (pyproject.toml)
 retry==0.9.2
     # via education-backend (pyproject.toml)

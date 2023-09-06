@@ -1,5 +1,7 @@
 import pytest
 
+import httpx
+
 from django.core.cache import cache
 
 from amocrm.client.http import AmoCRMClientException
@@ -62,10 +64,29 @@ def test_get_ok(amocrm_client, httpx_mock):
 
 def test_get_ok_with_expected_status_code(amocrm_client, httpx_mock):
     httpx_mock.add_response(url="https://test.amocrm.ru/api/v4/companies?limit=100500", method="GET", json={"ok": True}, status_code=321)
-
     got = amocrm_client.http.get("api/v4/companies", expected_status_codes=[321], params={"limit": 100500})
 
     assert "ok" in got
+
+
+def test_get_cached(amocrm_client, respx_mock):
+    respx_mock.get("https://test.amocrm.ru/api/v4/companies?limit=100500").respond(200, json={"ok": "bar"})
+    amocrm_client.http.get("api/v4/companies", params={"limit": 100500}, cached=True)
+    respx_mock.get("https://test.amocrm.ru/api/v4/companies?limit=100500").respond(200, json={"foo": "bar"})
+
+    got = amocrm_client.http.get("api/v4/companies", params={"limit": 100500}, cached=True)
+
+    assert "ok" in got
+
+
+def test_get_default_not_cached(amocrm_client, respx_mock):
+    respx_mock.get("https://test.amocrm.ru/api/v4/companies?limit=100500").respond(200, json={"ok": "bar"})
+    amocrm_client.http.get("api/v4/companies", params={"limit": 100500})
+    respx_mock.get("https://test.amocrm.ru/api/v4/companies?limit=100500").respond(200, json={"foo": "bar"})
+
+    got = amocrm_client.http.get("api/v4/companies", params={"limit": 100500})
+
+    assert "foo" in got
 
 
 def test_delete_ok(amocrm_client, httpx_mock):

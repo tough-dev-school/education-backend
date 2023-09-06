@@ -3,8 +3,9 @@ from typing import Any
 from urllib.parse import urljoin
 
 import httpx
-import httpx_cache
 from httpx import Response
+import httpx_cache
+from httpx_cache.cache.redis import RedisCache
 
 from django.conf import settings
 
@@ -19,14 +20,14 @@ class AmoCRMClientException(AmoCRMException):
 class AmoCRMHTTP:
     def __init__(self) -> None:
         self.base_url = settings.AMOCRM_BASE_URL
-        self.client = httpx.Client()
 
-    def get(self, url: str, params: dict | None = None, expected_status_codes: list[int] | None = None) -> dict[str, Any]:
+    def get(self, url: str, params: dict | None = None, expected_status_codes: list[int] | None = None, cached: bool = False) -> dict[str, Any]:
         return self.request(
             method="get",
             url=url,
             params=params,
             expected_status_codes=expected_status_codes,
+            cached=cached,
         )
 
     def delete(self, url: str, params: dict | None = None, expected_status_codes: list[int] | None = None) -> dict[str, Any]:
@@ -54,9 +55,16 @@ class AmoCRMHTTP:
         )
 
     def request(
-        self, method: str, url: str, data: dict | list | None = None, params: dict | None = None, expected_status_codes: list[int] | None = None
+        self,
+        method: str,
+        url: str,
+        data: dict | list | None = None,
+        params: dict | None = None,
+        expected_status_codes: list[int] | None = None,
+        cached: bool = False,
     ) -> dict[str, Any]:
-        request = getattr(self.client, method)
+        client = self.get_client(cached=cached)
+        request = getattr(client, method)
         headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",
@@ -70,6 +78,17 @@ class AmoCRMHTTP:
             response = request(url=url, timeout=3, json=data, headers=headers)
 
         return self.get_validated_response(response=response, url=url, expected_status_codes=expected_status_codes)
+
+    @staticmethod
+    def get_client(cached: bool = False) -> httpx.Client | httpx_cache.Client:
+        cache_url = settings.HTTP_CACHE_REDIS_URL
+        if cached and len(cache_url):
+            return httpx_cache.Client(
+                cache=RedisCache(redis_url=cache_url),
+                always_cache=True,
+            )
+
+        return httpx.Client()
 
     @property
     def access_token(self) -> str:
@@ -94,7 +113,6 @@ class AmoCRMHTTP:
             errors = response_json.get("_embedded", {}).get("errors") if isinstance(response_json, dict) else None
             if errors:
                 raise AmoCRMClientException(f"Errors in response to {url}: {errors}")
-
             return response_json
         except JSONDecodeError:
             return {}

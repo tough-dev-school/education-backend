@@ -21,8 +21,7 @@ class AmoCRMCatalogs(AmoDTO):
         Returns all catalogs from amocrm
         https://www.amocrm.ru/developers/content/crm_platform/catalogs-api#lists-list
         """
-        http = cls._get_http_client()
-        response = http.get(url="/api/v4/catalogs", params={"limit": 250})  # request max amount of catalogs
+        response = cls.http.get(url="/api/v4/catalogs", params={"limit": 250})  # type: ignore
         return [cls._catalog_from_response(catalog) for catalog in response["_embedded"]["catalogs"]]
 
     @classmethod
@@ -31,8 +30,7 @@ class AmoCRMCatalogs(AmoDTO):
         Returns chosen catalog's fields
         https://www.amocrm.ru/developers/content/crm_platform/custom-fields
         """
-        http = cls._get_http_client()
-        response = http.get(url=f"/api/v4/catalogs/{catalog_id}/custom_fields", params={"limit": 250})  # request max amount of fields for catalog
+        response = cls.http.get(url=f"/api/v4/catalogs/{catalog_id}/custom_fields", params={"limit": 250})  # type: ignore
         return [cls._catalog_field_from_response(catalog) for catalog in response["_embedded"]["custom_fields"]]
 
     @staticmethod
