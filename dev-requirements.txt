@@ -148,7 +148,7 @@ django-split-settings==1.2.0
     # via education-backend (pyproject.toml)
 django-storages==1.14
     # via education-backend (pyproject.toml)
-django-stubs==4.2.3
+django-stubs==4.2.4
     # via
     #   djangorestframework-stubs
     #   education-backend (pyproject.toml)
@@ -311,7 +311,7 @@ mixer==7.2.2
     # via education-backend (pyproject.toml)
 msgpack==1.0.5
     # via httpx-cache
-mypy==1.4.1
+mypy==1.5.1
     # via
     #   django-stubs
     #   djangorestframework-stubs
