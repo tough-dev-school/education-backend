@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 
-from amocrm.cache.catalog_id import get_catalog_id
-from amocrm.cache.lead_b2c_pipeline_id import get_b2c_pipeline_id
-from amocrm.cache.lead_b2c_pipeline_statuses_ids import get_b2c_pipeline_status_id
-from amocrm.cache.lead_b2c_pipeline_statuses_ids import STATUSES_NAMES
 from amocrm.dto.base import AmoDTO
+from amocrm.ids.catalog_id import get_catalog_id
+from amocrm.ids.lead_b2c_pipeline_id import get_b2c_pipeline_id
+from amocrm.ids.lead_b2c_pipeline_id import get_b2c_pipeline_status_id
+from amocrm.ids.lead_b2c_pipeline_id import STATUSES_NAMES
 from orders.models import Order
 
 

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from amocrm.client.http import AmoCRMHTTP
+from amocrm.client import AmoCRMHTTP
 
 
 @dataclass

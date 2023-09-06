@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from typing import Annotated, NotRequired, TypedDict
 
-from amocrm.cache.catalog_id import get_catalog_id
-from amocrm.cache.product_fields_ids import get_product_field_id
 from amocrm.dto.base import AmoDTO
+from amocrm.ids.catalog_id import get_catalog_id
+from amocrm.ids.product_fields_ids import get_product_field_id
 from products.models import Course
 
 

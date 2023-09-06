@@ -125,11 +125,10 @@ def test_get_pipelines_return_list_of_pipelines(get):
             ],
         ),
     ]
-    get.assert_called_once_with(url="/api/v4/leads/pipelines")
 
 
 @pytest.mark.usefixtures("_successful_response")
-def test_get_pipelines_call_url(get):
+def test_get_pipelines_call_cached(get):
     AmoCRMPipelines.get()
 
-    get.assert_called_once_with(url="/api/v4/leads/pipelines")
+    get.assert_called_once_with(url="/api/v4/leads/pipelines", cached=True)

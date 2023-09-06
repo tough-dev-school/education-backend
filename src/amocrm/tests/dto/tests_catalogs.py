@@ -106,10 +106,6 @@ def test_get_returns_list_of_catalogs(get):
         dict(id=11271, name="Товары", type="products"),
         dict(id=11273, name="Мои юр. лица", type="suppliers"),
     ]
-    get.assert_called_once_with(
-        url="/api/v4/catalogs",
-        params={"limit": 250},
-    )
 
 
 def test_get_catalogs_call_url(get):
@@ -118,6 +114,7 @@ def test_get_catalogs_call_url(get):
     get.assert_called_once_with(
         url="/api/v4/catalogs",
         params={"limit": 250},
+        cached=True,
     )
 
 
@@ -137,4 +134,25 @@ def test_get_fields_call_url(get):
     get.assert_called_once_with(
         url="/api/v4/catalogs/777/custom_fields",
         params={"limit": 250},
+        cached=True,
+    )
+
+
+@pytest.mark.usefixtures("_successful_get_fields_response")
+def test_get_contacts_fields_returns_list_of_fields(get):
+    got = AmoCRMCatalogs.get_contacts_fields()
+
+    assert got == [
+        dict(id=2235143, code="SKU"),
+        dict(id=2235149, code="GROUP"),
+    ]
+
+
+def test_get_contacts_fields_call_url(get):
+    AmoCRMCatalogs.get_contacts_fields()
+
+    get.assert_called_once_with(
+        url="/api/v4/contacts/custom_fields",
+        params={"limit": 250},
+        cached=True,
     )

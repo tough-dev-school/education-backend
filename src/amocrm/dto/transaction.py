@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from amocrm.cache.catalog_id import get_catalog_id
 from amocrm.dto.base import AmoDTO
+from amocrm.ids.catalog_id import get_catalog_id
 from orders.models import Order
 
 

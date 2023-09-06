@@ -21,7 +21,7 @@ class AmoCRMCatalogs(AmoDTO):
         Returns all catalogs from amocrm
         https://www.amocrm.ru/developers/content/crm_platform/catalogs-api#lists-list
         """
-        response = cls.http.get(url="/api/v4/catalogs", params={"limit": 250})  # type: ignore
+        response = cls.http.get(url="/api/v4/catalogs", params={"limit": 250}, cached=True)  # type: ignore
         return [cls._catalog_from_response(catalog) for catalog in response["_embedded"]["catalogs"]]
 
     @classmethod
@@ -30,8 +30,17 @@ class AmoCRMCatalogs(AmoDTO):
         Returns chosen catalog's fields
         https://www.amocrm.ru/developers/content/crm_platform/custom-fields
         """
-        response = cls.http.get(url=f"/api/v4/catalogs/{catalog_id}/custom_fields", params={"limit": 250})  # type: ignore
+        response = cls.http.get(url=f"/api/v4/catalogs/{catalog_id}/custom_fields", params={"limit": 250}, cached=True)  # type: ignore
         return [cls._catalog_field_from_response(catalog) for catalog in response["_embedded"]["custom_fields"]]
+
+    @classmethod
+    def get_contacts_fields(cls) -> list[CatalogField]:
+        """
+        Returns contacts catalog fields
+        https://www.amocrm.ru/developers/content/crm_platform/custom-fields
+        """
+        response = cls.http.get(url="/api/v4/contacts/custom_fields", params={"limit": 250}, cached=True)  # type: ignore
+        return [cls._catalog_field_from_response(contact) for contact in response["_embedded"]["custom_fields"]]
 
     @staticmethod
     def _catalog_from_response(data: dict) -> Catalog:
