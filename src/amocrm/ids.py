@@ -17,7 +17,7 @@ STATUSES_NAMES_TRANSLATE = {
     "closed": "Закрыто и не реализовано",
 }
 PRODUCTS_FIELDS_CODES = Literal["SKU", "PRICE", "SPECIAL_PRICE_1", "GROUP", "DESCRIPTION", "EXTERNAL_ID", "UNIT"]
-CONTACTS_FIELDS_CODES = typing.Literal["POSITION", "PHONE", "EMAIL"]
+CONTACTS_FIELDS_CODES = Literal["POSITION", "PHONE", "EMAIL"]
 
 
 def _get_b2c_pipeline() -> Pipeline:
