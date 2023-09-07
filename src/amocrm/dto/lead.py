@@ -25,12 +25,12 @@ class AmoCRMLead:
         https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-edit
         """
 
-        from amocrm.ids import get_b2c_pipeline_status_id
+        from amocrm.ids import b2c_pipeline_status_id
 
         data = self._get_order_as_lead()
         data.update({"id": self.order.amocrm_lead.amocrm_id})  # type: ignore
         if status is not None:
-            data.update({"status_id": get_b2c_pipeline_status_id(status_name=status)})
+            data.update({"status_id": b2c_pipeline_status_id(status_name=status)})
 
         http.patch(
             url="/api/v4/leads",
@@ -42,13 +42,13 @@ class AmoCRMLead:
         Create lead and returns amocrm_id
         https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-complex-add
         """
-        from amocrm.ids import get_b2c_pipeline_status_id
+        from amocrm.ids import b2c_pipeline_status_id
 
         data = self._get_order_as_lead()
         data.update(
             {
                 "_embedded": {"contacts": [{"id": self.order.user.amocrm_user.contact_id}]},
-                "status_id": get_b2c_pipeline_status_id(status_name="first_contact"),
+                "status_id": b2c_pipeline_status_id(status_name="first_contact"),
             }
         )
 
@@ -74,7 +74,7 @@ class AmoCRMLead:
         Link given customer to given contact
         https://www.amocrm.ru/developers/content/crm_platform/entity-links-api#links-link
         """
-        from amocrm.ids import get_products_catalog_id
+        from amocrm.ids import products_catalog_id
 
         http.post(
             url=f"/api/v4/leads/{lead_id}/link",
@@ -84,17 +84,17 @@ class AmoCRMLead:
                     "to_entity_type": "catalog_elements",
                     "metadata": {
                         "quantity": 1,  # only 1 course per order
-                        "catalog_id": get_products_catalog_id(),
+                        "catalog_id": products_catalog_id(),
                     },
                 },
             ],
         )
 
     def _get_order_as_lead(self) -> dict:
-        from amocrm.ids import get_b2c_pipeline_id
+        from amocrm.ids import b2c_pipeline_id
 
         return {
-            "pipeline_id": get_b2c_pipeline_id(),
+            "pipeline_id": b2c_pipeline_id(),
             "price": int(self.order.price),  # amocrm api requires field to be integer
             "created_at": int(self.order.created.timestamp()),  # amocrm api requires to send integer timestamp
         }

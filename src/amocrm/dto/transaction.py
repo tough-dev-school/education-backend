@@ -13,7 +13,7 @@ class AmoCRMTransaction:
         Create transaction for given order
         https://www.amocrm.ru/support/customers/create_purchase
         """
-        from amocrm.ids import get_products_catalog_id
+        from amocrm.ids import products_catalog_id
 
         response = http.post(
             url=f"/api/v4/customers/{self.order.user.amocrm_user.customer_id}/transactions",
@@ -26,7 +26,7 @@ class AmoCRMTransaction:
                             {
                                 "id": self.order.course.amocrm_course.amocrm_id,
                                 "metadata": {
-                                    "catalog_id": get_products_catalog_id(),
+                                    "catalog_id": products_catalog_id(),
                                     "quantity": 1,  # only 1 course per order
                                 },
                             },

@@ -97,13 +97,13 @@ class AmoCRMCustomer:
         }
 
     def _get_user_as_contact(self) -> dict:
-        from amocrm.ids import get_contact_field_id
+        from amocrm.ids import contact_field_id
 
         return {
             "name": str(self.user),
             "custom_fields_values": [
                 {
-                    "field_id": get_contact_field_id(field_code="EMAIL"),
+                    "field_id": contact_field_id(field_code="EMAIL"),
                     "values": [
                         {"value": self.user.email},
                     ],

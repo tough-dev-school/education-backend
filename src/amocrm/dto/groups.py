@@ -19,15 +19,15 @@ class AmoCRMGroups:
         Updates product catalog field
         returns list of pairs like [(group_slug, amocrm_id), ...]
         """
-        from amocrm.ids import get_product_field_id
-        from amocrm.ids import get_products_catalog_id
+        from amocrm.ids import product_field_id
+        from amocrm.ids import products_catalog_id
 
         groups_as_product_fields = [self._get_group_as_product_field(group=group) for group in self.groups]
         response = http.patch(
-            url=f"/api/v4/catalogs/{get_products_catalog_id()}/custom_fields",
+            url=f"/api/v4/catalogs/{products_catalog_id()}/custom_fields",
             data=[
                 {
-                    "id": get_product_field_id(field_code="GROUP"),
+                    "id": product_field_id(field_code="GROUP"),
                     "nested": groups_as_product_fields,
                 }
             ],

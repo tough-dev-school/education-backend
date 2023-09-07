@@ -1,7 +1,7 @@
 import pytest
 
 from amocrm.exceptions import AmoCRMCacheException
-from amocrm.ids import get_contact_field_id
+from amocrm.ids import contact_field_id
 
 
 @pytest.fixture
@@ -23,7 +23,7 @@ def mock_get_contact_fields(mocker, fields):
 
 
 def test_return_field_id(email_field):
-    got = get_contact_field_id("EMAIL")
+    got = contact_field_id("EMAIL")
 
     assert got == email_field["id"]
 
@@ -32,4 +32,4 @@ def test_fail_if_not_in_cache_and_not_in_response(mock_get_contact_fields):
     mock_get_contact_fields.return_value = [dict(id=123, code="PHONE")]
 
     with pytest.raises(AmoCRMCacheException):
-        get_contact_field_id("EMAIL")
+        contact_field_id("EMAIL")

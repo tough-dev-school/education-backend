@@ -3,8 +3,8 @@ import pytest
 from amocrm.dto.pipelines import Pipeline
 from amocrm.dto.pipelines import PipelineStatus
 from amocrm.exceptions import AmoCRMCacheException
-from amocrm.ids import get_b2c_pipeline_id
-from amocrm.ids import get_b2c_pipeline_status_id
+from amocrm.ids import b2c_pipeline_id
+from amocrm.ids import b2c_pipeline_status_id
 
 
 @pytest.fixture
@@ -28,13 +28,13 @@ def mock_get_pipelines(mocker, pipelines):
 
 
 def test_return_pipeline_id(b2c_pipeline):
-    got = get_b2c_pipeline_id()
+    got = b2c_pipeline_id()
 
     assert got == b2c_pipeline["id"]
 
 
 def test_return_pipeline_status_id(unsorted_status):
-    got = get_b2c_pipeline_status_id(status_name="unsorted")
+    got = b2c_pipeline_status_id(status_name="unsorted")
 
     assert got == unsorted_status["id"]
 
@@ -43,9 +43,9 @@ def test_fail_if_no_such_pipeline(mock_get_pipelines):
     mock_get_pipelines.return_value = [Pipeline(id=111, name="individual", statuses=[PipelineStatus(id=10, name="hm status")])]
 
     with pytest.raises(AmoCRMCacheException):
-        get_b2c_pipeline_id()
+        b2c_pipeline_id()
 
 
 def test_fail_if_no_such_status():
     with pytest.raises(AmoCRMCacheException):
-        get_b2c_pipeline_status_id(status_name="closed")
+        b2c_pipeline_status_id(status_name="closed")

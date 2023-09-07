@@ -44,18 +44,18 @@ class AmoCRMProduct:
         )
 
     def _get_course_as_product(self) -> Product:
-        from amocrm.ids import get_product_field_id
+        from amocrm.ids import product_field_id
 
         price = ProductField(
-            field_id=get_product_field_id(field_code="PRICE"),
+            field_id=product_field_id(field_code="PRICE"),
             values=[ProductFieldValue(value=str(self.course.price))],
         )
         slug = ProductField(
-            field_id=get_product_field_id(field_code="SKU"),
+            field_id=product_field_id(field_code="SKU"),
             values=[ProductFieldValue(value=self.course.slug)],
         )
         unit = ProductField(
-            field_id=get_product_field_id(field_code="UNIT"),
+            field_id=product_field_id(field_code="UNIT"),
             values=[ProductFieldValue(value="шт")],  # 'piece' as unit type suits best for courses
         )
         fields_values = [price, slug, unit]
@@ -63,7 +63,7 @@ class AmoCRMProduct:
         if self.course.group is not None:
             fields_values.append(
                 ProductField(
-                    field_id=get_product_field_id(field_code="GROUP"),
+                    field_id=product_field_id(field_code="GROUP"),
                     values=[ProductFieldValue(value=self.course.group.slug)],
                 )
             )
@@ -74,6 +74,6 @@ class AmoCRMProduct:
 
     @staticmethod
     def _get_catalog_id() -> int:
-        from amocrm.ids import get_products_catalog_id
+        from amocrm.ids import products_catalog_id
 
-        return get_products_catalog_id()
+        return products_catalog_id()

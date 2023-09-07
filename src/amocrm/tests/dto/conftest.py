@@ -8,11 +8,11 @@ from django.utils import timezone
 
 @pytest.fixture(autouse=True)
 def _mock_cached_fields_id(mocker):
-    mocker.patch("amocrm.ids.get_contact_field_id", return_value=2235143)
-    mocker.patch("amocrm.ids.get_product_field_id", return_value=800)
-    mocker.patch("amocrm.ids.get_products_catalog_id", return_value=900)
-    mocker.patch("amocrm.ids.get_b2c_pipeline_id", return_value=555)
-    mocker.patch("amocrm.ids.get_b2c_pipeline_status_id", return_value=333)
+    mocker.patch("amocrm.ids.contact_field_id", return_value=2235143)
+    mocker.patch("amocrm.ids.product_field_id", return_value=800)
+    mocker.patch("amocrm.ids.products_catalog_id", return_value=900)
+    mocker.patch("amocrm.ids.b2c_pipeline_id", return_value=555)
+    mocker.patch("amocrm.ids.b2c_pipeline_status_id", return_value=333)
 
 
 @pytest.fixture

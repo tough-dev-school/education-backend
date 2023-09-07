@@ -1,7 +1,7 @@
 import pytest
 
 from amocrm.exceptions import AmoCRMCacheException
-from amocrm.ids import get_products_catalog_id
+from amocrm.ids import products_catalog_id
 
 
 @pytest.fixture
@@ -20,7 +20,7 @@ def mock_get_catalogs(mocker, catalogs):
 
 
 def test_return_catalog_id(products_catalog):
-    got = get_products_catalog_id()
+    got = products_catalog_id()
 
     assert got == products_catalog["id"]
 
@@ -29,4 +29,4 @@ def test_fail_if_no_products_catalog(mock_get_catalogs):
     mock_get_catalogs.return_value = [dict(id=111, name="NotWhatINeed", type="sad-story")]
 
     with pytest.raises(AmoCRMCacheException):
-        get_products_catalog_id()
+        products_catalog_id()

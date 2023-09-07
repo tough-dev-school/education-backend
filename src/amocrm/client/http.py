@@ -61,23 +61,19 @@ def format_url(url: str) -> str:
 
 
 def get_validated_response(response: Response, url: str, expected_status_codes: list[int] | None = None) -> dict[str, Any]:
-    expected_status_codes = expected_status_codes or [200]
-    if response.status_code not in expected_status_codes:
-        try:
-            response_json = response.json()
-            raise AmoCRMClientException(f"Non-ok HTTP response from amocrm: {response.status_code}\nResponse data: {response_json}")
-        except JSONDecodeError:
-            raise AmoCRMClientException(f"Non-ok HTTP response from amocrm: {response.status_code}")
-
     try:
         response_json = response.json()
-
-        errors = response_json.get("_embedded", {}).get("errors") if isinstance(response_json, dict) else None
-        if errors:
-            raise AmoCRMClientException(f"Errors in response to {url}: {errors}")
-        return response_json
     except JSONDecodeError:
-        return {}
+        response_json = {}
+
+    expected_status_codes = expected_status_codes or [200]
+    if response.status_code not in expected_status_codes:
+        raise AmoCRMClientException(f"Non-ok HTTP response from amocrm: {response.status_code}\nResponse data: {response_json}")
+
+    errors = response_json.get("_embedded", {}).get("errors") if isinstance(response_json, dict) else None
+    if errors:
+        raise AmoCRMClientException(f"Errors in response to {url}: {errors}")
+    return response_json
 
 
 def get(url: str, params: dict | None = None, expected_status_codes: list[int] | None = None, cached: bool = False) -> dict[str, Any]:
