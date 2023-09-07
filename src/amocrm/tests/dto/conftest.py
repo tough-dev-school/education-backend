@@ -53,19 +53,19 @@ def order(amocrm_user, course, factory):
 
 @pytest.fixture
 def post(mocker):
-    return mocker.patch("amocrm.client.http.AmoCRMHTTP.post")
+    return mocker.patch("amocrm.client.http.post")
 
 
 @pytest.fixture
 def patch(mocker):
-    return mocker.patch("amocrm.client.http.AmoCRMHTTP.patch")
+    return mocker.patch("amocrm.client.http.patch")
 
 
 @pytest.fixture
 def delete(mocker):
-    return mocker.patch("amocrm.client.http.AmoCRMHTTP.delete")
+    return mocker.patch("amocrm.client.http.delete")
 
 
 @pytest.fixture
 def get(mocker):
-    return mocker.patch("amocrm.client.http.AmoCRMHTTP.get")
+    return mocker.patch("amocrm.client.http.get")
