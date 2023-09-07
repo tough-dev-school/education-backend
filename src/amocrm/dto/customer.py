@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 
-from amocrm.dto.base import AmoDTO
+from amocrm.client import http
 from users.models import User
 
 
 @dataclass
-class AmoCRMCustomer(AmoDTO):
+class AmoCRMCustomer:
     user: User
 
     def create(self) -> tuple[int, int]:
@@ -28,7 +28,7 @@ class AmoCRMCustomer(AmoDTO):
         Creates customer and returns amocrm_id
         https://www.amocrm.ru/developers/content/crm_platform/customers-api#customers-add
         """
-        response = self.http.post(
+        response = http.post(
             url="/api/v4/customers",
             data=[self._get_user_as_customer()],
         )
@@ -43,7 +43,7 @@ class AmoCRMCustomer(AmoDTO):
         data = self._get_user_as_customer()
         data.update({"id": customer_id})
 
-        self.http.patch(
+        http.patch(
             url="/api/v4/customers",
             data=[data],
         )
@@ -53,7 +53,7 @@ class AmoCRMCustomer(AmoDTO):
         Creates contact and returns amocrm_id
         https://www.amocrm.ru/developers/content/crm_platform/contacts-api#contacts-add
         """
-        response = self.http.post(
+        response = http.post(
             url="/api/v4/contacts",
             data=[self._get_user_as_contact()],
         )
@@ -68,7 +68,7 @@ class AmoCRMCustomer(AmoDTO):
         data = self._get_user_as_contact()
         data.update({"id": contact_id})
 
-        self.http.patch(
+        http.patch(
             url="/api/v4/contacts",
             data=[data],
         )
@@ -78,7 +78,7 @@ class AmoCRMCustomer(AmoDTO):
         Link given customer to given contact
         https://www.amocrm.ru/developers/content/crm_platform/entity-links-api#links-link
         """
-        self.http.post(
+        http.post(
             url=f"/api/v4/customers/{customer_id}/link",
             data=[
                 {

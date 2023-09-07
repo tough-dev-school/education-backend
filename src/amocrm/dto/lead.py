@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from amocrm.dto.base import AmoDTO
+from amocrm.client import http
 from orders.models import Order
 
 if TYPE_CHECKING:
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class AmoCRMLead(AmoDTO):
+class AmoCRMLead:
     order: Order
 
     def create(self) -> int:
@@ -32,7 +32,7 @@ class AmoCRMLead(AmoDTO):
         if status is not None:
             data.update({"status_id": get_b2c_pipeline_status_id(status_name=status)})
 
-        self.http.patch(
+        http.patch(
             url="/api/v4/leads",
             data=[data],
         )
@@ -52,7 +52,7 @@ class AmoCRMLead(AmoDTO):
             }
         )
 
-        response = self.http.post(
+        response = http.post(
             url="/api/v4/leads/complex",
             data=[data],
         )
@@ -64,7 +64,7 @@ class AmoCRMLead(AmoDTO):
         data = self._get_order_as_lead()
         data.update({"id": lead_id})
 
-        self.http.patch(
+        http.patch(
             url="/api/v4/leads",
             data=[data],
         )
@@ -76,7 +76,7 @@ class AmoCRMLead(AmoDTO):
         """
         from amocrm.ids import get_products_catalog_id
 
-        self.http.post(
+        http.post(
             url=f"/api/v4/leads/{lead_id}/link",
             data=[
                 {

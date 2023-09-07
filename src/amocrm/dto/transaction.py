@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 
-from amocrm.dto.base import AmoDTO
+from amocrm.client import http
 from orders.models import Order
 
 
 @dataclass
-class AmoCRMTransaction(AmoDTO):
+class AmoCRMTransaction:
     order: Order
 
     def create(self) -> int:
@@ -15,7 +15,7 @@ class AmoCRMTransaction(AmoDTO):
         """
         from amocrm.ids import get_products_catalog_id
 
-        response = self.http.post(
+        response = http.post(
             url=f"/api/v4/customers/{self.order.user.amocrm_user.customer_id}/transactions",
             data=[
                 {
@@ -43,7 +43,7 @@ class AmoCRMTransaction(AmoDTO):
         Delete transaction for given order
         https://www.amocrm.ru/developers/content/crm_platform/customers-api#transactions-delete
         """
-        self.http.delete(
+        http.delete(
             url=f"/api/v4/customers/transactions/{self.order.amocrm_transaction.amocrm_id}",  # type: ignore
             expected_status_codes=[204],
         )

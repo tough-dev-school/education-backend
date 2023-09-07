@@ -1,7 +1,5 @@
 __all__ = [
-    "AmoCRMHTTP",
-    "AmoCRMClientException",
+    "AmoCRMClient",
 ]
 
-from amocrm.client.http import AmoCRMClientException
-from amocrm.client.http import AmoCRMHTTP
+from amocrm.client.client import AmoCRMClient

@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 from typing import Iterable
 
-from amocrm.dto.base import AmoDTO
+from amocrm.client import http
 from products.models import Group
 
 
 @dataclass
-class AmoCRMGroups(AmoDTO):
+class AmoCRMGroups:
     """
     Product group is just a ENUM field for Product in amocrm
     This DTO creates and updates product groups with single request
@@ -23,7 +23,7 @@ class AmoCRMGroups(AmoDTO):
         from amocrm.ids import get_products_catalog_id
 
         groups_as_product_fields = [self._get_group_as_product_field(group=group) for group in self.groups]
-        response = self.http.patch(
+        response = http.patch(
             url=f"/api/v4/catalogs/{get_products_catalog_id()}/custom_fields",
             data=[
                 {

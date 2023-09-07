@@ -1,6 +1,6 @@
 from typing import TypedDict
 
-from amocrm.dto.base import AmoDTO
+from amocrm.client import http
 
 
 class CatalogField(TypedDict):
@@ -14,14 +14,14 @@ class Catalog(TypedDict):
     type: str
 
 
-class AmoCRMCatalogs(AmoDTO):
+class AmoCRMCatalogs:  # NOQA: PIE798
     @classmethod
     def get(cls) -> list[Catalog]:
         """
         Returns all catalogs from amocrm
         https://www.amocrm.ru/developers/content/crm_platform/catalogs-api#lists-list
         """
-        response = cls.http.get(url="/api/v4/catalogs", params={"limit": 250}, cached=True)  # type: ignore
+        response = http.get(url="/api/v4/catalogs", params={"limit": 250}, cached=True)
         return [cls._catalog_from_response(catalog) for catalog in response["_embedded"]["catalogs"]]
 
     @classmethod
@@ -30,7 +30,7 @@ class AmoCRMCatalogs(AmoDTO):
         Returns chosen catalog's fields
         https://www.amocrm.ru/developers/content/crm_platform/custom-fields
         """
-        response = cls.http.get(url=f"/api/v4/catalogs/{catalog_id}/custom_fields", params={"limit": 250}, cached=True)  # type: ignore
+        response = http.get(url=f"/api/v4/catalogs/{catalog_id}/custom_fields", params={"limit": 250}, cached=True)
         return [cls._catalog_field_from_response(catalog) for catalog in response["_embedded"]["custom_fields"]]
 
     @classmethod
@@ -39,7 +39,7 @@ class AmoCRMCatalogs(AmoDTO):
         Returns contacts catalog fields
         https://www.amocrm.ru/developers/content/crm_platform/custom-fields
         """
-        response = cls.http.get(url="/api/v4/contacts/custom_fields", params={"limit": 250}, cached=True)  # type: ignore
+        response = http.get(url="/api/v4/contacts/custom_fields", params={"limit": 250}, cached=True)
         return [cls._catalog_field_from_response(contact) for contact in response["_embedded"]["custom_fields"]]
 
     @staticmethod

@@ -1,6 +1,6 @@
 from typing import TypedDict
 
-from amocrm.dto.base import AmoDTO
+from amocrm.client import http
 
 
 class PipelineStatus(TypedDict):
@@ -14,14 +14,14 @@ class Pipeline(TypedDict):
     statuses: list[PipelineStatus]
 
 
-class AmoCRMPipelines(AmoDTO):
+class AmoCRMPipelines:  # NOQA: PIE798
     @classmethod
     def get(cls) -> list[Pipeline]:
         """
         Returns all amocrm pipelines
         https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines
         """
-        response = cls.http.get(url="/api/v4/leads/pipelines", cached=True)  # type: ignore
+        response = http.get(url="/api/v4/leads/pipelines", cached=True)
         return [cls._pipeline_from_response(data=pipeline) for pipeline in response["_embedded"]["pipelines"]]
 
     @staticmethod

@@ -4,7 +4,7 @@ from httpx import TransportError
 from django.apps import apps
 from django.conf import settings
 
-from amocrm.client.client import AmoCRMClient
+from amocrm.client import AmoCRMClient
 from amocrm.client.http import AmoCRMClientException
 from amocrm.services.access_token_getter import AmoCRMTokenGetterException
 from amocrm.services.course_pusher import AmoCRMCoursePusher

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Annotated, NotRequired, TypedDict
 
-from amocrm.dto.base import AmoDTO
+from amocrm.client import http
 from products.models import Course
 
 
@@ -21,13 +21,13 @@ class Product(TypedDict):
 
 
 @dataclass
-class AmoCRMProduct(AmoDTO):
+class AmoCRMProduct:
     course: Course
 
     def create(self) -> int:
         """Create product in amocrm and returns its amocrm_id"""
 
-        response = self.http.post(
+        response = http.post(
             url=f"/api/v4/catalogs/{self._get_catalog_id()}/elements",
             data=[self._get_course_as_product()],
         )
@@ -38,7 +38,7 @@ class AmoCRMProduct(AmoDTO):
         data = self._get_course_as_product()
         data.update({"id": self.course.amocrm_course.amocrm_id})
 
-        self.http.patch(
+        http.patch(
             url=f"/api/v4/catalogs/{self._get_catalog_id()}/elements",
             data=[data],
         )
