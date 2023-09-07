@@ -1,5 +1,3 @@
-__all__ = [
-    "AmoCRMClient",
-]
+__all__ = ["AmoCRMClient"]
 
 from amocrm.client.client import AmoCRMClient
