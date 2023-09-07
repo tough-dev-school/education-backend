@@ -1,9 +1,7 @@
 from dataclasses import dataclass
 from typing import Annotated, NotRequired, TypedDict
 
-from amocrm.cache.catalog_id import get_catalog_id
-from amocrm.cache.product_fields_ids import get_product_field_id
-from amocrm.dto.base import AmoDTO
+from amocrm.client import http
 from products.models import Course
 
 
@@ -23,13 +21,14 @@ class Product(TypedDict):
 
 
 @dataclass
-class AmoCRMProduct(AmoDTO):
+class AmoCRMProduct:
     course: Course
 
     def create(self) -> int:
         """Create product in amocrm and returns its amocrm_id"""
-        response = self.http.post(
-            url=f"/api/v4/catalogs/{get_catalog_id(catalog_type='products')}/elements",
+
+        response = http.post(
+            url=f"/api/v4/catalogs/{self._get_catalog_id()}/elements",
             data=[self._get_course_as_product()],
         )
         return response["_embedded"]["elements"][0]["id"]
@@ -39,22 +38,24 @@ class AmoCRMProduct(AmoDTO):
         data = self._get_course_as_product()
         data.update({"id": self.course.amocrm_course.amocrm_id})
 
-        self.http.patch(
-            url=f"/api/v4/catalogs/{get_catalog_id(catalog_type='products')}/elements",
+        http.patch(
+            url=f"/api/v4/catalogs/{self._get_catalog_id()}/elements",
             data=[data],
         )
 
     def _get_course_as_product(self) -> Product:
+        from amocrm.ids import product_field_id
+
         price = ProductField(
-            field_id=get_product_field_id(field_code="PRICE"),
+            field_id=product_field_id(field_code="PRICE"),
             values=[ProductFieldValue(value=str(self.course.price))],
         )
         slug = ProductField(
-            field_id=get_product_field_id(field_code="SKU"),
+            field_id=product_field_id(field_code="SKU"),
             values=[ProductFieldValue(value=self.course.slug)],
         )
         unit = ProductField(
-            field_id=get_product_field_id(field_code="UNIT"),
+            field_id=product_field_id(field_code="UNIT"),
             values=[ProductFieldValue(value="шт")],  # 'piece' as unit type suits best for courses
         )
         fields_values = [price, slug, unit]
@@ -62,7 +63,7 @@ class AmoCRMProduct(AmoDTO):
         if self.course.group is not None:
             fields_values.append(
                 ProductField(
-                    field_id=get_product_field_id(field_code="GROUP"),
+                    field_id=product_field_id(field_code="GROUP"),
                     values=[ProductFieldValue(value=self.course.group.slug)],
                 )
             )
@@ -70,3 +71,9 @@ class AmoCRMProduct(AmoDTO):
             name=self.course.name,
             custom_fields_values=fields_values,
         )
+
+    @staticmethod
+    def _get_catalog_id() -> int:
+        from amocrm.ids import products_catalog_id
+
+        return products_catalog_id()

@@ -1,11 +1,9 @@
 import pytest
 
-from amocrm.types import AmoCRMPipeline
-from amocrm.types import AmoCRMPipelineStatus
+from amocrm.dto.pipelines import AmoCRMPipelines
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.single_thread,
 ]
 
 
@@ -105,26 +103,32 @@ def _successful_response(get):
 
 
 @pytest.mark.usefixtures("_successful_response")
-def test_get_pipelines(user, amocrm_client, get):
-    got = amocrm_client.get_pipelines()
+def test_get_pipelines_return_list_of_pipelines(get):
+    got = AmoCRMPipelines.get()
 
     assert got == [
-        AmoCRMPipeline(
+        dict(
             id=7028886,
             name="b2b",
             statuses=[
-                AmoCRMPipelineStatus(id=58962662, name="Переговоры"),
-                AmoCRMPipelineStatus(id=142, name="Успешно реализовано"),
-                AmoCRMPipelineStatus(id=143, name="Закрыто и не реализовано"),
+                dict(id=58962662, name="Переговоры"),
+                dict(id=142, name="Успешно реализовано"),
+                dict(id=143, name="Закрыто и не реализовано"),
             ],
         ),
-        AmoCRMPipeline(
+        dict(
             id=7055602,
             name="individual",
             statuses=[
-                AmoCRMPipelineStatus(id=59144290, name="Неразобранное"),
-                AmoCRMPipelineStatus(id=59144298, name="подготовить индивидуальный план"),
+                dict(id=59144290, name="Неразобранное"),
+                dict(id=59144298, name="подготовить индивидуальный план"),
             ],
         ),
     ]
-    get.assert_called_once_with(url="/api/v4/leads/pipelines")
+
+
+@pytest.mark.usefixtures("_successful_response")
+def test_get_pipelines_call_cached(get):
+    AmoCRMPipelines.get()
+
+    get.assert_called_once_with(url="/api/v4/leads/pipelines", cached=True)

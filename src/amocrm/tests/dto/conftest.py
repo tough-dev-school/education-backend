@@ -8,15 +8,11 @@ from django.utils import timezone
 
 @pytest.fixture(autouse=True)
 def _mock_cached_fields_id(mocker):
-    mocker.patch("amocrm.dto.customer.get_contact_field_id", return_value=2235143)
-    mocker.patch("amocrm.dto.product.get_product_field_id", return_value=800)
-    mocker.patch("amocrm.dto.product.get_catalog_id", return_value=900)
-    mocker.patch("amocrm.dto.groups.get_product_field_id", return_value=800)
-    mocker.patch("amocrm.dto.groups.get_catalog_id", return_value=900)
-    mocker.patch("amocrm.dto.lead.get_catalog_id", return_value=777)
-    mocker.patch("amocrm.dto.transaction.get_catalog_id", return_value=777)
-    mocker.patch("amocrm.dto.lead.get_b2c_pipeline_id", return_value=555)
-    mocker.patch("amocrm.dto.lead.get_b2c_pipeline_status_id", return_value=333)
+    mocker.patch("amocrm.ids.contact_field_id", return_value=2235143)
+    mocker.patch("amocrm.ids.product_field_id", return_value=800)
+    mocker.patch("amocrm.ids.products_catalog_id", return_value=900)
+    mocker.patch("amocrm.ids.b2c_pipeline_id", return_value=555)
+    mocker.patch("amocrm.ids.b2c_pipeline_status_id", return_value=333)
 
 
 @pytest.fixture
@@ -57,14 +53,19 @@ def order(amocrm_user, course, factory):
 
 @pytest.fixture
 def post(mocker):
-    return mocker.patch("amocrm.client.http.AmoCRMHTTP.post")
+    return mocker.patch("amocrm.client.http.post")
 
 
 @pytest.fixture
 def patch(mocker):
-    return mocker.patch("amocrm.client.http.AmoCRMHTTP.patch")
+    return mocker.patch("amocrm.client.http.patch")
 
 
 @pytest.fixture
 def delete(mocker):
-    return mocker.patch("amocrm.client.http.AmoCRMHTTP.delete")
+    return mocker.patch("amocrm.client.http.delete")
+
+
+@pytest.fixture
+def get(mocker):
+    return mocker.patch("amocrm.client.http.get")

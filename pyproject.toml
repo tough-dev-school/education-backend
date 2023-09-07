@@ -46,6 +46,7 @@ dependencies = [
     "celery",
     "redis",
 
+    "httpx-cache[redis]",
     "httpx[http2]",
     "stripe",
 
@@ -67,6 +68,7 @@ dev = [
     "pytest-repeat",
     "pytest-xdist",
     "pytest-httpx",
+    "respx",
 
     "freezegun",
     "mixer",
