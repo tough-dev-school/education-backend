@@ -43,7 +43,7 @@ class AmoCRMOrderPusher(BaseService):
         else:
             if existing_lead.order != self.order:
                 self.relink_lead(order=self.order, lead=existing_lead)
-                AmoCRMLead(order=self.order).update()  # actualize lead's price and created_at
+                self.reactivate_lead_in_amocrm()
 
     def create_lead(self) -> None:
         lead_id = AmoCRMLead(order=self.order).create()
@@ -68,12 +68,17 @@ class AmoCRMOrderPusher(BaseService):
         if order_with_lead is not None:
             return order_with_lead.amocrm_lead
 
-    def relink_lead(self, order: Order, lead: AmoCRMOrderLead) -> None:
+    @staticmethod
+    def relink_lead(order: Order, lead: AmoCRMOrderLead) -> None:
         old_order = lead.order
         old_order.amocrm_lead = None
         old_order.save()
         order.amocrm_lead = lead
         order.save()
+
+    def reactivate_lead_in_amocrm(self) -> None:
+        """Actualize lead's price, created_at and set lead to 'active' status"""
+        AmoCRMLead(order=self.order).update(status="first_contact")
 
     def order_must_be_pushed(self) -> bool:
         if self.order.is_b2b:
