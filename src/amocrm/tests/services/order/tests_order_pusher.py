@@ -98,12 +98,15 @@ def test_created_transaction_is_linked(paid_order_with_lead):
 
 @pytest.mark.usefixtures("not_paid_order_with_lead")
 def test_relink_new_not_paid_order(not_paid_order_without_lead, mock_update_lead, amocrm_lead):
-    """Поступил новый открытый заказ, но аналогичная сделка уже есть в Амо - привязываем сделку к текущему заказу и обновляем сделку в Амо"""
+    """
+    Поступил новый открытый заказ, но аналогичная сделка уже есть в Амо - привязываем сделку к текущему заказу и обновляем сделку в Амо,
+    устанавлияваем статус как "новое обращение", чтобы гарантированно вернуть сделку в "активное" состояние
+    """
     AmoCRMOrderPusher(order=not_paid_order_without_lead)()
 
     not_paid_order_without_lead.refresh_from_db()
     assert not_paid_order_without_lead.amocrm_lead == amocrm_lead
-    mock_update_lead.assert_called_once()
+    mock_update_lead.assert_called_once_with(status="first_contact")
 
 
 @pytest.mark.usefixtures("not_paid_order_with_lead", "mock_create_transaction")
