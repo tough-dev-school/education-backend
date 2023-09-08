@@ -40,11 +40,6 @@ def mock_push_order(mocker):
 
 
 @pytest.fixture
-def paid_order_without_lead(user, course, factory):
-    return factory.order(user=user, course=course, is_paid=True, author=user)
-
-
-@pytest.fixture
 def not_paid_order_without_lead(factory, user, course):
     return factory.order(user=user, course=course, is_paid=False, author=user)
 
