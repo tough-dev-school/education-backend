@@ -17,6 +17,38 @@ class AmoCRMClientException(AmoCRMException):
     """Raises when client cannot make successful request"""
 
 
+class AmoCRMCacheControl(httpx_cache.CacheControl):
+    def is_response_fresh(self, *, request: httpx.Request, response: httpx.Response) -> bool:
+        """
+        Override method to tell cache client to store Responses ignoring 'cache' headers
+        https://obendidi.github.io/httpx-cache/cache_control/#use-your-own-cachecontroller
+        """
+        return True
+
+
+class AmoCRMCacheControlTransport(httpx_cache.CacheControlTransport):
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
+        self.controller = AmoCRMCacheControl(
+            cacheable_methods=("GET",),
+            cacheable_status_codes=(200, 203, 300, 301, 308),
+            always_cache=True,
+        )
+
+
+def get_client(cached: bool = False) -> httpx.Client | httpx_cache.Client:
+    cache_url = settings.HTTP_CACHE_REDIS_URL
+    if cached:
+        if len(cache_url) == 0:
+            raise AmoCRMClientException("No cache url for client")
+        cache = RedisCache(redis_url=cache_url)
+        return httpx_cache.Client(
+            transport=AmoCRMCacheControlTransport(cache=cache),
+        )
+
+    return httpx.Client()
+
+
 def request(
     method: str,
     url: str,
@@ -40,19 +72,6 @@ def request(
         response = request(url=url, timeout=3, json=data, headers=headers)
 
     return get_validated_response(response=response, url=url, expected_status_codes=expected_status_codes)
-
-
-def get_client(cached: bool = False) -> httpx.Client | httpx_cache.Client:
-    cache_url = settings.HTTP_CACHE_REDIS_URL
-    if cached:
-        if len(cache_url) == 0:
-            raise AmoCRMClientException("No cache url for client")
-        return httpx_cache.Client(
-            cache=RedisCache(redis_url=cache_url),
-            always_cache=True,
-        )
-
-    return httpx.Client()
 
 
 def format_url(url: str) -> str:
