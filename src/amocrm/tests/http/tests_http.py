@@ -1,5 +1,7 @@
 import pytest
 
+import httpx_cache
+
 from django.core.cache import cache
 
 from amocrm.client import http
@@ -7,6 +9,7 @@ from amocrm.client.http import AmoCRMClientException
 
 pytestmark = [
     pytest.mark.single_thread,
+    pytest.mark.freeze_time("2023-09-08 11:17:12-04:00"),
 ]
 
 
@@ -14,6 +17,16 @@ pytestmark = [
 def _cached_tokens():
     cache.set("amocrm_access_token", "token")
     cache.set("amocrm_refresh_token", "refresh-token")
+
+
+@pytest.fixture
+def amocrm_not_allowing_cache_headers():
+    return {
+        "cache-control": "no-store, no-cache, must-revalidate",
+        "date": "Fri, 08 Sep 2023 11:17:12 GMT",
+        "expires": "Tue, 15 Nov 1994 12:45:26 GMT",
+        "pragma": "no-cache",
+    }
 
 
 class MockResponse:
@@ -74,14 +87,35 @@ def test_get_ok_with_expected_status_code(respx_mock):
     assert "ok" in got
 
 
-def test_get_cached(respx_mock):
-    respx_mock.get("https://test.amocrm.ru/api/v4/companies?limit=100500").respond(200, json={"ok": "bar"})
+def test_get_cached(respx_mock, amocrm_not_allowing_cache_headers):
+    respx_mock.get("https://test.amocrm.ru/api/v4/companies?limit=100500").respond(
+        200,
+        json={"ok": "bar"},
+        headers=amocrm_not_allowing_cache_headers,  # imitate real Amo response with not allowing cache headers
+    )
     http.get("api/v4/companies", params={"limit": 100500}, cached=True)
     respx_mock.get("https://test.amocrm.ru/api/v4/companies?limit=100500").respond(500)  # throw 500 error
 
     got = http.get("api/v4/companies", params={"limit": 100500}, cached=True)
 
     assert "ok" in got  # client used cached value and didn't fail with 500
+
+
+@pytest.mark.xfail(reason="That's how cached Client works with base CacheControl and CacheControlTransport")
+def test_get_cached_with_default_cached_client(respx_mock, amocrm_not_allowing_cache_headers):
+    client = httpx_cache.Client(always_cache=True)
+    respx_mock.get("https://test.amocrm.ru/api/v4/companies?limit=100500").respond(
+        200,
+        json={"ok": "bar"},
+        headers=amocrm_not_allowing_cache_headers,  # imitate real Amo response with not allowing cache headers
+    )
+    client.get("https://test.amocrm.ru/api/v4/companies", params={"limit": 100500})
+    respx_mock.get("https://test.amocrm.ru/api/v4/companies?limit=100500").respond(500, json={})  # throw 500 error
+
+    got = client.get("https://test.amocrm.ru/api/v4/companies", params={"limit": 100500})
+
+    assert got.status_code == 200
+    assert "ok" in got.json()
 
 
 def test_delete_ok(respx_mock):
