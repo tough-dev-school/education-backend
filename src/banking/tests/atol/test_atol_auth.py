@@ -16,23 +16,21 @@ def fetch(mocker):
     return mocker.patch("banking.atol.auth.fetch", return_value="secret")
 
 
-def test_ok(httpx_mock: HTTPXMock):
-    httpx_mock.add_response(
-        url="https://online.atol.ru/possystem/v4/getToken",
+def test_ok(respx_mock):
+    respx_mock.route(url="https://online.atol.ru/possystem/v4/getToken").respond(
         json={
             "error": None,
             "token": "__mocked",
             "timestamp": "30.11.2017 17:58:53",  # this the real timestamp from official docs
-        },
+        }
     )
 
     assert auth.get_atol_token() == "__mocked"
 
 
 @pytest.mark.parametrize("status_code", [200, 400, 500])
-def test_400(httpx_mock: HTTPXMock, status_code):
-    httpx_mock.add_response(
-        url="https://online.atol.ru/possystem/v4/getToken",
+def test_400(respx_mock, status_code):
+    respx_mock.route(url="https://online.atol.ru/possystem/v4/getToken").respond(
         status_code=status_code,
         json={
             "error": {
