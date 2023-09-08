@@ -67,7 +67,6 @@ dev = [
     "pytest-randomly",
     "pytest-repeat",
     "pytest-xdist",
-    "pytest-httpx",
     "respx",
 
     "freezegun",
