@@ -34,7 +34,7 @@ def test_subscribe(dashamail, post, user, tags, request_tags):
 
 
 def test_subscription_failed(dashamail, user, fail_response_json):
-    dashamail.httpx_mock.add_response(url="https://api.dashamail.com", method="POST", json=fail_response_json)
+    dashamail.respx_mock.post(url="https://api.dashamail.com").respond(json=fail_response_json)
 
     with pytest.raises(DashamailSubscriptionFailed):
         dashamail.subscribe_user(
