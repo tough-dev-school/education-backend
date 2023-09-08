@@ -1,5 +1,7 @@
 import pytest
 
+from respx import MockRouter
+
 from diplomas.models import Diploma
 from diplomas.tasks import generate_diploma
 
@@ -9,7 +11,7 @@ pytestmark = [
 
 
 @pytest.fixture(autouse=True)
-def _mock_response(respx_mock):
+def _mock_response(respx_mock: MockRouter):
     respx_mock.route().respond(content=b"TYPICAL MAC USER JPG")
 
 

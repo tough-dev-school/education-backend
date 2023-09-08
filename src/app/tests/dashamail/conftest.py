@@ -1,5 +1,7 @@
 import pytest
 
+from respx import MockRouter
+
 from app.integrations.dashamail import AppDashamail
 
 pytestmark = [pytest.mark.django_db]
@@ -17,7 +19,7 @@ def _set_dashamail_credentials(settings):
 
 
 @pytest.fixture
-def dashamail(respx_mock):
+def dashamail(respx_mock: MockRouter):
     client = AppDashamail()
     client.respx_mock = respx_mock
     return client

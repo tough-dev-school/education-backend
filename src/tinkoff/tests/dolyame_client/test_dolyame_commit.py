@@ -2,6 +2,8 @@ import json
 import pytest
 import uuid
 
+from respx import MockRouter
+
 from tinkoff import tasks
 
 pytestmark = [pytest.mark.django_db]
@@ -12,7 +14,7 @@ def idempotency_key() -> str:
     return str(uuid.uuid4())
 
 
-def test(order, idempotency_key, respx_mock):
+def test(order, idempotency_key, respx_mock: MockRouter):
     respx_mock.route(
         url=f"https://partner.dolyame.ru/v1/orders/{order.slug}/commit",
         headers={
@@ -30,7 +32,7 @@ def test(order, idempotency_key, respx_mock):
 
 
 @pytest.mark.xfail(strict=True, reason="Just to make sure above code works")
-def test_header(order, idempotency_key, respx_mock):
+def test_header(order, idempotency_key, respx_mock: MockRouter):
     respx_mock.route(
         url=f"https://partner.dolyame.ru/v1/orders/{order.slug}/commit",
         headers={

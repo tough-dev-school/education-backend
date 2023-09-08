@@ -1,5 +1,7 @@
 import pytest
 
+from respx import MockRouter
+
 from banking.atol import auth
 from banking.atol import exceptions
 
@@ -14,7 +16,7 @@ def fetch(mocker):
     return mocker.patch("banking.atol.auth.fetch", return_value="secret")
 
 
-def test_ok(respx_mock):
+def test_ok(respx_mock: MockRouter):
     respx_mock.route(url="https://online.atol.ru/possystem/v4/getToken").respond(
         json={
             "error": None,
@@ -27,7 +29,7 @@ def test_ok(respx_mock):
 
 
 @pytest.mark.parametrize("status_code", [200, 400, 500])
-def test_400(respx_mock, status_code):
+def test_400(respx_mock: MockRouter, status_code):
     respx_mock.route(url="https://online.atol.ru/possystem/v4/getToken").respond(
         status_code=status_code,
         json={
