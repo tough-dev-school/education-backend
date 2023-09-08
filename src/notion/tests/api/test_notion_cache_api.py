@@ -16,11 +16,6 @@ def as_staff(staff_user):
     return DRFClient(user=staff_user)
 
 
-@pytest.fixture
-def assert_all_responses_were_requested() -> bool:
-    return False
-
-
 @pytest.fixture(autouse=True)
 def _ok(respx_mock: MockRouter):
     respx_mock.route(url="http://notion.middleware/v1/notion/loadPageChunk/").respond(
