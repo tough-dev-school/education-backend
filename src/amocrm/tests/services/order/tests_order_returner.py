@@ -26,18 +26,46 @@ def unpaid_order(mixer, paid_order_with_lead):
 
 
 @pytest.fixture
-def order_deleter():
+def unpaid_b2b_order(paid_order_without_lead, another_user):
+    paid_order_without_lead.set_not_paid()
+    paid_order_without_lead.setattr_and_save("author", another_user)
+    return paid_order_without_lead
+
+
+@pytest.fixture
+def unpaid_free_order(paid_order_without_lead):
+    paid_order_without_lead.set_not_paid()
+    paid_order_without_lead.setattr_and_save("price", 0)
+    return paid_order_without_lead
+
+
+@pytest.fixture
+def order_returner():
     return lambda order: AmoCRMOrderReturner(order=order)()
 
 
-def test_correct_calls(order_deleter, unpaid_order, mock_update_lead, mock_delete_transaction):
-    order_deleter(unpaid_order)
+def test_correct_calls(order_returner, unpaid_order, mock_update_lead, mock_delete_transaction):
+    order_returner(unpaid_order)
 
     mock_update_lead.assert_called_once_with(status="closed")
     mock_delete_transaction.assert_called_once()
 
 
-def test_delete_transaction(order_deleter, unpaid_order, mock_update_lead, mock_delete_transaction):
-    order_deleter(unpaid_order)
+def test_delete_transaction(order_returner, unpaid_order, mock_update_lead, mock_delete_transaction):
+    order_returner(unpaid_order)
 
     assert AmoCRMOrderTransaction.objects.count() == 0
+
+
+def test_dont_return_if_b2b(order_returner, unpaid_b2b_order, mock_update_lead, mock_delete_transaction):
+    order_returner(unpaid_b2b_order)
+
+    mock_update_lead.assert_not_called()
+    mock_delete_transaction.assert_not_called()
+
+
+def test_dont_return_if_free(order_returner, unpaid_free_order, mock_update_lead, mock_delete_transaction):
+    order_returner(unpaid_free_order)
+
+    mock_update_lead.assert_not_called()
+    mock_delete_transaction.assert_not_called()

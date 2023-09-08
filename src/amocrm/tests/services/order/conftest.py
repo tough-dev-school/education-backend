@@ -16,3 +16,8 @@ def amocrm_lead(mixer, order):
 @pytest.fixture
 def paid_order_with_lead(user, course, factory, amocrm_lead):
     return factory.order(user=user, course=course, is_paid=True, author=user, amocrm_lead=amocrm_lead)
+
+
+@pytest.fixture
+def paid_order_without_lead(user, course, factory):
+    return factory.order(user=user, course=course, is_paid=True, author=user)
