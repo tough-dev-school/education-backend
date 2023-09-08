@@ -17,9 +17,9 @@ def _set_dashamail_credentials(settings):
 
 
 @pytest.fixture
-def dashamail(httpx_mock):
+def dashamail(respx_mock):
     client = AppDashamail()
-    client.httpx_mock = httpx_mock
+    client.respx_mock = respx_mock
     return client
 
 
