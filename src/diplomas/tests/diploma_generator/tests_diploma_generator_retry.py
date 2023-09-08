@@ -38,16 +38,16 @@ def generator(generator):
     return generator(language="RU")
 
 
-def test_ok(generator, httpx_mock):
-    httpx_mock.add_callback(generate_exception_n_times(3))
+def test_ok(generator, respx_mock):
+    respx_mock.route().mock(side_effect=generate_exception_n_times(3))
 
     diploma = generator()
 
     assert diploma.image.read() == b"TYPICAL MAC USER JPG"
 
 
-def test_fail(generator, httpx_mock):
-    httpx_mock.add_callback(generate_exception_n_times(6))
+def test_fail(generator, respx_mock):
+    respx_mock.route().mock(side_effect=generate_exception_n_times(6))
 
     with pytest.raises(WrongDiplomaServiceResponse):
         generator()

@@ -1,7 +1,5 @@
 import pytest
 
-from pytest_httpx import HTTPXMock
-
 from banking.atol import auth
 from banking.atol import exceptions
 
