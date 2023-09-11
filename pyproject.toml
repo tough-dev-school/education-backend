@@ -46,7 +46,6 @@ dependencies = [
     "celery",
     "redis",
 
-    "httpx-cache[redis]",
     "httpx[http2]",
     "stripe",
 
