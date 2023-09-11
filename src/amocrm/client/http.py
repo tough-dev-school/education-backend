@@ -62,7 +62,7 @@ def get_validated_response(response: Response, url: str, expected_status_codes: 
 
 
 def get(url: str, params: dict | None = None, expected_status_codes: list[int] | None = None, cached: bool = False) -> dict[str, Any]:
-    def call() -> dict[str, Any]:
+    def fetch() -> dict[str, Any]:
         return request(
             method="get",
             url=url,
