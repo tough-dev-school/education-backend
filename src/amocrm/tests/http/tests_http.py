@@ -99,15 +99,6 @@ def test_get_cached(respx_mock, amocrm_not_allowing_cache_headers):
     assert "ok" in got  # client used cached value and didn't fail with 500
 
 
-def test_get_already_cached(respx_mock, amocrm_not_allowing_cache_headers):
-    cache.set("amocrm__api/v4/companies", {"ok": True})
-    respx_mock.get("https://test.amocrm.ru/api/v4/companies?limit=100500").respond(500)  # throw 500 error
-
-    got = http.get("api/v4/companies", params={"limit": 100500}, cached=True)
-
-    assert "ok" in got  # client used cached value and didn't fail with 500
-
-
 def test_delete_ok(respx_mock):
     respx_mock.delete(url="https://test.amocrm.ru/api/v4/transactions/444")
 

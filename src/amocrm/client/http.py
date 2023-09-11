@@ -71,9 +71,9 @@ def get(url: str, params: dict | None = None, expected_status_codes: list[int] |
         )
 
     if cached:
-        timeout = 60 * 60 * 24 * 365 * 5  # set 5 years TTL
-        return cache.get_or_set(f"amocrm__{url}", call, timeout=timeout)  # type: ignore
-    return call()
+        timeout = 60 * 60  # set 1 hour TTL
+        return cache.get_or_set(f"amocrm__{url}", fetch, timeout=timeout)  # type: ignore
+    return fetch()
 
 
 def delete(url: str, params: dict | None = None, expected_status_codes: list[int] | None = None) -> dict[str, Any]:
