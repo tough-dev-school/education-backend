@@ -4,10 +4,9 @@ from urllib.parse import urljoin
 
 import httpx
 from httpx import Response
-import httpx_cache
-from httpx_cache.cache.redis import RedisCache
 
 from django.conf import settings
+from django.core.cache import cache
 
 from amocrm.exceptions import AmoCRMException
 from amocrm.services.access_token_getter import AmoCRMTokenGetter
@@ -17,47 +16,14 @@ class AmoCRMClientException(AmoCRMException):
     """Raises when client cannot make successful request"""
 
 
-class AmoCRMCacheControl(httpx_cache.CacheControl):
-    def is_response_fresh(self, *, request: httpx.Request, response: httpx.Response) -> bool:
-        """
-        Override method to tell cache client to store Responses ignoring 'cache' headers
-        https://obendidi.github.io/httpx-cache/cache_control/#use-your-own-cachecontroller
-        """
-        return True
-
-
-class AmoCRMCacheControlTransport(httpx_cache.CacheControlTransport):
-    def __init__(self, **kwargs: Any) -> None:
-        super().__init__(**kwargs)
-        self.controller = AmoCRMCacheControl(
-            cacheable_methods=("GET",),
-            cacheable_status_codes=(200, 203, 300, 301, 308),
-            always_cache=True,
-        )
-
-
-def get_client(cached: bool = False) -> httpx.Client | httpx_cache.Client:
-    cache_url = settings.HTTP_CACHE_REDIS_URL
-    if cached:
-        if len(cache_url) == 0:
-            raise AmoCRMClientException("No cache url for client")
-        cache = RedisCache(redis_url=cache_url)
-        return httpx_cache.Client(
-            transport=AmoCRMCacheControlTransport(cache=cache),
-        )
-
-    return httpx.Client()
-
-
 def request(
     method: str,
     url: str,
     data: dict | list | None = None,
     params: dict | None = None,
     expected_status_codes: list[int] | None = None,
-    cached: bool = False,
 ) -> dict[str, Any]:
-    client = get_client(cached=cached)
+    client = httpx.Client()
     request = getattr(client, method)
     headers = {
         "Content-Type": "application/json",
@@ -96,13 +62,18 @@ def get_validated_response(response: Response, url: str, expected_status_codes: 
 
 
 def get(url: str, params: dict | None = None, expected_status_codes: list[int] | None = None, cached: bool = False) -> dict[str, Any]:
-    return request(
-        method="get",
-        url=url,
-        params=params,
-        expected_status_codes=expected_status_codes,
-        cached=cached,
-    )
+    def fetch() -> dict[str, Any]:
+        return request(
+            method="get",
+            url=url,
+            params=params,
+            expected_status_codes=expected_status_codes,
+        )
+
+    if cached:
+        timeout = 60 * 60  # set 1 hour TTL
+        return cache.get_or_set(f"amocrm__{url}", fetch, timeout=timeout)  # type: ignore
+    return fetch()
 
 
 def delete(url: str, params: dict | None = None, expected_status_codes: list[int] | None = None) -> dict[str, Any]:

@@ -1,7 +1,5 @@
 import pytest
 
-import httpx_cache
-
 from django.core.cache import cache
 
 from amocrm.client import http
@@ -99,23 +97,6 @@ def test_get_cached(respx_mock, amocrm_not_allowing_cache_headers):
     got = http.get("api/v4/companies", params={"limit": 100500}, cached=True)
 
     assert "ok" in got  # client used cached value and didn't fail with 500
-
-
-@pytest.mark.xfail(reason="That's how cached Client works with base CacheControl and CacheControlTransport")
-def test_get_cached_with_default_cached_client(respx_mock, amocrm_not_allowing_cache_headers):
-    client = httpx_cache.Client(always_cache=True)
-    respx_mock.get("https://test.amocrm.ru/api/v4/companies?limit=100500").respond(
-        200,
-        json={"ok": "bar"},
-        headers=amocrm_not_allowing_cache_headers,  # imitate real Amo response with not allowing cache headers
-    )
-    client.get("https://test.amocrm.ru/api/v4/companies", params={"limit": 100500})
-    respx_mock.get("https://test.amocrm.ru/api/v4/companies?limit=100500").respond(500, json={})  # throw 500 error
-
-    got = client.get("https://test.amocrm.ru/api/v4/companies", params={"limit": 100500})
-
-    assert got.status_code == 200
-    assert "ok" in got.json()
 
 
 def test_delete_ok(respx_mock):
