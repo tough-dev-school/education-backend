@@ -31,7 +31,7 @@ def test_send_correct_refund_request_per_items_data(order, idempotency_key, add_
     assert refunded_item_in_request["price"] == "100500"
     assert refunded_item_in_request["quantity"] == 1
     assert refunded_item_in_request["receipt"]["payment_method"] == "full_payment"
-    assert refunded_item_in_request["receipt"]["tax"] is None
+    assert refunded_item_in_request["receipt"]["tax"] == "none"
     assert refunded_item_in_request["receipt"]["payment_object"] == "service"
     assert refunded_item_in_request["receipt"]["measurement_unit"] == "шт"
 

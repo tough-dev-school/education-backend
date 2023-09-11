@@ -94,7 +94,7 @@ class Dolyame(Bank):
             {
                 "receipt": {
                     "payment_method": "full_payment",
-                    "tax": None,
+                    "tax": "none",
                     "payment_object": "service",
                     "measurement_unit": "шт",
                 },

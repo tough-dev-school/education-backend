@@ -34,7 +34,7 @@ def test_dolyame_commit_correct_per_items_data(order, add_commit_response, idemp
     assert item_in_request["price"] == "100500"
     assert item_in_request["quantity"] == 1
     assert item_in_request["receipt"]["payment_method"] == "full_payment"
-    assert item_in_request["receipt"]["tax"] is None
+    assert item_in_request["receipt"]["tax"] == "none"
     assert item_in_request["receipt"]["payment_object"] == "service"
     assert item_in_request["receipt"]["measurement_unit"] == "шт"
 

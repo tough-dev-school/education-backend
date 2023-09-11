@@ -26,7 +26,7 @@ def test_items_with_receipt_data(dolyame):
     assert got[0]["quantity"] == 1
     assert got[0]["price"] == "100500"
     assert got[0]["receipt"]["payment_method"] == "full_payment"
-    assert got[0]["receipt"]["tax"] is None
+    assert got[0]["receipt"]["tax"] == "none"
     assert got[0]["receipt"]["payment_object"] == "service"
     assert got[0]["receipt"]["measurement_unit"] == "шт"
 
