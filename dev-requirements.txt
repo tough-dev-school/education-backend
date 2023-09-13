@@ -37,7 +37,7 @@ bcrypt==4.0.1
     # via education-backend (pyproject.toml)
 billiard==3.6.4.0
     # via celery
-black==23.7.0
+black==23.9.1
     # via
     #   education-backend (pyproject.toml)
     #   flake8-black
@@ -95,7 +95,7 @@ decorator==5.1.1
     #   retry
 dj-rest-auth==4.0.1
     # via education-backend (pyproject.toml)
-django==4.1.10
+django==4.2.5
     # via
     #   dj-rest-auth
     #   django-anymail
@@ -260,7 +260,7 @@ httpcore==0.17.3
 httpx[http2]==0.24.1
     # via
     #   education-backend (pyproject.toml)
-    #   pytest-httpx
+    #   respx
 hyperframe==6.0.1
     # via h2
 idna==3.4
@@ -354,14 +354,13 @@ pyjwt[crypto]==2.8.0
     # via
     #   drf-jwt
     #   education-backend (pyproject.toml)
-pytest==7.4.1
+pytest==7.4.2
     # via
     #   pytest-cov
     #   pytest-deadfixtures
     #   pytest-django
     #   pytest-env
     #   pytest-freezegun
-    #   pytest-httpx
     #   pytest-mock
     #   pytest-randomly
     #   pytest-repeat
@@ -375,8 +374,6 @@ pytest-django==4.5.2
 pytest-env==1.0.1
     # via education-backend (pyproject.toml)
 pytest-freezegun==0.4.2
-    # via education-backend (pyproject.toml)
-pytest-httpx==0.24.0
     # via education-backend (pyproject.toml)
 pytest-mock==3.11.1
     # via education-backend (pyproject.toml)
@@ -397,7 +394,7 @@ pytz==2023.3.post1
     #   djangorestframework
 pyyaml==6.0.1
     # via drf-spectacular
-redis==5.0.0
+redis==4.6.0
     # via education-backend (pyproject.toml)
 referencing==0.30.2
     # via
@@ -411,6 +408,8 @@ requests==2.31.0
     #   requests-mock
     #   stripe
 requests-mock==1.11.0
+    # via education-backend (pyproject.toml)
+respx==0.20.2
     # via education-backend (pyproject.toml)
 retry==0.9.2
     # via education-backend (pyproject.toml)
@@ -446,7 +445,7 @@ stack-data==0.6.2
     # via ipython
 standardjson==0.3.1
     # via django-prettyjson
-stripe==6.3.0
+stripe==6.4.0
     # via education-backend (pyproject.toml)
 traitlets==5.9.0
     # via
@@ -480,7 +479,7 @@ types-retry==0.9.9.4
     # via education-backend (pyproject.toml)
 types-s3transfer==0.6.2
     # via boto3-stubs
-types-setuptools==68.1.0.1
+types-setuptools==68.2.0.0
     # via types-babel
 types-simplejson==3.19.0.2
     # via education-backend (pyproject.toml)

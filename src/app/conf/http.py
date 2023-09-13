@@ -17,3 +17,5 @@ CORS_ORIGIN_REGEX_WHITELIST = [
 
 FRONTEND_URL = env("FRONTEND_URL", cast=str, default="https://lms.tough-dev.school/")
 DIPLOMA_FRONTEND_URL = env("DIPLOMA_FRONTEND_URL", cast=str, default="https://cert.tough-dev.school/")
+
+HTTP_CACHE_REDIS_URL = env("REDISCLOUD_URL", cast=str, default="")

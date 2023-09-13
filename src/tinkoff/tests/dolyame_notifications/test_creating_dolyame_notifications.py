@@ -33,11 +33,8 @@ def test_status(api, notification, status):
     assert notification.status == status
 
 
-def test_autocommit_is_sent(api, notification, order, httpx_mock):
-    httpx_mock.add_response(
-        url=f"https://partner.dolyame.ru/v1/orders/{order.slug}/commit",
-        json={},
-    )
+def test_autocommit_is_sent(api, notification, order, respx_mock):
+    respx_mock.post(url=f"https://partner.dolyame.ru/v1/orders/{order.slug}/commit").respond(json={})
 
     api.post("/api/v2/banking/dolyame-notifications/", notification(status="wait_for_commit"), expected_status_code=200)
 

@@ -1,3 +1,4 @@
+from functools import partial
 import pytest
 
 from tinkoff import tasks
@@ -7,7 +8,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def add_refund_response(add_dolyame_response):
-    return add_dolyame_response(url_suffix="refund")
+    return partial(add_dolyame_response, url_suffix="refund")
 
 
 def test_send_correct_refund_request(order, idempotency_key, add_refund_response, retrieve_request_json):

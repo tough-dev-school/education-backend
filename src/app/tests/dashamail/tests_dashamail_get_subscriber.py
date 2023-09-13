@@ -43,7 +43,7 @@ def test_get_subscriber_with_yandex_mail(dashamail, post, user, email, expected_
 
 
 def test_get_subscriber_correct_values(dashamail, user, successful_response_json):
-    dashamail.httpx_mock.add_response(url="https://api.dashamail.com", method="POST", json=successful_response_json)
+    dashamail.respx_mock.post(url="https://api.dashamail.com").respond(json=successful_response_json)
 
     member_id, is_active = dashamail.get_subscriber(
         email=user.email,
@@ -54,7 +54,7 @@ def test_get_subscriber_correct_values(dashamail, user, successful_response_json
 
 
 def test_get_subscriber_error_doesnt_exist(dashamail, user, fail_response_json):
-    dashamail.httpx_mock.add_response(url="https://api.dashamail.com", method="POST", json=fail_response_json)
+    dashamail.respx_mock.post(url="https://api.dashamail.com").respond(json=fail_response_json)
 
     member_id, is_active = dashamail.get_subscriber(
         email=user.email,

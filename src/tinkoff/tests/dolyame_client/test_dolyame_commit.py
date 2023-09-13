@@ -1,3 +1,4 @@
+from functools import partial
 import pytest
 
 from tinkoff import tasks
@@ -7,10 +8,10 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def add_commit_response(add_dolyame_response):
-    return add_dolyame_response(url_suffix="commit")
+    return partial(add_dolyame_response, url_suffix="commit")
 
 
-def test_dolyame_commit_send_correct_request(order, add_commit_response, idempotency_key, retrieve_request_json):
+def test_dolyame_commit_send_correct_request(order, add_commit_response, idempotency_key, retrieve_request_json, respx_mock):
     add_commit_response()
 
     tasks.commit_dolyame_order(order_id=order.id, idempotency_key=idempotency_key)
@@ -42,7 +43,7 @@ def test_dolyame_commit_correct_per_items_data(order, add_commit_response, idemp
 @pytest.mark.xfail(strict=True, reason="Just to make sure above code works")
 def test_header(order, idempotency_key, add_commit_response):
     add_commit_response(
-        match_headers={
+        headers={
             "X-Correlation-ID": "SOME-OTHER-VALUE",
         }
     )

@@ -1,7 +1,8 @@
-from functools import partial
 import json
 import pytest
 from uuid import uuid4
+
+from respx import MockRouter
 
 from tinkoff.dolyame import Dolyame
 
@@ -31,18 +32,16 @@ def idempotency_key() -> str:
 
 
 @pytest.fixture
-def add_dolyame_response(httpx_mock, order, idempotency_key):
-    return lambda url_suffix: partial(
-        httpx_mock.add_response,
-        method="POST",
-        url=f"https://partner.dolyame.ru/v1/orders/{order.slug}/{url_suffix}",
-        match_headers={
-            "X-Correlation-ID": idempotency_key,
-        },
-        json={},
-    )
+def add_dolyame_response(order, idempotency_key, respx_mock: MockRouter):
+    def add_response(url_suffix: str, headers: dict | None = None):
+        return respx_mock.post(
+            url__eq=f"https://partner.dolyame.ru/v1/orders/{order.slug}/{url_suffix}",
+            headers=headers or {"X-Correlation-ID": idempotency_key},
+        ).respond(json={})
+
+    return add_response
 
 
 @pytest.fixture
-def retrieve_request_json(httpx_mock):
-    return lambda: json.loads(httpx_mock.get_request().content)
+def retrieve_request_json(respx_mock: MockRouter):
+    return lambda: json.loads(respx_mock.calls.last.request.content)

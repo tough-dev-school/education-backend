@@ -118,7 +118,7 @@ def test_link_course_to_lead(order, post):
                 "to_entity_type": "catalog_elements",
                 "metadata": {
                     "quantity": 1,
-                    "catalog_id": 777,
+                    "catalog_id": 900,
                 },
             },
         ],

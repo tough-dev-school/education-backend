@@ -1,12 +1,11 @@
 import pytest
 
-from pytest_httpx import HTTPXMock
+from respx import MockRouter
 
 
 @pytest.fixture
-def _ok(httpx_mock: HTTPXMock):
-    httpx_mock.add_response(
-        url="http://notion.middleware/v1/notion/syncRecordValues/",
+def _ok(respx_mock: MockRouter):
+    respx_mock.route(url="http://notion.middleware/v1/notion/syncRecordValues/").respond(
         json={
             "recordMap": {
                 "block": {

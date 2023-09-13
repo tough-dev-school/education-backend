@@ -46,7 +46,7 @@ def test_create_call(order, post):
                         {
                             "id": 999111,
                             "metadata": {
-                                "catalog_id": 777,
+                                "catalog_id": 900,
                                 "quantity": 1,
                             },
                         },
