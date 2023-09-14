@@ -447,7 +447,7 @@ standardjson==0.3.1
     # via django-prettyjson
 stripe==6.4.0
     # via education-backend (pyproject.toml)
-traitlets==5.9.0
+traitlets==5.10.0
     # via
     #   ipython
     #   matplotlib-inline
