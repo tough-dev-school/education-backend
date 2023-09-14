@@ -4,7 +4,7 @@ from django.conf import settings
 from django.utils import timezone
 
 from app.services import BaseService
-from app.tasks import send_happiness_message
+from app.tasks import send_telegram_message
 from orders.models import Order
 
 
@@ -35,13 +35,16 @@ class OrderShipper(BaseService):
         if not settings.HAPPINESS_MESSAGES_CHAT_ID:
             return
 
-        send_happiness_message.delay(text=self.get_order_happiness_message(self.order))
+        send_telegram_message.delay(
+            chat_id=settings.HAPPINESS_MESSAGES_CHAT_ID,
+            text=self.get_order_happiness_message(self.order),
+        )
 
     @staticmethod
     def get_order_happiness_message(order: Order) -> str:
         sum = str(order.price).replace(".00", "")
         reason = str(order.item)
-        payment_method = order.get_payment_method()
+        payment_method = order.get_readable_payment_method_name()
 
         payment_info = f"💰+{sum} ₽, {payment_method}"
 

@@ -14,7 +14,7 @@ def _enable_happiness_messages(settings):
 
 @pytest.fixture(autouse=True)
 def tg_message(mocker):
-    return mocker.patch("app.integrations.tg.send_happiness_message")
+    return mocker.patch("app.integrations.tg.send_message")
 
 
 @pytest.fixture
@@ -25,15 +25,21 @@ def mock_get_happiness_message(mocker):
 def test(tg_message, order, mock_get_happiness_message):
     order.set_paid()
 
-    tg_message.assert_called_once_with("happiness_message")
     mock_get_happiness_message.assert_called_once_with(order)
+    tg_message.assert_called_once_with(
+        chat_id="aaa100500",
+        text="happiness_message",
+    )
 
 
 def test_no_notifications_for_already_paid_orders(tg_message, order, mock_get_happiness_message):
     order.set_paid()
     order.set_paid()
 
-    tg_message.assert_called_once_with("happiness_message")
+    tg_message.assert_called_once_with(
+        chat_id="aaa100500",
+        text="happiness_message",
+    )
 
 
 def test_no_notifications_for_zero_prices_orders(tg_message, order):
