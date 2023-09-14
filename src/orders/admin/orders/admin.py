@@ -136,7 +136,7 @@ class OrderAdmin(ModelAdmin):
 
     @admin.display(description=_("Payment"), ordering="paid")
     def payment(self, obj: Order) -> str:
-        return obj.get_payment_method()
+        return obj.get_readable_payment_method_name()
 
     @admin.display(description=_("Login as customer"))
     @mark_safe
