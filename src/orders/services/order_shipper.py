@@ -10,7 +10,7 @@ from orders.models import Order
 
 @dataclass
 class OrderShipper(BaseService):
-    """Ship the order (actualy calls item ship() method)"""
+    """Ship the order (actually calls item ship() method)"""
 
     order: Order
     silent: bool | None = False
@@ -35,7 +35,17 @@ class OrderShipper(BaseService):
         if not settings.HAPPINESS_MESSAGES_CHAT_ID:
             return
 
-        sum = str(self.order.price).replace(".00", "")
-        reason = str(self.order.item)
+        send_happiness_message.delay(text=self.get_order_happiness_message(self.order))
 
-        send_happiness_message.delay(text=f"💰+{sum} ₽, {self.order.user}, {reason}")
+    @staticmethod
+    def get_order_happiness_message(order: Order) -> str:
+        sum = str(order.price).replace(".00", "")
+        reason = str(order.item)
+        payment_method = order.get_payment_method()
+
+        payment_info = f"💰+{sum} ₽, {payment_method}"
+
+        if order.promocode:
+            payment_info += f", промокод {order.promocode}"
+
+        return f"{payment_info}\n{reason}\n{order.user}"
