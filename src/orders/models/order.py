@@ -10,6 +10,7 @@ from django.utils.translation import pgettext_lazy
 from app.models import models
 from app.models import only_one_or_zero_is_set
 from app.models import TimestampedModel
+from banking.selector import get_bank
 from orders.exceptions import UnknownItemException
 from orders.fields import ItemField
 from products.models import Product
@@ -152,3 +153,17 @@ class Order(TimestampedModel):
         from orders.services import OrderUnshipper
 
         OrderUnshipper(self)()
+
+    def get_payment_method(self) -> str:
+        if self.paid is not None:
+            if self.bank_id:
+                return get_bank(self.bank_id).name
+            if self.is_b2b:
+                return "B2B"
+
+            return "Is paid"
+
+        if self.shipped is not None:
+            return "Shipped without payment"
+
+        return "—"

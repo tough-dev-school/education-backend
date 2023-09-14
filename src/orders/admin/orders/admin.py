@@ -9,7 +9,6 @@ from django.utils.translation import gettext as _
 from app.admin import admin
 from app.admin import ModelAdmin
 from app.pricing import format_price
-from banking.selector import get_bank
 from orders.admin.orders import actions
 from orders.admin.orders.filters import OrderStatusFilter
 from orders.admin.orders.forms import OrderAddForm
@@ -137,18 +136,7 @@ class OrderAdmin(ModelAdmin):
 
     @admin.display(description=_("Payment"), ordering="paid")
     def payment(self, obj: Order) -> str:
-        if obj.paid is not None:
-            if obj.bank_id:
-                return get_bank(obj.bank_id).name
-            if obj.is_b2b:
-                return _("B2B")
-
-            return _("Is paid")
-
-        if obj.shipped is not None:
-            return _("Shipped without payment")
-
-        return "—"
+        return obj.get_payment_method()
 
     @admin.display(description=_("Login as customer"))
     @mark_safe
