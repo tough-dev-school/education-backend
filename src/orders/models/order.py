@@ -154,7 +154,7 @@ class Order(TimestampedModel):
 
         OrderUnshipper(self)()
 
-    def get_payment_method(self) -> str:
+    def get_readable_payment_method_name(self) -> str:
         if self.paid is not None:
             if self.bank_id:
                 return get_bank(self.bank_id).name
