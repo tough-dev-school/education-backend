@@ -1,6 +1,6 @@
 import pytest
 
-import requests_mock
+import respx
 
 from tinkoff.credit import TinkoffCredit
 
@@ -22,7 +22,7 @@ def _absolute_host(settings):
 
 @pytest.fixture
 def tinkoff(order):
-    with requests_mock.Mocker() as m:
+    with respx.mock() as m:
         client = TinkoffCredit(order)
 
         client.m = m

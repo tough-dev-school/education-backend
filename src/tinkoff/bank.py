@@ -4,7 +4,7 @@ from hashlib import sha256
 from typing import Any
 from urllib.parse import urljoin
 
-import requests
+import httpx
 
 from django.conf import settings
 
@@ -37,7 +37,7 @@ class TinkoffBank(Bank):
         """Query Tinkoff API"""
         payload.update({"TerminalKey": settings.TINKOFF_TERMINAL_KEY})
 
-        response = requests.post(
+        response = httpx.post(
             f"https://securepay.tinkoff.ru/v2/{method}/",
             json={
                 "Token": self._get_token(payload),
