@@ -107,7 +107,6 @@ dev = [
     "types-bleach",
     "types-freezegun",
     "types-Markdown",
-    "types-requests",
     "types-retry",
     "types-Pillow",
     "types-simplejson",
