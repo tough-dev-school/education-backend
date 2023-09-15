@@ -18,9 +18,9 @@ worker:
 	cd src && celery -A app worker -E --purge
 
 fmt:
-	cd src && autoflake --in-place --remove-all-unused-imports --recursive .
-	cd src && isort .
-	cd src && black .
+	cd src && poetry run autoflake --in-place --remove-all-unused-imports --recursive .
+	cd src && poetry run isort .
+	cd src && poetry run black .
 
 lint:
 	cd src && poetry run python manage.py makemigrations --check --no-input --dry-run
