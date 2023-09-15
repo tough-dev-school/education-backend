@@ -1,7 +1,5 @@
 import pytest
 
-from orders.services import OrderHumanReadableProvider
-
 pytestmark = [
     pytest.mark.django_db,
 ]
@@ -13,8 +11,3 @@ def order(factory, course, user):
     order.set_item(course)
 
     return order
-
-
-@pytest.fixture
-def provider():
-    return OrderHumanReadableProvider()

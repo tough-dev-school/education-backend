@@ -8,12 +8,12 @@ from django.utils.translation import gettext as _
 from app.admin import admin
 from app.admin import ModelAdmin
 from app.pricing import format_price
+from orders import human_readable
 from orders.admin.orders import actions
 from orders.admin.orders.filters import OrderStatusFilter
 from orders.admin.orders.forms import OrderAddForm
 from orders.admin.orders.forms import OrderChangeForm
 from orders.models import Order
-from orders.services import OrderHumanReadableProvider
 from users.models import Student
 
 
@@ -106,7 +106,7 @@ class OrderAdmin(ModelAdmin):
 
     @admin.display(description=_("User"), ordering="user__id")
     def customer(self, obj: Order) -> str:
-        return OrderHumanReadableProvider.get_customer(obj)
+        return human_readable.get_order_customer(obj)
 
     @admin.display(description=_("Item"))
     def item(self, obj: Order) -> str:
@@ -114,7 +114,7 @@ class OrderAdmin(ModelAdmin):
 
     @admin.display(description=_("Payment"), ordering="paid")
     def payment(self, obj: Order) -> str:
-        return OrderHumanReadableProvider.get_payment_method_name(obj)
+        return human_readable.get_order_payment_method_name(obj)
 
     @admin.display(description=_("Login as customer"))
     @mark_safe
