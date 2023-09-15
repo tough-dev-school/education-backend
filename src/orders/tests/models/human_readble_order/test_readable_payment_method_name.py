@@ -3,7 +3,6 @@ import pytest
 
 from banking.selector import BANK_CHOICES
 from banking.selector import BANKS
-from orders.models import HumanReadableOrder
 
 pytestmark = [
     pytest.mark.django_db,
@@ -13,14 +12,6 @@ pytestmark = [
 @pytest.fixture(autouse=True)
 def _set_en_locale(settings):
     settings.LANGUAGE_CODE = "en"
-
-
-@pytest.fixture
-def readable_order(factory, course, user):
-    order = factory.order(user=user, price=1500)
-    order.set_item(course)
-
-    return HumanReadableOrder.objects.get(id=order.id)
 
 
 @pytest.fixture

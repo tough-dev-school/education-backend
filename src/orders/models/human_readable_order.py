@@ -30,21 +30,21 @@ class HumanReadableOrder(Order):
 
         total_length = len(name) + len(email)
 
-        if 30 <= total_length <= 34:
+        if total_length < 30:
+            return format_html(
+                name_template,
+                name=name,
+                email=email,
+            )
+        elif 30 <= total_length <= 34:
             return format_html(
                 name_template,
                 name=self.user.first_name,
                 email=email,
             )
-        elif total_length > 34:
-            return format_html(
-                '<a href="mailto:{email}">{email}</a>',
-                email=email,
-            )
         else:
             return format_html(
-                '{name} &lt;<a href="mailto:{email}">{email}</a>&gt;',
-                name=name,
+                '<a href="mailto:{email}">{email}</a>',
                 email=email,
             )
 

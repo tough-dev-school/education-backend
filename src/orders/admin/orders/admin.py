@@ -2,7 +2,6 @@ from rest_framework.request import Request
 
 from django.db.models import QuerySet
 from django.forms import Media
-from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 
@@ -13,11 +12,11 @@ from orders.admin.orders import actions
 from orders.admin.orders.filters import OrderStatusFilter
 from orders.admin.orders.forms import OrderAddForm
 from orders.admin.orders.forms import OrderChangeForm
-from orders.models import Order
+from orders.models import HumanReadableOrder
 from users.models import Student
 
 
-@admin.register(Order)
+@admin.register(HumanReadableOrder)
 class OrderAdmin(ModelAdmin):
     form = OrderChangeForm
     add_form = OrderAddForm
@@ -97,50 +96,28 @@ class OrderAdmin(ModelAdmin):
         )
 
     @admin.display(description=_("Price"), ordering="price")
-    def formatted_price(self, obj: Order) -> str:
+    def formatted_price(self, obj: HumanReadableOrder) -> str:
         return format_price(obj.price)
 
     @admin.display(description=_("Date"), ordering="created")
-    def date(self, obj: Order) -> str:
+    def date(self, obj: HumanReadableOrder) -> str:
         return obj.created.strftime("%d.%m.%Y")
 
     @admin.display(description=_("User"), ordering="user__id")
-    def customer(self, obj: Order) -> str:
-        name_template = '{name} &lt;<a href="mailto:{email}">{email}</a>&gt;'
-        name = str(obj.user)
-        email = obj.user.email
-
-        total_length = len(name) + len(email)
-
-        if 30 <= total_length <= 34:
-            return format_html(
-                name_template,
-                name=obj.user.first_name,
-                email=email,
-            )
-        elif total_length > 34:
-            return format_html(
-                '<a href="mailto:{email}">{email}</a>',
-                email=email,
-            )
-        else:
-            return format_html(
-                '{name} &lt;<a href="mailto:{email}">{email}</a>&gt;',
-                name=name,
-                email=email,
-            )
+    def customer(self, obj: HumanReadableOrder) -> str:
+        return obj.readable_customer
 
     @admin.display(description=_("Item"))
-    def item(self, obj: Order) -> str:
+    def item(self, obj: HumanReadableOrder) -> str:
         return obj.item.name if obj.item is not None else "—"
 
     @admin.display(description=_("Payment"), ordering="paid")
-    def payment(self, obj: Order) -> str:
-        return obj.get_readable_payment_method_name()
+    def payment(self, obj: HumanReadableOrder) -> str:
+        return obj.readable_payment_method_name
 
     @admin.display(description=_("Login as customer"))
     @mark_safe
-    def login_as(self, obj: Order) -> str:
+    def login_as(self, obj: HumanReadableOrder) -> str:
         if obj.pk is None:
             return "—"  # type: ignore
 
