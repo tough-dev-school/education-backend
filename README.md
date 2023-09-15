@@ -10,13 +10,12 @@ Configuration is stored in `src/app/.env`, for examples see `src/app/.env.ci`
 
 ## Installing on a local machine
 This project requires python 3.11. Python virtual environment should be installed and activated.\
-Deps are managed by [pip-tools](https://github.com/jazzband/pip-tools) with requirements stored in [pyproject.toml](https://github.com/jazzband/pip-tools#requirements-from-pyprojecttoml).
+Deps are managed by [Poetry](https://python-poetry.org/) with requirements stored in [pyproject.toml](https://python-poetry.org/docs/pyproject/).
 
 Install requirements:
 
 ```bash
-pip install --upgrade pip pip-tools
-make
+poetry install
 ```
 
 Configure postgres and redis. It's convenient to use docker and docker-compose:
@@ -35,19 +34,21 @@ postgres:
 Run the server:
 
 ```bash
-cd src && cp app/.env.ci app/.env  # default environment variables
-./manage.py migrate
-./manage.py createsuperuser
-./manage.py runserver
+cp src/app/.env.ci src/app/.env
+
+poetry run python manage.py migrate
+poetry run python manage.py createsuperuser
+
+make server
 ```
 
 Testing:
 ```bash
 # run lint
-make -C .. lint
+make lint
 
 # run unit tests
-make -C .. test
+make test
 ```
 
 ## Backend Code requirements
