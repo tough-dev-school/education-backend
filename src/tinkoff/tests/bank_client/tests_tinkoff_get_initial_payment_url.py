@@ -14,8 +14,7 @@ def req(mocker):
 
 
 def test_ok_initial_payment_url(tinkoff):
-    tinkoff.m.post(
-        "https://securepay.tinkoff.ru/v2/Init/",
+    tinkoff.m.post("https://securepay.tinkoff.ru/v2/Init/").respond(
         json={
             "Success": True,
             "PaymentURL": "https://pay.ment/url",

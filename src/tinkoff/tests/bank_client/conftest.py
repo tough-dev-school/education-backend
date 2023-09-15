@@ -1,6 +1,6 @@
 import pytest
 
-import requests_mock
+import respx
 
 from tinkoff.bank import TinkoffBank
 
@@ -21,7 +21,7 @@ def _set_absolute_host(settings):
 
 @pytest.fixture
 def tinkoff(user, order):
-    with requests_mock.Mocker() as m:
+    with respx.mock() as m:
         client = TinkoffBank(order)
 
         client.m = m

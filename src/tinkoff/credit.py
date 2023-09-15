@@ -1,4 +1,4 @@
-import requests
+import httpx
 
 from django.conf import settings
 
@@ -30,7 +30,7 @@ class TinkoffCredit(Bank):
 
     def call(self, url: str, payload: dict) -> dict:
         """Query TinkoffCredit API"""
-        response = requests.post(url, json=payload)
+        response = httpx.post(url, json=payload)
 
         if response.status_code != 200:
             errors = response.json()["errors"]
