@@ -1,3 +1,5 @@
+manage = cd src && poetry run python manage.py
+
 install-dev-deps: dev-deps
 	pip-sync requirements.txt dev-requirements.txt
 
@@ -12,7 +14,8 @@ dev-deps: deps
 	pip-compile --extra=dev --output-file dev-requirements.txt --resolver=backtracking pyproject.toml
 
 server:
-	cd src && ./manage.py migrate && ./manage.py runserver
+	$(manage) migrate
+	$(manage) runserver
 
 worker:
 	cd src && poetry run celery -A app worker -E --purge
@@ -23,7 +26,7 @@ fmt:
 	cd src && poetry run black .
 
 lint:
-	cd src && poetry run python manage.py makemigrations --check --no-input --dry-run
+	$(manage) makemigrations --check --no-input --dry-run
 	poetry run flake8 src
 	cd src && poetry run mypy
 
