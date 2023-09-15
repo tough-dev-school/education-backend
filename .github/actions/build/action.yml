@@ -1,0 +1,23 @@
+name: build
+
+runs:
+  using: composite
+
+  steps:
+    - name: setup python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: setup poetry
+      uses: snok/install-poetry@v1
+      with:
+        virtualenvs-create: false
+
+    - name: deps
+      run: poetry install --no-interaction --no-root
+      shell: bash
+
+    - name: setup envs
+      run: cp src/app/.env.ci src/app/.env
+      shell: bash
