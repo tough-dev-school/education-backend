@@ -5,6 +5,7 @@ from django.utils import timezone
 
 from app.services import BaseService
 from app.tasks import send_telegram_message
+from orders import human_readable
 from orders.models import Order
 
 
@@ -44,7 +45,7 @@ class OrderShipper(BaseService):
     def get_order_happiness_message(order: Order) -> str:
         sum = str(order.price).replace(".00", "")
         reason = str(order.item)
-        payment_method = order.get_readable_payment_method_name()
+        payment_method = human_readable.get_order_payment_method_name(order)
 
         payment_info = f"💰+{sum} ₽, {payment_method}"
 

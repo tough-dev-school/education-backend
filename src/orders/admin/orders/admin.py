@@ -2,13 +2,13 @@ from rest_framework.request import Request
 
 from django.db.models import QuerySet
 from django.forms import Media
-from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 
 from app.admin import admin
 from app.admin import ModelAdmin
 from app.pricing import format_price
+from orders import human_readable
 from orders.admin.orders import actions
 from orders.admin.orders.filters import OrderStatusFilter
 from orders.admin.orders.forms import OrderAddForm
@@ -106,29 +106,7 @@ class OrderAdmin(ModelAdmin):
 
     @admin.display(description=_("User"), ordering="user__id")
     def customer(self, obj: Order) -> str:
-        name_template = '{name} &lt;<a href="mailto:{email}">{email}</a>&gt;'
-        name = str(obj.user)
-        email = obj.user.email
-
-        total_length = len(name) + len(email)
-
-        if 30 <= total_length <= 34:
-            return format_html(
-                name_template,
-                name=obj.user.first_name,
-                email=email,
-            )
-        elif total_length > 34:
-            return format_html(
-                '<a href="mailto:{email}">{email}</a>',
-                email=email,
-            )
-        else:
-            return format_html(
-                '{name} &lt;<a href="mailto:{email}">{email}</a>&gt;',
-                name=name,
-                email=email,
-            )
+        return human_readable.get_order_customer(obj)
 
     @admin.display(description=_("Item"))
     def item(self, obj: Order) -> str:
@@ -136,7 +114,7 @@ class OrderAdmin(ModelAdmin):
 
     @admin.display(description=_("Payment"), ordering="paid")
     def payment(self, obj: Order) -> str:
-        return obj.get_readable_payment_method_name()
+        return human_readable.get_order_payment_method_name(obj)
 
     @admin.display(description=_("Login as customer"))
     @mark_safe
