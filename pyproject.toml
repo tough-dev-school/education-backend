@@ -104,6 +104,52 @@ types-retry = "^0.9.9.4"
 types-simplejson = "^3.19.0.2"
 types-stripe = "^3.5.2.14"
 
+[tool.black]
+exclude = """
+/(
+    | migrations
+)/
+"""
+line_length = 160
+
+[tool.flake8]
+banned-modules = """
+    typing.Optional = Please use "x | None"
+    typing.Union = Please use "x | y"
+    typing.List = Please use "list" instead of "List"
+    typing.Dict = Please use "dict" instead of "Dict"
+"""
+exclude = [
+    "frontend",
+    "migrations",
+    "static",
+    ".git",
+    "__pycache__",
+]
+ignore = [
+    "DJ01",     # avoid using null=True on string-based fields such CharField
+    "DJ07",     # do not use __all__ with ModelForm, use fields instead
+    "E501",     # line too long ({} > {} characters)
+    "PIE783",   # celery tasks should have explicit names
+    "PIE785",   # celery tasks should have expirations
+    "PIE801",   # prefer-simple-return: Return boolean expressions directly instead of returning `True` and `False`
+    "PT001",    # use @pytest.fixture() over @pytest.fixture
+    "SIM102",   # use a single if-statement instead of nested if-statements
+    "SIM113",   # use enumerate for `{}`
+    "VNE003",   # variable names that shadow builtins are not allowed
+    "W503",     # line break before binary operator
+]
+line-quotes = "\""
+
+[tool.isort]
+profile = "google"
+line_length = 160
+multi_line_output = 3
+use_parentheses = true
+extra_standard_library = ["pytest"]
+known_django = ["django", "restframework"]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "DJANGO", "FIRSTPARTY", "LOCALFOLDER"]
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

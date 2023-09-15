@@ -23,9 +23,9 @@ fmt:
 	cd src && black .
 
 lint:
-	cd src && ./manage.py makemigrations --check --no-input --dry-run
-	flake8 src
-	cd src && mypy
+	cd src && poetry run python manage.py makemigrations --check --no-input --dry-run
+	poetry run flake8 src
+	cd src && poetry run mypy
 
 test:
 	cd src && poetry run pytest -n 4 --ff -x --create-db --cov-report=xml --cov=. -m 'not single_thread'
