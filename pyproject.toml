@@ -70,7 +70,6 @@ dev = [
 
     "freezegun",
     "mixer",
-    "requests-mock",
 
     "black",
 
