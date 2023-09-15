@@ -28,6 +28,6 @@ lint:
 	cd src && mypy
 
 test:
-	cd src && pytest -n 4 --ff -x --create-db --cov-report=xml --cov=. -m 'not single_thread'
-	cd src && pytest --ff -x --cov-report=xml --cov=. --cov-append -m 'single_thread'
-	cd src && pytest --dead-fixtures
+	cd src && poetry run pytest -n 4 --ff -x --create-db --cov-report=xml --cov=. -m 'not single_thread'
+	cd src && poetry run pytest --ff -x --cov-report=xml --cov=. --cov-append -m 'single_thread'
+	cd src && poetry run pytest --dead-fixtures
