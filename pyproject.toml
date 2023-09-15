@@ -129,6 +129,7 @@ exclude = [
 ignore = [
     "DJ01",     # avoid using null=True on string-based fields such CharField
     "DJ07",     # do not use __all__ with ModelForm, use fields instead
+    "DJ08",     # model does not define __str__ method
     "E501",     # line too long ({} > {} characters)
     "PIE783",   # celery tasks should have explicit names
     "PIE785",   # celery tasks should have expirations
