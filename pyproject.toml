@@ -142,13 +142,13 @@ ignore = [
 line-quotes = "\""
 
 [tool.isort]
-profile = "google"
-line_length = 160
-multi_line_output = 3
-use_parentheses = true
 extra_standard_library = ["pytest"]
 known_django = ["django", "restframework"]
+line_length = 160
+multi_line_output = 3
+profile = "google"
 sections = ["FUTURE", "STDLIB", "THIRDPARTY", "DJANGO", "FIRSTPARTY", "LOCALFOLDER"]
+use_parentheses = true
 
 [build-system]
 requires = ["poetry-core"]
