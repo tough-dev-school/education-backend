@@ -23,8 +23,3 @@ def order(factory, course):
 @pytest.fixture
 def shipment(user, course, order):
     return partial(CourseShipment, user=user, product=course, order=order)
-
-
-@pytest.fixture(autouse=True)
-def invite_to_zoomus(mocker):
-    return mocker.patch("app.tasks.invite_to_zoomus.delay")
