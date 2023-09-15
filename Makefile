@@ -15,7 +15,7 @@ server:
 	cd src && ./manage.py migrate && ./manage.py runserver
 
 worker:
-	cd src && celery -A app worker -E --purge
+	cd src && poetry run celery -A app worker -E --purge
 
 fmt:
 	cd src && poetry run autoflake --in-place --remove-all-unused-imports --recursive .
