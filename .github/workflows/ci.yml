@@ -23,7 +23,9 @@ jobs:
         uses: ./.github/actions/build
 
       - name: lint
-        run: make lint
+        run: |
+          source .venv/bin/activate
+          make lint
 
   test:
     needs: lint
@@ -67,7 +69,9 @@ jobs:
         env:
           DATABASE_URL: postgres://postgres:secret@localhost:5432/postgres
           REDISCLOUD_URL: redis://localhost:6379/5
-        run: make test
+        run: |
+          source .venv/bin/activate
+          make test
 
       - name: upload code coverage to codeclimate
         uses: paambaati/codeclimate-action@v3.2.0
