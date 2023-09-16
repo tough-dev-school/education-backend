@@ -34,12 +34,13 @@ RUN wget -O uwsgi-${_UWSGI_VERSION}.tar.gz https://github.com/unbit/uwsgi/archiv
 RUN pip install --no-cache-dir --upgrade pip \
   && pip install --no-cache-dir poetry
 
-WORKDIR /src
-COPY pyproject.toml poetry.lock /src
-COPY src /src
+COPY pyproject.toml poetry.lock /
 
 RUN poetry config virtualenvs.create false \
   && poetry install --no-root --no-dev --no-interaction --no-ansi
+
+WORKDIR /src
+COPY src /src
 
 ENV NO_CACHE=On
 RUN poetry run python manage.py compilemessages

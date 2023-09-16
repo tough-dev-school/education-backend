@@ -5,9 +5,10 @@ runs:
 
   steps:
     - name: setup python
+      id: setup-python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
+        python-version-file: '.python-version'
 
     - name: setup poetry
       uses: snok/install-poetry@v1
