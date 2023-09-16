@@ -7,6 +7,10 @@ runs:
     - name: setup envs
       run: cp src/app/.env.ci src/app/.env
       shell: bash
+    
+    - name: print env
+      run: cat src/app/.env
+      shell: bash
 
     - name: setup python
       uses: actions/setup-python@v4
