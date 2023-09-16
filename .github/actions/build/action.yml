@@ -33,3 +33,7 @@ runs:
     - name: copy envs
       run: cp src/app/.env.ci src/app/.env
       shell: bash
+
+    - name: activate poetry venv
+      run: poetry shell
+      shell: bash
