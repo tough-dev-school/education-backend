@@ -18,7 +18,8 @@ jobs:
         uses: ./.github/actions/build
       
       - name: check rebuild outputs work
-        run: echo "pyversion: ${{ steps.rebuild.outputs.python-version }}"
+        run: |
+          echo ${{ steps.rebuild.outputs.python-version }}
 
       - name: lint
         run: make lint
