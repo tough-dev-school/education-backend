@@ -18,7 +18,7 @@ jobs:
         run: make lint
 
   test:
-    needs: build
+    needs: lint
     runs-on: ubuntu-latest
     services:
       postgres:
