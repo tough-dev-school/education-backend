@@ -4,13 +4,14 @@ from django.conf import settings
 from django.utils import timezone
 
 from app.services import BaseService
-from app.tasks import send_happiness_message
+from app.tasks import send_telegram_message
+from orders import human_readable
 from orders.models import Order
 
 
 @dataclass
 class OrderShipper(BaseService):
-    """Ship the order (actualy calls item ship() method)"""
+    """Ship the order (actually calls item ship() method)"""
 
     order: Order
     silent: bool | None = False
@@ -35,7 +36,20 @@ class OrderShipper(BaseService):
         if not settings.HAPPINESS_MESSAGES_CHAT_ID:
             return
 
-        sum = str(self.order.price).replace(".00", "")
-        reason = str(self.order.item)
+        send_telegram_message.delay(
+            chat_id=settings.HAPPINESS_MESSAGES_CHAT_ID,
+            text=self.get_order_happiness_message(self.order),
+        )
 
-        send_happiness_message.delay(text=f"💰+{sum} ₽, {self.order.user}, {reason}")
+    @staticmethod
+    def get_order_happiness_message(order: Order) -> str:
+        sum = str(order.price).replace(".00", "")
+        reason = str(order.item)
+        payment_method = human_readable.get_order_payment_method_name(order)
+
+        payment_info = f"💰+{sum} ₽, {payment_method}"
+
+        if order.promocode:
+            payment_info += f", промокод {order.promocode}"
+
+        return f"{payment_info}\n{reason}\n{order.user}"

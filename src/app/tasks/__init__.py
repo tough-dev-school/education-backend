@@ -1,9 +1,7 @@
 from app.tasks.dashamail import update_dashamail_subscription
-from app.tasks.tg import send_happiness_message
-from app.tasks.zoomus import invite_to_zoomus
+from app.tasks.tg import send_telegram_message
 
 __all__ = [
-    "invite_to_zoomus",
-    "send_happiness_message",
+    "send_telegram_message",
     "update_dashamail_subscription",
 ]

@@ -45,9 +45,6 @@ class Course(Shippable):
     objects = CourseManager()
 
     name_genitive = models.CharField(_("Genitive name"), max_length=255, help_text="«мастер-класса о TDD». К примеру для записей.")
-    zoomus_webinar_id = models.CharField(
-        _("Zoom.us webinar ID"), max_length=255, null=True, blank=True, help_text=_("If set, every user who purcashes this course gets invited")
-    )
 
     welcome_letter_template_id = models.CharField(
         _("Welcome letter template id"), max_length=255, blank=True, null=True, help_text=_("Will be sent upon purchase if set")

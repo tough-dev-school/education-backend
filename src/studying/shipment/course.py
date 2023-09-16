@@ -1,4 +1,3 @@
-from app.tasks import invite_to_zoomus
 from mailing.tasks import send_mail
 from products.models import Course
 from studying import shipment_factory as factory
@@ -13,7 +12,6 @@ class CourseShipment(BaseShipment):
         return self.stuff_to_ship
 
     def ship(self) -> None:
-        self.invite_to_zoomus()
         self.create_study_model()
 
         self.send_welcome_letter()
@@ -30,13 +28,6 @@ class CourseShipment(BaseShipment):
 
     def remove_study_model(self) -> None:
         Study.objects.get(order=self.order).delete()
-
-    def invite_to_zoomus(self) -> None:
-        if self.course.zoomus_webinar_id:
-            invite_to_zoomus.delay(
-                webinar_id=self.course.zoomus_webinar_id,
-                user_id=self.user.id,
-            )
 
     def send_welcome_letter(self) -> None:
         if self.course.welcome_letter_template_id:
