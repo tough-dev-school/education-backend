@@ -90,14 +90,14 @@ jobs:
         with:
           python-version-file: '.python-version'
 
-      - name: Rebuild
-        uses: ./.github/actions/build
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+
+      - name: Store default envfironment file to be runnable at the developer machine
+        run: cp src/app/.env.ci src/app/.env
 
       - name: Generate image identifier
         id: image

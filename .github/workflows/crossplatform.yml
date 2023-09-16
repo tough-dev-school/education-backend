@@ -1,3 +1,4 @@
+---
 name: Crossplatform nightly
 on:
   schedule:
@@ -8,14 +9,19 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: rebuild
+      - uses: actions/setup-python@v4
+        with:
+          python-version-file: '.python-version'
+
+      - name: Rebuild
         uses: ./.github/actions/build
 
-      - name: lint
-        run: make lint
+      - name: Run the linter
+        run: |
+          source .venv/bin/activate
+          make lint
 
   test:
     needs: lint
@@ -44,11 +50,8 @@ jobs:
         with:
           python-version-file: '.python-version'
 
-      - uses: actions/cache@v3
-        with:
-          path: |
-            venv
-          key: ${{ runner.os }}-venv-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/*requirements.txt') }}
+      - name: Rebuild
+        uses: ./.github/actions/build
 
       - name: Install locale stuff
         run: |
@@ -60,8 +63,7 @@ jobs:
           DATABASE_URL: postgres://postgres:secret@localhost:5432/postgres
           REDISCLOUD_URL: redis://localhost:6379/5
         run: |
-          . venv/bin/activate
-          cp src/app/.env.ci src/app/.env
+          source .venv/bin/activate
           make test
 
   build-docker-image:
