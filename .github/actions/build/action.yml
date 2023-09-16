@@ -22,3 +22,7 @@ runs:
     - name: deps
       run: poetry install --no-interaction --no-root
       shell: bash
+
+    - name: copy envs
+      run: cp src/app/.env.ci src/app/.env
+      shell: bash

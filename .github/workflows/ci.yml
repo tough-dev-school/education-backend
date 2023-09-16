@@ -16,10 +16,6 @@ jobs:
       - name: rebuild
         id: rebuild
         uses: ./.github/actions/build
-      
-      - name: check rebuild outputs work
-        run: |
-          echo ${{ steps.rebuild.outputs.python-version }}
 
       - name: lint
         run: make lint
@@ -111,7 +107,7 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:${{ github.sha }}
 
           build-args: |
-            PYTHON_VERSION=${{ steps.build.outputs.python-version }}
+            PYTHON_VERSION=${{ steps.rebuild.outputs.python-version }}
             RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -126,7 +122,7 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:latest
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }}
           build-args: |
-            PYTHON_VERSION=${{ steps.build.outputs.python-version }}
+            PYTHON_VERSION=${{ steps.rebuild.outputs.python-version }}
             RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -141,7 +137,7 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:latest
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:${{ github.sha }}
           build-args: |
-            PYTHON_VERSION=${{ steps.build.outputs.python-version }}
+            PYTHON_VERSION=${{ steps.rebuild.outputs.python-version }}
             RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
