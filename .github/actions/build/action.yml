@@ -1,19 +1,9 @@
 name: build
 
-outputs:
-  python-version:
-    value: ${{ steps.setup-python.outputs.python-version }}
-
 runs:
   using: composite
 
   steps:
-    - name: setup python
-      id: setup-python
-      uses: actions/setup-python@v4
-      with:
-        python-version-file: '.python-version'
-
     - name: setup poetry
       uses: snok/install-poetry@v1
       with:

@@ -13,8 +13,13 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
 
+      - name: setup python
+        uses: actions/setup-python@v4
+        id: setup-python
+        with:
+          python-version-file: '.python-version'
+
       - name: rebuild
-        id: rebuild
         uses: ./.github/actions/build
 
       - name: lint
@@ -44,6 +49,12 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
 
+      - name: setup python
+        uses: actions/setup-python@v4
+        id: setup-python
+        with:
+          python-version-file: '.python-version'
+
       - name: rebuild
         uses: ./.github/actions/build
 
@@ -72,6 +83,12 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+
+      - name: setup python
+        uses: actions/setup-python@v4
+        id: setup-python
+        with:
+          python-version-file: '.python-version'
 
       - name: rebuild
         uses: ./.github/actions/build
@@ -107,7 +124,7 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:${{ github.sha }}
 
           build-args: |
-            PYTHON_VERSION=3.11.5
+            PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
             RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -122,7 +139,7 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:latest
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }}
           build-args: |
-            PYTHON_VERSION=3.11.5
+            PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
             RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -137,7 +154,7 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:latest
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:${{ github.sha }}
           build-args: |
-            PYTHON_VERSION=3.11.5
+            PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
             RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
