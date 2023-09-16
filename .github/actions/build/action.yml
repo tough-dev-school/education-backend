@@ -4,11 +4,14 @@ runs:
   using: composite
 
   steps:
+    - name: setup envs
+      run: cp src/app/.env.ci src/app/.env
+      shell: bash
+
     - name: setup python
-      id: setup-python
       uses: actions/setup-python@v4
       with:
-        python-version-file: '.python-version'
+        python-version: ${{ env.PYTHON_VERSION }}
 
     - name: setup poetry
       uses: snok/install-poetry@v1
@@ -17,8 +20,4 @@ runs:
 
     - name: deps
       run: poetry install --no-interaction --no-root
-      shell: bash
-
-    - name: setup envs
-      run: cp src/app/.env.ci src/app/.env
       shell: bash
