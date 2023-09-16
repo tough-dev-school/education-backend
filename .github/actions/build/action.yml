@@ -1,21 +1,18 @@
 name: build
 
+outputs:
+  python-version:
+    value: ${{ steps.setup-python.outputs.python-version }}
+
 runs:
   using: composite
 
   steps:
-    - name: setup envs
-      run: cp src/app/.env.ci src/app/.env
-      shell: bash
-    
-    - name: print env
-      run: cat src/app/.env
-      shell: bash
-
     - name: setup python
+      id: setup-python
       uses: actions/setup-python@v4
       with:
-        python-version: ${{ env.PYTHON_VERSION }}
+        python-version-file: '.python-version'
 
     - name: setup poetry
       uses: snok/install-poetry@v1
