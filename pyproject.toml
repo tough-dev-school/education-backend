@@ -4,7 +4,6 @@ version = "2022.10.31"
 description = ""
 authors = ["f213 <f@f213.in>"]
 readme = "README.md"
-packages = [{include = "education_backend"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
