@@ -31,32 +31,30 @@ RUN wget -O uwsgi-${_UWSGI_VERSION}.tar.gz https://github.com/unbit/uwsgi/archiv
   && UWSGI_BIN_NAME=/usr/local/bin/uwsgi make -C uwsgi-${_UWSGI_VERSION} \
   && rm -Rf uwsgi-*
 
-RUN pip install --no-cache-dir --upgrade pip
-
-COPY requirements.txt /
-
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip \
+  && pip install --no-cache-dir poetry
 
 WORKDIR /src
+COPY pyproject.toml poetry.lock /src
 COPY src /src
 
+RUN poetry config virtualenvs.create false \
+  && poetry install --no-root --no-dev --no-interaction --no-ansi
+
 ENV NO_CACHE=On
-RUN ./manage.py compilemessages
-RUN ./manage.py collectstatic --noinput
+RUN poetry run python manage.py compilemessages
+RUN poetry run python manage.py collectstatic --noinput
 ENV NO_CACHE=Off
 
 USER nobody
 
-
 FROM base as web
 HEALTHCHECK CMD wget -q -O /dev/null http://localhost:8000/api/v2/healthchecks/db/ --header "Host: app.tough-dev.school" || exit 1
-CMD ./manage.py migrate && uwsgi --master --http :8000 --module app.wsgi --workers 2 --threads 2 --harakiri 25 --max-requests 1000 --log-x-forwarded-for
-
+CMD poetry run python manage.py migrate && uwsgi --master --http :8000 --module app.wsgi --workers 2 --threads 2 --harakiri 25 --max-requests 1000 --log-x-forwarded-for
 
 FROM base as worker
 HEALTHCHECK CMD celery -A ${CELERY_APP} inspect ping -d $QUEUE@$HOSTNAME
 CMD celery -A ${CELERY_APP} worker -Q $QUEUE -c ${CONCURENCY:-2} -n "${QUEUE}@%h" --max-tasks-per-child ${MAX_REQUESTS_PER_CHILD:-50} --time-limit ${TIME_LIMIT:-900} --soft-time-limit ${SOFT_TIME_LIMIT:-45}
-
 
 FROM base as scheduler
 ENV SCHEDULER_DB_PATH=/var/db/scheduler
