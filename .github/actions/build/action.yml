@@ -35,5 +35,5 @@ runs:
       shell: bash
 
     - name: activate poetry venv
-      run: poetry shell -T
+      run: source .venv/bin/activate
       shell: bash
