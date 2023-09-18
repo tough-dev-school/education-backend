@@ -257,7 +257,7 @@ hpack==4.0.0
     # via h2
 httpcore==0.17.3
     # via httpx
-httpx[http2]==0.24.1
+httpx[http2]==0.25.0
     # via
     #   education-backend (pyproject.toml)
     #   respx
