@@ -1,5 +1,7 @@
-from functools import partial
 import pytest
+from uuid import uuid4
+
+from respx import MockRouter
 
 from tinkoff import tasks
 
@@ -7,8 +9,19 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def add_refund_response(add_dolyame_response):
-    return partial(add_dolyame_response, url_suffix="refund")
+def idempotency_key() -> str:
+    return str(uuid4())
+
+
+@pytest.fixture
+def add_refund_response(order, idempotency_key, respx_mock: MockRouter):
+    def add_response(headers: dict | None = None):
+        return respx_mock.post(
+            url__eq=f"https://partner.dolyame.ru/v1/orders/{order.slug}/refund",
+            headers=headers or {"X-Correlation-ID": idempotency_key},
+        ).respond(json={})
+
+    return add_response
 
 
 def test_send_correct_refund_request(order, idempotency_key, add_refund_response, retrieve_request_json):

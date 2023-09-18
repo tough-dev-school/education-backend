@@ -1,5 +1,4 @@
 from typing import Any
-import uuid
 
 from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
@@ -8,7 +7,6 @@ from rest_framework.views import APIView
 from django.http import HttpResponse
 
 from orders.models import Order
-from tinkoff import tasks
 from tinkoff.api.permissions import DolyameNetmaskPermission
 from tinkoff.api.permissions import TinkoffCreditNetmaskPermission
 from tinkoff.api.serializers import CreditNotificationSerializer
@@ -52,9 +50,7 @@ class TinkoffCreditNotificationsView(APIView):
 
 
 class DolyameNotificationsView(APIView):
-    """Receive dolyame notifications, automatically commiting back
-    ones that are waiting for commit
-    """
+    """Receive dolyame notifications."""
 
     permission_classes = [DolyameNetmaskPermission]
 
@@ -66,15 +62,6 @@ class DolyameNotificationsView(APIView):
             }
         )
         serializer.is_valid(raise_exception=True)
-        notification = serializer.save()
-
-        if notification.status == "wait_for_commit":
-            tasks.commit_dolyame_order.apply_async(
-                countdown=10,
-                kwargs={
-                    "order_id": notification.order.pk,
-                    "idempotency_key": str(uuid.uuid4()),
-                },
-            )
+        serializer.save()
 
         return HttpResponse("OK")

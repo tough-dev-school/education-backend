@@ -11,7 +11,7 @@ def course(factory):
 
 @pytest.fixture
 def user(mixer):
-    return mixer.blend("users.User", first_name="Авраам Соломонович", last_name="Пейзенгольц")
+    return mixer.blend("users.User", first_name="Авраам Соломонович", last_name="Пейзенгольц", email="avraam-the-god@gmail.com")
 
 
 @pytest.fixture
