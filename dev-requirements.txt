@@ -481,7 +481,7 @@ types-stripe==3.5.2.14
     # via education-backend (pyproject.toml)
 types-urllib3==1.26.25.14
     # via types-requests
-typing-extensions==4.7.1
+typing-extensions==4.8.0
     # via
     #   django-stubs
     #   django-stubs-ext
