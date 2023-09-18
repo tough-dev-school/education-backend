@@ -6,6 +6,12 @@ from app.models import TimestampedModel
 
 
 class Receipt(TimestampedModel):
+    """Receipts has been created by lms itself.
+
+    It's not longer in use cause all the integrations with banks have their own support for online cashiers.
+    Should be removed in the near feature.
+    """
+
     class PROVIDERS(TextChoices):
         ATOL = "atol", _("Atol")
 
