@@ -10,17 +10,6 @@ def test_items(dolyame):
 
     assert len(got) == 1
 
-    assert len(got[0]) == 3
-    assert got[0]["name"] == "Предоставление доступа к записи курса «Пентакли и Тентакли»"
-    assert got[0]["quantity"] == 1
-    assert got[0]["price"] == "100500"
-
-
-def test_items_with_receipt_data(dolyame):
-    got = dolyame.get_items_with_receipt_data()
-
-    assert len(got) == 1
-
     assert len(got[0]) == 4
     assert got[0]["name"] == "Предоставление доступа к записи курса «Пентакли и Тентакли»"
     assert got[0]["quantity"] == 1
@@ -36,3 +25,4 @@ def test_user(dolyame):
 
     assert got["first_name"] == "Авраам Соломонович"
     assert got["last_name"] == "Пейзенгольц"
+    assert got["email"] == "avraam-the-god@gmail.com"

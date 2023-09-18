@@ -13,6 +13,11 @@ class DolyameRequestException(Exception):
 
 
 class Dolyame(Bank):
+    """Dolyame client.
+
+    There is no 'commit' method: it's not required cause 'autocommit' is enabled on the bank side.
+    """
+
     acquiring_percent = Decimal("6.9")
     base_url = "https://partner.dolyame.ru/v1/"
     name = "Долями"
@@ -27,6 +32,7 @@ class Dolyame(Bank):
                     "amount": self.price,
                     "items": self.get_items(),
                 },
+                "fiscalization_settings": {"type": "enabled"},
                 "client_info": self.get_client_info(),
                 "notification_url": self.get_notification_url(),
                 "success_url": self.success_url,
@@ -36,29 +42,12 @@ class Dolyame(Bank):
 
         return result["link"]
 
-    def commit(self) -> None:
-        self.post(
-            method=f"orders/{self.order.slug}/commit",
-            payload={
-                "amount": self.price,
-                "items": self.get_items_with_receipt_data(),
-                "fiscalization_settings": {
-                    "type": "enabled",
-                    "params": {
-                        "create_receipt_for_committed_items": True,
-                        "create_receipt_for_added_items": True,
-                        "create_receipt_for_returned_items": True,
-                    },
-                },
-            },
-        )
-
     def refund(self) -> None:
         self.post(
             method=f"orders/{self.order.slug}/refund",
             payload={
                 "amount": self.price,
-                "returned_items": self.get_items_with_receipt_data(),
+                "returned_items": self.get_items(),
                 "fiscalization_settings": {"type": "enabled"},
             },
         )
@@ -86,21 +75,13 @@ class Dolyame(Bank):
                 "name": self.order.item.name_receipt,
                 "price": self.price,
                 "quantity": 1,
-            },
-        ]
-
-    def get_items_with_receipt_data(self) -> list[dict]:
-        return [
-            {
                 "receipt": {
                     "payment_method": "full_payment",
                     "tax": "none",
                     "payment_object": "service",
                     "measurement_unit": "шт",
                 },
-                **item,
-            }
-            for item in self.get_items()
+            },
         ]
 
     def get_client_info(self) -> dict:

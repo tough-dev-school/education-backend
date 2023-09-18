@@ -1,6 +1,5 @@
 import json
 import pytest
-from uuid import uuid4
 
 from respx import MockRouter
 
@@ -24,22 +23,6 @@ def _absolute_host(settings):
 @pytest.fixture
 def dolyame(order):
     return Dolyame(order=order)
-
-
-@pytest.fixture
-def idempotency_key() -> str:
-    return str(uuid4())
-
-
-@pytest.fixture
-def add_dolyame_response(order, idempotency_key, respx_mock: MockRouter):
-    def add_response(url_suffix: str, headers: dict | None = None):
-        return respx_mock.post(
-            url__eq=f"https://partner.dolyame.ru/v1/orders/{order.slug}/{url_suffix}",
-            headers=headers or {"X-Correlation-ID": idempotency_key},
-        ).respond(json={})
-
-    return add_response
 
 
 @pytest.fixture
