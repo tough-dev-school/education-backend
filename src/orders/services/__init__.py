@@ -1,7 +1,6 @@
 from orders.services.order_creator import OrderCreator
 from orders.services.order_diploma_generator import OrderDiplomaGenerator
 from orders.services.order_email_changer import OrderEmailChanger
-from orders.services.order_human_readable_provider import OrderHumanReadableProvider
 from orders.services.order_paid_setter import OrderPaidSetter
 from orders.services.order_shipper import OrderShipper
 from orders.services.order_unpaid_setter import OrderUnpaidSetter
@@ -15,5 +14,4 @@ __all__ = [
     "OrderUnpaidSetter",
     "OrderShipper",
     "OrderUnshipper",
-    "OrderHumanReadableProvider",
 ]
