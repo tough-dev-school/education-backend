@@ -3,6 +3,7 @@ from datetime import timezone
 import pytest
 
 from orders.services import OrderUnpaidSetter
+from orders.services.order_refunder import OrderRefunderException
 
 pytestmark = [
     pytest.mark.django_db,
@@ -17,6 +18,11 @@ def _enable_amocrm(settings):
 @pytest.fixture
 def mock_rebuild_tags(mocker):
     return mocker.patch("users.tasks.rebuild_tags.delay")
+
+
+@pytest.fixture
+def not_paid_order(factory):
+    return factory.order(is_paid=False)
 
 
 @pytest.fixture
@@ -73,14 +79,6 @@ def test_unships(order, set_unpaid, mock_item_unshipping):
     mock_item_unshipping.assert_called_once_with(order=order)
 
 
-def test_not_unships_if_order_was_not_paid(order, set_unpaid, mock_item_unshipping):
-    order.setattr_and_save("paid", None)
-
-    set_unpaid(order=order)
-
-    mock_item_unshipping.assert_not_called()
-
-
 def test_empty_item_does_not_break_things(order, set_unpaid, mock_item_unshipping):
     order.setattr_and_save("course", None)
 
@@ -97,10 +95,6 @@ def test_sets_unpaid_date(order, set_unpaid):
     assert order.unpaid == datetime(2032, 12, 1, 15, 30, tzinfo=timezone.utc)
 
 
-def test_does_not_set_unpaid_date_if_order_was_not_paid(order, set_unpaid):
-    order.setattr_and_save("paid", None)
-
-    set_unpaid(order=order)
-
-    order.refresh_from_db()
-    assert order.unpaid is None
+def test_raise_if_order_is_not_paid(set_unpaid, not_paid_order):
+    with pytest.raises(OrderRefunderException, match="not paid"):
+        set_unpaid(order=not_paid_order)

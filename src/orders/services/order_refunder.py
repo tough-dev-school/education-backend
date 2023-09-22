@@ -1,23 +1,18 @@
 from dataclasses import dataclass
-from datetime import timedelta
-from ipaddress import IPv4Address
-from ipaddress import IPv6Address
 from typing import Callable
-from urllib.parse import urljoin
 
-from django.conf import settings
-from django.urls import reverse
+from celery import chain
+
 from django.utils import timezone
 
-from app.pricing import format_price
+from amocrm.tasks import amocrm_enabled
+from amocrm.tasks import push_user
+from amocrm.tasks import return_order
 from app.services import BaseService
-from banking.selector import get_bank
-from banking.zero_price_bank import ZeroPriceBank
-from mailing.tasks import send_mail
+from banking.selector import REFUNDABLE_BANK_KEYS
 from orders.models import Order
-from orders.models import Refund
-from orders.services.order_unpaid_setter import OrderUnpaidSetter
-from users.models import User
+from orders.services import OrderBankRefunder
+from users.tasks import rebuild_tags
 
 
 class OrderRefunderException(Exception):
@@ -26,71 +21,40 @@ class OrderRefunderException(Exception):
 
 @dataclass
 class OrderRefunder(BaseService):
+    """Refund and unship order. If order is suitable for bank refund - do it."""
+
     order: Order
-    author: User
-    author_ip: IPv4Address | IPv6Address
 
-    def act(self) -> Refund:
-        OrderUnpaidSetter(self.order)()
+    def act(self) -> None:
+        if self.order.bank_id in REFUNDABLE_BANK_KEYS:
+            OrderBankRefunder(order=self.order)()
+        else:
+            self.mark_order_as_not_paid()
 
-        refund = self.create_refund_entry()
-        self.do_bank_refund(refund)
-        self.notify_dangerous_operation_happened()
+        self.order.unship()
+        self.after_unshipment()
 
-        return refund
+    def mark_order_as_not_paid(self) -> None:
+        self.order.unpaid = timezone.now()
+        self.order.save(update_fields=["unpaid", "modified"])
 
-    def create_refund_entry(self) -> Refund:
-        return Refund.objects.create(
-            order=self.order,
-            author=self.author,
-            author_ip=str(self.author_ip),
-        )
+    def after_unshipment(self) -> None:
+        can_be_subscribed = bool(self.order.user.email and len(self.order.user.email))
 
-    def do_bank_refund(self, refund: Refund) -> None:
-        """Do bank API call here"""
+        if not can_be_subscribed and not amocrm_enabled():
+            rebuild_tags.delay(student_id=self.order.user.id, subscribe=False)
+            return None
 
-    def notify_dangerous_operation_happened(self) -> None:
-        for email in settings.DANGEROUS_OPERATION_HAPPENED_EMAILS:
-            send_mail.delay(
-                to=email,
-                template_id="order-refunded",
-                ctx=self.get_template_context(),
-            )
-
-    def get_template_context(self) -> dict:
-        return {
-            "refunded_item": self.order.item.name,
-            "price": format_price(self.order.price),
-            "bank": get_bank(self.order.bank_id).name,
-            "author": str(self.author),
-            "author_ip": str(self.author_ip),
-            "order_admin_site_url": urljoin(
-                settings.ABSOLUTE_HOST,
-                reverse("admin:orders_order_change", args=[self.order.pk]),
-            ),
-        }
+        if amocrm_enabled():
+            chain(
+                rebuild_tags.si(student_id=self.order.user.id, subscribe=can_be_subscribed),
+                push_user.si(user_id=self.order.user.id),
+                return_order.si(order_id=self.order.id),
+            ).delay()
 
     def get_validators(self) -> list[Callable]:
-        return [
-            self.validate_refunds_rate_limit,
-            self.validate_order,
-        ]
-
-    def validate_refunds_rate_limit(self) -> None:
-        count_author_refunds_in_last_24_hours = Refund.objects.filter(
-            author=self.author,
-            created__gte=timezone.now() - timedelta(hours=24),
-        ).count()
-
-        if count_author_refunds_in_last_24_hours >= 5:
-            raise OrderRefunderException("To many refunds in last 24 hours")
+        return [self.validate_order]
 
     def validate_order(self) -> None:
         if not self.order.paid:
             raise OrderRefunderException("Order is not paid")
-
-        if get_bank(self.order.bank_id) == ZeroPriceBank or self.order.price == 0:
-            raise OrderRefunderException("The order if free, no refund possible")
-
-        if Refund.objects.filter(order=self.order, created__gte=self.order.paid).exists():
-            raise OrderRefunderException("Order already refunded")
