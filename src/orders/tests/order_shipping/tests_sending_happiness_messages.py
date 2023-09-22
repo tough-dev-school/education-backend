@@ -1,6 +1,6 @@
 import pytest
 
-from banking.selector import BANK_CHOICES
+from banking.selector import BANK_KEYS
 from banking.selector import BANKS
 from orders.services import OrderShipper
 
@@ -64,7 +64,7 @@ def test_not_sending_in_silent_mode(tg_message, order):
     tg_message.assert_not_called()
 
 
-@pytest.mark.parametrize("bank_id", BANK_CHOICES)
+@pytest.mark.parametrize("bank_id", BANK_KEYS)
 def test_notification_message_include_payment_method(order, bank_id):
     order.setattr_and_save("bank_id", bank_id)
     order.set_paid()
