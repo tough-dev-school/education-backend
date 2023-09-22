@@ -22,11 +22,6 @@ def order(factory, course):
 
 
 @pytest.fixture
-def mock_item_unshipping(mocker):
-    return mocker.patch("studying.shipment.course.CourseShipment.unship")  # any item shipment should be suitable here
-
-
-@pytest.fixture
 def unship(order):
     return OrderUnshipper(order=order)
 

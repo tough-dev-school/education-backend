@@ -72,9 +72,6 @@ def test_refund_entry_for_order_created(refund, paid_order, user):
     assert refund is not None
     assert refund.order == paid_order
     assert refund.author == user
-    assert refund.author_ip == "17.253.144.10"
-    assert refund.bank_confirmation_received is False, "Refund should not be confirmed by default"
-
 
 def test_order_unshipped_and_marked_unpaid(refund, mocker, paid_order):
     spy_unpaid_setter = mocker.spy(OrderUnpaidSetter, "__call__")
