@@ -35,7 +35,10 @@ class Bank(metaclass=ABCMeta):
 
     @abstractmethod
     def get_initial_payment_url(self) -> str:
-        raise NotImplementedError()
+        raise NotImplementedError(".get_initial_payment_url() must be overridden")
+
+    def refund(self) -> None:
+        return
 
     def validate_order(self, order: "Order") -> None:  # NOQA: B027
         """Hook to validate if order suites given bank"""

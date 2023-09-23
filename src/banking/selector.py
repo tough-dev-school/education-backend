@@ -25,7 +25,6 @@ BANK_CHOICES = [
 ]
 
 DEFAULT_BANK = TinkoffBank
-REFUNDABLE_BANK_KEYS = ["dolyame"]
 
 
 def get_bank(desired: str | None = None) -> Type[Bank]:

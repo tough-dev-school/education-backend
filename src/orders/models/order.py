@@ -133,9 +133,9 @@ class Order(TimestampedModel):
         OrderPaidSetter(self, silent=silent)()
 
     def set_not_paid(self) -> None:
-        from orders.services import OrderUnpaidSetter
+        from orders.services import OrderRefunder
 
-        OrderUnpaidSetter(self)()
+        OrderRefunder(self)()
 
     def ship(self, silent: bool | None = False) -> None:
         from orders.services import OrderShipper

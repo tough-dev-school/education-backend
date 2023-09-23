@@ -17,6 +17,9 @@ def order(self: Any, slug: str | None = None, is_paid: bool = False, item: Produ
         if "price" not in kwargs:
             order.price = item.price
 
+        if "bank_id" not in kwargs:
+            order.bank_id = "tinkoff_bank"
+
         order.save()
 
     if is_paid:
