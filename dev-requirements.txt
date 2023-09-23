@@ -467,7 +467,7 @@ types-pyyaml==6.0.12.11
     # via
     #   django-stubs
     #   djangorestframework-stubs
-types-requests==2.31.0.3
+types-requests==2.31.0.4
     # via djangorestframework-stubs
 types-retry==0.9.9.4
     # via education-backend (pyproject.toml)
