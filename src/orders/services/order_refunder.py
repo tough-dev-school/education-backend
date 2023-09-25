@@ -45,7 +45,7 @@ class OrderRefunder(BaseService):
         if self.order.paid and settings.BANKS_REFUNDS_ENABLED:
             is_bank_refunded = self.do_bank_refund_if_needed()
             self.notify_dangerous_operation_happened(is_bank_refunded)
-        
+
         if self.order.paid:
             self.mark_order_as_not_paid()
 
