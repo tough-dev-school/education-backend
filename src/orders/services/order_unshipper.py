@@ -14,7 +14,7 @@ class OrderUnshipper(BaseService):
             self.mark_order_as_unshipped()
 
         return self.order
-    
+
     def unship_item(self) -> None:
         if self.order.item is not None:
             self.order.item.unship(order=self.order)
