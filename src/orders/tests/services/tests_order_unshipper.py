@@ -45,3 +45,13 @@ def test_does_not_unship_twice(unship, mock_item_unshipping, mocker):
 
     mock_order_save.assert_called_once()
     mock_item_unshipping.assert_called_once()
+
+
+def test_does_not_break_if_item_not_set(order, unship, mock_item_unshipping):
+    order.setattr_and_save("course", None)
+
+    unship()
+
+    order.refresh_from_db()
+    assert order.shipped is None
+    mock_item_unshipping.assert_not_called()
