@@ -13,10 +13,10 @@ def paid_order(factory):
 
 
 @pytest.mark.freeze_time("2022-04-19 19:23Z")
-def test_set_not_paid_call_service_and_set_base_attributes(paid_order, mocker):
+def test_refund_call_service_and_set_base_attributes(paid_order, mocker):
     spy_refunder = mocker.spy(OrderRefunder, "__call__")
 
-    paid_order.set_not_paid()
+    paid_order.refund()
 
     paid_order.refresh_from_db()
     assert paid_order.paid is None

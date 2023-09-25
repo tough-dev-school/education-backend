@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-25 17:01+0300\n"
+"POT-Creation-Date: 2023-09-25 17:58+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -43,7 +43,7 @@ msgstr "Чек"
 msgid "Receipts"
 msgstr "Чеки"
 
-#: banking/zero_price_bank.py:19
+#: banking/zero_price_bank.py:20
 msgid "Zero Price"
 msgstr "Бесплатно"
 
@@ -241,8 +241,9 @@ msgstr "Неверный символ emoji"
 msgid ""
 "Only {Reaction.MAX_REACTIONS_FROM_ONE_AUTHOR} reactions per answer are "
 "allowed from one author."
-msgstr "Только {Reaction.MAX_REACTIONS_FROM_ONE_AUTHOR} реакций на ответ "
-"разрешено для одного пользователя."
+msgstr ""
+"Только {Reaction.MAX_REACTIONS_FROM_ONE_AUTHOR} реакций на ответ разрешено "
+"для одного пользователя."
 
 #: magnets/admin.py:33
 msgid "Lead count"
@@ -366,7 +367,7 @@ msgid "Set paid"
 msgstr "Пометить оплаченным"
 
 #: orders/admin/orders/actions.py:22
-msgid "Set not paid"
+msgid "Refund"
 msgstr "Вернуть"
 
 #: orders/admin/orders/actions.py:30
@@ -796,6 +797,9 @@ msgstr "пользователи"
 #: users/models.py:102
 msgid "Students"
 msgstr "Студенты"
+
+#~ msgid "Set not paid"
+#~ msgstr "Вернуть"
 
 #~ msgid "Giver"
 #~ msgstr "Даритель"

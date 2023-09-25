@@ -38,7 +38,7 @@ class Bank(metaclass=ABCMeta):
 
     @abstractmethod
     def get_initial_payment_url(self) -> str:
-        raise NotImplementedError(".get_initial_payment_url() must be overridden")
+        raise NotImplementedError()
 
     def refund(self) -> None:
         return

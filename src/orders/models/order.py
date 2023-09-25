@@ -132,7 +132,7 @@ class Order(TimestampedModel):
 
         OrderPaidSetter(self, silent=silent)()
 
-    def set_not_paid(self) -> None:
+    def refund(self) -> None:
         from orders.services import OrderRefunder
 
         OrderRefunder(self)()

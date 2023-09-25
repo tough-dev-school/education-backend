@@ -19,7 +19,7 @@ def test_sending_mail(course, user, send_mail):
 
 
 def test_non_purchased(course, user, send_mail, order):
-    order.set_not_paid()
+    order.refund()
 
     course.send_email_to_all_purchased_users(template_id="100500")
 
