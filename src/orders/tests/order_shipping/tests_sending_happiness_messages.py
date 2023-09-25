@@ -8,8 +8,9 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def _enable_happiness_messages(settings):
+def _adjust_settings(settings):
     settings.HAPPINESS_MESSAGES_CHAT_ID = "aaa100500"
+    settings.LANGUAGE_CODE = "en"
 
 
 @pytest.fixture(autouse=True)
@@ -80,7 +81,7 @@ def test_include_promocode_if_set(order, mixer):
 
     message = OrderShipper.get_order_happiness_message(order)
 
-    assert message == "💰+1500 ₽, Тинькофф, промокод YARR!\nЗапись курсов катанья и мытья\nKamaz Otkhodov"
+    assert message == "💰+1500 ₽, Tinkoff, промокод YARR!\nЗапись курсов катанья и мытья\nKamaz Otkhodov"
 
 
 def test_include_group_if_set(order, factory):
@@ -89,4 +90,4 @@ def test_include_group_if_set(order, factory):
 
     message = OrderShipper.get_order_happiness_message(order)
 
-    assert message == "💰+1500 ₽, Тинькофф\nЗапись курсов катанья и мытья - Эффективная прокрастинация поток 2\nKamaz Otkhodov"
+    assert message == "💰+1500 ₽, Tinkoff\nЗапись курсов катанья и мытья - Эффективная прокрастинация поток 2\nKamaz Otkhodov"
