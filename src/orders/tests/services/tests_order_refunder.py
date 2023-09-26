@@ -149,8 +149,8 @@ def test_order_refunded_all_refund_watchers_notified(paid_order, refund, mock_se
     mock_send_mail.assert_has_calls(
         any_order=True,
         calls=[
-            mocker.call(to="first_refunds_watcher@mail.com", template_id=mocker.ANY, ctx=mocker.ANY),
-            mocker.call(to="second_refunds_watcher@mail.com", template_id=mocker.ANY, ctx=mocker.ANY),
+            mocker.call(to="first_refunds_watcher@mail.com", template_id=mocker.ANY, disable_antispam=mocker.ANY, ctx=mocker.ANY),
+            mocker.call(to="second_refunds_watcher@mail.com", template_id=mocker.ANY, disable_antispam=mocker.ANY, ctx=mocker.ANY),
         ],
     )
 
@@ -167,6 +167,7 @@ def test_refund_notification_email_context_and_template_correct(refund, paid_ord
     mock_send_mail.assert_called_with(
         to=mocker.ANY,
         template_id="order-refunded",
+        disable_antispam=True,
         ctx=dict(
             order_id=paid_order.id,
             refunded_item="Кройка и шитьё",

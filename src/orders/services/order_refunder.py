@@ -83,7 +83,12 @@ class OrderRefunder(BaseService):
         email_context = self.get_email_template_context(is_bank_refunded)
 
         for email in settings.DANGEROUS_OPERATION_HAPPENED_EMAILS:
-            mailing_tasks.send_mail.delay(to=email, template_id="order-refunded", ctx=email_context)
+            mailing_tasks.send_mail.delay(
+                to=email,
+                template_id="order-refunded",
+                ctx=email_context,
+                disable_antispam=True,
+            )
 
     def get_email_template_context(self, is_bank_refunded: bool) -> dict:
         return {
