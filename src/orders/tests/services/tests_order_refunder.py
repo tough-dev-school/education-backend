@@ -155,12 +155,6 @@ def test_order_refunded_all_refund_watchers_notified(paid_order, refund, mock_se
     )
 
 
-def test_do_not_notify_if_order_not_paid_and_not_refunded(not_paid_order, refund, mock_send_mail):
-    refund(not_paid_order)
-
-    mock_send_mail.assert_not_called(), "Notifications should not be sent cause the order was unpaid = no refund happened"
-
-
 def test_refund_notification_email_context_and_template_correct(refund, paid_order, mock_send_mail, mocker):
     refund(paid_order)
 
@@ -172,21 +166,11 @@ def test_refund_notification_email_context_and_template_correct(refund, paid_ord
             order_id=paid_order.id,
             refunded_item="Кройка и шитьё",
             refund_author="Авраам Соломонович Пейзенгольц",
-            bank_name=BANKS["dolyame"].name,
-            is_bank_refunded=True,
+            payment_method_name=BANKS["dolyame"].name,
             price="999",
             order_admin_site_url=f"http://absolute-url.url/admin/orders/order/{paid_order.id}/change/",
         ),
     )
-
-
-def test_notification_context_if_banks_refund_not_happened(refund, paid_order, mock_send_mail, get_send_mail_call_email_context):
-    paid_order.setattr_and_save("bank_id", "")
-
-    refund(paid_order)
-
-    send_mail_context = get_send_mail_call_email_context(mock_send_mail)
-    assert send_mail_context["is_bank_refunded"] is False, "Should be False cause bank_id is empty and nothing to refund"
 
 
 def test_do_not_break_if_order_without_item_was_refunded(refund, paid_order, mock_send_mail, get_send_mail_call_email_context):
