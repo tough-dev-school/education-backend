@@ -19,12 +19,12 @@ def set_paid(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
     modeladmin.message_user(request, f"{queryset.count()} orders set as paid")
 
 
-@admin.action(description=_("Set not paid"), permissions=["unpay"])
-def set_not_paid(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
+@admin.action(description=_("Refund"), permissions=["unpay"])
+def refund(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
     for order in queryset.iterator():
-        order.set_not_paid()
+        order.refund()
 
-    modeladmin.message_user(request, f"{queryset.count()} orders set as not paid")
+    modeladmin.message_user(request, f"{queryset.count()} orders refunded")
 
 
 @admin.action(description=_("Ship without payments"), permissions=["pay"])

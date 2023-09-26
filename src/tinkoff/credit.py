@@ -1,6 +1,7 @@
 import httpx
 
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 from banking.base import Bank
 
@@ -10,7 +11,7 @@ class TinkoffCreditRequestException(Exception):
 
 
 class TinkoffCredit(Bank):
-    name = "Т.Кредит"
+    name = _("Tinkoff Credit")
 
     def get_initial_payment_url(self) -> str:
         result = self.call(
