@@ -1,7 +1,4 @@
-import json
 import pytest
-
-from respx import MockRouter
 
 from tinkoff.dolyame import Dolyame
 
@@ -23,8 +20,3 @@ def _absolute_host(settings):
 @pytest.fixture
 def dolyame(order):
     return Dolyame(order=order)
-
-
-@pytest.fixture
-def retrieve_request_json(respx_mock: MockRouter):
-    return lambda: json.loads(respx_mock.calls.last.request.content)

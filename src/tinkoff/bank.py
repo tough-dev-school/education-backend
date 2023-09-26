@@ -20,6 +20,17 @@ class TinkoffBank(Bank):
     def get_initial_payment_url(self) -> str:
         return self.Init()["PaymentURL"]
 
+    def refund(self) -> None:
+        last_payment_notification = self.order.tinkoff_payment_notifications.order_by("-id")[0]
+
+        self.call(
+            "Cancel",
+            payload={
+                "PaymentId": last_payment_notification.payment_id,
+                "Receipt": self.get_receipt(),
+            },
+        )
+
     def Init(self) -> dict:
         return self.call(
             "Init",
@@ -86,7 +97,7 @@ class TinkoffBank(Bank):
         _request["Password"] = settings.TINKOFF_TERMINAL_PASSWORD
 
         sorted_request = OrderedDict(sorted(_request.items(), key=lambda key, *args: key))
-        return sha256("".join(str(value) for value in sorted_request.values()).encode()).hexdigest().upper()
+        return sha256("".join(str(value) for value in sorted_request.values()).encode()).hexdigest()
 
     @staticmethod
     def get_notification_url() -> str:
