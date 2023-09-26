@@ -443,7 +443,7 @@ standardjson==0.3.1
     # via django-prettyjson
 stripe==6.6.0
     # via education-backend (pyproject.toml)
-traitlets==5.10.0
+traitlets==5.10.1
     # via
     #   ipython
     #   matplotlib-inline
