@@ -14,7 +14,7 @@ asgiref==3.7.2
     # via django
 astor==0.8.1
     # via flake8-simplify
-astroid==2.15.6
+astroid==2.15.8
     # via flake8-django
 asttokens==2.4.0
     # via stack-data
@@ -164,7 +164,7 @@ drf-jwt==1.19.2
     # via education-backend (pyproject.toml)
 drf-recaptcha==3.0.0
     # via education-backend (pyproject.toml)
-drf-spectacular[sidecar]==0.26.4
+drf-spectacular[sidecar]==0.26.5
     # via education-backend (pyproject.toml)
 drf-spectacular-sidecar==2023.9.1
     # via drf-spectacular
@@ -233,7 +233,7 @@ flake8-pytest==1.4
     # via education-backend (pyproject.toml)
 flake8-pytest-style==1.7.2
     # via education-backend (pyproject.toml)
-flake8-simplify==0.20.0
+flake8-simplify==0.21.0
     # via education-backend (pyproject.toml)
 flake8-tidy-imports==4.10.0
     # via education-backend (pyproject.toml)
@@ -394,7 +394,7 @@ pytz==2023.3.post1
     #   djangorestframework
 pyyaml==6.0.1
     # via drf-spectacular
-redis==5.0.0
+redis==5.0.1
     # via education-backend (pyproject.toml)
 referencing==0.30.2
     # via
@@ -441,9 +441,9 @@ stack-data==0.6.2
     # via ipython
 standardjson==0.3.1
     # via django-prettyjson
-stripe==6.5.0
+stripe==6.6.0
     # via education-backend (pyproject.toml)
-traitlets==5.10.0
+traitlets==5.10.1
     # via
     #   ipython
     #   matplotlib-inline
@@ -463,11 +463,11 @@ types-pytz==2023.3.1.1
     # via
     #   django-stubs
     #   types-babel
-types-pyyaml==6.0.12.11
+types-pyyaml==6.0.12.12
     # via
     #   django-stubs
     #   djangorestframework-stubs
-types-requests==2.31.0.3
+types-requests==2.31.0.5
     # via djangorestframework-stubs
 types-retry==0.9.9.4
     # via education-backend (pyproject.toml)
