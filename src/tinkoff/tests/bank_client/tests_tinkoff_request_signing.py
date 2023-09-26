@@ -34,17 +34,17 @@ def reference_request():
 
 
 def test_signature(tinkoff, reference_request):
-    assert tinkoff._get_token(reference_request) == "597C160C8C348FB14C63C820C54B712468923A74FD111AC6B0ECDA01FB5F4716"
+    assert tinkoff._get_token(reference_request) == "597c160c8c348fb14c63c820c54b712468923a74fd111ac6b0ecda01fb5f4716"
 
 
 def test_signature_without_data_and_receipt(tinkoff, reference_request):
     del reference_request["DATA"]
     del reference_request["Receipt"]
 
-    assert tinkoff._get_token(reference_request) == "597C160C8C348FB14C63C820C54B712468923A74FD111AC6B0ECDA01FB5F4716"
+    assert tinkoff._get_token(reference_request) == "597c160c8c348fb14c63c820c54b712468923a74fd111ac6b0ecda01fb5f4716"
 
 
 def test_signature_with_integer_int(tinkoff, reference_request):
     reference_request["OrderId"] = 100500
 
-    assert tinkoff._get_token(reference_request) == "2F182D493F0488BDE0750D1BDB8B1DE3A10BBE0A38358A89C8EA93972A55F453"
+    assert tinkoff._get_token(reference_request) == "2f182d493f0488bde0750d1bdb8b1de3a10bbe0a38358a89c8ea93972a55f453"
