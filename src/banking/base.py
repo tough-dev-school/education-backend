@@ -6,8 +6,11 @@ from urllib.parse import urljoin
 import uuid
 
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 if TYPE_CHECKING:
+    from django_stubs_ext import StrPromise
+
     from orders.models import Order
     from users.models import User
 
@@ -17,7 +20,7 @@ class Bank(metaclass=ABCMeta):
     currency_symbol = "₽"
     ue: int = 1  # ue stands for «условные единицы», this is some humour from 2000's
     acquiring_percent: Decimal = Decimal(0)  # we use it for analytics
-    name: str = "—"
+    name: "StrPromise" = _("—")
 
     def __init__(
         self,
@@ -36,6 +39,9 @@ class Bank(metaclass=ABCMeta):
     @abstractmethod
     def get_initial_payment_url(self) -> str:
         raise NotImplementedError()
+
+    def refund(self) -> None:
+        return
 
     def validate_order(self, order: "Order") -> None:  # NOQA: B027
         """Hook to validate if order suites given bank"""

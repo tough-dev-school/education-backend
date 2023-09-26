@@ -9,6 +9,11 @@ from homework.services.reaction_creator import ReactionCreatorException
 pytestmark = [pytest.mark.django_db]
 
 
+@pytest.fixture(autouse=True)
+def _set_locale(settings):
+    settings.LANGUAGE_CODE = "en"
+
+
 @pytest.fixture
 def create():
     return lambda *args, **kwargs: ReactionCreator(*args, **kwargs)()

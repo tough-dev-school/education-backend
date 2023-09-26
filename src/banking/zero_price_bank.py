@@ -3,6 +3,8 @@ from typing import TYPE_CHECKING
 
 from rest_framework.exceptions import ValidationError
 
+from django.utils.translation import gettext_lazy as _
+
 from banking.base import Bank
 
 if TYPE_CHECKING:
@@ -15,7 +17,7 @@ class ZeroPriceBank(Bank):
     currency = "KIS"
     currency_symbol = "💋"
     acquiring_percent = Decimal(0)
-    name = "Бесплатно"
+    name = _("Zero Price")
 
     def __init__(
         self,

@@ -8,16 +8,17 @@ from orders.models import Order
 class OrderUnshipper(BaseService):
     order: Order
 
-    def act(self) -> None:
-        self.order.item.unship(order=self.order)
+    def act(self) -> Order:
+        if self.order.shipped is not None:
+            self.unship_item()
+            self.mark_order_as_unshipped()
 
-        self.mark_order_as_unpaid()
-        self.mark_order_as_unshipped()
+        return self.order
+
+    def unship_item(self) -> None:
+        if self.order.item is not None:
+            self.order.item.unship(order=self.order)
 
     def mark_order_as_unshipped(self) -> None:
         self.order.shipped = None
-        self.order.save()
-
-    def mark_order_as_unpaid(self) -> None:
-        self.order.paid = None
-        self.order.save()
+        self.order.save(update_fields=["shipped", "modified"])

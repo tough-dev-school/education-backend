@@ -1,7 +1,7 @@
 from datetime import datetime
 import pytest
 
-from banking.selector import BANK_CHOICES
+from banking.selector import BANK_KEYS
 from banking.selector import BANKS
 from orders import human_readable
 
@@ -53,7 +53,7 @@ def test_get_readable_payment_method_name_shipped_but_not_paid(order):
     assert got == "Shipped without payment"
 
 
-@pytest.mark.parametrize("bank_id", BANK_CHOICES)
+@pytest.mark.parametrize("bank_id", BANK_KEYS)
 def test_get_readable_payment_method_name_if_payed_with_bank(bank_id, set_order_paid):
     order = set_order_paid(bank_id)
 

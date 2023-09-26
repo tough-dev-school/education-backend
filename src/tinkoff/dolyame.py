@@ -4,6 +4,7 @@ from urllib.parse import urljoin
 import httpx
 
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 from banking.base import Bank
 
@@ -20,7 +21,7 @@ class Dolyame(Bank):
 
     acquiring_percent = Decimal("6.9")
     base_url = "https://partner.dolyame.ru/v1/"
-    name = "Долями"
+    name = _("Dolyame")
     bank_id = "dolyame"
 
     def get_initial_payment_url(self) -> str:

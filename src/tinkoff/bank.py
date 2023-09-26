@@ -7,6 +7,7 @@ from urllib.parse import urljoin
 import httpx
 
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 from banking.base import Bank
 from tinkoff.exceptions import TinkoffRequestException
@@ -14,7 +15,7 @@ from tinkoff.exceptions import TinkoffRequestException
 
 class TinkoffBank(Bank):
     acquiring_percent = Decimal("2.49")
-    name = "Тинькофф"
+    name = _("Tinkoff")
 
     def get_initial_payment_url(self) -> str:
         return self.Init()["PaymentURL"]

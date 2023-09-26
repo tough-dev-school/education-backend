@@ -41,3 +41,4 @@ include(
 )
 
 include("conf/integrations/*.py")
+include("conf/integrations/banking/*.py")
