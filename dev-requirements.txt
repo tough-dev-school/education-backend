@@ -471,7 +471,7 @@ types-requests==2.31.0.5
     # via djangorestframework-stubs
 types-retry==0.9.9.4
     # via education-backend (pyproject.toml)
-types-s3transfer==0.6.2
+types-s3transfer==0.7.0
     # via boto3-stubs
 types-setuptools==68.2.0.0
     # via types-babel
