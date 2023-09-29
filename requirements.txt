@@ -238,7 +238,7 @@ vine==5.0.0
     #   amqp
     #   celery
     #   kombu
-wcwidth==0.2.6
+wcwidth==0.2.7
     # via prompt-toolkit
 webencodings==0.5.1
     # via bleach
