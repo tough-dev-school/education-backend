@@ -437,7 +437,7 @@ sqlparse==0.4.4
     # via
     #   django
     #   django-debug-toolbar
-stack-data==0.6.2
+stack-data==0.6.3
     # via ipython
 standardjson==0.3.1
     # via django-prettyjson
