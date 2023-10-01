@@ -39,11 +39,11 @@ certifi==2023.7.22
     #   httpx
     #   requests
     #   sentry-sdk
-cffi==1.15.1
+cffi==1.16.0
     # via
     #   cmarkgfm
     #   cryptography
-charset-normalizer==3.2.0
+charset-normalizer==3.3.0
     # via requests
 click==8.1.7
     # via
@@ -109,7 +109,7 @@ django-prettyjson==0.4.1
     # via education-backend (pyproject.toml)
 django-split-settings==1.2.0
     # via education-backend (pyproject.toml)
-django-storages==1.14
+django-storages==1.14.1
     # via education-backend (pyproject.toml)
 django-tree-queries==0.15.0
     # via education-backend (pyproject.toml)
@@ -163,7 +163,7 @@ pillow==10.0.1
     # via education-backend (pyproject.toml)
 prompt-toolkit==3.0.39
     # via click-repl
-psycopg2-binary==2.9.7
+psycopg2-binary==2.9.8
     # via education-backend (pyproject.toml)
 py==1.11.0
     # via retry
@@ -238,7 +238,7 @@ vine==5.0.0
     #   amqp
     #   celery
     #   kombu
-wcwidth==0.2.6
+wcwidth==0.2.8
     # via prompt-toolkit
 webencodings==0.5.1
     # via bleach
