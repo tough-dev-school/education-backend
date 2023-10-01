@@ -1,13 +1,17 @@
+from datetime import timedelta
 from typing import Any
 
 from celery import group
 
+from django.contrib import messages
 from django.db.models import QuerySet
 from django.http.request import HttpRequest
 from django.utils.translation import gettext as _
 
 from app.admin import admin
+from orders import human_readable
 from orders import tasks
+from orders.admin.orders.throttling import OrderRefundActionThrottle
 from studying.models import Study
 
 
@@ -21,10 +25,29 @@ def set_paid(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
 
 @admin.action(description=_("Refund"), permissions=["unpay"])
 def refund(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
-    for order in queryset.iterator():
-        order.refund()
+    throttle = OrderRefundActionThrottle()
+    refunded_orders = []
+    non_refunded_orders = []
 
-    modeladmin.message_user(request, f"{queryset.count()} orders refunded")
+    for order in queryset.iterator():
+        if throttle.allow_request(request, view=modeladmin):
+            order.refund()
+            modeladmin.log_change(request, order, "Order refunded")
+            refunded_orders.append(order)
+        else:
+            non_refunded_orders.append(order)
+
+    if refunded_orders:
+        refunded_orders_as_message = human_readable.get_orders_identifiers(refunded_orders)
+        modeladmin.message_user(request, _(f"Orders {refunded_orders_as_message} refunded."))
+
+    if non_refunded_orders:
+        recommended_wait_seconds = throttle.wait() or 0
+        recommended_wait_duration = timedelta(seconds=int(recommended_wait_seconds))
+        non_refunded_orders_as_message = human_readable.get_orders_identifiers(non_refunded_orders)
+        modeladmin.message_user(
+            request, _(f"Orders {non_refunded_orders_as_message} could not be refunded. Try again after {recommended_wait_duration}"), level=messages.ERROR
+        )
 
 
 @admin.action(description=_("Ship without payments"), permissions=["pay"])

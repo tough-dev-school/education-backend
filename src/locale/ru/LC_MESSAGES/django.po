@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-25 17:58+0300\n"
+"POT-Creation-Date: 2023-10-01 18:51+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -30,6 +30,10 @@ msgstr "Да"
 #: app/admin/filters.py:26
 msgid "No"
 msgstr "Нет"
+
+#: banking/base.py:23
+msgid "—"
+msgstr ""
 
 #: banking/models.py:10
 msgid "Atol"
@@ -362,31 +366,45 @@ msgstr "Файл"
 msgid "Material files"
 msgstr "Файлы"
 
-#: orders/admin/orders/actions.py:14
+#: orders/admin/orders/actions.py:18
 msgid "Set paid"
 msgstr "Пометить оплаченным"
 
-#: orders/admin/orders/actions.py:22
+#: orders/admin/orders/actions.py:26
 msgid "Refund"
 msgstr "Вернуть"
 
-#: orders/admin/orders/actions.py:30
+#: orders/admin/orders/actions.py:42
+#, python-brace-format
+msgid "Orders {refunded_orders_as_message} refunded."
+msgstr "Заказы {refunded_orders_as_message} возвращены."
+
+#: orders/admin/orders/actions.py:49
+#, python-brace-format
+msgid ""
+"Orders {non_refunded_orders_as_message} could not be refunded. Try again "
+"after {recommended_wait_duration}"
+msgstr ""
+"Заказы {non_refunded_orders_as_message} не могут быть возвращены. Попробуйте "
+"снова через {recommended_wait_duration}"
+
+#: orders/admin/orders/actions.py:53
 msgid "Ship without payments"
 msgstr "Допустить до уроков без оплаты"
 
-#: orders/admin/orders/actions.py:41
+#: orders/admin/orders/actions.py:64
 msgid "Ship again if paid"
 msgstr "Ещё раз выполнить (если заказ не оплачен — не выполнится)"
 
-#: orders/admin/orders/actions.py:54 products/admin/courses/actions.py:40
+#: orders/admin/orders/actions.py:77 products/admin/courses/actions.py:40
 msgid "Generate diplomas"
 msgstr "Сгенерировать дипломы"
 
-#: orders/admin/orders/actions.py:64
+#: orders/admin/orders/actions.py:87
 msgid "Accept homework"
 msgstr "Засчитать домашку"
 
-#: orders/admin/orders/actions.py:73
+#: orders/admin/orders/actions.py:96
 msgid "Disaccept homework"
 msgstr "Не засчитать домашку"
 
