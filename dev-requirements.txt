@@ -166,7 +166,7 @@ drf-recaptcha==3.0.0
     # via education-backend (pyproject.toml)
 drf-spectacular[sidecar]==0.26.5
     # via education-backend (pyproject.toml)
-drf-spectacular-sidecar==2023.9.1
+drf-spectacular-sidecar==2023.10.1
     # via drf-spectacular
 emoji==2.8.0
     # via education-backend (pyproject.toml)
