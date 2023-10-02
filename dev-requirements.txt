@@ -166,7 +166,7 @@ drf-recaptcha==3.0.0
     # via education-backend (pyproject.toml)
 drf-spectacular[sidecar]==0.26.5
     # via education-backend (pyproject.toml)
-drf-spectacular-sidecar==2023.9.1
+drf-spectacular-sidecar==2023.10.1
     # via drf-spectacular
 emoji==2.8.0
     # via education-backend (pyproject.toml)
@@ -272,11 +272,11 @@ inflection==0.5.1
     # via drf-spectacular
 iniconfig==2.0.0
     # via pytest
-ipython==8.16.0
+ipython==8.16.1
     # via education-backend (pyproject.toml)
 isort==5.12.0
     # via flake8-isort
-jedi==0.19.0
+jedi==0.19.1
     # via
     #   education-backend (pyproject.toml)
     #   ipython
@@ -307,7 +307,7 @@ mypy-extensions==1.0.0
     # via
     #   black
     #   mypy
-packaging==23.1
+packaging==23.2
     # via
     #   black
     #   pytest
@@ -379,7 +379,7 @@ pytest-mock==3.11.1
     # via education-backend (pyproject.toml)
 pytest-randomly==3.15.0
     # via education-backend (pyproject.toml)
-pytest-repeat==0.9.1
+pytest-repeat==0.9.2
     # via education-backend (pyproject.toml)
 pytest-xdist==3.3.1
     # via education-backend (pyproject.toml)
