@@ -226,7 +226,7 @@ stripe==6.6.0
     # via education-backend (pyproject.toml)
 uritemplate==4.1.1
     # via drf-spectacular
-urllib3==1.26.16
+urllib3==1.26.17
     # via
     #   botocore
     #   django-anymail
