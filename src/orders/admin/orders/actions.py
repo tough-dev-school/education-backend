@@ -2,13 +2,20 @@ from typing import Any
 
 from celery import group
 
+from django.contrib import messages
 from django.db.models import QuerySet
 from django.http.request import HttpRequest
 from django.utils.translation import gettext as _
 
 from app.admin import admin
 from orders import tasks
+from orders.admin.orders.throttling import OrderRefundActionThrottle
+from orders.models import Order
 from studying.models import Study
+
+
+def format_orders_for_message(orders: list[Order]) -> str:
+    return ", ".join(str(order.id) for order in orders)
 
 
 @admin.action(description=_("Set paid"), permissions=["pay"])
@@ -21,10 +28,29 @@ def set_paid(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
 
 @admin.action(description=_("Refund"), permissions=["unpay"])
 def refund(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
-    for order in queryset.iterator():
-        order.refund()
+    throttle = OrderRefundActionThrottle()
+    refunded_orders = []
+    non_refunded_orders = []
 
-    modeladmin.message_user(request, f"{queryset.count()} orders refunded")
+    for order in queryset.iterator():
+        if throttle.allow_request(request, view=modeladmin):
+            order.refund()
+            modeladmin.log_change(request, order, "Order refunded")
+            refunded_orders.append(order)
+        else:
+            non_refunded_orders.append(order)
+
+    if refunded_orders:
+        refunded_orders_as_message = format_orders_for_message(refunded_orders)
+        modeladmin.message_user(request, _(f"Orders {refunded_orders_as_message} refunded."))
+
+    if non_refunded_orders:
+        non_refunded_orders_as_message = format_orders_for_message(non_refunded_orders)
+        modeladmin.message_user(
+            request,
+            _(f"Orders {non_refunded_orders_as_message} have not been refunded. Up to 5 refunds per day are allowed. Please come back tomorrow."),
+            level=messages.ERROR,
+        )
 
 
 @admin.action(description=_("Ship without payments"), permissions=["pay"])

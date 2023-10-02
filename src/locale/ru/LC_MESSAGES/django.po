@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-25 17:58+0300\n"
+"POT-Creation-Date: 2023-10-02 20:01+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -30,6 +30,10 @@ msgstr "Да"
 #: app/admin/filters.py:26
 msgid "No"
 msgstr "Нет"
+
+#: banking/base.py:23
+msgid "—"
+msgstr ""
 
 #: banking/models.py:10
 msgid "Atol"
@@ -362,31 +366,43 @@ msgstr "Файл"
 msgid "Material files"
 msgstr "Файлы"
 
-#: orders/admin/orders/actions.py:14
+#: orders/admin/orders/actions.py:21
 msgid "Set paid"
 msgstr "Пометить оплаченным"
 
-#: orders/admin/orders/actions.py:22
+#: orders/admin/orders/actions.py:29
 msgid "Refund"
 msgstr "Вернуть"
 
-#: orders/admin/orders/actions.py:30
+#: orders/admin/orders/actions.py:45
+#, python-brace-format
+msgid "Orders {refunded_orders_as_message} refunded."
+msgstr "Заказы {refunded_orders_as_message} возвращены."
+
+#: orders/admin/orders/actions.py:51
+#, python-brace-format
+msgid "Orders {non_refunded_orders_as_message} have not been refunded. Up to 5 "
+"refunds per day are allowed. Please come back tomorrow."
+msgstr "Заказы {non_refunded_orders_as_message} не были возвращены. "
+"Разрешено до 5 возвратов в день, попробуйте снова завтра."
+
+#: orders/admin/orders/actions.py:56
 msgid "Ship without payments"
 msgstr "Допустить до уроков без оплаты"
 
-#: orders/admin/orders/actions.py:41
+#: orders/admin/orders/actions.py:67
 msgid "Ship again if paid"
 msgstr "Ещё раз выполнить (если заказ не оплачен — не выполнится)"
 
-#: orders/admin/orders/actions.py:54 products/admin/courses/actions.py:40
+#: orders/admin/orders/actions.py:80 products/admin/courses/actions.py:40
 msgid "Generate diplomas"
 msgstr "Сгенерировать дипломы"
 
-#: orders/admin/orders/actions.py:64
+#: orders/admin/orders/actions.py:90
 msgid "Accept homework"
 msgstr "Засчитать домашку"
 
-#: orders/admin/orders/actions.py:73
+#: orders/admin/orders/actions.py:99
 msgid "Disaccept homework"
 msgstr "Не засчитать домашку"
 
