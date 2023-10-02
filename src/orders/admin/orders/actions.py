@@ -1,4 +1,3 @@
-from datetime import timedelta
 from typing import Any
 
 from celery import group
@@ -9,10 +8,14 @@ from django.http.request import HttpRequest
 from django.utils.translation import gettext as _
 
 from app.admin import admin
-from orders import human_readable
 from orders import tasks
 from orders.admin.orders.throttling import OrderRefundActionThrottle
+from orders.models import Order
 from studying.models import Study
+
+
+def format_orders_for_message(orders: list[Order]) -> str:
+    return ", ".join(str(order.id) for order in orders)
 
 
 @admin.action(description=_("Set paid"), permissions=["pay"])
@@ -38,15 +41,15 @@ def refund(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
             non_refunded_orders.append(order)
 
     if refunded_orders:
-        refunded_orders_as_message = human_readable.get_orders_identifiers(refunded_orders)
+        refunded_orders_as_message = format_orders_for_message(refunded_orders)
         modeladmin.message_user(request, _(f"Orders {refunded_orders_as_message} refunded."))
 
     if non_refunded_orders:
-        recommended_wait_seconds = throttle.wait() or 0
-        recommended_wait_duration = timedelta(seconds=int(recommended_wait_seconds))
-        non_refunded_orders_as_message = human_readable.get_orders_identifiers(non_refunded_orders)
+        non_refunded_orders_as_message = format_orders_for_message(non_refunded_orders)
         modeladmin.message_user(
-            request, _(f"Orders {non_refunded_orders_as_message} could not be refunded. Try again after {recommended_wait_duration}"), level=messages.ERROR
+            request,
+            _(f"Orders {non_refunded_orders_as_message} have not been refunded. Up to 5 refunds per day are allowed. Please come back tomorrow."),
+            level=messages.ERROR,
         )
 
 

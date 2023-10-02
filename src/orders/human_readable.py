@@ -46,7 +46,3 @@ def get_order_customer(order: Order) -> str:
         '<a href="mailto:{email}">{email}</a>',
         email=email,
     )
-
-
-def get_orders_identifiers(orders: list[Order]) -> str:
-    return ", ".join(str(order.id) for order in orders)
