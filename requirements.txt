@@ -16,7 +16,7 @@ attrs==23.1.0
     # via
     #   jsonschema
     #   referencing
-babel==2.12.1
+babel==2.13.0
     # via education-backend (pyproject.toml)
 bcrypt==4.0.1
     # via education-backend (pyproject.toml)
