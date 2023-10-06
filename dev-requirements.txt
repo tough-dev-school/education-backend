@@ -41,7 +41,7 @@ black==23.9.1
     # via
     #   education-backend (pyproject.toml)
     #   flake8-black
-bleach==6.0.0
+bleach==6.1.0
     # via education-backend (pyproject.toml)
 boto3==1.28.1
     # via education-backend (pyproject.toml)
