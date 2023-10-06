@@ -22,7 +22,7 @@ bcrypt==4.0.1
     # via education-backend (pyproject.toml)
 billiard==3.6.4.0
     # via celery
-bleach==6.0.0
+bleach==6.1.0
     # via education-backend (pyproject.toml)
 boto3==1.28.1
     # via education-backend (pyproject.toml)
