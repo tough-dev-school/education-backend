@@ -455,7 +455,7 @@ types-bleach==6.1.0.0
     # via education-backend (pyproject.toml)
 types-freezegun==1.1.10
     # via education-backend (pyproject.toml)
-types-markdown==3.4.2.10
+types-markdown==3.5.0.0
     # via education-backend (pyproject.toml)
 types-pillow==10.0.0.3
     # via education-backend (pyproject.toml)
