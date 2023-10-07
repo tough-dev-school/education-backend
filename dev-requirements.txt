@@ -451,7 +451,7 @@ types-awscrt==0.19.2
     # via botocore-stubs
 types-babel==2.11.0.15
     # via education-backend (pyproject.toml)
-types-bleach==6.0.0.5
+types-bleach==6.1.0.0
     # via education-backend (pyproject.toml)
 types-freezegun==1.1.10
     # via education-backend (pyproject.toml)
