@@ -319,7 +319,7 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
-pillow==10.0.1
+pillow==10.1.0
     # via education-backend (pyproject.toml)
 platformdirs==3.11.0
     # via black
