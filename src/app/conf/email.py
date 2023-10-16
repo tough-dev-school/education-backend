@@ -19,7 +19,7 @@ RECEIPTS_EMAIL = env("RECEIPTS_EMAIL", cast=str, default="receipts@tough-dev.sch
 DANGEROUS_OPERATION_HAPPENED_EMAILS = env(
     "DANGEROUS_OPERATION_HAPPENED_EMAILS",
     cast=tuple,
-    default=[],
+    default=["fedor@borshev.com", "marianaonysko@gmail.com"],
 )
 
 # Postmark template IDs
