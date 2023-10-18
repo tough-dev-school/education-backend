@@ -490,7 +490,7 @@ typing-extensions==4.8.0
     #   mypy
 uritemplate==4.1.1
     # via drf-spectacular
-urllib3==1.26.17
+urllib3==1.26.18
     # via
     #   botocore
     #   django-anymail
