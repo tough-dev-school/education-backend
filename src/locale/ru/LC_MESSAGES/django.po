@@ -293,7 +293,7 @@ msgid "Notion page id"
 msgstr "ID страницы в ноушене"
 
 #: notion/models.py:50
-msgid "Paste it from notion address bar"
+msgid "Paste it from apps.notion address bar"
 msgstr "Скопируйте адрес из строки браузера"
 
 #: notion/models.py:51 orders/admin/promocodes/admin.py:12
