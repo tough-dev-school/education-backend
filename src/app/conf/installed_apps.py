@@ -1,7 +1,7 @@
 INSTALLED_APPS = [
     "apps.a12n",
+    "apps.amocrm",
     "app",
-    "amocrm",
     "banking",
     "diplomas",
     "homework",

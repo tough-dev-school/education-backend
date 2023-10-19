@@ -2,8 +2,8 @@ from dataclasses import dataclass
 
 from rest_framework import serializers
 
-from amocrm.tasks import amocrm_enabled
-from amocrm.tasks import push_user
+from apps.amocrm.tasks import amocrm_enabled
+from apps.amocrm.tasks import push_user
 from app.services import BaseService
 from diplomas.tasks import regenerate_diplomas
 from users.models import User

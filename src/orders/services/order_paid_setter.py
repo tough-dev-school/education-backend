@@ -4,9 +4,9 @@ from celery import chain
 
 from django.utils import timezone
 
-from amocrm.tasks import amocrm_enabled
-from amocrm.tasks import push_order
-from amocrm.tasks import push_user
+from apps.amocrm.tasks import amocrm_enabled
+from apps.amocrm.tasks import push_order
+from apps.amocrm.tasks import push_user
 from app.services import BaseService
 from orders.models import Order
 from users.tasks import rebuild_tags

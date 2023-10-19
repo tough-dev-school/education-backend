@@ -13,9 +13,9 @@ from django.utils.functional import cached_property
 from django.utils.timezone import is_naive
 from django.utils.timezone import make_aware
 
-from amocrm.tasks import amocrm_enabled
-from amocrm.tasks import push_order
-from amocrm.tasks import push_user
+from apps.amocrm.tasks import amocrm_enabled
+from apps.amocrm.tasks import push_order
+from apps.amocrm.tasks import push_user
 from app.current_user import get_current_user
 from app.exceptions import AppServiceException
 from app.helpers import lower_first

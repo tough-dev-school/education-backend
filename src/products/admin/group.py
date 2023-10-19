@@ -2,7 +2,7 @@ from typing import Any
 
 from django.http import HttpRequest
 
-from amocrm import tasks
+from apps.amocrm import tasks
 from app.admin import admin
 from app.admin import ModelAdmin
 from products.models import Group
