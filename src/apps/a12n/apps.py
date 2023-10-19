@@ -2,7 +2,7 @@ from django.apps import AppConfig
 
 
 class A12NConfig(AppConfig):
-    name = "a12n"
+    name = "apps.a12n"
 
     def ready(self) -> None:
-        import a12n.signals.handlers  # noqa
+        import apps.a12n.signals.handlers  # noqa

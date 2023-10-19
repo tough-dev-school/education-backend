@@ -7,7 +7,7 @@ from django.db import migrations
 from django.db import models
 import django.db.models.deletion
 
-import a12n.models
+import apps.a12n.models
 
 
 class Migration(migrations.Migration):
@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
                 ('modified', models.DateTimeField(blank=True, db_index=True, null=True)),
                 ('token', models.UUIDField(db_index=True, default=uuid.uuid4, unique=True)),
-                ('expires', models.DateTimeField(default=a12n.models.default_expiration)),
+                ('expires', models.DateTimeField(default=apps.a12n.models.default_expiration)),
                 ('used', models.BooleanField(default=False)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],

@@ -7,10 +7,10 @@ from rest_framework_jwt import views as jwt
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 
-from a12n.api.serializers import PasswordResetSerializer
-from a12n.api.throttling import AuthAnonRateThrottle
-from a12n.models import PasswordlessAuthToken
-from a12n.utils import get_jwt
+from apps.a12n.api.serializers import PasswordResetSerializer
+from apps.a12n.api.throttling import AuthAnonRateThrottle
+from apps.a12n.models import PasswordlessAuthToken
+from apps.a12n.utils import get_jwt
 from app.permissions import SuperUserOnly
 from app.views import AnonymousAPIView
 from mailing.tasks import send_mail

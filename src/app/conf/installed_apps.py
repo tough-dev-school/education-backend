@@ -1,5 +1,5 @@
 INSTALLED_APPS = [
-    "a12n",
+    "apps.a12n",
     "app",
     "amocrm",
     "banking",

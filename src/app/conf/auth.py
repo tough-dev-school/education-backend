@@ -52,7 +52,7 @@ JWT_AUTH = {
     "JWT_ALGORITHM": "RS256",
     "JWT_PRIVATE_KEY": keys["private"],
     "JWT_PUBLIC_KEY": keys["public"],
-    "JWT_PAYLOAD_HANDLER": "a12n.jwt.payload_handler",
+    "JWT_PAYLOAD_HANDLER": "apps.a12n.jwt.payload_handler",
 }
 
 DANGEROUSLY_MAKE_ONE_TIME_PASSWORDLESS_TOKEN_MULTI_PASS = env("DANGEROUSLY_MAKE_ONE_TIME_PASSWORDLESS_TOKEN_MULTI_PASS", cast=bool, default=False)

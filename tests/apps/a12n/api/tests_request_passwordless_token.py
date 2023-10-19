@@ -3,7 +3,7 @@ from datetime import timedelta
 from datetime import timezone
 import pytest
 
-from a12n.models import PasswordlessAuthToken
+from apps.a12n.models import PasswordlessAuthToken
 
 pytestmark = [
     pytest.mark.django_db,
@@ -18,7 +18,7 @@ def user(mixer):
 
 @pytest.fixture(autouse=True)
 def _freeze_frontend_url(mocker):
-    mocker.patch("a12n.models.PasswordlessAuthToken.get_absolute_url", return_value="https://frontend/auth/__TOKEN__")
+    mocker.patch("apps.a12n.models.PasswordlessAuthToken.get_absolute_url", return_value="https://frontend/auth/__TOKEN__")
 
 
 def test_token_is_created(anon, user):
