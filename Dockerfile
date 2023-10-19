@@ -37,6 +37,7 @@ RUN pip install --no-cache-dir --upgrade pip \
 COPY pyproject.toml poetry.lock /
 
 RUN poetry config virtualenvs.create false \
+  && poetry self add poetry-dotenv-plugin
   && poetry install --no-root --no-dev --no-interaction --no-ansi
 
 WORKDIR /src
