@@ -12,18 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
-        id: setup-python
-        with:
-          python-version-file: '.python-version'
-
       - name: Rebuild
         uses: ./.github/actions/build
 
       - name: Run the linter
-        run: |
-          source .venv/bin/activate
-          make lint
+        run: make lint
 
   test:
     needs: lint
@@ -48,11 +41,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
-        id: setup-python
-        with:
-          python-version-file: '.python-version'
-
       - name: Rebuild
         uses: ./.github/actions/build
 
@@ -65,9 +53,7 @@ jobs:
         env:
           DATABASE_URL: postgres://postgres:secret@localhost:5432/postgres
           REDISCLOUD_URL: redis://localhost:6379/5
-        run: |
-          source .venv/bin/activate
-          make test
+        run: make test
 
       - name: Upload code coverage to codeclimate
         uses: paambaati/codeclimate-action@v3.2.0
@@ -87,7 +73,7 @@ jobs:
       - uses: actions/setup-python@v4
         id: setup-python
         with:
-          python-version-file: '.python-version'
+          python-version-file: 'pyproject.toml'
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2

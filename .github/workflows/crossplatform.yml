@@ -11,17 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
-        with:
-          python-version-file: '.python-version'
-
       - name: Rebuild
         uses: ./.github/actions/build
 
       - name: Run the linter
-        run: |
-          source .venv/bin/activate
-          make lint
+        run: make lint
 
   test:
     needs: lint
@@ -46,10 +40,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
-        with:
-          python-version-file: '.python-version'
-
       - name: Rebuild
         uses: ./.github/actions/build
 
@@ -62,9 +52,7 @@ jobs:
         env:
           DATABASE_URL: postgres://postgres:secret@localhost:5432/postgres
           REDISCLOUD_URL: redis://localhost:6379/5
-        run: |
-          source .venv/bin/activate
-          make test
+        run: make test
 
   build-docker-image:
     needs: test
@@ -76,7 +64,7 @@ jobs:
       - uses: actions/setup-python@v4
         id: setup-python
         with:
-          python-version-file: '.python-version'
+          python-version-file: 'pyproject.toml'
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2

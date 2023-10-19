@@ -9,24 +9,21 @@ runs:
       uses: actions/cache@v3
       with:
         path: ~/.local
-        key: poetry-0
+        key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
 
     - name: install poetry
       if: steps.cached-poetry.outputs.cache-hit != 'true'
-      uses: snok/install-poetry@v1
-      with:
-        virtualenvs-create: true
-        virtualenvs-in-project: true
+      run: curl -sSL https://install.python-poetry.org | python3 -
+      shell: bash
 
-    - name: load cached venv
-      id: cached-poetry-deps
-      uses: actions/cache@v3
+    - name: install python
+      id: setup-python
+      uses: actions/setup-python@v4
       with:
-        path: .venv
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+        cache: 'poetry'
+        python-version-file: 'pyproject.toml'
 
     - name: install deps
-      if: steps.cached-poetry-deps.outputs.cache-hit != 'true'
       run: poetry install --no-interaction --no-root
       shell: bash
 
