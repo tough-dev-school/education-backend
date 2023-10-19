@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from django.http import HttpResponseRedirect
 
 from apps.banking import price_calculator
-from apps.banking.selector import BANK_CHOICES
+from apps.banking.selector import BANK_KEYS
 from apps.banking.selector import get_bank
 from apps.orders.api.serializers import PromocodeSerializer
 from apps.orders.api.throttling import PromocodeThrottle
@@ -33,7 +33,7 @@ class PromocodeView(APIView):
         responses=PromocodeSerializer,
         parameters=[
             OpenApiParameter(name="promocode", type=str),
-            OpenApiParameter(name="desired_bank", type=str, many=False, enum=BANK_CHOICES),
+            OpenApiParameter(name="desired_bank", type=str, many=False, enum=BANK_KEYS),
         ],
     )
     def get(self, request: "Request", slug: str | None = None, **kwargs: dict[str, Any]) -> Response:

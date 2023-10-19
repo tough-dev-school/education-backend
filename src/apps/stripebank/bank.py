@@ -4,16 +4,17 @@ from typing import Any
 import stripe
 
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 from apps.banking.base import Bank
 
 
 class StripeBank(Bank):
-    ue = 80  # ue stands for «условные единицы», this is some humour from 2000's
+    ue = 90  # ue stands for «условные единицы», this is some humour from 2000's
     currency = "EUR"
     currency_symbol = "€"
     acquiring_percent = Decimal(4)
-    name = "Страйп"
+    name = _("Stripe")
 
     def get_initial_payment_url(self) -> str:
         stripe.api_key = settings.STRIPE_API_KEY

@@ -25,7 +25,7 @@ def order(factory, course, api):
 
 @pytest.fixture
 def unpaid_order(order):
-    order.set_not_paid()
+    order.refund()
 
     return order
 

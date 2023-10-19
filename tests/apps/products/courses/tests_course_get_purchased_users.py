@@ -36,7 +36,7 @@ def test_single_user_in_two_orders(course, order, another_order):
 
 
 def test_non_purchased(course, order):
-    order.set_not_paid()
+    order.refund()
 
     assert len(course.get_purchased_users()) == 0
 

@@ -7,6 +7,7 @@ from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
+from apps.banking.selector import BANK_CHOICES
 from apps.orders.exceptions import UnknownItemException
 from apps.orders.fields import ItemField
 from apps.products.models import Product
@@ -53,7 +54,7 @@ class Order(TimestampedModel):
     unpaid = models.DateTimeField(_("Date when order got unpaid"), null=True, blank=True)
     shipped = models.DateTimeField(_("Date when order was shipped"), null=True, blank=True)
 
-    bank_id = models.CharField(_("User-requested bank string"), blank=True, max_length=32)
+    bank_id = models.CharField(_("User-requested bank string"), choices=BANK_CHOICES, blank=True, max_length=32)
     ue_rate = models.IntegerField(_("Purchase-time UE rate"))
     acquiring_percent = models.DecimalField(default=0, max_digits=4, decimal_places=2)
 
@@ -131,10 +132,10 @@ class Order(TimestampedModel):
 
         OrderPaidSetter(self, silent=silent)()
 
-    def set_not_paid(self) -> None:
-        from apps.orders.services import OrderUnpaidSetter
+    def refund(self) -> None:
+        from apps.orders.services import OrderRefunder
 
-        OrderUnpaidSetter(self)()
+        OrderRefunder(self)()
 
     def ship(self, silent: bool | None = False) -> None:
         from apps.orders.services import OrderShipper
