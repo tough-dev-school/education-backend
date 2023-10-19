@@ -12,7 +12,7 @@ from app.types import Language
 from apps.diplomas.models import Diploma
 from apps.diplomas.models import DiplomaTemplate
 from apps.products.models import Course
-from studying.models import Study
+from apps.studying.models import Study
 from users.models import User
 
 

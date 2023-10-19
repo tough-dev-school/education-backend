@@ -7,7 +7,7 @@ from apps.diplomas.models import DiplomaTemplate
 from apps.diplomas.tasks import generate_diploma
 from apps.orders.models import Order
 from apps.products.models import Course
-from studying.models import Study
+from apps.studying.models import Study
 from users.models import User
 
 

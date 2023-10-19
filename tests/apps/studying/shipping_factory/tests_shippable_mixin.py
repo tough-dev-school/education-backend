@@ -5,7 +5,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def ship(mocker):
-    return mocker.patch("studying.shipment.CourseShipment.ship")
+    return mocker.patch("apps.studying.shipment.CourseShipment.ship")
 
 
 @pytest.fixture

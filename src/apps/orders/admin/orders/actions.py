@@ -8,7 +8,7 @@ from django.utils.translation import gettext as _
 
 from app.admin import admin
 from apps.orders import tasks
-from studying.models import Study
+from apps.studying.models import Study
 
 
 @admin.action(description=_("Set paid"), permissions=["pay"])

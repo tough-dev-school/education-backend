@@ -8,7 +8,7 @@ from app.models import models
 from app.models import TimestampedModel
 from app.pricing import format_old_price
 from app.pricing import format_price
-from studying import shipment_factory as ShipmentFactory
+from apps.studying import shipment_factory as ShipmentFactory
 from users.models import User
 
 if TYPE_CHECKING:

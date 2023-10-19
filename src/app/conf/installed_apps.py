@@ -11,9 +11,9 @@ INSTALLED_APPS = [
     "apps.orders",
     "apps.products",
     "apps.stripebank",
+    "apps.studying",
 
     "app",
-    "studying",
     "tinkoff",
     "users",
     "corsheaders",

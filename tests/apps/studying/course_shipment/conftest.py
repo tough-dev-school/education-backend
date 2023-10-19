@@ -1,7 +1,7 @@
 from functools import partial
 import pytest
 
-from studying.shipment import CourseShipment
+from apps.studying.shipment import CourseShipment
 
 pytestmark = [pytest.mark.django_db]
 

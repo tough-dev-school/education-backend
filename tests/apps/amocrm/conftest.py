@@ -24,7 +24,7 @@ def amocrm_course(mixer, course):
 def _mock_tasks_with_paid_setter(mocker):
     mocker.patch("apps.orders.services.order_paid_setter.OrderPaidSetter.after_shipment", return_value=None)
     mocker.patch("apps.orders.services.order_unpaid_setter.OrderUnpaidSetter.after_unshipment", return_value=None)
-    mocker.patch("studying.shipment_factory.unship", return_value=None)
+    mocker.patch("apps.studying.shipment_factory.unship", return_value=None)
 
 
 @pytest.fixture

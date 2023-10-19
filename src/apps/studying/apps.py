@@ -2,8 +2,8 @@ from django.apps import AppConfig
 
 
 class StudyingConfig(AppConfig):
-    name = "studying"
+    name = "apps.studying"
 
     def ready(self) -> None:
         """Register all shipping algorithms for the factory"""
-        import studying.shipment  # noqa
+        import apps.studying.shipment  # noqa

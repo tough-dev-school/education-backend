@@ -11,9 +11,9 @@ urlpatterns = [
     path("homework/", include("apps.homework.urls")),
     path("leads/", include("apps.magnets.urls")),
     path("notion/", include("apps.notion.urls")),
-    path("users/", include("users.urls")),
-    path("studies/", include("studying.urls")),
     path("orders/", include("apps.orders.urls")),
+    path("studies/", include("apps.studying.urls")),
+    path("users/", include("users.urls")),
     path("", include("apps.products.urls")),
     path("healthchecks/", include("django_healthchecks.urls")),
     path(

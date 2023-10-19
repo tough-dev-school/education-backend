@@ -1,13 +1,13 @@
 import pytest
 
-from studying import shipment_factory
+from apps.studying import shipment_factory
 
 pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
 def unship_course(mocker):
-    return mocker.patch("studying.shipment.CourseShipment.unship")
+    return mocker.patch("apps.studying.shipment.CourseShipment.unship")
 
 
 def test_course(course, unship_course, factory):

@@ -6,8 +6,8 @@ from django.db.models import QuerySet
 from app.api.mixins import DisablePaginationWithQueryParamMixin
 from app.views import AuthenticatedRequest
 from apps.products.models import Course
-from studying.api.serializers import CourseSerializer
-from studying.models import Study
+from apps.studying.api.serializers import CourseSerializer
+from apps.studying.models import Study
 
 
 class PurchasedCoursesView(DisablePaginationWithQueryParamMixin, ListAPIView):

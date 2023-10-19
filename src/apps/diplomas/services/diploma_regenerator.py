@@ -9,7 +9,7 @@ from apps.diplomas.models import Diploma
 from apps.diplomas.models import DiplomaTemplate
 from apps.diplomas.services.diploma_generator import DiplomaGenerator
 from apps.mailing.tasks import send_mail
-from studying.models import Study
+from apps.studying.models import Study
 from users.models import User
 
 

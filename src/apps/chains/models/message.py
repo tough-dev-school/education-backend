@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 from app.models import models
 from app.models import TimestampedModel
-from studying.models import Study
+from apps.studying.models import Study
 
 
 class MessageQuerySet(QuerySet):

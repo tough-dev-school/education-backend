@@ -4,7 +4,7 @@ from app.services import BaseService
 from apps.chains.models import Chain
 from apps.chains.models import Message
 from apps.chains.models import Progress
-from studying.models import Study
+from apps.studying.models import Study
 
 
 @dataclass

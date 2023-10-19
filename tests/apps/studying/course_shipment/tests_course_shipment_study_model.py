@@ -1,6 +1,6 @@
 import pytest
 
-from studying.models import Study
+from apps.studying.models import Study
 
 pytestmark = [pytest.mark.django_db]
 

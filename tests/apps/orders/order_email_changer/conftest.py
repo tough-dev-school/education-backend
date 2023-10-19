@@ -22,12 +22,12 @@ def nameless_user(mixer):
 
 @pytest.fixture
 def ship(mocker):
-    return mocker.patch("studying.shipment_factory.ship")
+    return mocker.patch("apps.studying.shipment_factory.ship")
 
 
 @pytest.fixture
 def unship(mocker):
-    return mocker.patch("studying.shipment_factory.unship")
+    return mocker.patch("apps.studying.shipment_factory.unship")
 
 
 @pytest.fixture

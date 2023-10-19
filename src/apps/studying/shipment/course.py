@@ -1,8 +1,8 @@
 from apps.mailing.tasks import send_mail
 from apps.products.models import Course
-from studying import shipment_factory as factory
-from studying.models import Study
-from studying.shipment.base import BaseShipment
+from apps.studying import shipment_factory as factory
+from apps.studying.models import Study
+from apps.studying.shipment.base import BaseShipment
 
 
 @factory.register(Course)
