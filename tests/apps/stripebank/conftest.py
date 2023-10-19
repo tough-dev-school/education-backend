@@ -1,7 +1,7 @@
 import json
 import pytest
 
-from stripebank.bank import StripeBank
+from apps.stripebank.bank import StripeBank
 
 pytestmark = [pytest.mark.django_db]
 
@@ -18,7 +18,7 @@ def _set_stripe_key(settings):
 
 @pytest.fixture(autouse=True)
 def _fix_stripe_course(mocker):
-    mocker.patch("stripebank.bank.StripeBank.ue", 70)  # let it be forever :'(
+    mocker.patch("apps.stripebank.bank.StripeBank.ue", 70)  # let it be forever :'(
 
 
 @pytest.fixture

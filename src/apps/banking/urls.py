@@ -2,7 +2,7 @@ from django.conf import settings
 from django.urls import path
 
 from apps.banking.api.views import AtolWebhookView
-from stripebank.api.views import StripeWebhookView
+from apps.stripebank.api.views import StripeWebhookView
 from tinkoff.api.views import DolyameNotificationsView
 from tinkoff.api.views import TinkoffCreditNotificationsView
 from tinkoff.api.views import TinkoffPaymentNotificationsView

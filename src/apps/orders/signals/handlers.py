@@ -3,7 +3,7 @@ from typing import Any
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from stripebank.models import StripeNotification
+from apps.stripebank.models import StripeNotification
 from tinkoff.models import CreditNotification as TinkoffCreditNotification
 from tinkoff.models import DolyameNotification
 from tinkoff.models import PaymentNotification as TinkoffPaymentNotification

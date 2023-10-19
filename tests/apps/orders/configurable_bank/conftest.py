@@ -42,7 +42,7 @@ def tinkoff_credit(mocker):
 
 @pytest.fixture(autouse=True)
 def stripe_bank(mocker):
-    return mocker.patch("stripebank.bank.StripeBank.get_initial_payment_url", return_value="https://mocked.link")
+    return mocker.patch("apps.stripebank.bank.StripeBank.get_initial_payment_url", return_value="https://mocked.link")
 
 
 @pytest.fixture(autouse=True)
@@ -54,7 +54,7 @@ def dolyame_bank(mocker):
 def _freeze_ue_rate(mocker):
     mocker.patch("tinkoff.bank.TinkoffBank.ue", 11)
     mocker.patch("tinkoff.credit.TinkoffCredit.ue", 22)
-    mocker.patch("stripebank.bank.StripeBank.ue", 33)
+    mocker.patch("apps.stripebank.bank.StripeBank.ue", 33)
     mocker.patch("tinkoff.dolyame.Dolyame.ue", 44)
 
 
@@ -62,5 +62,5 @@ def _freeze_ue_rate(mocker):
 def _freeze_acquiring_percent(mocker):
     mocker.patch("tinkoff.bank.TinkoffBank.acquiring_percent", "1.2")
     mocker.patch("tinkoff.credit.TinkoffCredit.acquiring_percent", "1.3")
-    mocker.patch("stripebank.bank.StripeBank.acquiring_percent", "1.4")
+    mocker.patch("apps.stripebank.bank.StripeBank.acquiring_percent", "1.4")
     mocker.patch("tinkoff.dolyame.Dolyame.acquiring_percent", "1.5")

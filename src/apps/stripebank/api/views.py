@@ -9,7 +9,7 @@ import stripe
 from django.conf import settings
 
 from apps.orders.models import Order
-from stripebank.api.serializers import StripeNotificationSerializer
+from apps.stripebank.api.serializers import StripeNotificationSerializer
 
 
 class StripeWebhookView(APIView):

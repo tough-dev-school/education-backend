@@ -1,7 +1,7 @@
 from decimal import Decimal
 import pytest
 
-from stripebank.models import StripeNotification
+from apps.stripebank.models import StripeNotification
 
 pytestmark = [
     pytest.mark.django_db,

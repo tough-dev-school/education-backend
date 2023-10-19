@@ -2,8 +2,8 @@ from decimal import Decimal
 
 from rest_framework import serializers
 
-from stripebank.bank import StripeBank
-from stripebank.models import StripeNotification
+from apps.stripebank.bank import StripeBank
+from apps.stripebank.models import StripeNotification
 
 
 class StripeNotificationSerializer(serializers.ModelSerializer):
