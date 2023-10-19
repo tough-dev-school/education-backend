@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from apps.banking.selector import BANK_CHOICES
-from products.models import Course
+from apps.products.models import Course
 
 
 class CourseSimpleSerializer(serializers.ModelSerializer):

@@ -11,7 +11,7 @@ from app.admin import ModelAdmin
 from apps.diplomas.models import Diploma
 from apps.diplomas.models import DiplomaTemplate
 from apps.orders import tasks
-from products.models import Course
+from apps.products.models import Course
 from users.models import User
 
 

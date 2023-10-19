@@ -8,8 +8,8 @@ pytest_plugins = [
     "users.fixtures",
     "apps.orders.factory",
     "apps.diplomas.factory",
-    "products.factory",
-    "products.fixtures",
+    "apps.products.factory",
+    "apps.products.fixtures",
 ]
 
 

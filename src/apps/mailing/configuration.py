@@ -4,7 +4,7 @@ from django.apps import apps
 
 if TYPE_CHECKING:
     from apps.mailing.models import EmailConfiguration
-    from products.models import Course
+    from apps.products.models import Course
 
 
 def get_configuration(*, recipient: str) -> Optional["EmailConfiguration"]:

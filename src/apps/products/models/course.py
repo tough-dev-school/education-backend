@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from app.files import RandomFileName
 from app.models import models
 from apps.mailing.tasks import send_mail
-from products.models.base import Shippable
+from apps.products.models.base import Shippable
 from users.models import User
 
 

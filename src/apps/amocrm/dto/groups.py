@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Iterable
 
 from apps.amocrm.client import http
-from products.models import Group
+from apps.products.models import Group
 
 
 @dataclass

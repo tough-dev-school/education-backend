@@ -5,7 +5,7 @@ from django.db.models import QuerySet
 
 from app.api.mixins import DisablePaginationWithQueryParamMixin
 from app.views import AuthenticatedRequest
-from products.models import Course
+from apps.products.models import Course
 from studying.api.serializers import CourseSerializer
 from studying.models import Study
 

@@ -18,8 +18,8 @@ from apps.orders.api.throttling import PromocodeThrottle
 from apps.orders.api.throttling import PurchaseThrottle
 from apps.orders.models import PromoCode
 from apps.orders.services.purchase_creator import PurchaseCreator
-from products.api.serializers import PurchaseSerializer
-from products.models import Course
+from apps.products.api.serializers import PurchaseSerializer
+from apps.products.models import Course
 
 if TYPE_CHECKING:
     from rest_framework.request import Request

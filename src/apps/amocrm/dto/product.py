@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Annotated, NotRequired, TypedDict
 
 from apps.amocrm.client import http
-from products.models import Course
+from apps.products.models import Course
 
 
 class ProductFieldValue(TypedDict):

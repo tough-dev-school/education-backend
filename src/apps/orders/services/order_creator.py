@@ -25,7 +25,7 @@ from apps.banking.selector import get_bank
 from apps.mailing.tasks import send_mail
 from apps.orders.models import Order
 from apps.orders.models import PromoCode
-from products.models.base import Shippable
+from apps.products.models.base import Shippable
 from users.models import User
 from users.tasks import rebuild_tags
 

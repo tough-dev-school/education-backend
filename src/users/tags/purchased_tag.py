@@ -2,7 +2,7 @@ from typing import final, Generator, TYPE_CHECKING
 
 from django.db.models import QuerySet
 
-from products.models import Course
+from apps.products.models import Course
 from users.tags.base import TagMechanism
 
 if TYPE_CHECKING:

@@ -4,8 +4,8 @@ from app.helpers import random_string
 from app.test.factory import register
 
 if TYPE_CHECKING:
-    from products.models import Course
-    from products.models import Group
+    from apps.products.models import Course
+    from apps.products.models import Group
 
 
 @register

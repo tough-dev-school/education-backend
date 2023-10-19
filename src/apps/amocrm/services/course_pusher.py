@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from apps.amocrm.dto import AmoCRMProduct
 from apps.amocrm.models import AmoCRMCourse
 from app.services import BaseService
-from products.models import Course
+from apps.products.models import Course
 
 
 @dataclass

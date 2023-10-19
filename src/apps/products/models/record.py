@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from app.integrations.s3 import AppS3
 from app.models import models
-from products.models.base import Shippable
+from apps.products.models.base import Shippable
 
 
 class Record(Shippable):

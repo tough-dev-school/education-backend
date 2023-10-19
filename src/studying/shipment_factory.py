@@ -2,8 +2,8 @@ from typing import Callable, Type, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from apps.orders.models import Order
-    from products.models import Product
-    from products.models import ProductType
+    from apps.products.models import Product
+    from apps.products.models import ProductType
     from studying.shipment.base import BaseShipment
     from users.models import User
 

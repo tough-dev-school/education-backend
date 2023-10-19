@@ -3,7 +3,7 @@ from typing import Any
 from app.helpers import random_string
 from app.test.factory import register
 from apps.orders.models import Order
-from products.models import Product
+from apps.products.models import Product
 
 
 @register

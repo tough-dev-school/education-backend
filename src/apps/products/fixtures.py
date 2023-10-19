@@ -2,7 +2,7 @@ import pytest
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from products.models import Course
+    from apps.products.models import Course
 
 
 @pytest.fixture

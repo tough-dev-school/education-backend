@@ -14,7 +14,7 @@ from django.utils.translation import gettext_lazy as _
 
 from app.models import models
 from app.models import TimestampedModel
-from products.models import Course
+from apps.products.models import Course
 
 
 class PromoCodeQuerySet(QuerySet):

@@ -12,7 +12,7 @@ from app.models import only_one_or_zero_is_set
 from app.models import TimestampedModel
 from apps.orders.exceptions import UnknownItemException
 from apps.orders.fields import ItemField
-from products.models import Product
+from apps.products.models import Product
 
 
 class OrderQuerySet(QuerySet):

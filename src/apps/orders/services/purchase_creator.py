@@ -10,7 +10,7 @@ from apps.banking.selector import get_bank
 from apps.banking.zero_price_bank import ZeroPriceBank
 from apps.orders.models import Order
 from apps.orders.services import OrderCreator
-from products.models import Product
+from apps.products.models import Product
 from users.models import User
 from users.services import UserCreator
 from users.tasks import rebuild_tags

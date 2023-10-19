@@ -1,5 +1,5 @@
 from apps.mailing.tasks import send_mail
-from products.models import Course
+from apps.products.models import Course
 from studying import shipment_factory as factory
 from studying.models import Study
 from studying.shipment.base import BaseShipment

@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from apps.orders.models import Order
-    from products.models import Course
+    from apps.products.models import Course
     from users.models import User
 
 

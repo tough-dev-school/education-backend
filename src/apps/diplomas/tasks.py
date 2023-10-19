@@ -5,7 +5,7 @@ from app.types import Language
 from apps.diplomas.services import DiplomaGenerator
 from apps.diplomas.services import DiplomaRegenerator
 from apps.diplomas.services.diploma_generator import WrongDiplomaServiceResponse
-from products.models import Course
+from apps.products.models import Course
 from users.models import User
 
 

@@ -1,7 +1,7 @@
 import pytest
 
 from apps.amocrm.services.group_pusher import AmoCRMGroupsPusher
-from products.models import Group
+from apps.products.models import Group
 
 pytestmark = [
     pytest.mark.django_db,

@@ -11,7 +11,7 @@ from app.services import BaseService
 from app.types import Language
 from apps.diplomas.models import Diploma
 from apps.diplomas.models import DiplomaTemplate
-from products.models import Course
+from apps.products.models import Course
 from studying.models import Study
 from users.models import User
 
