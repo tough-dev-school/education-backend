@@ -2,7 +2,7 @@
 name = "education-backend"
 version = "2023.10.20"
 description = ""
-authors = ["f213 <f@f213.in>"]
+authors = ["Fedor Borshev <fedor@borshev.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
