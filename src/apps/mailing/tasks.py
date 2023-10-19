@@ -1,7 +1,7 @@
 from anymail.exceptions import AnymailRequestsAPIError
 
 from app.celery import celery
-from mailing.owl import Owl
+from apps.mailing.owl import Owl
 
 
 @celery.task(

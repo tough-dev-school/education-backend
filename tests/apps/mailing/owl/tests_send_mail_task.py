@@ -1,18 +1,18 @@
 import pytest
 
-from mailing.tasks import send_mail
+from apps.mailing.tasks import send_mail
 
 pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
 def init(mocker):
-    return mocker.patch("mailing.tasks.Owl")
+    return mocker.patch("apps.mailing.tasks.Owl")
 
 
 @pytest.fixture
 def call(mocker):
-    return mocker.patch("mailing.tasks.Owl.__call__")
+    return mocker.patch("apps.mailing.tasks.Owl.__call__")
 
 
 ARGS = dict(

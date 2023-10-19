@@ -22,7 +22,7 @@ from app.helpers import lower_first
 from app.services import BaseService
 from apps.banking.base import Bank
 from apps.banking.selector import get_bank
-from mailing.tasks import send_mail
+from apps.mailing.tasks import send_mail
 from orders.models import Order
 from orders.models import PromoCode
 from products.models.base import Shippable

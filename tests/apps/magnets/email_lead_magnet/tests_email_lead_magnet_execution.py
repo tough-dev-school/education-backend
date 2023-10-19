@@ -2,7 +2,7 @@ import pytest
 
 from django.core import mail
 
-from mailing.models import EmailLogEntry
+from apps.mailing.models import EmailLogEntry
 
 pytestmark = [pytest.mark.django_db]
 

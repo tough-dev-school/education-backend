@@ -1,6 +1,6 @@
 from app.admin import admin
 from app.admin import ModelAdmin
-from mailing.models import PersonalEmailDomain
+from apps.mailing.models import PersonalEmailDomain
 
 
 @admin.register(PersonalEmailDomain)

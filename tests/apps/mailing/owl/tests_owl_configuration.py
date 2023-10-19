@@ -1,6 +1,6 @@
 import pytest
 
-from mailing.models import EmailConfiguration
+from apps.mailing.models import EmailConfiguration
 
 pytestmark = [pytest.mark.django_db]
 
@@ -35,7 +35,7 @@ def email_configration(mixer):
 
 @pytest.fixture
 def configuration(email_configration, mocker):
-    return mocker.patch("mailing.owl.get_configuration", return_value=email_configration)
+    return mocker.patch("apps.mailing.owl.get_configuration", return_value=email_configration)
 
 
 @pytest.fixture

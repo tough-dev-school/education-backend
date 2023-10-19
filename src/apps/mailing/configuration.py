@@ -3,7 +3,7 @@ from typing import Optional, TYPE_CHECKING  # NOQA: I251
 from django.apps import apps
 
 if TYPE_CHECKING:
-    from mailing.models import EmailConfiguration
+    from apps.mailing.models import EmailConfiguration
     from products.models import Course
 
 

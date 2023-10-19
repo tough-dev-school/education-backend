@@ -8,10 +8,10 @@ from django.core.mail.backends.base import BaseEmailBackend
 from django.utils.functional import cached_property
 
 from app.services import BaseService
-from mailing import helpers
-from mailing.configuration import get_configuration
-from mailing.models import EmailConfiguration
-from mailing.models import EmailLogEntry
+from apps.mailing import helpers
+from apps.mailing.configuration import get_configuration
+from apps.mailing.models import EmailConfiguration
+from apps.mailing.models import EmailLogEntry
 
 
 @dataclass

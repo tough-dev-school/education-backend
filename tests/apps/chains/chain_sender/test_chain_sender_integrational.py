@@ -12,7 +12,7 @@ pytestmark = [
 
 @pytest.fixture
 def owl(mocker):
-    return mocker.patch("mailing.tasks.Owl")
+    return mocker.patch("apps.mailing.tasks.Owl")
 
 
 @pytest.fixture

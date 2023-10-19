@@ -3,7 +3,7 @@ from typing import final
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 
-from mailing.models import PersonalEmailDomain
+from apps.mailing.models import PersonalEmailDomain
 from users.tags.base import TagMechanism
 
 

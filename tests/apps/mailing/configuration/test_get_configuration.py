@@ -1,6 +1,6 @@
 import pytest
 
-from mailing.configuration import get_configuration
+from apps.mailing.configuration import get_configuration
 from orders.models import Order
 
 pytestmark = [pytest.mark.django_db]

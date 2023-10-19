@@ -7,7 +7,7 @@ pytestmark = [
 
 @pytest.fixture(autouse=True)
 def send_mail(mocker):
-    return mocker.patch("mailing.tasks.send_mail.delay")
+    return mocker.patch("apps.mailing.tasks.send_mail.delay")
 
 
 @pytest.fixture(autouse=True)

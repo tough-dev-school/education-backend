@@ -1,7 +1,7 @@
 from functools import partial
 import pytest
 
-from mailing.owl import Owl
+from apps.mailing.owl import Owl
 
 pytestmark = [pytest.mark.django_db]
 

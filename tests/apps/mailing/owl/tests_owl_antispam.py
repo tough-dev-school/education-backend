@@ -2,8 +2,8 @@ import pytest
 
 from django.core import mail
 
-from mailing.models import EmailLogEntry
-from mailing.tasks import send_mail
+from apps.mailing.models import EmailLogEntry
+from apps.mailing.tasks import send_mail
 
 pytestmark = [pytest.mark.django_db]
 

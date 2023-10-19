@@ -6,6 +6,7 @@ INSTALLED_APPS = [
     "apps.diplomas",
     "apps.homework",
     "apps.magnets",
+    "apps.mailing",
 
     "app",
     "notion",
@@ -15,7 +16,6 @@ INSTALLED_APPS = [
     "tinkoff",
     "stripebank",
     "users",
-    "mailing",
     "corsheaders",
     "anymail",
     "drf_spectacular",

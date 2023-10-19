@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 from app.models import models
 from app.models import TimestampedModel
-from mailing.tasks import send_mail
+from apps.mailing.tasks import send_mail
 from users.models import User
 
 

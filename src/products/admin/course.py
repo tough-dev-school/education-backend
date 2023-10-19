@@ -6,7 +6,7 @@ from django.utils.translation import gettext as _
 from apps.amocrm import tasks
 from app.admin import admin
 from app.admin import ModelAdmin
-from mailing.admin.email_configuration import EmailConfigurationAdmin
+from apps.mailing.admin.email_configuration import EmailConfigurationAdmin
 from products.admin.courses import actions
 from products.models import Course
 

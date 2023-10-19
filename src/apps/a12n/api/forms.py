@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 from django.conf import settings
 from django.contrib.auth.forms import PasswordResetForm as DjangoPasswordResetForm
 
-from mailing.tasks import send_mail
+from apps.mailing.tasks import send_mail
 
 
 class EspTemplatePasswordResetForm(DjangoPasswordResetForm):

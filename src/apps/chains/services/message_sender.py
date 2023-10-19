@@ -5,7 +5,7 @@ from app.services import BaseService
 from apps.chains import tasks
 from apps.chains.models import Message
 from apps.chains.models import Progress
-from mailing.tasks import send_mail
+from apps.mailing.tasks import send_mail
 from studying.models import Study
 
 

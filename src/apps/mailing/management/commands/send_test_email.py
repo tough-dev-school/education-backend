@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from mailing import tasks
+from apps.mailing import tasks
 
 
 class Command(BaseCommand):
