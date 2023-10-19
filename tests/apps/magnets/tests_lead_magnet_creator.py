@@ -1,6 +1,6 @@
 import pytest
 
-from magnets.models import LeadCampaignLogEntry
+from apps.magnets.models import LeadCampaignLogEntry
 from users.models import User
 
 pytestmark = [pytest.mark.django_db]
@@ -13,7 +13,7 @@ def rebuild_tags(mocker):
 
 @pytest.fixture
 def execute(mocker):
-    return mocker.patch("magnets.models.EmailLeadMagnetCampaign.execute")
+    return mocker.patch("apps.magnets.models.EmailLeadMagnetCampaign.execute")
 
 
 def get_user():

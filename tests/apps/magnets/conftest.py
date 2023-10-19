@@ -1,7 +1,7 @@
 from functools import partial
 import pytest
 
-from magnets.creator import LeadCreator
+from apps.magnets.creator import LeadCreator
 
 
 @pytest.fixture

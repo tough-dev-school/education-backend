@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from app.admin import admin
 from app.admin import ModelAdmin
-from magnets.models import EmailLeadMagnetCampaign
+from apps.magnets.models import EmailLeadMagnetCampaign
 
 
 @admin.register(EmailLeadMagnetCampaign)

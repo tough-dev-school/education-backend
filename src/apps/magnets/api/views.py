@@ -5,9 +5,9 @@ from django.shortcuts import get_object_or_404
 
 from app.views import AnonymousAPIView
 from app.viewsets import ValidationMixin
-from magnets.api.validators import LeadValidator
-from magnets.creator import LeadCreator
-from magnets.models import EmailLeadMagnetCampaign
+from apps.magnets.api.validators import LeadValidator
+from apps.magnets.creator import LeadCreator
+from apps.magnets.models import EmailLeadMagnetCampaign
 
 
 class EmailLeadMagnetCampaignView(AnonymousAPIView, ValidationMixin):

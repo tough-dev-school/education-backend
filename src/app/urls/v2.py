@@ -9,7 +9,7 @@ urlpatterns = [
     path("banking/", include("apps.banking.urls")),
     path("diplomas/", include("apps.diplomas.urls")),
     path("homework/", include("apps.homework.urls")),
-    path("leads/", include("magnets.urls")),
+    path("leads/", include("apps.magnets.urls")),
     path("users/", include("users.urls")),
     path("notion/", include("notion.urls")),
     path("studies/", include("studying.urls")),

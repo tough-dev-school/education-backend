@@ -1,6 +1,6 @@
 import pytest
 
-from magnets.models import EmailLeadMagnetCampaign
+from apps.magnets.models import EmailLeadMagnetCampaign
 
 pytestmark = [
     pytest.mark.django_db,
