@@ -19,6 +19,6 @@ lint:
 	$(poetry) mypy
 
 test:
-	$(poetry) pytest -n 4 --ff -x --create-db --cov-report=xml --cov=. -m 'not single_thread'
-	$(poetry) pytest --ff -x --cov-report=xml --cov=. --cov-append -m 'single_thread'
-	$(poetry) pytest --dead-fixtures
+	poetry run pytest -n 4 --ff -x --create-db --cov-report=xml --cov=. -m 'not single_thread'
+	poetry run pytest --ff -x --cov-report=xml --cov=. --cov-append -m 'single_thread'
+	poetry run pytest --dead-fixtures

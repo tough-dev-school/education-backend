@@ -7,7 +7,7 @@ from apps.products.models.base import Shippable
 
 if TYPE_CHECKING:
     from apps.orders.models import Order
-    from users.models import User
+    from apps.users.models import User
 
 
 class Bundle(Shippable):

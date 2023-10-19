@@ -14,7 +14,7 @@ from apps.orders.admin.orders.filters import OrderStatusFilter
 from apps.orders.admin.orders.forms import OrderAddForm
 from apps.orders.admin.orders.forms import OrderChangeForm
 from apps.orders.models import Order
-from users.models import Student
+from apps.users.models import Student
 
 
 @admin.register(Order)

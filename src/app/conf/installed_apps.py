@@ -13,9 +13,9 @@ INSTALLED_APPS = [
     "apps.stripebank",
     "apps.studying",
     "apps.tinkoff",
+    "apps.users",
 
     "app",
-    "users",
     "corsheaders",
     "anymail",
     "drf_spectacular",

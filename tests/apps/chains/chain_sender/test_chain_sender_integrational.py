@@ -2,7 +2,7 @@ import pytest
 
 from apps.chains import tasks
 from apps.chains.models import Message
-from users.models import User
+from apps.users.models import User
 
 pytestmark = [
     pytest.mark.django_db(transaction=True),

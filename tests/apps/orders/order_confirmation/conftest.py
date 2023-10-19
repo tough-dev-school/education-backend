@@ -18,4 +18,4 @@ def order(factory, course):
 
 @pytest.fixture(autouse=True)
 def ship(mocker):
-    return mocker.patch("products.models.Course.ship")
+    return mocker.patch("apps.products.models.Course.ship")

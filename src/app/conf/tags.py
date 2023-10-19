@@ -1,6 +1,6 @@
 TAG_PIPELINE = [
-    "users.tags.AnyPurchaseTag",
-    "users.tags.StartedTag",
-    "users.tags.PurchasedTag",
-    "users.tags.B2BTag",
+    "apps.users.tags.AnyPurchaseTag",
+    "apps.users.tags.StartedTag",
+    "apps.users.tags.PurchasedTag",
+    "apps.users.tags.B2BTag",
 ]

@@ -6,7 +6,7 @@ from apps.diplomas.services import DiplomaGenerator
 from apps.diplomas.services import DiplomaRegenerator
 from apps.diplomas.services.diploma_generator import WrongDiplomaServiceResponse
 from apps.products.models import Course
-from users.models import User
+from apps.users.models import User
 
 
 @celery.task(

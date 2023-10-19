@@ -1,7 +1,7 @@
 import jwt
 from rest_framework_jwt.utils import jwt_create_payload
 
-from users.models import User
+from apps.users.models import User
 
 
 def payload_handler(user: User) -> dict:

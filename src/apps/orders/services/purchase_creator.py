@@ -11,9 +11,9 @@ from apps.banking.zero_price_bank import ZeroPriceBank
 from apps.orders.models import Order
 from apps.orders.services import OrderCreator
 from apps.products.models import Product
-from users.models import User
-from users.services import UserCreator
-from users.tasks import rebuild_tags
+from apps.users.models import User
+from apps.users.services import UserCreator
+from apps.users.tasks import rebuild_tags
 
 
 @dataclass

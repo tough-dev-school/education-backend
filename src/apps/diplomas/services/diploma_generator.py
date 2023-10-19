@@ -13,7 +13,7 @@ from apps.diplomas.models import Diploma
 from apps.diplomas.models import DiplomaTemplate
 from apps.products.models import Course
 from apps.studying.models import Study
-from users.models import User
+from apps.users.models import User
 
 
 class WrongDiplomaServiceResponse(httpx.HTTPError):

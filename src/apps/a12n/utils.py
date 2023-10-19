@@ -1,7 +1,7 @@
 import jwt
 from rest_framework_jwt.settings import api_settings
 
-from users.models import User
+from apps.users.models import User
 
 
 def get_jwt(user: User) -> str:

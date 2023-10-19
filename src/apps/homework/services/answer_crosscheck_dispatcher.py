@@ -8,7 +8,7 @@ from django.db.models import QuerySet
 from app.services import BaseService
 from apps.homework.models import Answer
 from apps.homework.models import AnswerCrossCheck
-from users.models import User
+from apps.users.models import User
 
 
 @dataclass

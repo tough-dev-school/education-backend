@@ -3,7 +3,7 @@ import pytest
 from apps.diplomas.models import Languages
 from apps.orders import tasks
 from apps.orders.services import OrderDiplomaGenerator
-from users.models import User
+from apps.users.models import User
 
 pytestmark = [pytest.mark.django_db]
 
@@ -59,7 +59,7 @@ def test_task(diploma_generator, order, student, course):
 
 
 def test_student_without_a_name_does_not_get_the_diploma(diploma_generator, order, mocker):
-    mocker.patch("users.models.User.get_printable_name", return_value=None)
+    mocker.patch("apps.users.models.User.get_printable_name", return_value=None)
 
     tasks.generate_diploma.delay(order_id=order.id)
 

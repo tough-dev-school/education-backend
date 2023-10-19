@@ -19,7 +19,7 @@ from app.models import models
 from apps.homework.models.reaction import Reaction
 from apps.orders.models import Order
 from apps.products.models import Course
-from users.models import User
+from apps.users.models import User
 
 
 class AnswerQuerySet(TreeQuerySet):

@@ -13,7 +13,7 @@ urlpatterns = [
     path("notion/", include("apps.notion.urls")),
     path("orders/", include("apps.orders.urls")),
     path("studies/", include("apps.studying.urls")),
-    path("users/", include("users.urls")),
+    path("users/", include("apps.users.urls")),
     path("", include("apps.products.urls")),
     path("healthchecks/", include("django_healthchecks.urls")),
     path(

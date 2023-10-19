@@ -10,7 +10,7 @@ from app.models import TimestampedModel
 
 if TYPE_CHECKING:
     from apps.homework.models import Answer
-    from users.models import User
+    from apps.users.models import User
 
 
 class AnswerAccessLogEntryQuerySet(QuerySet):

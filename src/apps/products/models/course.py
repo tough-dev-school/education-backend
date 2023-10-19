@@ -9,7 +9,7 @@ from app.files import RandomFileName
 from app.models import models
 from apps.mailing.tasks import send_mail
 from apps.products.models.base import Shippable
-from users.models import User
+from apps.users.models import User
 
 
 class CourseQuerySet(QuerySet):

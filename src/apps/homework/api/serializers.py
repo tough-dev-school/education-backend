@@ -8,7 +8,7 @@ from apps.homework.models import Answer
 from apps.homework.models import AnswerImage
 from apps.homework.models import Question
 from apps.homework.models.reaction import Reaction
-from users.api.serializers import UserSafeSerializer
+from apps.users.api.serializers import UserSafeSerializer
 
 
 class ReactionDetailedSerializer(serializers.ModelSerializer):

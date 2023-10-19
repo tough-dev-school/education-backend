@@ -12,7 +12,7 @@ from apps.diplomas.models import Diploma
 from apps.diplomas.models import DiplomaTemplate
 from apps.orders import tasks
 from apps.products.models import Course
-from users.models import User
+from apps.users.models import User
 
 
 @admin.register(Diploma)

@@ -15,7 +15,7 @@ from django.utils.translation import gettext_lazy as _
 from app.models import models
 from app.models import TimestampedModel
 from apps.notion.helpers import uuid_to_id
-from users.models import User
+from apps.users.models import User
 
 
 class MaterialQuerySet(QuerySet):

@@ -5,7 +5,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def mock_rebuild_tags(mocker):
-    return mocker.patch("users.tasks.rebuild_tags.si")
+    return mocker.patch("apps.users.tasks.rebuild_tags.si")
 
 
 @pytest.fixture
@@ -25,7 +25,7 @@ def mock_return_order_in_amocrm(mocker):
 
 @pytest.fixture(autouse=True)
 def rebuild_tags(mocker):
-    return mocker.patch("users.tasks.rebuild_tags.delay")
+    return mocker.patch("apps.users.tasks.rebuild_tags.delay")
 
 
 @pytest.fixture

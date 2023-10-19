@@ -5,7 +5,7 @@ if TYPE_CHECKING:
     from apps.products.models import Product
     from apps.products.models import ProductType
     from apps.studying.shipment.base import BaseShipment
-    from users.models import User
+    from apps.users.models import User
 
 _registry: dict["ProductType", Type["BaseShipment"]] = {}
 

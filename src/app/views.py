@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 
 from django.views.generic import RedirectView
 
-from users.models import User
+from apps.users.models import User
 
 
 class AuthenticatedRequest(Request):

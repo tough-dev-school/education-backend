@@ -4,7 +4,7 @@ from rest_framework.exceptions import ValidationError
 from apps.diplomas.models import Diploma
 from apps.products.api.serializers import CourseSimpleSerializer
 from apps.studying.models import Study
-from users.api.serializers import UserSafeSerializer
+from apps.users.api.serializers import UserSafeSerializer
 
 
 class DiplomaSerializer(serializers.ModelSerializer):

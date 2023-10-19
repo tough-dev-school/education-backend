@@ -4,8 +4,8 @@ from django.utils.functional import cached_property
 
 from app.services import BaseService
 from apps.orders.models import Order
-from users.models import User
-from users.services import UserCreator
+from apps.users.models import User
+from apps.users.services import UserCreator
 
 
 @dataclass

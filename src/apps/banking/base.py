@@ -9,7 +9,7 @@ from django.conf import settings
 
 if TYPE_CHECKING:
     from apps.orders.models import Order
-    from users.models import User
+    from apps.users.models import User
 
 
 class Bank(metaclass=ABCMeta):

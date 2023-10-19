@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from apps.amocrm.dto import AmoCRMCustomer
 from apps.amocrm.models import AmoCRMUser
 from app.services import BaseService
-from users.models import User
+from apps.users.models import User
 
 
 @dataclass

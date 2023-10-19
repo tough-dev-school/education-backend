@@ -1,7 +1,7 @@
 import pytest
 
 from apps.a12n.jwt import decode_jwt_without_validation
-from users.services import UserCreator
+from apps.users.services import UserCreator
 
 pytestmark = pytest.mark.django_db
 

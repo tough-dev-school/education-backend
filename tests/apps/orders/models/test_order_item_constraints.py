@@ -3,7 +3,7 @@ import pytest
 from django.db.utils import IntegrityError
 
 from apps.orders.models.order import Order
-from users.models import User
+from apps.users.models import User
 
 pytestmark = [pytest.mark.django_db]
 

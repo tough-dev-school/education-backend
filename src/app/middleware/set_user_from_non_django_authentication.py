@@ -9,7 +9,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from django.contrib.auth.middleware import get_user
 from django.utils.functional import SimpleLazyObject
 
-from users.models import User
+from apps.users.models import User
 
 
 class UserMiddleware:

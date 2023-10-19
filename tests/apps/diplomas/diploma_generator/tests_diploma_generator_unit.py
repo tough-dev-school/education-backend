@@ -1,7 +1,7 @@
 import pytest
 
 from apps.diplomas.models import DiplomaTemplate
-from users.models import User
+from apps.users.models import User
 
 pytestmark = [
     pytest.mark.django_db,

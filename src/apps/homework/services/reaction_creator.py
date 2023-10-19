@@ -12,7 +12,7 @@ from app.exceptions import AppServiceException
 from app.services import BaseService
 from apps.homework.models import Answer
 from apps.homework.models.reaction import Reaction
-from users.models import User
+from apps.users.models import User
 
 
 class ReactionCreatorException(AppServiceException):

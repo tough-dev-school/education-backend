@@ -10,7 +10,7 @@ from apps.diplomas.models import DiplomaTemplate
 from apps.diplomas.services.diploma_generator import DiplomaGenerator
 from apps.mailing.tasks import send_mail
 from apps.studying.models import Study
-from users.models import User
+from apps.users.models import User
 
 
 @dataclass

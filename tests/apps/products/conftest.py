@@ -10,7 +10,7 @@ def testcode(mixer):
 
 @pytest.fixture(autouse=True)
 def rebuild_tags(mocker):
-    return mocker.patch("users.services.user_creator.rebuild_tags.delay")
+    return mocker.patch("apps.users.services.user_creator.rebuild_tags.delay")
 
 
 @pytest.fixture

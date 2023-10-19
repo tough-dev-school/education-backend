@@ -9,7 +9,7 @@ from apps.amocrm.tasks import push_user
 from apps.amocrm.tasks import return_order
 from app.services import BaseService
 from apps.orders.models import Order
-from users.tasks import rebuild_tags
+from apps.users.tasks import rebuild_tags
 
 
 @dataclass

@@ -1,14 +1,14 @@
 import pytest
 
 from apps.magnets.models import LeadCampaignLogEntry
-from users.models import User
+from apps.users.models import User
 
 pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
 def rebuild_tags(mocker):
-    return mocker.patch("users.services.user_creator.rebuild_tags.delay")
+    return mocker.patch("apps.users.services.user_creator.rebuild_tags.delay")
 
 
 @pytest.fixture

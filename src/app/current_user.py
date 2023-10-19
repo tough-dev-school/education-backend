@@ -1,7 +1,7 @@
 from threading import current_thread
 from threading import local
 
-from users.models import User
+from apps.users.models import User
 
 _thread_locals = local()
 

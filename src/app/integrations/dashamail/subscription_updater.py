@@ -5,7 +5,7 @@ from app.integrations.dashamail import AppDashamail
 from app.services import BaseService
 
 if TYPE_CHECKING:
-    from users.models import User
+    from apps.users.models import User
 
 
 @final

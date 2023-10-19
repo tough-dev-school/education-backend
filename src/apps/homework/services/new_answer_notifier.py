@@ -5,7 +5,7 @@ from django.db.models import QuerySet
 from app.services import BaseService
 from apps.homework.models import Answer
 from apps.mailing.tasks import send_mail
-from users.models import User
+from apps.users.models import User
 
 
 @dataclass

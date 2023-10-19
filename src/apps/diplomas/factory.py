@@ -3,7 +3,7 @@ from typing import Any
 from app.test.factory import register
 from apps.diplomas.models import Diploma
 from apps.products.models import Course
-from users.models import User
+from apps.users.models import User
 
 
 @register

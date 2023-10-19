@@ -8,7 +8,7 @@ from apps.homework.models import AnswerCrossCheck
 from apps.homework.models import Question
 from apps.homework.services.answer_crosscheck_dispatcher import AnswerCrossCheckDispatcher
 from apps.mailing.tasks import send_mail
-from users.models import User
+from apps.users.models import User
 
 
 @dataclass

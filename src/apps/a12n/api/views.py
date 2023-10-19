@@ -14,7 +14,7 @@ from apps.a12n.utils import get_jwt
 from app.permissions import SuperUserOnly
 from app.views import AnonymousAPIView
 from apps.mailing.tasks import send_mail
-from users.models import User
+from apps.users.models import User
 
 
 class ObtainJSONWebTokenView(jwt.ObtainJSONWebTokenView):

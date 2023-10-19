@@ -15,7 +15,7 @@ from app.models import TimestampedModel
 from apps.mailing.tasks import send_mail
 
 if TYPE_CHECKING:
-    from users.models import User
+    from apps.users.models import User
 
 
 class Languages(models.TextChoices):

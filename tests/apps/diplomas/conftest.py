@@ -3,7 +3,7 @@ import pytest
 
 from apps.diplomas.models import Languages
 from apps.diplomas.services import DiplomaGenerator
-from users.models import User
+from apps.users.models import User
 
 
 @pytest.fixture(autouse=True)
