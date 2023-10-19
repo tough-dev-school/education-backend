@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from django.utils.functional import cached_property
 
-from app.services import BaseService
+from core.services import BaseService
 from apps.diplomas.models import DiplomaTemplate
 from apps.diplomas.tasks import generate_diploma
 from apps.orders.models import Order

@@ -4,7 +4,7 @@ import json
 
 from django.conf import settings
 
-from app.services import BaseService
+from core.services import BaseService
 from apps.tinkoff.exceptions import TinkoffPaymentNotificationInvalidToken
 from apps.tinkoff.exceptions import TinkoffPaymentNotificationNoTokenPassed
 

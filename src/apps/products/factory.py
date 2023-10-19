@@ -1,7 +1,7 @@
 from typing import Any, TYPE_CHECKING
 
-from app.helpers import random_string
-from app.test.factory import register
+from core.helpers import random_string
+from core.test.factory import register
 
 if TYPE_CHECKING:
     from apps.products.models import Course

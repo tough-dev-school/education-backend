@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from apps.amocrm.dto import AmoCRMLead
 from apps.amocrm.dto import AmoCRMTransaction
-from app.services import BaseService
+from core.services import BaseService
 from apps.orders.models import Order
 
 

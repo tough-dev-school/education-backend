@@ -1,6 +1,6 @@
 from django.contrib.auth.admin import UserAdmin as StockUserAdmin
 
-from app.admin import admin
+from core.admin import admin
 from apps.users.models import User
 
 

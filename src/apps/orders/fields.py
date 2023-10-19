@@ -1,6 +1,6 @@
 from typing import Any
 
-from app.models import models
+from core.models import models
 
 
 class ItemField(models.ForeignKey):

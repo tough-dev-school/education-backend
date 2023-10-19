@@ -1,5 +1,5 @@
-from app.admin import admin
-from app.admin import ModelAdmin
+from core.admin import admin
+from core.admin import ModelAdmin
 from apps.mailing.models import PersonalEmailDomain
 
 

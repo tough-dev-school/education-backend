@@ -1,6 +1,6 @@
 from django_filters import rest_framework as filters
 
-from app.api.filters import UUIDInFilter
+from core.api.filters import UUIDInFilter
 from apps.homework.models import Answer
 
 

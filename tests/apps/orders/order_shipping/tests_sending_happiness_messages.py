@@ -14,7 +14,7 @@ def _enable_happiness_messages(settings):
 
 @pytest.fixture(autouse=True)
 def tg_message(mocker):
-    return mocker.patch("app.integrations.tg.send_message")
+    return mocker.patch("core.integrations.tg.send_message")
 
 
 @pytest.fixture

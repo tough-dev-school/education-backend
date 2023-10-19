@@ -3,8 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 
 from django.db.models import QuerySet
 
-from app.api.mixins import DisablePaginationWithQueryParamMixin
-from app.views import AuthenticatedRequest
+from core.api.mixins import DisablePaginationWithQueryParamMixin
+from core.views import AuthenticatedRequest
 from apps.products.models import Course
 from apps.studying.api.serializers import CourseSerializer
 from apps.studying.models import Study

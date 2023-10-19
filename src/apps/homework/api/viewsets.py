@@ -10,9 +10,9 @@ from rest_framework.response import Response
 from django.db.models import QuerySet
 from django.utils.functional import cached_property
 
-from app.api.mixins import DisablePaginationWithQueryParamMixin
-from app.viewsets import AppViewSet
-from app.viewsets import CreateDeleteAppViewSet
+from core.api.mixins import DisablePaginationWithQueryParamMixin
+from core.viewsets import AppViewSet
+from core.viewsets import CreateDeleteAppViewSet
 from apps.homework.api.filtersets import AnswerFilterSet
 from apps.homework.api.permissions import MayChangeAnswerOnlyForLimitedTime
 from apps.homework.api.permissions import MayChangeAnswerOnlyWithoutDescendants

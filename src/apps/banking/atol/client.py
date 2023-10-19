@@ -5,7 +5,7 @@ import httpx
 
 from django.conf import settings
 
-from app.services import BaseService
+from core.services import BaseService
 from apps.banking.atol import exceptions
 from apps.banking.atol.auth import get_atol_token
 from apps.orders.models import Order

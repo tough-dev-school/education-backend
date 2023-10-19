@@ -3,7 +3,7 @@ from rest_framework.request import Request
 from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
-from app.admin.filters import BooleanFilter
+from core.admin.filters import BooleanFilter
 
 
 class IsRootFilter(BooleanFilter):

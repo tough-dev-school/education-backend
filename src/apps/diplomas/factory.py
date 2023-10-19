@@ -1,6 +1,6 @@
 from typing import Any
 
-from app.test.factory import register
+from core.test.factory import register
 from apps.diplomas.models import Diploma
 from apps.products.models import Course
 from apps.users.models import User

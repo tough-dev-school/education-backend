@@ -9,7 +9,7 @@ pytestmark = [
 
 @pytest.fixture(autouse=True)
 def update_subscription(mocker):
-    return mocker.patch("app.tasks.update_dashamail_subscription.delay")
+    return mocker.patch("core.tasks.update_dashamail_subscription.delay")
 
 
 @pytest.fixture(autouse=True)

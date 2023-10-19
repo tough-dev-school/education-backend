@@ -1533,7 +1533,7 @@ typing-extensions = ">=3.10.0"
 
 [package.extras]
 compatible-mypy = ["mypy (==1.4.*)"]
-coreapi = ["coreapi (>=2.0.0)"]
+coreapi = ["core.api (>=2.0.0)"]
 markdown = ["types-Markdown (>=0.1.5)"]
 
 [[package]]
@@ -2484,7 +2484,7 @@ files = [
 [[package]]
 name = "packaging"
 version = "23.1"
-description = "Core utilities for Python packages"
+description = "core. utilities for Python packages"
 optional = false
 python-versions = ">=3.7"
 files = [

@@ -6,7 +6,7 @@ from rest_framework.request import Request
 
 from django.http import HttpResponseRedirect
 
-from app.throttling import PublicIDThrottle
+from core.throttling import PublicIDThrottle
 from apps.orders.models import Order
 
 

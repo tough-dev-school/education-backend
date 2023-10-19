@@ -1,4 +1,4 @@
-from app.admin import StackedInline
+from core.admin import StackedInline
 from apps.mailing.models import EmailConfiguration
 
 

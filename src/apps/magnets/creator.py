@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.services import BaseService
+from core.services import BaseService
 from apps.magnets.models import EmailLeadMagnetCampaign
 from apps.magnets.models import LeadCampaignLogEntry
 from apps.users.models import User

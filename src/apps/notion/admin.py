@@ -2,8 +2,8 @@ from httpx import HTTPError
 
 from django import forms
 
-from app.admin import admin
-from app.admin import ModelAdmin
+from core.admin import admin
+from core.admin import ModelAdmin
 from apps.notion import helpers
 from apps.notion.client import NotionClient
 from apps.notion.exceptions import NotionError

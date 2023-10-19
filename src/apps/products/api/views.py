@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 
 from django.http import HttpResponseRedirect
 
-from app.pricing import format_price
+from core.pricing import format_price
 from apps.banking import price_calculator
 from apps.banking.selector import BANK_CHOICES
 from apps.banking.selector import get_bank

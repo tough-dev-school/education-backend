@@ -11,7 +11,7 @@ def migrate_from_previous_table(apps, schema_editor):
     """
     EmailLogEntry = apps.get_model('mailing.EmailLogEntry')
 
-    previous_entries = apps.get_model('app.EmailLogEntry').objects.values(
+    previous_entries = apps.get_model('core.EmailLogEntry').objects.values(
         'modified',
         'email',
         'template_id',
@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('app', '0003_RenameCoursesAppPt1'),
+        ('core', '0003_RenameCoursesAppPt1'),
     ]
 
     operations = [

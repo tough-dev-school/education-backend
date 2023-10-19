@@ -156,7 +156,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 pythonpath = ". src"
-DJANGO_SETTINGS_MODULE = "app.settings"
+DJANGO_SETTINGS_MODULE = "core.settings"
 python_files = "test*.py"
 addopts = "--reuse-db"
 markers = [

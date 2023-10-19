@@ -1,6 +1,6 @@
 from rest_framework.throttling import AnonRateThrottle
 
-from app.throttling import ConfigurableThrottlingMixin
+from core.throttling import ConfigurableThrottlingMixin
 
 
 class PromocodeThrottle(ConfigurableThrottlingMixin, AnonRateThrottle):  # type: ignore

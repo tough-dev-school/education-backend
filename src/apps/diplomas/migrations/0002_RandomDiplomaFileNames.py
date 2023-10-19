@@ -3,7 +3,7 @@
 from django.db import migrations
 from django.db import models
 
-import app.files
+import core.files
 
 
 class Migration(migrations.Migration):
@@ -16,6 +16,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='diploma',
             name='image',
-            field=models.ImageField(upload_to=app.files.RandomFileName('diplomas')),
+            field=models.ImageField(upload_to=core.files.RandomFileName('diplomas')),
         ),
     ]

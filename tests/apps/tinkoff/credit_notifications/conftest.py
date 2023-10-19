@@ -1,6 +1,6 @@
 import pytest
 
-from app.test.api_client import DRFClient
+from core.test.api_client import DRFClient
 
 pytestmark = [pytest.mark.django_db]
 

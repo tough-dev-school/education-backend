@@ -5,8 +5,8 @@ from rest_framework.request import Request
 
 from django.db.models import QuerySet
 
-from app.api.mixins import DisablePaginationWithQueryParamMixin
-from app.viewsets import AppViewSet
+from core.api.mixins import DisablePaginationWithQueryParamMixin
+from core.viewsets import AppViewSet
 from apps.diplomas.api import serializers
 from apps.diplomas.api.permissions import DiplomaPermission
 from apps.diplomas.models import Diploma

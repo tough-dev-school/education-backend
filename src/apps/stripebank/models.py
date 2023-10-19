@@ -1,5 +1,5 @@
-from app.models import models
-from app.models import TimestampedModel
+from core.models import models
+from core.models import TimestampedModel
 
 
 class StripeNotification(TimestampedModel):

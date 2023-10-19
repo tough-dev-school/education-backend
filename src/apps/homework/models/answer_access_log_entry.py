@@ -5,8 +5,8 @@ from django.db.models import Index
 from django.db.models import QuerySet
 from django.db.models import UniqueConstraint
 
-from app.models import models
-from app.models import TimestampedModel
+from core.models import models
+from core.models import TimestampedModel
 
 if TYPE_CHECKING:
     from apps.homework.models import Answer

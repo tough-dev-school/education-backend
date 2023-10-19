@@ -1,6 +1,6 @@
 from apps.amocrm.dto import AmoCRMGroups
 from apps.amocrm.models import AmoCRMProductGroup
-from app.services import BaseService
+from core.services import BaseService
 from apps.products.models import Group
 
 

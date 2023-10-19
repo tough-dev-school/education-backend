@@ -5,8 +5,8 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
-from app.admin import admin
-from app.admin import ModelAdmin
+from core.admin import admin
+from core.admin import ModelAdmin
 from apps.homework.admin.answer.filters import IsRootFilter
 from apps.homework.models import Answer
 from apps.homework.models import AnswerCrossCheck

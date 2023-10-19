@@ -4,10 +4,10 @@ from typing import TYPE_CHECKING
 from django.apps import apps
 from django.utils.translation import gettext_lazy as _
 
-from app.models import models
-from app.models import TimestampedModel
-from app.pricing import format_old_price
-from app.pricing import format_price
+from core.models import models
+from core.models import TimestampedModel
+from core.pricing import format_old_price
+from core.pricing import format_price
 from apps.studying import shipment_factory as ShipmentFactory
 from apps.users.models import User
 

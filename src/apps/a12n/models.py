@@ -6,8 +6,8 @@ import uuid
 from django.conf import settings
 from django.utils import timezone
 
-from app.models import models
-from app.models import TimestampedModel
+from core.models import models
+from core.models import TimestampedModel
 
 
 def default_expiration() -> datetime:

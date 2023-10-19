@@ -1,6 +1,6 @@
 from typing import Any
 
-from app.celery import celery
+from core.celery import celery
 from apps.homework.models import Answer
 from apps.homework.models import Question
 from apps.homework.services import NewAnswerNotifier

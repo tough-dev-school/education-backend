@@ -1,8 +1,8 @@
 from django.db.models import Count
 from django.utils.translation import gettext_lazy as _
 
-from app.models import models
-from app.models import TimestampedModel
+from core.models import models
+from core.models import TimestampedModel
 from apps.mailing.tasks import send_mail
 from apps.users.models import User
 

@@ -4,7 +4,7 @@ from django.db.models import QuerySet
 from django.http.request import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
-from app.admin import admin
+from core.admin import admin
 
 
 @admin.action(description=_("Deactivate selected promo codes"))

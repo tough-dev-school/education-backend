@@ -1,7 +1,7 @@
 from typing import Any
 
-from app.helpers import random_string
-from app.test.factory import register
+from core.helpers import random_string
+from core.test.factory import register
 from apps.orders.models import Order
 from apps.products.models import Product
 

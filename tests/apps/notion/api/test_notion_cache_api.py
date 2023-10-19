@@ -2,7 +2,7 @@ import pytest
 
 from respx import MockRouter
 
-from app.test.api_client import DRFClient
+from core.test.api_client import DRFClient
 from apps.notion.models import NotionCacheEntry
 
 pytestmark = [

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from functools import partial
 
-from app.services import BaseService
+from core.services import BaseService
 from apps.chains import tasks
 from apps.chains.models import Message
 from apps.chains.models import Progress

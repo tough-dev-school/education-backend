@@ -5,7 +5,7 @@ from rest_framework import serializers
 
 from django.utils.functional import cached_property
 
-from app.services import BaseService
+from core.services import BaseService
 from apps.users.models import User
 from apps.users.tasks import rebuild_tags
 

@@ -1,7 +1,7 @@
 import httpx
 
-from app.celery import celery
-from app.types import Language
+from core.celery import celery
+from core.types import Language
 from apps.diplomas.services import DiplomaGenerator
 from apps.diplomas.services import DiplomaRegenerator
 from apps.diplomas.services.diploma_generator import WrongDiplomaServiceResponse

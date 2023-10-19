@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.services import BaseService
+from core.services import BaseService
 from apps.orders.models import Order
 
 

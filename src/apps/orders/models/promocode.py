@@ -12,8 +12,8 @@ from django.db.models import When
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from app.models import models
-from app.models import TimestampedModel
+from core.models import models
+from core.models import TimestampedModel
 from apps.products.models import Course
 
 

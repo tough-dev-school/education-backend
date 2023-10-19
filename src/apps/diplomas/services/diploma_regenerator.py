@@ -3,8 +3,8 @@ from typing import cast
 
 from django.db.models import QuerySet
 
-from app.services import BaseService
-from app.types import Language
+from core.services import BaseService
+from core.types import Language
 from apps.diplomas.models import Diploma
 from apps.diplomas.models import DiplomaTemplate
 from apps.diplomas.services.diploma_generator import DiplomaGenerator

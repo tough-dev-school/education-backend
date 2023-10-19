@@ -2,8 +2,8 @@ import time
 
 from django.apps import apps
 
-from app.celery import celery
-from app.tasks import update_dashamail_subscription
+from core.celery import celery
+from core.tasks import update_dashamail_subscription
 from apps.users.tags.pipeline import generate_tags
 
 

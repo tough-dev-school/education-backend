@@ -3,8 +3,8 @@ from typing import Any
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from app.admin import admin
-from app.admin import ModelAdmin
+from core.admin import admin
+from core.admin import ModelAdmin
 from apps.users.models import Student
 from apps.users.models import User
 from apps.users.services import UserCreator

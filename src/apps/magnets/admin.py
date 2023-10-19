@@ -3,8 +3,8 @@ from rest_framework.request import Request
 from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
-from app.admin import admin
-from app.admin import ModelAdmin
+from core.admin import admin
+from core.admin import ModelAdmin
 from apps.magnets.models import EmailLeadMagnetCampaign
 
 

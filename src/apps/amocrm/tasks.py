@@ -12,7 +12,7 @@ from apps.amocrm.services.group_pusher import AmoCRMGroupsPusher
 from apps.amocrm.services.orders.order_pusher import AmoCRMOrderPusher
 from apps.amocrm.services.orders.order_returner import AmoCRMOrderReturner
 from apps.amocrm.services.user_pusher import AmoCRMUserPusher
-from app.celery import celery
+from core.celery import celery
 
 __all__ = [
     "amocrm_enabled",

@@ -1,4 +1,4 @@
-from app.exceptions import AppServiceException
+from core.exceptions import AppServiceException
 
 
 class AmoCRMException(Exception):

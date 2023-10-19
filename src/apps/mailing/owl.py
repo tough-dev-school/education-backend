@@ -7,7 +7,7 @@ from django.core import mail
 from django.core.mail.backends.base import BaseEmailBackend
 from django.utils.functional import cached_property
 
-from app.services import BaseService
+from core.services import BaseService
 from apps.mailing import helpers
 from apps.mailing.configuration import get_configuration
 from apps.mailing.models import EmailConfiguration

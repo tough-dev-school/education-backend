@@ -9,9 +9,9 @@ from django.db.models import Exists
 from django.db.models import OuterRef
 from django.utils.translation import gettext_lazy as _
 
-from app.files import RandomFileName
-from app.models import models
-from app.models import TimestampedModel
+from core.files import RandomFileName
+from core.models import models
+from core.models import TimestampedModel
 from apps.mailing.tasks import send_mail
 
 if TYPE_CHECKING:

@@ -7,8 +7,8 @@ from retry import retry
 from django.conf import settings
 from django.core.files.base import ContentFile
 
-from app.services import BaseService
-from app.types import Language
+from core.services import BaseService
+from core.types import Language
 from apps.diplomas.models import Diploma
 from apps.diplomas.models import DiplomaTemplate
 from apps.products.models import Course

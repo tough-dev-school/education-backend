@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED 1
 ENV DEBIAN_FRONTEND noninteractive
 
 ENV STATIC_ROOT /var/lib/django-static
-ENV CELERY_APP=app.celery
+ENV CELERY_APP=core.celery
 
 ENV _UWSGI_VERSION 2.0.21
 ENV _WAITFOR_VERSION 2.2.3
@@ -50,8 +50,8 @@ ENV NO_CACHE=Off
 USER nobody
 
 FROM base as web
-HEALTHCHECK CMD wget -q -O /dev/null http://localhost:8000/api/v2/healthchecks/db/ --header "Host: app.tough-dev.school" || exit 1
-CMD poetry run python manage.py migrate && uwsgi --master --http :8000 --module app.wsgi --workers 2 --threads 2 --harakiri 25 --max-requests 1000 --log-x-forwarded-for
+HEALTHCHECK CMD wget -q -O /dev/null http://localhost:8000/api/v2/healthchecks/db/ --header "Host: core.tough-dev.school" || exit 1
+CMD poetry run python manage.py migrate && uwsgi --master --http :8000 --module core.wsgi --workers 2 --threads 2 --harakiri 25 --max-requests 1000 --log-x-forwarded-for
 
 FROM base as worker
 HEALTHCHECK CMD celery -A ${CELERY_APP} inspect ping -d $QUEUE@$HOSTNAME

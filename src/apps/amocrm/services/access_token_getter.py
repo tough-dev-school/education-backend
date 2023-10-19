@@ -7,7 +7,7 @@ from django.conf import settings
 from django.core.cache import cache
 
 from apps.amocrm.exceptions import AmoCRMServiceException
-from app.services import BaseService
+from core.services import BaseService
 
 
 class AmoCRMTokenGetterException(AmoCRMServiceException):

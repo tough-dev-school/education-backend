@@ -2,8 +2,8 @@ from typing import cast
 
 from rest_framework import serializers
 
-from app.serializers import MarkdownField
-from app.serializers import SoftField
+from core.serializers import MarkdownField
+from core.serializers import SoftField
 from apps.homework.models import Answer
 from apps.homework.models import AnswerImage
 from apps.homework.models import Question

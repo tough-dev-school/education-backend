@@ -1,6 +1,6 @@
 from django.apps import apps
 
-from app.celery import celery
+from core.celery import celery
 
 
 @celery.task

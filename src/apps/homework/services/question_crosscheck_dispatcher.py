@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from django.db.models import QuerySet
 
-from app.services import BaseService
+from core.services import BaseService
 from apps.homework.models import Answer
 from apps.homework.models import AnswerCrossCheck
 from apps.homework.models import Question

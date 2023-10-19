@@ -16,10 +16,10 @@ from django.utils.timezone import make_aware
 from apps.amocrm.tasks import amocrm_enabled
 from apps.amocrm.tasks import push_order
 from apps.amocrm.tasks import push_user
-from app.current_user import get_current_user
-from app.exceptions import AppServiceException
-from app.helpers import lower_first
-from app.services import BaseService
+from core.current_user import get_current_user
+from core.exceptions import AppServiceException
+from core.helpers import lower_first
+from core.services import BaseService
 from apps.banking.base import Bank
 from apps.banking.selector import get_bank
 from apps.mailing.tasks import send_mail

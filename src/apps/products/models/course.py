@@ -5,8 +5,8 @@ from django.db.models import QuerySet
 from django.db.models import Subquery
 from django.utils.translation import gettext_lazy as _
 
-from app.files import RandomFileName
-from app.models import models
+from core.files import RandomFileName
+from core.models import models
 from apps.mailing.tasks import send_mail
 from apps.products.models.base import Shippable
 from apps.users.models import User

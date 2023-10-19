@@ -5,9 +5,9 @@ from django.forms import Media
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 
-from app.admin import admin
-from app.admin import ModelAdmin
-from app.pricing import format_price
+from core.admin import admin
+from core.admin import ModelAdmin
+from core.pricing import format_price
 from apps.orders import human_readable
 from apps.orders.admin.orders import actions
 from apps.orders.admin.orders.filters import OrderStatusFilter

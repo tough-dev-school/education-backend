@@ -3,9 +3,9 @@ from rest_framework.request import Request
 from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
-from app.admin import admin
-from app.admin import ModelAdmin
-from app.admin.filters import DefaultFalseBooleanFilter
+from core.admin import admin
+from core.admin import ModelAdmin
+from core.admin.filters import DefaultFalseBooleanFilter
 from apps.chains.models import Chain
 from apps.chains.models.chain import ChainQuerySet
 

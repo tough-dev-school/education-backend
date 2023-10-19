@@ -1,4 +1,4 @@
-from app.celery import celery
+from core.celery import celery
 from apps.chains.models import Chain
 from apps.chains.models import Progress
 from apps.chains.services import ChainSender

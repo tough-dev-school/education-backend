@@ -1,6 +1,6 @@
 from drf_recaptcha.fields import ReCaptchaV3Field
 
-from app import validators
+from core import validators
 
 
 class LeadValidator(validators.Validator):

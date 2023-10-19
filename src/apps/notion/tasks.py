@@ -1,4 +1,4 @@
-from app.celery import celery
+from core.celery import celery
 from apps.notion.cache import cache
 from apps.notion.client import NotionClient
 from apps.notion.models import Material

@@ -1,7 +1,7 @@
 from typing import Optional, TYPE_CHECKING  # NOQA: I251
 
-from app.models import models
-from app.models import TimestampedModel
+from core.models import models
+from core.models import TimestampedModel
 from apps.studying.models import Study
 
 if TYPE_CHECKING:

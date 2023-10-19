@@ -1,4 +1,4 @@
-from app.celery import celery
+from core.celery import celery
 from apps.orders.models import Order
 
 
