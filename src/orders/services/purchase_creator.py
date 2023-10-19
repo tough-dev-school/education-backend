@@ -6,8 +6,8 @@ from apps.amocrm.tasks import amocrm_enabled
 from apps.amocrm.tasks import push_order
 from apps.amocrm.tasks import push_user
 from app.services import BaseService
-from banking.selector import get_bank
-from banking.zero_price_bank import ZeroPriceBank
+from apps.banking.selector import get_bank
+from apps.banking.zero_price_bank import ZeroPriceBank
 from orders.models import Order
 from orders.services import OrderCreator
 from products.models import Product

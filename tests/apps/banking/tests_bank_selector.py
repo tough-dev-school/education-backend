@@ -1,7 +1,7 @@
 import pytest
 
-from banking.selector import get_bank
-from banking.zero_price_bank import ZeroPriceBank
+from apps.banking.selector import get_bank
+from apps.banking.zero_price_bank import ZeroPriceBank
 from stripebank.bank import StripeBank
 from tinkoff.bank import TinkoffBank
 from tinkoff.credit import TinkoffCredit

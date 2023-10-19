@@ -2,7 +2,7 @@ import httpx
 
 from django.conf import settings
 
-from banking.base import Bank
+from apps.banking.base import Bank
 
 
 class TinkoffCreditRequestException(Exception):

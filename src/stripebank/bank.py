@@ -5,7 +5,7 @@ import stripe
 
 from django.conf import settings
 
-from banking.base import Bank
+from apps.banking.base import Bank
 
 
 class StripeBank(Bank):

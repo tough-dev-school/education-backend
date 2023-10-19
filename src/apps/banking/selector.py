@@ -1,7 +1,7 @@
 from typing import Type
 
-from banking.base import Bank
-from banking.zero_price_bank import ZeroPriceBank
+from apps.banking.base import Bank
+from apps.banking.zero_price_bank import ZeroPriceBank
 from stripebank.bank import StripeBank
 from tinkoff.bank import TinkoffBank
 from tinkoff.credit import TinkoffCredit

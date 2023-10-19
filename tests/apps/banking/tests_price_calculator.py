@@ -1,7 +1,7 @@
 from decimal import Decimal
 import pytest
 
-from banking import price_calculator
+from apps.banking import price_calculator
 
 
 @pytest.mark.parametrize(

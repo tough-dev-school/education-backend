@@ -10,9 +10,9 @@ from rest_framework.views import APIView
 from django.http import HttpResponseRedirect
 
 from app.pricing import format_price
-from banking import price_calculator
-from banking.selector import BANK_CHOICES
-from banking.selector import get_bank
+from apps.banking import price_calculator
+from apps.banking.selector import BANK_CHOICES
+from apps.banking.selector import get_bank
 from orders.api.serializers import PromocodeSerializer
 from orders.api.throttling import PromocodeThrottle
 from orders.api.throttling import PurchaseThrottle

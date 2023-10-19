@@ -2,8 +2,8 @@ import pytest
 
 from respx import MockRouter
 
-from banking.atol import auth
-from banking.atol import exceptions
+from apps.banking.atol import auth
+from apps.banking.atol import exceptions
 
 pytestmark = [
     pytest.mark.django_db,
@@ -13,7 +13,7 @@ pytestmark = [
 
 @pytest.fixture
 def fetch(mocker):
-    return mocker.patch("banking.atol.auth.fetch", return_value="secret")
+    return mocker.patch("apps.banking.atol.auth.fetch", return_value="secret")
 
 
 def test_ok(respx_mock: MockRouter):

@@ -1,6 +1,6 @@
 import pytest
 
-from banking.atol.client import AtolClient
+from apps.banking.atol.client import AtolClient
 
 pytestmark = [
     pytest.mark.django_db,
@@ -30,7 +30,7 @@ def atol(order):
 
 @pytest.fixture
 def post(mocker):
-    return mocker.patch("banking.atol.client.AtolClient.post")
+    return mocker.patch("apps.banking.atol.client.AtolClient.post")
 
 
 @pytest.fixture

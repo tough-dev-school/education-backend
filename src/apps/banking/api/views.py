@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 
 from django.http import HttpResponse
 
-from banking.models import Receipt
+from apps.banking.models import Receipt
 from orders.models import Order
 
 

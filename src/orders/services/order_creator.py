@@ -20,8 +20,8 @@ from app.current_user import get_current_user
 from app.exceptions import AppServiceException
 from app.helpers import lower_first
 from app.services import BaseService
-from banking.base import Bank
-from banking.selector import get_bank
+from apps.banking.base import Bank
+from apps.banking.selector import get_bank
 from mailing.tasks import send_mail
 from orders.models import Order
 from orders.models import PromoCode

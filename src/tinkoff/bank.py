@@ -8,7 +8,7 @@ import httpx
 
 from django.conf import settings
 
-from banking.base import Bank
+from apps.banking.base import Bank
 from tinkoff.exceptions import TinkoffRequestException
 
 

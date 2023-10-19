@@ -1,7 +1,7 @@
 import pytest
 
-from banking.selector import BANK_CHOICES
-from banking.selector import BANKS
+from apps.banking.selector import BANK_CHOICES
+from apps.banking.selector import BANKS
 from orders.services import OrderShipper
 
 pytestmark = [pytest.mark.django_db]

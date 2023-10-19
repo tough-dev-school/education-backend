@@ -1,6 +1,6 @@
 import pytest
 
-from banking.models import Receipt
+from apps.banking.models import Receipt
 
 pytestmark = [
     pytest.mark.django_db,

@@ -1,8 +1,8 @@
 from datetime import datetime
 import pytest
 
-from banking.selector import BANK_CHOICES
-from banking.selector import BANKS
+from apps.banking.selector import BANK_CHOICES
+from apps.banking.selector import BANKS
 from orders import human_readable
 
 pytestmark = [

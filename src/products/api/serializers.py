@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from banking.selector import BANK_CHOICES
+from apps.banking.selector import BANK_CHOICES
 from products.models import Course
 
 

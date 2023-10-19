@@ -1,7 +1,7 @@
 from django.utils.html import format_html
 from django.utils.translation import gettext as _
 
-from banking.selector import get_bank
+from apps.banking.selector import get_bank
 from orders.models import Order
 
 

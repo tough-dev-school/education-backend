@@ -5,7 +5,7 @@ import httpx
 from django.conf import settings
 from django.core.cache import cache
 
-from banking.atol.exceptions import AtolAuthError
+from apps.banking.atol.exceptions import AtolAuthError
 
 
 def get_atol_token() -> str:

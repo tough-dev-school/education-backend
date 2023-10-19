@@ -1,7 +1,7 @@
 from decimal import Decimal
 from typing import Type
 
-from banking.base import Bank
+from apps.banking.base import Bank
 
 
 def to_bank(bank: Type[Bank], price: Decimal) -> Decimal:

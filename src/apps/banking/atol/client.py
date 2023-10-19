@@ -6,8 +6,8 @@ import httpx
 from django.conf import settings
 
 from app.services import BaseService
-from banking.atol import exceptions
-from banking.atol.auth import get_atol_token
+from apps.banking.atol import exceptions
+from apps.banking.atol.auth import get_atol_token
 from orders.models import Order
 
 BASE_URL = "https://online.atol.ru/possystem/v4/"
