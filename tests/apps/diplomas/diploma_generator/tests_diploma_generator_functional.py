@@ -2,8 +2,8 @@ import pytest
 
 from respx import MockRouter
 
-from diplomas.models import Diploma
-from diplomas.tasks import generate_diploma
+from apps.diplomas.models import Diploma
+from apps.diplomas.tasks import generate_diploma
 
 pytestmark = [
     pytest.mark.django_db,

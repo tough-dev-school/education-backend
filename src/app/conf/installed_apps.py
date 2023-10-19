@@ -3,9 +3,9 @@ INSTALLED_APPS = [
     "apps.amocrm",
     "apps.banking",
     "apps.chains",
+    "apps.diplomas",
 
     "app",
-    "diplomas",
     "homework",
     "magnets",
     "notion",

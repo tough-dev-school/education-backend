@@ -3,8 +3,8 @@ from dataclasses import dataclass
 from django.utils.functional import cached_property
 
 from app.services import BaseService
-from diplomas.models import DiplomaTemplate
-from diplomas.tasks import generate_diploma
+from apps.diplomas.models import DiplomaTemplate
+from apps.diplomas.tasks import generate_diploma
 from orders.models import Order
 from products.models import Course
 from studying.models import Study

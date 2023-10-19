@@ -3,7 +3,7 @@ from rest_framework.routers import SimpleRouter
 from django.urls import include
 from django.urls import path
 
-from diplomas.api.viewsets import DiplomaViewSet
+from apps.diplomas.api.viewsets import DiplomaViewSet
 
 router = SimpleRouter()
 

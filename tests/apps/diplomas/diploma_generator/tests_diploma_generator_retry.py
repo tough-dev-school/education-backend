@@ -3,7 +3,7 @@ import pytest
 import httpx
 from respx import MockRouter
 
-from diplomas.services.diploma_generator import WrongDiplomaServiceResponse
+from apps.diplomas.services.diploma_generator import WrongDiplomaServiceResponse
 
 pytestmark = [
     pytest.mark.slow,

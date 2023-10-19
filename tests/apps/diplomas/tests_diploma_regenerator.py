@@ -1,10 +1,10 @@
 import pytest
 
-from diplomas import tasks
-from diplomas.models import Diploma
-from diplomas.models import Languages
-from diplomas.services import DiplomaGenerator
-from diplomas.services import DiplomaRegenerator
+from apps.diplomas import tasks
+from apps.diplomas.models import Diploma
+from apps.diplomas.models import Languages
+from apps.diplomas.services import DiplomaGenerator
+from apps.diplomas.services import DiplomaRegenerator
 
 pytestmark = [
     pytest.mark.django_db,
@@ -14,7 +14,7 @@ pytestmark = [
 @pytest.fixture(autouse=True)
 def _mock_diploma_generator_fetch_image(mocker, factory):
     image = factory.image()
-    mocker.patch("diplomas.services.diploma_regenerator.DiplomaGenerator.fetch_image", return_value=image)
+    mocker.patch("apps.diplomas.services.diploma_regenerator.DiplomaGenerator.fetch_image", return_value=image)
 
 
 @pytest.fixture(autouse=True)
@@ -40,12 +40,12 @@ def diploma_en(mixer, order):
 
 @pytest.fixture
 def mock_diploma_generator(mocker):
-    return mocker.patch("diplomas.services.diploma_generator.DiplomaGenerator.__call__", autospec=True)
+    return mocker.patch("apps.diplomas.services.diploma_generator.DiplomaGenerator.__call__", autospec=True)
 
 
 @pytest.fixture
 def mock_diploma_regenerator(mocker):
-    return mocker.patch("diplomas.services.diploma_regenerator.DiplomaRegenerator.__call__", autospec=True)
+    return mocker.patch("apps.diplomas.services.diploma_regenerator.DiplomaRegenerator.__call__", autospec=True)
 
 
 @pytest.fixture

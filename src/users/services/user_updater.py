@@ -5,7 +5,7 @@ from rest_framework import serializers
 from apps.amocrm.tasks import amocrm_enabled
 from apps.amocrm.tasks import push_user
 from app.services import BaseService
-from diplomas.tasks import regenerate_diplomas
+from apps.diplomas.tasks import regenerate_diplomas
 from users.models import User
 
 

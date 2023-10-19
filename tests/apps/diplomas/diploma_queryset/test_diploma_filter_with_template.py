@@ -1,7 +1,7 @@
 import pytest
 
-from diplomas.models import Diploma
-from diplomas.models import Languages
+from apps.diplomas.models import Diploma
+from apps.diplomas.models import Languages
 
 pytestmark = [
     pytest.mark.django_db,

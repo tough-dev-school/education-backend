@@ -8,8 +8,8 @@ from django.utils.translation import gettext_lazy as _
 
 from app.admin import admin
 from app.admin import ModelAdmin
-from diplomas.models import Diploma
-from diplomas.models import DiplomaTemplate
+from apps.diplomas.models import Diploma
+from apps.diplomas.models import DiplomaTemplate
 from orders import tasks
 from products.models import Course
 from users.models import User

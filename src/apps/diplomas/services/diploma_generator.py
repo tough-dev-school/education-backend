@@ -9,8 +9,8 @@ from django.core.files.base import ContentFile
 
 from app.services import BaseService
 from app.types import Language
-from diplomas.models import Diploma
-from diplomas.models import DiplomaTemplate
+from apps.diplomas.models import Diploma
+from apps.diplomas.models import DiplomaTemplate
 from products.models import Course
 from studying.models import Study
 from users.models import User

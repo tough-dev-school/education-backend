@@ -1,6 +1,6 @@
 import pytest
 
-from diplomas.models import DiplomaTemplate
+from apps.diplomas.models import DiplomaTemplate
 from users.models import User
 
 pytestmark = [

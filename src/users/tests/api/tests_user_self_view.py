@@ -99,7 +99,7 @@ def test_edit_user_data_response(api):
     ["first_name", "last_name", "first_name_en", "last_name_en"],
 )
 def test_user_update_first_or_last_names_triggers_diploma_regeneration(api, mocker, field_used_in_diplomas):
-    diploma_regenerator = mocker.patch("diplomas.tasks.regenerate_diplomas.delay")
+    diploma_regenerator = mocker.patch("apps.diplomas.tasks.regenerate_diplomas.delay")
 
     api.patch(
         "/api/v2/users/me/",
@@ -112,7 +112,7 @@ def test_user_update_first_or_last_names_triggers_diploma_regeneration(api, mock
 
 
 def test_user_update_gender_triggers_diploma_regeneration(api, mocker):
-    diploma_regenerator = mocker.patch("diplomas.tasks.regenerate_diplomas.delay")
+    diploma_regenerator = mocker.patch("apps.diplomas.tasks.regenerate_diplomas.delay")
 
     api.patch(
         "/api/v2/users/me/",
@@ -129,7 +129,7 @@ def test_user_update_gender_triggers_diploma_regeneration(api, mocker):
     ["github_username", "linkedin_username", "telegram_username"],
 )
 def test_non_diploma_fields_not_triggers_diploma_regeneration(api, mocker, field_not_used_in_diplomas):
-    diploma_regenerator = mocker.patch("diplomas.tasks.regenerate_diplomas.delay")
+    diploma_regenerator = mocker.patch("apps.diplomas.tasks.regenerate_diplomas.delay")
 
     api.patch(
         "/api/v2/users/me/",

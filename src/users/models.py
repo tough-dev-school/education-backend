@@ -13,7 +13,7 @@ from django.utils.translation import gettext_lazy as _
 
 from app.models import models
 from app.types import Language
-from diplomas.models import Languages
+from apps.diplomas.models import Languages
 
 
 class User(AbstractUser):

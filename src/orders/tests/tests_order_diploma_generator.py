@@ -1,6 +1,6 @@
 import pytest
 
-from diplomas.models import Languages
+from apps.diplomas.models import Languages
 from orders import tasks
 from orders.services import OrderDiplomaGenerator
 from users.models import User

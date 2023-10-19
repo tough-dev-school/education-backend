@@ -5,9 +5,9 @@ from django.db.models import QuerySet
 
 from app.services import BaseService
 from app.types import Language
-from diplomas.models import Diploma
-from diplomas.models import DiplomaTemplate
-from diplomas.services.diploma_generator import DiplomaGenerator
+from apps.diplomas.models import Diploma
+from apps.diplomas.models import DiplomaTemplate
+from apps.diplomas.services.diploma_generator import DiplomaGenerator
 from mailing.tasks import send_mail
 from studying.models import Study
 from users.models import User

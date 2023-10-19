@@ -1,7 +1,7 @@
 from typing import Any
 
 from app.test.factory import register
-from diplomas.models import Diploma
+from apps.diplomas.models import Diploma
 from products.models import Course
 from users.models import User
 

@@ -1,8 +1,8 @@
 from functools import partial
 import pytest
 
-from diplomas.models import Languages
-from diplomas.services import DiplomaGenerator
+from apps.diplomas.models import Languages
+from apps.diplomas.services import DiplomaGenerator
 from users.models import User
 
 

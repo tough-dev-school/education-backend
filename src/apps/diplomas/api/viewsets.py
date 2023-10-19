@@ -7,9 +7,9 @@ from django.db.models import QuerySet
 
 from app.api.mixins import DisablePaginationWithQueryParamMixin
 from app.viewsets import AppViewSet
-from diplomas.api import serializers
-from diplomas.api.permissions import DiplomaPermission
-from diplomas.models import Diploma
+from apps.diplomas.api import serializers
+from apps.diplomas.api.permissions import DiplomaPermission
+from apps.diplomas.models import Diploma
 
 
 class DiplomaViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
