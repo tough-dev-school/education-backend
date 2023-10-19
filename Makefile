@@ -1,5 +1,5 @@
 poetry = cd src && poetry run
-manage = $(poetry) python manage.py
+manage = poetry run python src/manage.py
 
 server:
 	$(manage) migrate
