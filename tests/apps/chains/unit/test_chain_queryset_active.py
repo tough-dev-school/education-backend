@@ -1,6 +1,6 @@
 import pytest
 
-from chains.models import Chain
+from apps.chains.models import Chain
 
 pytestmark = [
     pytest.mark.django_db,

@@ -5,9 +5,9 @@ from django.utils.translation import gettext_lazy as _
 
 from app.admin import admin
 from app.admin import ModelAdmin
-from chains.admin.forms import MessageAddForm
-from chains.admin.forms import MessageEditForm
-from chains.models import Message
+from apps.chains.admin.forms import MessageAddForm
+from apps.chains.admin.forms import MessageEditForm
+from apps.chains.models import Message
 
 
 @admin.register(Message)

@@ -1,7 +1,7 @@
 from app.celery import celery
-from chains.models import Chain
-from chains.models import Progress
-from chains.services import ChainSender
+from apps.chains.models import Chain
+from apps.chains.models import Progress
+from apps.chains.services import ChainSender
 
 
 @celery.task

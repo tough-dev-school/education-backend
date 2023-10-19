@@ -5,7 +5,7 @@ from app.models import TimestampedModel
 from studying.models import Study
 
 if TYPE_CHECKING:
-    from chains.models.chain import Chain
+    from apps.chains.models.chain import Chain
 
 
 class ProgressQuerySet(models.QuerySet):

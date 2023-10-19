@@ -12,8 +12,8 @@ if not env("DEBUG") and SENTRY_DSN:
     def strip_transactions(event, hint):  # type: ignore
         if event["transaction"] in (
             "/api/v2/healthchecks/{service}/",
-            "chains.tasks.send_chain_messages",
-            "chains.tasks.send_active_chains",
+            "apps.chains.tasks.send_chain_messages",
+            "apps.chains.tasks.send_active_chains",
             "/admin/jsi18n/",
         ):
             return None

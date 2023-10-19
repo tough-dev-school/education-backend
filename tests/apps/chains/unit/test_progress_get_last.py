@@ -1,6 +1,6 @@
 import pytest
 
-from chains.models import Progress
+from apps.chains.models import Progress
 
 pytestmark = [
     pytest.mark.django_db,

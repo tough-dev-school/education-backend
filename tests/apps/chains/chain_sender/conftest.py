@@ -1,6 +1,6 @@
 import pytest
 
-from chains.services import ChainSender
+from apps.chains.services import ChainSender
 
 pytestmark = [pytest.mark.django_db]
 
@@ -12,4 +12,4 @@ def chain_sender(chain):
 
 @pytest.fixture
 def send_message(mocker):
-    return mocker.patch("chains.services.chain_sender.ChainSender.send")
+    return mocker.patch("apps.chains.services.chain_sender.ChainSender.send")

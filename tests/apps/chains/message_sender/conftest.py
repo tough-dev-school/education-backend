@@ -1,6 +1,6 @@
 import pytest
 
-from chains.services import MessageSender
+from apps.chains.services import MessageSender
 
 pytestmark = [pytest.mark.django_db]
 

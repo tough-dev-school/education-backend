@@ -2,6 +2,8 @@ INSTALLED_APPS = [
     "apps.a12n",
     "apps.amocrm",
     "apps.banking",
+    "apps.chains",
+
     "app",
     "diplomas",
     "homework",
@@ -13,7 +15,6 @@ INSTALLED_APPS = [
     "tinkoff",
     "stripebank",
     "users",
-    "chains",
     "mailing",
     "corsheaders",
     "anymail",

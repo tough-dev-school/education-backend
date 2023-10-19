@@ -27,7 +27,7 @@ celery.conf.update(
     enable_utc=False,
     beat_schedule={
         "send_active_chains": {
-            "task": "chains.tasks.send_active_chains",
+            "task": "apps.chains.tasks.send_active_chains",
             "schedule": crontab(hour="*", minute="*/5"),
         },
         "amocrm_push_all_products_and_product_groups": {

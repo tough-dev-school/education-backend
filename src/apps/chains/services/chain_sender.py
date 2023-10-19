@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
 from app.services import BaseService
-from chains.models import Chain
-from chains.models import Message
-from chains.models import Progress
+from apps.chains.models import Chain
+from apps.chains.models import Message
+from apps.chains.models import Progress
 from studying.models import Study
 
 
@@ -37,6 +37,6 @@ class ChainSender(BaseService):
 
     @staticmethod
     def send(message: Message, study: Study) -> None:
-        from chains.services.message_sender import MessageSender
+        from apps.chains.services.message_sender import MessageSender
 
         MessageSender(message=message, study=study)()

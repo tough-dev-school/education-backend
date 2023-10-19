@@ -6,8 +6,8 @@ from django.utils.translation import gettext_lazy as _
 from app.admin import admin
 from app.admin import ModelAdmin
 from app.admin.filters import DefaultFalseBooleanFilter
-from chains.models import Chain
-from chains.models.chain import ChainQuerySet
+from apps.chains.models import Chain
+from apps.chains.models.chain import ChainQuerySet
 
 
 class ChainArchivedFilter(DefaultFalseBooleanFilter):

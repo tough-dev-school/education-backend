@@ -1,7 +1,7 @@
 import pytest
 
-from chains import tasks
-from chains.models import Message
+from apps.chains import tasks
+from apps.chains.models import Message
 from users.models import User
 
 pytestmark = [

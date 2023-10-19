@@ -2,9 +2,9 @@ from dataclasses import dataclass
 from functools import partial
 
 from app.services import BaseService
-from chains import tasks
-from chains.models import Message
-from chains.models import Progress
+from apps.chains import tasks
+from apps.chains.models import Message
+from apps.chains.models import Progress
 from mailing.tasks import send_mail
 from studying.models import Study
 
