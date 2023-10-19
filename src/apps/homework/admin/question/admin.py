@@ -3,10 +3,10 @@ from rest_framework.request import Request
 from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
-from core.admin import admin
-from core.admin import ModelAdmin
 from apps.homework import tasks
 from apps.homework.models import Question
+from core.admin import admin
+from core.admin import ModelAdmin
 
 
 @admin.register(Question)

@@ -2,9 +2,9 @@ from typing import Any
 
 from django.utils.translation import gettext_lazy as _
 
+from apps.products.models.base import Shippable
 from core.integrations.s3 import AppS3
 from core.models import models
-from apps.products.models.base import Shippable
 
 
 class Record(Shippable):

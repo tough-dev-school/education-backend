@@ -3,9 +3,9 @@ from typing import Any
 from django.http import HttpRequest
 
 from apps.amocrm import tasks
+from apps.products.models import Group
 from core.admin import admin
 from core.admin import ModelAdmin
-from apps.products.models import Group
 
 
 @admin.register(Group)

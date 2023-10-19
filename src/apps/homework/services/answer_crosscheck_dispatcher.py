@@ -5,10 +5,10 @@ from django.db.models import Count
 from django.db.models import Q
 from django.db.models import QuerySet
 
-from core.services import BaseService
 from apps.homework.models import Answer
 from apps.homework.models import AnswerCrossCheck
 from apps.users.models import User
+from core.services import BaseService
 
 
 @dataclass

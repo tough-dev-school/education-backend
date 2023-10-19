@@ -6,13 +6,13 @@ from rest_framework.request import Request
 from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
-from core.admin import admin
-from core.admin import ModelAdmin
 from apps.diplomas.models import Diploma
 from apps.diplomas.models import DiplomaTemplate
 from apps.orders import tasks
 from apps.products.models import Course
 from apps.users.models import User
+from core.admin import admin
+from core.admin import ModelAdmin
 
 
 @admin.register(Diploma)

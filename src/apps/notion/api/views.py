@@ -6,12 +6,12 @@ from rest_framework.response import Response
 
 from django.db.models import QuerySet
 
-from core.views import AuthenticatedAPIView
 from apps.notion.api.serializers import NotionPageSerializer
 from apps.notion.api.throttling import NotionThrottle
 from apps.notion.cache import get_cached_page
 from apps.notion.helpers import uuid_to_id
 from apps.notion.models import Material
+from core.views import AuthenticatedAPIView
 
 
 class NotionMaterialView(AuthenticatedAPIView):

@@ -5,7 +5,6 @@ from celery import chain
 from apps.amocrm.tasks import amocrm_enabled
 from apps.amocrm.tasks import push_order
 from apps.amocrm.tasks import push_user
-from core.services import BaseService
 from apps.banking.selector import get_bank
 from apps.banking.zero_price_bank import ZeroPriceBank
 from apps.orders.models import Order
@@ -14,6 +13,7 @@ from apps.products.models import Product
 from apps.users.models import User
 from apps.users.services import UserCreator
 from apps.users.tasks import rebuild_tags
+from core.services import BaseService
 
 
 @dataclass

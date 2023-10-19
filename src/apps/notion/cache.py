@@ -5,10 +5,10 @@ from typing import Callable
 from django.conf import settings
 from django.utils import timezone
 
-from core.current_user import get_current_user
 from apps.notion.client import NotionClient
 from apps.notion.models import NotionCacheEntry
 from apps.notion.page import NotionPage
+from core.current_user import get_current_user
 
 TIMEOUT = 60 * 60 * 24 * 365 * 5  # 5 years
 

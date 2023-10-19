@@ -2,8 +2,8 @@ from typing import Any, Generator, TYPE_CHECKING
 
 from django.utils.translation import gettext_lazy as _
 
-from core.models import models
 from apps.products.models.base import Shippable
+from core.models import models
 
 if TYPE_CHECKING:
     from apps.orders.models import Order

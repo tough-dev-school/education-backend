@@ -4,9 +4,9 @@ import json
 
 from django.conf import settings
 
-from core.services import BaseService
 from apps.tinkoff.exceptions import TinkoffPaymentNotificationInvalidToken
 from apps.tinkoff.exceptions import TinkoffPaymentNotificationNoTokenPassed
+from core.services import BaseService
 
 PAYLOAD_KEYS_EXCLUDED_FROM_SIGNATURE_VALIDATION = [
     "Token",

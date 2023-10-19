@@ -5,9 +5,9 @@ from django.db.models import QuerySet
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from apps.studying.models import Study
 from core.models import models
 from core.models import TimestampedModel
-from apps.studying.models import Study
 
 
 class MessageQuerySet(QuerySet):

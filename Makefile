@@ -1,4 +1,3 @@
-poetry = cd src && poetry run
 manage = poetry run python src/manage.py
 
 server:
@@ -6,17 +5,17 @@ server:
 	$(manage) runserver
 
 worker:
-	$(poetry) celery -A app worker -E --purge
+	poetry run celery --app core --workdir src worker --events --purge
 
 fmt:
-	$(poetry) autoflake --in-place --remove-all-unused-imports --recursive .
-	$(poetry) isort .
-	$(poetry) black .
+	poetry run autoflake --in-place --remove-all-unused-imports --recursive src
+	poetry run isort src
+	poetry run black src
 
 lint:
 	$(manage) makemigrations --check --no-input --dry-run
-	$(poetry) flake8 .
-	$(poetry) mypy
+	poetry run flake8 src
+	poetry run mypy src
 
 test:
 	poetry run pytest -n 4 --ff -x --create-db --cov-report=xml --cov=. -m 'not single_thread'

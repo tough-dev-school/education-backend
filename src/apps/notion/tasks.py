@@ -1,7 +1,7 @@
-from core.celery import celery
 from apps.notion.cache import cache
 from apps.notion.client import NotionClient
 from apps.notion.models import Material
+from core.celery import celery
 
 
 @celery.task(rate_limit="6/m", acks_late=True)

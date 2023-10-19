@@ -3,11 +3,11 @@ from django.db.models import QuerySet
 from django.http.request import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
-from core.admin import admin
-from core.admin import ModelAdmin
 from apps.chains.admin.forms import MessageAddForm
 from apps.chains.admin.forms import MessageEditForm
 from apps.chains.models import Message
+from core.admin import admin
+from core.admin import ModelAdmin
 
 
 @admin.register(Message)

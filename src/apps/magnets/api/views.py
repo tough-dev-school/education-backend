@@ -3,11 +3,11 @@ from rest_framework.response import Response
 
 from django.shortcuts import get_object_or_404
 
-from core.views import AnonymousAPIView
-from core.viewsets import ValidationMixin
 from apps.magnets.api.validators import LeadValidator
 from apps.magnets.creator import LeadCreator
 from apps.magnets.models import EmailLeadMagnetCampaign
+from core.views import AnonymousAPIView
+from core.viewsets import ValidationMixin
 
 
 class EmailLeadMagnetCampaignView(AnonymousAPIView, ValidationMixin):

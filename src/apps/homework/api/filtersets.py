@@ -1,7 +1,7 @@
 from django_filters import rest_framework as filters
 
-from core.api.filters import UUIDInFilter
 from apps.homework.models import Answer
+from core.api.filters import UUIDInFilter
 
 
 class AnswerFilterSet(filters.FilterSet):

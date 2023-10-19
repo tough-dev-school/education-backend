@@ -16,10 +16,6 @@ from django.utils.timezone import make_aware
 from apps.amocrm.tasks import amocrm_enabled
 from apps.amocrm.tasks import push_order
 from apps.amocrm.tasks import push_user
-from core.current_user import get_current_user
-from core.exceptions import AppServiceException
-from core.helpers import lower_first
-from core.services import BaseService
 from apps.banking.base import Bank
 from apps.banking.selector import get_bank
 from apps.mailing.tasks import send_mail
@@ -28,6 +24,10 @@ from apps.orders.models import PromoCode
 from apps.products.models.base import Shippable
 from apps.users.models import User
 from apps.users.tasks import rebuild_tags
+from core.current_user import get_current_user
+from core.exceptions import AppServiceException
+from core.helpers import lower_first
+from core.services import BaseService
 
 
 class OrderCreatorException(AppServiceException):

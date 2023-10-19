@@ -5,11 +5,11 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
-from core.admin import admin
-from core.admin import ModelAdmin
 from apps.homework.admin.answer.filters import IsRootFilter
 from apps.homework.models import Answer
 from apps.homework.models import AnswerCrossCheck
+from core.admin import admin
+from core.admin import ModelAdmin
 
 
 @admin.register(Answer)

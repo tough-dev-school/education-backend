@@ -7,9 +7,9 @@ from django.utils import timezone
 from apps.amocrm.tasks import amocrm_enabled
 from apps.amocrm.tasks import push_user
 from apps.amocrm.tasks import return_order
-from core.services import BaseService
 from apps.orders.models import Order
 from apps.users.tasks import rebuild_tags
+from core.services import BaseService
 
 
 @dataclass

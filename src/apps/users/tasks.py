@@ -2,9 +2,9 @@ import time
 
 from django.apps import apps
 
+from apps.users.tags.pipeline import generate_tags
 from core.celery import celery
 from core.tasks import update_dashamail_subscription
-from apps.users.tags.pipeline import generate_tags
 
 
 @celery.task(name="users.rebuild_tags")

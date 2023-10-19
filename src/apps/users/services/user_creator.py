@@ -5,9 +5,9 @@ from rest_framework import serializers
 
 from django.utils.functional import cached_property
 
-from core.services import BaseService
 from apps.users.models import User
 from apps.users.tasks import rebuild_tags
+from core.services import BaseService
 
 
 class UserCreateSerializer(serializers.ModelSerializer):

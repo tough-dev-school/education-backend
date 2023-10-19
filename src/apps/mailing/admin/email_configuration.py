@@ -1,5 +1,5 @@
-from core.admin import StackedInline
 from apps.mailing.models import EmailConfiguration
+from core.admin import StackedInline
 
 
 class EmailConfigurationAdmin(StackedInline):

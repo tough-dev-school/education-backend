@@ -6,8 +6,8 @@ from rest_framework.request import Request
 
 from django.http import HttpResponseRedirect
 
-from core.throttling import PublicIDThrottle
 from apps.orders.models import Order
+from core.throttling import PublicIDThrottle
 
 
 class OrderConfirmationView(RetrieveAPIView):

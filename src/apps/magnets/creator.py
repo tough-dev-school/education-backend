@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 
-from core.services import BaseService
 from apps.magnets.models import EmailLeadMagnetCampaign
 from apps.magnets.models import LeadCampaignLogEntry
 from apps.users.models import User
 from apps.users.services import UserCreator
+from core.services import BaseService
 
 
 @dataclass

@@ -7,12 +7,12 @@ from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
-from core.models import models
-from core.models import only_one_or_zero_is_set
-from core.models import TimestampedModel
 from apps.orders.exceptions import UnknownItemException
 from apps.orders.fields import ItemField
 from apps.products.models import Product
+from core.models import models
+from core.models import only_one_or_zero_is_set
+from core.models import TimestampedModel
 
 
 class OrderQuerySet(QuerySet):

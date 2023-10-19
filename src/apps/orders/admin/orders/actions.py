@@ -6,9 +6,9 @@ from django.db.models import QuerySet
 from django.http.request import HttpRequest
 from django.utils.translation import gettext as _
 
-from core.admin import admin
 from apps.orders import tasks
 from apps.studying.models import Study
+from core.admin import admin
 
 
 @admin.action(description=_("Set paid"), permissions=["pay"])

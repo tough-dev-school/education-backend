@@ -8,11 +8,11 @@ from emoji import is_emoji
 from django.db import IntegrityError
 from django.utils.translation import gettext_lazy as _
 
-from core.exceptions import AppServiceException
-from core.services import BaseService
 from apps.homework.models import Answer
 from apps.homework.models.reaction import Reaction
 from apps.users.models import User
+from core.exceptions import AppServiceException
+from core.services import BaseService
 
 
 class ReactionCreatorException(AppServiceException):

@@ -5,8 +5,8 @@ from apps.amocrm.dto import AmoCRMTransaction
 from apps.amocrm.exceptions import AmoCRMServiceException
 from apps.amocrm.models import AmoCRMOrderLead
 from apps.amocrm.models import AmoCRMOrderTransaction
-from core.services import BaseService
 from apps.orders.models import Order
+from core.services import BaseService
 
 
 class AmoCRMOrderPusherException(AmoCRMServiceException):

@@ -5,8 +5,8 @@ from django.http.request import HttpRequest
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
-from core.admin import admin
 from apps.orders.models import Order
+from core.admin import admin
 
 
 class OrderStatusFilter(admin.SimpleListFilter):

@@ -3,10 +3,10 @@ from dataclasses import dataclass
 from django.conf import settings
 from django.utils import timezone
 
-from core.services import BaseService
-from core.tasks import send_telegram_message
 from apps.orders import human_readable
 from apps.orders.models import Order
+from core.services import BaseService
+from core.tasks import send_telegram_message
 
 
 @dataclass

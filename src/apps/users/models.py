@@ -11,9 +11,9 @@ from django.db.models import TextChoices
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
+from apps.diplomas.models import Languages
 from core.models import models
 from core.types import Language
-from apps.diplomas.models import Languages
 
 
 class User(AbstractUser):

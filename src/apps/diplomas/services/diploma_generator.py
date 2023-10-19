@@ -7,13 +7,13 @@ from retry import retry
 from django.conf import settings
 from django.core.files.base import ContentFile
 
-from core.services import BaseService
-from core.types import Language
 from apps.diplomas.models import Diploma
 from apps.diplomas.models import DiplomaTemplate
 from apps.products.models import Course
 from apps.studying.models import Study
 from apps.users.models import User
+from core.services import BaseService
+from core.types import Language
 
 
 class WrongDiplomaServiceResponse(httpx.HTTPError):

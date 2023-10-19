@@ -12,10 +12,10 @@ from django.db.models import UniqueConstraint
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from core.models import models
-from core.models import TimestampedModel
 from apps.notion.helpers import uuid_to_id
 from apps.users.models import User
+from core.models import models
+from core.models import TimestampedModel
 
 
 class MaterialQuerySet(QuerySet):

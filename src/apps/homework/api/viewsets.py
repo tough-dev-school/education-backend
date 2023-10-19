@@ -10,9 +10,6 @@ from rest_framework.response import Response
 from django.db.models import QuerySet
 from django.utils.functional import cached_property
 
-from core.api.mixins import DisablePaginationWithQueryParamMixin
-from core.viewsets import AppViewSet
-from core.viewsets import CreateDeleteAppViewSet
 from apps.homework.api.filtersets import AnswerFilterSet
 from apps.homework.api.permissions import MayChangeAnswerOnlyForLimitedTime
 from apps.homework.api.permissions import MayChangeAnswerOnlyWithoutDescendants
@@ -27,6 +24,9 @@ from apps.homework.models import AnswerAccessLogEntry
 from apps.homework.models.answer import AnswerQuerySet
 from apps.homework.models.reaction import Reaction
 from apps.homework.services import ReactionCreator
+from core.api.mixins import DisablePaginationWithQueryParamMixin
+from core.viewsets import AppViewSet
+from core.viewsets import CreateDeleteAppViewSet
 
 
 class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):

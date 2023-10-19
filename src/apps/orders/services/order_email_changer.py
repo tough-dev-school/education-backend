@@ -2,10 +2,10 @@ from dataclasses import dataclass
 
 from django.utils.functional import cached_property
 
-from core.services import BaseService
 from apps.orders.models import Order
 from apps.users.models import User
 from apps.users.services import UserCreator
+from core.services import BaseService
 
 
 @dataclass

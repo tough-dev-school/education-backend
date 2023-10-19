@@ -1,7 +1,7 @@
 from apps.amocrm.dto import AmoCRMGroups
 from apps.amocrm.models import AmoCRMProductGroup
-from core.services import BaseService
 from apps.products.models import Group
+from core.services import BaseService
 
 
 class AmoCRMGroupsPusher(BaseService):

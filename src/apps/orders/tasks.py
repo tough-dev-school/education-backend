@@ -1,5 +1,5 @@
-from core.celery import celery
 from apps.orders.models import Order
+from core.celery import celery
 
 
 @celery.task

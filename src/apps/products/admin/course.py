@@ -4,11 +4,11 @@ from django.http import HttpRequest
 from django.utils.translation import gettext as _
 
 from apps.amocrm import tasks
-from core.admin import admin
-from core.admin import ModelAdmin
 from apps.mailing.admin.email_configuration import EmailConfigurationAdmin
 from apps.products.admin.courses import actions
 from apps.products.models import Course
+from core.admin import admin
+from core.admin import ModelAdmin
 
 
 @admin.register(Course)

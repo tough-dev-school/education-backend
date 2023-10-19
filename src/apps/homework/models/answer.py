@@ -13,13 +13,13 @@ from django.db.models import Q
 from django.db.models.query_utils import FilteredRelation
 from django.utils.translation import gettext_lazy as _
 
-from core.markdown import markdownify
-from core.markdown import remove_html
-from core.models import models
 from apps.homework.models.reaction import Reaction
 from apps.orders.models import Order
 from apps.products.models import Course
 from apps.users.models import User
+from core.markdown import markdownify
+from core.markdown import remove_html
+from core.models import models
 
 
 class AnswerQuerySet(TreeQuerySet):

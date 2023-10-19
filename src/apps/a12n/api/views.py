@@ -11,10 +11,10 @@ from apps.a12n.api.serializers import PasswordResetSerializer
 from apps.a12n.api.throttling import AuthAnonRateThrottle
 from apps.a12n.models import PasswordlessAuthToken
 from apps.a12n.utils import get_jwt
-from core.permissions import SuperUserOnly
-from core.views import AnonymousAPIView
 from apps.mailing.tasks import send_mail
 from apps.users.models import User
+from core.permissions import SuperUserOnly
+from core.views import AnonymousAPIView
 
 
 class ObtainJSONWebTokenView(jwt.ObtainJSONWebTokenView):
