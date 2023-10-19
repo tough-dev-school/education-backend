@@ -3,9 +3,9 @@ from typing import Type
 from apps.banking.base import Bank
 from apps.banking.zero_price_bank import ZeroPriceBank
 from apps.stripebank.bank import StripeBank
-from tinkoff.bank import TinkoffBank
-from tinkoff.credit import TinkoffCredit
-from tinkoff.dolyame import Dolyame
+from apps.tinkoff.bank import TinkoffBank
+from apps.tinkoff.credit import TinkoffCredit
+from apps.tinkoff.dolyame import Dolyame
 
 BANKS = {
     "tinkoff_bank": TinkoffBank,

@@ -3,8 +3,8 @@ import pytest
 from apps.banking.selector import get_bank
 from apps.banking.zero_price_bank import ZeroPriceBank
 from apps.stripebank.bank import StripeBank
-from tinkoff.bank import TinkoffBank
-from tinkoff.credit import TinkoffCredit
+from apps.tinkoff.bank import TinkoffBank
+from apps.tinkoff.credit import TinkoffCredit
 
 
 @pytest.mark.parametrize(

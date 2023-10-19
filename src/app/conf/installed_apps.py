@@ -12,9 +12,9 @@ INSTALLED_APPS = [
     "apps.products",
     "apps.stripebank",
     "apps.studying",
+    "apps.tinkoff",
 
     "app",
-    "tinkoff",
     "users",
     "corsheaders",
     "anymail",

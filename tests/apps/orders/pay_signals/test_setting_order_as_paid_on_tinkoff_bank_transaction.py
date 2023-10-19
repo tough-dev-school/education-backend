@@ -22,7 +22,7 @@ def _tinkoff_credentials(settings):
 
 @pytest.fixture(autouse=True)
 def disable_token_validation(mocker):
-    return mocker.patch("tinkoff.api.views.TinkoffNotificationsTokenValidator.__call__", return_value=True)
+    return mocker.patch("apps.tinkoff.api.views.TinkoffNotificationsTokenValidator.__call__", return_value=True)
 
 
 @pytest.fixture

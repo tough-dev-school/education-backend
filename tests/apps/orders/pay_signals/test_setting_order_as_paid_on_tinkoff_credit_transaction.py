@@ -16,7 +16,7 @@ def order(factory):
 
 @pytest.fixture(autouse=True)
 def _disable_tinkoff_authn(mocker):
-    mocker.patch("tinkoff.api.permissions.TinkoffCreditNetmaskPermission.has_permission", return_value=True)
+    mocker.patch("apps.tinkoff.api.permissions.TinkoffCreditNetmaskPermission.has_permission", return_value=True)
 
 
 @pytest.fixture

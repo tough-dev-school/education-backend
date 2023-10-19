@@ -4,9 +4,9 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from apps.stripebank.models import StripeNotification
-from tinkoff.models import CreditNotification as TinkoffCreditNotification
-from tinkoff.models import DolyameNotification
-from tinkoff.models import PaymentNotification as TinkoffPaymentNotification
+from apps.tinkoff.models import CreditNotification as TinkoffCreditNotification
+from apps.tinkoff.models import DolyameNotification
+from apps.tinkoff.models import PaymentNotification as TinkoffPaymentNotification
 
 
 @receiver(post_save, sender=TinkoffPaymentNotification)

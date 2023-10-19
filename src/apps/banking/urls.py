@@ -3,9 +3,9 @@ from django.urls import path
 
 from apps.banking.api.views import AtolWebhookView
 from apps.stripebank.api.views import StripeWebhookView
-from tinkoff.api.views import DolyameNotificationsView
-from tinkoff.api.views import TinkoffCreditNotificationsView
-from tinkoff.api.views import TinkoffPaymentNotificationsView
+from apps.tinkoff.api.views import DolyameNotificationsView
+from apps.tinkoff.api.views import TinkoffCreditNotificationsView
+from apps.tinkoff.api.views import TinkoffPaymentNotificationsView
 
 urlpatterns = [
     path("tinkoff-notifications/", TinkoffPaymentNotificationsView.as_view()),

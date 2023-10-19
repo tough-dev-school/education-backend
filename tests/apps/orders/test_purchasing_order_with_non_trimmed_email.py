@@ -19,7 +19,7 @@ def user_with_the_same_username_but_without_a_space_in_the_end(mixer):
 
 @pytest.fixture(autouse=True)
 def bank(mocker):
-    return mocker.patch("tinkoff.bank.TinkoffBank.get_initial_payment_url", return_value="https://mocked")
+    return mocker.patch("apps.tinkoff.bank.TinkoffBank.get_initial_payment_url", return_value="https://mocked")
 
 
 @pytest.fixture
