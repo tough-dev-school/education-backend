@@ -2,15 +2,18 @@ import pytest
 
 from django.core.cache import cache
 
+# fmt: off
 pytest_plugins = [
-    "apps.diplomas.factory",
-    "apps.orders.factory",
-    "apps.products.factory",
-    "apps.products.fixtures",
-    "apps.users.fixtures",
-    "core.factory",
-    "core.fixtures",
+    "tests.factories.apps.diplomas",
+    "tests.factories.apps.orders",
+    "tests.factories.apps.products",
+    "tests.factories.core",
+
+    "tests.fixtures.apps.products",
+    "tests.fixtures.apps.users",
+    "tests.fixtures.core",
 ]
+# fmt: on
 
 
 @pytest.fixture(autouse=True)
