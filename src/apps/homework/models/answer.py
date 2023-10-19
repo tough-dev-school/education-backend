@@ -17,7 +17,7 @@ from app.markdown import markdownify
 from app.markdown import remove_html
 from app.models import models
 from apps.homework.models.reaction import Reaction
-from orders.models import Order
+from apps.orders.models import Order
 from products.models import Course
 from users.models import User
 

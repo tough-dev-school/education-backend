@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 from apps.amocrm.client import http
-from orders.models import Order
+from apps.orders.models import Order
 
 if TYPE_CHECKING:
     from apps.amocrm.ids import STATUSES_NAMES

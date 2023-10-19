@@ -1,14 +1,14 @@
 from decimal import Decimal
 import pytest
 
-from orders.models import Order
+from apps.orders.models import Order
 
 pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
 def mock_update_chain(mocker):
-    return mocker.patch("orders.services.purchase_creator.chain")
+    return mocker.patch("apps.orders.services.purchase_creator.chain")
 
 
 @pytest.fixture

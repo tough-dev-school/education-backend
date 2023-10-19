@@ -6,7 +6,7 @@ from rest_framework.exceptions import ValidationError
 from apps.banking.base import Bank
 
 if TYPE_CHECKING:
-    from orders.models import Order
+    from apps.orders.models import Order
 
 
 class ZeroPriceBank(Bank):

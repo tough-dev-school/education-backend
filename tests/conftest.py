@@ -6,7 +6,7 @@ pytest_plugins = [
     "app.factory",
     "app.fixtures",
     "users.fixtures",
-    "orders.factory",
+    "apps.orders.factory",
     "apps.diplomas.factory",
     "products.factory",
     "products.fixtures",

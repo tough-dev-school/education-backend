@@ -13,11 +13,11 @@ from app.pricing import format_price
 from apps.banking import price_calculator
 from apps.banking.selector import BANK_CHOICES
 from apps.banking.selector import get_bank
-from orders.api.serializers import PromocodeSerializer
-from orders.api.throttling import PromocodeThrottle
-from orders.api.throttling import PurchaseThrottle
-from orders.models import PromoCode
-from orders.services.purchase_creator import PurchaseCreator
+from apps.orders.api.serializers import PromocodeSerializer
+from apps.orders.api.throttling import PromocodeThrottle
+from apps.orders.api.throttling import PurchaseThrottle
+from apps.orders.models import PromoCode
+from apps.orders.services.purchase_creator import PurchaseCreator
 from products.api.serializers import PurchaseSerializer
 from products.models import Course
 

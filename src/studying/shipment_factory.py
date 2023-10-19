@@ -1,7 +1,7 @@
 from typing import Callable, Type, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from orders.models import Order
+    from apps.orders.models import Order
     from products.models import Product
     from products.models import ProductType
     from studying.shipment.base import BaseShipment

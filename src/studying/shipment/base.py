@@ -3,7 +3,7 @@ from abc import abstractmethod
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from orders.models import Order
+    from apps.orders.models import Order
     from products.models import Course
     from users.models import User
 

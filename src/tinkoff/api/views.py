@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 from django.http import HttpResponse
 
-from orders.models import Order
+from apps.orders.models import Order
 from tinkoff import tasks
 from tinkoff.api.permissions import DolyameNetmaskPermission
 from tinkoff.api.permissions import TinkoffCreditNetmaskPermission

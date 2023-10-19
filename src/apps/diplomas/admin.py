@@ -10,7 +10,7 @@ from app.admin import admin
 from app.admin import ModelAdmin
 from apps.diplomas.models import Diploma
 from apps.diplomas.models import DiplomaTemplate
-from orders import tasks
+from apps.orders import tasks
 from products.models import Course
 from users.models import User
 

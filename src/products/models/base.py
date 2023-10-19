@@ -12,7 +12,7 @@ from studying import shipment_factory as ShipmentFactory
 from users.models import User
 
 if TYPE_CHECKING:
-    from orders.models import Order
+    from apps.orders.models import Order
 
 
 class Shippable(TimestampedModel):

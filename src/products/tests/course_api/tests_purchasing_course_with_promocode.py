@@ -1,7 +1,7 @@
 from decimal import Decimal
 import pytest
 
-from orders.models import Order
+from apps.orders.models import Order
 
 pytestmark = [
     pytest.mark.django_db,

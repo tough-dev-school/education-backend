@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from apps.amocrm.client import http
-from orders.models import Order
+from apps.orders.models import Order
 
 
 @dataclass

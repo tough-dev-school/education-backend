@@ -8,7 +8,7 @@ import uuid
 from django.conf import settings
 
 if TYPE_CHECKING:
-    from orders.models import Order
+    from apps.orders.models import Order
     from users.models import User
 
 

@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 
 from apps.banking.atol.client import AtolClient
-from orders.models import Order
+from apps.orders.models import Order
 
 
 class Command(BaseCommand):

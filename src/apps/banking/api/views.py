@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from django.http import HttpResponse
 
 from apps.banking.models import Receipt
-from orders.models import Order
+from apps.orders.models import Order
 
 
 class AtolWebhookView(APIView):

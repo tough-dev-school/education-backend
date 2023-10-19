@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 from django.db.models import QuerySet
 
-from orders.models import Order
+from apps.orders.models import Order
 
 if TYPE_CHECKING:
     from users.models import Student

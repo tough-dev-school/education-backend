@@ -1,7 +1,7 @@
 import httpx
 
 from app.celery import celery
-from orders.models import Order
+from apps.orders.models import Order
 from tinkoff.dolyame import Dolyame
 from tinkoff.dolyame import DolyameRequestException
 

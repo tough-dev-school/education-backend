@@ -6,7 +6,7 @@ from app.models import models
 from products.models.base import Shippable
 
 if TYPE_CHECKING:
-    from orders.models import Order
+    from apps.orders.models import Order
     from users.models import User
 
 

@@ -8,9 +8,9 @@ INSTALLED_APPS = [
     "apps.magnets",
     "apps.mailing",
     "apps.notion",
+    "apps.orders",
 
     "app",
-    "orders",
     "products",
     "studying",
     "tinkoff",
