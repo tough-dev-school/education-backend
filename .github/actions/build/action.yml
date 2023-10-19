@@ -31,5 +31,5 @@ runs:
       shell: bash
 
     - name: copy envs
-      run: cp src/app/.env.ci src/app/.env
+      run: cp .env.ci .env
       shell: bash

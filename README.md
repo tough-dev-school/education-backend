@@ -5,16 +5,18 @@
 Django-based production project, integrated with Tinkoff, Dashamail, Postmark, S3 and telegram. Frontend is built on vue.js in the [separate repo](http://github.com/f213/education-frontend).
 
 ## Configuration
-Configuration is stored in `src/app/.env`, for examples see `src/app/.env.ci`
+Configuration is stored in `.env`, for examples see `.env.ci`
 
 
 ## Installing on a local machine
 This project requires python 3.11. Python virtual environment should be installed and activated.\
 Deps are managed by [Poetry](https://python-poetry.org/) with requirements stored in [pyproject.toml](https://python-poetry.org/docs/pyproject/).
 
-Install requirements:
+Install poetry plugins and project requirements:
 
 ```bash
+poetry self add poetry-dotenv-plugin
+
 poetry install
 ```
 
@@ -34,10 +36,10 @@ postgres:
 Run the server:
 
 ```bash
-cp src/app/.env.ci src/app/.env
+cp .env.ci .env
 
-poetry run python manage.py migrate
-poetry run python manage.py createsuperuser
+poetry run python src/manage.py migrate
+poetry run python src/manage.py createsuperuser
 
 make server
 ```
