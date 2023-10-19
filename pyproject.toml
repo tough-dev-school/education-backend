@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "education-backend"
-version = "2022.10.31"
+version = "2023.10.20"
 description = ""
 authors = ["f213 <f@f213.in>"]
 readme = "README.md"
