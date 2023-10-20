@@ -16,10 +16,6 @@ runs:
       run: curl -sSL https://install.python-poetry.org | python3 -
       shell: bash
 
-    - name: install poetry dotenv plugin
-      run: poetry self add poetry-dotenv-plugin
-      shell: bash
-
     - name: install python
       id: setup-python
       uses: actions/setup-python@v4

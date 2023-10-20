@@ -12,11 +12,9 @@ Configuration is stored in `.env`, for examples see `.env.ci`
 This project requires python 3.11. Python virtual environment should be installed and activated.\
 Deps are managed by [Poetry](https://python-poetry.org/) with requirements stored in [pyproject.toml](https://python-poetry.org/docs/pyproject/).
 
-Install poetry plugins and project requirements:
+Install requirements:
 
 ```bash
-poetry self add poetry-dotenv-plugin
-
 poetry install
 ```
 
