@@ -9,8 +9,7 @@ Configuration is stored in `.env`, for examples see `.env.ci`
 
 
 ## Installing on a local machine
-This project requires python 3.11. Python virtual environment should be installed and activated.\
-Deps are managed by [Poetry](https://python-poetry.org/) with requirements stored in [pyproject.toml](https://python-poetry.org/docs/pyproject/).
+This project requires python 3.11. Deps are managed by [Poetry](https://python-poetry.org/).
 
 Install requirements:
 
@@ -21,7 +20,7 @@ poetry install
 Configure postgres and redis. It's convenient to use docker and docker-compose:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 If you don't have access to de-anonymized db image use `postgres:13.6-alpine` in `docker-compose.yml` instead:
