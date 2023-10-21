@@ -35,6 +35,7 @@ runs:
 
     - name: write python version to file
       run: echo "${{ steps.setup-python.outputs.python-version }}" > .python-version
+      shell: bash
 
     - name: upload python version to artifacts
       uses: actions/upload-artifact@v2
