@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Rebuild
+      - name: build
         uses: ./.github/actions/build
 
       - name: Run the linter
@@ -41,7 +41,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Rebuild
+      - name: build
         uses: ./.github/actions/build
 
       - name: Install locale stuff
