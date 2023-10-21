@@ -5,7 +5,7 @@
 Django-based production project, integrated with Tinkoff, Dashamail, Postmark, S3 and telegram. Frontend is built on vue.js in the [separate repo](http://github.com/f213/education-frontend).
 
 ## Configuration
-Configuration is stored in `.env`, for examples see `.env.ci`
+Configuration is stored in `src/core/.env`, for examples see `src/core/.env.ci`
 
 
 ## Installing on a local machine
@@ -33,7 +33,7 @@ postgres:
 Run the server:
 
 ```bash
-cp .env.ci .env
+cp src/core/.env.ci src/core/.env
 
 poetry run python src/manage.py migrate
 poetry run python src/manage.py createsuperuser

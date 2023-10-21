@@ -28,5 +28,5 @@ runs:
       shell: bash
 
     - name: copy envs
-      run: cp .env.ci .env
+      run: cp src/core/.env.ci src/core/.env
       shell: bash

@@ -73,7 +73,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Store default envfironment file to be runnable at the developer machine
-        run: cp .env.ci .env
+        run: cp src/core/.env.ci src/core/.env
 
       - name: Generate image identifier
         id: image

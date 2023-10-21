@@ -1,14 +1,17 @@
-"""Read .env file"""
-import os.path
+import environ  # type: ignore[import-untyped]
 
-import environ  # type: ignore
+from core.conf.boilerplate import BASE_DIR
 
 env = environ.Env(
     DEBUG=(bool, False),
     CI=(bool, False),
 )
-if os.path.exists(".env"):
-    environ.Env.read_env(".env")  # reading .env file
+
+envpath = BASE_DIR / ".env"
+
+if envpath.exists():
+    env.read_env(envpath)
+
 
 __all__ = [
     "env",
