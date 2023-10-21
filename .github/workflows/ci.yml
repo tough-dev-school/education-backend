@@ -19,9 +19,6 @@ jobs:
       - name: read python version from file
         run: echo "python-version=$(cat .python-version)" >> $GITHUB_ENV
 
-      - name: use python version
-        run: echo "pyversion is — ${{ env.python-version }}"
-
       - name: lint
         run: make lint
 
@@ -137,7 +134,7 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:latest
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }}
           build-args: |
-            PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
+            PYTHON_VERSION=${{ env.python-version }}
             RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -152,7 +149,7 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:latest
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:${{ github.sha }}
           build-args: |
-            PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
+            PYTHON_VERSION=${{ env.python-version }}
             RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
