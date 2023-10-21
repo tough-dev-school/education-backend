@@ -27,6 +27,6 @@ runs:
       run: poetry install --no-interaction --no-root
       shell: bash
 
-    - name: copy envs
+    - name: restore default environment
       run: cp src/core/.env.ci src/core/.env
       shell: bash
