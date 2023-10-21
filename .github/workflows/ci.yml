@@ -20,7 +20,7 @@ jobs:
         run: echo "python-version=$(cat .python-version)" >> $GITHUB_ENV
 
       - name: use python version
-        run: echo "pyversion is — $python-version"
+        run: echo "pyversion is — ${{ env.python-version }}"
 
       - name: lint
         run: make lint
