@@ -4,12 +4,22 @@ runs:
   using: composite
 
   steps:
+    - name: get poetry version
+      id: poetry-version
+      run: |
+        if command -v poetry >/dev/null 2>&1; then
+          echo "::set-output name=version::$(poetry --version)"
+        else
+          echo "::set-output name=version::none"
+        fi
+      shell: bash
+
     - name: load cached poetry installation
       id: cached-poetry
       uses: actions/cache@v3
       with:
         path: ~/.local
-        key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+        key: poetry-${{ runner.os }}-${{ steps.poetry-version.outputs.version }}
 
     - name: install poetry
       if: steps.cached-poetry.outputs.cache-hit != 'true'
