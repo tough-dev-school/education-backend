@@ -63,20 +63,17 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
 
-      - name: set up python
-        uses: actions/setup-python@v4
-        id: setup-python
+      - name: download python version from artifacts
+        id: download-artifacts
+        uses: actions/download-artifact@v2
         with:
-          python-version-file: 'pyproject.toml'
+          name: python-version
 
       - name: set up qemu
         uses: docker/setup-qemu-action@v2
 
       - name: set up buildx
         uses: docker/setup-buildx-action@v2
-
-      - name: store default envfironment file to be runnable at the developer machine
-        run: cp src/core/.env.ci src/core/.env
 
       - name: generate image identifier
         id: image
@@ -92,6 +89,9 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: export poetry deps to .txt
+        run: make deps-export
+
       - name: build dev image
         uses: docker/build-push-action@v3
         with:
@@ -104,7 +104,7 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/dev-backend:${{ github.sha }}
 
           build-args: |
-            PYTHON_VERSION=${{ steps.setup-python.outputs.python-version }}
+            PYTHON_VERSION=${{ steps.download-artifacts.outputs.version }}
             RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

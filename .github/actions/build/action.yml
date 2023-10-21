@@ -33,6 +33,12 @@ runs:
         cache: 'poetry'
         python-version-file: 'pyproject.toml'
 
+    - name: upload python version to artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: python-version
+        path: ${{ steps.setup-python.outputs.python-version }}
+
     - name: install deps
       run: poetry install --no-interaction --no-root
       shell: bash
