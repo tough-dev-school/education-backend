@@ -4,8 +4,7 @@ runs:
   using: composite
 
   steps:
-    - name: get poetry version
-      id: poetry-version
+    - name: save poetry version to github env
       run: |
         if command -v poetry >/dev/null 2>&1; then
           echo "poetry-version=$(poetry --version)" >> $GITHUB_ENV
