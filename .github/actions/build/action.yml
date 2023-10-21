@@ -33,15 +33,9 @@ runs:
         cache: 'poetry'
         python-version-file: 'pyproject.toml'
 
-    - name: write python version to file
-      run: echo "${{ steps.setup-python.outputs.python-version }}" > .python-version
+    - name: save python version to github env
+      run: echo "python-version=${{ steps.setup-python.outputs.python-version }}" >> $GITHUB_ENV
       shell: bash
-
-    - name: upload python version to artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: python-version
-        path: .python-version
 
     - name: install deps
       run: poetry install --no-interaction --no-root

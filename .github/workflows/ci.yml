@@ -16,12 +16,6 @@ jobs:
       - name: build
         uses: ./.github/actions/build
 
-      - name: try to read poetry version outside crossplatform action
-        run: echo "poetry version is — ${{ env.poetry-version }}"
-
-      - name: read python version from file
-        run: echo "python-version=$(cat .python-version)" >> $GITHUB_ENV
-
       - name: lint
         run: make lint
 
@@ -79,14 +73,6 @@ jobs:
 
       - name: build
         uses: ./.github/actions/build
-
-      - name: download python version from artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: python-version
-
-      - name: read python version from file
-        run: echo "python-version=$(cat .python-version)" >> $GITHUB_ENV
 
       - name: set up qemu
         uses: docker/setup-qemu-action@v2

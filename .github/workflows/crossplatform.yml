@@ -63,13 +63,8 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
 
-      - name: download python version from artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: python-version
-
-      - name: read python version from file
-        run: echo "python-version=$(cat .python-version)" >> $GITHUB_ENV
+      - name: build
+        uses: ./.github/actions/build
 
       - name: set up qemu
         uses: docker/setup-qemu-action@v2
