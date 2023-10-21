@@ -9,12 +9,13 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: checkout
+        uses: actions/checkout@v3
 
       - name: build
         uses: ./.github/actions/build
 
-      - name: Run the linter
+      - name: lint
         run: make lint
 
   test:
@@ -38,17 +39,18 @@ jobs:
           - 6379:6379
 
     steps:
-      - uses: actions/checkout@v3
+      - name: checkout
+        uses: actions/checkout@v3
 
       - name: build
         uses: ./.github/actions/build
 
-      - name: Install locale stuff
+      - name: install locale stuff
         run: |
           sudo apt-get update
           sudo apt-get --no-install-recommends install -y locales-all gettext
 
-      - name: Run the tests
+      - name: test
         env:
           DATABASE_URL: postgres://postgres:secret@localhost:5432/postgres
           REDISCLOUD_URL: redis://localhost:6379/5
@@ -58,30 +60,31 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: checkout
         uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
+      - name: set up python
+        uses: actions/setup-python@v4
         id: setup-python
         with:
           python-version-file: 'pyproject.toml'
 
-      - name: Set up QEMU
+      - name: set up qemu
         uses: docker/setup-qemu-action@v2
 
-      - name: Set up Docker Buildx
+      - name: set up buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Store default envfironment file to be runnable at the developer machine
+      - name: store default envfironment file to be runnable at the developer machine
         run: cp src/core/.env.ci src/core/.env
 
-      - name: Generate image identifier
+      - name: generate image identifier
         id: image
         uses: ASzc/change-string-case-action@v5
         with:
           string: ${{ github.repository_owner }}
 
-      - name: Login to GitHub Container Registry
+      - name: login to ghcr
         uses: docker/login-action@v2
         if: ${{ github.ref == 'refs/heads/master' }}
         with:
@@ -89,7 +92,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build dev image
+      - name: build dev image
         uses: docker/build-push-action@v3
         with:
           context: .

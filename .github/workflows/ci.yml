@@ -10,12 +10,13 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: checkout
+        uses: actions/checkout@v3
 
       - name: build
         uses: ./.github/actions/build
 
-      - name: Run the linter
+      - name: lint
         run: make lint
 
   test:
@@ -44,18 +45,18 @@ jobs:
       - name: build
         uses: ./.github/actions/build
 
-      - name: Install locale stuff
+      - name: install locale stuff
         run: |
           sudo apt-get update
           sudo apt-get --no-install-recommends install -y locales-all gettext
 
-      - name: Run the tests
+      - name: test
         env:
           DATABASE_URL: postgres://postgres:secret@localhost:5432/postgres
           REDISCLOUD_URL: redis://localhost:6379/5
         run: make test
 
-      - name: Upload code coverage to codeclimate
+      - name: upload code coverage to codeclimate
         uses: paambaati/codeclimate-action@v3.2.0
         env:
           CC_TEST_REPORTER_ID: dd4cac59d43b52ee4c29cfed9d5162098a49ff65d9e72003abc1fa65cd608f1d
@@ -67,7 +68,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: checkout
         uses: actions/checkout@v3
 
       - uses: actions/setup-python@v4
@@ -75,22 +76,22 @@ jobs:
         with:
           python-version-file: 'pyproject.toml'
 
-      - name: Set up QEMU
+      - name: set up qemu
         uses: docker/setup-qemu-action@v2
 
-      - name: Set up Docker Buildx
+      - name: set up buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Store default envfironment file to be runnable at the developer machine
+      - name: store default envfironment file to be runnable at the developer machine
         run: cp src/core/.env.ci src/core/.env
 
-      - name: Generate image identifier
+      - name: generate image identifier
         id: image
         uses: ASzc/change-string-case-action@v5
         with:
           string: ${{ github.repository_owner }}
 
-      - name: Login to GitHub Container Registry
+      - name: login to ghcr
         uses: docker/login-action@v2
         if: ${{ github.ref == 'refs/heads/master' }}
         with:
@@ -98,7 +99,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build web image
+      - name: build web image
         uses: docker/build-push-action@v3
         with:
           context: .
@@ -114,7 +115,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Build worker image
+      - name: build worker image
         uses: docker/build-push-action@v3
         with:
           context: .
@@ -129,7 +130,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Build scheduler image
+      - name: build scheduler image
         uses: docker/build-push-action@v3
         with:
           context: .
@@ -149,10 +150,10 @@ jobs:
     if: github.ref == 'refs/heads/master' && github.repository_owner == 'tough-dev-school'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: checkout
         uses: actions/checkout@v3
 
-      - name: Draft Sentry release
+      - name: draft sentry release
         uses: getsentry/action-release@v1
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
@@ -162,13 +163,13 @@ jobs:
           environment: production
           finalize: false
 
-      - name: Read image identifiers
+      - name: read image identifiers
         id: image
         uses: ASzc/change-string-case-action@v5
         with:
           string: ${{ github.repository_owner }}
 
-      - name: Update backend image
+      - name: update backend image
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.DEPLOY_HOST }}
@@ -176,7 +177,7 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: docker service update app_backend --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:${{ github.sha }} --with-registry-auth
 
-      - name: Update celery worker image
+      - name: update celery worker image
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.DEPLOY_HOST }}
@@ -184,7 +185,7 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: docker service update app_worker --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }} --with-registry-auth
 
-      - name: Update celery amocrm worker image
+      - name: update celery amocrm worker image
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.DEPLOY_HOST }}
@@ -192,7 +193,7 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: docker service update app_amocrm-worker --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }} --with-registry-auth
 
-      - name: Update celery scheduler image
+      - name: update celery scheduler image
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.DEPLOY_HOST }}
@@ -201,7 +202,7 @@ jobs:
           script: |
             docker service update app_scheduler --detach --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:${{ github.sha }} --with-registry-auth
 
-      - name: Finalize Sentry release
+      - name: finalize sentry release
         uses: getsentry/action-release@v1
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
