@@ -16,6 +16,9 @@ jobs:
       - name: build
         uses: ./.github/actions/build
 
+      - name: try to read poetry version outside crossplatform action
+        run: echo "poetry version is — ${{ env.poetry-version }}"
+
       - name: read python version from file
         run: echo "python-version=$(cat .python-version)" >> $GITHUB_ENV
 
