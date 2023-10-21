@@ -8,9 +8,9 @@ runs:
       id: poetry-version
       run: |
         if command -v poetry >/dev/null 2>&1; then
-          echo "::set-output name=version::$(poetry --version)"
+          echo "poetry-version=$(poetry --version)" >> $GITHUB_ENV
         else
-          echo "::set-output name=version::none"
+          echo "poetry-version=none" >> $GITHUB_ENV
         fi
       shell: bash
 
@@ -19,7 +19,7 @@ runs:
       uses: actions/cache@v3
       with:
         path: ~/.local
-        key: poetry-${{ runner.os }}-${{ steps.poetry-version.outputs.version }}
+        key: poetry-${{ runner.os }}-${{ env.poetry_version }}
 
     - name: install poetry
       if: steps.cached-poetry.outputs.cache-hit != 'true'
@@ -33,11 +33,14 @@ runs:
         cache: 'poetry'
         python-version-file: 'pyproject.toml'
 
+    - name: write python version to file
+      run: echo "${{ steps.setup-python.outputs.python-version }}" > .python-version
+
     - name: upload python version to artifacts
       uses: actions/upload-artifact@v2
       with:
         name: python-version
-        path: ${{ steps.setup-python.outputs.python-version }}
+        path: .python-version
 
     - name: install deps
       run: poetry install --no-interaction --no-root

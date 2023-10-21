@@ -64,10 +64,12 @@ jobs:
         uses: actions/checkout@v3
 
       - name: download python version from artifacts
-        id: download-artifacts
         uses: actions/download-artifact@v2
         with:
           name: python-version
+
+      - name: read python version from file
+        run: echo "python-version=$(cat .python-version)" >> $GITHUB_ENV
 
       - name: set up qemu
         uses: docker/setup-qemu-action@v2
@@ -104,7 +106,7 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/dev-backend:${{ github.sha }}
 
           build-args: |
-            PYTHON_VERSION=${{ steps.download-artifacts.outputs.version }}
+            PYTHON_VERSION=${{ env.python-version }}
             RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
