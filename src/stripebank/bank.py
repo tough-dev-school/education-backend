@@ -7,6 +7,7 @@ from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 from banking.base import Bank
+from stripebank.models import StripeNotification
 
 
 class StripeBank(Bank):
@@ -29,6 +30,18 @@ class StripeBank(Bank):
         )
 
         return session.url
+
+    def refund(self) -> None:
+        stripe.api_key = settings.STRIPE_API_KEY
+
+        payment_completed_notification = (
+            StripeNotification.objects.filter(
+                order=self.order,
+                event_type="checkout.session.completed",
+            ).order_by("-id")
+        )[0]
+
+        stripe.Refund.create(payment_intent=payment_completed_notification.payment_intent)
 
     def get_items(self) -> list[dict[str, Any]]:
         return [

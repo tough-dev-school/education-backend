@@ -36,7 +36,7 @@ def mark_order_as_paid_on_stripe_notifications(instance: StripeNotification, cre
     if not created:
         return
 
-    if instance.status != "complete":
+    if instance.event_type != "checkout.session.completed":
         return
 
     instance.order.set_paid()

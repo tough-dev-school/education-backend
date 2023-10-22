@@ -1,4 +1,3 @@
-import json
 import pytest
 
 from stripebank.bank import StripeBank
@@ -29,12 +28,3 @@ def course(factory):
 @pytest.fixture
 def order(course, factory):
     return factory.order(item=course, price=100500, is_paid=False)
-
-
-@pytest.fixture
-def webhook(order):
-    with open("./stripebank/tests/.fixtures/webhook.json", "r") as fp:
-        webhook = json.load(fp)
-        webhook["data"]["object"]["client_reference_id"] = order.slug
-
-        return webhook
