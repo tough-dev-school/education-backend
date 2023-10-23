@@ -1,5 +1,8 @@
----
 name: Crossplatform nightly
+
+env:
+  poetry-version: 1.6.1
+
 on:
   schedule:
     - cron: '30 4 * * *'

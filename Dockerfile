@@ -1,4 +1,13 @@
 ARG PYTHON_VERSION
+FROM python:${PYTHON_VERSION}-slim-bullseye as deps-compile
+
+ARG POETRY_VERSION
+RUN pip install poetry==${POETRY_VERSION}
+
+WORKDIR /
+COPY poetry.lock pyproject.toml /
+RUN poetry export --format=requirements.txt > requirements.txt --without-hashes
+
 FROM python:${PYTHON_VERSION}-slim-bullseye as base
 LABEL maintainer="fedor@borshev.com"
 
@@ -33,7 +42,7 @@ RUN wget -O uwsgi-${_UWSGI_VERSION}.tar.gz https://github.com/unbit/uwsgi/archiv
 
 RUN pip install --no-cache-dir --upgrade pip
 
-COPY requirements.txt /
+COPY --from=deps-compile /requirements.txt /
 
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -47,16 +56,13 @@ ENV NO_CACHE=Off
 
 USER nobody
 
-
 FROM base as web
 HEALTHCHECK CMD wget -q -O /dev/null http://localhost:8000/api/v2/healthchecks/db/ --header "Host: app.tough-dev.school" || exit 1
 CMD ./manage.py migrate && uwsgi --master --http :8000 --module app.wsgi --workers 2 --threads 2 --harakiri 25 --max-requests 1000 --log-x-forwarded-for
 
-
 FROM base as worker
 HEALTHCHECK CMD celery -A ${CELERY_APP} inspect ping -d $QUEUE@$HOSTNAME
 CMD celery -A ${CELERY_APP} worker -Q $QUEUE -c ${CONCURENCY:-2} -n "${QUEUE}@%h" --max-tasks-per-child ${MAX_REQUESTS_PER_CHILD:-50} --time-limit ${TIME_LIMIT:-900} --soft-time-limit ${SOFT_TIME_LIMIT:-45}
-
 
 FROM base as scheduler
 ENV SCHEDULER_DB_PATH=/var/db/scheduler
