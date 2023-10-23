@@ -1,8 +1,5 @@
 manage = poetry run python src/manage.py
 
-deps-export:
-	poetry export --format=requirements.txt > requirements.txt --without-hashes
-
 fmt:
 	poetry run autoflake --in-place --remove-all-unused-imports --recursive src
 	poetry run isort src

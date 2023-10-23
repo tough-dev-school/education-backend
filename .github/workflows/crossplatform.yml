@@ -89,9 +89,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: export poetry deps to .txt
-        run: make deps-export
-
       - name: build dev image
         uses: docker/build-push-action@v3
         with:
