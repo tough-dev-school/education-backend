@@ -4,15 +4,6 @@ runs:
   using: composite
 
   steps:
-    - name: save poetry version to github env
-      run: |
-        if command -v poetry >/dev/null 2>&1; then
-          echo "poetry-version=$(poetry --version)" >> $GITHUB_ENV
-        else
-          echo "poetry-version=none" >> $GITHUB_ENV
-        fi
-      shell: bash
-
     - name: load cached poetry installation
       id: cached-poetry
       uses: actions/cache@v3
@@ -21,9 +12,9 @@ runs:
         key: poetry-${{ runner.os }}-${{ env.poetry-version }}
 
     - name: install poetry
-      if: steps.cached-poetry.outputs.cache-hit != 'true'
-      run: curl -sSL https://install.python-poetry.org | python3 -
-      shell: bash
+      uses: snok/install-poetry@v1
+      with:
+        version: ${{ env.poetry-version }}
 
     - name: install python
       id: setup-python

@@ -1,5 +1,8 @@
----
 name: CI
+
+env:
+  poetry-version: 1.6.1
+
 on:
   push:
     branches:
