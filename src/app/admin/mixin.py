@@ -54,6 +54,7 @@ class AppAdminMixin:
         defaults = {}
         if obj is None and hasattr(self, "add_form") and self.add_form is not None:
             defaults["form"] = self.add_form
+
         defaults.update(kwargs)
 
         return super().get_form(request, obj, **defaults)  # type: ignore
