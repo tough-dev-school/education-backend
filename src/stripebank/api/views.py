@@ -7,14 +7,14 @@ from rest_framework.views import APIView
 
 from django.conf import settings
 
-from stripebank.services.stripe_webhook_saver import StripeWebhookSaver
+from stripebank.services.stripe_webhook_router import StripeWebhookRouter
 
 
 class StripeWebhookView(APIView):
     permission_classes = [AllowAny]  # validation is done later by stripe StripeWebhookSaver
 
     def post(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
-        StripeWebhookSaver(
+        StripeWebhookRouter(
             request=request,
             stripe_webhook_secret=settings.STRIPE_WEBHOOK_SECRET,
         )()
