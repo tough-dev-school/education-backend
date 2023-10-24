@@ -20,7 +20,7 @@ def study(factory):
 
 
 @pytest.fixture
-def data(faker, study):
+def data(study):
     return {
         "course": study.course.id,
         "student": study.student.id,
