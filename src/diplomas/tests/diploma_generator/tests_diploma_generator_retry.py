@@ -8,6 +8,7 @@ from diplomas.services.diploma_generator import WrongDiplomaServiceResponse
 pytestmark = [
     pytest.mark.slow,
     pytest.mark.django_db,
+    pytest.mark.usefixtures("order"),
 ]
 
 RUNS = 0
