@@ -28,6 +28,7 @@ runs:
       shell: bash
 
     - name: install deps
+      if: steps.setup-python.outputs.cache-hit != 'true'
       run: poetry install --no-interaction --no-root
       shell: bash
 
