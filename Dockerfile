@@ -1,5 +1,5 @@
 ARG PYTHON_VERSION
-FROM python:${PYTHON_VERSION}-slim-bullseye as deps-compile
+FROM python:${PYTHON_VERSION}-slim-bookworm as deps-compile
 
 ARG POETRY_VERSION
 RUN pip install poetry==${POETRY_VERSION}
@@ -8,7 +8,7 @@ WORKDIR /
 COPY poetry.lock pyproject.toml /
 RUN poetry export --format=requirements.txt > requirements.txt --without-hashes
 
-FROM python:${PYTHON_VERSION}-slim-bullseye as base
+FROM python:${PYTHON_VERSION}-slim-bookworm as base
 LABEL maintainer="fedor@borshev.com"
 
 LABEL com.datadoghq.ad.logs='[{"source": "uwsgi", "service": "django"}]'
@@ -22,7 +22,7 @@ ENV CELERY_APP=core.celery
 ENV _UWSGI_VERSION 2.0.21
 ENV _WAITFOR_VERSION 2.2.3
 
-RUN echo deb http://deb.debian.org/debian buster contrib non-free > /etc/apt/sources.list.d/debian-contrib.list \
+RUN echo "deb http://deb.debian.org/debian buster main" >> /etc/apt/sources.list \
   && apt-get update \
   && apt-get --no-install-recommends install -y gettext locales-all wget imagemagick tzdata git netcat \
   && rm -rf /var/lib/apt/lists/*
