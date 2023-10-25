@@ -1,3 +1,4 @@
+import json
 import pytest
 
 from stripebank.bank import StripeBank
@@ -28,3 +29,40 @@ def course(factory):
 @pytest.fixture
 def order(course, factory):
     return factory.order(item=course, price=100500, is_paid=False)
+
+
+@pytest.fixture
+def load_stipe_webhook():
+    def load_filename(webhook_filename: str):
+        with open(f"./stripebank/tests/.fixtures/{webhook_filename}", "r") as fp:
+            return json.load(fp)
+
+    return load_filename
+
+
+@pytest.fixture
+def _disable_signature_verification(mocker):
+    mocker.patch("stripe.webhook.WebhookSignature.verify_header", return_value=True)
+
+
+@pytest.fixture
+def webhook_checkout_session_completed(load_stipe_webhook, order):
+    webhook_data = load_stipe_webhook("webhook_checkout_session_completed.json")
+    webhook_data["data"]["object"]["client_reference_id"] = order.slug
+    return webhook_data
+
+
+@pytest.fixture
+def webhook_charge_refunded(load_stipe_webhook):
+    return load_stipe_webhook("webhook_charge_refunded.json")
+
+
+@pytest.fixture
+def stripe_notification_checkout_completed(order, mixer):
+    return mixer.blend(
+        "stripebank.StripeNotification",
+        order=order,
+        event_type="checkout.session.completed",
+        payment_intent="pi_3O42fCHFzM1bXe8Q0EbUXgsQ",
+        amount=50,
+    )

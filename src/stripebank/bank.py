@@ -56,3 +56,7 @@ class StripeBank(Bank):
                 "quantity": 1,
             },
         ]
+
+    @staticmethod
+    def convert_amount(stripe_amount: int) -> Decimal:
+        return Decimal(Decimal(stripe_amount) / 100 * StripeBank.ue)
