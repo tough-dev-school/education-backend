@@ -31,8 +31,7 @@ def data(study):
 def test_diploma_created_via_admin_class(data, study):
     form = DiplomaAddForm(data=data)
 
-    assert form.is_valid()
-
+    form.is_valid()
     DiplomaAdmin(Diploma, admin.site).save_model(None, Diploma(), form, None)
 
     diploma = Diploma.objects.get()

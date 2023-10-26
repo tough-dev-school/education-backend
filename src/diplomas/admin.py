@@ -76,7 +76,7 @@ class DiplomaAdmin(ModelAdmin):
         "study__student__email",
     )
 
-    def save_model(self, request: "HttpRequest", obj: "Diploma", form: "DiplomaAddForm", change: bool) -> None:  #
+    def save_model(self, request: "HttpRequest", obj: "Diploma", form: "DiplomaAddForm", change: bool) -> None:
         obj = form.save(commit=False)
 
         obj.study = form.cleaned_data["study"]
