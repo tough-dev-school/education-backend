@@ -9,12 +9,12 @@ runs:
       uses: actions/cache@v3
       with:
         path: ~/.local
-        key: poetry-${{ runner.os }}-${{ env.poetry-version }}
+        key: poetry-v1-${{ hashFiles('pyproject.toml') }}
 
     - name: install poetry
       uses: snok/install-poetry@v1
       with:
-        version: ${{ env.poetry-version }}
+        version: 1.6.1
 
     - name: install python
       id: setup-python
@@ -23,7 +23,11 @@ runs:
         cache: 'poetry'
         python-version-file: 'pyproject.toml'
 
-    - name: save python version to github env
+    - name: make sure poetry lockfile is up to date
+      run: poetry check --lock && echo Lockfile is ok, $(poetry --version)
+      shell: bash
+
+    - name: save python version to the env
       run: echo "python-version=${{ steps.setup-python.outputs.python-version }}" >> $GITHUB_ENV
       shell: bash
 

@@ -5,16 +5,16 @@ ARG PYTHON_VERSION
 #
 FROM python:${PYTHON_VERSION}-slim-bookworm as deps-compile
 
-ARG POETRY_VERSION
-RUN pip install poetry==${POETRY_VERSION}
-
 WORKDIR /
 COPY poetry.lock pyproject.toml /
-RUN poetry export --format=requirements.txt > requirements.txt --without-hashes
+
+# Version is taken from poetry.lock, assuming it is generated with up-to-date version of poetry
+RUN pip install poetry==$(cat poetry.lock |head -n1|awk -v FS='(Poetry |and)' '{print $2}')
+RUN poetry export --format=requirements.txt > requirements.txt
 
 
 #
-# Compile uwsgi, cuz debian's one is weird
+# Compile custom uwsgi, cuz debian's one is weird
 #
 FROM python:${PYTHON_VERSION}-slim-bookworm as uwsgi-compile
 ENV _UWSGI_VERSION 2.0.21
@@ -25,7 +25,9 @@ RUN wget -O uwsgi-${_UWSGI_VERSION}.tar.gz https://github.com/unbit/uwsgi/archiv
   && rm -Rf uwsgi-*
 
 
-
+#
+# Base image with django dependecines
+#
 FROM python:${PYTHON_VERSION}-slim-bookworm as base
 LABEL maintainer="fedor@borshev.com"
 
@@ -40,16 +42,11 @@ ENV CELERY_APP=core.celery
 ENV _WAITFOR_VERSION 2.2.3
 
 RUN apt-get update \
-  && apt-get --no-install-recommends install -y gettext locales-all wget tzdata git netcat-traditional \
+  && apt-get --no-install-recommends install -y gettext locales-all tzdata git wait-for-it \
   && rm -rf /var/lib/apt/lists/*
 
-RUN wget -O /usr/local/bin/wait-for https://github.com/eficode/wait-for/releases/download/v${_WAITFOR_VERSION}/wait-for \
-  && chmod +x /usr/local/bin/wait-for
-
 RUN pip install --no-cache-dir --upgrade pip
-
 COPY --from=deps-compile /requirements.txt /
-
 RUN pip install --no-cache-dir -r requirements.txt
 
 WORKDIR /src

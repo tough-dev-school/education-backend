@@ -1,7 +1,5 @@
 name: CI
 
-env:
-  poetry-version: 1.6.1
 
 on:
   push:
@@ -108,7 +106,6 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:${{ github.sha }}
 
           build-args: |
-            POETRY_VERSION=${{ env.poetry-version }}
             PYTHON_VERSION=${{ env.python-version }}
             RELEASE=${{ github.sha }}
           cache-from: type=gha
@@ -124,7 +121,6 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:latest
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }}
           build-args: |
-            POETRY_VERSION=${{ env.poetry-version }}
             PYTHON_VERSION=${{ env.python-version }}
             RELEASE=${{ github.sha }}
           cache-from: type=gha
@@ -140,7 +136,6 @@ jobs:
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:latest
             ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:${{ github.sha }}
           build-args: |
-            POETRY_VERSION=${{ env.poetry-version }}
             PYTHON_VERSION=${{ env.python-version }}
             RELEASE=${{ github.sha }}
           cache-from: type=gha
