@@ -3019,6 +3019,27 @@ files = [
 six = ">=1.5"
 
 [[package]]
+name = "pytoolconfig"
+version = "1.2.6"
+description = "Python tool configuration"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "pytoolconfig-1.2.6-py3-none-any.whl", hash = "sha256:e8b2e538f11dbabc4617884d45401e0105e2d7db920cb8ae6baa94d66126a8e3"},
+    {file = "pytoolconfig-1.2.6.tar.gz", hash = "sha256:f2d00ea4f8cbdffd3006780ba51016618c835b338f634e3f7f8b2715b1710889"},
+]
+
+[package.dependencies]
+packaging = ">=22.0"
+platformdirs = {version = ">=1.4.4", optional = true, markers = "extra == \"global\""}
+
+[package.extras]
+doc = ["sphinx (>=4.5.0)", "tabulate (>=0.8.9)"]
+gendocs = ["pytoolconfig[doc]", "sphinx (>=4.5.0)", "sphinx-autodoc-typehints (>=1.18.1)", "sphinx-rtd-theme (>=1.0.0)"]
+global = ["platformdirs (>=1.4.4)"]
+validation = ["pydantic (>=1.7.4)"]
+
+[[package]]
 name = "pytz"
 version = "2023.3.post1"
 description = "World timezone definitions, modern and historical"
@@ -3189,6 +3210,25 @@ files = [
 [package.dependencies]
 decorator = ">=3.4.2"
 py = ">=1.4.26,<2.0.0"
+
+[[package]]
+name = "rope"
+version = "1.10.0"
+description = "a python refactoring library..."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "rope-1.10.0-py3-none-any.whl", hash = "sha256:4e9f06d7296708a8a6518590c49352c99394053d91fde5b1d74c9ffc85c76d5b"},
+    {file = "rope-1.10.0.tar.gz", hash = "sha256:14bfcc7dfea69fa32c53db0667e86e321ef059de555c7f8101a0cb91c8d85a55"},
+]
+
+[package.dependencies]
+pytoolconfig = {version = ">=1.2.2", extras = ["global"]}
+
+[package.extras]
+dev = ["build (>=0.7.0)", "pre-commit (>=2.20.0)", "pytest (>=7.0.1)", "pytest-timeout (>=2.1.0)"]
+doc = ["pytoolconfig[doc]", "sphinx (>=4.5.0)", "sphinx-autodoc-typehints (>=1.18.1)", "sphinx-rtd-theme (>=1.0.0)"]
+release = ["pip-tools (>=6.12.1)", "toml (>=0.10.2)", "twine (>=4.0.2)"]
 
 [[package]]
 name = "rpds-py"
@@ -3937,4 +3977,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "dc52687b25ef2a10334bff66d7aa938e92c8efd2a9e3a1313d955e899990afef"
+content-hash = "1b33d200b818f8ab1fb4f6e40efbef7bf8fec3eb348c9962fcf88245583ee5e2"

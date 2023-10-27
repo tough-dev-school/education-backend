@@ -102,6 +102,7 @@ types-requests = "^2.31.0.2"
 types-retry = "^0.9.9.4"
 types-simplejson = "^3.19.0.2"
 types-stripe = "^3.5.2.14"
+rope = "^1.10.0"
 
 [tool.black]
 exclude = """
