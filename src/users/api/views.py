@@ -53,7 +53,7 @@ class SelfView(GenericAPIView):
         return User.objects.filter(is_active=True)
 
 
-class CourseStudentsViewSet(viewsets.ReadOnlyModelViewSet):
+class CourseStudentViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = None
     serializer_class = CourseStudentSerializer
 
