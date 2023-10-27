@@ -66,4 +66,4 @@ class CourseStudentViewSet(viewsets.ReadOnlyModelViewSet):
         return get_object_or_404(Course, id=id)
 
     def get_queryset(self) -> "QuerySet[User]":
-        return self.course.get_purchased_users().order_by("first_name")  # type: ignore[return-value]
+        return self.course.get_purchased_users().order_by("first_name", "last_name")  # type: ignore[return-value]

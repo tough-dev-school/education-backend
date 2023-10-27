@@ -40,6 +40,15 @@ def test_response_students_ordered_by_first_name(as_superuser, course, factory):
     assert response[0]["name"] < response[1]["name"] < response[2]["name"]
 
 
+def test_response_students_ordered_by_last_name(as_superuser, course, factory):
+    for student in factory.cycle(3).user(first_name="одинаковое-у-всех"):
+        factory.study(course=course, student=student)
+
+    response = as_superuser.get(f"/api/v2/users/?course={course.id}")
+
+    assert response[0]["name"] < response[1]["name"] < response[2]["name"]
+
+
 def test_perfomance(as_superuser, course, django_assert_num_queries, factory):
     factory.cycle(3).study(course=course)
 

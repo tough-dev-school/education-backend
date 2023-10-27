@@ -19,8 +19,8 @@ from users.models import User
 
 
 class DiplomaAddForm(forms.ModelForm):
-    course = forms.ModelChoiceField(label="Курс", queryset=Course.objects.all())
-    student = forms.ModelChoiceField(label="Студент", queryset=User.objects.all())
+    course = forms.ModelChoiceField(label="Курс", queryset=Course.objects.order_by("name"))
+    student = forms.ModelChoiceField(label="Студент", queryset=User.objects.order_by("first_name", "last_name"))
 
     class Meta:
         model = Diploma
