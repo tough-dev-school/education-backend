@@ -1,4 +1,5 @@
 import datetime
+from typing import no_type_check
 
 from celery import group
 from rest_framework.request import Request
@@ -33,23 +34,23 @@ class DiplomaAddForm(forms.ModelForm):
     class Media:
         js = ("admin/js/get_course_students.js",)
 
-    def clean(self) -> dict:
+    @no_type_check
+    def clean(self):
         data = super().clean()
 
-        course = data.pop("course")  # type: ignore[union-attr]
-        student = data.pop("student")  # type: ignore[union-attr]
+        course, student = data.pop("course"), data.pop("student")
 
         study = Study.objects.filter(course=course, student=student).first()
 
         if not study:
             raise forms.ValidationError(f"Студент {student.get_full_name()} не обучался на курсе «{course.name}»!")
 
-        data["study"] = study  # type: ignore[index]
+        if Diploma.objects.filter(study=study, language=data["language"]).exists():
+            raise forms.ValidationError(f"Диплом для студента {student.get_full_name()} курса «{course.name}» на языке `{data['language']}` уже существует!")
 
-        if Diploma.objects.filter(study=study, language=data["language"]).exists():  # type: ignore[index]
-            raise forms.ValidationError(f"Диплом для студента {student.get_full_name()} курса «{course.name}» на языке `{data['language']}` уже существует!")  # type: ignore[index]
+        data["study"] = study
 
-        return data  # type: ignore[return-value]
+        return data
 
 
 @admin.register(Diploma)
