@@ -34,14 +34,14 @@ class StripeBank(Bank):
     def refund(self) -> None:
         stripe.api_key = settings.STRIPE_API_KEY
 
-        payment_completed_notification = (
+        latest_payment_notification = (
             StripeNotification.objects.filter(
                 order=self.order,
                 event_type="checkout.session.completed",
             ).order_by("-id")
         )[0]
 
-        stripe.Refund.create(payment_intent=payment_completed_notification.payment_intent)
+        stripe.Refund.create(payment_intent=latest_payment_notification.payment_intent)
 
     def get_items(self) -> list[dict[str, Any]]:
         return [
@@ -56,7 +56,3 @@ class StripeBank(Bank):
                 "quantity": 1,
             },
         ]
-
-    @staticmethod
-    def convert_amount(stripe_amount: int) -> Decimal:
-        return Decimal(Decimal(stripe_amount) / 100 * StripeBank.ue)
