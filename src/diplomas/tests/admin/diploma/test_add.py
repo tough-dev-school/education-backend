@@ -1,8 +1,8 @@
 import pytest
 
 from app.admin import admin
-from diplomas.admin import DiplomaAddForm
 from diplomas.admin import DiplomaAdmin
+from diplomas.admin.forms import DiplomaAddForm
 from diplomas.models import Diploma
 from diplomas.models import Languages
 

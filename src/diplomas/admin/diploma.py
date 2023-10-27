@@ -1,56 +1,19 @@
 import datetime
-from typing import no_type_check
 
 from celery import group
 from rest_framework.request import Request
 
-from django import forms
 from django.db.models import QuerySet
 from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
 from app.admin import admin
 from app.admin import ModelAdmin
+from diplomas.admin.forms import DiplomaAddForm
 from diplomas.models import Diploma
-from diplomas.models import DiplomaTemplate
 from orders import tasks
 from products.models import Course
-from studying.models import Study
 from users.models import User
-
-
-class DiplomaAddForm(forms.ModelForm):
-    course = forms.ModelChoiceField(label="Курс", queryset=Course.objects.order_by("name"))
-    student = forms.ModelChoiceField(label="Студент", queryset=User.objects.order_by("first_name", "last_name"))
-
-    class Meta:
-        model = Diploma
-        fields = (
-            "course",
-            "student",
-            "language",
-        )
-
-    class Media:
-        js = ("admin/js/get_course_students.js",)
-
-    @no_type_check
-    def clean(self):
-        data = super().clean()
-
-        course, student = data.pop("course"), data.pop("student")
-
-        study = Study.objects.filter(course=course, student=student).first()
-
-        if not study:
-            raise forms.ValidationError(f"Студент {student.get_full_name()} не обучался на курсе «{course.name}»!")
-
-        if Diploma.objects.filter(study=study, language=data["language"]).exists():
-            raise forms.ValidationError(f"Диплом для студента {student.get_full_name()} курса «{course.name}» на языке `{data['language']}` уже существует!")
-
-        data["study"] = study
-
-        return data
 
 
 @admin.register(Diploma)
@@ -114,19 +77,3 @@ class DiplomaAdmin(ModelAdmin):
         generate_diplomas.skew(step=2).apply_async()
 
         self.message_user(request, f"Started generation of {len(order_ids)} diplomas")
-
-
-@admin.register(DiplomaTemplate)
-class DiplomaTemplateAdmin(ModelAdmin):
-    fields = list_display = (
-        "course",
-        "language",
-        "slug",
-        "homework_accepted",
-    )
-
-    list_editable = [
-        "slug",
-        "language",
-        "homework_accepted",
-    ]
