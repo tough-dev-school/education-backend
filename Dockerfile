@@ -8,6 +8,15 @@ WORKDIR /
 COPY poetry.lock pyproject.toml /
 RUN poetry export --format=requirements.txt > requirements.txt --without-hashes
 
+
+FROM python:${PYTHON_VERSION}-slim-bookworm as uwsgi-compile
+ENV _UWSGI_VERSION 2.0.21
+RUN apt-get update && apt-get --no-install-recommends install -y build-essential wget
+RUN wget -O uwsgi-${_UWSGI_VERSION}.tar.gz https://github.com/unbit/uwsgi/archive/${_UWSGI_VERSION}.tar.gz \
+  && tar zxvf uwsgi-*.tar.gz \
+  && UWSGI_BIN_NAME=/uwsgi make -C uwsgi-${_UWSGI_VERSION} \
+  && rm -Rf uwsgi-*
+
 FROM python:${PYTHON_VERSION}-slim-bookworm as base
 LABEL maintainer="fedor@borshev.com"
 
@@ -19,7 +28,6 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV STATIC_ROOT /var/lib/django-static
 ENV CELERY_APP=core.celery
 
-ENV _UWSGI_VERSION 2.0.21
 ENV _WAITFOR_VERSION 2.2.3
 
 RUN echo "deb http://deb.debian.org/debian buster main" >> /etc/apt/sources.list \
@@ -34,11 +42,6 @@ RUN apt-get update && apt-get --no-install-recommends install -y build-essential
 
 RUN wget -O /usr/local/bin/wait-for https://github.com/eficode/wait-for/releases/download/v${_WAITFOR_VERSION}/wait-for \
   && chmod +x /usr/local/bin/wait-for
-
-RUN wget -O uwsgi-${_UWSGI_VERSION}.tar.gz https://github.com/unbit/uwsgi/archive/${_UWSGI_VERSION}.tar.gz \
-  && tar zxvf uwsgi-*.tar.gz \
-  && UWSGI_BIN_NAME=/usr/local/bin/uwsgi make -C uwsgi-${_UWSGI_VERSION} \
-  && rm -Rf uwsgi-*
 
 RUN pip install --no-cache-dir --upgrade pip
 
@@ -57,6 +60,7 @@ ENV NO_CACHE=Off
 USER nobody
 
 FROM base as web
+COPY --from=uwsgi-compile /uwsgi /usr/local/bin/
 HEALTHCHECK CMD wget -q -O /dev/null http://localhost:8000/api/v2/healthchecks/db/ --header "Host: app.tough-dev.school" || exit 1
 CMD ./manage.py migrate && uwsgi --master --http :8000 --module app.wsgi --workers 2 --threads 2 --harakiri 25 --max-requests 1000 --log-x-forwarded-for
 
