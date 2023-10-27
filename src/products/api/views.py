@@ -9,7 +9,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from django.http import HttpResponseRedirect
-from django.http import JsonResponse
 
 from app.pricing import format_price
 from banking import price_calculator
@@ -24,15 +23,7 @@ from products.api.serializers import PurchaseSerializer
 from products.models import Course
 
 if TYPE_CHECKING:
-    from django.http import HttpRequest
-
-
-def get_course_students(request: "HttpRequest", course_id: int) -> "JsonResponse":
-    course = get_object_or_404(Course, id=course_id)
-
-    students = course.get_purchased_users().values("id", "username")
-
-    return JsonResponse(list(students), safe=False)
+    pass
 
 
 class PromocodeView(APIView):

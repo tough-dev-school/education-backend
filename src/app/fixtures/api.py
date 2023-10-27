@@ -24,5 +24,12 @@ def as_() -> Callable[[User | None], DRFClient]:
 
 
 @pytest.fixture
+def as_superuser(as_, user):
+    user.update(is_staff=True, is_superuser=True)
+
+    return as_(user)
+
+
+@pytest.fixture
 def as_user(as_: Callable, user: User) -> DRFClient:
     return as_(user)

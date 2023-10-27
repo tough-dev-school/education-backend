@@ -17,7 +17,17 @@ __all__ = [
 ]
 
 
-class DefaultModel(models.Model):
+class UpdateMixin:
+    def update(self: "Type[models.Model]", **kwargs: dict) -> "Type[models.Model]":  # type: ignore[misc]
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+        self.save(update_fields=kwargs.keys())  # type: ignore[call-arg]
+
+        return self
+
+
+class DefaultModel(UpdateMixin, models.Model):
     class Meta:
         abstract = True
 

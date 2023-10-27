@@ -1,16 +1,22 @@
 from typing import Any
 
 from rest_framework import permissions
+from rest_framework import viewsets
 from rest_framework.generics import GenericAPIView
+from rest_framework.generics import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.response import Response
 
+from django.contrib.auth.models import User
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import QuerySet
+from django.utils.functional import cached_property
 
 from app.current_user import get_current_user
+from products.models import Course
+from users.api.serializers import CourseStudentSerializer
 from users.api.serializers import UserSerializer
-from users.models import User
+from users.models import User  # type: ignore[assignment]
 from users.services import UserUpdater
 
 
@@ -26,7 +32,7 @@ class SelfView(GenericAPIView):
 
     def patch(self, request: Request) -> Response:
         user_updater = UserUpdater(
-            user=self.get_object(),
+            user=self.get_object(),  # type: ignore[arg-type]
             user_data=request.data,
         )
 
@@ -45,3 +51,17 @@ class SelfView(GenericAPIView):
 
     def get_queryset(self) -> QuerySet[User]:
         return User.objects.filter(is_active=True)
+
+
+class CourseStudentsViewSet(viewsets.ReadOnlyModelViewSet):
+    pagination_class = None
+    serializer_class = CourseStudentSerializer
+
+    @cached_property
+    def course(self) -> "Course":
+        id = self.request.query_params.get("course")
+
+        return get_object_or_404(Course, id=id)
+
+    def get_queryset(self) -> "QuerySet[User]":
+        return self.course.get_purchased_users().order_by("first_name")  # type: ignore[return-value]

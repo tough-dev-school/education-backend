@@ -12,11 +12,12 @@ from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
 from app.models import models
+from app.models import UpdateMixin
 from app.types import Language
 from diplomas.models import Languages
 
 
-class User(AbstractUser):
+class User(UpdateMixin, AbstractUser):
     class GENDERS(TextChoices):
         MALE = "male", _("Male")
         FEMALE = "female", _("Female")

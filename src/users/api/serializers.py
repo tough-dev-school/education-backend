@@ -30,3 +30,11 @@ class UserSafeSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
         ]
+
+
+class CourseStudentSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(source="__str__")
+
+    class Meta:
+        model = User
+        fields = ("id", "name")
