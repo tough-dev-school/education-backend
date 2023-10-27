@@ -17,6 +17,13 @@ jobs:
       - name: build
         uses: ./.github/actions/build
 
+      - name: restore mypy cache
+        uses: actions/cache@v3
+        with:
+          path: .mypy_cache
+          key: mypy-cache-${{ github.ref_name }}
+          restore-keys: mypy-cache-master
+
       - name: lint
         run: make lint
 
