@@ -1,4 +1,8 @@
 ARG PYTHON_VERSION
+
+#
+# Build poetry and export compiled dependecines as plain requirements.txt
+#
 FROM python:${PYTHON_VERSION}-slim-bookworm as deps-compile
 
 ARG POETRY_VERSION
@@ -9,6 +13,9 @@ COPY poetry.lock pyproject.toml /
 RUN poetry export --format=requirements.txt > requirements.txt --without-hashes
 
 
+#
+# Compile uwsgi, cuz debian's one is weird
+#
 FROM python:${PYTHON_VERSION}-slim-bookworm as uwsgi-compile
 ENV _UWSGI_VERSION 2.0.21
 RUN apt-get update && apt-get --no-install-recommends install -y build-essential wget
@@ -16,6 +23,8 @@ RUN wget -O uwsgi-${_UWSGI_VERSION}.tar.gz https://github.com/unbit/uwsgi/archiv
   && tar zxvf uwsgi-*.tar.gz \
   && UWSGI_BIN_NAME=/uwsgi make -C uwsgi-${_UWSGI_VERSION} \
   && rm -Rf uwsgi-*
+
+
 
 FROM python:${PYTHON_VERSION}-slim-bookworm as base
 LABEL maintainer="fedor@borshev.com"
@@ -30,14 +39,8 @@ ENV CELERY_APP=core.celery
 
 ENV _WAITFOR_VERSION 2.2.3
 
-RUN echo "deb http://deb.debian.org/debian buster main" >> /etc/apt/sources.list \
-  && apt-get update \
-  && apt-get --no-install-recommends install -y gettext locales-all wget imagemagick tzdata git netcat \
-  && rm -rf /var/lib/apt/lists/*
-
-RUN apt-get update && apt-get --no-install-recommends install -y build-essential libxml2-dev libxslt1-dev \
-  && apt-get --no-install-recommends install -y libjpeg62-turbo-dev libjpeg-dev libfreetype6-dev libtiff5-dev liblcms2-dev libwebp-dev tk8.6-dev \
-  && apt-get --no-install-recommends install -y libffi-dev libcgraph6 libgraphviz-dev libmagic-dev \
+RUN apt-get update \
+  && apt-get --no-install-recommends install -y gettext locales-all wget tzdata git netcat-traditional \
   && rm -rf /var/lib/apt/lists/*
 
 RUN wget -O /usr/local/bin/wait-for https://github.com/eficode/wait-for/releases/download/v${_WAITFOR_VERSION}/wait-for \
@@ -62,7 +65,7 @@ USER nobody
 FROM base as web
 COPY --from=uwsgi-compile /uwsgi /usr/local/bin/
 HEALTHCHECK CMD wget -q -O /dev/null http://localhost:8000/api/v2/healthchecks/db/ --header "Host: app.tough-dev.school" || exit 1
-CMD ./manage.py migrate && uwsgi --master --http :8000 --module app.wsgi --workers 2 --threads 2 --harakiri 25 --max-requests 1000 --log-x-forwarded-for
+CMD ./manage.py migrate && uwsgi --master --http :8000 --module core.wsgi --workers 2 --threads 2 --harakiri 25 --max-requests 1000 --log-x-forwarded-for
 
 FROM base as worker
 HEALTHCHECK CMD celery -A ${CELERY_APP} inspect ping -d $QUEUE@$HOSTNAME
