@@ -1,4 +1,5 @@
 manage = poetry run python src/manage.py
+SIMULTANEOUS_TEST_JOBS=4
 
 fmt:
 	poetry run autoflake --in-place --remove-all-unused-imports --recursive src
@@ -15,7 +16,7 @@ server:
 	$(manage) runserver
 
 test:
-	poetry run pytest -n 4 --ff -x --create-db --cov-report=xml --cov=. -m 'not single_thread'
+	poetry run pytest -n ${SIMULTANEOUS_TEST_JOBS} --ff -x --create-db --cov-report=xml --cov=. -m 'not single_thread'
 	poetry run pytest --ff -x --cov-report=xml --cov=. --cov-append -m 'single_thread'
 	poetry run pytest --dead-fixtures
 

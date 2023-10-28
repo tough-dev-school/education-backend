@@ -62,7 +62,7 @@ jobs:
         env:
           DATABASE_URL: postgres://postgres:secret@localhost:5432/postgres
           REDISCLOUD_URL: redis://localhost:6379/5
-        run: make test
+        run: make test -e SIMULTANEOUS_TEST_JOBS=16
 
       - name: upload code coverage to codeclimate
         uses: paambaati/codeclimate-action@v3.2.0
