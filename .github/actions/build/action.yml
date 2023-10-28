@@ -12,6 +12,7 @@ runs:
         key: poetry-v1-${{ hashFiles('pyproject.toml') }}
 
     - name: install poetry
+      if: steps.cached-poetry.outputs.cache-hit != 'true'
       uses: snok/install-poetry@v1
       with:
         version: 1.6.1
