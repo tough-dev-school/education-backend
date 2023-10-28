@@ -45,6 +45,7 @@ RUN apt-get update \
   && apt-get --no-install-recommends install -y gettext locales-all tzdata git wait-for-it \
   && rm -rf /var/lib/apt/lists/*
 
+COPY --from=uwsgi-compile /uwsgi /usr/local/bin/
 RUN pip install --no-cache-dir --upgrade pip
 COPY --from=deps-compile /requirements.txt /
 RUN pip install --no-cache-dir -r requirements.txt
@@ -63,7 +64,6 @@ USER nobody
 # Web worker image
 #
 FROM base as web
-COPY --from=uwsgi-compile /uwsgi /usr/local/bin/
 HEALTHCHECK CMD wget -q -O /dev/null http://localhost:8000/api/v2/healthchecks/db/ --header "Host: app.tough-dev.school" || exit 1
 CMD ./manage.py migrate && uwsgi --master --http :8000 --module core.wsgi --workers 2 --threads 2 --harakiri 25 --max-requests 1000 --log-x-forwarded-for
 
