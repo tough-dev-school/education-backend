@@ -54,9 +54,10 @@ jobs:
         uses: ./.github/actions/build
 
       - name: install locale stuff
-        run: |
-          sudo apt-get update
-          sudo apt-get --no-install-recommends install -y locales-all gettext
+        uses: awalsh128/cache-apt-pkgs-action@v1
+        with:
+          packages: locales-all gettext
+          version: 1
 
       - name: test
         env:
