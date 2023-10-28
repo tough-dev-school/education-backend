@@ -29,7 +29,7 @@ jobs:
 
   test:
     needs: lint
-    runs-on: large-hosted
+    runs-on: ubuntu-16x
     services:
       postgres:
         image: postgres:13.9-alpine
