@@ -1,5 +1,5 @@
-from diplomas.admin.forms.diploma.add import DiplomaAddForm
+from diplomas.admin.forms.diploma import DiplomaForm
 
 __all__ = [
-    "DiplomaAddForm",
+    "DiplomaForm",
 ]

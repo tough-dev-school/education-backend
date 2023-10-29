@@ -9,7 +9,7 @@ from django.utils.translation import gettext_lazy as _
 
 from app.admin import admin
 from app.admin import ModelAdmin
-from diplomas.admin.forms import DiplomaAddForm
+from diplomas.admin.forms import DiplomaForm
 from diplomas.models import Diploma
 from orders import tasks
 from products.models import Course
@@ -18,11 +18,16 @@ from users.models import User
 
 @admin.register(Diploma)
 class DiplomaAdmin(ModelAdmin):
-    add_form = DiplomaAddForm
-    form = DiplomaAddForm
+    form = DiplomaForm
 
     actions = ("send_to_student", "regenerate")
-    fields = ("course", "student", "language", "image")
+    fields = (
+        "slug",
+        "course",
+        "student",
+        "language",
+        "image",
+    )
     list_display = (
         "date",
         "student",
@@ -40,10 +45,12 @@ class DiplomaAdmin(ModelAdmin):
         "study__student__email",
     )
 
-    def save_model(self, request: "HttpRequest", obj: "Diploma", form: "DiplomaAddForm", change: bool) -> None:
-        obj = form.save(commit=False)
+    def save_model(self, request: "HttpRequest", obj: "Diploma", form: "DiplomaForm", change: bool) -> None:
+        if not change:
+            obj = form.save(commit=False)
 
-        obj.study = form.cleaned_data["study"]
+            obj.study = form.cleaned_data["study"]
+
         obj.save()
 
     @admin.display(description=_("Course"), ordering="study__course")
