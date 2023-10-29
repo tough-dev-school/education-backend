@@ -10,8 +10,6 @@ anyio==3.7.1
     # via httpcore
 asgiref==3.7.2
     # via django
-async-timeout==4.0.3
-    # via redis
 attrs==23.1.0
     # via
     #   jsonschema
@@ -224,6 +222,8 @@ standardjson==0.3.1
     # via django-prettyjson
 stripe==6.7.0
     # via education-backend (pyproject.toml)
+typing-extensions==4.8.0
+    # via stripe
 uritemplate==4.1.1
     # via drf-spectacular
 urllib3==1.26.18
