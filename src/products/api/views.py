@@ -1,4 +1,4 @@
-from typing import Any, TYPE_CHECKING
+from typing import Any
 
 from drf_spectacular.utils import extend_schema
 from drf_spectacular.utils import OpenApiParameter
@@ -21,9 +21,6 @@ from orders.models import PromoCode
 from orders.services.purchase_creator import PurchaseCreator
 from products.api.serializers import PurchaseSerializer
 from products.models import Course
-
-if TYPE_CHECKING:
-    pass
 
 
 class PromocodeView(APIView):
