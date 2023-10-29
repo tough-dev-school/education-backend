@@ -41,7 +41,7 @@ cffi==1.16.0
     # via
     #   cmarkgfm
     #   cryptography
-charset-normalizer==3.3.0
+charset-normalizer==3.3.1
     # via requests
 click==8.1.7
     # via
@@ -57,7 +57,7 @@ click-repl==0.3.0
     # via celery
 cmarkgfm==2022.10.27
     # via education-backend (pyproject.toml)
-cryptography==41.0.4
+cryptography==41.0.5
     # via pyjwt
 decorator==5.1.1
     # via retry
