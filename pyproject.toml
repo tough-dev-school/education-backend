@@ -66,6 +66,7 @@ dev = [
     "pytest-mock",
     "pytest-randomly",
     "pytest-repeat",
+    "pytest-subtests",
     "pytest-xdist",
     "respx",
 

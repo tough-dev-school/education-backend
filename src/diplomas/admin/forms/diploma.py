@@ -53,7 +53,7 @@ class DiplomaForm(forms.ModelForm):
         if not self.diploma:
             for fieldname in ("course", "image", "language", "student"):
                 if not data.get(fieldname):
-                    raise forms.ValidationError(f"Поле «{self.fields[fieldname].label}» — обязательное!")
+                    raise forms.ValidationError("")
 
             course, student = data.pop("course"), data.pop("student")
 

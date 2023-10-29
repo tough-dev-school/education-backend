@@ -1,4 +1,5 @@
 import pytest
+import re
 
 from diplomas.models import Diploma
 from diplomas.models import Languages
@@ -64,23 +65,17 @@ def test_err_message_if_student_not_enrolled_in_course(as_superuser, course, dat
     assert f"Студент {student.get_full_name()} не обучался на курсе «{course.name}»!" in response.content.decode()
 
 
-@pytest.mark.parametrize(
-    ("field", "message"),
-    [
-        ("course", "Поле «Курс» — обязательное!"),
-        ("image", "Поле «Обложка» — обязательное!"),
-        ("language", "Поле «Язык» — обязательное!"),
-        ("student", "Поле «Студент» — обязательное!"),
-    ],
-)
-def test_err_messages_in_required_fields(as_superuser, data, field, message):
-    del data[field]
-
+def test_required_field_messages_shown_when_fields_not_set(as_superuser, subtests):
     response = as_superuser.post(
         "/admin/diplomas/diploma/add/",
         as_response=True,
-        data=data,
+        data={},
         format="multipart",
     )
 
-    assert message in response.content.decode()
+    for fieldname in ("course", "image", "language", "student"):
+        with subtests.test(fieldname=fieldname):
+            assert re.search(
+                rf'<div class="form-row errors field-{fieldname}">\s+<ul class="errorlist"><li>Обязательное поле.</li></ul>',
+                response.content.decode(),
+            )
