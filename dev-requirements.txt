@@ -16,7 +16,7 @@ astor==0.8.1
     # via flake8-simplify
 astroid==2.15.8
     # via flake8-django
-asttokens==2.4.0
+asttokens==2.4.1
     # via stack-data
 async-timeout==4.0.3
     # via redis
@@ -29,7 +29,7 @@ attrs==23.1.0
     #   referencing
 autoflake==1.7.8
     # via education-backend (pyproject.toml)
-babel==2.13.0
+babel==2.13.1
     # via education-backend (pyproject.toml)
 backcall==0.2.0
     # via ipython
@@ -337,7 +337,7 @@ pure-eval==0.2.2
     # via stack-data
 py==1.11.0
     # via retry
-pycodestyle==2.9.1
+pycodestyle==2.11.1
     # via
     #   flake8
     #   flake8-print
