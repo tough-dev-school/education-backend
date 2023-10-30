@@ -31,7 +31,7 @@ def test_items(atol):
     ],
 )
 def test_item_price(atol, price, expected):
-    atol.order.setattr_and_save("price", price)
+    atol.order.update(price=price)
 
     got = atol.get_items()
 

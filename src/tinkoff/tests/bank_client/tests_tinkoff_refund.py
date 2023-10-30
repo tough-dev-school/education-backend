@@ -9,7 +9,7 @@ pytestmark = [
 
 @pytest.fixture
 def paid_tinkoff_order(order, mixer):
-    order.setattr_and_save("bank_id", "tinkoff_bank")
+    order.update(bank_id="tinkoff_bank")
     order.set_paid()
 
     mixer.blend("tinkoff.PaymentNotification", order=order, payment_id=9001)

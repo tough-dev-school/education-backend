@@ -10,7 +10,7 @@ pytestmark = [
 
 @pytest.fixture
 def _no_purchase(purchase):
-    purchase.setattr_and_save("paid", None)
+    purchase.update(paid=None)
 
 
 def get_answer():

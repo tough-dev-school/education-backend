@@ -53,7 +53,7 @@ def test_does_not_unship_twice(unship, mock_item_unshipping, mocker):
 
 
 def test_does_not_break_if_item_not_set(order, unship, mock_item_unshipping):
-    order.setattr_and_save("course", None)
+    order.update(course=None)
 
     unship()
 

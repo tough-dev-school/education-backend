@@ -54,7 +54,7 @@ def test_user_name_en(generator):
 
 
 def test_additional_course_context(generator, course):
-    course.setattr_and_save("diploma_template_context", {"test": "__mocked"})
+    course.update(diploma_template_context={"test": "__mocked"})
 
     generator = generator(language="RU")
 

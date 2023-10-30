@@ -65,7 +65,7 @@ def test_call_update_user_celery_chain_without_subscription(order, mock_update_u
 
 
 def test_not_ships_if_order_is_already_paid(order, ship):
-    order.setattr_and_save("paid", datetime(2032, 12, 1, 15, 30, tzinfo=timezone.utc))
+    order.update(paid=datetime(2032, 12, 1, 15, 30, tzinfo=timezone.utc))
 
     order.set_paid()
 
@@ -120,7 +120,7 @@ def test_unpaid_date_is_not_reset_when_order_is_not_paid(order):
 
 
 def test_empty_item_does_not_break_things(order, ship):
-    order.setattr_and_save("course", None)
+    order.update(course=None)
 
     order.set_paid()
 

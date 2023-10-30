@@ -27,7 +27,7 @@ def test_course(create, user, course):
 
 
 def test_free_course(create, user, course):
-    course.setattr_and_save("price", 0)
+    course.update(price=0)
 
     order = create(user=user, item=course)
 

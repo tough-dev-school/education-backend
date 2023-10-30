@@ -14,7 +14,7 @@ def test_ok(api, question):
 
 
 def test_markdown(api, question):
-    question.setattr_and_save("text", "*should be rendered*")
+    question.update(text="*should be rendered*")
 
     got = api.get(f"/api/v2/homework/questions/{question.slug}/")
 

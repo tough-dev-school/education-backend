@@ -53,11 +53,6 @@ class DefaultModel(DefaultModelMixin, models.Model):
         except models.FieldDoesNotExist:
             return False
 
-    def setattr_and_save(self, key: str, value: Any) -> None:
-        """Shortcut for testing -- set attribute of the model and save"""
-        setattr(self, key, value)
-        self.save()
-
     def copy(self, **kwargs: Any) -> "DefaultModel":
         """Creates new object from current."""
         kwargs.update(id=None, pk=None)

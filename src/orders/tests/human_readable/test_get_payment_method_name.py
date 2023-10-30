@@ -46,7 +46,7 @@ def test_readable_payment_method_name_not_paid_order(order):
 
 
 def test_get_readable_payment_method_name_shipped_but_not_paid(order):
-    order.setattr_and_save("shipped", datetime.fromisoformat("2023-09-13 10:20+03:00"))
+    order.update(shipped=datetime.fromisoformat("2023-09-13 10:20+03:00"))
 
     got = human_readable.get_order_payment_method_name(order)
 

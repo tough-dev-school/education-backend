@@ -44,7 +44,7 @@ def test_no_notifications_for_already_paid_orders(tg_message, order, mock_get_ha
 
 
 def test_no_notifications_for_zero_prices_orders(tg_message, order):
-    order.setattr_and_save("price", 0)
+    order.update(price=0)
 
     order.set_paid()
 
@@ -67,7 +67,7 @@ def test_not_sending_in_silent_mode(tg_message, order):
 
 @pytest.mark.parametrize("bank_id", BANK_KEYS)
 def test_notification_message_include_payment_method(order, bank_id):
-    order.setattr_and_save("bank_id", bank_id)
+    order.update(bank_id=bank_id)
     order.set_paid()
 
     message = OrderShipper.get_order_happiness_message(order)
@@ -76,7 +76,7 @@ def test_notification_message_include_payment_method(order, bank_id):
 
 
 def test_include_promocode_if_set(order, mixer):
-    order.setattr_and_save("promocode", mixer.blend("orders.PromoCode", name="YARR!", discount_percent=1))
+    order.update(promocode=mixer.blend("orders.PromoCode", name="YARR!", discount_percent=1))
     order.set_paid()
 
     message = OrderShipper.get_order_happiness_message(order)
@@ -85,7 +85,7 @@ def test_include_promocode_if_set(order, mixer):
 
 
 def test_include_group_if_set(order, factory):
-    order.item.setattr_and_save("group", factory.group(name="Эффективная прокрастинация поток 2"))
+    order.item.update(group=factory.group(name="Эффективная прокрастинация поток 2"))
     order.set_paid()
 
     message = OrderShipper.get_order_happiness_message(order)

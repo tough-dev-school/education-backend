@@ -24,7 +24,7 @@ def test_include_active_not_archived_chains(get_editable, chain):
 
 
 def test_exclude_sending_is_active_chains(get_editable, chain):
-    chain.setattr_and_save("sending_is_active", True)
+    chain.update(sending_is_active=True)
 
     got = get_editable()
 
@@ -32,7 +32,7 @@ def test_exclude_sending_is_active_chains(get_editable, chain):
 
 
 def test_exclude_archived_chains(get_editable, chain):
-    chain.setattr_and_save("archived", True)
+    chain.update(archived=True)
 
     got = get_editable()
 
