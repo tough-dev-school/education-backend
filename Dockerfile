@@ -42,7 +42,7 @@ ENV CELERY_APP=core.celery
 ENV _WAITFOR_VERSION 2.2.3
 
 RUN apt-get update \
-  && apt-get --no-install-recommends install -y gettext locales-all tzdata git wait-for-it \
+  && apt-get --no-install-recommends install -y gettext locales-all tzdata git wait-for-it wget \
   && rm -rf /var/lib/apt/lists/*
 
 COPY --from=uwsgi-compile /uwsgi /usr/local/bin/
