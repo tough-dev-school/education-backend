@@ -2887,17 +2887,17 @@ testing = ["Django", "django-configurations (>=2.0)"]
 
 [[package]]
 name = "pytest-env"
-version = "1.1.0"
+version = "1.1.1"
 description = "pytest plugin that allows you to add environment variables."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pytest_env-1.1.0-py3-none-any.whl", hash = "sha256:86f2dbc05a78cfbb42a4be19e04fd7b4ef364127d0118af2f59b4dcccfd773bf"},
-    {file = "pytest_env-1.1.0.tar.gz", hash = "sha256:33a630a3db07068528c16f061350664d0146519824bd8c87b4cb120fff202ad9"},
+    {file = "pytest_env-1.1.1-py3-none-any.whl", hash = "sha256:2b71b37c6810f28bec790a7b373c777af87352b3a359b3de0edb9d24df5cf8b3"},
+    {file = "pytest_env-1.1.1.tar.gz", hash = "sha256:1efb8acce1f6431196150f3b30673443ff05a6fabff64539a9495cd2248adf9e"},
 ]
 
 [package.dependencies]
-pytest = ">=7.4.2"
+pytest = ">=7.4.3"
 
 [package.extras]
 test = ["covdefaults (>=2.3)", "coverage (>=7.3.2)", "pytest-mock (>=3.12)"]
