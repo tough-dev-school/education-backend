@@ -6,7 +6,7 @@
 #
 amqp==5.1.1
     # via kombu
-anyio==3.7.1
+anyio==4.0.0
     # via httpcore
 appnope==0.1.3
     # via ipython
