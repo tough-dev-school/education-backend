@@ -54,6 +54,7 @@ class User(DefaultModelMixin, AbstractUser):
     class Meta(AbstractUser.Meta):
         abstract = False  # type: ignore[assignment]
         indexes = [GinIndex(fields=["tags"])]
+        ordering = ("last_name", "first_name")
         verbose_name = _("user")
         verbose_name_plural = _("users")
 
