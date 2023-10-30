@@ -21,6 +21,7 @@ from users.services import UserUpdater
 class SelfView(GenericAPIView):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+    queryset = User.objects.for_view()
 
     def get(self, *args: Any) -> Response:
         user = self.get_object()
@@ -47,14 +48,11 @@ class SelfView(GenericAPIView):
 
         raise ImproperlyConfigured("This code should not be ran")
 
-    def get_queryset(self) -> QuerySet[User]:
-        return User.objects.filter(is_active=True)
-
 
 class UserView(ListAPIView):
     filter_backends = (DjangoFilterBackend,)
     filterset_class = UserFilter
     pagination_class = None
     permission_classes = (IsAdminUser,)
-    queryset = User.objects.filter(is_active=True)
+    queryset = User.objects.for_view()
     serializer_class = UserSerializer

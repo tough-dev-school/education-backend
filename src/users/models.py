@@ -1,26 +1,42 @@
-from typing import cast
+from typing import cast, TYPE_CHECKING
 from urllib.parse import urljoin
 import uuid
 
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import Permission
+from django.contrib.auth.models import UserManager
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GinIndex
 from django.db.models import TextChoices
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
-from app.models import models
 from app.models import DefaultModelMixin
+from app.models import models
 from app.types import Language
 from diplomas.models import Languages
+
+if TYPE_CHECKING:
+    from typing_extensions import Self
+
+    from products.models import Course
+
+
+class UserQuerySet(models.QuerySet):
+    def for_view(self) -> "Self":
+        return self.filter(is_active=True)
+
+    def for_course(self, course: "Course") -> "Self":
+        return course.get_purchased_users().order_by("first_name", "last_name")
 
 
 class User(DefaultModelMixin, AbstractUser):
     class GENDERS(TextChoices):
         MALE = "male", _("Male")
         FEMALE = "female", _("Female")
+
+    objects = UserManager.from_queryset(UserQuerySet)()
 
     subscribed = models.BooleanField(_("Subscribed to newsletter"), default=False)
     first_name_en = models.CharField(_("first name in english"), max_length=150, blank=True)
