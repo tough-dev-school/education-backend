@@ -16,7 +16,7 @@ astor==0.8.1
     # via flake8-simplify
 astroid==2.15.8
     # via flake8-django
-asttokens==2.4.1
+asttokens==2.4.0
     # via stack-data
 attrs==23.1.0
     # via
@@ -28,7 +28,7 @@ attrs==23.1.0
     #   referencing
 autoflake==1.7.8
     # via education-backend (pyproject.toml)
-babel==2.13.1
+babel==2.13.0
     # via education-backend (pyproject.toml)
 backcall==0.2.0
     # via ipython
@@ -65,7 +65,7 @@ cffi==1.16.0
     # via
     #   cmarkgfm
     #   cryptography
-charset-normalizer==3.3.1
+charset-normalizer==3.3.0
     # via requests
 click==8.1.7
     # via
@@ -88,7 +88,7 @@ coverage[toml]==7.3.2
     # via
     #   coverage
     #   pytest-cov
-cryptography==41.0.5
+cryptography==41.0.4
     # via pyjwt
 decorator==5.1.1
     # via
@@ -134,7 +134,7 @@ django-filter==23.3
     # via education-backend (pyproject.toml)
 django-healthchecks==1.5.0
     # via education-backend (pyproject.toml)
-django-ipware==5.0.2
+django-ipware==5.0.1
     # via
     #   drf-recaptcha
     #   education-backend (pyproject.toml)
