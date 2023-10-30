@@ -2,7 +2,7 @@ import contextlib
 from copy import copy
 from functools import reduce
 import operator
-from typing import Any, Type, TYPE_CHECKING
+from typing import Any, Type
 
 from behaviors.behaviors import Timestamped
 
@@ -22,7 +22,7 @@ class DefaultModelMixin:
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-        self.save(update_fields=kwargs.keys())
+        self.save(update_fields=kwargs)
 
         return self
 
