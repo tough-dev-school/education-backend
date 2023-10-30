@@ -414,7 +414,7 @@ rpds-py==0.10.6
     # via
     #   jsonschema
     #   referencing
-s3transfer==0.6.2
+s3transfer==0.7.0
     # via boto3
 sentry-sdk==1.31.0
     # via education-backend (pyproject.toml)
