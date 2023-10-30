@@ -2,7 +2,7 @@ import contextlib
 from copy import copy
 from functools import reduce
 import operator
-from typing import Any, Type
+from typing import Any, Type, TYPE_CHECKING
 
 from behaviors.behaviors import Timestamped
 
@@ -18,11 +18,11 @@ __all__ = [
 
 
 class DefaultModelMixin:
-    def update(self: "Type[models.Model]", **kwargs: dict) -> "Type[models.Model]":  # type: ignore[misc]
+    def update(self: "models.Model", **kwargs: dict) -> "models.Model":  # type: ignore[misc]
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-        self.save(update_fields=kwargs.keys())  # type: ignore[call-arg]
+        self.save(update_fields=kwargs.keys())
 
         return self
 
@@ -53,13 +53,6 @@ class DefaultModel(DefaultModelMixin, models.Model):
         except models.FieldDoesNotExist:
             return False
 
-    def update_from_kwargs(self, **kwargs: dict[str, Any]) -> None:
-        """
-        A shortcut method to update model instance from the kwargs.
-        """
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-
     def setattr_and_save(self, key: str, value: Any) -> None:
         """Shortcut for testing -- set attribute of the model and save"""
         setattr(self, key, value)
@@ -67,15 +60,11 @@ class DefaultModel(DefaultModelMixin, models.Model):
 
     def copy(self, **kwargs: Any) -> "DefaultModel":
         """Creates new object from current."""
+        kwargs.update(id=None, pk=None)
+
         instance = copy(self)
-        kwargs.update(
-            {
-                "id": None,
-                "pk": None,
-            }
-        )
-        instance.update_from_kwargs(**kwargs)
-        return instance
+
+        return instance.update(**kwargs)  # type: ignore[return-value]
 
     @classmethod
     def get_label(cls) -> str:

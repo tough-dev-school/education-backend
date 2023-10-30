@@ -5,12 +5,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def course(course):
-    course.update_from_kwargs(
-        welcome_letter_template_id="tpl100500",
-    )
-    course.save()
-
-    return course
+    return course.update(welcome_letter_template_id="tpl100500")
 
 
 def test_the_message_is_sent_to_right_email(send_mail, shipment, user):
