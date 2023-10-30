@@ -1,6 +1,7 @@
 import pytest
 import re
 
+from diplomas.admin import DiplomaForm
 from diplomas.models import Diploma
 from diplomas.models import Languages
 
@@ -73,7 +74,7 @@ def test_required_field_messages_shown_when_fields_not_set(as_superuser, subtest
         format="multipart",
     )
 
-    for fieldname in ("course", "image", "language", "student"):
+    for fieldname in DiplomaForm().required_fields:
         with subtests.test(fieldname=fieldname):
             assert re.search(
                 rf'<div class="form-row errors field-{fieldname}">\s+<ul class="errorlist"><li>Обязательное поле.</li></ul>',

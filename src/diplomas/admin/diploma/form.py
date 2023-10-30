@@ -1,6 +1,7 @@
 from typing import no_type_check
 
 from django import forms
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
 from diplomas.models import Diploma
@@ -30,6 +31,10 @@ class DiplomaForm(forms.ModelForm):
     class Media:
         js = ("admin/js/get_course_students.js",)
 
+    @cached_property
+    def required_fields(self) -> list[str]:
+        return [fieldname for fieldname in self.fields if self.fields[fieldname].required]
+
     @no_type_check
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -41,8 +46,6 @@ class DiplomaForm(forms.ModelForm):
             self.fields["course"].initial = self.diploma.study.course
             self.fields["course"].widget.attrs.update({"style": "background-color: rosybrown;"})
 
-            self.fields["language"].initial = self.diploma.language
-
             self.fields["student"].disabled = True
             self.fields["student"].initial = self.diploma.study.student
             self.fields["student"].widget.attrs.update({"style": "background-color: rosybrown;"})
@@ -52,7 +55,7 @@ class DiplomaForm(forms.ModelForm):
         data = super().clean()
 
         if not self.diploma:
-            for fieldname in ("course", "image", "language", "student"):
+            for fieldname in self.required_fields:
                 if not data.get(fieldname):
                     raise forms.ValidationError("")
 
