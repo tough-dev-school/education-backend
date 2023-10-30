@@ -13,7 +13,7 @@ def url(course):
 @pytest.mark.parametrize(
     ("requester", "expected"),
     [
-        (pytest.lazy_fixture("client"), status.HTTP_401_UNAUTHORIZED),  # type: ignore[operator]
+        (pytest.lazy_fixture("anon"), status.HTTP_401_UNAUTHORIZED),  # type: ignore[operator]
         (pytest.lazy_fixture("as_user"), status.HTTP_403_FORBIDDEN),  # type: ignore[operator]
     ],
 )
