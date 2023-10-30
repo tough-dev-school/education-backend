@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-02 20:01+0300\n"
+"POT-Creation-Date: 2023-10-30 22:02+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -68,7 +68,8 @@ msgid ""
 "Only the chains that are neither archived nor active for sending are listed"
 msgstr "В списке только не запущенные и не заархивированные цепочки"
 
-#: chains/admin/message.py:50 chains/models/chain.py:34 diplomas/admin.py:58
+#: chains/admin/message.py:50 chains/models/chain.py:34
+#: diplomas/admin/diploma/admin.py:56 diplomas/admin/diploma/form.py:13
 #: homework/admin/answer/admin.py:59 homework/admin/answer/admin.py:104
 #: orders/models/order.py:61 products/models/course.py:76
 msgid "Course"
@@ -120,25 +121,46 @@ msgstr "Письмо"
 msgid "Email chain messages"
 msgstr "Письма"
 
-#: diplomas/admin.py:54 users/models.py:101
-msgid "Student"
-msgstr "Студент"
-
-#: diplomas/admin.py:62 homework/models/question.py:20
-msgid "Homework"
-msgstr "Домашка"
-
-#: diplomas/admin.py:66 orders/admin/orders/admin.py:103
+#: diplomas/admin/diploma/admin.py:60 orders/admin/orders/admin.py:103
 msgid "Date"
 msgstr "Дата"
 
-#: diplomas/admin.py:70
+#: diplomas/admin/diploma/admin.py:64 homework/models/question.py:20
+msgid "Homework"
+msgstr "Домашка"
+
+#: diplomas/admin/diploma/admin.py:68 diplomas/admin/diploma/form.py:14
+#: users/models.py:121
+msgid "Student"
+msgstr "Студент"
+
+#: diplomas/admin/diploma/admin.py:72
 msgid "Send diploma to student"
 msgstr "Отправить студенту"
 
-#: diplomas/admin.py:77
+#: diplomas/admin/diploma/admin.py:79
 msgid "Regenerate diploma"
 msgstr "Перегенерировать"
+
+#: diplomas/admin/diploma/form.py:25
+msgid "Cover"
+msgstr "Обложка"
+
+#: diplomas/admin/diploma/form.py:26
+msgid "Language"
+msgstr "Язык"
+
+#: diplomas/admin/diploma/form.py:27
+msgid "Slug"
+msgstr "Слаг"
+
+#: diplomas/admin/diploma/form.py:64
+msgid "The selected student did not study on this course."
+msgstr "Выбранный студент не учился на этом курсе."
+
+#: diplomas/admin/diploma/form.py:77
+msgid "Such a diploma already exists, try choosing another language."
+msgstr "Такой диплом уже создан, попробуйте выбрать другой язык."
 
 #: diplomas/models.py:22
 msgid "Russian"
@@ -381,10 +403,12 @@ msgstr "Заказы {refunded_orders_as_message} возвращены."
 
 #: orders/admin/orders/actions.py:51
 #, python-brace-format
-msgid "Orders {non_refunded_orders_as_message} have not been refunded. Up to 5 "
+msgid ""
+"Orders {non_refunded_orders_as_message} have not been refunded. Up to 5 "
 "refunds per day are allowed. Please come back tomorrow."
-msgstr "Заказы {non_refunded_orders_as_message} не были возвращены. "
-"Разрешено до 5 возвратов в день, попробуйте снова завтра."
+msgstr ""
+"Заказы {non_refunded_orders_as_message} не были возвращены. Разрешено до 5 "
+"возвратов в день, попробуйте снова завтра."
 
 #: orders/admin/orders/actions.py:56
 msgid "Ship without payments"
@@ -778,41 +802,49 @@ msgstr "Имя на английском"
 msgid "Users"
 msgstr "Юзеры"
 
-#: users/models.py:21
+#: users/models.py:39
 msgid "Male"
 msgstr "Мужчина"
 
-#: users/models.py:22
+#: users/models.py:40
 msgid "Female"
 msgstr "Женщина"
 
-#: users/models.py:24
+#: users/models.py:44
 msgid "Subscribed to newsletter"
 msgstr "Подписан на новости"
 
-#: users/models.py:25
+#: users/models.py:45
 msgid "first name in english"
 msgstr "Имя на английском"
 
-#: users/models.py:26
+#: users/models.py:46
 msgid "last name in english"
 msgstr "Фамилия на английском"
 
-#: users/models.py:29
+#: users/models.py:49
 msgid "Gender"
 msgstr "Пол"
 
-#: users/models.py:40
+#: users/models.py:60
 msgid "user"
 msgstr "пользователь"
 
-#: users/models.py:41
+#: users/models.py:61
 msgid "users"
 msgstr "пользователи"
 
-#: users/models.py:102
+#: users/models.py:122
 msgid "Students"
 msgstr "Студенты"
+
+#~ msgid "Sheeet!"
+#~ msgstr "Дерьмоооо"
+
+#, python-brace-format
+#~ msgid ""
+#~ "A diploma for this student in the language {language} already exists!"
+#~ msgstr "Диплом для этого студента на языке {language} уже существует!"
 
 #~ msgid "Set not paid"
 #~ msgstr "Вернуть"

@@ -1,6 +1,7 @@
 from typing import no_type_check
 
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from diplomas.models import Diploma
 from products.models import Course
@@ -9,8 +10,8 @@ from users.models import User
 
 
 class DiplomaForm(forms.ModelForm):
-    course = forms.ModelChoiceField(label="Курс", queryset=Course.objects.order_by("name"))
-    student = forms.ModelChoiceField(label="Студент", queryset=User.objects.order_by("first_name", "last_name"))
+    course = forms.ModelChoiceField(label=_("Course"), queryset=Course.objects.order_by("name"))
+    student = forms.ModelChoiceField(label=_("Student"), queryset=User.objects.order_by("first_name", "last_name"))
 
     class Meta:
         model = Diploma
@@ -21,9 +22,9 @@ class DiplomaForm(forms.ModelForm):
             "student",
         )
         labels = {
-            "image": "Обложка",
-            "language": "Язык",
-            "slug": "Слаг",
+            "image": _("Cover"),
+            "language": _("Language"),
+            "slug": _("Slug"),
         }
 
     class Media:
@@ -60,7 +61,7 @@ class DiplomaForm(forms.ModelForm):
             study = Study.objects.filter(course=course, student=student).first()
 
             if not study:
-                raise forms.ValidationError(f"Студент {student.get_full_name()} не обучался на курсе «{course.name}»!")
+                raise forms.ValidationError(_("The selected student did not study on this course."))
 
             data["study"] = study
 
@@ -73,4 +74,4 @@ class DiplomaForm(forms.ModelForm):
 
     def check_duplicate_diploma(self, language: str, study: "Study") -> None:
         if Diploma.objects.filter(language=language, study=study).exists():
-            raise forms.ValidationError(f"Диплом для этого студента на языке `{language}` уже существует!")
+            raise forms.ValidationError(_("Such a diploma already exists, try choosing another language."))

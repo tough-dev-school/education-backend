@@ -39,4 +39,4 @@ def test_err_message_if_diploma_already_exists(as_superuser, diploma, same_en_di
         format="multipart",
     )
 
-    assert f"Диплом для этого студента на языке `{same_en_diploma.language}` уже существует!" in response.content.decode()
+    assert "Такой диплом уже создан, попробуйте выбрать другой язык." in response.content.decode()

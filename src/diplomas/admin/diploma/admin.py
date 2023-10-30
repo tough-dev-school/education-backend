@@ -9,7 +9,7 @@ from django.utils.translation import gettext_lazy as _
 
 from app.admin import admin
 from app.admin import ModelAdmin
-from diplomas.admin.forms import DiplomaForm
+from diplomas.admin.diploma.form import DiplomaForm
 from diplomas.models import Diploma
 from orders import tasks
 from products.models import Course

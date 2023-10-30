@@ -49,7 +49,7 @@ def test_err_message_if_diploma_already_exists(as_superuser, data, diploma):
         format="multipart",
     )
 
-    assert f"Диплом для этого студента на языке `{diploma.language}` уже существует!" in response.content.decode()
+    assert "Такой диплом уже создан, попробуйте выбрать другой язык." in response.content.decode()
 
 
 def test_err_message_if_student_not_enrolled_in_course(as_superuser, course, data, student):
@@ -62,7 +62,7 @@ def test_err_message_if_student_not_enrolled_in_course(as_superuser, course, dat
         format="multipart",
     )
 
-    assert f"Студент {student.get_full_name()} не обучался на курсе «{course.name}»!" in response.content.decode()
+    assert "Выбранный студент не учился на этом курсе." in response.content.decode()
 
 
 def test_required_field_messages_shown_when_fields_not_set(as_superuser, subtests):
