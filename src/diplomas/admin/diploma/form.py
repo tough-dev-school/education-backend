@@ -12,7 +12,7 @@ from users.models import User
 
 class DiplomaForm(forms.ModelForm):
     course = forms.ModelChoiceField(label=_("Course"), queryset=Course.objects.order_by("name"))
-    student = forms.ModelChoiceField(label=_("Student"), queryset=User.objects.order_by("first_name", "last_name"))
+    student = forms.ModelChoiceField(label=_("Student"), queryset=User.objects.order_by("last_name", "first_name"))
 
     class Meta:
         model = Diploma

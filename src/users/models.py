@@ -27,7 +27,7 @@ class UserQuerySet(models.QuerySet):
         return self.filter(is_active=True)
 
     def for_course(self, course: "Course") -> "QuerySet[User]":
-        return course.get_purchased_users().order_by("first_name", "last_name")
+        return course.get_purchased_users().order_by("last_name", "first_name")
 
 
 class UserManager(_UserManager.from_queryset(UserQuerySet)):  # type: ignore[misc]
