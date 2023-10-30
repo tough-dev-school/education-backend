@@ -21,5 +21,4 @@ class UserFilter(filters.FilterSet):
 
         course = Course.objects.filter(pk=value).first()
 
-        if course:
-            return queryset.for_course(course=course)
+        return queryset.for_course(course=course) if course else queryset.none()

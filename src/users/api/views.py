@@ -9,7 +9,6 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from django.core.exceptions import ImproperlyConfigured
-from django.db.models import QuerySet
 
 from app.current_user import get_current_user
 from users.api.filters import UserFilter
