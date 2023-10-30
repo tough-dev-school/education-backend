@@ -1,7 +1,5 @@
 import pytest
 
-from rest_framework import status
-
 pytestmark = pytest.mark.django_db
 
 
@@ -17,7 +15,21 @@ def test_response_with_study_course_ok(as_superuser, study):
     assert response["id"] == student.id
     assert response["name"] == student.__str__()
 
-    assert set(response) == {"id", "name"}
+    assert set(response) == {
+        "id",
+        "email",
+        "first_name",
+        "first_name_en",
+        "gender",
+        "github_username",
+        "last_name",
+        "last_name_en",
+        "linkedin_username",
+        "name",
+        "telegram_username",
+        "username",
+        "uuid",
+    }
 
 
 @pytest.mark.usefixtures("user")
@@ -25,11 +37,6 @@ def test_response_with_course_without_students_ok(as_superuser, course):
     response = as_superuser.get(f"/api/v2/users/?course={course.id}")
 
     assert not response
-
-
-@pytest.mark.usefixtures("course")
-def test_request_without_course_query_param_raises_not_found(as_superuser):
-    as_superuser.get("/api/v2/users/", expected_status_code=status.HTTP_404_NOT_FOUND)
 
 
 def test_response_students_ordered_by_first_name_asc(as_superuser, course, factory):

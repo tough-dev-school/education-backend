@@ -1,20 +1,18 @@
 from typing import Any
 
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions
-from rest_framework import viewsets
 from rest_framework.generics import GenericAPIView
-from rest_framework.generics import get_object_or_404
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import QuerySet
-from django.utils.functional import cached_property
 
 from app.current_user import get_current_user
-from products.models import Course
-from users.api.serializers import CourseStudentSerializer
+from users.api.filters import UserFilter
 from users.api.serializers import UserSerializer
 from users.models import User
 from users.services import UserUpdater
@@ -53,16 +51,10 @@ class SelfView(GenericAPIView):
         return User.objects.filter(is_active=True)
 
 
-class CourseStudentViewSet(viewsets.ReadOnlyModelViewSet):
+class UserView(ListAPIView):
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = UserFilter
     pagination_class = None
     permission_classes = (IsAdminUser,)
-    serializer_class = CourseStudentSerializer
-
-    @cached_property
-    def course(self) -> "Course":
-        id = self.request.query_params.get("course")
-
-        return get_object_or_404(Course, id=id)
-
-    def get_queryset(self) -> "QuerySet[User]":
-        return self.course.get_purchased_users().order_by("first_name", "last_name")
+    queryset = User.objects.filter(is_active=True)
+    serializer_class = UserSerializer
