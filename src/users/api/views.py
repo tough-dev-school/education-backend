@@ -8,7 +8,6 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from django.contrib.auth.models import User
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import QuerySet
 from django.utils.functional import cached_property
@@ -17,7 +16,7 @@ from app.current_user import get_current_user
 from products.models import Course
 from users.api.serializers import CourseStudentSerializer
 from users.api.serializers import UserSerializer
-from users.models import User  # type: ignore[assignment]
+from users.models import User
 from users.services import UserUpdater
 
 
@@ -33,7 +32,7 @@ class SelfView(GenericAPIView):
 
     def patch(self, request: Request) -> Response:
         user_updater = UserUpdater(
-            user=self.get_object(),  # type: ignore[arg-type]
+            user=self.get_object(),
             user_data=request.data,
         )
 
@@ -66,4 +65,4 @@ class CourseStudentViewSet(viewsets.ReadOnlyModelViewSet):
         return get_object_or_404(Course, id=id)
 
     def get_queryset(self) -> "QuerySet[User]":
-        return self.course.get_purchased_users().order_by("first_name", "last_name")  # type: ignore[return-value]
+        return self.course.get_purchased_users().order_by("first_name", "last_name")
