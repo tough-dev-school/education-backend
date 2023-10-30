@@ -2,9 +2,11 @@ import pytest
 
 pytestmark = pytest.mark.django_db
 
+url = "/api/v2/users/"
+
 
 def test_response(as_superuser):
-    response = as_superuser.get("/api/v2/users/")[0]
+    response = as_superuser.get(url)[0]
 
     user = as_superuser.user
     assert response["email"] == user.email
@@ -42,4 +44,4 @@ def test_perfomance(as_superuser, django_assert_num_queries, factory):
     factory.cycle(2).user()
 
     with django_assert_num_queries(2):
-        as_superuser.get(f"/api/v2/users/")
+        as_superuser.get(url)

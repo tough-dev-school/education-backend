@@ -5,9 +5,10 @@ import uuid
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import Permission
-from django.contrib.auth.models import UserManager
+from django.contrib.auth.models import UserManager as _UserManager
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GinIndex
+from django.db.models import QuerySet
 from django.db.models import TextChoices
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
@@ -18,17 +19,19 @@ from app.types import Language
 from diplomas.models import Languages
 
 if TYPE_CHECKING:
-    from typing_extensions import Self
-
     from products.models import Course
 
 
 class UserQuerySet(models.QuerySet):
-    def for_view(self) -> "Self":
+    def for_view(self) -> "QuerySet[User]":
         return self.filter(is_active=True)
 
-    def for_course(self, course: "Course") -> "Self":
+    def for_course(self, course: "Course") -> "QuerySet[User]":
         return course.get_purchased_users().order_by("first_name", "last_name")
+
+
+class UserManager(_UserManager.from_queryset(UserQuerySet)):  # type: ignore[misc]
+    pass
 
 
 class User(DefaultModelMixin, AbstractUser):
@@ -36,7 +39,7 @@ class User(DefaultModelMixin, AbstractUser):
         MALE = "male", _("Male")
         FEMALE = "female", _("Female")
 
-    objects = UserManager.from_queryset(UserQuerySet)()
+    objects = UserManager()  # type: ignore[misc]
 
     subscribed = models.BooleanField(_("Subscribed to newsletter"), default=False)
     first_name_en = models.CharField(_("first name in english"), max_length=150, blank=True)
@@ -54,7 +57,6 @@ class User(DefaultModelMixin, AbstractUser):
     class Meta(AbstractUser.Meta):
         abstract = False  # type: ignore[assignment]
         indexes = [GinIndex(fields=["tags"])]
-        ordering = ("last_name", "first_name")
         verbose_name = _("user")
         verbose_name_plural = _("users")
 

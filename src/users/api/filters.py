@@ -6,6 +6,8 @@ from products.models import Course
 from users.models import User
 
 if TYPE_CHECKING:
+    from django.db.models import QuerySet
+
     from users.models import UserQuerySet
 
 
@@ -16,7 +18,7 @@ class UserFilter(filters.FilterSet):
         model = User
         fields = ("course",)
 
-    def _course(self, queryset: "UserQuerySet", name: str, value: int):
+    def _course(self, queryset: "UserQuerySet", name: str, value: int) -> "QuerySet":
         del name
 
         course = Course.objects.filter(pk=value).first()

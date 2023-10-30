@@ -6,7 +6,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 def get_user():
-    return User.objects.last()
+    return User.objects.get(email="monty@python.org")
 
 
 @pytest.fixture
