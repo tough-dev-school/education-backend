@@ -3583,18 +3583,18 @@ files = [
 
 [[package]]
 name = "stripe"
-version = "6.7.0"
+version = "7.1.0"
 description = "Python bindings for the Stripe API"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "stripe-6.7.0-py2.py3-none-any.whl", hash = "sha256:a453d6daa633f656297a9323c736fdcb53164418d643fdc30499a6d32ad7933c"},
-    {file = "stripe-6.7.0.tar.gz", hash = "sha256:2794ccc4b4c97070d1cab4385e1d2aad65937b4437b75cc1faf7d67dda8199f4"},
+    {file = "stripe-7.1.0-py2.py3-none-any.whl", hash = "sha256:efd1e54825752c41bb311497cb5b6ae745464a57ca63bbe2847984a2409bcb0a"},
+    {file = "stripe-7.1.0.tar.gz", hash = "sha256:9cc2632230d5742eeb779af2b41c1510e724f498a296dfb40507de98d563f9a2"},
 ]
 
 [package.dependencies]
 requests = {version = ">=2.20", markers = "python_version >= \"3.0\""}
-typing-extensions = {version = ">=4.0.0", markers = "python_version >= \"3.7\""}
+typing-extensions = {version = ">=4.5.0", markers = "python_version >= \"3.7\""}
 
 [[package]]
 name = "traitlets"
@@ -3956,4 +3956,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "1c442030061150fdf8877225ebc3c57c9b8c87bd55af7d5c0d2a240afe04fd08"
+content-hash = "509bc5708e0ce415e4a42e75378d72aa23efb08be42ef87b72e275031364bd81"
