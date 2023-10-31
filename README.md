@@ -1,14 +1,15 @@
 # Backend for [education.borshev.com](http://education.borshev.com/)
 
-![CI](https://github.com/tough-dev-school/education-backend/actions/workflows/ci.yml/badge.svg) ![](https://heroku-badge.herokuapp.com/?app=education-backend&svg=1) [![Maintainability](https://api.codeclimate.com/v1/badges/fe9fb0b64052a426f355/maintainability)](https://codeclimate.com/github/f213/education-backend/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/fe9fb0b64052a426f355/test_coverage)](https://codeclimate.com/github/f213/education-backend/test_coverage) 
+![CI](https://github.com/tough-dev-school/education-backend/actions/workflows/ci.yml/badge.svg) [![Maintainability](https://api.codeclimate.com/v1/badges/fe9fb0b64052a426f355/maintainability)](https://codeclimate.com/github/f213/education-backend/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/fe9fb0b64052a426f355/test_coverage)](https://codeclimate.com/github/f213/education-backend/test_coverage)
 
 Django-based production project, integrated with Tinkoff, Dashamail, Postmark, S3 and telegram. Frontend is built on vue.js in the [separate repo](http://github.com/f213/education-frontend).
 
 ## Configuration
+
 Configuration is stored in `src/core/.env`, for examples see `src/core/.env.ci`
 
-
 ## Installing on a local machine
+
 This project requires python 3.11. Deps are managed by [Poetry](https://python-poetry.org/).
 
 Install requirements:
@@ -24,6 +25,7 @@ docker compose up -d
 ```
 
 If you don't have access to de-anonymized db image use `postgres:13.6-alpine` in `docker-compose.yml` instead:
+
 ```yaml
 postgres:
     image: postgres:13.6-alpine
@@ -42,6 +44,7 @@ make server
 ```
 
 Testing:
+
 ```bash
 # run lint
 make lint

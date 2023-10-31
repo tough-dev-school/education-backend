@@ -10,6 +10,7 @@ lint:
 	$(manage) makemigrations --check --no-input --dry-run
 	poetry run flake8 src
 	poetry run mypy src
+	poetry run pymarkdown --disable-rules MD013 scan README.md
 
 server:
 	$(manage) migrate
