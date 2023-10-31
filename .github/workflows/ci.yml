@@ -59,6 +59,9 @@ jobs:
           packages: locales-all gettext
           version: 1
 
+      - name: compile messages
+        run: make compilemessages
+
       - name: test
         env:
           DATABASE_URL: postgres://postgres:secret@localhost:5432/postgres

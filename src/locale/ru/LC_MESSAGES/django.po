@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-31 12:10+0300\n"
+"POT-Creation-Date: 2023-10-31 12:52+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -61,7 +61,7 @@ msgid ""
 msgstr "В списке только не запущенные и не заархивированные цепочки"
 
 #: src/apps/chains/admin/message.py:50 src/apps/chains/models/chain.py:34
-#: src/apps/diplomas/admin/diploma/admin.py:64
+#: src/apps/diplomas/admin/diploma/admin.py:56
 #: src/apps/diplomas/admin/diploma/form.py:14
 #: src/apps/homework/admin/answer/admin.py:59
 #: src/apps/homework/admin/answer/admin.py:104
@@ -115,26 +115,26 @@ msgstr "Письмо"
 msgid "Email chain messages"
 msgstr "Письма"
 
-#: src/apps/diplomas/admin/diploma/admin.py:68
+#: src/apps/diplomas/admin/diploma/admin.py:60
 #: src/apps/orders/admin/orders/admin.py:103
 msgid "Date"
 msgstr "Дата"
 
-#: src/apps/diplomas/admin/diploma/admin.py:72
+#: src/apps/diplomas/admin/diploma/admin.py:64
 #: src/apps/homework/models/question.py:20
 msgid "Homework"
 msgstr "Домашка"
 
-#: src/apps/diplomas/admin/diploma/admin.py:76
-#: src/apps/diplomas/admin/diploma/form.py:15 src/apps/users/models.py:124
+#: src/apps/diplomas/admin/diploma/admin.py:68
+#: src/apps/diplomas/admin/diploma/form.py:15 src/apps/users/models.py:121
 msgid "Student"
 msgstr "Студент"
 
-#: src/apps/diplomas/admin/diploma/admin.py:80
+#: src/apps/diplomas/admin/diploma/admin.py:72
 msgid "Send diploma to student"
 msgstr "Отправить студенту"
 
-#: src/apps/diplomas/admin/diploma/admin.py:87
+#: src/apps/diplomas/admin/diploma/admin.py:79
 msgid "Regenerate diploma"
 msgstr "Перегенерировать"
 
@@ -806,39 +806,39 @@ msgstr "Имя на английском"
 msgid "Users"
 msgstr "Юзеры"
 
-#: src/apps/users/models.py:42
+#: src/apps/users/models.py:39
 msgid "Male"
 msgstr "Мужчина"
 
-#: src/apps/users/models.py:43
+#: src/apps/users/models.py:40
 msgid "Female"
 msgstr "Женщина"
 
-#: src/apps/users/models.py:47
+#: src/apps/users/models.py:44
 msgid "Subscribed to newsletter"
 msgstr "Подписан на новости"
 
-#: src/apps/users/models.py:48
+#: src/apps/users/models.py:45
 msgid "first name in english"
 msgstr "Имя на английском"
 
-#: src/apps/users/models.py:49
+#: src/apps/users/models.py:46
 msgid "last name in english"
 msgstr "Фамилия на английском"
 
-#: src/apps/users/models.py:52
+#: src/apps/users/models.py:49
 msgid "Gender"
 msgstr "Пол"
 
-#: src/apps/users/models.py:63
+#: src/apps/users/models.py:60
 msgid "user"
 msgstr "пользователь"
 
-#: src/apps/users/models.py:64
+#: src/apps/users/models.py:61
 msgid "users"
 msgstr "пользователи"
 
-#: src/apps/users/models.py:125
+#: src/apps/users/models.py:122
 msgid "Students"
 msgstr "Студенты"
 
