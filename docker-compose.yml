@@ -12,7 +12,7 @@ services:
 
   notion-middleware:
     image: ghcr.io/tough-dev-school/notion-middleware
-    env_file: ".env"
+    env_file: "src/core/.env"
     ports:
       - 8001:8000
 

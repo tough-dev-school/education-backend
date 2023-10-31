@@ -1,0 +1,42 @@
+name: build
+
+runs:
+  using: composite
+
+  steps:
+    - name: load cached poetry installation
+      id: cached-poetry
+      uses: actions/cache@v3
+      with:
+        path: ~/.local
+        key: poetry-v1-${{ hashFiles('pyproject.toml') }}
+
+    - name: install poetry
+      if: steps.cached-poetry.outputs.cache-hit != 'true'
+      uses: snok/install-poetry@v1
+      with:
+        version: 1.6.1
+
+    - name: install python
+      id: setup-python
+      uses: actions/setup-python@v4
+      with:
+        cache: 'poetry'
+        python-version-file: 'pyproject.toml'
+
+    - name: make sure poetry lockfile is up to date
+      run: poetry check --lock && echo Lockfile is ok, $(poetry --version)
+      shell: bash
+
+    - name: save python version to the env
+      run: echo "python-version=${{ steps.setup-python.outputs.python-version }}" >> $GITHUB_ENV
+      shell: bash
+
+    - name: install deps
+      if: steps.setup-python.outputs.cache-hit != 'true'
+      run: poetry install --no-interaction --no-root
+      shell: bash
+
+    - name: restore default environment
+      run: cp src/core/.env.ci src/core/.env
+      shell: bash
