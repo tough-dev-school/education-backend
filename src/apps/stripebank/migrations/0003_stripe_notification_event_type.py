@@ -3,6 +3,7 @@
 from django.core.exceptions import ValidationError
 from django.db import migrations
 from django.db import models
+import django.db.models.deletion
 from django.db.models.fields import json
 
 
@@ -20,6 +21,7 @@ def retrieve_and_set_event_type_payment_intent(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
+        ("orders", "0032_order_set_bank_choices"),
         ("stripebank", "0002_OrderUUID"),
     ]
 
@@ -43,6 +45,21 @@ class Migration(migrations.Migration):
             name="payment_intent",
             field=models.CharField(db_index=True, default="", max_length=256),
             preserve_default=False,
+        ),
+        migrations.AlterField(
+            model_name="stripenotification",
+            name="amount",
+            field=models.DecimalField(decimal_places=2, default=0, max_digits=9),
+        ),
+        migrations.AlterField(
+            model_name="stripenotification",
+            name="order",
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name="stripe_notifications", to="orders.order"),
+        ),
+        migrations.AlterField(
+            model_name="stripenotification",
+            name="payment_intent",
+            field=models.CharField(db_index=True, default="", max_length=256),
         ),
         migrations.RunPython(retrieve_and_set_event_type_payment_intent),
     ]

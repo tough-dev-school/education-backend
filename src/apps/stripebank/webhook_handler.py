@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from decimal import Decimal
 from typing import Callable
 
+import sentry_sdk
 import stripe
 
 from apps.orders.models import Order
@@ -21,12 +22,28 @@ class StripeWebhookHandler(BaseService):
             "charge.refunded": self.charge_refunded,
         }
 
+    @property
+    def safe_low_interested_event_types(self) -> set[str]:
+        """Safe low interested notifications that don't require their own handler.
+        These events are saved without being linked to an order and no sentry notification is sent.
+        """
+        return {
+            "payment_intent.succeeded",
+        }
+
     def act(self) -> None:
         handler = self.handlers.get(self.webhook_event.type, self.default_handler)
         handler(self.webhook_event)
 
     def default_handler(self, webhook_event: stripe.Event) -> None:
-        pass
+        StripeNotification.objects.create(
+            stripe_id=webhook_event.data.object["id"],
+            event_type=webhook_event.type,
+            raw=webhook_event,
+        )
+
+        if webhook_event.type not in self.safe_low_interested_event_types:
+            sentry_sdk.capture_message(f"Suspicious Stripe event received: {webhook_event.type}")
 
     def checkout_session_completed(self, webhook_event: stripe.Event) -> None:
         stripe_checkout_event = webhook_event.data.object
