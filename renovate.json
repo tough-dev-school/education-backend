@@ -2,8 +2,8 @@
   "extends": [
     "config:base"
   ],
-  "enabledManagers": ["pip_requirements"],
-  "ignoreDeps": ["boto3", "boto3-stubs", "botocore", "botocore-stubs"],
+  "enabledManagers": ["poetry"],
+  "ignoreDeps": ["boto3", "boto3-stubs", "botocore", "botocore-stubs", "s3transfer"],
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],

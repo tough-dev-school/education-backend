@@ -2,3 +2,5 @@ venv/
 storage/
 .vscode/
 .env
+.git
+tests/

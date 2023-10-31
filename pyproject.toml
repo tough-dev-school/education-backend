@@ -1,143 +1,120 @@
-[project]
+[tool.poetry]
 name = "education-backend"
-version = "2022.10.31"
-requires-python = ">=3.10"
-dependencies = [
-    "Django",
-    "django-behaviors",
-    "django-cors-headers",
-    "django-environ",
-    "django-ipware",
-    "django-split-settings",
-    "django-tree-queries",
-    "django-cachalot",
-    "django-prettyjson",
-    "whitenoise",
-    "psycopg2-binary",
-    "shortuuid",
-    "retry",
-    "bcrypt",
-    "simplejson",
-    "Pillow",
+version = "2023.10.20"
+description = ""
+authors = ["Fedor Borshev <fedor@borshev.com>"]
+readme = "README.md"
 
-    "djangorestframework",
-    "django-storages",
-    "drf-recaptcha",
-    "drf-spectacular[sidecar]",
-    "drf-jwt",
-    "django-filter",
-    "django-anymail",
-    "django-axes",
-    "django-debug-toolbar",
-    "dj-rest-auth",
+[tool.poetry.dependencies]
+python = "~3.11"
+babel = "^2.12.1"
+bcrypt = "^4.0.1"
+bleach = "^6.0.0"
+boto3 = "^1.28.48"
+celery = "5.2.7"
+cmarkgfm = "^2022.10.27"
+django = "^4.2.5"
+djangorestframework = "^3.14.0"
+django-anymail = "^10.1"
+django-axes = "^6.1.1"
+django-behaviors = "^0.5.1"
+django-cachalot = "^2.6.1"
+django-cors-headers = "^4.2.0"
+django-debug-toolbar = "^4.2.0"
+django-environ = "^0.11.2"
+django-filter = "^23.2"
+django-healthchecks = "^1.5.0"
+django-ipware = "^5.0.0"
+django-prettyjson = "^0.4.1"
+django-split-settings = "^1.2.0"
+django-storages = "^1.14"
+django-tree-queries = "^0.15.0"
+dj-rest-auth = "^5.0.0"
+drf-jwt = "^1.19.2"
+drf-recaptcha = "^3.0.0"
+drf-spectacular = {extras = ["sidecar"], version = "^0.26.4"}
+emoji = "^2.8.0"
+httpx = {extras = ["http2"], version = "^0.25.0"}
+psycopg2-binary = "^2.9.7"
+pillow = "^10.1.0"
+redis = "^5.0.0"
+retry = "^0.9.2"
+sentry-sdk = "^1.31.0"
+shortuuid = "^1.0.11"
+simplejson = "^3.19.1"
+stripe = "^6.5.0"
+whitenoise = "^6.5.0"
 
-    "django-healthchecks",
+[tool.poetry.group.dev.dependencies]
+autoflake = "^2.2.1"
+black = "^23.9.1"
 
-    "cmarkgfm",
-    "bleach",
+flake8-absolute-import = "^1.0.0.1"
+flake8-black = "^0.3.6"
+flake8-bugbear = "^23.7.10"
+flake8-cognitive-complexity = "^0.1.0"
+flake8-django = "^1.4"
+flake8-eradicate = "^1.5.0"
+flake8-fixme = "^1.1.1"
+flake8-isort = "^6.0.0"
+flake8-multiline-containers = "^0.0.19"
+flake8-mutable = "^1.2.0"
+flake8-pep3101 = "^2.0.0"
+flake8-pie = "^0.16.0"
+flake8-print = "^5.0.0"
+flake8-printf-formatting = "^1.1.2"
+flake8-pyproject = "^1.2.3"
+flake8-pytest = "^1.4"
+flake8-pytest-style = "^1.7.2"
+flake8-simplify = "^0.20.0"
+flake8-tidy-imports = "^4.10.0"
+flake8-todo = "^0.7"
+flake8-use-fstring = "^1.4"
+flake8-variables-names = "^0.0.6"
+flake8-walrus = "^1.2.0"
 
-    "sentry-sdk",
+freezegun = "^1.2.2"
+ipython = "^8.15.0"
+jedi = "^0.19.0"
+mixer = "^7.2.2"
+mypy = "^1.6.1"
+pytest-django = "^4.5.2"
+pytest-cov = "^4.1.0"
+pytest-deadfixtures = "^2.2.1"
+pytest-env = "^1.0.1"
+pytest-freezegun = "^0.4.2"
+pytest-lazy-fixture = "^0.6.3"
+pytest-mock = "^3.11.1"
+pytest-randomly = "^3.15.0"
+pytest-repeat = "^0.9.1"
+pytest-subtests = "^0.11.0"
+pytest-xdist = "^3.3.1"
+requests-mock = "^1.11.0"
+respx = "^0.20.2"
+rope = "^1.10.0"
 
-    "babel",
-    "boto3",
-    "PyJWT",
-    "urllib3",
+boto3-stubs = "^1.28.48"
+djangorestframework-stubs = "^3.14.4"
+django-stubs = "^4.2.6"
+types-babel = "^2.11.0.15"
+types-bleach = "^6.0.0.4"
+types-freezegun = "^1.1.10"
+types-markdown = "^3.4.2.10"
+types-pillow = "^10.0.0.3"
+types-requests = "^2.31.0.2"
+types-retry = "^0.9.9.4"
+types-simplejson = "^3.19.0.2"
+types-stripe = "^3.5.2.14"
 
-    "celery",
-    "redis",
-
-    "httpx[http2]",
-    "stripe",
-
-    "emoji",
-]
-
-
-[project.optional-dependencies]
-dev = [
-    "ipython",
-
-    "pytest-django",
-    "pytest-cov",
-    "pytest-deadfixtures",
-    "pytest-env",
-    "pytest-freezegun",
-    "pytest-lazy-fixture",
-    "pytest-mock",
-    "pytest-randomly",
-    "pytest-repeat",
-    "pytest-subtests",
-    "pytest-xdist",
-    "respx",
-
-    "freezegun",
-    "mixer",
-
-    "black",
-
-    "jedi",
-    "autoflake",
-    "flake8-absolute-import",
-    "flake8-black",
-    "flake8-bugbear",
-    "flake8-cognitive-complexity",
-    "flake8-django",
-    "flake8-eradicate",
-    "flake8-fixme",
-    "flake8-isort>=4.0.0",
-    "flake8-multiline-containers",
-    "flake8-mutable",
-    "flake8-pie",
-    "flake8-pep3101",
-    "flake8-print",
-    "flake8-printf-formatting",
-    "flake8-pytest",
-    "flake8-pytest-style",
-    "flake8-simplify",
-    "flake8-tidy-imports",
-    "flake8-todo",
-    "flake8-variables-names",
-    "flake8-walrus",
-    "flake8-use-fstring",
-    "flake8-pyproject",
-
-    "mypy",
-    "boto3-stubs",
-    "django-stubs",
-    "djangorestframework-stubs",
-    "types-babel",
-    "types-bleach",
-    "types-freezegun",
-    "types-Markdown",
-    "types-retry",
-    "types-Pillow",
-    "types-simplejson",
-    "types-stripe",
-]
-
+[tool.black]
+exclude = """
+/(
+    | migrations
+)/
+"""
+line_length = 160
 
 [tool.flake8]
-max-line-length = 160
-line-quotes = "\""
-ignore = [
-    "B010",  # Do not call setattr(x, 'attr', val), instead use normal property access: x.attr = val
-    "DJ01",  # Avoid using null=True on string-based fields such as CharField and TextField
-    "DJ07",  # Allow __all__ in fields for ModelForm
-    "DJ12",  # Field ordering
-    "E501",  # Line too long
-    "E265",  # Block comments should have one space before the pound sign (#) and the comment itself
-    "F811",  # Redefinition of unused name from line n
-    "FS003",  # f-string missing prefix
-    "PIE783",  # Warn about Celery task definitions that don't have explicit names
-    "PIE785",  # Celery tasks can bunch up if they don't have expirations
-    "PIE801",  # Return boolean expressions directly instead of returning True and False
-    "PT001",  # Use @pytest.fixture() over @pytest.fixture
-    "SIM102",  # Use a single if-statement instead of nested if-statements
-    "SIM113",  # Use enumerate instead of manually incrementing a counter
-    "VNE003",  # Variable names that shadow builtins are not allowed
-    "W503",  # https://www.flake8rules.com/rules/W503.html
-    "E203", # whitespace before ':', disabled for black purposes https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html#slices
-]
 banned-modules = """
     typing.Optional = Please use "x | None"
     typing.Union = Please use "x | y"
@@ -145,28 +122,71 @@ banned-modules = """
     typing.Dict = Please use "dict" instead of "Dict"
 """
 exclude = [
-    "static",
-    "migrations",
     "frontend",
+    "migrations",
+    "static",
     ".git",
     "__pycache__",
 ]
-
+ignore = [
+    "DJ01",     # avoid using null=True on string-based fields such CharField
+    "DJ07",     # do not use __all__ with ModelForm, use fields instead
+    "DJ08",     # model does not define __str__ method
+    "E501",     # line too long ({} > {} characters)
+    "PIE783",   # celery tasks should have explicit names
+    "PIE785",   # celery tasks should have expirations
+    "PIE801",   # prefer-simple-return: Return boolean expressions directly instead of returning `True` and `False`
+    "PT001",    # use @pytest.fixture() over @pytest.fixture
+    "SIM102",   # use a single if-statement instead of nested if-statements
+    "SIM113",   # use enumerate for `{}`
+    "VNE003",   # variable names that shadow builtins are not allowed
+    "W503",     # line break before binary operator
+]
+line-quotes = "\""
 
 [tool.isort]
-profile = "google"
-line_length = 160
-multi_line_output = 3
-use_parentheses = true
 extra_standard_library = ["pytest"]
 known_django = ["django", "restframework"]
+line_length = 160
+multi_line_output = 3
+profile = "google"
 sections = ["FUTURE", "STDLIB", "THIRDPARTY", "DJANGO", "FIRSTPARTY", "LOCALFOLDER"]
+use_parentheses = true
 
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
-[tool.black]
- exclude = '''
- /(
-   | migrations
- )/
- '''
- line_length = 160
+[tool.pytest.ini_options]
+addopts = "--reuse-db"
+DJANGO_SETTINGS_MODULE = "core.settings"
+env = [
+    "ATOL_WEBHOOK_SALT = SECRET-SALT",
+    "AWS_ACCESS_KEY_ID = zeroc00l94",
+    "AWS_S3_ENDPOINT_URL = https://fra1.digitaloceanspaces.com",
+    "AWS_S3_REGION_NAME = Ukraine",
+    "AWS_SECRET_ACCESS_KEY = h4xx0r",
+    "AWS_STORAGE_BUCKET_NAME = pwned_data",
+    "CELERY_ALWAYS_EAGER = on",
+    "CI = 1",
+    "DEFAULT_FILE_STORAGE = django.core.files.storage.FileSystemStorage",
+    "DISABLE_HOMEWORK_PERMISSIONS_CHECKING = on",
+    "DISABLE_NEW_ANSWER_NOTIFICATIONS = on",
+    "DISABLE_THROTTLING = on",
+    "RECAPTCHA_ENABLED = off",
+]
+filterwarnings = [
+    "error",
+    "ignore:'cgi' is deprecated",
+    "ignore:distutils Version classes are deprecated. Use packaging.version instead.:DeprecationWarning:pytest_freezegun:17",
+    "ignore:pkg_resources is deprecated as an API",
+    "ignore:SelectableGroups dict interface is deprecated",
+    "ignore:unclosed file:ResourceWarning",
+]
+markers = [
+    "freeze_time: freezing time marker (pytest-freezegun does not register it)",
+    "single_thread: marked tests should be ran only in single thread",
+    "slow: tests with inentional slow run",
+]
+python_files = "test*.py"
+pythonpath = ". src"
