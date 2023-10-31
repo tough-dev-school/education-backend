@@ -28,8 +28,10 @@ jobs:
         run: make lint
 
   test:
+    env:
+      IS_BOT_JOB: ${{ startsWith(github.ref_name, 'renovate/') }}
     needs: lint
-    runs-on: ubuntu-16x
+    runs-on: ${{ env.IS_BOT_JOB && 'ubuntu-latest' || 'ubuntu-16x' }}
     services:
       postgres:
         image: postgres:13.9-alpine
@@ -63,7 +65,7 @@ jobs:
         env:
           DATABASE_URL: postgres://postgres:secret@localhost:5432/postgres
           REDISCLOUD_URL: redis://localhost:6379/5
-        run: make test -e SIMULTANEOUS_TEST_JOBS=16
+        run: make test -e SIMULTANEOUS_TEST_JOBS=${{ env.IS_BOT_JOB && 4 || 16 }}
 
       - name: upload code coverage to codeclimate
         uses: paambaati/codeclimate-action@v3.2.0
