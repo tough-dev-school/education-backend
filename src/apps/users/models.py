@@ -22,9 +22,6 @@ if TYPE_CHECKING:
 
 
 class UserQuerySet(models.QuerySet):
-    def for_view(self) -> "QuerySet[User]":
-        return self.filter(is_active=True)
-
     def for_course(self, course: "Course") -> "QuerySet[User]":
         return self.filter(order__study__course=course).order_by("last_name", "first_name")
 
