@@ -8,29 +8,28 @@ import stripe
 
 from django.conf import settings
 
-from apps.orders.models import Order
-from apps.stripebank.api.serializers import StripeNotificationSerializer
+from apps.stripebank.webhook_handler import StripeWebhookHandler
+from core.exceptions import AppServiceException
 
 
 class StripeWebhookView(APIView):
-    permission_classes = [AllowAny]  # validation is done later by stripe library
+    permission_classes = [AllowAny]  # validation is done later by 'validate_webhook' using stripe.Webhook.construct_event
 
     def post(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
-        payload = request.body.decode(request.encoding or "utf-8")
-        stripe.api_key = settings.STRIPE_API_KEY
-        sig_header = request.headers.get("STRIPE_SIGNATURE")
+        webhook_event = self.validate_webhook(request)
 
-        event = stripe.Webhook.construct_event(payload, sig_header, settings.STRIPE_WEBHOOK_SECRET)  # type: ignore
-
-        if event["type"] == "checkout.session.completed":
-            serializer = StripeNotificationSerializer(
-                data={
-                    **event["data"]["object"],
-                    "order": Order.objects.get(slug=event["data"]["object"]["client_reference_id"]).pk,
-                    "raw": event,
-                }
-            )
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
+        StripeWebhookHandler(webhook_event)()
 
         return Response({"success": True})
+
+    def validate_webhook(self, request: Request) -> stripe.Event:
+        try:
+            return stripe.Webhook.construct_event(
+                payload=request.body,
+                sig_header=request.headers.get("STRIPE_SIGNATURE", ""),
+                secret=settings.STRIPE_WEBHOOK_SECRET,
+                api_key=settings.STRIPE_API_KEY,
+            )
+
+        except stripe.error.StripeError:
+            raise AppServiceException("Not a valid webhook request")
