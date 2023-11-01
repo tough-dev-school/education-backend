@@ -23,7 +23,7 @@ if TYPE_CHECKING:
 
 class UserQuerySet(models.QuerySet):
     def for_course(self, course: "Course") -> "QuerySet[User]":
-        return self.filter(order__study__course=course).order_by("last_name", "first_name")
+        return self.filter(order__study__course=course)
 
 
 class UserManager(_UserManager.from_queryset(UserQuerySet)):  # type: ignore[misc]
