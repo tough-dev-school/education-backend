@@ -7,6 +7,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.staticfiles",
 
+    "admin_auto_filters",
     "anymail",
     "axes",
     "corsheaders",

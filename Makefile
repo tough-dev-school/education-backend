@@ -12,6 +12,8 @@ lint:
 	poetry run mypy src
 
 server:
+	$(manage) collectstatic --no-input
+
 	$(manage) migrate
 	$(manage) runserver
 

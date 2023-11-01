@@ -62,6 +62,7 @@ class Diploma(TimestampedModel):
         indexes = [
             models.Index(fields=["study", "language"]),
         ]
+        default_related_name = "diplomas"
         ordering = ["-id"]
         permissions = [
             ("access_all_diplomas", _("May access diplomas of all students")),
