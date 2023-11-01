@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Callable
+from typing import Callable, ClassVar
 
 import sentry_sdk
 import stripe
@@ -13,22 +13,24 @@ from core.services import BaseService
 
 @dataclass
 class StripeWebhookHandler(BaseService):
+    """Save stipe webhook events as StripeNotification.
+
+    1. Events with their own handler are linked to order, and 'pament_intent' and 'amount' are set.
+    2. Safe and low interested notifications are saved without being linked to an order.
+    3. The remaining events are considered suspicious. Save them as safe ones and send sentry message.
+    """
+
     webhook_event: stripe.Event
+
+    safe_low_interested_event_types: ClassVar[set[str]] = {
+        "payment_intent.succeeded",
+    }
 
     @property
     def handlers(self) -> dict[str, Callable]:
         return {
             "checkout.session.completed": self.checkout_session_completed,
             "charge.refunded": self.charge_refunded,
-        }
-
-    @property
-    def safe_low_interested_event_types(self) -> set[str]:
-        """Safe low interested notifications that don't require their own handler.
-        These events are saved without being linked to an order and no sentry notification is sent.
-        """
-        return {
-            "payment_intent.succeeded",
         }
 
     def act(self) -> None:
