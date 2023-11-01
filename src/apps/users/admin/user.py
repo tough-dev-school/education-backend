@@ -22,6 +22,6 @@ class UserAdmin(StockUserAdmin):
             course = Course.objects.filter(id=course).first()
 
             if course:
-                queryset = course.get_purchased_users()
+                queryset = queryset.for_course(course=course)  # type: ignore[attr-defined]
 
-        return queryset, use_distinct
+        return queryset.order_by("first_name", "last_name"), use_distinct

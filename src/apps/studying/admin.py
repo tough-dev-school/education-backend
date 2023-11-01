@@ -18,20 +18,22 @@ class CourseFilter(AutocompleteFilter):
 
 
 class StudentFilter(AutocompleteFilter):
-    title = "студент"
+    title = "Студент"
     field_name = "student"
 
     def get_autocomplete_url(self, request: "HttpRequest", model_admin: "ModelAdmin") -> str:
-        del model_admin
-
         course = request.GET.get("course__pk__exact")
 
-        return f"/admin/autocomplete/?course={course}"
+        if course:
+            return f"/admin/autocomplete/?course={course}"
+
+        return super().get_autocomplete_url(request, model_admin)
 
 
 class DiplomaInline(admin.TabularInline):
     extra = 1
     fields = ("slug", "language", "image")
+    max_num = 2
     model = Diploma
     readonly_fields = ("slug",)
 
@@ -44,7 +46,7 @@ class StudyAdmin(ModelAdmin):
     inlines = (DiplomaInline,)
     list_display = ("course", "student", "homework_accepted")
     list_filter = (CourseFilter, StudentFilter, "homework_accepted")
-    readonly_fields = ("course", "student", "homework_accepted")
+    readonly_fields = ("course", "student")
 
     def has_add_permission(self, request: "HttpRequest") -> bool:
         """Study addition is disabled: the student is automatically enrolled in the course when the course is purchased.
@@ -54,6 +56,6 @@ class StudyAdmin(ModelAdmin):
 
         return False
 
-    @admin.action(description="Создать дипломы на желаемых студентами языках и разослать их по почте")
+    @admin.action(description="Создать дипломы и разослать их почтой")
     def graduate(self, request: "HttpRequest", queryset: "QuerySet") -> None:
         pass

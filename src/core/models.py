@@ -17,17 +17,7 @@ __all__ = [
 ]
 
 
-class DefaultModelMixin:
-    def update(self: "models.Model", **kwargs: dict) -> "models.Model":  # type: ignore[misc]
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-
-        self.save(update_fields=kwargs)
-
-        return self
-
-
-class DefaultModel(DefaultModelMixin, models.Model):
+class DefaultModel(models.Model):
     class Meta:
         abstract = True
 
@@ -53,13 +43,29 @@ class DefaultModel(DefaultModelMixin, models.Model):
         except models.FieldDoesNotExist:
             return False
 
+    def update_from_kwargs(self, **kwargs: dict[str, Any]) -> None:
+        """
+        A shortcut method to update model instance from the kwargs.
+        """
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+    def setattr_and_save(self, key: str, value: Any) -> None:
+        """Shortcut for testing -- set attribute of the model and save"""
+        setattr(self, key, value)
+        self.save()
+
     def copy(self, **kwargs: Any) -> "DefaultModel":
         """Creates new object from current."""
-        kwargs.update(id=None, pk=None)
-
         instance = copy(self)
-
-        return instance.update(**kwargs)  # type: ignore[return-value]
+        kwargs.update(
+            {
+                "id": None,
+                "pk": None,
+            }
+        )
+        instance.update_from_kwargs(**kwargs)
+        return instance
 
     @classmethod
     def get_label(cls) -> str:

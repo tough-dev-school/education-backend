@@ -1,6 +1,9 @@
 manage = poetry run python src/manage.py
 SIMULTANEOUS_TEST_JOBS=4
 
+compilemessages:
+	$(manage) compilemessages
+
 fmt:
 	poetry run autoflake --in-place --remove-all-unused-imports --recursive src
 	poetry run isort src
@@ -11,7 +14,10 @@ lint:
 	poetry run flake8 src
 	poetry run mypy src
 
-server:
+messages: compilemessages
+	$(manage) makemessages -l ru
+
+server: compilemessages
 	$(manage) collectstatic --no-input
 
 	$(manage) migrate

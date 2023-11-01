@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 from django.http import HttpRequest
 from django.utils.translation import gettext as _
@@ -9,6 +9,9 @@ from apps.products.admin.courses import actions
 from apps.products.models import Course
 from core.admin import admin
 from core.admin import ModelAdmin
+
+if TYPE_CHECKING:
+    from django.db.models import QuerySet
 
 
 @admin.register(Course)
@@ -88,6 +91,11 @@ class CourseAdmin(ModelAdmin):
 
     save_as = True
     search_fields = ("name",)
+
+    def get_search_results(self, request: "HttpRequest", queryset: "QuerySet", search_term: str) -> tuple["QuerySet", bool]:
+        queryset, use_distinct = super().get_search_results(request, queryset, search_term)
+
+        return queryset.order_by("name"), use_distinct
 
     @admin.display(boolean=True)
     def has_cover(self, course: Course) -> bool:

@@ -1,12 +1,14 @@
-from typing import cast
+from typing import cast, TYPE_CHECKING
 from urllib.parse import urljoin
 import uuid
 
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import Permission
+from django.contrib.auth.models import UserManager as _UserManager
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GinIndex
+from django.db.models import QuerySet
 from django.db.models import TextChoices
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
@@ -15,11 +17,28 @@ from apps.diplomas.models import Languages
 from core.models import models
 from core.types import Language
 
+if TYPE_CHECKING:
+    from apps.products.models import Course
+
+
+class UserQuerySet(models.QuerySet):
+    def for_view(self) -> "QuerySet[User]":
+        return self.filter(is_active=True)
+
+    def for_course(self, course: "Course") -> "QuerySet[User]":
+        return self.filter(order__study__course=course).order_by("last_name", "first_name")
+
+
+class UserManager(_UserManager.from_queryset(UserQuerySet)):  # type: ignore[misc]
+    pass
+
 
 class User(AbstractUser):
     class GENDERS(TextChoices):
         MALE = "male", _("Male")
         FEMALE = "female", _("Female")
+
+    objects = UserManager()  # type: ignore[misc]
 
     subscribed = models.BooleanField(_("Subscribed to newsletter"), default=False)
     first_name_en = models.CharField(_("first name in english"), max_length=150, blank=True)
