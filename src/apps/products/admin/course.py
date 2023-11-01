@@ -92,7 +92,7 @@ class CourseAdmin(ModelAdmin):
     save_as = True
     search_fields = ("name",)
 
-    def get_search_results(self, request: "HttpRequest", queryset: "QuerySet", search_term: str) -> tuple["QuerySet", bool]:
+    def get_search_results(self, request: "HttpRequest", queryset: "QuerySet", search_term: str) -> "tuple[QuerySet, bool]":
         queryset, use_distinct = super().get_search_results(request, queryset, search_term)
 
         return queryset.order_by("name"), use_distinct

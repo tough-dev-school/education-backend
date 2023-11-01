@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 @admin.register(User)
 class UserAdmin(StockUserAdmin):
-    def get_search_results(self, request: "HttpRequest", queryset: "QuerySet", search_term: str) -> tuple["QuerySet", bool]:
+    def get_search_results(self, request: "HttpRequest", queryset: "QuerySet", search_term: str) -> "tuple[QuerySet, bool]":
         queryset, use_distinct = super().get_search_results(request, queryset, search_term)
 
         course = request.GET.get("course")
