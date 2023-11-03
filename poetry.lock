@@ -1840,13 +1840,13 @@ flake8 = "*"
 
 [[package]]
 name = "flake8-pep3101"
-version = "2.0.0"
-description = "Checks for old string formatting."
+version = "2.1.0"
+description = "Checks for old string formatting"
 optional = false
-python-versions = "*"
+python-versions = ">=3.8"
 files = [
-    {file = "flake8-pep3101-2.0.0.tar.gz", hash = "sha256:ae2ee1758734a473ca971b4bf9ff09c961b6099916db91fdb6b9718328dfcacb"},
-    {file = "flake8_pep3101-2.0.0-py3-none-any.whl", hash = "sha256:1d818e1f53c6d26e875714f2f041ec15fbb23c17e2268dbbb024e9c3383541cd"},
+    {file = "flake8_pep3101-2.1.0-py3-none-any.whl", hash = "sha256:2d2b8b997ccf0bf0df91532e861465dcfa32a6a306d1dc98f93889cae49f4231"},
+    {file = "flake8_pep3101-2.1.0.tar.gz", hash = "sha256:1b84b61685f1e631f2f710e5d5ed3ca68b5fc45fb9402fa8ae1b8a9a058a3387"},
 ]
 
 [package.dependencies]
