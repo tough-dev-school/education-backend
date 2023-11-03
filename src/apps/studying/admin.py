@@ -31,6 +31,4 @@ class StudyAdmin(ModelAdmin):
         """Study addition is disabled: the student is automatically enrolled in the course when the course is purchased.
 
         The course can be purchased through the “Order” interface."""
-        del request
-
         return False
