@@ -21,7 +21,7 @@ class StudyAdmin(ModelAdmin):
     fields = ("course", "student", "homework_accepted")
     inlines = (DiplomaInline,)
     list_display = ("course", "student", "homework_accepted")
-    list_filter = ("course", "student", "homework_accepted")
+    list_filter = ("course", "homework_accepted")
     readonly_fields = ("course", "student")
     search_fields = ("course__name", "student__first_name", "student__last_name")
 
