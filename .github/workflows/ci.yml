@@ -29,7 +29,7 @@ jobs:
 
   test:
     needs: lint
-    runs-on: ${{ contains(fromJSON('["renovate", "dependabot"]'), github.triggering_actor) && 'ubuntu-latest' || 'ubuntu-8x' }}
+    runs-on: ${{ contains(github.triggering_actor, '[bot]') && 'ubuntu-latest' || 'ubuntu-8x' }}
     services:
       postgres:
         image: postgres:13.9-alpine
@@ -52,9 +52,6 @@ jobs:
 
       - name: build
         uses: ./.github/actions/build
-
-      - name: Debug runner triggering_actor
-        run: echo ${{ github.triggering_actor }}
 
       - name: install locale stuff
         uses: awalsh128/cache-apt-pkgs-action@v1
