@@ -11,10 +11,9 @@ if TYPE_CHECKING:
 
 class DiplomaInline(admin.TabularInline):
     extra = 0
-    fields = ("slug", "language", "image")
+    fields = ("language", "image")
     max_num = 2
     model = Diploma
-    readonly_fields = ("slug",)
 
 
 @admin.register(Study)
