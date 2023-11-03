@@ -10,6 +10,7 @@ from django.db.models import OuterRef
 from django.utils.translation import gettext_lazy as _
 
 from apps.mailing.tasks import send_mail
+from apps.studying.models import Study
 from core.files import RandomFileName
 from core.models import models
 from core.models import TimestampedModel
@@ -59,6 +60,7 @@ class Diploma(TimestampedModel):
         constraints = [
             models.UniqueConstraint(fields=["study", "language"], name="unique_study"),
         ]
+        default_related_name = "diplomas"
         indexes = [
             models.Index(fields=["study", "language"]),
         ]
@@ -108,3 +110,10 @@ class DiplomaTemplate(TimestampedModel):
         indexes = [
             models.Index(fields=["course", "language", "homework_accepted"]),
         ]
+
+
+class DiplomaStudyProxy(Study):
+    class Meta:
+        proxy = True
+        verbose_name = _("Study")
+        verbose_name_plural = _("Studies")
