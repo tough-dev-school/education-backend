@@ -53,6 +53,9 @@ jobs:
       - name: build
         uses: ./.github/actions/build
 
+      - name: Debug runner triggering_actor
+        run: echo ${{ github.triggering_actor }}
+
       - name: install locale stuff
         uses: awalsh128/cache-apt-pkgs-action@v1
         with:
