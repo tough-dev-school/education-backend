@@ -31,7 +31,7 @@ celery.conf.update(
             "schedule": crontab(hour="*", minute="*/5"),
         },
         "amocrm_push_all_products_and_product_groups": {
-            "task": "amocrm.tasks.push_all_products_and_product_groups",
+            "task": "apps.amocrm.tasks.push_all_products_and_product_groups",
             "schedule": crontab(minute="15", hour="*/2"),
         },
     },
