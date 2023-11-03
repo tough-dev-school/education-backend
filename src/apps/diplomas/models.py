@@ -51,10 +51,10 @@ DiplomaManager = models.Manager.from_queryset(DiplomaQuerySet)
 class Diploma(TimestampedModel):
     objects = DiplomaManager()
 
-    study = models.ForeignKey("studying.Study", on_delete=models.CASCADE)
+    study = models.ForeignKey("studying.Study", on_delete=models.CASCADE, verbose_name=_("Study"))
     slug = models.CharField(max_length=32, db_index=True, unique=True, default=shortuuid.uuid)
-    language = models.CharField(max_length=3, choices=Languages.choices, db_index=True)
-    image = models.ImageField(upload_to=RandomFileName("diplomas"))
+    language = models.CharField(max_length=3, choices=Languages.choices, db_index=True, verbose_name=_("Language"))
+    image = models.ImageField(upload_to=RandomFileName("diplomas"), verbose_name=_("Image"))
 
     class Meta:
         constraints = [

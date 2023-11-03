@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-04 00:06+0300\n"
+"POT-Creation-Date: 2023-11-04 00:17+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -166,6 +166,23 @@ msgstr "Русский"
 msgid "English"
 msgstr "Английский"
 
+#: src/apps/diplomas/models.py:54 src/apps/diplomas/models.py:118
+#: src/apps/studying/models.py:23
+msgid "Study"
+msgstr "Студент-курс"
+
+#: src/apps/diplomas/models.py:55
+msgid "Slug"
+msgstr "Слаг"
+
+#: src/apps/diplomas/models.py:56
+msgid "Language"
+msgstr "Язык"
+
+#: src/apps/diplomas/models.py:57
+msgid "Image"
+msgstr "Обложка"
+
 #: src/apps/diplomas/models.py:69
 msgid "May access diplomas of all students"
 msgstr "Видит все дипломы"
@@ -193,10 +210,6 @@ msgstr "Шаблон диплома"
 #: src/apps/diplomas/models.py:104
 msgid "Diploma templates"
 msgstr "Шаблоны дипломов"
-
-#: src/apps/diplomas/models.py:118 src/apps/studying/models.py:23
-msgid "Study"
-msgstr "Студент-курс"
 
 #: src/apps/diplomas/models.py:119 src/apps/studying/models.py:24
 msgid "Studies"
