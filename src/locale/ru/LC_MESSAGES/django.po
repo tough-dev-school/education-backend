@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-03 15:32+0300\n"
+"POT-Creation-Date: 2023-11-04 00:06+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -61,9 +61,11 @@ msgid ""
 msgstr "В списке только не запущенные и не заархивированные цепочки"
 
 #: src/apps/chains/admin/message.py:50 src/apps/chains/models/chain.py:34
-#: src/apps/diplomas/admin.py:58 src/apps/homework/admin/answer/admin.py:59
+#: src/apps/diplomas/admin/diploma.py:57
+#: src/apps/homework/admin/answer/admin.py:59
 #: src/apps/homework/admin/answer/admin.py:104
 #: src/apps/orders/models/order.py:61 src/apps/products/models/course.py:76
+#: src/apps/studying/models.py:11
 msgid "Course"
 msgstr "Курс"
 
@@ -113,61 +115,92 @@ msgstr "Письмо"
 msgid "Email chain messages"
 msgstr "Письма"
 
-#: src/apps/diplomas/admin.py:54 src/apps/users/models.py:101
+#: src/apps/diplomas/admin/diploma.py:53 src/apps/studying/models.py:10
+#: src/apps/users/models.py:101
 msgid "Student"
 msgstr "Студент"
 
-#: src/apps/diplomas/admin.py:62 src/apps/homework/models/question.py:20
+#: src/apps/diplomas/admin/diploma.py:61
+#: src/apps/homework/models/question.py:20
 msgid "Homework"
 msgstr "Домашка"
 
-#: src/apps/diplomas/admin.py:66 src/apps/orders/admin/orders/admin.py:103
+#: src/apps/diplomas/admin/diploma.py:65
+#: src/apps/orders/admin/orders/admin.py:103
 msgid "Date"
 msgstr "Дата"
 
-#: src/apps/diplomas/admin.py:70
+#: src/apps/diplomas/admin/diploma.py:69
 msgid "Send diploma to student"
 msgstr "Отправить студенту"
 
-#: src/apps/diplomas/admin.py:77
+#: src/apps/diplomas/admin/diploma.py:76
 msgid "Regenerate diploma"
 msgstr "Перегенерировать"
 
-#: src/apps/diplomas/models.py:22
+#: src/apps/diplomas/admin/study.py:33 src/apps/diplomas/admin/study.py:76
+msgid "RU diploma exists"
+msgstr "Есть диплом на русском"
+
+#: src/apps/diplomas/admin/study.py:39 src/apps/diplomas/admin/study.py:68
+msgid "EN diploma exists"
+msgstr "Есть диплом на английском"
+
+#: src/apps/diplomas/admin/study.py:64 src/apps/users/admin/student.py:14
+msgid "Email"
+msgstr "Почта"
+
+#: src/apps/diplomas/admin/study.py:72 src/apps/studying/models.py:14
+msgid "Homework accepted"
+msgstr "Домашка принята"
+
+#: src/apps/diplomas/admin/study.py:80
+msgid "Username"
+msgstr "Логин"
+
+#: src/apps/diplomas/models.py:23
 msgid "Russian"
 msgstr "Русский"
 
-#: src/apps/diplomas/models.py:23
+#: src/apps/diplomas/models.py:24
 msgid "English"
 msgstr "Английский"
 
-#: src/apps/diplomas/models.py:67
+#: src/apps/diplomas/models.py:69
 msgid "May access diplomas of all students"
 msgstr "Видит все дипломы"
 
-#: src/apps/diplomas/models.py:70
+#: src/apps/diplomas/models.py:72
 msgid "Diploma"
 msgstr "Диплом"
 
-#: src/apps/diplomas/models.py:71
+#: src/apps/diplomas/models.py:73
 msgid "Diplomas"
 msgstr "Дипломы"
 
-#: src/apps/diplomas/models.py:96
+#: src/apps/diplomas/models.py:98
 msgid "Check out https://is.gd/eutOYr for available templates"
 msgstr "Шаблоны искать в https://is.gd/eutOYr"
 
-#: src/apps/diplomas/models.py:98
+#: src/apps/diplomas/models.py:100
 msgid "This template is for students that have completed the homework"
 msgstr "Для тех, кто сдал домашку"
 
-#: src/apps/diplomas/models.py:101
+#: src/apps/diplomas/models.py:103
 msgid "Diploma template"
 msgstr "Шаблон диплома"
 
-#: src/apps/diplomas/models.py:102
+#: src/apps/diplomas/models.py:104
 msgid "Diploma templates"
 msgstr "Шаблоны дипломов"
+
+#: src/apps/diplomas/models.py:118 src/apps/studying/models.py:23
+msgid "Study"
+msgstr "Студент-курс"
+
+#: src/apps/diplomas/models.py:119 src/apps/studying/models.py:24
+msgid "Studies"
+msgstr "Студенты-курсы"
 
 #: src/apps/homework/admin/answer/admin.py:67
 msgid "Crosschecking people"
@@ -694,17 +727,16 @@ msgstr "Записи"
 msgid "Stripe"
 msgstr "Страйп"
 
-#: src/apps/studying/apps.py:7 src/apps/studying/apps.py:8
+#: src/apps/studying/apps.py:8 src/apps/studying/apps.py:9
 msgid "Studying"
 msgstr "Студенты-курсы"
 
-#: src/apps/studying/models.py:23
-msgid "Study"
-msgstr "Студент-курс"
-
-#: src/apps/studying/models.py:24
-msgid "Studies"
-msgstr "Студенты-курсы"
+#: src/apps/studying/models.py:12
+#, fuzzy
+#| msgctxt "orders"
+#| msgid "Order"
+msgid "Order"
+msgstr "Заказ"
 
 #: src/apps/tinkoff/bank.py:18
 msgid "Tinkoff"
@@ -767,10 +799,6 @@ msgstr ""
 
 #: src/apps/tinkoff/models.py:69
 msgid "Completed"
-msgstr ""
-
-#: src/apps/users/admin/student.py:14
-msgid "Email"
 msgstr ""
 
 #: src/apps/users/admin/student.py:15
