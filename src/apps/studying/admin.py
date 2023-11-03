@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class DiplomaInline(admin.TabularInline):
-    extra = 1
+    extra = 0
     fields = ("slug", "language", "image")
     max_num = 2
     model = Diploma
@@ -19,7 +19,6 @@ class DiplomaInline(admin.TabularInline):
 
 @admin.register(Study)
 class StudyAdmin(ModelAdmin):
-    autocomplete_fields = ("course", "student")
     fields = ("course", "student", "homework_accepted")
     inlines = (DiplomaInline,)
     list_display = ("course", "student", "homework_accepted")
