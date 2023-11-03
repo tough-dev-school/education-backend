@@ -87,6 +87,7 @@ class CourseAdmin(ModelAdmin):
     ]
 
     save_as = True
+    search_fields = ("name",)
 
     @admin.display(boolean=True)
     def has_cover(self, course: Course) -> bool:
