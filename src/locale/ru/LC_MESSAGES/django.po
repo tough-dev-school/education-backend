@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-04 00:17+0300\n"
+"POT-Creation-Date: 2023-11-04 07:52+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -138,7 +138,7 @@ msgstr "Отправить студенту"
 msgid "Regenerate diploma"
 msgstr "Перегенерировать"
 
-#: src/apps/diplomas/admin/study.py:33 src/apps/diplomas/admin/study.py:76
+#: src/apps/diplomas/admin/study.py:33 src/apps/diplomas/admin/study.py:72
 msgid "RU diploma exists"
 msgstr "Есть диплом на русском"
 
@@ -150,13 +150,14 @@ msgstr "Есть диплом на английском"
 msgid "Email"
 msgstr "Почта"
 
-#: src/apps/diplomas/admin/study.py:72 src/apps/studying/models.py:14
-msgid "Homework accepted"
-msgstr "Домашка принята"
-
-#: src/apps/diplomas/admin/study.py:80
+#: src/apps/diplomas/admin/study.py:76
 msgid "Username"
 msgstr "Логин"
+
+#: src/apps/diplomas/apps.py:9 src/apps/diplomas/apps.py:10
+#: src/apps/diplomas/models.py:73
+msgid "Diplomas"
+msgstr "Дипломы"
 
 #: src/apps/diplomas/models.py:23
 msgid "Russian"
@@ -170,10 +171,6 @@ msgstr "Английский"
 #: src/apps/studying/models.py:23
 msgid "Study"
 msgstr "Студент-курс"
-
-#: src/apps/diplomas/models.py:55
-msgid "Slug"
-msgstr "Слаг"
 
 #: src/apps/diplomas/models.py:56
 msgid "Language"
@@ -190,10 +187,6 @@ msgstr "Видит все дипломы"
 #: src/apps/diplomas/models.py:72
 msgid "Diploma"
 msgstr "Диплом"
-
-#: src/apps/diplomas/models.py:73
-msgid "Diplomas"
-msgstr "Дипломы"
 
 #: src/apps/diplomas/models.py:98
 msgid "Check out https://is.gd/eutOYr for available templates"
@@ -751,6 +744,10 @@ msgstr "Студенты-курсы"
 msgid "Order"
 msgstr "Заказ"
 
+#: src/apps/studying/models.py:14
+msgid "Homework accepted"
+msgstr "Домашка принята"
+
 #: src/apps/tinkoff/bank.py:18
 msgid "Tinkoff"
 msgstr "Тинькофф"
@@ -877,6 +874,9 @@ msgstr "Да"
 #: src/core/admin/filters.py:26
 msgid "No"
 msgstr "Нет"
+
+#~ msgid "Slug"
+#~ msgstr "Слаг"
 
 #~ msgid "Set not paid"
 #~ msgstr "Вернуть"
