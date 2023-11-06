@@ -61,5 +61,5 @@ class StudyAdmin(ModelAdmin):
         The course can be purchased through the “Order” interface."""
         return False
 
-    def has_delete_permission(self, request: "HttpRequest", obj: "Study" = None) -> bool:
+    def has_delete_permission(self, request: "HttpRequest", obj: "Study | None" = None) -> bool:
         return False

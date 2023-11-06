@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-04 07:52+0300\n"
+"POT-Creation-Date: 2023-11-06 18:18+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -138,21 +138,13 @@ msgstr "Отправить студенту"
 msgid "Regenerate diploma"
 msgstr "Перегенерировать"
 
-#: src/apps/diplomas/admin/study.py:33 src/apps/diplomas/admin/study.py:72
+#: src/apps/diplomas/admin/study.py:33
 msgid "RU diploma exists"
 msgstr "Есть диплом на русском"
 
-#: src/apps/diplomas/admin/study.py:39 src/apps/diplomas/admin/study.py:68
+#: src/apps/diplomas/admin/study.py:39
 msgid "EN diploma exists"
 msgstr "Есть диплом на английском"
-
-#: src/apps/diplomas/admin/study.py:64 src/apps/users/admin/student.py:14
-msgid "Email"
-msgstr "Почта"
-
-#: src/apps/diplomas/admin/study.py:76
-msgid "Username"
-msgstr "Логин"
 
 #: src/apps/diplomas/apps.py:9 src/apps/diplomas/apps.py:10
 #: src/apps/diplomas/models.py:73
@@ -167,8 +159,7 @@ msgstr "Русский"
 msgid "English"
 msgstr "Английский"
 
-#: src/apps/diplomas/models.py:54 src/apps/diplomas/models.py:118
-#: src/apps/studying/models.py:23
+#: src/apps/diplomas/models.py:54 src/apps/studying/models.py:23
 msgid "Study"
 msgstr "Студент-курс"
 
@@ -204,9 +195,13 @@ msgstr "Шаблон диплома"
 msgid "Diploma templates"
 msgstr "Шаблоны дипломов"
 
-#: src/apps/diplomas/models.py:119 src/apps/studying/models.py:24
-msgid "Studies"
-msgstr "Студенты-курсы"
+#: src/apps/diplomas/models.py:118
+msgid "Manual upload"
+msgstr "Ручная загрузка"
+
+#: src/apps/diplomas/models.py:119
+msgid "Manual uploads"
+msgstr "Ручные загрузки"
 
 #: src/apps/homework/admin/answer/admin.py:67
 msgid "Crosschecking people"
@@ -748,6 +743,10 @@ msgstr "Заказ"
 msgid "Homework accepted"
 msgstr "Домашка принята"
 
+#: src/apps/studying/models.py:24
+msgid "Studies"
+msgstr "Студенты-курсы"
+
 #: src/apps/tinkoff/bank.py:18
 msgid "Tinkoff"
 msgstr "Тинькофф"
@@ -810,6 +809,10 @@ msgstr ""
 #: src/apps/tinkoff/models.py:69
 msgid "Completed"
 msgstr ""
+
+#: src/apps/users/admin/student.py:14
+msgid "Email"
+msgstr "Почта"
 
 #: src/apps/users/admin/student.py:15
 msgid "first name"
@@ -874,6 +877,9 @@ msgstr "Да"
 #: src/core/admin/filters.py:26
 msgid "No"
 msgstr "Нет"
+
+#~ msgid "Username"
+#~ msgstr "Логин"
 
 #~ msgid "Slug"
 #~ msgstr "Слаг"

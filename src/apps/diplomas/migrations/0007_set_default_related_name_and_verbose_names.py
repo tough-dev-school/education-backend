@@ -19,8 +19,8 @@ class Migration(migrations.Migration):
             name="DiplomaStudyProxy",
             fields=[],
             options={
-                "verbose_name": "Study",
-                "verbose_name_plural": "Studies",
+                "verbose_name": "Manual upload",
+                "verbose_name_plural": "Manual uploads",
                 "proxy": True,
                 "indexes": [],
                 "constraints": [],

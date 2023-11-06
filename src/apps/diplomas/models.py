@@ -113,7 +113,9 @@ class DiplomaTemplate(TimestampedModel):
 
 
 class DiplomaStudyProxy(Study):
+    """Used in the admin to upload diplomas manually."""
+
     class Meta:
         proxy = True
-        verbose_name = _("Study")
-        verbose_name_plural = _("Studies")
+        verbose_name = _("Manual upload")
+        verbose_name_plural = _("Manual uploads")
