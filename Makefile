@@ -24,8 +24,8 @@ server: compilemessages
 	$(manage) runserver
 
 test:
-	poetry run pytest -n ${SIMULTANEOUS_TEST_JOBS} --ff -x --create-db --cov-report=xml --cov=. -m 'not single_thread'
-	poetry run pytest --ff -x --cov-report=xml --cov=. --cov-append -m 'single_thread'
+	poetry run pytest -n ${SIMULTANEOUS_TEST_JOBS} --create-db --cov-report=xml --cov=. --junit-xml=junit-multithread.xml -m 'not single_thread'
+	poetry run pytest --cov-report=xml --cov=. --cov-append --junit-xml=junit-singlethread.xml -m 'single_thread'
 	poetry run pytest --dead-fixtures
 
 worker:
