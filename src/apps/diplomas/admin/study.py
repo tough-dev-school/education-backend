@@ -50,7 +50,7 @@ class DiplomaInline(admin.TabularInline):
 class StudyAdmin(ModelAdmin):
     fields = ("course", "student", "homework_accepted")
     inlines = (DiplomaInline,)
-    list_display = ("course", "student", "email", "username", "homework_accepted", "en_diploma_exists", "ru_diploma_exists")
+    list_display = ("course", "student")
     list_filter = ("homework_accepted", RuDiplomaExistsFilter, EnDiplomaExistsFilter, "course")
     readonly_fields = ("course", "student")
     search_fields = ("course__name", "student__email", "student__first_name", "student__last_name", "student__username")
@@ -60,19 +60,3 @@ class StudyAdmin(ModelAdmin):
 
         The course can be purchased through the “Order” interface."""
         return False
-
-    @admin.display(description=_("Email"))
-    def email(self, study: "Study") -> str:
-        return study.student.email
-
-    @admin.display(boolean=True, description=_("EN diploma exists"))
-    def en_diploma_exists(self, study: "Study") -> bool:
-        return study.diplomas.filter(language=Languages.EN).exists()
-
-    @admin.display(boolean=True, description=_("RU diploma exists"))
-    def ru_diploma_exists(self, study: "Study") -> bool:
-        return study.diplomas.filter(language=Languages.RU).exists()
-
-    @admin.display(description=_("Username"))
-    def username(self, study: "Study") -> str:
-        return study.student.username
