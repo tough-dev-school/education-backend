@@ -159,7 +159,6 @@ build-backend = "poetry.core.masonry.api"
 addopts = "--reuse-db"
 DJANGO_SETTINGS_MODULE = "core.settings"
 env = [
-    "ATOL_WEBHOOK_SALT = SECRET-SALT",
     "AWS_ACCESS_KEY_ID = zeroc00l94",
     "AWS_S3_ENDPOINT_URL = https://fra1.digitaloceanspaces.com",
     "AWS_S3_REGION_NAME = Ukraine",
