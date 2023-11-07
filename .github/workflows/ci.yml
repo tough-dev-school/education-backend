@@ -69,6 +69,14 @@ jobs:
           REDISCLOUD_URL: redis://localhost:6379/5
         run: make test -e SIMULTANEOUS_TEST_JOBS=${{ steps.cpu-cores.outputs.count }}
 
+      - name: publish test results
+        uses: phoenix-actions/test-reporting@v12
+        if: always()
+        with:
+          name: Test results
+          path: "junit-*.xml"
+          reporter: java-junit
+
       - name: upload code coverage to codeclimate
         uses: paambaati/codeclimate-action@v3.2.0
         env:
