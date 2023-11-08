@@ -29,7 +29,7 @@ jobs:
 
   test:
     needs: lint
-    runs-on: ubuntu-16x
+    runs-on: ${{ contains(github.triggering_actor, '[bot]') && 'ubuntu-latest' || 'ubuntu-8x' }}
     services:
       postgres:
         image: postgres:13.9-alpine
@@ -59,11 +59,23 @@ jobs:
           packages: locales-all gettext
           version: 1
 
+      - name: get number of CPU cores
+        uses: SimenB/github-actions-cpu-cores@v2.0.0
+        id: cpu-cores
+
       - name: test
         env:
           DATABASE_URL: postgres://postgres:secret@localhost:5432/postgres
           REDISCLOUD_URL: redis://localhost:6379/5
-        run: make test -e SIMULTANEOUS_TEST_JOBS=16
+        run: make test -e SIMULTANEOUS_TEST_JOBS=${{ steps.cpu-cores.outputs.count }}
+
+      - name: publish test results
+        uses: phoenix-actions/test-reporting@v12
+        if: always()
+        with:
+          name: Test results
+          path: "junit-*.xml"
+          reporter: java-junit
 
       - name: upload code coverage to codeclimate
         uses: paambaati/codeclimate-action@v3.2.0

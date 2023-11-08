@@ -10,6 +10,7 @@ from django.db.models import OuterRef
 from django.utils.translation import gettext_lazy as _
 
 from apps.mailing.tasks import send_mail
+from apps.studying.models import Study
 from core.files import RandomFileName
 from core.models import models
 from core.models import TimestampedModel
@@ -50,15 +51,16 @@ DiplomaManager = models.Manager.from_queryset(DiplomaQuerySet)
 class Diploma(TimestampedModel):
     objects = DiplomaManager()
 
-    study = models.ForeignKey("studying.Study", on_delete=models.CASCADE)
+    study = models.ForeignKey("studying.Study", on_delete=models.CASCADE, verbose_name=_("Study"))
     slug = models.CharField(max_length=32, db_index=True, unique=True, default=shortuuid.uuid)
-    language = models.CharField(max_length=3, choices=Languages.choices, db_index=True)
-    image = models.ImageField(upload_to=RandomFileName("diplomas"))
+    language = models.CharField(max_length=3, choices=Languages.choices, db_index=True, verbose_name=_("Language"))
+    image = models.ImageField(upload_to=RandomFileName("diplomas"), verbose_name=_("Image"))
 
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=["study", "language"], name="unique_study"),
         ]
+        default_related_name = "diplomas"
         indexes = [
             models.Index(fields=["study", "language"]),
         ]
@@ -108,3 +110,12 @@ class DiplomaTemplate(TimestampedModel):
         indexes = [
             models.Index(fields=["course", "language", "homework_accepted"]),
         ]
+
+
+class DiplomaStudyProxy(Study):
+    """Used in the admin to upload diplomas manually."""
+
+    class Meta:
+        proxy = True
+        verbose_name = _("Manual upload")
+        verbose_name_plural = _("Manual uploads")

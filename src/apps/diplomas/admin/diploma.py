@@ -7,7 +7,6 @@ from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
 from apps.diplomas.models import Diploma
-from apps.diplomas.models import DiplomaTemplate
 from apps.orders import tasks
 from apps.products.models import Course
 from apps.users.models import User
@@ -82,19 +81,3 @@ class DiplomaAdmin(ModelAdmin):
         generate_diplomas.skew(step=2).apply_async()
 
         self.message_user(request, f"Started generation of {len(order_ids)} diplomas")
-
-
-@admin.register(DiplomaTemplate)
-class DiplomaTemplateAdmin(ModelAdmin):
-    fields = list_display = (
-        "course",
-        "language",
-        "slug",
-        "homework_accepted",
-    )
-
-    list_editable = [
-        "slug",
-        "language",
-        "homework_accepted",
-    ]
