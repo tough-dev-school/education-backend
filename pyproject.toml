@@ -78,6 +78,7 @@ ipython = "^8.15.0"
 jedi = "^0.19.0"
 mixer = "^7.2.2"
 mypy = "^1.6.1"
+pymarkdownlnt = "^0.9.13.4"
 pytest-django = "^4.5.2"
 pytest-cov = "^4.1.0"
 pytest-deadfixtures = "^2.2.1"
@@ -103,6 +104,10 @@ types-retry = "^0.9.9.4"
 types-simplejson = "^3.19.0.2"
 types-stripe = "^3.5.2.14"
 rope = "^1.10.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 exclude = """
@@ -151,9 +156,12 @@ profile = "google"
 sections = ["FUTURE", "STDLIB", "THIRDPARTY", "DJANGO", "FIRSTPARTY", "LOCALFOLDER"]
 use_parentheses = true
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.pymarkdown]
+    [tool.pymarkdown.plugins.md013]
+    enabled = false
+
+    [tool.pymarkdown.plugins.md045]
+    enabled = false
 
 [tool.pytest.ini_options]
 addopts = "--reuse-db"

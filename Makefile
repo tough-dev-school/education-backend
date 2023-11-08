@@ -13,6 +13,7 @@ lint:
 	$(manage) makemigrations --check --no-input --dry-run
 	poetry run flake8 src
 	poetry run mypy src
+	poetry run pymarkdown scan README.md
 
 messages: compilemessages
 	$(manage) makemessages --locale ru
