@@ -157,11 +157,11 @@ sections = ["FUTURE", "STDLIB", "THIRDPARTY", "DJANGO", "FIRSTPARTY", "LOCALFOLD
 use_parentheses = true
 
 [tool.pymarkdown]
-  [tool.pymarkdown.plugins.md013]
-  enabled = false
+    [tool.pymarkdown.plugins.md013]
+    enabled = false
 
-  [tool.pymarkdown.plugins.md045]
-  enabled = false
+    [tool.pymarkdown.plugins.md045]
+    enabled = false
 
 [tool.pytest.ini_options]
 addopts = "--reuse-db"
