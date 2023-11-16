@@ -6,8 +6,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def course(course):
-    course.setattr_and_save("price", 100_500)
-    return course
+    return course.update(price=100_500)
 
 
 @pytest.mark.parametrize(

@@ -5,9 +5,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def course(course):
-    course.update(welcome_letter_template_id="tpl100500")
-
-    return course
+    return course.update(welcome_letter_template_id="tpl100500")
 
 
 def test_the_message_is_sent_to_right_email(send_mail, shipment, user):
@@ -33,7 +31,7 @@ def test_the_message_is_sent_with_right_template_id(send_mail, shipment):
 )
 def test_the_message_is_not_sent_when_there_is_no_template_id(send_mail, shipment, template_id):
     shipment = shipment()
-    shipment.course.setattr_and_save("welcome_letter_template_id", template_id)
+    shipment.course.update(welcome_letter_template_id=template_id)
 
     send_mail.assert_not_called()
 

@@ -30,7 +30,7 @@ def test_item(stripe):
     ],
 )
 def test_price(stripe, price, expected):
-    stripe.order.setattr_and_save("price", price)
+    stripe.order.update(price=price)
 
     result = stripe.get_items()
 

@@ -74,8 +74,7 @@ def not_paid_order(factory, user, course):
 
 @pytest.fixture
 def paid_order(not_paid_order):
-    not_paid_order.setattr_and_save("paid", datetime.fromisoformat("2022-12-10 09:23Z"))  # set manually to skip side effects
-    return not_paid_order
+    return not_paid_order.update(paid=datetime.fromisoformat("2022-12-10 09:23Z"))  # set manually to skip side effects
 
 
 @pytest.fixture
@@ -131,7 +130,7 @@ def test_do_not_call_bank_refund_if_refunds_disabled(paid_order, refund, mock_do
 
 
 def test_do_not_break_and_not_try_call_bank_refund_if_bank_id_is_empty(paid_order, refund):
-    paid_order.setattr_and_save("bank_id", "")
+    paid_order.update(bank_id="")
 
     with does_not_raise():
         refund(paid_order)
@@ -174,7 +173,7 @@ def test_refund_notification_email_context_and_template_correct(refund, paid_ord
 
 
 def test_do_not_break_if_order_without_item_was_refunded(refund, paid_order, mock_send_mail, get_send_mail_call_email_context):
-    paid_order.setattr_and_save("course", None)
+    paid_order.update(course=None)
 
     with does_not_raise():
         refund(paid_order)
