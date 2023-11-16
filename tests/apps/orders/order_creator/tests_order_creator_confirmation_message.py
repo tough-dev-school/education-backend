@@ -22,19 +22,13 @@ def test_message_is_not_sent_by_default(create, user, course, send_mail):
 
 
 def test_message_is_not_sent_on_non_free_courses(create, user, course, send_mail):
-    course.update_from_kwargs(
-        confirmation_template_id="test-confirmation-template-id",
-        price=100500,
-    )
+    course.update(confirmation_template_id="test-confirmation-template-id", price=100500)
 
     send_mail.assert_not_called()
 
 
 def test_message_is_sent_when_course_has_confirmation_template_id(create, user, course, send_mail):
-    course.update_from_kwargs(
-        confirmation_template_id="test-confirmation-template-id",
-        price=0,
-    )
+    course.update(confirmation_template_id="test-confirmation-template-id", price=0)
 
     order = create(user=user, item=course)
 
