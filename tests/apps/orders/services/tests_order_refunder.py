@@ -193,8 +193,7 @@ def test_do_not_break_if_current_user_could_not_be_captured(refund, paid_order, 
 
 
 def test_update_user_tags(paid_order, mock_rebuild_tags, refund):
-    paid_order.user.email = ""
-    paid_order.user.save()
+    paid_order.user.update(email="")
 
     refund(paid_order)
 

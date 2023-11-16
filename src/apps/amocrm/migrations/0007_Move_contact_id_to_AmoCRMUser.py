@@ -7,8 +7,7 @@ from django.db import models
 def move_contacts_to_amocrm_user(apps, schema_editor):
     for contact in apps.get_model('amocrm.AmoCRMUserContact').objects.all().iterator():
         amocrm_user = contact.user.amocrm_user
-        amocrm_user.contact_id = contact.amocrm_id
-        amocrm_user.save()
+        amocrm_user.update(contact_id=contact.amocrm_id)
 
 
 class Migration(migrations.Migration):

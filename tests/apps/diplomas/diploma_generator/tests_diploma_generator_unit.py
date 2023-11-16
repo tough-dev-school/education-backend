@@ -70,8 +70,7 @@ def test_bad_language(generator):
 
 
 def test_no_template_for_homework(generator, order):
-    order.study.homework_accepted = True
-    order.study.save()
+    order.study.update(homework_accepted=True)
 
     generator = generator(language="RU")
 

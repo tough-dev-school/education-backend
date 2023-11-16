@@ -23,8 +23,8 @@ def set_default_slug_to_group(apps, schema_editor):
     for group in groups:
         slug = get_product_group_slug(group)
         already_exist_slug = Group.objects.filter(slug=slug).first()
-        group.slug = slug if not already_exist_slug else random_string()
-        group.save()
+        
+        group.update(slug=slug if not already_exist_slug else random_string())
 
 
 def revert_set_default_slug_to_group(apps, schema_editor):

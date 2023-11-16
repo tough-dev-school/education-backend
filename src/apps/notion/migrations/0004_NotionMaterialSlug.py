@@ -8,8 +8,7 @@ from django.db import models
 
 def make_random_uuids_for_existing_materials(apps, schema_editor):
     for material in apps.get_model('notion.Material').objects.all():
-        material.slug = uuid.uuid4()
-        material.save(update_fields=['slug'])
+        material.update(slug=uuid.uuid4())
 
 
 class Migration(migrations.Migration):

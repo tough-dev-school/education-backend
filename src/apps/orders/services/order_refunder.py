@@ -55,9 +55,7 @@ class OrderRefunder(BaseService):
         self.update_integrations()
 
     def mark_order_as_not_paid(self) -> None:
-        self.order.paid = None
-        self.order.unpaid = timezone.now()
-        self.order.save(update_fields=["paid", "unpaid", "modified"])
+        self.order.update(paid=None, unpaid=timezone.now())
 
     def do_bank_refund_if_needed(self) -> None:
         if self.bank and settings.BANKS_REFUNDS_ENABLED:

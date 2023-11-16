@@ -47,14 +47,14 @@ class AmoCRMOrderPusher(BaseService):
 
     def create_lead(self) -> None:
         lead_id = AmoCRMLead(order=self.order).create()
-        self.order.amocrm_lead = AmoCRMOrderLead.objects.create(amocrm_id=lead_id)
-        self.order.save()
+
+        self.order.update(amocrm_lead=AmoCRMOrderLead.objects.create(amocrm_id=lead_id))
 
     def create_order(self) -> None:
         AmoCRMLead(order=self.order).update(status="purchased")
         transaction_id = AmoCRMTransaction(order=self.order).create()
-        self.order.amocrm_transaction = AmoCRMOrderTransaction.objects.create(amocrm_id=transaction_id)
-        self.order.save()
+
+        self.order.update(amocrm_transaction=AmoCRMOrderTransaction.objects.create(amocrm_id=transaction_id))
 
     def get_lead(self) -> AmoCRMOrderLead | None:
         """
@@ -71,10 +71,9 @@ class AmoCRMOrderPusher(BaseService):
     @staticmethod
     def relink_lead(order: Order, lead: AmoCRMOrderLead) -> None:
         old_order = lead.order
-        old_order.amocrm_lead = None
-        old_order.save()
-        order.amocrm_lead = lead
-        order.save()
+
+        old_order.update(amocrm_lead=None)
+        order.update(amocrm_lead=lead)
 
     def reactivate_lead_in_amocrm(self) -> None:
         """Actualize lead's price, created_at and set lead to 'active' status"""

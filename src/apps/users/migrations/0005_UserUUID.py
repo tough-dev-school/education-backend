@@ -8,8 +8,7 @@ from django.db import models
 
 def set_random_uuid_for_all_users(apps, schema_editor):
     for user in apps.get_model('users.User').objects.filter(uuid__isnull=True).iterator():
-        user.uuid = uuid.uuid4()
-        user.save(update_fields=['uuid'])
+        user.update(uuid=uuid.uuid4())
 
 
 class Migration(migrations.Migration):

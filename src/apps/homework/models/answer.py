@@ -19,6 +19,7 @@ from apps.products.models import Course
 from apps.users.models import User
 from core.markdown import markdownify
 from core.markdown import remove_html
+from core.models import DefaultModelMixin
 from core.models import models
 
 
@@ -75,7 +76,7 @@ class AnswerQuerySet(TreeQuerySet):
         return self.annotate(children_count=Count("children"))
 
 
-class Answer(TreeNode):
+class Answer(DefaultModelMixin, TreeNode):
     objects = AnswerQuerySet.as_manager()
 
     created = models.DateTimeField(auto_now_add=True, db_index=True)

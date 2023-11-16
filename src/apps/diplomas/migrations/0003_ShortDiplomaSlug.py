@@ -8,8 +8,7 @@ from django.db import models
 
 def rename_old_slugs(apps, schema_editor):
     for diploma in apps.get_model('diplomas.Diploma').objects.all():
-        diploma.slug = shortuuid.uuid()
-        diploma.save()
+        diploma.update(slug=shortuuid.uuid())
 
 
 class Migration(migrations.Migration):

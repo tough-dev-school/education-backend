@@ -20,5 +20,4 @@ class OrderUnshipper(BaseService):
             self.order.item.unship(order=self.order)
 
     def mark_order_as_unshipped(self) -> None:
-        self.order.shipped = None
-        self.order.save(update_fields=["shipped", "modified"])
+        self.order.update(shipped=None)

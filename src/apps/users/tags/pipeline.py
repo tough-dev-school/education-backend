@@ -16,8 +16,7 @@ def generate_tags(student: "Student") -> None:
     for tag_class in pipeline:
         new_tags.update(tag_class(student=student)())
 
-    student.tags = list(new_tags)
-    student.save()
+    student.update(tags=list(new_tags))
 
 
 __all__ = ["generate_tags"]

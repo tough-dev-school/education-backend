@@ -29,8 +29,7 @@ class OrderShipper(BaseService):
         self.order.item.ship(to=self.order.user, order=self.order)
 
     def mark_order_as_shipped(self) -> None:
-        self.order.shipped = timezone.now()
-        self.order.save()
+        self.order.update(shipped=timezone.now())
 
     def send_happiness_message(self) -> None:
         if not settings.HAPPINESS_MESSAGES_CHAT_ID:

@@ -8,12 +8,13 @@ import django.db.models.deletion
 def set_relations(apps, schema_editor):
     AmoCRMOrderLead = apps.get_model("amocrm", "AmoCRMOrderLead")
     AmoCRMOrderTransaction = apps.get_model("amocrm", "AmoCRMOrderTransaction")
+
     for lead in AmoCRMOrderLead.objects.all():
-        lead.order.amocrm_lead = lead
-        lead.order.save()
+        lead.order.update(amocrm_lead=lead)
+
     for transaction in AmoCRMOrderTransaction.objects.all():
-        transaction.order.amocrm_transaction = transaction
-        transaction.order.save()
+        transaction.order.update(amocrm_transaction=transaction)
+
 
 class Migration(migrations.Migration):
     dependencies = [

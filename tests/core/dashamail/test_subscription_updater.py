@@ -37,8 +37,7 @@ def update_subscriber(mocker):
 
 @pytest.mark.usefixtures("get_subscriber_active")
 def test_user_is_updated_when_he_exists(user, subscribe_user, update_subscriber, updater):
-    user.tags = ["popug-3-self__purchased", "any-purchase"]
-    user.save()
+    user.update(tags=["popug-3-self__purchased", "any-purchase"])
 
     updater(user)()
 
@@ -53,8 +52,7 @@ def test_user_is_updated_when_he_exists(user, subscribe_user, update_subscriber,
 
 @pytest.mark.usefixtures("get_subscriber_doesnt_exist")
 def test_user_gets_subscribed_when_he_didnt_exist(user, subscribe_user, update_subscriber, updater):
-    user.tags = ["popug-3-self__purchased", "any-purchase"]
-    user.save()
+    user.update(tags=["popug-3-self__purchased", "any-purchase"])
 
     updater(user)()
 

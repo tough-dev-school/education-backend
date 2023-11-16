@@ -17,8 +17,7 @@ class OrderEmailChanger(BaseService):
         if self.was_shipped:
             self.order.unship()
 
-        self.order.user = self.get_user()
-        self.order.save()
+        self.order.update(user=self.get_user())
 
         if self.was_shipped:
             self.order.ship()
@@ -28,7 +27,7 @@ class OrderEmailChanger(BaseService):
         return self.order.shipped is not None
 
     def get_user(self) -> User:
-        user: User = self.order.user
+        user = self.order.user
         user_creator = UserCreator(email=self.email, name=f"{user.first_name} {user.last_name}")
 
         return user_creator()

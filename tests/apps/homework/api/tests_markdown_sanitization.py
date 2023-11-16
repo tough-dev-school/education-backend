@@ -21,8 +21,7 @@ pytestmark = [
     ],
 )
 def test_markdown_gets_sanitized(api, answer, text, expected):
-    answer.text = text
-    answer.save()
+    answer.update(text=text)
 
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 

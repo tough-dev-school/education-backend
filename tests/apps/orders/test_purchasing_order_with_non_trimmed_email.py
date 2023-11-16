@@ -11,10 +11,8 @@ def course(factory):
 @pytest.fixture(autouse=True)
 def user_with_the_same_username_but_without_a_space_in_the_end(mixer):
     user = mixer.blend("users.User", email="zaboy@gmail.com")
-    user.username = "zaboy@gmail.com"
-    user.save()  # workaround for make_username_truly_random(), we need particular username here
-
-    return user
+    
+    return user.update(username="zaboy@gmail.com")  # workaround for make_username_truly_random(), we need particular username here
 
 
 @pytest.fixture(autouse=True)

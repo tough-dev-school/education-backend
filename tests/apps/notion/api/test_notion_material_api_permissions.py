@@ -40,8 +40,7 @@ def test_ok_for_materials_with_same_page_id_from_another_course(api, mixer, anot
 
 @pytest.mark.usefixtures("unpaid_order")
 def test_ok_for_superuser(api):
-    api.user.is_superuser = True
-    api.user.save()
+    api.user.update(is_superuser=True)
 
     api.get("/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/", expected_status_code=200)
 

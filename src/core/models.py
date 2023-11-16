@@ -18,12 +18,14 @@ __all__ = [
 
 
 class DefaultModelMixin:
-    def update(self: "models.Model", save: bool = True, **kwargs: dict) -> "models.Model":  # type: ignore[misc]
+    def update(self: "models.Model", save: bool = True, **kwargs: "Any") -> "models.Model":  # type: ignore[misc]
         for key, value in kwargs.items():
             setattr(self, key, value)
 
         if save:
-            self.save(update_fields=kwargs)
+            update_fields = list(kwargs) + ["modified"] if hasattr(self, "modified") else list(kwargs)
+
+            self.save(update_fields=update_fields)
 
         return self
 

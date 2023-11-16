@@ -17,7 +17,6 @@ def another_answer(mixer):
 def parent_of_another_answer(mixer, another_answer):
     answer = mixer.blend("homework.Answer")
 
-    another_answer.parent = answer
-    another_answer.save()
+    another_answer.update(parent=answer)
 
     return answer
