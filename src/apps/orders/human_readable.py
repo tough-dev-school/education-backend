@@ -1,6 +1,7 @@
 from django.utils.html import format_html
 from django.utils.translation import gettext as _
 
+from apps.banking.selector import BANK_KEYS
 from apps.banking.selector import get_bank
 from apps.orders.models import Order
 
@@ -8,7 +9,7 @@ from apps.orders.models import Order
 def get_order_payment_method_name(order: Order) -> str:
     """Return the human-readable name of the order payment method."""
     if order.paid is not None:
-        if order.bank_id:
+        if order.bank_id and order.bank_id in BANK_KEYS:
             return str(get_bank(order.bank_id).name)
         if order.is_b2b:
             return _("B2B")

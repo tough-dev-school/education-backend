@@ -19,7 +19,6 @@ class Migration(migrations.Migration):
                     ("dolyame", "Dolyame"),
                     ("stripe", "Stripe"),
                     ("tinkoff_bank", "Tinkoff"),
-                    ("tinkoff_credit", "Deprecated bank"),
                     ("zero_price", "Zero Price"),
                 ],
                 max_length=32,

@@ -89,11 +89,3 @@ def test_non_existed_bank_could_not_be_chosen_as_desired(api, default_user_data)
     got = api.post("/api/v2/courses/ruloning-oboev/purchase/", default_user_data, format="multipart", expected_status_code=400)
 
     assert "desired_bank" in got
-
-
-def test_deprecated_bank_could_not_be_chosen_as_desired(api, default_user_data):
-    default_user_data["desired_bank"] = "tinkoff_credit"
-
-    got = api.post("/api/v2/courses/ruloning-oboev/purchase/", default_user_data, format="multipart", expected_status_code=400)
-
-    assert "desired_bank" in got

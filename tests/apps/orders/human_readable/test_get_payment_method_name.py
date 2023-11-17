@@ -74,3 +74,11 @@ def test_get_readable_payment_method_name_if_bank_not_set_and_not_b2b(set_order_
     got = human_readable.get_order_payment_method_name(order)
 
     assert got == "Is paid"
+
+
+def test_get_readable_payment_method_name_if_bank_name_set_but_unknown(set_order_paid):
+    order = set_order_paid(bank_id="tinkoff_credit")
+
+    got = human_readable.get_order_payment_method_name(order)
+
+    assert got == "Is paid"

@@ -1,7 +1,6 @@
 from typing import Type
 
 from apps.banking.base import Bank
-from apps.banking.deprecated_bank import DeprecatedBank
 from apps.banking.zero_price_bank import ZeroPriceBank
 from apps.stripebank.bank import StripeBank
 from apps.tinkoff.bank import TinkoffBank
@@ -12,7 +11,6 @@ BANKS: dict[str, Type[Bank]] = {
     "stripe": StripeBank,
     "dolyame": Dolyame,
     "zero_price": ZeroPriceBank,
-    "tinkoff_credit": DeprecatedBank,
 }
 
 
@@ -23,14 +21,6 @@ BANK_CHOICES = [
         BANKS[bank_key].name,
     )
     for bank_key in BANK_KEYS
-]
-ACTIVE_BANK_CHOICES = [
-    (
-        bank_key,
-        BANKS[bank_key].name,
-    )
-    for bank_key in BANK_KEYS
-    if BANKS[bank_key] != DeprecatedBank
 ]
 
 DEFAULT_BANK = TinkoffBank
