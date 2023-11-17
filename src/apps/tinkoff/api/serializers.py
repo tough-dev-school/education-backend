@@ -1,7 +1,6 @@
 from _decimal import Decimal
 from rest_framework import serializers
 
-from apps.tinkoff.models import CreditNotification
 from apps.tinkoff.models import DolyameNotification
 from apps.tinkoff.models import PaymentNotification
 
@@ -41,32 +40,6 @@ class PaymentNotificationSerializer(serializers.ModelSerializer):
 
     def validate_Amount(self, validated_data: int) -> Decimal:
         return Decimal(validated_data / 100)
-
-
-class CreditNotificationSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(source="order_id")
-    created_at = serializers.DateTimeField(source="bank_created")
-    middle_name = serializers.CharField(required=False, allow_null=True)
-
-    class Meta:
-        model = CreditNotification
-        fields = [
-            "id",
-            "status",
-            "created_at",
-            "first_payment",
-            "order_amount",
-            "credit_amount",
-            "product",
-            "term",
-            "monthly_payment",
-            "first_name",
-            "last_name",
-            "middle_name",
-            "phone",
-            "loan_number",
-            "email",
-        ]
 
 
 class DolyameNotificationSerializer(serializers.ModelSerializer):

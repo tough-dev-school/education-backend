@@ -7,6 +7,7 @@ from core import current_user
 from apps.banking.selector import BANKS
 from apps.orders.services import OrderRefunder
 from apps.orders.services import OrderUnshipper
+from rest_framework.exceptions import ValidationError
 
 pytestmark = [
     pytest.mark.django_db,
@@ -216,3 +217,10 @@ def test_call_update_user_celery_chain_with_subscription(paid_order, refund, moc
         mock_second_push_customer(user_id=paid_order.user.id),
         mock_third_return_order_in_amocrm(order_id=paid_order.id),
     )
+
+
+def test_fail_if_orders_bank_is_deprecated(paid_order, refund):
+    paid_order.setattr_and_save("bank_id", "tinkoff_credit")  # The bank set as deprecated
+
+    with pytest.raises(ValidationError, match="orders for deprecated bank could not be refunded"):
+        refund(paid_order)

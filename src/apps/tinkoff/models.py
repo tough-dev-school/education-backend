@@ -31,33 +31,6 @@ class PaymentNotification(TimestampedModel):
     exp_date = models.CharField(max_length=32, null=True)
 
 
-class CreditNotification(TimestampedModel):
-    """Notification for credit order by TinkoffCredit"""
-
-    STATUS_CHOICES = (
-        ("approved", _("Approved")),
-        ("rejected", _("Rejected")),
-        ("canceled", _("Canceled")),
-        ("signed", _("Signed")),
-    )
-
-    order = models.ForeignKey("orders.Order", on_delete=models.PROTECT, related_name="tinkoff_credit_notifications")
-    status = models.CharField(max_length=32, choices=STATUS_CHOICES)
-    bank_created = models.DateTimeField()
-    first_payment = models.DecimalField(max_digits=10, decimal_places=2)
-    order_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    credit_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    product = models.CharField(max_length=128)
-    term = models.IntegerField()
-    monthly_payment = models.DecimalField(max_digits=10, decimal_places=2)
-    phone = models.CharField(max_length=64, null=True, blank=True)
-    first_name = models.CharField(max_length=128, null=True, blank=True)
-    last_name = models.CharField(max_length=128, null=True, blank=True)
-    middle_name = models.CharField(max_length=32, blank=True, null=True)
-    loan_number = models.CharField(max_length=128, blank=True, null=True)
-    email = models.CharField(max_length=128, null=True, blank=True)
-
-
 class DolyameNotification(TimestampedModel):
     STATUS_CHOICES = (
         ("approved", _("Approved")),
