@@ -30,8 +30,7 @@ def test_ships(order, course, user, ship):
 
 
 def test_update_user_tags(order, rebuild_tags):
-    order.user.email = ""
-    order.user.save()
+    order.user.update(email="")
 
     order.set_paid()
 
@@ -52,8 +51,7 @@ def test_call_update_user_celery_chain_with_subscription(order, mock_update_user
 
 def test_call_update_user_celery_chain_without_subscription(order, mock_update_user_chain, mock_rebuild_tags, mock_push_customer, mock_push_order, settings):
     settings.AMOCRM_BASE_URL = "https://amo.amo.amo"
-    order.user.email = ""
-    order.user.save()
+    order.user.update(email="")
 
     order.set_paid()
 
@@ -80,8 +78,7 @@ def test_shipment_date(order):
 
 
 def test_order_is_not_shipped_again_if_already_shipped(order, ship):
-    order.shipped = datetime(2000, 11, 12, 1, 13, tzinfo=timezone.utc)
-    order.save()
+    order.update(shipped=datetime(2032, 12, 1, 15, 30, tzinfo=timezone.utc))
 
     order.set_paid()
 
@@ -89,8 +86,7 @@ def test_order_is_not_shipped_again_if_already_shipped(order, ship):
 
 
 def test_shipment_date_is_not_reset(order, ship):
-    order.shipped = datetime(2000, 11, 12, 1, 13, tzinfo=timezone.utc)
-    order.save()
+    order.update(shipped=datetime(2000, 11, 12, 1, 13, tzinfo=timezone.utc))
 
     order.set_paid()
     order.refresh_from_db()
@@ -99,8 +95,7 @@ def test_shipment_date_is_not_reset(order, ship):
 
 
 def test_unpaid_date_is_reset(order):
-    order.unpaid = datetime(2032, 12, 1, 15, 13, tzinfo=timezone.utc)
-    order.save()
+    order.update(unpaid=datetime(2032, 12, 1, 15, 13, tzinfo=timezone.utc))
 
     order.set_paid()
     order.refresh_from_db()
@@ -109,9 +104,10 @@ def test_unpaid_date_is_reset(order):
 
 
 def test_unpaid_date_is_not_reset_when_order_is_not_paid(order):
-    order.paid = datetime(2032, 12, 1, 12, 13, tzinfo=timezone.utc)
-    order.unpaid = datetime(2032, 12, 1, 15, 13, tzinfo=timezone.utc)
-    order.save()
+    order.update(
+        paid=datetime(2032, 12, 1, 12, 13, tzinfo=timezone.utc),
+        unpaid=datetime(2032, 12, 1, 15, 13, tzinfo=timezone.utc),
+    )
 
     order.set_paid()
     order.refresh_from_db()

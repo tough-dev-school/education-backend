@@ -8,11 +8,7 @@ pytestmark = [
 
 @pytest.fixture
 def answer_from_another_user(another_user, another_answer, question):
-    another_answer.question = question
-    another_answer.author = another_user
-    another_answer.save()
-
-    return another_answer
+    return another_answer.update(author=another_user, question=question)
 
 
 @pytest.mark.freeze_time("2022-10-09 10:30:12+12:00")  # +12 hours kamchatka timezone
@@ -48,8 +44,7 @@ def test_has_reaction_fields_if_there_is_reaction(api, question, answer, reactio
 
 
 def test_has_descendants_is_true_if_answer_has_children(api, question, answer, another_answer):
-    another_answer.parent = answer
-    another_answer.save()
+    another_answer.update(parent=answer)
 
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 
@@ -73,8 +68,7 @@ def test_answers_from_other_questions_are_excluded(api, another_question):
 
 
 def test_non_root_answers_are_excluded(api, question, answer, answer_from_another_user):
-    answer.parent = answer_from_another_user
-    answer.save()
+    answer.update(parent=answer_from_another_user)
 
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 

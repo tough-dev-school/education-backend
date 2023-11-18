@@ -35,8 +35,7 @@ def test_404_for_non_existant_materials(api, mock_notion_response):
 
 
 def test_404_for_inactive_materials(api, mock_notion_response, material):
-    material.active = False
-    material.save()
+    material.update(active=False)
 
     api.get("/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/", expected_status_code=404)
 

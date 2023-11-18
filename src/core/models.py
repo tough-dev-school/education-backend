@@ -20,7 +20,7 @@ __all__ = [
 class TestUtilsMixin:
     def update(self: "models.Model", **kwargs: "Any") -> "models.Model":
         for key, value in kwargs.items():
-             setattr(self, key, value)
+            setattr(self, key, value)
 
         update_fields = list(kwargs) + ["modified"] if hasattr(self, "modified") else list(kwargs)
 
@@ -55,17 +55,13 @@ class DefaultModel(TestUtilsMixin, models.Model):
         except models.FieldDoesNotExist:
             return False
 
-    def copy(self, **kwargs: Any) -> "DefaultModel":
+    def copy(self, **kwargs: Any) -> "models.Model":
         """Creates new object from current."""
         instance = copy(self)
-        kwargs.update(
-            {
-                "id": None,
-                "pk": None,
-            }
-        )
-        instance.update_from_kwargs(**kwargs)
-        return instance
+
+        kwargs.update(id=None, pk=None)
+
+        return instance.update(**kwargs)
 
     @classmethod
     def get_label(cls) -> str:

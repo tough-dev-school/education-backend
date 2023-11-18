@@ -8,18 +8,12 @@ pytestmark = [
 
 @pytest.fixture
 def another_answer(another_answer, answer, even_another_user):
-    another_answer.parent = answer
-    another_answer.author = even_another_user
-    another_answer.save()
-
-    return another_answer
+    return another_answer.update(author=even_another_user, parent=answer)
 
 
 @pytest.fixture
 def another_answer_reaction(another_answer, reaction):
-    reaction.answer = another_answer
-    reaction.save()
-    return reaction
+    return reaction.update(answer=another_answer)
 
 
 @pytest.fixture

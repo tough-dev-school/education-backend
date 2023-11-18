@@ -30,8 +30,7 @@ def test_403_for_not_purchased_users(api, question, purchase):
 def test_ok_for_superusers_even_when_they_did_not_purchase_the_course(api, question, purchase):
     purchase.refund()
 
-    api.user.is_superuser = True
-    api.user.save()
+    api.user.update(is_superuser=True)
 
     api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=200)
 

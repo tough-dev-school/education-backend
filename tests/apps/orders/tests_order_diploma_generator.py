@@ -36,8 +36,7 @@ def diploma_generator(mocker):
 
 @pytest.mark.parametrize("language", [Languages.RU, Languages.EN])
 def test_single_language(diploma_generator, order, student, course, template, language):
-    template.language = language
-    template.save()
+    template.update(language=language)
 
     OrderDiplomaGenerator(order=order)()
 
