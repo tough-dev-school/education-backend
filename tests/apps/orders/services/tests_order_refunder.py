@@ -7,7 +7,7 @@ from core import current_user
 from apps.banking.selector import BANKS
 from apps.orders.services import OrderRefunder
 from apps.orders.services import OrderUnshipper
-from rest_framework.exceptions import ValidationError
+from apps.banking.exceptions import BankDoesNotExist
 
 pytestmark = [
     pytest.mark.django_db,
@@ -219,8 +219,8 @@ def test_call_update_user_celery_chain_with_subscription(paid_order, refund, moc
     )
 
 
-@pytest.mark.xfail(strict=True, reason="It's ok to fail with 500 when refunding orders for deprecated banks")
-def test_fail_if_orders_bank_is_deprecated(paid_order, refund):
+def test_fail_if_bank_is_set_but_unknown(paid_order, refund):
     paid_order.setattr_and_save("bank_id", "tinkoff_credit")
 
-    refund(paid_order)
+    with pytest.raises(BankDoesNotExist, match="does not exists"):
+        refund(paid_order)

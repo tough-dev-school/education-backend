@@ -43,7 +43,7 @@ def get_bank(bank_id: str) -> Type[Bank] | None:
     Bank = BANKS.get(bank_id)
 
     if Bank is None:
-        raise BankDoesNotExist(bank_id)
+        raise BankDoesNotExist(f"The bank with id '{bank_id}' does not exists.")
 
     return Bank
 
