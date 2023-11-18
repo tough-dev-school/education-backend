@@ -1,6 +1,7 @@
 from typing import Type
 
 from apps.banking.base import Bank
+from apps.banking.exceptions import BankDoesNotExist
 from apps.banking.zero_price_bank import ZeroPriceBank
 from apps.stripebank.bank import StripeBank
 from apps.tinkoff.bank import TinkoffBank
@@ -12,7 +13,6 @@ BANKS: dict[str, Type[Bank]] = {
     "dolyame": Dolyame,
     "zero_price": ZeroPriceBank,
 }
-
 
 BANK_KEYS = sorted(BANKS.keys())
 BANK_CHOICES = [
@@ -26,7 +26,7 @@ BANK_CHOICES = [
 DEFAULT_BANK = TinkoffBank
 
 
-def get_bank(desired: str | None = None) -> Type[Bank]:
+def get_bank_or_default(desired: str | None = None) -> Type[Bank]:
     if desired is None:
         return DEFAULT_BANK
 
@@ -34,6 +34,18 @@ def get_bank(desired: str | None = None) -> Type[Bank]:
         return BANKS[desired]
     except KeyError:
         return DEFAULT_BANK
+
+
+def get_bank(bank_id: str) -> Type[Bank] | None:
+    if not bank_id:
+        return None
+
+    Bank = BANKS.get(bank_id)
+
+    if Bank is None:
+        raise BankDoesNotExist(bank_id)
+
+    return Bank
 
 
 __all__ = [

@@ -17,7 +17,7 @@ from apps.amocrm.tasks import amocrm_enabled
 from apps.amocrm.tasks import push_order
 from apps.amocrm.tasks import push_user
 from apps.banking.base import Bank
-from apps.banking.selector import get_bank
+from apps.banking.selector import get_bank_or_default
 from apps.mailing.tasks import send_mail
 from apps.orders.models import Order
 from apps.orders.models import PromoCode
@@ -79,7 +79,7 @@ class OrderCreator(BaseService):
 
     @cached_property
     def bank(self) -> Type[Bank]:
-        return get_bank(self.desired_bank)
+        return get_bank_or_default(self.desired_bank)
 
     def send_confirmation_message(self, order: Order) -> None:
         if order.price == 0 and order.item is not None:

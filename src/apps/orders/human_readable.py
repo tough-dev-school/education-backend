@@ -10,7 +10,7 @@ def get_order_payment_method_name(order: Order) -> str:
     """Return the human-readable name of the order payment method."""
     if order.paid is not None:
         if order.bank_id and order.bank_id in BANK_KEYS:
-            return str(get_bank(order.bank_id).name)
+            return str(get_bank(order.bank_id).name)  # type: ignore [union-attr]
         if order.is_b2b:
             return _("B2B")
 
