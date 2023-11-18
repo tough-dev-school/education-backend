@@ -21,7 +21,7 @@ def test_time_has_not_passed_if_there_is_no_progress(message, study, progress, f
 
 def test_time_has_not_passed_for_root_messages(message, study, progress, freezer):
     progress.delete()
-    message.setattr_and_save("parent", None)
+    message.update(parent=None)
 
     freezer.move_to("2032-12-01 15:35:00")
 

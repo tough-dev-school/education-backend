@@ -25,7 +25,7 @@ def test_not_found():
 
 
 def test_not_found_when_promo_code_is_disabled(ten_percent_promocode):
-    ten_percent_promocode.setattr_and_save("active", False)
+    ten_percent_promocode.update(active=False)
 
     assert PromoCode.objects.get_or_nothing(name="TESTCODE") is None
 
@@ -40,7 +40,7 @@ def test_not_found_when_promo_code_is_disabled(ten_percent_promocode):
     ],
 )
 def test_not_found_when_promo_code_has_expired(ten_percent_promocode, expires, is_found):
-    ten_percent_promocode.setattr_and_save("expires", expires)
+    ten_percent_promocode.update(expires=expires)
 
     assert (PromoCode.objects.get_or_nothing(name="TESTCODE") is not None) is is_found
 

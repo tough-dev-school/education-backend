@@ -17,7 +17,19 @@ __all__ = [
 ]
 
 
-class DefaultModel(models.Model):
+class TestUtilsMixin:
+    def update(self: "models.Model", **kwargs: "Any") -> "models.Model":
+        for key, value in kwargs.items():
+             setattr(self, key, value)
+
+        update_fields = list(kwargs) + ["modified"] if hasattr(self, "modified") else list(kwargs)
+
+        self.save(update_fields=update_fields)
+
+        return self
+
+
+class DefaultModel(TestUtilsMixin, models.Model):
     class Meta:
         abstract = True
 
@@ -42,18 +54,6 @@ class DefaultModel(models.Model):
             return True
         except models.FieldDoesNotExist:
             return False
-
-    def update_from_kwargs(self, **kwargs: dict[str, Any]) -> None:
-        """
-        A shortcut method to update model instance from the kwargs.
-        """
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-
-    def setattr_and_save(self, key: str, value: Any) -> None:
-        """Shortcut for testing -- set attribute of the model and save"""
-        setattr(self, key, value)
-        self.save()
 
     def copy(self, **kwargs: Any) -> "DefaultModel":
         """Creates new object from current."""

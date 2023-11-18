@@ -15,7 +15,7 @@ pytestmark = [pytest.mark.django_db]
     ],
 )
 def test_true(order, paid, is_present):
-    order.setattr_and_save("paid", paid)
+    order.update(paid=paid)
 
     assert (order in Order.objects.paid()) is is_present
 
@@ -28,6 +28,6 @@ def test_true(order, paid, is_present):
     ],
 )
 def test_invert(order, paid, is_present):
-    order.setattr_and_save("paid", paid)
+    order.update(paid=paid)
 
     assert (order in Order.objects.paid(invert=True)) is is_present
