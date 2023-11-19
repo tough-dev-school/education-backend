@@ -50,32 +50,16 @@ stripe = "^6.5.0"
 whitenoise = "^6.5.0"
 
 [tool.poetry.group.dev.dependencies]
-autoflake = "^2.2.1"
 black = "^23.9.1"
 boto3-stubs = "^1.28.48"
 django-stubs = "^4.2.6"
 djangorestframework-stubs = "^3.14.4"
 flake8-absolute-import = "^1.0.0.1"
 flake8-black = "^0.3.6"
-flake8-bugbear = "^23.7.10"
 flake8-cognitive-complexity = "^0.1.0"
-flake8-django = "^1.4"
-flake8-eradicate = "^1.5.0"
-flake8-fixme = "^1.1.1"
-flake8-isort = "^6.0.0"
 flake8-multiline-containers = "^0.0.19"
-flake8-mutable = "^1.2.0"
-flake8-pep3101 = "^2.0.0"
-flake8-pie = "^0.16.0"
-flake8-print = "^5.0.0"
-flake8-printf-formatting = "^1.1.2"
 flake8-pyproject = "^1.2.3"
-flake8-pytest = "^1.4"
-flake8-pytest-style = "^1.7.2"
-flake8-simplify = "^0.20.0"
-flake8-tidy-imports = "^4.10.0"
 flake8-todo = "^0.7"
-flake8-use-fstring = "^1.4"
 flake8-variables-names = "^0.0.6"
 flake8-walrus = "^1.2.0"
 freezegun = "^1.2.2"
@@ -145,15 +129,6 @@ ignore = [
     "W503",  # line break before binary operator
 ]
 line-quotes = "\""
-
-[tool.isort]
-extra_standard_library = ["pytest"]
-known_django = ["django", "restframework"]
-line_length = 160
-multi_line_output = 3
-profile = "google"
-sections = ["DJANGO", "FIRSTPARTY", "FUTURE", "LOCALFOLDER", "STDLIB", "THIRDPARTY"]
-use_parentheses = true
 
 [tool.pymarkdown.plugins.md013]
 enabled = false
