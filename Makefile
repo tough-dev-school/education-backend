@@ -6,9 +6,11 @@ compilemessages:
 
 flint:
 	poetry run black src tests
+	poetry run toml-sort pyproject.toml
 
 lint:
 	$(manage) makemigrations --check --no-input --dry-run
+	poetry run ruff src tests
 	poetry run flake8 src tests
 	poetry run mypy src tests
 	poetry run pymarkdown scan README.md

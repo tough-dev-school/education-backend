@@ -101,12 +101,6 @@ exclude = """
 line_length = 160
 
 [tool.flake8]
-banned-modules = """
-    typing.Optional = Please use "x | None"
-    typing.Union = Please use "x | y"
-    typing.List = Please use "list" instead of "List"
-    typing.Dict = Please use "dict" instead of "Dict"
-"""
 exclude = [
     ".git",
     "__pycache__",
@@ -115,20 +109,10 @@ exclude = [
     "static",
 ]
 ignore = [
-    "DJ01",  # avoid using null=True on string-based fields such CharField
-    "DJ07",  # do not use __all__ with ModelForm, use fields instead
-    "DJ08",  # model does not define __str__ method
     "E501",  # line too long ({} > {} characters)
-    "PIE783",  # celery tasks should have explicit names
-    "PIE785",  # celery tasks should have expirations
-    "PIE801",  # prefer-simple-return: Return boolean expressions directly instead of returning `True` and `False`
-    "PT001",  # use @pytest.fixture() over @pytest.fixture
-    "SIM102",  # use a single if-statement instead of nested if-statements
-    "SIM113",  # use enumerate for `{}`
     "VNE003",  # variable names that shadow builtins are not allowed
     "W503",  # line break before binary operator
 ]
-line-quotes = "\""
 
 [tool.pymarkdown.plugins.md013]
 enabled = false

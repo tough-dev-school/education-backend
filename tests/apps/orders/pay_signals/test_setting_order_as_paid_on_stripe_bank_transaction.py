@@ -22,6 +22,7 @@ def webhook_checkout_completed(order):
 
         return bank_data
 
+
 @pytest.fixture(autouse=True)
 def _disable_signature_verification(mocker):
     mocker.patch("stripe.webhook.WebhookSignature.verify_header", return_value=True)

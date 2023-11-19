@@ -10,6 +10,7 @@ pytestmark = [
 def mock_stripe_refund(mocker):
     return mocker.patch("stripe.Refund.create")
 
+
 def test_refund(stripe, stripe_notification_checkout_completed, mock_stripe_refund):
     stripe.refund()
 
