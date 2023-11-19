@@ -8,6 +8,9 @@ flint:
 	poetry run ruff src tests --fix
 	poetry run black src tests
 	poetry run toml-sort pyproject.toml
+	poetry run flake8 src tests
+	poetry run mypy src tests
+	poetry run pymarkdown scan README.md
 
 lint:
 	$(manage) makemigrations --check --no-input --dry-run
