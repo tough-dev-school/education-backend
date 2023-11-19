@@ -5,6 +5,7 @@ compilemessages:
 	$(manage) compilemessages
 
 flint:
+	$(manage) makemigrations --check --no-input --dry-run
 	poetry run ruff src tests --fix
 	poetry run black src tests
 	poetry run toml-sort pyproject.toml
