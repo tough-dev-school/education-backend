@@ -1,4 +1,5 @@
 from functools import partial
+
 import pytest
 
 from apps.magnets.creator import LeadCreator

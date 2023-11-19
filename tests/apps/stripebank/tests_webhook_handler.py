@@ -1,6 +1,6 @@
 from decimal import Decimal
-import pytest
 
+import pytest
 import stripe
 
 from apps.stripebank.models import StripeNotification

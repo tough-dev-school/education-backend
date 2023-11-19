@@ -1,5 +1,4 @@
 import pytest
-
 import respx
 
 from apps.tinkoff.bank import TinkoffBank

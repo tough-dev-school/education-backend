@@ -1,7 +1,7 @@
 import pytest
 
-from core.test.api_client import DRFClient
 from apps.tinkoff.models import CreditNotification
+from core.test.api_client import DRFClient
 
 pytestmark = [pytest.mark.django_db]
 

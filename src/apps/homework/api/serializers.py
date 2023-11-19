@@ -2,13 +2,10 @@ from typing import cast
 
 from rest_framework import serializers
 
-from apps.homework.models import Answer
-from apps.homework.models import AnswerImage
-from apps.homework.models import Question
+from apps.homework.models import Answer, AnswerImage, Question
 from apps.homework.models.reaction import Reaction
 from apps.users.api.serializers import UserSafeSerializer
-from core.serializers import MarkdownField
-from core.serializers import SoftField
+from core.serializers import MarkdownField, SoftField
 
 
 class ReactionDetailedSerializer(serializers.ModelSerializer):

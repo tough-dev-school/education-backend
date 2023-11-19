@@ -1,11 +1,10 @@
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from core.helpers import random_string
 from core.test.factory import register
 
 if TYPE_CHECKING:
-    from apps.products.models import Course
-    from apps.products.models import Group
+    from apps.products.models import Course, Group
 
 
 @register

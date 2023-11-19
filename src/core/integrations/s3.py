@@ -1,7 +1,5 @@
 import boto3
-from botocore.client import BaseClient
-from botocore.client import Config
-
+from botocore.client import BaseClient, Config
 from django.conf import settings
 from django.utils.functional import cached_property
 

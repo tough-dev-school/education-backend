@@ -1,5 +1,4 @@
 import pytest
-
 import stripe
 
 from apps.stripebank.models import StripeNotification

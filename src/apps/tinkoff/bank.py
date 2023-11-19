@@ -5,7 +5,6 @@ from typing import Any
 from urllib.parse import urljoin
 
 import httpx
-
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 

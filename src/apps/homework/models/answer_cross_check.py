@@ -1,8 +1,6 @@
-from django.db.models import Index
-from django.db.models import UniqueConstraint
+from django.db.models import Index, UniqueConstraint
 
-from core.models import models
-from core.models import TimestampedModel
+from core.models import TimestampedModel, models
 
 
 class AnswerCrossCheck(TimestampedModel):

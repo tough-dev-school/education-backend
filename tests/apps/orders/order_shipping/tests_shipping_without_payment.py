@@ -1,5 +1,4 @@
 import pytest
-
 from django.utils import timezone
 
 pytestmark = [pytest.mark.django_db]

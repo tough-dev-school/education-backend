@@ -2,8 +2,7 @@
 
 import uuid
 
-from django.db import migrations
-from django.db import models
+from django.db import migrations, models
 
 
 def set_random_uuid_for_all_users(apps, schema_editor):

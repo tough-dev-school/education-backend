@@ -1,7 +1,6 @@
 from urllib.parse import urljoin
 
 import httpx
-
 from django.conf import settings
 
 from core.integrations.dashamail import exceptions

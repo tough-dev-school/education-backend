@@ -1,6 +1,7 @@
 from datetime import datetime
-import pytest
 from zoneinfo import ZoneInfo
+
+import pytest
 
 pytestmark = [pytest.mark.django_db]
 

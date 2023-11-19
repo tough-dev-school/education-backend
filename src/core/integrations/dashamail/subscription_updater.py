@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import final, TYPE_CHECKING
+from typing import TYPE_CHECKING, final
 
 from core.integrations.dashamail import AppDashamail
 from core.services import BaseService

@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
 from anymail.message import AnymailMessage
-
 from django.conf import settings
 from django.core import mail
 from django.core.mail.backends.base import BaseEmailBackend
@@ -9,8 +8,7 @@ from django.utils.functional import cached_property
 
 from apps.mailing import helpers
 from apps.mailing.configuration import get_configuration
-from apps.mailing.models import EmailConfiguration
-from apps.mailing.models import EmailLogEntry
+from apps.mailing.models import EmailConfiguration, EmailLogEntry
 from core.services import BaseService
 
 

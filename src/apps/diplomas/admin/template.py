@@ -1,6 +1,5 @@
 from apps.diplomas.models import DiplomaTemplate
-from core.admin import admin
-from core.admin import ModelAdmin
+from core.admin import ModelAdmin, admin
 
 
 @admin.register(DiplomaTemplate)

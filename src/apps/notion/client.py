@@ -1,9 +1,8 @@
 from collections.abc import Iterable
 
 import httpx
-from sentry_sdk import add_breadcrumb
-
 from django.conf import settings
+from sentry_sdk import add_breadcrumb
 
 from apps.notion.block import NotionBlockList
 from apps.notion.exceptions import HTTPError

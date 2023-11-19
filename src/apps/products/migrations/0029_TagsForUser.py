@@ -2,8 +2,7 @@
 import random
 import string
 
-from django.db import migrations
-from django.db import models
+from django.db import migrations, models
 
 
 def set_default_slug_to_group(apps, schema_editor):

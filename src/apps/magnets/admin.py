@@ -1,11 +1,9 @@
-from rest_framework.request import Request
-
 from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
+from rest_framework.request import Request
 
 from apps.magnets.models import EmailLeadMagnetCampaign
-from core.admin import admin
-from core.admin import ModelAdmin
+from core.admin import ModelAdmin, admin
 
 
 @admin.register(EmailLeadMagnetCampaign)

@@ -3,10 +3,9 @@ from typing import Any
 from urllib.parse import urljoin
 
 import httpx
-from httpx import Response
-
 from django.conf import settings
 from django.core.cache import cache
+from httpx import Response
 
 from apps.amocrm.exceptions import AmoCRMException
 from apps.amocrm.services.access_token_getter import AmoCRMTokenGetter

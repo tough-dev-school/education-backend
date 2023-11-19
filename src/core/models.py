@@ -1,11 +1,10 @@
 import contextlib
+import operator
 from copy import copy
 from functools import reduce
-import operator
 from typing import Any, Type
 
 from behaviors.behaviors import Timestamped
-
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.functional import cached_property

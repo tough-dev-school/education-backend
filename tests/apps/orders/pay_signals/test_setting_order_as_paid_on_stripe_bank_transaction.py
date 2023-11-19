@@ -1,6 +1,6 @@
-from datetime import datetime
-from datetime import timezone
 import json
+from datetime import datetime, timezone
+
 import pytest
 
 pytestmark = [

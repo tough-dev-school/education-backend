@@ -1,5 +1,4 @@
 import pytest
-
 from django.core.cache import cache
 
 from apps.amocrm.client import http

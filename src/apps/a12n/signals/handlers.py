@@ -1,10 +1,9 @@
 from typing import Any
 
 from axes.signals import user_locked_out
-from rest_framework.exceptions import PermissionDenied
-
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
+from rest_framework.exceptions import PermissionDenied
 
 
 @receiver(user_locked_out)

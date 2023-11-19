@@ -1,6 +1,6 @@
+import sentry_sdk
 from rest_framework.response import Response
 from rest_framework.views import exception_handler
-import sentry_sdk
 
 
 class AppServiceException(Exception):

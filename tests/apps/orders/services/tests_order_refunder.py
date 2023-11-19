@@ -1,12 +1,11 @@
 from contextlib import nullcontext as does_not_raise
-from datetime import datetime
-from datetime import timezone
+from datetime import datetime, timezone
+
 import pytest
 
-from core import current_user
 from apps.banking.selector import BANKS
-from apps.orders.services import OrderRefunder
-from apps.orders.services import OrderUnshipper
+from apps.orders.services import OrderRefunder, OrderUnshipper
+from core import current_user
 
 pytestmark = [
     pytest.mark.django_db,

@@ -1,5 +1,4 @@
 import pytest
-
 from django.core.cache import cache
 
 from apps.amocrm.services.access_token_getter import AmoCRMTokenGetter

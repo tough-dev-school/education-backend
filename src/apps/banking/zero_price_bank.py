@@ -1,9 +1,8 @@
 from decimal import Decimal
 from typing import TYPE_CHECKING
 
-from rest_framework.exceptions import ValidationError
-
 from django.utils.translation import gettext_lazy as _
+from rest_framework.exceptions import ValidationError
 
 from apps.banking.base import Bank
 

@@ -1,9 +1,9 @@
 from typing import Any
 
-from core.helpers import random_string
-from core.test.factory import register
 from apps.orders.models import Order
 from apps.products.models import Product
+from core.helpers import random_string
+from core.test.factory import register
 
 
 @register

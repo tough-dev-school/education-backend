@@ -1,5 +1,4 @@
-from ipaddress import IPv4Address
-from ipaddress import IPv4Network
+from ipaddress import IPv4Address, IPv4Network
 from typing import Any
 
 from rest_framework import permissions

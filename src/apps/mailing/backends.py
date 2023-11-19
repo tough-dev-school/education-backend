@@ -1,6 +1,6 @@
+import simplejson as json
 from anymail.backends.console import EmailBackend
 from anymail.message import AnymailMessage
-import simplejson as json
 
 
 class ConsoleEmailBackend(EmailBackend):

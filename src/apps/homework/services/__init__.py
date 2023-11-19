@@ -1,6 +1,10 @@
-from apps.homework.services.answer_crosscheck_dispatcher import AnswerCrossCheckDispatcher
+from apps.homework.services.answer_crosscheck_dispatcher import (
+    AnswerCrossCheckDispatcher,
+)
 from apps.homework.services.new_answer_notifier import NewAnswerNotifier
-from apps.homework.services.question_crosscheck_dispatcher import QuestionCrossCheckDispatcher
+from apps.homework.services.question_crosscheck_dispatcher import (
+    QuestionCrossCheckDispatcher,
+)
 
 __all__ = [
     "AnswerCrossCheckDispatcher",

@@ -2,12 +2,9 @@ from typing import TYPE_CHECKING
 
 from django.utils.translation import gettext_lazy as _
 
-from apps.diplomas.models import Diploma
-from apps.diplomas.models import DiplomaStudyProxy
-from apps.diplomas.models import Languages
+from apps.diplomas.models import Diploma, DiplomaStudyProxy, Languages
 from apps.studying.models import Study
-from core.admin import admin
-from core.admin import ModelAdmin
+from core.admin import ModelAdmin, admin
 from core.admin.filters import BooleanFilter
 
 if TYPE_CHECKING:

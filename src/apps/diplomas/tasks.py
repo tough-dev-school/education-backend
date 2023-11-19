@@ -1,7 +1,6 @@
 import httpx
 
-from apps.diplomas.services import DiplomaGenerator
-from apps.diplomas.services import DiplomaRegenerator
+from apps.diplomas.services import DiplomaGenerator, DiplomaRegenerator
 from apps.diplomas.services.diploma_generator import WrongDiplomaServiceResponse
 from apps.products.models import Course
 from apps.users.models import User

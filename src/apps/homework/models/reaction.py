@@ -3,8 +3,7 @@ import uuid
 from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
-from core.models import models
-from core.models import TimestampedModel
+from core.models import TimestampedModel, models
 
 
 class ReactionQuerySet(QuerySet):

@@ -1,9 +1,7 @@
 import pytest
-
 from respx import MockRouter
 
-from apps.notion.exceptions import NotionResponseError
-from apps.notion.exceptions import NotSharedForWeb
+from apps.notion.exceptions import NotionResponseError, NotSharedForWeb
 
 pytestmark = [
     pytest.mark.django_db,

@@ -1,19 +1,16 @@
-from rest_framework.request import Request
-
 from django.db.models import QuerySet
 from django.forms import Media
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
+from rest_framework.request import Request
 
 from apps.orders import human_readable
 from apps.orders.admin.orders import actions
 from apps.orders.admin.orders.filters import OrderStatusFilter
-from apps.orders.admin.orders.forms import OrderAddForm
-from apps.orders.admin.orders.forms import OrderChangeForm
+from apps.orders.admin.orders.forms import OrderAddForm, OrderChangeForm
 from apps.orders.models import Order
 from apps.users.models import Student
-from core.admin import admin
-from core.admin import ModelAdmin
+from core.admin import ModelAdmin, admin
 from core.pricing import format_price
 
 

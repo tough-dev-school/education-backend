@@ -1,5 +1,4 @@
 import pytest
-
 from respx import MockRouter
 
 pytestmark = [pytest.mark.django_db]

@@ -3,8 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.mailing.tasks import send_mail
 from apps.users.models import User
-from core.models import models
-from core.models import TimestampedModel
+from core.models import TimestampedModel, models
 
 
 class EmailLeadCampaignQuerySet(models.QuerySet):

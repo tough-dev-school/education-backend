@@ -4,8 +4,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from apps.orders.models import Order
-from apps.orders.services import OrderCreator
-from apps.orders.services import OrderEmailChanger
+from apps.orders.services import OrderCreator, OrderEmailChanger
 
 
 class OrderChangeForm(forms.ModelForm):

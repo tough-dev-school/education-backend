@@ -1,5 +1,4 @@
 import pytest
-
 from django.db.utils import IntegrityError
 
 from apps.orders.models.order import Order

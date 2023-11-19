@@ -5,22 +5,17 @@ from typing import Type
 from urllib.parse import urljoin
 
 from celery import chain
-
 from django.conf import settings
 from django.urls import reverse
 from django.utils.dateparse import parse_datetime
 from django.utils.functional import cached_property
-from django.utils.timezone import is_naive
-from django.utils.timezone import make_aware
+from django.utils.timezone import is_naive, make_aware
 
-from apps.amocrm.tasks import amocrm_enabled
-from apps.amocrm.tasks import push_order
-from apps.amocrm.tasks import push_user
+from apps.amocrm.tasks import amocrm_enabled, push_order, push_user
 from apps.banking.base import Bank
 from apps.banking.selector import get_bank
 from apps.mailing.tasks import send_mail
-from apps.orders.models import Order
-from apps.orders.models import PromoCode
+from apps.orders.models import Order, PromoCode
 from apps.products.models.base import Shippable
 from apps.users.models import User
 from apps.users.tasks import rebuild_tags

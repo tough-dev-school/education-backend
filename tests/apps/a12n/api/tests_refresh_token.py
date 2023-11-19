@@ -1,5 +1,4 @@
 import pytest
-
 from freezegun import freeze_time
 
 from apps.a12n.utils import get_jwt

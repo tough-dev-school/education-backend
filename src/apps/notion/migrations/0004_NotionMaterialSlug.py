@@ -2,8 +2,7 @@
 
 import uuid
 
-from django.db import migrations
-from django.db import models
+from django.db import migrations, models
 
 
 def make_random_uuids_for_existing_materials(apps, schema_editor):

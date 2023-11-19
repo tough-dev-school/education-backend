@@ -2,18 +2,15 @@ from typing import TYPE_CHECKING
 from urllib.parse import urljoin
 
 import shortuuid
-
 from django.apps import apps
 from django.conf import settings
-from django.db.models import Exists
-from django.db.models import OuterRef
+from django.db.models import Exists, OuterRef
 from django.utils.translation import gettext_lazy as _
 
 from apps.mailing.tasks import send_mail
 from apps.studying.models import Study
 from core.files import RandomFileName
-from core.models import models
-from core.models import TimestampedModel
+from core.models import TimestampedModel, models
 
 if TYPE_CHECKING:
     from apps.users.models import User

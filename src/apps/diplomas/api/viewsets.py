@@ -1,9 +1,8 @@
 from typing import Any
 
+from django.db.models import QuerySet
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.request import Request
-
-from django.db.models import QuerySet
 
 from apps.diplomas.api import serializers
 from apps.diplomas.api.permissions import DiplomaPermission

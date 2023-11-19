@@ -1,5 +1,7 @@
 from typing import Any
 
+from django.db.models import QuerySet
+from django.utils.functional import cached_property
 from drf_spectacular.utils import extend_schema
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.generics import get_object_or_404
@@ -7,26 +9,25 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from django.db.models import QuerySet
-from django.utils.functional import cached_property
-
 from apps.homework.api.filtersets import AnswerFilterSet
-from apps.homework.api.permissions import MayChangeAnswerOnlyForLimitedTime
-from apps.homework.api.permissions import MayChangeAnswerOnlyWithoutDescendants
-from apps.homework.api.permissions import ShouldBeAuthorOrReadOnly
-from apps.homework.api.permissions import ShouldHavePurchasedQuestionCoursePermission
-from apps.homework.api.serializers import AnswerCreateSerializer
-from apps.homework.api.serializers import AnswerDetailedSerializer
-from apps.homework.api.serializers import ReactionCreateSerializer
-from apps.homework.api.serializers import ReactionDetailedSerializer
-from apps.homework.models import Answer
-from apps.homework.models import AnswerAccessLogEntry
+from apps.homework.api.permissions import (
+    MayChangeAnswerOnlyForLimitedTime,
+    MayChangeAnswerOnlyWithoutDescendants,
+    ShouldBeAuthorOrReadOnly,
+    ShouldHavePurchasedQuestionCoursePermission,
+)
+from apps.homework.api.serializers import (
+    AnswerCreateSerializer,
+    AnswerDetailedSerializer,
+    ReactionCreateSerializer,
+    ReactionDetailedSerializer,
+)
+from apps.homework.models import Answer, AnswerAccessLogEntry
 from apps.homework.models.answer import AnswerQuerySet
 from apps.homework.models.reaction import Reaction
 from apps.homework.services import ReactionCreator
 from core.api.mixins import DisablePaginationWithQueryParamMixin
-from core.viewsets import AppViewSet
-from core.viewsets import CreateDeleteAppViewSet
+from core.viewsets import AppViewSet, CreateDeleteAppViewSet
 
 
 class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):

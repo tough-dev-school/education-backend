@@ -1,7 +1,6 @@
 import pytest
 
-from apps.notion.block import NotionBlock
-from apps.notion.block import NotionBlockList
+from apps.notion.block import NotionBlock, NotionBlockList
 from apps.notion.page import NotionPage
 
 

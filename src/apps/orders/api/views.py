@@ -1,10 +1,9 @@
 from typing import Any
 
+from django.http import HttpResponseRedirect
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
-
-from django.http import HttpResponseRedirect
 
 from apps.orders.models import Order
 from core.throttling import PublicIDThrottle

@@ -1,10 +1,8 @@
 import contextlib
 from dataclasses import dataclass
 
-from apps.notion.block import NotionBlock
-from apps.notion.block import NotionBlockList
-from apps.notion.exceptions import NotionResponseError
-from apps.notion.exceptions import NotSharedForWeb
+from apps.notion.block import NotionBlock, NotionBlockList
+from apps.notion.exceptions import NotionResponseError, NotSharedForWeb
 
 
 @dataclass

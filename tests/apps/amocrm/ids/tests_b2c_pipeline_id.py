@@ -1,10 +1,8 @@
 import pytest
 
-from apps.amocrm.dto.pipelines import Pipeline
-from apps.amocrm.dto.pipelines import PipelineStatus
+from apps.amocrm.dto.pipelines import Pipeline, PipelineStatus
 from apps.amocrm.exceptions import AmoCRMCacheException
-from apps.amocrm.ids import b2c_pipeline_id
-from apps.amocrm.ids import b2c_pipeline_status_id
+from apps.amocrm.ids import b2c_pipeline_id, b2c_pipeline_status_id
 
 
 @pytest.fixture

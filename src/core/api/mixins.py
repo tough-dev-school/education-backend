@@ -1,8 +1,8 @@
-from typing import Any, Protocol, Sequence
-
-from rest_framework.request import Request
+from collections.abc import Sequence
+from typing import Any, Protocol
 
 from django.db.models import QuerySet
+from rest_framework.request import Request
 
 
 class BaseListAPIView(Protocol):

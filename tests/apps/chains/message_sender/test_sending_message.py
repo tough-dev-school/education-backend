@@ -1,5 +1,4 @@
 import pytest
-
 from anymail.exceptions import AnymailRecipientsRefused
 
 from apps.chains.models import Progress

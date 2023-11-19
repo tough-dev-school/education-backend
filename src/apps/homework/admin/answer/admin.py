@@ -1,15 +1,12 @@
-from rest_framework.request import Request
-
 from django.db.models import QuerySet
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
+from rest_framework.request import Request
 
 from apps.homework.admin.answer.filters import IsRootFilter
-from apps.homework.models import Answer
-from apps.homework.models import AnswerCrossCheck
-from core.admin import admin
-from core.admin import ModelAdmin
+from apps.homework.models import Answer, AnswerCrossCheck
+from core.admin import ModelAdmin, admin
 
 
 @admin.register(Answer)

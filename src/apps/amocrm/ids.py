@@ -2,8 +2,7 @@ from typing import Literal
 
 from django.conf import settings
 
-from apps.amocrm.dto import AmoCRMCatalogs
-from apps.amocrm.dto import AmoCRMPipelines
+from apps.amocrm.dto import AmoCRMCatalogs, AmoCRMPipelines
 from apps.amocrm.dto.pipelines import Pipeline
 from apps.amocrm.exceptions import AmoCRMCacheException
 

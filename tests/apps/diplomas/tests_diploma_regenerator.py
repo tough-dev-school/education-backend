@@ -1,10 +1,8 @@
 import pytest
 
 from apps.diplomas import tasks
-from apps.diplomas.models import Diploma
-from apps.diplomas.models import Languages
-from apps.diplomas.services import DiplomaGenerator
-from apps.diplomas.services import DiplomaRegenerator
+from apps.diplomas.models import Diploma, Languages
+from apps.diplomas.services import DiplomaGenerator, DiplomaRegenerator
 
 pytestmark = [
     pytest.mark.django_db,

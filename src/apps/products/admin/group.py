@@ -4,8 +4,7 @@ from django.http import HttpRequest
 
 from apps.amocrm import tasks
 from apps.products.models import Group
-from core.admin import admin
-from core.admin import ModelAdmin
+from core.admin import ModelAdmin, admin
 
 
 @admin.register(Group)

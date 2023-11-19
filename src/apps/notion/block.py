@@ -1,11 +1,10 @@
-from collections import UserList
 import contextlib
+from collections import UserList
+from collections.abc import Generator
 from dataclasses import dataclass
-from typing import Generator
 
 from apps.notion.rewrite import rewrite
-from apps.notion.types import BlockData
-from apps.notion.types import BlockId
+from apps.notion.types import BlockData, BlockId
 
 
 @dataclass

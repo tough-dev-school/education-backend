@@ -2,15 +2,12 @@ from dataclasses import dataclass
 from urllib.parse import urljoin
 
 import celery
-
 from django.conf import settings
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
 
-from apps.amocrm.tasks import amocrm_enabled
-from apps.amocrm.tasks import push_user
-from apps.amocrm.tasks import return_order
+from apps.amocrm.tasks import amocrm_enabled, push_user, return_order
 from apps.banking.base import Bank
 from apps.banking.selector import get_bank
 from apps.mailing import tasks as mailing_tasks

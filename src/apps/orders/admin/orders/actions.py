@@ -1,7 +1,6 @@
 from typing import Any
 
 from celery import group
-
 from django.contrib import messages
 from django.db.models import QuerySet
 from django.http.request import HttpRequest

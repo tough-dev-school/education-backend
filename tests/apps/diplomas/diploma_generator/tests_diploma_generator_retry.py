@@ -1,6 +1,5 @@
-import pytest
-
 import httpx
+import pytest
 from respx import MockRouter
 
 from apps.diplomas.services.diploma_generator import WrongDiplomaServiceResponse

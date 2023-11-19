@@ -1,5 +1,4 @@
 import pytest
-from contextlib import nullcontext as does_not_raise
 
 pytestmark = [
     pytest.mark.django_db,

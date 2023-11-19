@@ -1,4 +1,6 @@
-from dj_rest_auth.serializers import PasswordResetSerializer as DjRestAuthPasswordResetSerializer
+from dj_rest_auth.serializers import (
+    PasswordResetSerializer as DjRestAuthPasswordResetSerializer,
+)
 
 from apps.a12n.api.forms import EspTemplatePasswordResetForm
 

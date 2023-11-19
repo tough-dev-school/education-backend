@@ -1,13 +1,13 @@
 import contextlib
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
+from django.contrib.auth.middleware import get_user
+from django.utils.functional import SimpleLazyObject
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.exceptions import APIException
 from rest_framework.request import Request
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-
-from django.contrib.auth.middleware import get_user
-from django.utils.functional import SimpleLazyObject
 
 from apps.users.models import User
 

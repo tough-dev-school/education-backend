@@ -1,6 +1,6 @@
-from abc import ABCMeta
-from abc import abstractmethod
-from typing import Any, Callable
+from abc import ABCMeta, abstractmethod
+from collections.abc import Callable
+from typing import Any
 
 
 class BaseService(metaclass=ABCMeta):

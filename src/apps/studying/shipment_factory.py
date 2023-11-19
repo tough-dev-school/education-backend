@@ -1,9 +1,9 @@
-from typing import Callable, Type, TYPE_CHECKING
+from collections.abc import Callable
+from typing import TYPE_CHECKING, Type
 
 if TYPE_CHECKING:
     from apps.orders.models import Order
-    from apps.products.models import Product
-    from apps.products.models import ProductType
+    from apps.products.models import Product, ProductType
     from apps.studying.shipment.base import BaseShipment
     from apps.users.models import User
 

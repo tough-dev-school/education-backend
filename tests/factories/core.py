@@ -1,8 +1,7 @@
 from typing import TYPE_CHECKING
 
-from faker import Faker
-
 from django.core.files.uploadedfile import SimpleUploadedFile
+from faker import Faker
 
 from core.test.factory import register
 

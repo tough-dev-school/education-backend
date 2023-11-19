@@ -6,10 +6,8 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.studying import shipment_factory as ShipmentFactory
 from apps.users.models import User
-from core.models import models
-from core.models import TimestampedModel
-from core.pricing import format_old_price
-from core.pricing import format_price
+from core.models import TimestampedModel, models
+from core.pricing import format_old_price, format_price
 
 if TYPE_CHECKING:
     from apps.orders.models import Order

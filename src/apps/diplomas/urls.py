@@ -1,7 +1,5 @@
+from django.urls import include, path
 from rest_framework.routers import SimpleRouter
-
-from django.urls import include
-from django.urls import path
 
 from apps.diplomas.api.viewsets import DiplomaViewSet
 
