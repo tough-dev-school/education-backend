@@ -19,8 +19,7 @@ def user(mixer):
 
 @pytest.fixture
 def order(order, user):
-    order.setattr_and_save("user", user)
-    return order
+    return order.update(user=user)
 
 
 def test_include_first_name_last_name_if_name_and_email_are_short_enough(order):

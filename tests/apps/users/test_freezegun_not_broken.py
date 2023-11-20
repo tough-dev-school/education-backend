@@ -17,7 +17,6 @@ def test_queryset_return_updated_data_while_time_freezed():
     created_user = User.objects.create(username="created_username")
 
     fetched_user = User.objects.get(id=created_user.id)
-    fetched_user.username = "updated_username"
-    fetched_user.save()
+    fetched_user.update(username="updated_username")
 
     assert User.objects.get(id=created_user.id).username == "updated_username"

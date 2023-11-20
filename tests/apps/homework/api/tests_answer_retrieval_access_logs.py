@@ -19,17 +19,13 @@ def another_author(mixer):
 
 @pytest.fixture
 def answer(answer, another_author):
-    answer.author = another_author
-    answer.save()
-
-    return answer
+    return answer.update(author=another_author)
 
 
 @pytest.fixture
 def api(api):
     """Api as an ordinary student user"""
-    api.user.is_superuser = False
-    api.user.save()
+    api.user.update(is_superuser=False)
 
     return api
 
@@ -49,8 +45,7 @@ def test_terrible_things_does_not_happen_when_there_already_is_a_log_entry_creat
 
 
 def test_log_entry_is_not_created_when_requesting_own_answers(api, answer):
-    answer.author = api.user
-    answer.save()
+    answer.update(author=api.user)
 
     api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
@@ -66,8 +61,7 @@ def test_log_entry_is_not_created_for_users_with_permission(api, answer):
 
 
 def test_log_entry_is_not_created_for_superusers(api, answer):
-    api.user.is_superuser = True
-    api.user.save()
+    api.user.update(is_superuser=True)
 
     api.get(f"/api/v2/homework/answers/{answer.slug}/")
 

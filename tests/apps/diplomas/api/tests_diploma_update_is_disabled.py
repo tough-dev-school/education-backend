@@ -5,8 +5,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def api(api):
-    api.user.is_superuser = True
-    api.user.save()
+    api.user.update(is_superuser=True)
 
     return api
 

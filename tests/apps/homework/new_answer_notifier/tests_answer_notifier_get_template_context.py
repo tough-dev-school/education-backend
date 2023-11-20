@@ -42,8 +42,7 @@ def test_default(notifier, answer, user):
 
 
 def test_root_answer(notifier, answer, another_answer):
-    answer.parent = another_answer
-    answer.save()
+    answer.update(parent=another_answer)
 
     context = notifier(answer).get_notification_context(answer.author)
 
@@ -53,12 +52,11 @@ def test_root_answer(notifier, answer, another_answer):
 
 
 def test_html_is_stripped(notifier, answer):
-    answer.text = "# Роисся вперде!"
-    answer.save()
+    answer.update(text="# Россия вперёд!")
 
     context = notifier(answer).get_notification_context(answer.author)
 
-    assert context["answer_title"] == "Роисся вперде!"
+    assert context["answer_title"] == "Россия вперёд!"
 
 
 def test_is_root_answer_author_flag(notifier, answer):

@@ -22,8 +22,7 @@ def test_ok(api, answer):
 
 
 def test_destroy_non_root_answer(api, answer, answer_of_another_author):
-    answer.parent = answer_of_another_author
-    answer.save()
+    answer.update(parent=answer_of_another_author)
 
     api.delete(f"/api/v2/homework/answers/{answer.slug}/")
 

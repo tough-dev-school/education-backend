@@ -1,14 +1,10 @@
-import contextlib
-from copy import copy
 from functools import reduce
 import operator
-from typing import Any, Type
+from typing import Any
 
 from behaviors.behaviors import Timestamped
 
-from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.utils.functional import cached_property
 
 __all__ = [
     "models",
@@ -17,7 +13,19 @@ __all__ = [
 ]
 
 
-class DefaultModel(models.Model):
+class TestUtilsMixin:
+    def update(self: "models.Model", **kwargs: "Any") -> "models.Model":  # type: ignore[misc]
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+        update_fields = list(kwargs) + ["modified"] if hasattr(self, "modified") else list(kwargs)
+
+        self.save(update_fields=update_fields)
+
+        return self
+
+
+class DefaultModel(TestUtilsMixin, models.Model):
     class Meta:
         abstract = True
 
@@ -27,70 +35,6 @@ class DefaultModel(models.Model):
             return str(name)
 
         return super().__str__()
-
-    @classmethod
-    def get_contenttype(cls) -> ContentType:
-        return ContentType.objects.get_for_model(cls)
-
-    @classmethod
-    def has_field(cls, field: str) -> bool:
-        """
-        Shortcut to check if model has particular field
-        """
-        try:
-            cls._meta.get_field(field)
-            return True
-        except models.FieldDoesNotExist:
-            return False
-
-    def update_from_kwargs(self, **kwargs: dict[str, Any]) -> None:
-        """
-        A shortcut method to update model instance from the kwargs.
-        """
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-
-    def setattr_and_save(self, key: str, value: Any) -> None:
-        """Shortcut for testing -- set attribute of the model and save"""
-        setattr(self, key, value)
-        self.save()
-
-    def copy(self, **kwargs: Any) -> "DefaultModel":
-        """Creates new object from current."""
-        instance = copy(self)
-        kwargs.update(
-            {
-                "id": None,
-                "pk": None,
-            }
-        )
-        instance.update_from_kwargs(**kwargs)
-        return instance
-
-    @classmethod
-    def get_label(cls) -> str:
-        """
-        Get a unique within the app model label
-        """
-        return cls._meta.label_lower.split(".")[-1]
-
-    @classmethod
-    def get_foreignkey(cls, Model: Type[models.Model]) -> str | None:
-        """Given an model, returns the ForeignKey to it"""
-        for field in cls._meta.get_fields():
-            if isinstance(field, models.fields.related.ForeignKey):
-                if field.related_model == Model:
-                    return field.name
-
-    def clear_cached_properties(self) -> None:
-        """Clears all used cached properties of instance."""
-
-        for property_name in self._get_cached_property_names():
-            with contextlib.suppress(KeyError):
-                del self.__dict__[property_name]
-
-    def _get_cached_property_names(self) -> list[str]:
-        return [func_name for func_name in dir(self.__class__) if type(getattr(self.__class__, func_name)) is cached_property]
 
 
 class TimestampedModel(DefaultModel, Timestamped):

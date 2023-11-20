@@ -48,9 +48,10 @@ def test_user_with_another_email_case_is_the_same(user):
 
 
 def test_user_creates_if_existing_inactive(user):
-    user.is_active = False
-    user.username = user.uuid  # should differ from email to be able to create new account
-    user.save()
+    user.update(
+        is_active=False,
+        username=user.uuid,  # should differ from email to be able to create new account
+    )
 
     created = UserCreator(name="Камаз Отходов", email=user.email)()
 

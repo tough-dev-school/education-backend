@@ -31,8 +31,7 @@ def test_answers_with_exclude_flag_are_excluded(get, user):
 
 
 def test_answer_authors_are_excluded(get, user, answers):
-    answers[0].author = user
-    answers[0].save()
+    answers[0].update(author=user)
 
     assert get(user) != answers[0]
 

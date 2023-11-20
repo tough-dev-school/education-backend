@@ -6,8 +6,7 @@ pytestmark = [pytest.mark.django_db]
 @pytest.fixture
 def api(api):
     """We test it as normal student, not superuser to check permissions"""
-    api.user.is_superuser = False
-    api.user.save()
+    api.user.update(is_superuser=False)
 
     return api
 
@@ -54,7 +53,7 @@ def purchase(factory, course, api):
 @pytest.fixture
 def _no_purchase(purchase):
     """Invalidate the purchase"""
-    purchase.setattr_and_save("paid", None)
+    purchase.update(paid=None)
 
 
 @pytest.fixture
