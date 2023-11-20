@@ -31,8 +31,7 @@ def test_no_diplomas_of_other_users(api):
 
 
 def test_superuser_can_access_diplomas_of_other_users(api):
-    api.user.is_superuser = True
-    api.user.save()
+    api.user.update(is_superuser=True)
 
     got = api.get("/api/v2/diplomas/")["results"]
 

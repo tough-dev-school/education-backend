@@ -5,9 +5,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def course(course):
-    course.setattr_and_save("price", 0)
-
-    return course
+    return course.update(price=0)
 
 
 def test_zero_price_bank(call_purchase):
@@ -18,7 +16,7 @@ def test_zero_price_bank(call_purchase):
 
 
 def test_fails_with_non_zero_priced_courses(call_purchase, course):
-    course.setattr_and_save("price", 100400)
+    course.update(price=100400)
 
     response = call_purchase(desired_bank="zero_price", redirect_url="https://thank.you", as_response=True)
 

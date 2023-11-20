@@ -53,7 +53,7 @@ def test_user_name_en(generator):
 
 
 def test_additional_course_context(generator, course):
-    course.setattr_and_save("diploma_template_context", {"test": "__mocked"})
+    course.update(diploma_template_context={"test": "__mocked"})
 
     generator = generator(language="RU")
 
@@ -70,8 +70,7 @@ def test_bad_language(generator):
 
 
 def test_no_template_for_homework(generator, order):
-    order.study.homework_accepted = True
-    order.study.save()
+    order.study.update(homework_accepted=True)
 
     generator = generator(language="RU")
 

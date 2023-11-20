@@ -35,7 +35,7 @@ def test_invalid_token(get_token):
 
 
 def test_expired_token(get_token, token):
-    token.setattr_and_save("expires", "1999-01-01 00:00+04:00")
+    token.update(expires="1999-01-01 00:00+04:00")
 
     get_token(token=str(token.token), expected_status_code=404)
 

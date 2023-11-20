@@ -96,8 +96,7 @@ def test_message_is_not_sent_when_study_model_disappeares_during_learning(
 
 
 def test_message_is_not_sent_when_sending_is_disabled(study, parent_message, assert_nothing_is_sent, chain):
-    chain.sending_is_active = False
-    chain.save()
+    chain.update(sending_is_active=False)
 
     tasks.send_active_chains()
 

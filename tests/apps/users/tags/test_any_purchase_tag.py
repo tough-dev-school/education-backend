@@ -13,8 +13,7 @@ def test_order_started(user):
 
 
 def test_free_order_purchased(user, paid_order):
-    paid_order.price = 0
-    paid_order.save()
+    paid_order.update(price=0)
 
     generate_tags(user)
 

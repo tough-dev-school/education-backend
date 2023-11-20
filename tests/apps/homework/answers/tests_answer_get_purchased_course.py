@@ -54,7 +54,6 @@ def test_latest_purchased_is_returned(answer, another_course):
 
 
 def test_purchases_from_another_users_are_ignored(answer, purchase, mixer):
-    purchase.user = mixer.blend("users.User")
-    purchase.save()
+    purchase.update(user=mixer.blend("users.User"))
 
     assert answer.get_purchased_course() is None

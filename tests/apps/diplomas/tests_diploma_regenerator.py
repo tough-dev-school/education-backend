@@ -50,10 +50,7 @@ def mock_diploma_regenerator(mocker):
 
 @pytest.fixture
 def student_without_english_name(student):
-    student.first_name_en = ""
-    student.last_name_en = ""
-    student.save()
-    return student
+    return student.update(first_name_en="", last_name_en="")
 
 
 def test_diplomas_are_regenerated(student, diploma_ru, diploma_en, order):

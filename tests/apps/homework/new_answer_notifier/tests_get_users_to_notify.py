@@ -20,8 +20,7 @@ def test_non_parent_non_sibling_answer_author_is_not_in_the_list(notifier, anoth
 
 
 def test_parent_answer_author_is_in_the_list(notifier, answer, another_answer):
-    answer.parent = another_answer
-    answer.save()
+    answer.update(parent=another_answer)
 
     notifier = notifier(answer)
 
@@ -29,9 +28,9 @@ def test_parent_answer_author_is_in_the_list(notifier, answer, another_answer):
 
 
 def test_sibling_answer_author_is_in_the_list(notifier, answer, another_answer, mixer):
-    answer.parent = another_answer.parent = mixer.blend("homework.Answer")
-    answer.save()
-    another_answer.save()
+    parent = mixer.blend("homework.Answer")
+    answer.update(parent=parent)
+    another_answer.update(parent=parent)
 
     notifier = notifier(answer)
 
@@ -39,8 +38,7 @@ def test_sibling_answer_author_is_in_the_list(notifier, answer, another_answer, 
 
 
 def test_parent_of_parent_answer_author_is_in_the_list(notifier, answer, another_answer, parent_of_another_answer):
-    answer.parent = another_answer
-    answer.save()
+    answer.update(parent=another_answer)
 
     notifier = notifier(answer)
 
@@ -48,10 +46,8 @@ def test_parent_of_parent_answer_author_is_in_the_list(notifier, answer, another
 
 
 def test_author_is_excluded_event_if_he_is_in_answer_tree(notifier, answer, another_answer):
-    answer.parent = another_answer
-    answer.save()
-    another_answer.author = answer.author
-    another_answer.save()
+    answer.update(parent=another_answer)
+    another_answer.update(author=answer.author)
 
     notifier = notifier(answer)
 

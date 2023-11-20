@@ -8,9 +8,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def course(course):
-    course.setattr_and_save("price", 0)
-
-    return course
+    return course.update(price=0)
 
 
 def get_order() -> Order | None:

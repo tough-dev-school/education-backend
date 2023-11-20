@@ -20,7 +20,7 @@ def order(self: Any, slug: str | None = None, is_paid: bool = False, item: Produ
         order.save()
 
     if "bank_id" not in kwargs:
-        order.setattr_and_save("bank_id", "tinkoff_bank")
+        order.update(bank_id="tinkoff_bank")
 
     if is_paid:
         order.set_paid()

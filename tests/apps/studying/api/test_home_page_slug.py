@@ -32,7 +32,7 @@ def test_latest_material_is_used(api):
 
 
 def test_material_without_home_page_flag_is_ignored(api, material):
-    material.setattr_and_save("is_home_page", False)
+    material.update(is_home_page=False)
 
     got = api.get("/api/v2/studies/purchased/")["results"]
 

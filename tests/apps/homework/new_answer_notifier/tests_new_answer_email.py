@@ -4,8 +4,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 def test(notifier, answer, another_answer, send_mail, mocker):
-    answer.parent = another_answer
-    answer.save()
+    answer.update(parent=another_answer)
 
     notifier(answer)()
 

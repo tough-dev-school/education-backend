@@ -58,8 +58,7 @@ def test_edit_user_data_in_english(api):
 
 
 def test_edit_gender(api):
-    api.user.gender = User.GENDERS.MALE
-    api.user.save()
+    api.user.update(gender=User.GENDERS.MALE)
 
     api.patch("/api/v2/users/me/", {"gender": "female"})
 

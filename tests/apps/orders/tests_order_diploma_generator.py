@@ -36,8 +36,7 @@ def diploma_generator(mocker):
 
 @pytest.mark.parametrize("language", [Languages.RU, Languages.EN])
 def test_single_language(diploma_generator, order, student, course, template, language):
-    template.language = language
-    template.save()
+    template.update(language=language)
 
     OrderDiplomaGenerator(order=order)()
 
@@ -67,7 +66,7 @@ def test_student_without_a_name_does_not_get_the_diploma(diploma_generator, orde
 
 
 def test_do_not_generate_diploma_for_order_not_matched_homework_accepted(diploma_generator, template, order):
-    template.setattr_and_save("homework_accepted", True)
+    template.update(homework_accepted=True)
 
     OrderDiplomaGenerator(order=order)()
 

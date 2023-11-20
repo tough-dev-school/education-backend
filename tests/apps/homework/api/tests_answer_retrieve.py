@@ -26,8 +26,7 @@ def test_ok(api, answer, question):
 
 
 def test_has_descendants_is_true_if_answer_has_children(api, answer, another_answer):
-    another_answer.parent = answer
-    another_answer.save()
+    another_answer.update(parent=answer)
 
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
@@ -54,8 +53,7 @@ def test_query_count_for_answer_without_descendants(api, answer, django_assert_n
 
 
 def test_markdown(api, answer):
-    answer.text = "*should be rendered*"
-    answer.save()
+    answer.update(text="*should be rendered*")
 
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
@@ -64,16 +62,14 @@ def test_markdown(api, answer):
 
 
 def test_non_root_answers_are_ok(api, answer, another_answer):
-    answer.parent = another_answer
-    answer.save()
+    answer.update(parent=another_answer)
 
     api.get(f"/api/v2/homework/answers/{answer.slug}/", expected_status_code=200)
 
 
 def test_answers_with_parents_have_parent_field(api, question, answer, another_answer):
     """Just to document weird behavior of our API: the parent is showed for not root answers only."""
-    answer.parent = another_answer
-    answer.save()
+    answer.update(parent=another_answer)
 
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
@@ -92,8 +88,7 @@ def test_403_for_not_purchased_users(api, answer, purchase):
 def test_ok_for_superusers_even_when_they_did_not_purchase_the_course(api, answer, purchase):
     purchase.refund()
 
-    api.user.is_superuser = True
-    api.user.save()
+    api.user.update(is_superuser=True)
 
     api.get(
         f"/api/v2/homework/answers/{answer.slug}/",
@@ -124,8 +119,7 @@ def test_configurable_permissions_checking(api, answer, purchase, settings):
 
 
 def test_ok_for_answers_of_another_authors(api, answer, mixer):
-    answer.author = mixer.blend("users.User")
-    answer.save()
+    answer.update(author=mixer.blend("users.User"))
 
     api.get(
         f"/api/v2/homework/answers/{answer.slug}/",

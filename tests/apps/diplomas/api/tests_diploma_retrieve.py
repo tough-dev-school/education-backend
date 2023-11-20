@@ -30,8 +30,7 @@ def test_other_languages(anon, diploma, diploma_with_another_lang):
 
 
 def test_no_diplomas_from_another_students(anon, diploma, diploma_with_another_lang, mixer):
-    diploma_with_another_lang.study = mixer.blend("studying.Study")
-    diploma_with_another_lang.save()
+    diploma_with_another_lang.update(study=mixer.blend("studying.Study"))
 
     got = anon.get(f"/api/v2/diplomas/{diploma.slug}/")
 

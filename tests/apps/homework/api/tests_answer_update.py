@@ -56,8 +56,7 @@ def test_patch_changing_text_response_fields(api, answer, another_answer):
 
 def test_update_answer_without_parent_do_not_have_parent_field_in_response(api, question, answer):
     """Just to document weird behavior of our API: we hide the parent field when it is empty"""
-    answer.parent = None
-    answer.save()
+    answer.update(parent=None)
 
     got = api.patch(f"/api/v2/homework/answers/{answer.slug}/", {"text": "*patched*"})
 
