@@ -131,13 +131,6 @@ def test_do_not_call_bank_refund_if_refunds_disabled(paid_order, refund, mock_do
     mock_dolyame_refund.assert_not_called()
 
 
-def test_do_not_break_and_not_try_call_bank_refund_if_bank_id_is_empty(paid_order, refund):
-    paid_order.setattr_and_save("bank_id", "")
-
-    with does_not_raise():
-        refund(paid_order)
-
-
 def test_unship_order_despite_it_unpaid(not_paid_order, refund, spy_unshipper):
     refund(not_paid_order)
 

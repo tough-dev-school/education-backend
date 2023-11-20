@@ -30,15 +30,6 @@ def set_order_paid(order, user):
     return set_paid
 
 
-@pytest.fixture
-def b2b_order(order, another_user):
-    order.bank_id = ""
-    order.paid = datetime.fromisoformat("2023-08-10 09:10:+03:00")
-    order.user = another_user
-    order.save()
-    return order
-
-
 def test_readable_payment_method_name_not_paid_order(order):
     got = human_readable.get_order_payment_method_name(order)
 
@@ -62,22 +53,8 @@ def test_get_readable_payment_method_name_if_payed_with_bank(bank_id, set_order_
     assert got == BANKS[bank_id].name
 
 
-def test_get_readable_payment_method_name_if_paid_b2b(b2b_order):
-    got = human_readable.get_order_payment_method_name(b2b_order)
-
-    assert got == "B2B"
-
-
-def test_get_readable_payment_method_name_if_bank_not_set_and_not_b2b(set_order_paid):
-    order = set_order_paid(bank_id="")
-
-    got = human_readable.get_order_payment_method_name(order)
-
-    assert got == "Is paid"
-
-
-def test_get_readable_payment_method_name_if_bank_name_set_but_unknown(set_order_paid):
-    order = set_order_paid(bank_id="tinkoff_credit")
+def test_get_readable_payment_method_name_if_bank_is_set_but_unknown(set_order_paid):
+    order = set_order_paid(bank_id="tinkoff_credit")  #  bank that existed but is no longer in use
 
     got = human_readable.get_order_payment_method_name(order)
 

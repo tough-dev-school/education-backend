@@ -14,10 +14,13 @@ from core.services import BaseService
 
 @dataclass
 class OrderPaidSetter(BaseService):
-    """Mark order as paid"""
+    """Mark order as paid.
+    
+    Set manually to True if """
 
     order: Order
     silent: bool | None = False
+    manually: bool = False
 
     def __post_init__(self) -> None:
         """Save order state at boot time"""

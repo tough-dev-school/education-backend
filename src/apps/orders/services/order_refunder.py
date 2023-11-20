@@ -41,9 +41,8 @@ class OrderRefunder(BaseService):
         self.payment_method_before_service_call = human_readable.get_order_payment_method_name(self.order)
 
     @cached_property
-    def bank(self) -> Bank | None:
-        Bank = get_bank(self.order.bank_id)
-        return Bank(order=self.order) if Bank else None
+    def bank(self) -> Bank:
+        return get_bank(self.order.bank_id)(order=self.order)
 
     def act(self) -> None:
         if self.order.paid:
@@ -60,7 +59,7 @@ class OrderRefunder(BaseService):
         self.order.save(update_fields=["paid", "unpaid", "modified"])
 
     def do_bank_refund_if_needed(self) -> None:
-        if self.bank and settings.BANKS_REFUNDS_ENABLED:
+        if settings.BANKS_REFUNDS_ENABLED:
             self.bank.refund()
 
     def update_integrations(self) -> None:
