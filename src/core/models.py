@@ -1,14 +1,10 @@
-import contextlib
-from copy import copy
 from functools import reduce
 import operator
-from typing import Any, Type
+from typing import Any
 
 from behaviors.behaviors import Timestamped
 
-from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.utils.functional import cached_property
 
 __all__ = [
     "models",
@@ -39,54 +35,6 @@ class DefaultModel(TestUtilsMixin, models.Model):
             return str(name)
 
         return super().__str__()
-
-    @classmethod
-    def get_contenttype(cls) -> ContentType:
-        return ContentType.objects.get_for_model(cls)
-
-    @classmethod
-    def has_field(cls, field: str) -> bool:
-        """
-        Shortcut to check if model has particular field
-        """
-        try:
-            cls._meta.get_field(field)
-            return True
-        except models.FieldDoesNotExist:
-            return False
-
-    def copy(self, **kwargs: Any) -> "models.Model":
-        """Creates new object from current."""
-        instance = copy(self)
-
-        kwargs.update(id=None, pk=None)
-
-        return instance.update(**kwargs)
-
-    @classmethod
-    def get_label(cls) -> str:
-        """
-        Get a unique within the app model label
-        """
-        return cls._meta.label_lower.split(".")[-1]
-
-    @classmethod
-    def get_foreignkey(cls, Model: Type[models.Model]) -> str | None:
-        """Given an model, returns the ForeignKey to it"""
-        for field in cls._meta.get_fields():
-            if isinstance(field, models.fields.related.ForeignKey):
-                if field.related_model == Model:
-                    return field.name
-
-    def clear_cached_properties(self) -> None:
-        """Clears all used cached properties of instance."""
-
-        for property_name in self._get_cached_property_names():
-            with contextlib.suppress(KeyError):
-                del self.__dict__[property_name]
-
-    def _get_cached_property_names(self) -> list[str]:
-        return [func_name for func_name in dir(self.__class__) if type(getattr(self.__class__, func_name)) is cached_property]
 
 
 class TimestampedModel(DefaultModel, Timestamped):
