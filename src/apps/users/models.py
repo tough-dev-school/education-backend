@@ -12,10 +12,11 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.diplomas.models import Languages
 from core.models import models
+from core.models import TestUtilsMixin
 from core.types import Language
 
 
-class User(AbstractUser):
+class User(TestUtilsMixin, AbstractUser):
     class GENDERS(TextChoices):
         MALE = "male", _("Male")
         FEMALE = "female", _("Female")

@@ -43,8 +43,7 @@ def test_if_subscribe_and_amocrm_enabled(create, user, course, mock_update_user_
 
 def test_if_not_subscribe_and_amocrm_enabled(create, user, course, mock_update_user_chain, mock_rebuild_tags, mock_push_customer, settings, mock_push_order):
     settings.AMOCRM_BASE_URL = "https://amo.amo.amo"
-    user.email = ""
-    user.save()
+    user.update(email="")
 
     order = create(user=user, item=course)
 
@@ -58,8 +57,7 @@ def test_if_not_subscribe_and_amocrm_enabled(create, user, course, mock_update_u
 def test_if_not_subscribe_and_amocrm_disabled(
     create, user, course, rebuild_tags, mock_update_user_chain, mock_rebuild_tags, mock_push_customer, settings, mock_push_order
 ):
-    user.email = ""
-    user.save()
+    user.update(email="")
 
     create(user=user, item=course)
 
@@ -72,8 +70,7 @@ def test_if_not_subscribe_and_amocrm_disabled(
 
 def test_dont_call_if_free_order(create, user, course, mock_update_user_chain, mock_rebuild_tags, mock_push_customer, settings, mock_push_order, rebuild_tags):
     settings.AMOCRM_BASE_URL = "https://amo.amo.amo"
-    user.email = ""
-    user.save()
+    user.update(email="")
 
     create(user=user, item=course, price=Decimal(0))
 
@@ -88,8 +85,7 @@ def test_if_not_subscribe_and_not_push_to_amocrm(
     create, user, course, rebuild_tags, mock_update_user_chain, mock_rebuild_tags, mock_push_customer, settings, mock_push_order
 ):
     settings.AMOCRM_BASE_URL = "https://amo.amo.amo"
-    user.email = ""
-    user.save()
+    user.update(email="")
 
     create(user=user, item=course, push_to_amocrm=False)
 

@@ -22,7 +22,7 @@ def test_list_includes_only_purchased(api):
 
 
 def test_list_excludes_courses_that_should_not_be_displayed_in_lms(api, course):
-    course.setattr_and_save("display_in_lms", False)
+    course.update(display_in_lms=False)
 
     got = api.get("/api/v2/studies/purchased/")["results"]
 

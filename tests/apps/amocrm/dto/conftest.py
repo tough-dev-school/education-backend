@@ -16,12 +16,12 @@ def _mock_cached_fields_id(mocker):
 
 @pytest.fixture
 def user(user):
-    user.email = "dada@da.net"
-    user.first_name = "First"
-    user.last_name = "Last"
-    user.tags = ["b2b", "any-purchase"]
-    user.save()
-    return user
+    return user.update(
+        email="dada@da.net",
+        first_name="First",
+        last_name="Last",
+        tags=["b2b", "any-purchase"],
+    )
 
 
 @pytest.fixture
@@ -45,9 +45,8 @@ def order(amocrm_user, course, factory):
         amocrm_transaction__amocrm_id=22222,
         amocrm_lead__amocrm_id=11111,
     )
-    order.created = datetime.fromtimestamp(1672520400, tz=timezone.get_current_timezone())
-    order.save()
-    return order
+
+    return order.update(created=datetime.fromtimestamp(1672520400, tz=timezone.get_current_timezone()))
 
 
 @pytest.fixture

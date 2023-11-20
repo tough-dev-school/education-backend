@@ -15,6 +15,7 @@ from apps.products.models import Course
 from apps.users.models import User
 from core.markdown import markdownify, remove_html
 from core.models import models
+from core.models import TestUtilsMixin
 
 
 class AnswerQuerySet(TreeQuerySet):
@@ -70,7 +71,7 @@ class AnswerQuerySet(TreeQuerySet):
         return self.annotate(children_count=Count("children"))
 
 
-class Answer(TreeNode):
+class Answer(TestUtilsMixin, TreeNode):
     objects = AnswerQuerySet.as_manager()
 
     created = models.DateTimeField(auto_now_add=True, db_index=True)

@@ -18,25 +18,23 @@ def _set_en_locale(settings):
 @pytest.fixture
 def set_order_paid(order, user):
     def set_paid(bank_id):
-        order.paid = datetime.fromisoformat("2023-08-10 09:10:+03:00")
-        order.bank_id = bank_id
-
-        order.user = user
-        order.author = user
-
-        order.save()
-        return order
+        return order.update(
+            author=user,
+            bank_id=bank_id,
+            paid=datetime.fromisoformat("2023-08-10 09:10:+03:00"),
+            user=user,
+        )
 
     return set_paid
 
 
 @pytest.fixture
 def b2b_order(order, another_user):
-    order.bank_id = ""
-    order.paid = datetime.fromisoformat("2023-08-10 09:10:+03:00")
-    order.user = another_user
-    order.save()
-    return order
+    return order.update(
+        bank_id="",
+        paid=datetime.fromisoformat("2023-08-10 09:10:+03:00"),
+        user=another_user,
+    )
 
 
 def test_readable_payment_method_name_not_paid_order(order):
@@ -46,7 +44,7 @@ def test_readable_payment_method_name_not_paid_order(order):
 
 
 def test_get_readable_payment_method_name_shipped_but_not_paid(order):
-    order.setattr_and_save("shipped", datetime.fromisoformat("2023-09-13 10:20+03:00"))
+    order.update(shipped=datetime.fromisoformat("2023-09-13 10:20+03:00"))
 
     got = human_readable.get_order_payment_method_name(order)
 

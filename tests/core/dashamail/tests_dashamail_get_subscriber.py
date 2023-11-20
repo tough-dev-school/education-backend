@@ -29,8 +29,7 @@ def test_get_subscriber(dashamail, post, user):
 
 @pytest.mark.parametrize(("email", "expected_email"), [("hehe@ya.ru", "hehe@yandex.ru"), ("simple@yandex.ru", "simple@yandex.ru")])
 def test_get_subscriber_with_yandex_mail(dashamail, post, user, email, expected_email):
-    user.email = email
-    user.save()
+    user.update(email=email)
 
     dashamail.get_subscriber(
         email=user.email,

@@ -14,11 +14,8 @@ def answer_another_user(mixer, question, another_user):
 
 @pytest.fixture
 def answer_with_descendants(answer, another_answer, answer_another_user):
-    answer_another_user.parent = answer
-    answer_another_user.save()
-
-    another_answer.parent = answer_another_user
-    another_answer.save()
+    answer_another_user.update(parent=answer)
+    another_answer.update(parent=answer_another_user)
 
     return answer
 

@@ -7,8 +7,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 def test_includes_paid_but_not_shipped_orders(order):
-    order.paid = None
-    order.shipped = timezone.now()
+    order.update(paid=None, shipped=timezone.now())
 
     order.save()
 
@@ -16,8 +15,7 @@ def test_includes_paid_but_not_shipped_orders(order):
 
 
 def test_excludes_paid_and_shipped_orders(order):
-    order.paid = timezone.now()
-    order.shipped = timezone.now()
+    order.update(paid=timezone.now(), shipped=timezone.now())
 
     order.save()
 
@@ -25,8 +23,7 @@ def test_excludes_paid_and_shipped_orders(order):
 
 
 def test_excludes_not_paid_and_not_shipped_orders(order):
-    order.paid = None
-    order.shipped = None
+    order.update(paid=None, shipped=None)
 
     order.save()
 
@@ -34,8 +31,7 @@ def test_excludes_not_paid_and_not_shipped_orders(order):
 
 
 def test_excludes_paid_but_not_shipped_orders(order):
-    order.paid = timezone.now()
-    order.shipped = None
+    order.update(paid=timezone.now(), shipped=None)
 
     order.save()
 

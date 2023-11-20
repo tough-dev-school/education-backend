@@ -66,8 +66,7 @@ def expired_datetime():
 
 @pytest.fixture
 def expired_cache_entry(cache_entry, expired_datetime):
-    cache_entry.setattr_and_save("expires", expired_datetime)
-    return cache_entry
+    return cache_entry.update(expires=expired_datetime)
 
 
 def test_set(cache, page, page_as_dict):

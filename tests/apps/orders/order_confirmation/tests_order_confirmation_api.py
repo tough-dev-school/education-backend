@@ -40,7 +40,7 @@ def test_order_is_shipped_only_one_time(anon, order, ship):
 
 
 def test_404_for_non_zero_priced_orders(anon, order, ship):
-    order.setattr_and_save("price", 100500)
+    order.update(price=100500)
 
     anon.get(f"/api/v2/orders/{order.slug}/confirm/", expected_status_code=404)
 

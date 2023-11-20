@@ -10,7 +10,7 @@ pytestmark = [
 
 @pytest.fixture
 def _no_purchase(purchase):
-    purchase.setattr_and_save("paid", None)
+    purchase.update(paid=None)
 
 
 def get_answer():
@@ -134,8 +134,7 @@ def test_ok_for_users_with_permission(api, question):
 
 @pytest.mark.usefixtures("_no_purchase")
 def test_ok_for_superusers(api, question):
-    api.user.is_superuser = True
-    api.user.save()
+    api.user.update(is_superuser=True)
 
     api.post(
         "/api/v2/homework/answers/",

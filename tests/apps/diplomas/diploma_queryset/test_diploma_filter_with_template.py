@@ -24,7 +24,7 @@ def test_diploma_with_template_in_query(diploma, query):
 
 
 def test_exclude_diplomas_not_matching_template_course(factory, query, template, diploma):
-    template.setattr_and_save("course", factory.course())
+    template.update(course=factory.course())
 
     diplomas = query()
 
@@ -32,7 +32,7 @@ def test_exclude_diplomas_not_matching_template_course(factory, query, template,
 
 
 def test_exclude_diplomas_not_matching_template_language(query, template, diploma):
-    template.setattr_and_save("language", Languages.EN)
+    template.update(language=Languages.EN)
 
     diplomas = query()
 
@@ -40,7 +40,7 @@ def test_exclude_diplomas_not_matching_template_language(query, template, diplom
 
 
 def test_exclude_diplomas_not_matching_template_homework_accepted(query, template, diploma):
-    template.setattr_and_save("homework_accepted", True)
+    template.update(homework_accepted=True)
 
     diplomas = query()
 
