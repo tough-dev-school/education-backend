@@ -14,8 +14,7 @@ from apps.orders.models import Order
 from apps.products.models import Course
 from apps.users.models import User
 from core.markdown import markdownify, remove_html
-from core.models import models
-from core.models import TestUtilsMixin
+from core.models import TestUtilsMixin, models
 
 
 class AnswerQuerySet(TreeQuerySet):
