@@ -11,7 +11,7 @@ from django.http import HttpResponseRedirect
 
 from apps.banking import price_calculator
 from apps.banking.selector import BANK_KEYS
-from apps.banking.selector import get_bank
+from apps.banking.selector import get_bank_or_default
 from apps.orders.api.serializers import PromocodeSerializer
 from apps.orders.api.throttling import PromocodeThrottle
 from apps.orders.api.throttling import PurchaseThrottle
@@ -41,7 +41,7 @@ class PromocodeView(APIView):
         promocode = self._get_promocode(request)
 
         price = promocode.apply(item) if promocode is not None else item.price
-        Bank = get_bank(desired=request.GET.get("desired_bank"))
+        Bank = get_bank_or_default(desired=request.GET.get("desired_bank"))
         price = price_calculator.to_bank(Bank, price)
 
         serializer = PromocodeSerializer(

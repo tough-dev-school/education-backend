@@ -7,19 +7,6 @@ from rest_framework.request import Request
 from rest_framework.views import APIView
 
 
-class TinkoffCreditNetmaskPermission(permissions.BasePermission):
-    """The only way to validate webhooks from apps.tinkoff credit is IP addess,
-    proof: https://forma.tinkoff.ru/docs/credit/help/http/
-    """
-
-    message = "Tinkoff Credit requests are allowed only from apps.tinkoff network"
-
-    def has_permission(self, request: Request, view: APIView, *args: Any, **kwargs: dict[str, Any]) -> bool:
-        sender_ip = IPv4Address(request.META["REMOTE_ADDR"])
-
-        return sender_ip in IPv4Network("91.194.226.0/23")
-
-
 class DolyameNetmaskPermission(permissions.BasePermission):
     """The only way to validate webhooks from dolyame is IP addess,
     proof: https://dolyame.ru/develop/help/webhooks/

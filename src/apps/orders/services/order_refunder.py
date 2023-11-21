@@ -38,8 +38,8 @@ class OrderRefunder(BaseService):
 
     @cached_property
     def bank(self) -> Bank | None:
-        if self.order.bank_id:
-            return get_bank(self.order.bank_id)(order=self.order)
+        Bank = get_bank(self.order.bank_id)
+        return Bank(order=self.order) if Bank else None
 
     def act(self) -> None:
         if self.order.paid:
