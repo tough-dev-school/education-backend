@@ -23,10 +23,6 @@ from core.pricing import format_price
 from core.services import BaseService
 
 
-class OrderRefunderException(Exception):
-    pass
-
-
 @dataclass
 class OrderRefunder(BaseService):
     """Refund and unship order.
