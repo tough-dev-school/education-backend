@@ -14,6 +14,7 @@ lint:
 	poetry run ruff src tests
 	poetry run flake8 src tests
 	poetry run mypy src tests
+	poetry run toml-sort pyproject.toml --check
 	poetry run pymarkdown scan README.md
 
 messages: compilemessages
