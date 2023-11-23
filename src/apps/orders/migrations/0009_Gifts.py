@@ -6,26 +6,25 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('orders', '0008_PromocodesI18n'),
+        ("orders", "0008_PromocodesI18n"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='gift_message',
-            field=models.TextField(default=''),
+            model_name="order",
+            name="gift_message",
+            field=models.TextField(default=""),
         ),
         migrations.AddField(
-            model_name='order',
-            name='desired_shipment_date',
-            field=models.DateTimeField(blank=True, null=True, verbose_name='Date when the gift should be shipped'),
+            model_name="order",
+            name="desired_shipment_date",
+            field=models.DateTimeField(blank=True, null=True, verbose_name="Date when the gift should be shipped"),
         ),
         migrations.AddField(
-            model_name='order',
-            name='giver',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='created_gifts', to=settings.AUTH_USER_MODEL),
+            model_name="order",
+            name="giver",
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name="created_gifts", to=settings.AUTH_USER_MODEL),
         ),
     ]

@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('chains', '0009_CreateChainProgressForAlreadyPurchasedUsers'),
+        ("chains", "0009_CreateChainProgressForAlreadyPurchasedUsers"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='message',
-            name='delay',
-            field=models.BigIntegerField(default=0, help_text='1440 for day, 10080 for week', verbose_name='Delay (minutes)'),
+            model_name="message",
+            name="delay",
+            field=models.BigIntegerField(default=0, help_text="1440 for day, 10080 for week", verbose_name="Delay (minutes)"),
         ),
     ]

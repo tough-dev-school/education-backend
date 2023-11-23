@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('homework', '0008_AnswersCrossCheck'),
+        ("homework", "0008_AnswersCrossCheck"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='answer',
-            name='do_not_crosscheck',
-            field=models.BooleanField(default=False, verbose_name='Exclude from cross-checking'),
+            model_name="answer",
+            name="do_not_crosscheck",
+            field=models.BooleanField(default=False, verbose_name="Exclude from cross-checking"),
         ),
     ]

@@ -4,20 +4,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('products', '0007_L18N'),
+        ("products", "0007_L18N"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='course',
-            name='template_id',
-            field=models.CharField(blank=True, help_text='Leave it blank for the default template', max_length=256, null=True, verbose_name='Mailjet template_id'),
+            model_name="course",
+            name="template_id",
+            field=models.CharField(
+                blank=True, help_text="Leave it blank for the default template", max_length=256, null=True, verbose_name="Mailjet template_id"
+            ),
         ),
         migrations.AddField(
-            model_name='record',
-            name='template_id',
-            field=models.CharField(blank=True, help_text='Leave it blank for the default template', max_length=256, null=True, verbose_name='Mailjet template_id'),
+            model_name="record",
+            name="template_id",
+            field=models.CharField(
+                blank=True, help_text="Leave it blank for the default template", max_length=256, null=True, verbose_name="Mailjet template_id"
+            ),
         ),
     ]

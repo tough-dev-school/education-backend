@@ -6,29 +6,28 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('homework', '0005_GodAnswerUsers'),
+        ("homework", "0005_GodAnswerUsers"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='AnswerAccessLogEntry',
+            name="AnswerAccessLogEntry",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('modified', models.DateTimeField(blank=True, db_index=True, null=True)),
-                ('answer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='homework.answer')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("created", models.DateTimeField(auto_now_add=True, db_index=True)),
+                ("modified", models.DateTimeField(blank=True, db_index=True, null=True)),
+                ("answer", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="homework.answer")),
+                ("user", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.AddIndex(
-            model_name='answeraccesslogentry',
-            index=models.Index(fields=['answer', 'user'], name='homework_an_answer__54d8de_idx'),
+            model_name="answeraccesslogentry",
+            index=models.Index(fields=["answer", "user"], name="homework_an_answer__54d8de_idx"),
         ),
         migrations.AddConstraint(
-            model_name='answeraccesslogentry',
-            constraint=models.UniqueConstraint(fields=('answer', 'user'), name='unique_user_and_answer'),
+            model_name="answeraccesslogentry",
+            constraint=models.UniqueConstraint(fields=("answer", "user"), name="unique_user_and_answer"),
         ),
     ]

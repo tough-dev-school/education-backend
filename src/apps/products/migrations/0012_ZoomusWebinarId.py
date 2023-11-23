@@ -4,15 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('products', '0011_Price'),
+        ("products", "0011_Price"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='course',
-            name='zoomus_webinar_id',
-            field=models.CharField(blank=True, help_text='If set, every user who purcashes this course gets invited', max_length=255, null=True, verbose_name='Zoom.us webinar ID'),
+            model_name="course",
+            name="zoomus_webinar_id",
+            field=models.CharField(
+                blank=True, help_text="If set, every user who purcashes this course gets invited", max_length=255, null=True, verbose_name="Zoom.us webinar ID"
+            ),
         ),
     ]

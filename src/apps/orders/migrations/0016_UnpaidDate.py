@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('orders', '0015_PromoCodeValue'),
+        ("orders", "0015_PromoCodeValue"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='unpaid',
-            field=models.DateTimeField(blank=True, null=True, verbose_name='Date when order got unpaid'),
+            model_name="order",
+            name="unpaid",
+            field=models.DateTimeField(blank=True, null=True, verbose_name="Date when order got unpaid"),
         ),
     ]

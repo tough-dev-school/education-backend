@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('products', '0024_DiplomaTemplateContextIsNotRequired'),
+        ("products", "0024_DiplomaTemplateContextIsNotRequired"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='course',
-            name='disable_triggers',
-            field=models.BooleanField(default=False, verbose_name='Disable all triggers'),
+            model_name="course",
+            name="disable_triggers",
+            field=models.BooleanField(default=False, verbose_name="Disable all triggers"),
         ),
     ]

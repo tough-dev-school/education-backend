@@ -4,16 +4,15 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('magnets', '0002_CampaignLog'),
+        ("magnets", "0002_CampaignLog"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='emailleadmagnetcampaign',
-            name='success_message',
-            field=models.CharField(default='', help_text='Will be shown under tilda form', max_length=255, verbose_name='Success Message'),
+            model_name="emailleadmagnetcampaign",
+            name="success_message",
+            field=models.CharField(default="", help_text="Will be shown under tilda form", max_length=255, verbose_name="Success Message"),
             preserve_default=False,
         ),
     ]

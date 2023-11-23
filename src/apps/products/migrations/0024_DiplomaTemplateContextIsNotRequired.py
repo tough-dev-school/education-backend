@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('products', '0023_DiplomaTemplateContext'),
+        ("products", "0023_DiplomaTemplateContext"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='course',
-            name='diploma_template_context',
+            model_name="course",
+            name="diploma_template_context",
             field=models.JSONField(blank=True, default=dict),
         ),
     ]

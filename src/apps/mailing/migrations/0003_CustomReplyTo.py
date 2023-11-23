@@ -4,13 +4,14 @@ from django.db import migrations, models
 
 
 def set_default_reply_to(apps, schema_editor):
-    apps.get_model("mailing.EmailConfiguration").objects.filter(reply_to="",).update(
+    apps.get_model("mailing.EmailConfiguration").objects.filter(
+        reply_to="",
+    ).update(
         reply_to=models.F("from_email"),
     )
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("mailing", "0002_EmailConfiguration"),
     ]

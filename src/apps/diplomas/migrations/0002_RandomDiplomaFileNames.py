@@ -6,15 +6,14 @@ import core.files
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('diplomas', '0001_initial'),
+        ("diplomas", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='diploma',
-            name='image',
-            field=models.ImageField(upload_to=core.files.RandomFileName('diplomas')),
+            model_name="diploma",
+            name="image",
+            field=models.ImageField(upload_to=core.files.RandomFileName("diplomas")),
         ),
     ]

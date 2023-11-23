@@ -4,28 +4,31 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0007_StudentProxyModel'),
+        ("users", "0007_StudentProxyModel"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='github_username',
-            field=models.CharField(blank=True, db_index=True, default='', max_length=256),
+            model_name="user",
+            name="github_username",
+            field=models.CharField(blank=True, db_index=True, default="", max_length=256),
         ),
         migrations.AddField(
-            model_name='user',
-            name='linkedin_username',
-            field=models.CharField(blank=True, db_index=True, default='', max_length=256),
+            model_name="user",
+            name="linkedin_username",
+            field=models.CharField(blank=True, db_index=True, default="", max_length=256),
         ),
         migrations.AddConstraint(
-            model_name='user',
-            constraint=models.UniqueConstraint(condition=models.Q(('github_username', ''), _negated=True), fields=('github_username',), name='unique_github_username'),
+            model_name="user",
+            constraint=models.UniqueConstraint(
+                condition=models.Q(("github_username", ""), _negated=True), fields=("github_username",), name="unique_github_username"
+            ),
         ),
         migrations.AddConstraint(
-            model_name='user',
-            constraint=models.UniqueConstraint(condition=models.Q(('linkedin_username', ''), _negated=True), fields=('linkedin_username',), name='unique_linkedin_username'),
+            model_name="user",
+            constraint=models.UniqueConstraint(
+                condition=models.Q(("linkedin_username", ""), _negated=True), fields=("linkedin_username",), name="unique_linkedin_username"
+            ),
         ),
     ]

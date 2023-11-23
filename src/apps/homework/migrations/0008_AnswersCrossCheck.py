@@ -6,29 +6,28 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('homework', '0007_merge_20210420_0027'),
+        ("homework", "0007_merge_20210420_0027"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='AnswerCrossCheck',
+            name="AnswerCrossCheck",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('modified', models.DateTimeField(blank=True, db_index=True, null=True)),
-                ('answer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='homework.answer')),
-                ('checker', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("created", models.DateTimeField(auto_now_add=True, db_index=True)),
+                ("modified", models.DateTimeField(blank=True, db_index=True, null=True)),
+                ("answer", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="homework.answer")),
+                ("checker", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.AddIndex(
-            model_name='answercrosscheck',
-            index=models.Index(fields=['answer', 'checker'], name='homework_an_answer__f77f46_idx'),
+            model_name="answercrosscheck",
+            index=models.Index(fields=["answer", "checker"], name="homework_an_answer__f77f46_idx"),
         ),
         migrations.AddConstraint(
-            model_name='answercrosscheck',
-            constraint=models.UniqueConstraint(fields=('answer', 'checker'), name='unique_checker_and_answer'),
+            model_name="answercrosscheck",
+            constraint=models.UniqueConstraint(fields=("answer", "checker"), name="unique_checker_and_answer"),
         ),
     ]

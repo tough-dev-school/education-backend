@@ -4,16 +4,15 @@ from django.db import migrations
 
 
 def drop_old_contenttypes(apps, schema_editor):
-    apps.get_model('contenttypes.ContentType').objects.filter(app_label='onetime').delete()
+    apps.get_model("contenttypes.ContentType").objects.filter(app_label="onetime").delete()
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0001_CourseMailLog'),
+        ("core", "0001_CourseMailLog"),
     ]
 
     operations = [
         migrations.RunPython(drop_old_contenttypes),
-        migrations.RunSQL('DROP TABLE IF EXISTS onetime_token;'),
+        migrations.RunSQL("DROP TABLE IF EXISTS onetime_token;"),
     ]

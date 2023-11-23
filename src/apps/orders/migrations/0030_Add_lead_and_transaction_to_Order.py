@@ -14,6 +14,7 @@ def set_relations(apps, schema_editor):
         transaction.order.amocrm_transaction = transaction
         transaction.order.save()
 
+
 class Migration(migrations.Migration):
     dependencies = [
         ("amocrm", "0005_Add_lead_and_transaction_to_Order"),

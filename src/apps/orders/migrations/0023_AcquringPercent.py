@@ -5,31 +5,30 @@ from django.db import migrations, models
 
 
 def set_previous_acquiring_percent(apps, schema_editor):
-    Order = apps.get_model('orders.Order')
+    Order = apps.get_model("orders.Order")
 
-    Order.objects.filter(desired_bank='stripe').update(
-        acquiring_percent=Decimal('4.2'),
+    Order.objects.filter(desired_bank="stripe").update(
+        acquiring_percent=Decimal("4.2"),
     )
 
-    Order.objects.filter(desired_bank__in=['tinkoff_bank', '']).update(
-        acquiring_percent=Decimal('2.79'),
+    Order.objects.filter(desired_bank__in=["tinkoff_bank", ""]).update(
+        acquiring_percent=Decimal("2.79"),
     )
 
-    Order.objects.filter(desired_bank='tinkoff_bank', created__gte='2022-04-18 00:00:00Z').update(
-        acquiring_percent=Decimal('1'),
+    Order.objects.filter(desired_bank="tinkoff_bank", created__gte="2022-04-18 00:00:00Z").update(
+        acquiring_percent=Decimal("1"),
     )
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('orders', '0022_PurchaseTimeUERate'),
+        ("orders", "0022_PurchaseTimeUERate"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='acquiring_percent',
+            model_name="order",
+            name="acquiring_percent",
             field=models.DecimalField(decimal_places=2, default=0, max_digits=4),
         ),
         migrations.RunPython(set_previous_acquiring_percent),

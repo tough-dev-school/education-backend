@@ -4,19 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('a12n', '0001_initial'),
+        ("a12n", "0001_initial"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='passwordlessauthtoken',
-            name='used',
+            model_name="passwordlessauthtoken",
+            name="used",
         ),
         migrations.AddField(
-            model_name='passwordlessauthtoken',
-            name='used',
+            model_name="passwordlessauthtoken",
+            name="used",
             field=models.DateTimeField(null=True),
         ),
     ]

@@ -4,19 +4,20 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('products', '0013_TemplateIdRename'),
+        ("products", "0013_TemplateIdRename"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='course',
-            name='template_id',
+            model_name="course",
+            name="template_id",
         ),
         migrations.AddField(
-            model_name='course',
-            name='welcome_letter_template_id',
-            field=models.CharField(blank=True, help_text='Will be sent upon purchase if set', max_length=255, null=True, verbose_name='Welcome letter template id'),
+            model_name="course",
+            name="welcome_letter_template_id",
+            field=models.CharField(
+                blank=True, help_text="Will be sent upon purchase if set", max_length=255, null=True, verbose_name="Welcome letter template id"
+            ),
         ),
     ]

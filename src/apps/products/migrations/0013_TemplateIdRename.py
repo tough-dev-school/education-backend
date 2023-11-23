@@ -4,15 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('products', '0012_ZoomusWebinarId'),
+        ("products", "0012_ZoomusWebinarId"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='record',
-            name='template_id',
-            field=models.CharField(blank=True, help_text='Leave it blank for the default template', max_length=256, null=True, verbose_name='Postmark template_id'),
+            model_name="record",
+            name="template_id",
+            field=models.CharField(
+                blank=True, help_text="Leave it blank for the default template", max_length=256, null=True, verbose_name="Postmark template_id"
+            ),
         ),
     ]

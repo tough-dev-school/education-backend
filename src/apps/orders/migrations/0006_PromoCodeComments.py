@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('orders', '0005_PromoCodesActiveByDefault'),
+        ("orders", "0005_PromoCodesActiveByDefault"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='promocode',
-            name='comment',
+            model_name="promocode",
+            name="comment",
             field=models.TextField(blank=True, null=True),
         ),
     ]

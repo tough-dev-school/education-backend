@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('notion', '0001_initial'),
+        ("notion", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='material',
-            name='title',
-            field=models.CharField(blank=True, help_text='Will be fetched automatically if empty', max_length=128, verbose_name='Page title'),
+            model_name="material",
+            name="title",
+            field=models.CharField(blank=True, help_text="Will be fetched automatically if empty", max_length=128, verbose_name="Page title"),
         ),
     ]

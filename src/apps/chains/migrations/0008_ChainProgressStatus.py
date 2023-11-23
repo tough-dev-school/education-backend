@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('chains', '0007_StudyConstraints'),
+        ("chains", "0007_StudyConstraints"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='progress',
-            name='success',
+            model_name="progress",
+            name="success",
             field=models.BooleanField(default=True),
         ),
     ]

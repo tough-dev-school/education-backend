@@ -4,23 +4,22 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('chains', '0001_Initial'),
+        ("chains", "0001_Initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='chain',
-            options={'verbose_name': 'Email chain', 'verbose_name_plural': 'Email chains'},
+            name="chain",
+            options={"verbose_name": "Email chain", "verbose_name_plural": "Email chains"},
         ),
         migrations.AlterModelOptions(
-            name='message',
-            options={'verbose_name': 'Email chain message', 'verbose_name_plural': 'Email chain messages'},
+            name="message",
+            options={"verbose_name": "Email chain message", "verbose_name_plural": "Email chain messages"},
         ),
         migrations.AddField(
-            model_name='chain',
-            name='sending_is_active',
+            model_name="chain",
+            name="sending_is_active",
             field=models.BooleanField(default=False),
         ),
     ]

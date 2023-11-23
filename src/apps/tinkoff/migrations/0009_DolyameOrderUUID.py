@@ -6,9 +6,9 @@ from django.db.models.functions import Cast, Replace
 
 
 def link_old_orders(apps, schema_editor):
-    apps.get_model('tinkoff.DolyameNotification').objects.update(
+    apps.get_model("tinkoff.DolyameNotification").objects.update(
         order_id=Cast(
-            Replace(F('old_order_id'), Value('tds-'), Value('')),
+            Replace(F("old_order_id"), Value("tds-"), Value("")),
             output_field=models.IntegerField(),
         ),
     )
@@ -16,29 +16,29 @@ def link_old_orders(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('orders', '0024_OrderSlugs'),
-        ('tinkoff', '0008_TinkoffBankOrderSlug'),
+        ("orders", "0024_OrderSlugs"),
+        ("tinkoff", "0008_TinkoffBankOrderSlug"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='dolyamenotification',
-            old_name='order_id',
-            new_name='old_order_id',
+            model_name="dolyamenotification",
+            old_name="order_id",
+            new_name="old_order_id",
         ),
         migrations.AddField(
-            model_name='dolyamenotification',
-            name='order',
-            field=models.ForeignKey(to='orders.Order', null=True, on_delete=django.db.models.deletion.PROTECT),
+            model_name="dolyamenotification",
+            name="order",
+            field=models.ForeignKey(to="orders.Order", null=True, on_delete=django.db.models.deletion.PROTECT),
         ),
         migrations.RunPython(link_old_orders),
         migrations.AlterField(
-            model_name='dolyamenotification',
-            name='order',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='dolyame_notifications', to='orders.order'),
+            model_name="dolyamenotification",
+            name="order",
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name="dolyame_notifications", to="orders.order"),
         ),
         migrations.RemoveField(
-            model_name='dolyamenotification',
-            name='old_order_id',
+            model_name="dolyamenotification",
+            name="old_order_id",
         ),
     ]

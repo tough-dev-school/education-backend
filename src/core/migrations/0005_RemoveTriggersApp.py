@@ -8,7 +8,6 @@ def remove_contenttypes(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("core", "0004_EmailLogEntryMovedToDedicatedApp"),
     ]

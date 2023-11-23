@@ -5,21 +5,20 @@ from django.db import migrations, models
 
 
 def rename_old_slugs(apps, schema_editor):
-    for diploma in apps.get_model('diplomas.Diploma').objects.all():
+    for diploma in apps.get_model("diplomas.Diploma").objects.all():
         diploma.slug = shortuuid.uuid()
         diploma.save()
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('diplomas', '0002_RandomDiplomaFileNames'),
+        ("diplomas", "0002_RandomDiplomaFileNames"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='diploma',
-            name='slug',
+            model_name="diploma",
+            name="slug",
             field=models.CharField(db_index=True, default=shortuuid.uuid, max_length=32, unique=True),
         ),
         migrations.RunPython(rename_old_slugs),

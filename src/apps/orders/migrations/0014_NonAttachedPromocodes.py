@@ -4,16 +4,15 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('products', '0017_TinkoffCreditPromoCode'),
-        ('orders', '0013_PerProductPromoCodes'),
+        ("products", "0017_TinkoffCreditPromoCode"),
+        ("orders", "0013_PerProductPromoCodes"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='promocode',
-            name='courses',
-            field=models.ManyToManyField(blank=True, help_text='Can not be used for courses not checked here', to='products.Course'),
+            model_name="promocode",
+            name="courses",
+            field=models.ManyToManyField(blank=True, help_text="Can not be used for courses not checked here", to="products.Course"),
         ),
     ]

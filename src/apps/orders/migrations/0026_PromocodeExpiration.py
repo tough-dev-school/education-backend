@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('orders', '0025_BankFieldRename'),
+        ("orders", "0025_BankFieldRename"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='promocode',
-            name='expires',
+            model_name="promocode",
+            name="expires",
             field=models.DateTimeField(blank=True, null=True),
         ),
     ]

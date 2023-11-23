@@ -5,15 +5,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('homework', '0009_ExcludeAnswersFromCrossCheck'),
+        ("homework", "0009_ExcludeAnswersFromCrossCheck"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='answer',
-            name='modified',
+            model_name="answer",
+            name="modified",
             field=models.DateTimeField(auto_now=True, db_index=True, default=django.utils.timezone.now),
             preserve_default=False,
         ),

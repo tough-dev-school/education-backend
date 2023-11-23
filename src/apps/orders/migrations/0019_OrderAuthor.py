@@ -7,8 +7,8 @@ from django.db import migrations, models
 
 
 def set_order_author(apps, schema_editor):
-    LogEntry = apps.get_model('admin.LogEntry')
-    Order = apps.get_model('orders.Order')
+    LogEntry = apps.get_model("admin.LogEntry")
+    Order = apps.get_model("orders.Order")
 
     for order in Order.objects.filter(author__isnull=True).iterator():
         admin_log_entry = LogEntry.objects.filter(content_type=11, action_flag=1, object_id=order.pk).first()
@@ -22,22 +22,23 @@ def set_order_author(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('orders', '0018_StudentProxyModel'),
+        ("orders", "0018_StudentProxyModel"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='author',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='created_orders', to='users.user', verbose_name='Order author'),
+            model_name="order",
+            name="author",
+            field=models.ForeignKey(
+                null=True, on_delete=django.db.models.deletion.PROTECT, related_name="created_orders", to="users.user", verbose_name="Order author"
+            ),
         ),
         migrations.RunPython(set_order_author),
         migrations.AlterField(
-            model_name='order',
-            name='author',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='created_orders', to='users.user', verbose_name='Order author'),
+            model_name="order",
+            name="author",
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name="created_orders", to="users.user", verbose_name="Order author"),
         ),
     ]

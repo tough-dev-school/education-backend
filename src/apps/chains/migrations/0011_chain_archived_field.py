@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('chains', '0010_ChainsAdminLabelChange'),
+        ("chains", "0010_ChainsAdminLabelChange"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='chain',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='The chain is archived'),
+            model_name="chain",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="The chain is archived"),
         ),
     ]

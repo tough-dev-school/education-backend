@@ -4,14 +4,18 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('homework', '0004_DefaultAnswerOrdering'),
+        ("homework", "0004_DefaultAnswerOrdering"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='answer',
-            options={'ordering': ['created'], 'permissions': [('see_all_answers', 'May see answers from every user')], 'verbose_name': 'Homework answer', 'verbose_name_plural': 'Homework answers'},
+            name="answer",
+            options={
+                "ordering": ["created"],
+                "permissions": [("see_all_answers", "May see answers from every user")],
+                "verbose_name": "Homework answer",
+                "verbose_name_plural": "Homework answers",
+            },
         ),
     ]

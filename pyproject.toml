@@ -141,7 +141,6 @@ python_files = "test*.py"
 pythonpath = ". src"
 
 [tool.ruff]
-exclude = ["migrations"]
 ignore = [
     "A001",  # variable `{}` is shadowing a Python builtin
     "A002",  # argument `{}` is shadowing a Python builtin

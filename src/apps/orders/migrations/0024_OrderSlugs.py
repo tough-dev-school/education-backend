@@ -6,21 +6,20 @@ from django.db.models.functions import Concat
 
 
 def set_legacy_uuid_for_previous_orders(apps, schema_editor):
-    apps.get_model('orders.Order').objects.update(slug=Concat(Value('tds-'), F('id')))
+    apps.get_model("orders.Order").objects.update(slug=Concat(Value("tds-"), F("id")))
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('orders', '0023_AcquringPercent'),
+        ("orders", "0023_AcquringPercent"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='slug',
+            model_name="order",
+            name="slug",
             field=models.CharField(
-                default='',
+                default="",
                 unique=False,
                 max_length=32,
             ),
@@ -28,8 +27,8 @@ class Migration(migrations.Migration):
         ),
         migrations.RunPython(set_legacy_uuid_for_previous_orders),
         migrations.AlterField(
-            model_name='order',
-            name='slug',
+            model_name="order",
+            name="slug",
             field=models.CharField(db_index=True, null=False, unique=True, max_length=32, default=shortuuid.uuid),
         ),
     ]

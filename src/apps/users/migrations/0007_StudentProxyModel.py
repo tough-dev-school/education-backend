@@ -5,26 +5,24 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0006_Gender'),
+        ("users", "0006_Gender"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Student',
-            fields=[
-            ],
+            name="Student",
+            fields=[],
             options={
-                'verbose_name': 'Student',
-                'verbose_name_plural': 'Students',
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "verbose_name": "Student",
+                "verbose_name_plural": "Students",
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('users.user',),
+            bases=("users.user",),
             managers=[
-                ('objects', django.contrib.auth.models.UserManager()),
+                ("objects", django.contrib.auth.models.UserManager()),
             ],
         ),
     ]

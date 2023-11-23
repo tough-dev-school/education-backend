@@ -5,15 +5,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('homework', '0002_MultipleCourses'),
+        ("homework", "0002_MultipleCourses"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='answer',
-            name='parent',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='children', to='homework.answer', verbose_name='parent'),
+            model_name="answer",
+            name="parent",
+            field=models.ForeignKey(
+                blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name="children", to="homework.answer", verbose_name="parent"
+            ),
         ),
     ]

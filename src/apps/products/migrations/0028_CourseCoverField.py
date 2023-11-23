@@ -6,15 +6,16 @@ import core.files
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('products', '0027_CourseConfirmationURL'),
+        ("products", "0027_CourseConfirmationURL"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='course',
-            name='cover',
-            field=models.ImageField(blank=True, help_text='The cover image of course', upload_to=core.files.RandomFileName('courses/covers'), verbose_name='Cover image'),
+            model_name="course",
+            name="cover",
+            field=models.ImageField(
+                blank=True, help_text="The cover image of course", upload_to=core.files.RandomFileName("courses/covers"), verbose_name="Cover image"
+            ),
         ),
     ]

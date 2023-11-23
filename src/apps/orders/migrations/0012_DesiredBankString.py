@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('orders', '0011_NotificationToGiverIsSent'),
+        ("orders", "0011_NotificationToGiverIsSent"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='desired_bank',
-            field=models.CharField(blank=True, max_length=32, verbose_name='User-requested bank string'),
+            model_name="order",
+            name="desired_bank",
+            field=models.CharField(blank=True, max_length=32, verbose_name="User-requested bank string"),
         ),
     ]

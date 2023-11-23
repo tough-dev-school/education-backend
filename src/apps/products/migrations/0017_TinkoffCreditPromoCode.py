@@ -4,25 +4,24 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('products', '0016_MailchimpListId'),
+        ("products", "0016_MailchimpListId"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='bundle',
-            name='tinkoff_credit_promo_code',
-            field=models.CharField(blank=True, help_text='Used in tinkoff credit only', max_length=64, verbose_name='Fixed promo code for tinkoff credit'),
+            model_name="bundle",
+            name="tinkoff_credit_promo_code",
+            field=models.CharField(blank=True, help_text="Used in tinkoff credit only", max_length=64, verbose_name="Fixed promo code for tinkoff credit"),
         ),
         migrations.AddField(
-            model_name='course',
-            name='tinkoff_credit_promo_code',
-            field=models.CharField(blank=True, help_text='Used in tinkoff credit only', max_length=64, verbose_name='Fixed promo code for tinkoff credit'),
+            model_name="course",
+            name="tinkoff_credit_promo_code",
+            field=models.CharField(blank=True, help_text="Used in tinkoff credit only", max_length=64, verbose_name="Fixed promo code for tinkoff credit"),
         ),
         migrations.AddField(
-            model_name='record',
-            name='tinkoff_credit_promo_code',
-            field=models.CharField(blank=True, help_text='Used in tinkoff credit only', max_length=64, verbose_name='Fixed promo code for tinkoff credit'),
+            model_name="record",
+            name="tinkoff_credit_promo_code",
+            field=models.CharField(blank=True, help_text="Used in tinkoff credit only", max_length=64, verbose_name="Fixed promo code for tinkoff credit"),
         ),
     ]

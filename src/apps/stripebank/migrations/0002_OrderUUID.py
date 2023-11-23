@@ -11,15 +11,15 @@ def delete_orders_that_do_not_belong_to_us(apps, schema_editor):
 
     Let's remove them now
     """
-    apps.get_model('stripebank.StripeNotification').objects.exclude(
-        old_order_id__icontains='tds-',
+    apps.get_model("stripebank.StripeNotification").objects.exclude(
+        old_order_id__icontains="tds-",
     ).delete()
 
 
 def link_orders(apps, schema_editor):
-    apps.get_model('stripebank.StripeNotification').objects.update(
+    apps.get_model("stripebank.StripeNotification").objects.update(
         order_id=Cast(
-            Replace(F('old_order_id'), Value('tds-'), Value('')),
+            Replace(F("old_order_id"), Value("tds-"), Value("")),
             output_field=models.IntegerField(),
         ),
     )
@@ -27,30 +27,30 @@ def link_orders(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('orders', '0024_OrderSlugs'),
-        ('stripebank', '0001_Initial'),
+        ("orders", "0024_OrderSlugs"),
+        ("stripebank", "0001_Initial"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='stripenotification',
-            old_name='order_id',
-            new_name='old_order_id',
+            model_name="stripenotification",
+            old_name="order_id",
+            new_name="old_order_id",
         ),
         migrations.AddField(
-            model_name='stripenotification',
-            name='order',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='stripe_notifications', to='orders.order'),
+            model_name="stripenotification",
+            name="order",
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name="stripe_notifications", to="orders.order"),
         ),
         migrations.RunPython(delete_orders_that_do_not_belong_to_us),
         migrations.RunPython(link_orders),
         migrations.AlterField(
-            model_name='stripenotification',
-            name='order',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='stripe_notifications', to='orders.order'),
+            model_name="stripenotification",
+            name="order",
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name="stripe_notifications", to="orders.order"),
         ),
         migrations.RemoveField(
-            model_name='stripenotification',
-            name='old_order_id',
+            model_name="stripenotification",
+            name="old_order_id",
         ),
     ]

@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('products', '0015_GiftWelcomeLetterTemplateId'),
+        ("products", "0015_GiftWelcomeLetterTemplateId"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='course',
-            name='mailchimp_list_id',
-            field=models.CharField(blank=True, help_text='Get it from audience settings', max_length=32, null=True, verbose_name='Mailchimp audience id'),
+            model_name="course",
+            name="mailchimp_list_id",
+            field=models.CharField(blank=True, help_text="Get it from audience settings", max_length=32, null=True, verbose_name="Mailchimp audience id"),
         ),
     ]

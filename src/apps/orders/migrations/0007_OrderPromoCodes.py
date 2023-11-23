@@ -5,15 +5,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('orders', '0006_PromoCodeComments'),
+        ("orders", "0006_PromoCodeComments"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='promocode',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='orders.PromoCode'),
+            model_name="order",
+            name="promocode",
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to="orders.PromoCode"),
         ),
     ]

@@ -4,30 +4,29 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('diplomas', '0004_DiplomaTemplates'),
+        ("diplomas", "0004_DiplomaTemplates"),
     ]
 
     operations = [
         migrations.RemoveConstraint(
-            model_name='diplomatemplate',
-            name='single diploma per course option',
+            model_name="diplomatemplate",
+            name="single diploma per course option",
         ),
         migrations.RemoveIndex(
-            model_name='diplomatemplate',
-            name='diplomas_di_course__b710b3_idx',
+            model_name="diplomatemplate",
+            name="diplomas_di_course__b710b3_idx",
         ),
         migrations.RemoveField(
-            model_name='diplomatemplate',
-            name='with_homework',
+            model_name="diplomatemplate",
+            name="with_homework",
         ),
         migrations.AddIndex(
-            model_name='diplomatemplate',
-            index=models.Index(fields=['course', 'language'], name='diplomas_di_course__b94934_idx'),
+            model_name="diplomatemplate",
+            index=models.Index(fields=["course", "language"], name="diplomas_di_course__b94934_idx"),
         ),
         migrations.AddConstraint(
-            model_name='diplomatemplate',
-            constraint=models.UniqueConstraint(fields=('course', 'language'), name='single diploma per course option'),
+            model_name="diplomatemplate",
+            constraint=models.UniqueConstraint(fields=("course", "language"), name="single diploma per course option"),
         ),
     ]

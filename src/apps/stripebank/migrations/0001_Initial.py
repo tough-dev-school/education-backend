@@ -4,28 +4,26 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='StripeNotification',
+            name="StripeNotification",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('modified', models.DateTimeField(blank=True, db_index=True, null=True)),
-                ('order_id', models.CharField(db_index=True, max_length=256)),
-                ('stripe_id', models.CharField(db_index=True, max_length=256, unique=True)),
-                ('amount', models.DecimalField(decimal_places=2, max_digits=9)),
-                ('payment_status', models.CharField(db_index=True, max_length=256)),
-                ('status', models.CharField(db_index=True, max_length=256)),
-                ('raw', models.JSONField(default=dict)),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("created", models.DateTimeField(auto_now_add=True, db_index=True)),
+                ("modified", models.DateTimeField(blank=True, db_index=True, null=True)),
+                ("order_id", models.CharField(db_index=True, max_length=256)),
+                ("stripe_id", models.CharField(db_index=True, max_length=256, unique=True)),
+                ("amount", models.DecimalField(decimal_places=2, max_digits=9)),
+                ("payment_status", models.CharField(db_index=True, max_length=256)),
+                ("status", models.CharField(db_index=True, max_length=256)),
+                ("raw", models.JSONField(default=dict)),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
     ]

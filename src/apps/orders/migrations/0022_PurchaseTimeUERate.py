@@ -4,24 +4,23 @@ from django.db import migrations, models
 
 
 def set_ue_rate_for_stripe_bank(apps, schema_editor):
-    apps.get_model('orders.Order').objects.filter(
-        desired_bank='stripe',
+    apps.get_model("orders.Order").objects.filter(
+        desired_bank="stripe",
     ).update(
         ue_rate=100,
     )
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('orders', '0021_OrderConstraintForProductItemsCountCheck'),
+        ("orders", "0021_OrderConstraintForProductItemsCountCheck"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='ue_rate',
-            field=models.IntegerField(default=1, verbose_name='Purchase-time UE rate'),
+            model_name="order",
+            name="ue_rate",
+            field=models.IntegerField(default=1, verbose_name="Purchase-time UE rate"),
             preserve_default=False,
         ),
         migrations.RunPython(set_ue_rate_for_stripe_bank),

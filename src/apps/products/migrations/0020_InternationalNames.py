@@ -4,25 +4,24 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('products', '0019_CourseDisplayInLMS'),
+        ("products", "0019_CourseDisplayInLMS"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='bundle',
-            name='name_international',
-            field=models.CharField(blank=True, default='', max_length=255, verbose_name='Name used for international purchases'),
+            model_name="bundle",
+            name="name_international",
+            field=models.CharField(blank=True, default="", max_length=255, verbose_name="Name used for international purchases"),
         ),
         migrations.AddField(
-            model_name='course',
-            name='name_international',
-            field=models.CharField(blank=True, default='', max_length=255, verbose_name='Name used for international purchases'),
+            model_name="course",
+            name="name_international",
+            field=models.CharField(blank=True, default="", max_length=255, verbose_name="Name used for international purchases"),
         ),
         migrations.AddField(
-            model_name='record',
-            name='name_international',
-            field=models.CharField(blank=True, default='', max_length=255, verbose_name='Name used for international purchases'),
+            model_name="record",
+            name="name_international",
+            field=models.CharField(blank=True, default="", max_length=255, verbose_name="Name used for international purchases"),
         ),
     ]

@@ -8,16 +8,15 @@ import apps.orders.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('products', '0008_Bundles'),
-        ('orders', '0002_L18N'),
+        ("products", "0008_Bundles"),
+        ("orders", "0002_L18N"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='bundle',
-            field=apps.orders.fields.ItemField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='products.Bundle'),
+            model_name="order",
+            name="bundle",
+            field=apps.orders.fields.ItemField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to="products.Bundle"),
         ),
     ]

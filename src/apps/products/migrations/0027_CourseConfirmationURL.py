@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('products', '0026_CourseConfirmationTemplateId'),
+        ("products", "0026_CourseConfirmationTemplateId"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='course',
-            name='confirmation_success_url',
-            field=models.URLField(blank=True, null=True, verbose_name='Confirmation success URL'),
+            model_name="course",
+            name="confirmation_success_url",
+            field=models.URLField(blank=True, null=True, verbose_name="Confirmation success URL"),
         ),
     ]
