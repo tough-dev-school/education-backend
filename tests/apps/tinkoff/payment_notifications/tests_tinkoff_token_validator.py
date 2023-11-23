@@ -1,9 +1,7 @@
 import pytest
 
-from apps.tinkoff.exceptions import (
-    TinkoffPaymentNotificationInvalidToken,
-    TinkoffPaymentNotificationNoTokenPassed,
-)
+from apps.tinkoff.exceptions import TinkoffPaymentNotificationInvalidToken
+from apps.tinkoff.exceptions import TinkoffPaymentNotificationNoTokenPassed
 from apps.tinkoff.token_validator import TinkoffNotificationsTokenValidator
 
 

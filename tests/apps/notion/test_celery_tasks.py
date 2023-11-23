@@ -1,9 +1,7 @@
 import pytest
 
-from apps.notion.tasks import (
-    update_cache_for_all_active_notion_materials,
-    update_cache_notion_material,
-)
+from apps.notion.tasks import update_cache_for_all_active_notion_materials
+from apps.notion.tasks import update_cache_notion_material
 
 pytestmark = [
     pytest.mark.django_db,
