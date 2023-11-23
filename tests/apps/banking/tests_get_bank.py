@@ -1,10 +1,10 @@
 import pytest
 
+from apps.banking.exceptions import BankDoesNotExist
 from apps.banking.selector import get_bank
 from apps.banking.zero_price_bank import ZeroPriceBank
 from apps.stripebank.bank import StripeBank
 from apps.tinkoff.bank import TinkoffBank
-from apps.banking.exceptions import BankDoesNotExist
 
 
 @pytest.mark.parametrize(

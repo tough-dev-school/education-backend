@@ -2,9 +2,7 @@ from dataclasses import dataclass
 
 from celery import chain
 
-from apps.amocrm.tasks import amocrm_enabled
-from apps.amocrm.tasks import push_order
-from apps.amocrm.tasks import push_user
+from apps.amocrm.tasks import amocrm_enabled, push_order, push_user
 from apps.banking.selector import get_bank_or_default
 from apps.banking.zero_price_bank import ZeroPriceBank
 from apps.orders.models import Order
