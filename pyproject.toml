@@ -54,7 +54,6 @@ boto3-stubs = "^1.28.48"
 django-stubs = "^4.2.6"
 djangorestframework-stubs = "^3.14.4"
 flake8-cognitive-complexity = "^0.1.0"
-flake8-multiline-containers = "^0.0.19"
 flake8-pyproject = "^1.2.3"
 flake8-todo = "^0.7"
 flake8-variables-names = "^0.0.6"
@@ -91,16 +90,15 @@ types-stripe = "^3.5.2.14"
 
 [tool.flake8]
 exclude = [
-    ".git",
     "__pycache__",
-    "frontend",
     "migrations",
-    "static",
 ]
-ignore = [
-    "E501",  # line too long ({} > {} characters)
-    "VNE003",  # variable names that shadow builtins are not allowed
-    "W503",  # line break before binary operator
+select = [
+    "ASN001",  # do not use assignment expressions
+    "CCR001",  # cognitive complexity is too high ({} > {})
+    "T000",  # todo note found
+    "VNE001",  # single letter variable names like '{}' are not allowed
+    "VNE002",  # variable name '{}' should be clarified
 ]
 
 [tool.pymarkdown.plugins.md013]
