@@ -50,11 +50,9 @@ stripe = "^6.5.0"
 whitenoise = "^6.5.0"
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.9.1"
 boto3-stubs = "^1.28.48"
 django-stubs = "^4.2.6"
 djangorestframework-stubs = "^3.14.4"
-flake8-black = "^0.3.6"
 flake8-cognitive-complexity = "^0.1.0"
 flake8-multiline-containers = "^0.0.19"
 flake8-pyproject = "^1.2.3"
@@ -90,14 +88,6 @@ types-requests = "^2.31.0.2"
 types-retry = "^0.9.9.4"
 types-simplejson = "^3.19.0.2"
 types-stripe = "^3.5.2.14"
-
-[tool.black]
-exclude = """
-/(
-    | migrations
-)/
-"""
-line_length = 160
 
 [tool.flake8]
 exclude = [
@@ -153,6 +143,7 @@ python_files = "test*.py"
 pythonpath = ". src"
 
 [tool.ruff]
+exclude = ["migrations"]
 ignore = [
     "A001",  # variable `{}` is shadowing a Python builtin
     "A002",  # argument `{}` is shadowing a Python builtin
@@ -203,6 +194,7 @@ ignore = [
     "FBT003",  # boolean positional value in function call
     "INP001",  # file `{}` is part of an implicit namespace package. Add an `__init__.py`
     "INT001",  # f-string is resolved before function call; consider `_("string %s") % arg`
+    "ISC001",  # implicitly concatenated string literals on one line
     "N802",  # function name `{}` should be lowercase
     "N803",  # argument name `{}` should be lowercase
     "N804",  # first argument of a class method should be named `cls`
@@ -242,6 +234,7 @@ ignore = [
     "S106",  # possible hardcoded password assigned to argument: "{}"
     "S311",  # standart pseudo-random generators are not suitable for cryptographic purposes
     "SIM102",  # use a single `if` statement instead of nested `if` statements
+    "SIM108",  # use ternary operator `{}` instead of `if`-`else`-block
     "SIM300",  # yoda conditions are discouraged, use `{}` instead
     "SLF001",  # private member accessed: `{}`
     "TCH001",  # move application import `{}` into a type-checking block
@@ -253,6 +246,7 @@ ignore = [
     "UP017",  # use `datetime.UTC` alias
     "UP035",  # `{}` is deprecated, use `{}` instead
 ]
+line-length = 160
 select = ["ALL"]
 target-version = "py311"
 
