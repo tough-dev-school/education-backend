@@ -199,7 +199,7 @@ ignore = [
     "N803",  # argument name `{}` should be lowercase
     "N804",  # first argument of a class method should be named `cls`
     "N806",  # variable `{}` in function should be lowercase
-    "N812",  # lowercase `{}`` imported as non-lowercase `{}`
+    "N812",  # lowercase `{}` imported as non-lowercase `{}`
     "N818",  # exception name `{}` should be named with an Error suffix
     "N999",  # invalid module name: '{}'
     "PERF401",  # use a list comprehension to create a transformed list
