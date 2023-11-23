@@ -1,11 +1,13 @@
 from contextlib import nullcontext as does_not_raise
-from datetime import datetime, timezone
-
+from datetime import datetime
+from datetime import timezone
 import pytest
 
-from apps.banking.selector import BANKS
-from apps.orders.services import OrderRefunder, OrderUnshipper
 from core import current_user
+from apps.banking.selector import BANKS
+from apps.orders.services import OrderRefunder
+from apps.orders.services import OrderUnshipper
+from apps.banking.exceptions import BankDoesNotExist
 
 pytestmark = [
     pytest.mark.django_db,
@@ -213,3 +215,10 @@ def test_call_update_user_celery_chain_with_subscription(paid_order, refund, moc
         mock_second_push_customer(user_id=paid_order.user.id),
         mock_third_return_order_in_amocrm(order_id=paid_order.id),
     )
+
+
+def test_fail_if_bank_is_set_but_unknown(paid_order, refund):
+    paid_order.update(bank_id="tinkoff_credit")
+
+    with pytest.raises(BankDoesNotExist, match="does not exists"):
+        refund(paid_order)

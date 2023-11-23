@@ -13,7 +13,7 @@ from django.utils.timezone import is_naive, make_aware
 
 from apps.amocrm.tasks import amocrm_enabled, push_order, push_user
 from apps.banking.base import Bank
-from apps.banking.selector import get_bank
+from apps.banking.selector import get_bank_or_default
 from apps.mailing.tasks import send_mail
 from apps.orders.models import Order, PromoCode
 from apps.products.models.base import Shippable
@@ -74,7 +74,7 @@ class OrderCreator(BaseService):
 
     @cached_property
     def bank(self) -> Type[Bank]:
-        return get_bank(self.desired_bank)
+        return get_bank_or_default(self.desired_bank)
 
     def send_confirmation_message(self, order: Order) -> None:
         if order.price == 0 and order.item is not None:

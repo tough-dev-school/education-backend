@@ -1,16 +1,20 @@
-from typing import TYPE_CHECKING, Any
+from typing import Any, TYPE_CHECKING
 
-from django.http import HttpResponseRedirect
-from drf_spectacular.utils import OpenApiParameter, extend_schema
+from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import OpenApiParameter
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.http import HttpResponseRedirect
+
 from apps.banking import price_calculator
-from apps.banking.selector import BANK_KEYS, get_bank
+from apps.banking.selector import BANK_KEYS
+from apps.banking.selector import get_bank_or_default
 from apps.orders.api.serializers import PromocodeSerializer
-from apps.orders.api.throttling import PromocodeThrottle, PurchaseThrottle
+from apps.orders.api.throttling import PromocodeThrottle
+from apps.orders.api.throttling import PurchaseThrottle
 from apps.orders.models import PromoCode
 from apps.orders.services.purchase_creator import PurchaseCreator
 from apps.products.api.serializers import PurchaseSerializer
@@ -37,7 +41,7 @@ class PromocodeView(APIView):
         promocode = self._get_promocode(request)
 
         price = promocode.apply(item) if promocode is not None else item.price
-        Bank = get_bank(desired=request.GET.get("desired_bank"))
+        Bank = get_bank_or_default(desired=request.GET.get("desired_bank"))
         price = price_calculator.to_bank(Bank, price)
 
         serializer = PromocodeSerializer(

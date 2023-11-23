@@ -1,20 +1,15 @@
 from typing import Any
 
-from django.http import HttpResponse
 from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.views import APIView
 
+from django.http import HttpResponse
+
 from apps.orders.models import Order
-from apps.tinkoff.api.permissions import (
-    DolyameNetmaskPermission,
-    TinkoffCreditNetmaskPermission,
-)
-from apps.tinkoff.api.serializers import (
-    CreditNotificationSerializer,
-    DolyameNotificationSerializer,
-    PaymentNotificationSerializer,
-)
+from apps.tinkoff.api.permissions import DolyameNetmaskPermission
+from apps.tinkoff.api.serializers import DolyameNotificationSerializer
+from apps.tinkoff.api.serializers import PaymentNotificationSerializer
 from apps.tinkoff.token_validator import TinkoffNotificationsTokenValidator
 
 
@@ -27,22 +22,6 @@ class TinkoffPaymentNotificationsView(APIView):
         serializer = PaymentNotificationSerializer(
             data={
                 "OrderId": Order.objects.get(slug=request.data.pop("OrderId")).pk,
-                **request.data,
-            }
-        )
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return HttpResponse("OK")
-
-
-class TinkoffCreditNotificationsView(APIView):
-    permission_classes = [TinkoffCreditNetmaskPermission]
-
-    def post(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> HttpResponse:
-        serializer = CreditNotificationSerializer(
-            data={
-                "id": Order.objects.get(slug=request.data.pop("id")).pk,
                 **request.data,
             }
         )
