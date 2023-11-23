@@ -1,7 +1,6 @@
 import pytest
 
-from apps.homework.services import AnswerCrossCheckDispatcher
-from apps.homework.services import QuestionCrossCheckDispatcher
+from apps.homework.services import AnswerCrossCheckDispatcher, QuestionCrossCheckDispatcher
 
 pytestmark = [pytest.mark.django_db]
 
