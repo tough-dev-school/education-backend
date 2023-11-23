@@ -133,7 +133,7 @@ def test_relink_new_not_paid_order_from_returned(not_paid_order_without_lead, am
 
 
 def test_not_push_if_author_not_equal_to_user(not_paid_order_without_lead, another_user, mock_push_lead, mock_push_order):
-    not_paid_order_without_lead.setattr_and_save("author", another_user)
+    not_paid_order_without_lead.update(author=another_user)
 
     AmoCRMOrderPusher(order=not_paid_order_without_lead)()
 
@@ -142,7 +142,7 @@ def test_not_push_if_author_not_equal_to_user(not_paid_order_without_lead, anoth
 
 
 def test_not_push_if_free_order(not_paid_order_without_lead, mock_push_lead, mock_push_order):
-    not_paid_order_without_lead.setattr_and_save("price", Decimal(0))
+    not_paid_order_without_lead.update(price=Decimal(0))
 
     AmoCRMOrderPusher(order=not_paid_order_without_lead)()
 
