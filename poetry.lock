@@ -1670,20 +1670,6 @@ pycodestyle = ">=2.11.0,<2.12.0"
 pyflakes = ">=3.1.0,<3.2.0"
 
 [[package]]
-name = "flake8-absolute-import"
-version = "1.0.0.2"
-description = "flake8 plugin to require absolute imports"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "flake8-absolute-import-1.0.0.2.tar.gz", hash = "sha256:fcb734ac5a9639fa4ffbc6242ae9d6e9d8063f9cd078d6d218597ee883a99d48"},
-    {file = "flake8_absolute_import-1.0.0.2-py3-none-any.whl", hash = "sha256:b72142db999ec5e0ac4f4ac57fb8776a2959d07346c4d3742c446f206d45fcef"},
-]
-
-[package.dependencies]
-flake8 = ">=5.0"
-
-[[package]]
 name = "flake8-black"
 version = "0.3.6"
 description = "flake8 plugin to call black as a code style validator"
@@ -3635,4 +3621,4 @@ brotli = ["Brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "c5e687aae6509b0e2ab126b8d4a130a2ca71cf8c9ef7b325933d7647df8e1bc9"
+content-hash = "9fdaa13e94e2ad83ccce0462a215b1b546c67be94993137e5b72c3323b8c2a9d"
