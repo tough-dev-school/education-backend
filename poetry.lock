@@ -1494,13 +1494,13 @@ typing-extensions = "*"
 
 [[package]]
 name = "django-tree-queries"
-version = "0.15.0"
+version = "0.16.0"
 description = "Tree queries with explicit opt-in, without configurability"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 files = [
-    {file = "django_tree_queries-0.15.0-py3-none-any.whl", hash = "sha256:cf11340de59d3122919fde46e99966bad40ff942df768d683383b111554134a1"},
-    {file = "django_tree_queries-0.15.0.tar.gz", hash = "sha256:0e994c2a4601c021a115a397ec8d0ff7d5e614fae95947f72126e6a419c60f08"},
+    {file = "django_tree_queries-0.16.0-py3-none-any.whl", hash = "sha256:2aff87d852d9b705f1a321d8239f361a9ae96282a3fbbebde9c41ada980bbea7"},
+    {file = "django_tree_queries-0.16.0.tar.gz", hash = "sha256:f06241913da496f11a7d9950d0b34df3e393bd237e96d4dda77c5ba0956604f7"},
 ]
 
 [package.extras]
@@ -4014,4 +4014,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "4f8ae3b0745a4aa16cc731de5187976994ad1f9ee6122fae13a5c201e07ceec6"
+content-hash = "7743c640f5df5bc9c600959145fd855d3a08045b540c63b8fa30e1b67e854721"
