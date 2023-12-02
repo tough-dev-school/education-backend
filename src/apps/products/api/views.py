@@ -85,6 +85,7 @@ class PurchaseView(APIView):
             desired_bank=data.get("desired_bank"),
             success_url=data.get("success_url"),
             redirect_url=data.get("redirect_url"),
+            analytics=data.get("analytics"),
         )
 
         payment_link = purchase_creator()

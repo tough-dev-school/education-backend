@@ -41,6 +41,7 @@ class OrderCreator(BaseService):
     price: Decimal | None = None
     promocode: str | None = None
     desired_bank: str | None = None
+    analytics: dict[str, str | dict] | None = None
 
     subscribe_user: bool = False
     push_to_amocrm: bool = True
@@ -70,6 +71,7 @@ class OrderCreator(BaseService):
             bank_id=self.desired_bank,
             ue_rate=self.bank.ue,
             acquiring_percent=self.bank.acquiring_percent,
+            analytics=self.analytics if self.analytics is not None else dict(),
         )
 
     @staticmethod

@@ -33,6 +33,7 @@ class PurchaseCreator(BaseService):
     desired_bank: str | None = None
     success_url: str | None = None
     redirect_url: str | None = None
+    analytics: dict[str, str | dict] | None = None
 
     def act(self) -> str:
         user = self.get_or_create_user(
@@ -43,6 +44,7 @@ class PurchaseCreator(BaseService):
             item=self.item,
             promocode=self.promocode,
             desired_bank=self.desired_bank,
+            analytics=self.analytics,
             user=user,
         )
 
@@ -56,12 +58,13 @@ class PurchaseCreator(BaseService):
         )
 
     @staticmethod
-    def create_order(item: Product, promocode: str | None, desired_bank: str | None, user: User) -> Order:
+    def create_order(item: Product, promocode: str | None, desired_bank: str | None, user: User, analytics: dict[str, str | dict] | None) -> Order:
         creator = OrderCreator(
             user=user,
             item=item,
             promocode=promocode,
             desired_bank=desired_bank,
+            analytics=analytics,
             push_to_amocrm=False,
         )
         return creator()

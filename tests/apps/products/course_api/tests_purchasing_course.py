@@ -1,4 +1,5 @@
 from decimal import Decimal
+import json
 import pytest
 
 from apps.orders.models import Order
@@ -53,6 +54,27 @@ def test_user(call_purchase):
     assert placed.user.first_name == "Забой"
     assert placed.user.last_name == "Шахтёров"
     assert placed.user.email == "zaboy@gmail.com"
+
+
+def test_analytics_metadata(call_purchase):
+    call_purchase(analytics=json.dumps({
+        "test_param": "test_value",
+        "empty": None,
+    }))
+    placed = get_order()
+
+    assert placed.analytics["test_param"] == "test_value"
+    assert placed.analytics["empty"] is None
+
+
+def test_order_creation_does_not_fail_with_nonexistant_params(call_purchase):
+    """Need this test cuz we may alter frontend request without corresponding changes on backend"""
+    call_purchase({
+        "nonexistant": None,
+        "Петрович": "Львович",
+    })
+
+    assert get_order() is not None
 
 
 @pytest.mark.parametrize(
