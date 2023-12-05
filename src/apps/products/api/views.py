@@ -100,19 +100,20 @@ class PurchaseView(APIView):
         return UserCreator(
             name=name,
             email=email.strip(),
-            push_to_amocrm=False,
         )()
 
     @staticmethod
     def create_order(user: "User", item: Course, data: dict) -> "Order":
-        return OrderCreator(
+        create_order = OrderCreator(
             user=user,
             item=item,
             subscribe=data.get("subscribe", False),
             promocode=data.get("promocode"),
             desired_bank=data.get("desired_bank"),
             analytics=data.get("analytics"),
-        )()
+        )
+
+        return create_order()
 
     @staticmethod
     def get_payment_link(order: "Order", success_url: str | None, redirect_url: str | None) -> str:

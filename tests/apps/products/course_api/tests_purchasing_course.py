@@ -7,13 +7,9 @@ from apps.orders.models import Order
 pytestmark = [pytest.mark.django_db]
 
 
-@pytest.fixture
-def mock_update_chain(mocker):
-    return mocker.patch("apps.orders.services.order_creator.chain")
-
 
 @pytest.fixture
-def mock_rebuild_tags(mocker):
+def rebuild_tags(mocker):
     return mocker.patch("apps.users.tasks.rebuild_tags.si")
 
 
@@ -23,12 +19,17 @@ def rebuild_tags(mocker):
 
 
 @pytest.fixture
-def mock_push_customer(mocker):
+def push_customer_to_amocrm(mocker):
     return mocker.patch("apps.amocrm.tasks.push_user.si")
 
 
 @pytest.fixture
-def mock_push_order(mocker):
+def update_dashamail(mocker):
+    return mocker.patch("core.tasks.update_dashamail_subscription.apply_async")
+
+
+@pytest.fixture
+def push_order_to_amocrm(mocker):
     return mocker.patch("apps.amocrm.tasks.push_order.si")
 
 
@@ -90,20 +91,26 @@ def test_order_creation_does_not_fail_with_nonexistant_params(call_purchase):
         (0, False),
     ],
 )
-def test_update_chain_called_with_correct_args(
-    call_purchase, wants_to_subscribe, should_be_subscribed, mock_update_chain, mock_rebuild_tags, mock_push_customer, mock_push_order, settings
+def test_user_is_subscribed_to_dashamail_if_allowed(call_purchase, wants_to_subscribe, should_be_subscribed, update_dashamail):
+    call_purchase(subscribe=wants_to_subscribe)
+
+    assert (update_dashamail.call_count == 1) is should_be_subscribed
+
+
+def test_integrations_are_updated(
+    call_purchase, rebuild_tags, push_customer_to_amocrm, push_order_to_amocrm, settings
 ):
     settings.AMOCRM_BASE_URL = "https://mamo.amo.criminal"
 
-    call_purchase(subscribe=wants_to_subscribe)
+    call_purchase()
 
     placed = get_order()
     placed.user.refresh_from_db()
 
-    mock_update_chain.assert_called_once()
-    mock_rebuild_tags.assert_called_once_with(student_id=placed.user.id, subscribe=should_be_subscribed)
-    mock_push_customer.assert_called_once_with(user_id=placed.user.id)
-    mock_push_order.assert_called_once_with(order_id=placed.id)
+    rebuild_tags.assert_called_once_with(student_id=placed.user.id)
+    push_customer_to_amocrm.assert_called_once_with(user_id=placed.user.id)
+    push_order_to_amocrm.assert_called_once_with(order_id=placed.id)
+
 
 
 def test_by_default_user_is_not_subscribed(call_purchase):

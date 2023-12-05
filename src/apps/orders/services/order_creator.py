@@ -24,6 +24,7 @@ from core.current_user import get_current_user
 from core.exceptions import AppServiceException
 from core.helpers import lower_first
 from core.services import BaseService
+from core.tasks import update_dashamail_subscription
 
 
 class OrderCreatorException(AppServiceException):
@@ -54,7 +55,10 @@ class OrderCreator(BaseService):
         order.save()
 
         self.send_confirmation_message(order)
-        self.after_creation(order=order)
+        self.update_user_tags(order)
+
+        self.do_push_to_amocrm(order)
+        self.do_push_to_dashamail(order)
 
         return order
 
@@ -79,31 +83,42 @@ class OrderCreator(BaseService):
     def bank(self) -> Type[Bank]:
         return get_bank_or_default(self.desired_bank)
 
+    def can_be_subscribed(self, order: Order) -> bool:
+        return bool(self.subscribe and order.user.email and len(order.user.email))
+
     def send_confirmation_message(self, order: Order) -> None:
         if order.price == 0 and order.item is not None:
             if hasattr(order.item, "confirmation_template_id") and order.item.confirmation_template_id:
                 send_mail.delay(
                     to=order.user.email,
                     template_id=order.item.confirmation_template_id,
-                    ctx=self.get_template_context(order),
+                    ctx=self._get_confirmation_template_context(order),
                 )
 
-    def after_creation(self, order: Order) -> None:
-        push_to_amocrm = self.push_to_amocrm and amocrm_enabled()
+    def update_user_tags(self, order: Order) -> None:
+        rebuild_tags.delay(student_id=order.user_id)
 
-        can_be_subscribed = bool(self.subscribe and order.user.email and len(order.user.email))
-        if push_to_amocrm and order.price > 0:  # do not push free unshipped orders
-            chain(
-                rebuild_tags.si(student_id=order.user.id, subscribe=can_be_subscribed),
-                push_user.si(user_id=order.user.id),
-                push_order.si(order_id=order.id),
-            ).delay()
-            return None
+    def do_push_to_amocrm(self, order: Order) -> None:
+        if not self.push_to_amocrm or not amocrm_enabled():
+            return
 
-        rebuild_tags.delay(student_id=order.user.id, subscribe=can_be_subscribed)
+        if order.price <= 0:
+            return
+
+        chain(
+            push_user.si(user_id=order.user.id),
+            push_order.si(order_id=order.id),
+        ).apply_async(countdown=10)
+
+    def do_push_to_dashamail(self, order: Order) -> None:
+        if self.subscribe and order.user.email and len(order.user.email):
+            update_dashamail_subscription.apply_async(
+                kwargs={"student_id": order.user.id},
+                countdown=30,
+            )  # hope rebuild_tags from push_to_amocrm is complete
 
     @staticmethod
-    def get_template_context(order: Order) -> dict[str, str]:
+    def _get_confirmation_template_context(order: Order) -> dict[str, str]:
         return {
             "item": order.item.full_name,
             "item_lower": lower_first(order.item.full_name),
