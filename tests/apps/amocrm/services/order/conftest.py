@@ -3,8 +3,7 @@ import pytest
 
 @pytest.fixture
 def order(factory, amocrm_course, amocrm_user):
-    order = factory.order(course=amocrm_course.course, user=amocrm_user.user)
-    order.set_paid()
+    order = factory.order(item=amocrm_course.course, user=amocrm_user.user, is_paid=True)
     return order
 
 
@@ -15,9 +14,10 @@ def amocrm_lead(mixer, order):
 
 @pytest.fixture
 def paid_order_with_lead(user, course, factory, amocrm_lead):
-    return factory.order(user=user, course=course, is_paid=True, author=user, amocrm_lead=amocrm_lead)
+    order = factory.order(user=user, item=course, is_paid=True, author=user, amocrm_lead=amocrm_lead)
+    return order
 
 
 @pytest.fixture
 def paid_order_without_lead(user, course, factory):
-    return factory.order(user=user, course=course, is_paid=True, author=user)
+    return factory.order(user=user, item=course, is_paid=True, author=user)
