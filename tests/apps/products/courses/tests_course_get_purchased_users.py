@@ -5,16 +5,14 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def order(factory, course, user):
-    order = factory.order(user=user, item=course)
-    order.set_paid()
+    order = factory.order(user=user, item=course, is_paid=True)
 
     return order
 
 
 @pytest.fixture
 def another_order(factory, user):
-    order = factory.order(user=user)
-    order.set_paid()
+    order = factory.order(user=user, is_paid=True)
 
     return order
 
@@ -30,7 +28,7 @@ def test_one_user(course, user):
 
 
 def test_single_user_in_two_orders(course, order, another_order):
-    another_order.set_item(order.course)
+    another_order.update(course=order.course)
 
     assert len(course.get_purchased_users()) == 1
 
