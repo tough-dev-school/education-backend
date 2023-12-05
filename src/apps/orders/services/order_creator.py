@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from datetime import datetime
 from decimal import Decimal
 from typing import Type
 from urllib.parse import urljoin
@@ -8,10 +7,7 @@ from celery import chain
 
 from django.conf import settings
 from django.urls import reverse
-from django.utils.dateparse import parse_datetime
 from django.utils.functional import cached_property
-from django.utils.timezone import is_naive
-from django.utils.timezone import make_aware
 
 from apps.amocrm.tasks import amocrm_enabled
 from apps.amocrm.tasks import push_order
@@ -43,7 +39,7 @@ class OrderCreator(BaseService):
     desired_bank: str | None = None
     analytics: dict[str, str | dict] | None = None
 
-    subscribe_user: bool = False
+    subscribe: bool = False
     push_to_amocrm: bool = True
 
     def __post_init__(self) -> None:
@@ -95,7 +91,7 @@ class OrderCreator(BaseService):
     def after_creation(self, order: Order) -> None:
         push_to_amocrm = self.push_to_amocrm and amocrm_enabled()
 
-        can_be_subscribed = bool(self.subscribe_user and order.user.email and len(order.user.email))
+        can_be_subscribed = bool(self.subscribe and order.user.email and len(order.user.email))
         if push_to_amocrm and order.price > 0:  # do not push free unshipped orders
             chain(
                 rebuild_tags.si(student_id=order.user.id, subscribe=can_be_subscribed),
@@ -114,19 +110,3 @@ class OrderCreator(BaseService):
             "firstname": order.user.first_name,
             "confirmation_url": urljoin(settings.FRONTEND_URL, reverse("confirm-order", args=[order.slug])),
         }
-
-    @staticmethod
-    def make_datetime_aware(input_dt: str | datetime | None = None) -> datetime | None:
-        """Return timezone aware datetime.datetime or None.
-
-        Supports time zone offsets. When the input contains one, the output uses a timezone
-        with a fixed offset from UTC. If timezone offset was not provided use default timezone."""
-        if input_dt is None:
-            return None
-
-        parsed_dt = parse_datetime(input_dt) if isinstance(input_dt, str) else input_dt
-
-        if parsed_dt is None:
-            raise OrderCreatorException("Input is not ISO formatted and could not be converted to datetime.")
-
-        return make_aware(parsed_dt) if is_naive(parsed_dt) else parsed_dt

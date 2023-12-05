@@ -6,7 +6,6 @@ from apps.amocrm.tasks import amocrm_enabled
 from apps.amocrm.tasks import push_order
 from apps.amocrm.tasks import push_user
 from apps.banking.selector import get_bank_or_default
-from apps.banking.zero_price_bank import ZeroPriceBank
 from apps.orders.models import Order
 from apps.orders.services import OrderCreator
 from apps.products.models import Product
@@ -52,7 +51,6 @@ class PurchaseCreator(BaseService):
 
         return self.get_payment_link(
             order=order,
-            desired_bank=self.desired_bank,
             success_url=self.success_url,
             redirect_url=self.redirect_url,
         )
@@ -78,19 +76,13 @@ class PurchaseCreator(BaseService):
         )()
 
     @staticmethod
-    def get_payment_link(order: Order, desired_bank: str | None, success_url: str | None, redirect_url: str | None) -> str:
-        Bank = get_bank_or_default(desired=desired_bank)
-        if Bank is ZeroPriceBank:
-            bank = Bank(
-                order=order,
-                success_url=success_url,
-                redirect_url=redirect_url,  # type: ignore
-            )
-        else:
-            bank = Bank(
-                order=order,
-                success_url=success_url,
-            )
+    def get_payment_link(order: Order, success_url: str | None, redirect_url: str | None) -> str:
+        Bank = get_bank_or_default(desired=order.bank_id)
+        bank = Bank(
+            order=order,
+            success_url=success_url,
+            redirect_url=redirect_url,
+        )
 
         return bank.get_initial_payment_url()
 
