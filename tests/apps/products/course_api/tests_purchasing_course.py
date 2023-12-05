@@ -9,7 +9,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def mock_update_chain(mocker):
-    return mocker.patch("apps.orders.services.purchase_creator.chain")
+    return mocker.patch("apps.orders.services.order_creator.chain")
 
 
 @pytest.fixture
