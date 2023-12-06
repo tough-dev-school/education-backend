@@ -13,7 +13,7 @@ def course(factory):
 
 @pytest.fixture
 def order(factory, course):
-    return factory.order(item=course)
+    return factory.order(item=course, price=0)
 
 
 @pytest.fixture(autouse=True)

@@ -32,7 +32,7 @@ def unship(mocker):
 
 @pytest.fixture
 def order(factory, nameless_user, course):
-    return factory.order(user=nameless_user, course=course)
+    return factory.order(user=nameless_user, item=course)
 
 
 @pytest.fixture(autouse=True)
