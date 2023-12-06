@@ -4,10 +4,10 @@ import httpx
 
 from django.conf import settings
 
-from core.integrations.dashamail import exceptions
+from apps.dashamail import exceptions
 
 
-class DashamailHTTP:
+class DashamailListsHTTP:
     @property
     def base_url(self) -> str:
         return "https://api.dashamail.com"

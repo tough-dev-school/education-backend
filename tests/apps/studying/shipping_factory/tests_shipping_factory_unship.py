@@ -18,7 +18,8 @@ def test_course(course, unship_course, factory):
 
 
 def test_shipping_stuff_without_registered_shipping_algorithm(factory):
-    order = factory.order(item=None)  # random order without an item
+    order = factory.order()  # random order without an item
+    order.update(course=None)
 
     with pytest.raises(shipment_factory.ShipmentAlgorithmNotFound):
         shipment_factory.unship(order)

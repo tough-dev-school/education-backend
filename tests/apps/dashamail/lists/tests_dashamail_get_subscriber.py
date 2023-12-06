@@ -17,7 +17,7 @@ def successful_response_json(successful_response_json):
 
 
 def test_get_subscriber(dashamail, post, user):
-    dashamail.get_subscriber(
+    dashamail._get_member_id(
         email=user.email,
     )
 
@@ -28,10 +28,10 @@ def test_get_subscriber(dashamail, post, user):
 
 
 @pytest.mark.parametrize(("email", "expected_email"), [("hehe@ya.ru", "hehe@yandex.ru"), ("simple@yandex.ru", "simple@yandex.ru")])
-def test_get_subscriber_with_yandex_mail(dashamail, post, user, email, expected_email):
+def testwith_yandex_mail(dashamail, post, user, email, expected_email):
     user.update(email=email)
 
-    dashamail.get_subscriber(
+    dashamail._get_member_id(
         email=user.email,
     )
 
@@ -41,10 +41,10 @@ def test_get_subscriber_with_yandex_mail(dashamail, post, user, email, expected_
     )
 
 
-def test_get_subscriber_correct_values(dashamail, user, successful_response_json):
+def testcorrect_values(dashamail, user, successful_response_json):
     dashamail.respx_mock.post(url="https://api.dashamail.com").respond(json=successful_response_json)
 
-    member_id, is_active = dashamail.get_subscriber(
+    member_id, is_active = dashamail._get_member_id(
         email=user.email,
     )
 
@@ -52,10 +52,10 @@ def test_get_subscriber_correct_values(dashamail, user, successful_response_json
     assert is_active is True
 
 
-def test_get_subscriber_error_doesnt_exist(dashamail, user, fail_response_json):
+def testerror_doesnt_exist(dashamail, user, fail_response_json):
     dashamail.respx_mock.post(url="https://api.dashamail.com").respond(json=fail_response_json)
 
-    member_id, is_active = dashamail.get_subscriber(
+    member_id, is_active = dashamail._get_member_id(
         email=user.email,
     )
 

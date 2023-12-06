@@ -36,7 +36,6 @@ def test_if_subscribe_and_amocrm_enabled(create, user, course, mock_update_user_
     order = create(user=user, item=course)
 
     mock_update_user_chain.assert_called_once_with(
-        mock_rebuild_tags(student_id=user.id, subscribe=True),
         mock_push_customer(user_id=user.id),
         mock_push_order(order_id=order.id),
     )
@@ -49,7 +48,6 @@ def test_if_not_subscribe_and_amocrm_enabled(create, user, course, mock_update_u
     order = create(user=user, item=course)
 
     mock_update_user_chain.assert_called_once_with(
-        mock_rebuild_tags(student_id=user.id, subscribe=False),
         mock_push_customer(user_id=user.id),
         mock_push_order(order_id=order.id),
     )
@@ -62,7 +60,7 @@ def test_if_not_subscribe_and_amocrm_disabled(
 
     create(user=user, item=course)
 
-    rebuild_tags.assert_called_once_with(student_id=user.id, subscribe=False)
+    rebuild_tags.assert_called_once_with(student_id=user.id)
     mock_update_user_chain.assert_not_called()
     mock_rebuild_tags.assert_not_called()
     mock_push_customer.assert_not_called()
@@ -75,7 +73,7 @@ def test_dont_call_if_free_order(create, user, course, mock_update_user_chain, m
 
     create(user=user, item=course, price=Decimal(0))
 
-    rebuild_tags.assert_called_once_with(student_id=user.id, subscribe=False)
+    rebuild_tags.assert_called_once_with(student_id=user.id)
     mock_update_user_chain.assert_not_called()
     mock_rebuild_tags.assert_not_called()
     mock_push_customer.assert_not_called()
@@ -90,7 +88,7 @@ def test_if_not_subscribe_and_not_push_to_amocrm(
 
     create(user=user, item=course, push_to_amocrm=False)
 
-    rebuild_tags.assert_called_once_with(student_id=user.id, subscribe=False)
+    rebuild_tags.assert_called_once_with(student_id=user.id)
     mock_update_user_chain.assert_not_called()
     mock_rebuild_tags.assert_not_called()
     mock_push_customer.assert_not_called()

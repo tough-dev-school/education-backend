@@ -11,13 +11,15 @@ def order(self: Any, slug: str | None = None, is_paid: bool = False, item: Produ
     slug = slug if slug else random_string(32)
     order = self.mixer.blend("orders.Order", slug=slug, **kwargs)
 
-    if item is not None:
-        order.set_item(item)
+    if item is None:
+        item = self.course()
 
-        if "price" not in kwargs:
-            order.price = item.price
+    order.set_item(item)
 
-        order.save()
+    if "price" not in kwargs:
+        order.price = item.price
+
+    order.save()
 
     if "bank_id" not in kwargs:
         order.update(bank_id="tinkoff_bank")

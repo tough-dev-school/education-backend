@@ -27,7 +27,8 @@ class OrderPaidSetter(BaseService):
     def act(self) -> None:
         self.mark_order_as_paid()
         self.ship()
-        self.after_shipment()
+        self.rebuild_user_tags()
+        self.update_amocrm()
 
     def mark_order_as_paid(self) -> None:
         self.order.paid = timezone.now()
@@ -40,16 +41,14 @@ class OrderPaidSetter(BaseService):
         if not self.is_already_shipped and not self.is_already_paid and self.order.item is not None:
             self.order.ship(silent=self.silent)
 
-    def after_shipment(self) -> None:
-        can_be_subscribed = bool(self.order.user.email and len(self.order.user.email))
+    def rebuild_user_tags(self) -> None:
+        rebuild_tags.delay(student_id=self.order.user_id)
 
-        if not can_be_subscribed and not amocrm_enabled():
-            rebuild_tags.delay(student_id=self.order.user.id, subscribe=False)
-            return None
-
+    def update_amocrm(self) -> None:
         if amocrm_enabled():
             chain(
-                rebuild_tags.si(student_id=self.order.user.id, subscribe=can_be_subscribed),
                 push_user.si(user_id=self.order.user.id),
                 push_order.si(order_id=self.order.id),
-            ).delay()
+            ).apply_async(
+                countdown=30
+            )  # hope rebuild tags are finished

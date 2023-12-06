@@ -1,3 +1,5 @@
+import contextlib
+
 from apps.mailing.tasks import send_mail
 from apps.products.models import Course
 from apps.studying import shipment_factory as factory
@@ -27,7 +29,8 @@ class CourseShipment(BaseShipment):
         )
 
     def remove_study_model(self) -> None:
-        Study.objects.get(order=self.order).delete()
+        with contextlib.suppress(Study.DoesNotExist):  # may have study from another order
+            Study.objects.get(order=self.order).delete()
 
     def send_welcome_letter(self) -> None:
         if self.course.welcome_letter_template_id:

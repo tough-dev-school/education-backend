@@ -3,6 +3,7 @@ from typing import Any
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
+from apps.dashamail.tasks import update_subscription as update_dashamail_subscription
 from apps.users.models import Student
 from apps.users.models import User
 from apps.users.services import UserCreator
@@ -27,7 +28,20 @@ class PasswordLessUserCreationForm(forms.ModelForm):
         pass
 
     def save(self, commit: bool = True) -> User:
+        user = self._create_user()
+        self._send_to_dashamail(user)
+
+        return user
+
+    def _create_user(self) -> User:
         return UserCreator(name=f"{self.cleaned_data['first_name']} {self.cleaned_data['last_name']}", email=self.cleaned_data["email"])()
+
+    @staticmethod
+    def _send_to_dashamail(user: User) -> None:
+        update_dashamail_subscription.apply_async(
+            kwargs=dict(student_id=user.id),
+            countdown=5,
+        )
 
 
 @admin.register(Student)

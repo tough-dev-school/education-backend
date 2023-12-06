@@ -16,13 +16,17 @@ from apps.orders.api.serializers import PromocodeSerializer
 from apps.orders.api.throttling import PromocodeThrottle
 from apps.orders.api.throttling import PurchaseThrottle
 from apps.orders.models import PromoCode
-from apps.orders.services.purchase_creator import PurchaseCreator
+from apps.orders.services import OrderCreator
 from apps.products.api.serializers import PurchaseSerializer
 from apps.products.models import Course
+from apps.users.services import UserCreator
 from core.pricing import format_price
 
 if TYPE_CHECKING:
     from rest_framework.request import Request
+
+    from apps.orders.models import Order
+    from apps.users.models import User
 
 
 class PromocodeView(APIView):
@@ -74,18 +78,50 @@ class PurchaseView(APIView):
         serializer = PurchaseSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        data = serializer.validated_data
-
-        purchase_creator = PurchaseCreator(
+        user = self.get_or_create_user(
+            name=serializer.validated_data.get("name"),
+            email=serializer.validated_data.get("email"),
+        )
+        order = self.create_order(
+            user=user,
             item=item,
-            subscribe=data.get("subscribe"),
-            user_name=data.get("name"),
-            email=data.get("email"),
-            promocode=data.get("promocode"),
-            desired_bank=data.get("desired_bank"),
-            success_url=data.get("success_url"),
-            redirect_url=data.get("redirect_url"),
+            data=serializer.validated_data,
         )
 
-        payment_link = purchase_creator()
+        payment_link = self.get_payment_link(
+            order,
+            success_url=serializer.validated_data.get("success_url"),
+            redirect_url=serializer.validated_data.get("redirect_url"),
+        )
         return HttpResponseRedirect(redirect_to=payment_link)
+
+    @staticmethod
+    def get_or_create_user(name: str, email: str) -> "User":
+        return UserCreator(
+            name=name,
+            email=email.strip(),
+        )()
+
+    @staticmethod
+    def create_order(user: "User", item: Course, data: dict) -> "Order":
+        create_order = OrderCreator(
+            user=user,
+            item=item,
+            subscribe=data.get("subscribe", False),
+            promocode=data.get("promocode"),
+            desired_bank=data.get("desired_bank"),
+            analytics=data.get("analytics"),
+        )
+
+        return create_order()
+
+    @staticmethod
+    def get_payment_link(order: "Order", success_url: str | None, redirect_url: str | None) -> str:
+        Bank = get_bank_or_default(desired=order.bank_id)
+        bank = Bank(
+            order=order,
+            success_url=success_url,
+            redirect_url=redirect_url,
+        )
+
+        return bank.get_initial_payment_url()

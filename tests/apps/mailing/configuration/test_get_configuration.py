@@ -26,7 +26,7 @@ def test_last_course_contains_no_configuration(factory, course, user, is_order_p
 
 def test_orders_without_itema_do_not_break_things(factory, configuration, user):
     factory.order(user=user, item=configuration.course)
-    factory.order(user=user)
+    factory.order(user=user).update(course=None)
 
     assert get_configuration(recipient=user.email) == configuration
 

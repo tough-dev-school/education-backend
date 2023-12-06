@@ -28,6 +28,7 @@ class Bank(metaclass=ABCMeta):
         success_url: str | None = None,
         fail_url: str | None = None,
         idempotency_key: str | None = None,
+        **kwargs: str | None,
     ) -> None:
         self.order = order
         self._success_url = success_url

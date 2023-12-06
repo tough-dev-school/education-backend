@@ -65,6 +65,8 @@ class Order(TimestampedModel):
     amocrm_lead = models.OneToOneField("amocrm.AmoCRMOrderLead", on_delete=models.SET_NULL, null=True, blank=True, related_name="order")
     amocrm_transaction = models.OneToOneField("amocrm.AmoCRMOrderTransaction", on_delete=models.SET_NULL, null=True, blank=True, related_name="order")
 
+    analytics = models.JSONField(default=dict)
+
     class Meta:
         ordering = ["-id"]
         verbose_name = pgettext_lazy("orders", "Order")
