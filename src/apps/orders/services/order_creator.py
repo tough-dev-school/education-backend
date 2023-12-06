@@ -83,9 +83,6 @@ class OrderCreator(BaseService):
     def bank(self) -> Type[Bank]:
         return get_bank_or_default(self.desired_bank)
 
-    def can_be_subscribed(self, order: Order) -> bool:
-        return bool(self.subscribe and order.user.email and len(order.user.email))
-
     def send_confirmation_message(self, order: Order) -> None:
         if order.price == 0 and order.item is not None:
             if hasattr(order.item, "confirmation_template_id") and order.item.confirmation_template_id:
