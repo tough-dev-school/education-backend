@@ -2,7 +2,7 @@ import pytest
 
 from apps.banking.selector import BANK_KEYS
 from apps.banking.selector import BANKS
-from apps.orders.services import OrderShipper
+from apps.orders.services import OrderPaidSetter
 
 pytestmark = [pytest.mark.django_db]
 
@@ -20,7 +20,7 @@ def tg_message(mocker):
 
 @pytest.fixture
 def mock_get_happiness_message(mocker):
-    return mocker.patch("apps.orders.services.order_shipper.OrderShipper.get_order_happiness_message", return_value="happiness_message")
+    return mocker.patch("apps.orders.services.order_paid_setter.OrderPaidSetter._get_happiness_message_text", return_value="happiness_message")
 
 
 def test(tg_message, order, mock_get_happiness_message):
@@ -70,7 +70,7 @@ def test_notification_message_include_payment_method(order, bank_id):
     order.update(bank_id=bank_id)
     order.set_paid()
 
-    message = OrderShipper.get_order_happiness_message(order)
+    message = OrderPaidSetter._get_happiness_message_text(order)
 
     assert message == f"💰+1500 ₽, {BANKS[bank_id].name}\nЗапись курсов катанья и мытья\nKamaz Otkhodov"
 
@@ -79,7 +79,7 @@ def test_include_promocode_if_set(order, mixer):
     order.update(promocode=mixer.blend("orders.PromoCode", name="YARR!", discount_percent=1))
     order.set_paid()
 
-    message = OrderShipper.get_order_happiness_message(order)
+    message = OrderPaidSetter._get_happiness_message_text(order)
 
     assert message == "💰+1500 ₽, Tinkoff, промокод YARR!\nЗапись курсов катанья и мытья\nKamaz Otkhodov"
 
@@ -88,6 +88,6 @@ def test_include_group_if_set(order, factory):
     order.item.update(group=factory.group(name="Эффективная прокрастинация поток 2"))
     order.set_paid()
 
-    message = OrderShipper.get_order_happiness_message(order)
+    message = OrderPaidSetter._get_happiness_message_text(order)
 
     assert message == "💰+1500 ₽, Tinkoff\nЗапись курсов катанья и мытья - Эффективная прокрастинация поток 2\nKamaz Otkhodov"
