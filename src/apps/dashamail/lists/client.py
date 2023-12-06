@@ -1,16 +1,36 @@
 from django.conf import settings
 
-from core.integrations.dashamail.exceptions import DashamailSubscriptionFailed
-from core.integrations.dashamail.exceptions import DashamailUpdateFailed
-from core.integrations.dashamail.http import DashamailHTTP
+from apps.dashamail import exceptions
+from apps.dashamail.lists.http import DashamailListsHTTP
+from apps.users.models import User
 
 
-class AppDashamail:
+class DashamailListsClient:
+    """Dealing with dashamail lists"""
+
     def __init__(self) -> None:
-        self.http = DashamailHTTP()
+        self.http = DashamailListsHTTP()
         self.list_id = settings.DASHAMAIL_LIST_ID
 
-    def subscribe_user(self, email: str, first_name: str, last_name: str, tags: list[str]) -> None:
+    def subscribe_or_update(self, user: User) -> None:
+        member_id, _ = self._get_member_id(user.email)
+
+        if member_id is None:
+            self._subscribe(
+                email=user.email,
+                first_name=user.first_name,
+                last_name=user.last_name,
+                tags=user.tags,
+            )
+        else:
+            self._update_subscriber(
+                member_id=member_id,
+                first_name=user.first_name,
+                last_name=user.last_name,
+                tags=user.tags,
+            )
+
+    def _subscribe(self, email: str, first_name: str, last_name: str, tags: list[str]) -> None:
         payload = {
             "method": "lists.add_member",
             "list_id": self.list_id,
@@ -26,12 +46,12 @@ class AppDashamail:
         )
 
         if response["response"]["msg"]["err_code"] != 0:
-            raise DashamailSubscriptionFailed(f"{response}")
+            raise exceptions.DashamailSubscriptionFailed(f"{response}")
 
-    def get_subscriber(self, email: str) -> tuple[int | None, bool]:
+    def _get_member_id(self, email: str) -> tuple[int | None, bool]:
         """Return tuple which consists of member_id and is_active"""
         if email.endswith("@ya.ru"):
-            # Dashamail internally convert ya.ru to yandex.ru, with ya.ru we're going to get nothing
+            # Dashamail internally converts ya.ru to yandex.ru, with ya.ru we're going to get nothing
             email = email.replace("@ya.ru", "@yandex.ru")
 
         payload = {
@@ -53,7 +73,7 @@ class AppDashamail:
             response["response"]["data"][0]["state"] == "active",
         )
 
-    def update_subscriber(self, member_id: int, first_name: str, last_name: str, tags: list[str]) -> None:
+    def _update_subscriber(self, member_id: int, first_name: str, last_name: str, tags: list[str]) -> None:
         """Replace old user's fields with new"""
 
         payload = {
@@ -71,9 +91,9 @@ class AppDashamail:
         )
 
         if response["response"]["msg"]["err_code"] != 0:
-            raise DashamailUpdateFailed(f"{response}")
+            raise exceptions.DashamailUpdateFailed(f"{response}")
 
 
 __all__ = [
-    "AppDashamail",
+    "DashamailListsClient",
 ]

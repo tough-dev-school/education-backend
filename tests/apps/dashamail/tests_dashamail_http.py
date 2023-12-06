@@ -1,6 +1,6 @@
 import pytest
 
-from core.integrations.dashamail.exceptions import DashamailWrongResponse
+from apps.dashamail.exceptions import DashamailWrongResponse
 
 pytestmark = [pytest.mark.django_db]
 

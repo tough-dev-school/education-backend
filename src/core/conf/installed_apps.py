@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     "apps.amocrm",
     "apps.banking",
     "apps.chains",
+    "apps.dashamail",
     "apps.diplomas",
     "apps.homework",
     "apps.magnets",

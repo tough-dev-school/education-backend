@@ -14,6 +14,7 @@ from apps.amocrm.tasks import push_order
 from apps.amocrm.tasks import push_user
 from apps.banking.base import Bank
 from apps.banking.selector import get_bank_or_default
+from apps.dashamail.tasks import update_dashamail_subscription
 from apps.mailing.tasks import send_mail
 from apps.orders.models import Order
 from apps.orders.models import PromoCode
@@ -24,7 +25,6 @@ from core.current_user import get_current_user
 from core.exceptions import AppServiceException
 from core.helpers import lower_first
 from core.services import BaseService
-from core.tasks import update_dashamail_subscription
 
 
 class OrderCreatorException(AppServiceException):

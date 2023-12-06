@@ -2,9 +2,9 @@ import httpx
 
 from django.apps import apps
 
+from apps.dashamail.exceptions import DashamailException
+from apps.dashamail.lists.client import DashamailListsClient
 from core.celery import celery
-from core.integrations.dashamail import DashamailException
-from core.integrations.dashamail.subscription_updater import SubscriptionUpdater
 
 
 @celery.task(
@@ -19,4 +19,4 @@ from core.integrations.dashamail.subscription_updater import SubscriptionUpdater
 def update_dashamail_subscription(student_id: int) -> None:
     user = apps.get_model("users.User").objects.get(pk=student_id)
 
-    SubscriptionUpdater(user)()
+    DashamailListsClient().subscribe_or_update(user)

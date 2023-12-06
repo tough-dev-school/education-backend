@@ -2,7 +2,7 @@ import pytest
 
 from respx import MockRouter
 
-from core.integrations.dashamail import AppDashamail
+from apps.dashamail.lists import DashamailListsClient
 
 pytestmark = [pytest.mark.django_db]
 
@@ -20,7 +20,7 @@ def _set_dashamail_credentials(settings):
 
 @pytest.fixture
 def dashamail(respx_mock: MockRouter):
-    client = AppDashamail()
+    client = DashamailListsClient()
     client.respx_mock = respx_mock  # type: ignore
     return client
 
@@ -55,7 +55,7 @@ def fail_response_json():
 
 @pytest.fixture
 def post(mocker, successful_response_json):
-    return mocker.patch("core.integrations.dashamail.http.DashamailHTTP.post", return_value=successful_response_json)
+    return mocker.patch("apps.dashamail.lists.http.DashamailListsHTTP.post", return_value=successful_response_json)
 
 
 @pytest.fixture

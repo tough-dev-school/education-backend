@@ -37,4 +37,4 @@ def order(factory, nameless_user, course):
 
 @pytest.fixture(autouse=True)
 def subscribe(mocker):
-    return mocker.patch("core.tasks.update_dashamail_subscription.delay")
+    return mocker.patch("apps.dashamail.tasks.update_dashamail_subscription.delay")

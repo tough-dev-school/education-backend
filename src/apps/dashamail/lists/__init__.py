@@ -1,7 +1,5 @@
-from core.integrations.dashamail.client import AppDashamail
-from core.integrations.dashamail.exceptions import DashamailException
+from apps.dashamail.lists.client import DashamailListsClient
 
 __all__ = [
-    "AppDashamail",
-    "DashamailException",
+    "DashamailListsClient",
 ]

@@ -25,7 +25,7 @@ def push_customer_to_amocrm(mocker):
 
 @pytest.fixture
 def update_dashamail(mocker):
-    return mocker.patch("core.tasks.update_dashamail_subscription.apply_async")
+    return mocker.patch("apps.dashamail.tasks.update_dashamail_subscription.apply_async")
 
 
 @pytest.fixture

@@ -1,6 +1,6 @@
 import pytest
 
-from core.integrations.dashamail.exceptions import DashamailSubscriptionFailed
+from apps.dashamail.exceptions import DashamailSubscriptionFailed
 
 pytestmark = [pytest.mark.django_db]
 
@@ -13,7 +13,7 @@ pytestmark = [pytest.mark.django_db]
     ],
 )
 def test_subscribe(dashamail, post, user, tags, request_tags):
-    dashamail.subscribe_user(
+    dashamail._subscribe(
         email=user.email,
         first_name=user.first_name,
         last_name=user.last_name,
@@ -37,7 +37,7 @@ def test_subscription_failed(dashamail, user, fail_response_json):
     dashamail.respx_mock.post(url="https://api.dashamail.com").respond(json=fail_response_json)
 
     with pytest.raises(DashamailSubscriptionFailed):
-        dashamail.subscribe_user(
+        dashamail._subscribe(
             email=user.email,
             first_name=user.first_name,
             last_name=user.last_name,
