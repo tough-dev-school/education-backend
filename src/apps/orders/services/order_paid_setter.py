@@ -8,6 +8,7 @@ from django.utils import timezone
 from apps.amocrm.tasks import amocrm_enabled
 from apps.amocrm.tasks import push_order
 from apps.amocrm.tasks import push_user
+from apps.dashamail.tasks import update_subscription as update_dashamail_subscription
 from apps.orders import human_readable
 from apps.orders.models import Order
 from apps.users.tasks import rebuild_tags
@@ -30,9 +31,12 @@ class OrderPaidSetter(BaseService):
     def act(self) -> None:
         self.mark_order_as_paid()
         self.ship()
+
         self.send_happiness_message()
+
         self.rebuild_user_tags()
         self.update_amocrm()
+        self.update_dashamail()
 
     def mark_order_as_paid(self) -> None:
         self.order.paid = timezone.now()
@@ -51,11 +55,17 @@ class OrderPaidSetter(BaseService):
     def update_amocrm(self) -> None:
         if amocrm_enabled():
             chain(
-                push_user.si(user_id=self.order.user.id),
+                push_user.si(user_id=self.order.user_id),
                 push_order.si(order_id=self.order.id),
             ).apply_async(
                 countdown=30
-            )  # hope rebuild tags are finished
+            )  # hope tags are rebuilt by this time
+
+    def update_dashamail(self) -> None:
+        update_dashamail_subscription.apply_async(
+            kwargs=dict(student_id=self.order.user_id),
+            countdown=30,  # hope tags are built by this time
+        )
 
     def send_happiness_message(self) -> None:
         if not settings.HAPPINESS_MESSAGES_CHAT_ID:
