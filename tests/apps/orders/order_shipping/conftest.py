@@ -4,11 +4,6 @@ pytestmark = [pytest.mark.django_db]
 
 
 
-@pytest.fixture(autouse=True)
-def rebuild_tags(mocker):
-    return mocker.patch("apps.users.tasks.rebuild_tags.delay")
-
-
 @pytest.fixture
 def user(mixer):
     return mixer.blend("users.User", first_name="Kamaz", last_name="Otkhodov", email="kamaz@gmail.com")

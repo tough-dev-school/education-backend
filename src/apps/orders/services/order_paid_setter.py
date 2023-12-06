@@ -2,14 +2,17 @@ from dataclasses import dataclass
 
 from celery import chain
 
+from django.conf import settings
 from django.utils import timezone
 
 from apps.amocrm.tasks import amocrm_enabled
 from apps.amocrm.tasks import push_order
 from apps.amocrm.tasks import push_user
+from apps.orders import human_readable
 from apps.orders.models import Order
 from apps.users.tasks import rebuild_tags
 from core.services import BaseService
+from core.tasks import send_telegram_message
 
 
 @dataclass
@@ -27,6 +30,7 @@ class OrderPaidSetter(BaseService):
     def act(self) -> None:
         self.mark_order_as_paid()
         self.ship()
+        self.send_happiness_message()
         self.rebuild_user_tags()
         self.update_amocrm()
 
@@ -52,3 +56,28 @@ class OrderPaidSetter(BaseService):
             ).apply_async(
                 countdown=30
             )  # hope rebuild tags are finished
+
+    def send_happiness_message(self) -> None:
+        if not settings.HAPPINESS_MESSAGES_CHAT_ID:
+            return
+
+        if self.is_already_paid or self.silent or self.order.price <= 0:
+            return
+
+        send_telegram_message.delay(
+            chat_id=settings.HAPPINESS_MESSAGES_CHAT_ID,
+            text=self._get_happiness_message_text(self.order),
+        )
+
+    @staticmethod
+    def _get_happiness_message_text(order: Order) -> str:
+        sum = str(order.price).replace(".00", "")
+        reason = str(order.item)
+        payment_method = human_readable.get_order_payment_method_name(order)
+
+        payment_info = f"💰+{sum} ₽, {payment_method}"
+
+        if order.promocode:
+            payment_info += f", промокод {order.promocode}"
+
+        return f"{payment_info}\n{reason}\n{order.user}"

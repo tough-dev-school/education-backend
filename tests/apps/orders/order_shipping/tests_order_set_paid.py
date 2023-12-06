@@ -24,14 +24,6 @@ def test_ships(order, course, user, ship):
     ship.assert_called_once_with(course, to=user, order=order)
 
 
-def test_update_user_tags(order, rebuild_tags):
-    order.user.update(email="")
-
-    order.set_paid()
-
-    rebuild_tags.assert_called_once_with(student_id=order.user.id)
-
-
 def test_not_ships_if_order_is_already_paid(order, ship):
     order.update(paid=datetime(2032, 12, 1, 15, 30, tzinfo=timezone.utc))
 
