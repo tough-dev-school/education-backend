@@ -3,7 +3,7 @@ from typing import Any
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from apps.dashamail.tasks import update_dashamail_subscription
+from apps.dashamail.tasks import update_subscription as update_dashamail_subscription
 from apps.users.models import Student
 from apps.users.models import User
 from apps.users.services import UserCreator

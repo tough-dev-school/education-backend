@@ -14,7 +14,7 @@ from apps.amocrm.tasks import push_order
 from apps.amocrm.tasks import push_user
 from apps.banking.base import Bank
 from apps.banking.selector import get_bank_or_default
-from apps.dashamail.tasks import update_dashamail_subscription
+from apps.dashamail.tasks import update_subscription as update_dashamail_subscription
 from apps.mailing.tasks import send_mail
 from apps.orders.models import Order
 from apps.orders.models import PromoCode
