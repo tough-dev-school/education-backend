@@ -7,7 +7,11 @@ class DashamailHTTPException(DashamailException):
 
 
 class DashamailWrongResponse(DashamailHTTPException):
-    pass
+    """Wrong response from the lists API"""
+
+
+class DashamailWrongFrontendAPIResponse(DashamailHTTPException):
+    """Wrong response from the frontend API"""
 
 
 class DashamailSubscriptionFailed(DashamailException):
