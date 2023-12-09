@@ -38,12 +38,25 @@ def ok():
         },
     }
 
+@pytest.fixture
+def set_response(respx_mock: MockRouter):
+    def _set_response(response):
+        respx_mock.route(url="http://notion.middleware/v1/notion/loadPageChunk/").respond(json=response)
 
-def test_ok(respx_mock: MockRouter, ok, notion):
-    respx_mock.route(url="http://notion.middleware/v1/notion/loadPageChunk/").respond(json=ok)
+    return _set_response
 
-    page = notion.fetch_page("0cb348b3a2d24c05bc944e2302fa553")
-    blocks = page.blocks.ordered()
+@pytest.fixture
+def get_page(notion):
+    return lambda: notion.fetch_page("0cb348b3a2d24c05bc944e2302fa553")
+
+@pytest.fixture
+def get_blocks(get_page):
+    return lambda: get_page().blocks.ordered()
+
+def test_ok(set_response, ok, get_blocks):
+    set_response(ok)
+
+    blocks = get_blocks()
 
     assert len(blocks) == 4
     assert blocks[0].id == "first-block"
@@ -51,17 +64,16 @@ def test_ok(respx_mock: MockRouter, ok, notion):
     assert blocks[2].id == "third-block"
 
 
-def test_blocks_are_ordered(respx_mock: MockRouter, ok, notion):
+def test_blocks_are_ordered(set_response, ok, get_blocks):
     """Change order in the first page block and make sure response is alligned with it"""
     ok["recordMap"]["block"]["first-block"]["value"]["content"] = [
         "fourth-block",
         "third-block",
         "second-block",
     ]
-    respx_mock.route(url="http://notion.middleware/v1/notion/loadPageChunk/").respond(json=ok)
+    set_response(ok)
 
-    page = notion.fetch_page("0cb348b3a2d24c05bc944e2302fa553")
-    blocks = page.blocks.ordered()
+    blocks = get_blocks()
 
     assert len(blocks) == 4
     assert blocks[0].id == "first-block"
@@ -70,7 +82,7 @@ def test_blocks_are_ordered(respx_mock: MockRouter, ok, notion):
     assert blocks[3].id == "second-block"
 
 
-def test_page_block_is_always_first(respx_mock, ok, notion):
+def test_page_block_is_always_first(set_response, ok, get_blocks):
     ok["recordMap"]["block"]["first-block"]["value"]["type"] = "Bullshit"
     ok["recordMap"]["block"]["fourth-block"] = {
         "value": {
@@ -79,67 +91,61 @@ def test_page_block_is_always_first(respx_mock, ok, notion):
         }
     }
 
-    respx_mock.route(url="http://notion.middleware/v1/notion/loadPageChunk/").respond(json=ok)
+    set_response(ok)
 
-    page = notion.fetch_page("0cb348b3a2d24c05bc944e2302fa553")
-    blocks = page.blocks.ordered()
+    blocks = get_blocks()
 
     assert blocks[0].id == "fourth-block"  # first block with type =="page"
     assert blocks[1].id == "third-block"
     assert blocks[2].id == "second-block"
 
 
-def test_page_title(respx_mock: MockRouter, ok, notion):
-    respx_mock.route(url="http://notion.middleware/v1/notion/loadPageChunk/").respond(json=ok)
+def test_page_title(set_response, ok, get_page):
+    set_response(ok)
 
-    page = notion.fetch_page("0cb348b3a2d24c05bc944e2302fa553")
+    page = get_page()
 
     assert page.title == "Неделя 1 из 4"
 
 
-def test_abscense_of_the_page_block_does_not_break_page_title(respx_mock: MockRouter, ok, notion):
-    respx_mock.route(url="http://notion.middleware/v1/notion/loadPageChunk/").respond(json=ok)
+def test_abscense_of_the_page_block_does_not_break_page_title(set_response, ok, get_page):
+    set_response(ok)
 
-    page = notion.fetch_page("0cb348b3a2d24c05bc944e2302fa553")
-
+    page = get_page()
     del page.blocks[0]
 
     assert page.title is None
 
 
-def test_block_without_title_does_not_break_page_title_1(respx_mock: MockRouter, ok, notion):
-    respx_mock.route(url="http://notion.middleware/v1/notion/loadPageChunk/").respond(json=ok)
+def test_block_without_title_does_not_break_page_title_1(set_response, ok, get_page):
+    set_response(ok)
 
-    page = notion.fetch_page("0cb348b3a2d24c05bc944e2302fa553")
-
+    page = get_page()
     del page.blocks[0].data["value"]["properties"]["title"]
 
     assert page.title is None
 
 
-def test_block_without_title_does_not_break_page_title_2(respx_mock: MockRouter, ok, notion):
-    respx_mock.route(url="http://notion.middleware/v1/notion/loadPageChunk/").respond(json=ok)
+def test_block_without_title_does_not_break_page_title_2(set_response, ok, get_page):
+    set_response(ok)
 
-    page = notion.fetch_page("0cb348b3a2d24c05bc944e2302fa553")
-
+    page = get_page()
     page.blocks[0].data["value"]["properties"]["title"] = []
 
     assert page.title is None
 
 
-def test_not_shared_exception(notion, respx_mock: MockRouter):
-    respx_mock.route(url="http://notion.middleware/v1/notion/loadPageChunk/").respond(
-        json={
+def test_not_shared_exception(get_page, set_response):
+    set_response({
             "recordMap": {},  # not shared page looks excactly like this
         },
     )
     with pytest.raises(NotSharedForWeb):
-        notion.fetch_page("0cb348b3a2d24c05bc944e2302fa553")
+        get_page()
 
 
-def test_wrong_response_exception(notion, respx_mock: MockRouter):
-    respx_mock.route(url="http://notion.middleware/v1/notion/loadPageChunk/").respond(
-        json={"errorId": "de586d84-7fbb-466b-b633-8b1ae5cf0497", "name": "ValidationError", "message": "Invalid input."},
-    )
+def test_wrong_response_exception(get_page, set_response):
+    set_response({"errorId": "de586d84-7fbb-466b-b633-8b1ae5cf0497", "name": "ValidationError", "message": "Invalid input."})
+
     with pytest.raises(NotionResponseError):
-        notion.fetch_page("0cb348b3a2d24c05bc944e2302fa553")
+        get_page()
