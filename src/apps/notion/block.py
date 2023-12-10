@@ -3,7 +3,7 @@ import contextlib
 from dataclasses import dataclass
 from typing import Generator
 
-from apps.notion.rewrite import rewrite
+from apps.notion.rewrite import apply_our_adjustments
 from apps.notion.types import BlockData
 from apps.notion.types import BlockId
 
@@ -21,7 +21,7 @@ class NotionBlock:
         return cls(id=data["id"], data=data["data"])
 
     def get_data(self) -> BlockData:
-        return rewrite(self.data)
+        return apply_our_adjustments(self.data)
 
     @property
     def content(self) -> list[BlockId]:

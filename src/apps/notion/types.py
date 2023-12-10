@@ -15,7 +15,8 @@ class Properties(TypedDict, total=False):
 class BlockValue(TypedDict, total=False):
     id: BlockId
     content: list[BlockId]
-    last_edited_time: int
+    parent_id: str
+    parent_table: str
     properties: Properties
     type: Literal[
         "page",
