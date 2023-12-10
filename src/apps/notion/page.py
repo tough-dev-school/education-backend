@@ -12,7 +12,7 @@ class NotionPage:
     blocks: NotionBlockList
 
     def to_json(self) -> dict:
-        return {"blocks": [block.to_json() for block in self.blocks]}
+        return {"blocks": [block.to_json() for block in self.blocks.ordered()]}
 
     @classmethod
     def from_json(cls, data: dict) -> "NotionPage":

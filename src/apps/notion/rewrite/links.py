@@ -9,15 +9,7 @@ from apps.notion.types import BlockId
 from apps.notion.types import TextProperty
 
 
-@lru_cache
-def get_rewrite_mapping() -> Mapping[BlockId, BlockId]:
-    """Returns a mapping Notion Material -> our slug"""
-    mapping = Material.objects.all().values_list("page_id", "slug")
-
-    return {page_id: uuid_to_id(str(slug)) for page_id, slug in mapping}
-
-
-def rewrite(notion_block_data: BlockData) -> BlockData:
+def rewrite_links(notion_block_data: BlockData) -> BlockData:
     if "properties" not in notion_block_data.get("value", {}):
         return notion_block_data
 
@@ -28,12 +20,20 @@ def rewrite(notion_block_data: BlockData) -> BlockData:
     return notion_block_data
 
 
+@lru_cache
+def get_link_rewrite_mapping() -> Mapping[BlockId, BlockId]:
+    """Returns a mapping Notion Material -> our slug"""
+    mapping = Material.objects.all().values_list("page_id", "slug")
+
+    return {page_id: uuid_to_id(str(slug)) for page_id, slug in mapping}
+
+
 def rewrite_prop(prop: TextProperty) -> TextProperty:  # NOQA: CCR001
     """Drill down notion property data, searching for a link to the internal material.
     If the link is found -- rewrite its id to our material slug
     """
     rewritten = TextProperty()
-    mapping = get_rewrite_mapping()
+    mapping = get_link_rewrite_mapping()
 
     for value in prop:
         if isinstance(value, list):
@@ -46,3 +46,6 @@ def rewrite_prop(prop: TextProperty) -> TextProperty:  # NOQA: CCR001
         rewritten.append(value)
 
     return rewritten
+
+
+__all__ = ["rewrite_links"]

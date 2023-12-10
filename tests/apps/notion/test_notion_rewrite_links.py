@@ -1,12 +1,12 @@
 import pytest
 
-from apps.notion.rewrite import rewrite
+from apps.notion.rewrite import rewrite_links
 
 
 @pytest.fixture(autouse=True)
 def rewrite_mapping(mocker):
     return mocker.patch(
-        "apps.notion.rewrite.get_rewrite_mapping",
+        "apps.notion.rewrite.links.get_link_rewrite_mapping",
         return_value={
             "their-material-id": "a4a1c6f6d2ea441ebf1fdd8b5b99445a",
         },
@@ -34,7 +34,7 @@ def test_title_is_rewritten(block, prop_name):
         ],
     ]
 
-    result = rewrite(block)["value"]["properties"]
+    result = rewrite_links(block)["value"]["properties"]
 
     assert result[prop_name] == [
         "Пыщ-Пыщ",
@@ -65,7 +65,7 @@ def test_recursivity(block):
         ],  # NOQA: JS102
     ]  # NOQA: JS102
 
-    result = rewrite(block)["value"]["properties"]["title"]
+    result = rewrite_links(block)["value"]["properties"]["title"]
 
     assert result == [
         "Пыщ-Пыщ",
@@ -97,7 +97,7 @@ def test_external_links_are_not_rewritten(block):
         ],
     ]
 
-    result = rewrite(block)["value"]["properties"]
+    result = rewrite_links(block)["value"]["properties"]
 
     assert result["title"] == [
         "Пыщ-Пыщ",
@@ -121,7 +121,7 @@ def test_links_not_from_mapping(block):
         ],
     ]
 
-    result = rewrite(block)["value"]["properties"]
+    result = rewrite_links(block)["value"]["properties"]
 
     assert result["title"] == [
         "Пыщ-Пыщ",
@@ -149,6 +149,6 @@ def test_links_not_from_mapping(block):
 def test_weird_text(block, weird_text):
     block["value"]["properties"]["title"] = weird_text
 
-    result = rewrite(block)["value"]["properties"]
+    result = rewrite_links(block)["value"]["properties"]
 
     assert result["title"] == weird_text
