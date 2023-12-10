@@ -9,9 +9,7 @@ TAGS_TO_LIVE = (
     "value.type",
     "value.content.*",
     "value.properties.*",
-    "value.format.page_icon",
-    "value.format.page_cover",
-    "value.format.page_cover_position",
+    "value.format.*",
     "value.parent_id",
     "value.parent_table",
 )

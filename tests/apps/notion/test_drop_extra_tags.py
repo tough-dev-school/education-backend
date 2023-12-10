@@ -7,15 +7,15 @@ def block():
     return {
         "role": "reader",
         "value": {
-            "format": {"page_icon": "1.ico"},
+            "format": {
+                "page_icon": "1.ico",
+                "random_key": "random_value",
+            },
             "second_level_value_to_drop": "test",
             "second_level_key_to_drop": {
                 "test": "__expired",
             },
             "parent_id": "will_no_be_dropped",
-            "content": {
-                "random_key": "random_value",
-            },
         },
     }
 
@@ -33,4 +33,4 @@ def test_required_values_are_not_dropped(block):
 
     assert block["value"]["parent_id"] == "will_no_be_dropped"
     assert block["value"]["format"]["page_icon"] == "1.ico"
-    assert block["value"]["content"]["random_key"] == "random_value"  # wildcards work wll
+    assert block["value"]["format"]["random_key"] == "random_value"  # wildcards work wll
