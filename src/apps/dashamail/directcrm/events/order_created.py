@@ -10,14 +10,19 @@ class OrderCreated(Event):
 
     def to_json(self) -> dict:
         return {
-            "orderId": self.order.slug,
-            "totalPrice": self.format_price(self.order.price),
-            "status": "created",
-            "lines": [
-                {
-                    "productId": self.order.course.slug,
-                    "quantity": 1,
-                    "price": self.format_price(self.order.price),
-                }
-            ],
+            "customer": {
+                "email": self.order.user.email,
+            },
+            "order": {
+                "orderId": self.order.slug,
+                "totalPrice": self.format_price(self.order.price),
+                "status": "created",
+                "lines": [
+                    {
+                        "productId": self.order.course.slug,
+                        "quantity": 1,
+                        "price": self.format_price(self.order.price),
+                    }
+                ],
+            },
         }
