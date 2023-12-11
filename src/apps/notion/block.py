@@ -3,7 +3,7 @@ import contextlib
 from dataclasses import dataclass
 from typing import Generator
 
-from apps.notion.rewrite import rewrite
+from apps.notion.rewrite import apply_our_adjustments
 from apps.notion.types import BlockData
 from apps.notion.types import BlockId
 
@@ -21,7 +21,7 @@ class NotionBlock:
         return cls(id=data["id"], data=data["data"])
 
     def get_data(self) -> BlockData:
-        return rewrite(self.data)
+        return apply_our_adjustments(self.data)
 
     @property
     def content(self) -> list[BlockId]:
@@ -42,6 +42,17 @@ class NotionBlockList(UserList[NotionBlock]):
         blocks = [NotionBlock.from_json(block_dict) for block_dict in data]
         return cls(blocks)
 
+    def ordered(self) -> "NotionBlockList":
+        """Blockes in order from the first_page_block"""
+        if self.first_page_block is None:
+            return self
+
+        result = self.__class__([self.first_page_block])
+        for block_id in self.first_page_block.content:
+            result.append(self.get_block(block_id))
+
+        return result
+
     @classmethod
     def from_api_response(cls, api_response: dict[str, BlockData]) -> "NotionBlockList":
         instance = cls()
@@ -60,8 +71,18 @@ class NotionBlockList(UserList[NotionBlock]):
 
         return block_ids
 
+    def get_block(self, block_id: BlockId) -> NotionBlock:
+        for block in self.data:
+            if block.id == block_id:
+                return block
+
+        raise KeyError("Block with id %s not found", block_id)
+
     def have_block_with_id(self, block_id: BlockId) -> bool:
-        return len([block for block in self.data if block.id == block_id]) > 0
+        try:
+            return self.get_block(block_id) is not None
+        except KeyError:
+            return False
 
     def blocks_with_underliying_blocks(self) -> Generator[NotionBlock, None, None]:
         """List of non-page blocks that have other blocks in it"""

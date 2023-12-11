@@ -36,6 +36,6 @@ def order(
     **kwargs)
 
     if is_paid:
-        order.set_paid()
+        order.set_paid(silent=True)
 
     return order
