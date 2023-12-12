@@ -7,7 +7,6 @@ def _pause_dashamail(mocker, request):
     if request.node.get_closest_marker("dashamail") is None:
         mocker.patch("apps.dashamail.tasks.update_subscription.delay")
         mocker.patch("apps.dashamail.tasks.update_subscription.apply_async")
-        mocker.patch("apps.dashamail.lists.client.DashamailListsClient.subscribe_or_update")
 
         mocker.patch("apps.dashamail.tasks.push_order_event.delay")
         mocker.patch("apps.dashamail.tasks.push_order_event.apply_async")

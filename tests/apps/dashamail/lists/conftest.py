@@ -1,9 +1,5 @@
 import pytest
 
-from respx import MockRouter
-
-from apps.dashamail.lists import DashamailListsClient
-
 pytestmark = [pytest.mark.django_db]
 
 
@@ -19,45 +15,11 @@ def _set_dashamail_credentials(settings):
 
 
 @pytest.fixture
-def dashamail(respx_mock: MockRouter):
-    client = DashamailListsClient()
-    client.respx_mock = respx_mock  # type: ignore
-    return client
-
-
-@pytest.fixture
-def successful_response_json():
-    return {
-        "response": {
-            "msg": {
-                "err_code": 0,
-                "text": "error",
-                "type": "message",
-            },
-            "data": {},
-        },
-    }
-
-
-@pytest.fixture
-def fail_response_json():
-    return {
-        "response": {
-            "msg": {
-                "err_code": 4,
-                "text": "error",
-                "type": "message",
-            },
-            "data": {},
-        },
-    }
-
-
-@pytest.fixture
-def post(mocker, successful_response_json):
-    return mocker.patch("apps.dashamail.lists.http.DashamailListsHTTP.post", return_value=successful_response_json)
-
-
-@pytest.fixture
 def user(mixer):
-    return mixer.blend("users.User", email="test@e.mail", first_name="Rulon", last_name="Oboev")
+    return mixer.blend(
+        "users.User",
+        email="test@e.mail",
+        first_name="Rulon",
+        last_name="Oboev",
+        tags=["popug-3-self__purchased", "any-purchase"],
+    )

@@ -7,7 +7,7 @@ pytestmark = [
 
 @pytest.fixture(autouse=True)
 def update_dashamail(mocker):
-    return mocker.patch("apps.dashamail.tasks.DashamailListsClient.subscribe_or_update")
+    return mocker.patch("apps.dashamail.tasks.DashamailSubscriber.subscribe")
 
 @pytest.fixture(autouse=True)
 def update_dashamail_directcrm(mocker):

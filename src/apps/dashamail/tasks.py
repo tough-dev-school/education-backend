@@ -4,7 +4,7 @@ from django.apps import apps
 
 from apps.dashamail import exceptions
 from apps.dashamail.directcrm import events as directcrm_events
-from apps.dashamail.lists.client import DashamailListsClient
+from apps.dashamail.lists.dto import DashamailSubscriber
 from core.celery import celery
 
 
@@ -20,7 +20,7 @@ from core.celery import celery
 def update_subscription(student_id: int) -> None:
     user = apps.get_model("users.User").objects.get(pk=student_id)
 
-    DashamailListsClient().subscribe_or_update(user)
+    DashamailSubscriber(user).subscribe()
 
 
 @celery.task(
