@@ -9,7 +9,12 @@ def _pause_dashamail(mocker, request):
         mocker.patch("apps.dashamail.tasks.update_subscription.apply_async")
 
         mocker.patch("apps.dashamail.tasks.push_order_event.delay")
+        mocker.patch("apps.dashamail.tasks.push_order_event.si")
         mocker.patch("apps.dashamail.tasks.push_order_event.apply_async")
+
+        mocker.patch("apps.dashamail.tasks.directcrm_subscribe.delay")
+        mocker.patch("apps.dashamail.tasks.directcrm_subscribe.si")
+        mocker.patch("apps.dashamail.tasks.directcrm_subscribe.apply_async")
 
 @pytest.fixture(autouse=True)
 def _pause_tags(mocker, request):

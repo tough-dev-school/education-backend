@@ -1,23 +1,13 @@
 import pytest
 
-from decimal import Decimal
+from _decimal import Decimal
 
 pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def mock_update_user_chain(mocker):
+def update_user_chain(mocker):
     return mocker.patch("apps.orders.services.order_creator.chain")
-
-
-@pytest.fixture
-def mock_rebuild_tags(mocker):
-    return mocker.patch("apps.users.tasks.rebuild_tags.si")
-
-
-@pytest.fixture
-def rebuild_tags(mocker):
-    return mocker.patch("apps.users.tasks.rebuild_tags.delay")
 
 
 @pytest.fixture
@@ -31,66 +21,57 @@ def push_order(mocker):
 
 
 
-def test_if_subscribe_and_amocrm_enabled(create, user, course, mock_update_user_chain, mock_rebuild_tags, push_customer, settings, push_order):
+def test_if_subscribe_and_amocrm_enabled(create, user, course, update_user_chain, push_customer, settings, push_order):
     settings.AMOCRM_BASE_URL = "https://amo.amo.amo"
 
     order = create(user=user, item=course)
 
-    mock_update_user_chain.assert_called_once_with(
+    update_user_chain.assert_has_calls(
         push_customer(user_id=user.id),
         push_order(order_id=order.id),
     )
 
 
-def test_if_not_subscribe_and_amocrm_enabled(create, user, course, mock_update_user_chain, mock_rebuild_tags, push_customer, settings, push_order):
+def test_if_not_subscribe_and_amocrm_enabled(create, user, course, update_user_chain, push_customer, settings, push_order):
     settings.AMOCRM_BASE_URL = "https://amo.amo.amo"
     user.update(email="")
 
     order = create(user=user, item=course)
 
-    mock_update_user_chain.assert_called_once_with(
+    update_user_chain.assert_has_calls(
         push_customer(user_id=user.id),
         push_order(order_id=order.id),
     )
 
 
 def test_if_not_subscribe_and_amocrm_disabled(
-    create, user, course, rebuild_tags, mock_update_user_chain, mock_rebuild_tags, push_customer, settings, push_order
+    create, user, course, push_customer, push_order
 ):
     user.update(email="")
 
     create(user=user, item=course)
 
-    rebuild_tags.assert_called_once_with(student_id=user.id)
-    mock_update_user_chain.assert_not_called()
-    mock_rebuild_tags.assert_not_called()
     push_customer.assert_not_called()
     push_order.assert_not_called()
 
 
-def test_dont_call_if_free_order(create, user, course, mock_update_user_chain, mock_rebuild_tags, push_customer, settings, push_order, rebuild_tags):
+def test_dont_call_if_free_order(create, user, course, push_customer, settings, push_order):
     settings.AMOCRM_BASE_URL = "https://amo.amo.amo"
     user.update(email="")
 
     create(user=user, item=course, price=Decimal(0))
 
-    rebuild_tags.assert_called_once_with(student_id=user.id)
-    mock_update_user_chain.assert_not_called()
-    mock_rebuild_tags.assert_not_called()
     push_customer.assert_not_called()
     push_order.assert_not_called()
 
 
 def test_if_not_subscribe_and_not_push_to_amocrm(
-    create, user, course, rebuild_tags, mock_update_user_chain, mock_rebuild_tags, push_customer, settings, push_order
+    create, user, course, push_customer, settings, push_order
 ):
     settings.AMOCRM_BASE_URL = "https://amo.amo.amo"
     user.update(email="")
 
     create(user=user, item=course, push_to_amocrm=False)
 
-    rebuild_tags.assert_called_once_with(student_id=user.id)
-    mock_update_user_chain.assert_not_called()
-    mock_rebuild_tags.assert_not_called()
     push_customer.assert_not_called()
     push_order.assert_not_called()

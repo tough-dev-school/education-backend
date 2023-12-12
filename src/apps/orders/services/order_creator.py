@@ -116,10 +116,13 @@ class OrderCreator(BaseService):
             )  # hope rebuild_tags from push_to_amocrm is complete
 
     def do_push_to_dashamail_directcrm(self, order: Order) -> None:
-        dashamail.push_order_event.delay(
-            event_name="OrderCreated",
-            order_id=order.pk,
-        )
+        chain(
+            dashamail.directcrm_subscribe.si(order_id=order.pk),
+            dashamail.push_order_event.si(
+                event_name="OrderCreated",
+                order_id=order.pk,
+            ),
+        ).delay()
 
     @staticmethod
     def _get_confirmation_template_context(order: Order) -> dict[str, str]:
