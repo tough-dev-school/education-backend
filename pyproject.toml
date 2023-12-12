@@ -32,7 +32,7 @@ django-tree-queries = "^0.16.0"
 dj-rest-auth = "^5.0.0"
 drf-jwt = "^1.19.2"
 drf-recaptcha = "^3.0.0"
-drf-spectacular = {extras = ["sidecar"], version = "^0.26.4"}
+drf-spectacular = {extras = ["sidecar"], version = "^0.27.0"}
 emoji = "^2.8.0"
 httpx = {extras = ["http2"], version = "^0.25.0"}
 psycopg2-binary = "^2.9.7"
