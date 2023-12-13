@@ -38,7 +38,7 @@ class Shippable(TimestampedModel):
         _("Fixed promo code for tinkoff credit"), max_length=64, blank=True, help_text=_("Used in tinkoff credit only")
     )
 
-    group = models.ForeignKey("products.Group", verbose_name=_("Analytical group"), null=True, blank=True, on_delete=models.SET_NULL)
+    group = models.ForeignKey("products.Group", verbose_name=_("Analytical group"), on_delete=models.PROTECT)
 
     class Meta:
         abstract = True

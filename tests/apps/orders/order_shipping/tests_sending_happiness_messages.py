@@ -72,7 +72,7 @@ def test_notification_message_include_payment_method(order, bank_id):
 
     message = OrderPaidSetter._get_happiness_message_text(order)
 
-    assert message == f"💰+1500 ₽, {BANKS[bank_id].name}\nЗапись курсов катанья и мытья\nKamaz Otkhodov"
+    assert message == f"💰+1500 ₽, {BANKS[bank_id].name}\nЗапись курсов катанья и мытья - testgroup\nKamaz Otkhodov"
 
 
 def test_include_promocode_if_set(order, mixer):
@@ -81,13 +81,4 @@ def test_include_promocode_if_set(order, mixer):
 
     message = OrderPaidSetter._get_happiness_message_text(order)
 
-    assert message == "💰+1500 ₽, Tinkoff, промокод YARR!\nЗапись курсов катанья и мытья\nKamaz Otkhodov"
-
-
-def test_include_group_if_set(order, factory):
-    order.item.update(group=factory.group(name="Эффективная прокрастинация поток 2"))
-    order.set_paid()
-
-    message = OrderPaidSetter._get_happiness_message_text(order)
-
-    assert message == "💰+1500 ₽, Tinkoff\nЗапись курсов катанья и мытья - Эффективная прокрастинация поток 2\nKamaz Otkhodov"
+    assert message == "💰+1500 ₽, Tinkoff, промокод YARR!\nЗапись курсов катанья и мытья - testgroup\nKamaz Otkhodov"

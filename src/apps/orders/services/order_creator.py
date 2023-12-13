@@ -14,7 +14,7 @@ from apps.amocrm.tasks import push_order
 from apps.amocrm.tasks import push_user
 from apps.banking.base import Bank
 from apps.banking.selector import get_bank_or_default
-from apps.dashamail.tasks import update_subscription as update_dashamail_subscription
+from apps.dashamail import tasks as dashamail
 from apps.mailing.tasks import send_mail
 from apps.orders.models import Order
 from apps.orders.models import PromoCode
@@ -59,6 +59,7 @@ class OrderCreator(BaseService):
 
         self.do_push_to_amocrm(order)
         self.do_push_to_dashamail(order)
+        self.do_push_to_dashamail_directcrm(order)
 
         return order
 
@@ -109,10 +110,19 @@ class OrderCreator(BaseService):
 
     def do_push_to_dashamail(self, order: Order) -> None:
         if self.subscribe and order.user.email and len(order.user.email):
-            update_dashamail_subscription.apply_async(
+            dashamail.update_subscription.apply_async(
                 kwargs={"student_id": order.user.id},
                 countdown=30,
             )  # hope rebuild_tags from push_to_amocrm is complete
+
+    def do_push_to_dashamail_directcrm(self, order: Order) -> None:
+        chain(
+            dashamail.directcrm_subscribe.si(order_id=order.pk),
+            dashamail.push_order_event.si(
+                event_name="OrderCreated",
+                order_id=order.pk,
+            ),
+        ).delay()
 
     @staticmethod
     def _get_confirmation_template_context(order: Order) -> dict[str, str]:

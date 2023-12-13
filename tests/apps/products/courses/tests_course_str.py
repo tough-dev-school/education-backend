@@ -3,11 +3,6 @@ import pytest
 pytestmark = [pytest.mark.django_db]
 
 
-def test_course(factory):
-    course = factory.course(name="Курс как стать милым котиком")
-    assert str(course) == "Курс как стать милым котиком"
-
-
 def test_course_with_group(factory):
     group = factory.group(name="Милые котики")
     course_with_group = factory.course(name="Курс как стать милым котиком", group=group)

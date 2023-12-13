@@ -24,10 +24,13 @@ def update_amocrm_user(mocker):
     return mocker.patch("apps.amocrm.tasks.AmoCRMUserPusher.act")
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def update_dashamail(mocker):
-    return mocker.patch("apps.dashamail.tasks.DashamailListsClient.subscribe_or_update")
+    return mocker.patch("apps.dashamail.tasks.DashamailSubscriber.subscribe")
 
+@pytest.fixture(autouse=True)
+def update_dashamail_directcrm(mocker):
+    return mocker.patch("apps.dashamail.tasks.directcrm_events.OrderPaid.send")
 
 @pytest.mark.usefixtures('_enable_amocrm')
 def test_amocrm_is_updated(order, update_amocrm_order, update_amocrm_user):
@@ -52,3 +55,10 @@ def test_dashamail_is_updated(order, update_dashamail):
     order.set_paid()
 
     update_dashamail.assert_called_once()
+
+
+@pytest.mark.dashamail
+def test_dashamail_directm_is_updated(order, update_dashamail_directcrm):
+    order.set_paid()
+
+    update_dashamail_directcrm.assert_called_once()
