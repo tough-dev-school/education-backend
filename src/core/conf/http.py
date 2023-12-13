@@ -8,11 +8,9 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 CORS_ALLOWED_ORIGINS = [
     "https://education.borshev.com",
+    "https://tough-dev.school",
     "https://certificates.tough-dev.school",
     "https://lms.tough-dev.school",
-]
-CORS_ORIGIN_REGEX_WHITELIST = [
-    r".*education-frontend.netlify.app.*",
 ]
 
 FRONTEND_URL = env("FRONTEND_URL", cast=str, default="https://lms.tough-dev.school/")
