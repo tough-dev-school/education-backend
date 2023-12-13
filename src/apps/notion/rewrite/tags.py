@@ -4,7 +4,7 @@ from benedict import benedict
 
 from apps.notion.types import BlockData
 
-TAGS_TO_LIVE = (
+TAGS_WHITELIST = (
     "value.id",
     "value.type",
     "value.content.*",
@@ -18,18 +18,18 @@ TAGS_TO_LIVE = (
 def drop_extra_tags(notion_block_data: BlockData) -> BlockData:
     data = benedict(notion_block_data)
     for key in sorted(data.keypaths(), key=len, reverse=True):
-        if not tag_should_live(key):
+        if not whitelisted(key):
             del data[key]
 
     return notion_block_data
 
 
-def tag_should_live(tag: str) -> bool:
-    for tag_to_live in TAGS_TO_LIVE:
-        if tag_to_live.startswith(f"{tag}."):
+def whitelisted(tag: str) -> bool:
+    for whitelist_entry in TAGS_WHITELIST:
+        if whitelist_entry.startswith(f"{tag}."):
             return True
 
-        if fnmatch.fnmatch(tag, tag_to_live) or tag == tag_to_live.replace(".*", ""):
+        if fnmatch.fnmatch(tag, whitelist_entry) or tag == whitelist_entry.replace(".*", ""):
             return True
 
     return False
