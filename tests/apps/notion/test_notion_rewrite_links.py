@@ -21,6 +21,9 @@ def block():
         },
     }
 
+def rewrite(block):
+    return rewrite_links(block)["value"]["properties"]
+
 
 @pytest.mark.parametrize("prop_name", ["title", "caption"])
 def test_title_is_rewritten(block, prop_name):
@@ -34,7 +37,32 @@ def test_title_is_rewritten(block, prop_name):
         ],
     ]
 
-    result = rewrite_links(block)["value"]["properties"]
+    result = rewrite(block)
+
+    assert result[prop_name] == [
+        "Пыщ-Пыщ",
+        [
+            [
+                "a",
+                "/a4a1c6f6d2ea441ebf1fdd8b5b99445a",
+            ],
+        ],
+    ]
+
+
+@pytest.mark.parametrize("prop_name", ["title", "caption"])
+def test_title_is_rewritten_with_get_params(block, prop_name):
+    block["value"]["properties"][prop_name] = [
+        "Пыщ-Пыщ",
+        [
+            [
+                "a",
+                "/their-material-id?good=to-go",
+            ],
+        ],
+    ]
+
+    result = rewrite(block)
 
     assert result[prop_name] == [
         "Пыщ-Пыщ",
@@ -86,49 +114,50 @@ def test_recursivity(block):
     ...
 
 
-def test_external_links_are_not_rewritten(block):
+@pytest.mark.parametrize("link", ["https://text.com", "https://text.com?good=to-go"])
+def test_external_links_are_not_rewritten(block, link):
     block["value"]["properties"]["title"] = [
         "Пыщ-Пыщ",
         [
             [
                 "a",
-                "https://test.com",
+                link,
             ],
         ],
     ]
 
-    result = rewrite_links(block)["value"]["properties"]
+    result = rewrite(block)
 
     assert result["title"] == [
         "Пыщ-Пыщ",
         [
             [
                 "a",
-                "https://test.com",
+                link,
             ],
         ],
     ]
 
-
-def test_links_not_from_mapping(block):
+@pytest.mark.parametrize("link", ["/id-not-in-mapping", "/id-not-in-mapping?good=to-go"])
+def test_links_not_from_mapping_are_not_rewritten(block, link):
     block["value"]["properties"]["title"] = [
         "Пыщ-Пыщ",
         [
             [
                 "a",
-                "/id-not-in-mapping",
+                link,
             ],
         ],
     ]
 
-    result = rewrite_links(block)["value"]["properties"]
+    result = rewrite(block)
 
     assert result["title"] == [
         "Пыщ-Пыщ",
         [
             [
                 "a",
-                "/id-not-in-mapping",
+                link,
             ],
         ],
     ]
@@ -149,6 +178,6 @@ def test_links_not_from_mapping(block):
 def test_weird_text(block, weird_text):
     block["value"]["properties"]["title"] = weird_text
 
-    result = rewrite_links(block)["value"]["properties"]
+    result = rewrite(block)
 
     assert result["title"] == weird_text
