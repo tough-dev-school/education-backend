@@ -31,7 +31,7 @@ def course(amocrm_course, factory):
         name="Popug",
         slug="popug-003",
         price=200,
-        group__slug="popug-group",
+        group=factory.group(slug="popug-group"),
         amocrm_course=amocrm_course,
     )
 
