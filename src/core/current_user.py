@@ -8,7 +8,8 @@ _thread_locals = local()
 
 def get_current_user() -> User | None:
     user = getattr(_thread_locals, _thread_key(), None)
-    if user is not None and user.is_authenticated:
+
+    if user is not None and user.is_authenticated and User.objects.filter(id=user.id).exists():
         return user
 
 

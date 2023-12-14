@@ -4,6 +4,8 @@ from urllib.parse import urljoin
 import celery
 
 from django.conf import settings
+from django.contrib.admin.models import CHANGE
+from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
@@ -21,6 +23,7 @@ from apps.users.tasks import rebuild_tags
 from core.current_user import get_current_user
 from core.pricing import format_price
 from core.services import BaseService
+from core.tasks import write_admin_log
 
 
 @dataclass
@@ -49,6 +52,7 @@ class OrderRefunder(BaseService):
         OrderUnshipper(order=self.order)()
         self.notify_dangerous_operation_happened()
         self.update_integrations()
+        self.write_success_admin_log()
 
     def mark_order_as_not_paid(self) -> None:
         self.order.paid = None
@@ -58,6 +62,18 @@ class OrderRefunder(BaseService):
     def do_bank_refund_if_needed(self) -> None:
         if self.bank and settings.BANKS_REFUNDS_ENABLED:
             self.bank.refund()
+
+    def write_success_admin_log(self) -> None:
+        user = get_current_user() or self.order.user
+
+        write_admin_log.delay(
+            action_flag=CHANGE,
+            change_message="Order refunded",
+            content_type_id=ContentType.objects.get_for_model(self.order).id,
+            object_id=self.order.id,
+            object_repr=str(self.order),
+            user_id=user.id,
+        )
 
     def update_integrations(self) -> None:
         can_be_subscribed = bool(self.order.user.email and len(self.order.user.email))

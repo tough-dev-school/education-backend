@@ -35,7 +35,6 @@ def refund(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
     for order in queryset.iterator():
         if throttle.allow_request(request, view=modeladmin):
             order.refund()
-            modeladmin.log_change(request, order, "Order refunded")
             refunded_orders.append(order)
         else:
             non_refunded_orders.append(order)
