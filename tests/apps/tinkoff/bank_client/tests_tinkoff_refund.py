@@ -40,6 +40,7 @@ def tinkoff(paid_tinkoff_order):
     return TinkoffBank(order=paid_tinkoff_order)
 
 
+@pytest.mark.usefixtures("_set_current_user")
 def test_send_correct_refund_request(tinkoff, retrieve_request_json):
     tinkoff.refund()
 

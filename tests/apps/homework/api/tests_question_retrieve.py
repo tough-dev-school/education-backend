@@ -21,12 +21,14 @@ def test_markdown(api, question):
     assert "<em>should be rendered" in got["text"]
 
 
+@pytest.mark.usefixtures("_set_current_user")
 def test_403_for_not_purchased_users(api, question, purchase):
     purchase.refund()
 
     api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=403)
 
 
+@pytest.mark.usefixtures("_set_current_user")
 def test_ok_for_superusers_even_when_they_did_not_purchase_the_course(api, question, purchase):
     purchase.refund()
 
@@ -35,6 +37,7 @@ def test_ok_for_superusers_even_when_they_did_not_purchase_the_course(api, quest
     api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=200)
 
 
+@pytest.mark.usefixtures("_set_current_user")
 def test_ok_for_users_with_permission_even_when_they_did_not_purchase_the_course(api, question, purchase):
     purchase.refund()
 
@@ -43,6 +46,7 @@ def test_ok_for_users_with_permission_even_when_they_did_not_purchase_the_course
     api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=200)
 
 
+@pytest.mark.usefixtures("_set_current_user")
 def test_ok_if_user_has_not_purchased_but_permission_check_is_disabled(api, settings, question, purchase):
     settings.DISABLE_HOMEWORK_PERMISSIONS_CHECKING = True
     purchase.refund()

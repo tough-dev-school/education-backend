@@ -184,15 +184,11 @@ def test_do_not_break_if_order_without_item_was_refunded(refund, paid_order, moc
     assert send_mail_context["refunded_item"] == "not-set"
 
 
-def test_do_not_break_if_current_user_could_not_be_captured(refund, paid_order, mock_send_mail, get_send_mail_call_email_context):
+def test_break_if_current_user_could_not_be_captured(paid_order, refund):
     current_user.unset_current_user()
 
-    with does_not_raise():
+    with pytest.raises(AttributeError):
         refund(paid_order)
-
-    send_mail_context = get_send_mail_call_email_context(mock_send_mail)
-    assert send_mail_context["refund_author"] == "unknown"
-    assert LogEntry.objects.get().user == paid_order.user
 
 
 def test_update_user_tags(paid_order, mock_rebuild_tags, refund):

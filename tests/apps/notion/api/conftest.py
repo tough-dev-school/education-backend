@@ -23,7 +23,7 @@ def order(factory, course, api):
 
 
 @pytest.fixture
-def unpaid_order(order):
+def unpaid_order(_set_current_user, order):
     order.refund()
 
     return order

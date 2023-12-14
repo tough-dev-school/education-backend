@@ -64,15 +64,13 @@ class OrderRefunder(BaseService):
             self.bank.refund()
 
     def write_success_admin_log(self) -> None:
-        user = get_current_user() or self.order.user
-
         write_admin_log.delay(
             action_flag=CHANGE,
             change_message="Order refunded",
             content_type_id=ContentType.objects.get_for_model(self.order).id,
             object_id=self.order.id,
             object_repr=str(self.order),
-            user_id=user.id,
+            user_id=get_current_user().id,
         )
 
     def update_integrations(self) -> None:
@@ -107,7 +105,7 @@ class OrderRefunder(BaseService):
         return {
             "order_id": self.order.pk,
             "refunded_item": self.order.item.name if self.order.item else "not-set",
-            "refund_author": str(get_current_user() or "unknown"),
+            "refund_author": str(get_current_user()),
             "payment_method_name": self.payment_method_before_service_call,
             "price": format_price(self.order.price),
             "order_admin_site_url": urljoin(
