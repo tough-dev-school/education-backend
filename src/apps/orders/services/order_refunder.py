@@ -70,7 +70,7 @@ class OrderRefunder(BaseService):
             content_type_id=ContentType.objects.get_for_model(self.order).id,
             object_id=self.order.id,
             object_repr=str(self.order),
-            user_id=get_current_user().id,
+            user_id=get_current_user().id,  # type: ignore[union-attr]
         )
 
     def update_integrations(self) -> None:

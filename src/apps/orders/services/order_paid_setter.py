@@ -3,6 +3,8 @@ from dataclasses import dataclass
 from celery import chain
 
 from django.conf import settings
+from django.contrib.admin.models import CHANGE
+from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 
 from apps.amocrm.tasks import amocrm_enabled
@@ -12,8 +14,10 @@ from apps.dashamail import tasks as dashamail
 from apps.orders import human_readable
 from apps.orders.models import Order
 from apps.users.tasks import rebuild_tags
+from core.current_user import get_current_user
 from core.services import BaseService
 from core.tasks import send_telegram_message
+from core.tasks import write_admin_log
 
 
 @dataclass
@@ -38,6 +42,7 @@ class OrderPaidSetter(BaseService):
         self.update_amocrm()
         self.update_dashamail()
         self.update_dashamail_directcrm()
+        self.write_success_admin_log()
 
     def mark_order_as_paid(self) -> None:
         self.order.paid = timezone.now()
@@ -84,6 +89,18 @@ class OrderPaidSetter(BaseService):
         send_telegram_message.delay(
             chat_id=settings.HAPPINESS_MESSAGES_CHAT_ID,
             text=self._get_happiness_message_text(self.order),
+        )
+
+    def write_success_admin_log(self) -> None:
+        user = get_current_user() or self.order.user
+
+        write_admin_log.delay(
+            action_flag=CHANGE,
+            change_message="Order paid",
+            content_type_id=ContentType.objects.get_for_model(self.order).id,
+            object_id=self.order.id,
+            object_repr=str(self.order),
+            user_id=user.id,
         )
 
     @staticmethod
