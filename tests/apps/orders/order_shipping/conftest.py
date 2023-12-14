@@ -16,7 +16,12 @@ def ship(mocker):
 
 @pytest.fixture
 def course(factory):
-    return factory.course(name_genitive="курсов катанья и мытья", name="Запись курсов катанья и мытья", full_name="Полная запись курса катанья и мытья", group__name='testgroup')
+    return factory.course(
+        name_genitive="курсов катанья и мытья",
+        name="Запись курсов катанья и мытья",
+        full_name="Полная запись курса катанья и мытья",
+        group=factory.group(name="testgroup"),
+    )
 
 
 @pytest.fixture
