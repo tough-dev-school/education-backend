@@ -1,5 +1,5 @@
 manage = poetry run python src/manage.py
-SIMULTANEOUS_TEST_JOBS = 8
+SIMULTANEOUS_TEST_JOBS=4
 
 compilemessages:
 	$(manage) compilemessages
