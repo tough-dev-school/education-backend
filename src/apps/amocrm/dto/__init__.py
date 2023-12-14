@@ -5,6 +5,7 @@ from apps.amocrm.dto.lead import AmoCRMLead
 from apps.amocrm.dto.pipelines import AmoCRMPipelines
 from apps.amocrm.dto.product import AmoCRMProduct
 from apps.amocrm.dto.transaction import AmoCRMTransaction
+from apps.amocrm.dto.user_operators import AmoCRMOperatorConnector
 
 __all__ = [
     "AmoCRMCustomer",
@@ -14,4 +15,5 @@ __all__ = [
     "AmoCRMTransaction",
     "AmoCRMPipelines",
     "AmoCRMCatalogs",
+    "AmoCRMOperatorConnector",
 ]
