@@ -1,8 +1,8 @@
 from functools import partial
 from typing import Callable
 
-from mixer.backend.django import mixer
 from faker import Faker
+from mixer.backend.django import mixer
 
 
 def register(method):
