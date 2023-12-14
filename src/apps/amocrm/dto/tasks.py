@@ -1,6 +1,8 @@
-from apps.amocrm.client import http
-from httpx import codes as status_codes
 from typing import TypedDict
+
+from httpx import codes as status_codes
+
+from apps.amocrm.client import http
 
 
 class AmoCRMTask(TypedDict):
@@ -27,7 +29,7 @@ class AmoCRMTaskConnector:
         }
 
         response_data = http.get(
-            url=f"/api/v4/tasks",
+            url="/api/v4/tasks",
             params=params,
             expected_status_codes=[status_codes.OK, status_codes.NO_CONTENT],
         )
@@ -44,7 +46,6 @@ class AmoCRMTaskConnector:
             )
             for task_data in response_data["_embedded"]["tasks"]
         ]
-
 
     def create_lead_task(self, lead_id: int, task_type_id: int, task_text: str, timestamp_complete_till: int, responsible_user_id: int) -> int:
         data = {

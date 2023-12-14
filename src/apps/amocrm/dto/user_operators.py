@@ -1,5 +1,6 @@
-from apps.amocrm.client import http
 from typing import TypedDict
+
+from apps.amocrm.client import http
 
 
 class AmoCRMOperator(TypedDict):
