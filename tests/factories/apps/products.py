@@ -1,22 +1,27 @@
-from typing import Any, TYPE_CHECKING
+from typing import Any
 
 from core.helpers import random_string
 from core.test.factory import register
 
-if TYPE_CHECKING:
-    from apps.products.models import Course
-    from apps.products.models import Group
+from apps.products.models import Course
+from apps.products.models import Group
 
 
 @register
-def course(self: Any, slug: str | None = None, **kwargs: dict[str, Any]) -> "Course":
-    slug = slug if slug else random_string(50)
-
-    return self.mixer.blend("products.Course", slug=slug, **kwargs)
+def course(self: Any, slug: str | None = None, group: Group | None = None, **kwargs: dict[str, Any]) -> Course:
+    return self.mixer.blend(
+        "products.Course",
+        slug=slug if slug is not None else random_string(49),
+        group=group if group is not None else self.group(),
+        **kwargs,
+    )
 
 
 @register
-def group(self: Any, slug: str | None = None, **kwargs: dict[str, Any]) -> "Group":
-    slug = slug if slug else random_string(50)
+def group(self: Any, slug: str | None = None, **kwargs: dict[str, Any]) -> Group:
 
-    return self.mixer.blend("products.Group", slug=slug, **kwargs)
+    return self.mixer.blend(
+        "products.Group",
+        slug=slug if slug is not None else random_string(49),
+        **kwargs,
+    )
