@@ -2,6 +2,7 @@ from functools import partial
 from typing import Callable
 
 from mixer.backend.django import mixer
+from faker import Faker
 
 
 def register(method):
@@ -34,6 +35,10 @@ class FixtureFactory:
     def __init__(self):
         self.mixer = mixer
         self.registry = FixtureRegistry()
+
+    @property
+    def faker(self) -> Faker:
+        return Faker()
 
     def __getattr__(self, name):
         method = self.registry.get(name)
