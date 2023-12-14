@@ -2,7 +2,7 @@ import pytest
 from apps.amocrm.dto import AmoCRMOperatorConnector
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def _successful_get_users_response(get):
     get.return_value = {
         "_total_items": 1,
@@ -49,7 +49,6 @@ def connector():
     return AmoCRMOperatorConnector()
 
 
-@pytest.mark.usefixtures("_successful_get_users_response")
 def test_amo_crm_operator_connector_return_users(connector):
     got = connector.get_users()
 
@@ -60,3 +59,13 @@ def test_amo_crm_operator_connector_return_users(connector):
             "email": "petrusha@ivanov.ru",
         },
     ]
+
+
+def test_amo_crm_operator_call_amo_client_with_correct_params(connector, get):
+    connector.get_users()
+
+    get.assert_called_once_with(
+        url="/api/v4/users",
+        params={"limit": 250},
+        cached=True,
+    )
