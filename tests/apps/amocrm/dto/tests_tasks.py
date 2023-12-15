@@ -1,5 +1,5 @@
 import pytest
-from apps.amocrm.dto import AmoCRMTaskConnector
+from apps.amocrm.dto import AmoCRMTaskDTO
 
 
 @pytest.fixture
@@ -62,13 +62,13 @@ def _successful_lead_task_created_response(post):
 
 
 @pytest.fixture
-def connector():
-    return AmoCRMTaskConnector()
+def dto():
+    return AmoCRMTaskDTO()
 
 
 @pytest.mark.usefixtures("_successful_lead_tasks_response")
-def test_amo_crm_task_connector_return_amocrm_tasks(connector):
-    got = connector.get_lead_tasks(lead_id=1781381)
+def test_amo_crm_task_dto_return_amocrm_tasks(dto):
+    got = dto.get_lead_tasks(lead_id=1781381)
 
     assert got == [
         {
@@ -81,8 +81,8 @@ def test_amo_crm_task_connector_return_amocrm_tasks(connector):
 
 
 @pytest.mark.usefixtures("_successful_lead_tasks_response")
-def test_get_lead_tasks_call_amo_client_with_correct_params(connector, get):
-    connector.get_lead_tasks(lead_id=1781381)
+def test_get_lead_tasks_call_amo_client_with_correct_params(dto, get):
+    dto.get_lead_tasks(lead_id=1781381)
 
     get.assert_called_once_with(
         url="/api/v4/tasks",
@@ -95,17 +95,17 @@ def test_get_lead_tasks_call_amo_client_with_correct_params(connector, get):
     )
 
 
-def test_get_lead_tasks_return_empty_list_if_no_matching_tasks(connector, get):
+def test_get_lead_tasks_return_empty_list_if_no_matching_tasks(dto, get):
     get.return_value = {}
 
-    got = connector.get_lead_tasks(lead_id=1781381)
+    got = dto.get_lead_tasks(lead_id=1781381)
 
     assert got == []
 
 
 @pytest.mark.usefixtures("_successful_lead_task_created_response")
-def test_create_lead_task_call_amo_client_with_correct_params(connector, post, mocker):
-    got = connector.create_lead_task(
+def test_create_lead_task_call_amo_client_with_correct_params(dto, post, mocker):
+    got = dto.create_lead_task(
         lead_id=1781381,
         task_type_id=1,
         task_text="hi!",

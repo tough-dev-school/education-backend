@@ -1,5 +1,5 @@
 import pytest
-from apps.amocrm.dto import AmoCRMOperatorConnector
+from apps.amocrm.dto import AmoCRMOperatorDTO
 
 
 @pytest.fixture(autouse=True)
@@ -45,12 +45,12 @@ def _successful_get_users_response(get):
 
 
 @pytest.fixture
-def connector():
-    return AmoCRMOperatorConnector()
+def dto():
+    return AmoCRMOperatorDTO()
 
 
-def test_amo_crm_operator_connector_return_users(connector):
-    got = connector.get_users()
+def test_amo_crm_operator_dto_return_users(dto):
+    got = dto.get_users()
 
     assert got == [
         {
@@ -61,8 +61,8 @@ def test_amo_crm_operator_connector_return_users(connector):
     ]
 
 
-def test_amo_crm_operator_call_amo_client_with_correct_params(connector, get):
-    connector.get_users()
+def test_amo_crm_operator_call_amo_client_with_correct_params(dto, get):
+    dto.get_users()
 
     get.assert_called_once_with(
         url="/api/v4/users",

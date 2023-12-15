@@ -1,6 +1,6 @@
 import pytest
 
-from apps.amocrm.dto import AmoCRMNoteConnector
+from apps.amocrm.dto import AmoCRMNoteDTO
 
 
 @pytest.fixture
@@ -21,13 +21,13 @@ def _successful_create_lead_note_response(post):
 
 
 @pytest.fixture
-def connector():
-    return AmoCRMNoteConnector()
+def dto():
+    return AmoCRMNoteDTO()
 
 
 @pytest.mark.usefixtures("_successful_create_lead_note_response")
-def test_create_lead_note_call_amo_crm_client_with_correct_params(connector, post):
-    got = connector.create_lead_note(
+def test_create_lead_note_call_amo_crm_client_with_correct_params(dto, post):
+    got = dto.create_lead_note(
         lead_id=1781381,
         service_name="🤖 🏦 🤖",
         note_text="Оплата отклонена, т.к. клиент хочет заплатить слишком много",
