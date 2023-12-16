@@ -43,13 +43,14 @@ class NotionBlockList(UserList[NotionBlock]):
         return cls(blocks)
 
     def ordered(self) -> "NotionBlockList":
-        """Blockes in order from the first_page_block"""
         if self.first_page_block is None:
             return self
 
         result = self.__class__([self.first_page_block])
-        for block_id in self.first_page_block.content:
-            result.append(self.get_block(block_id))
+
+        for block in self.data:
+            if block.id is None or block.id != self.first_page_block.id:
+                result.append(block)
 
         return result
 
