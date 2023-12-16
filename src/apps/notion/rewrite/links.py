@@ -14,7 +14,7 @@ def rewrite_links(notion_block_data: BlockData) -> BlockData:
 
     for key in ("title", "caption"):
         if key in notion_block_data["value"]["properties"]:
-            notion_block_data["value"]["properties"][key] = rewrite_prop(notion_block_data["value"]["properties"][key])  # type: ignore
+            notion_block_data["value"]["properties"][key] = rewrite_prop(notion_block_data["value"]["properties"][key])
 
     return notion_block_data
 
