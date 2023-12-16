@@ -8,11 +8,10 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
 
-from apps.amocrm.tasks import amocrm_enabled
-from apps.amocrm.tasks import push_user
-from apps.amocrm.tasks import return_order
+from apps.amocrm import tasks as amocrm
 from apps.banking.base import Bank
 from apps.banking.selector import get_bank
+from apps.dashamail import tasks as dashamail
 from apps.mailing import tasks as mailing_tasks
 from apps.orders import human_readable
 from apps.orders.models import Order
@@ -48,7 +47,10 @@ class OrderRefunder(BaseService):
 
         OrderUnshipper(order=self.order)()
         self.notify_dangerous_operation_happened()
-        self.update_integrations()
+
+        self.update_user_tags()
+        self.update_amocrm()
+        self.update_dashamail()
 
     def mark_order_as_not_paid(self) -> None:
         self.order.paid = None
@@ -59,19 +61,23 @@ class OrderRefunder(BaseService):
         if self.bank and settings.BANKS_REFUNDS_ENABLED:
             self.bank.refund()
 
-    def update_integrations(self) -> None:
-        can_be_subscribed = bool(self.order.user.email and len(self.order.user.email))
+    def update_user_tags(self) -> None:
+        rebuild_tags.delay(student_id=self.order.user_id)
 
-        if not can_be_subscribed and not amocrm_enabled():
-            rebuild_tags.delay(student_id=self.order.user.id, subscribe=False)
-            return None
+    def update_amocrm(self) -> None:
+        if not amocrm.amocrm_enabled():
+            return
 
-        if amocrm_enabled():
-            celery.chain(
-                rebuild_tags.si(student_id=self.order.user.id, subscribe=can_be_subscribed),
-                push_user.si(user_id=self.order.user.id),
-                return_order.si(order_id=self.order.id),
-            ).delay()
+        celery.chain(
+            amocrm.push_user.si(user_id=self.order.user.id),
+            amocrm.push_order.si(order_id=self.order.id),
+        ).apply_async(countdown=10)
+
+    def update_dashamail(self) -> None:
+        dashamail.update_subscription.apply_async(
+            kwargs={"student_id": self.order.user_id},
+            countdown=30,
+        )  # hope rebuild_tags from update_amocrm is complete
 
     def notify_dangerous_operation_happened(self) -> None:
         if not settings.BANKS_REFUNDS_ENABLED:
