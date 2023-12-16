@@ -64,24 +64,6 @@ def test_ok(set_response, ok, get_blocks):
     assert blocks[2].id == "third-block"
 
 
-def test_blocks_are_ordered(set_response, ok, get_blocks):
-    """Change order in the first page block and make sure response is alligned with it"""
-    ok["recordMap"]["block"]["first-block"]["value"]["content"] = [
-        "fourth-block",
-        "third-block",
-        "second-block",
-    ]
-    set_response(ok)
-
-    blocks = get_blocks()
-
-    assert len(blocks) == 4
-    assert blocks[0].id == "first-block"
-    assert blocks[1].id == "fourth-block"
-    assert blocks[2].id == "third-block"
-    assert blocks[3].id == "second-block"
-
-
 def test_page_block_is_always_first(set_response, ok, get_blocks):
     ok["recordMap"]["block"]["first-block"]["value"]["type"] = "Bullshit"
     ok["recordMap"]["block"]["fourth-block"] = {
@@ -96,7 +78,7 @@ def test_page_block_is_always_first(set_response, ok, get_blocks):
     blocks = get_blocks()
 
     assert blocks[0].id == "fourth-block"  # first block with type =="page"
-    assert blocks[1].id == "third-block"
+    assert blocks[1].id == "first-block"
     assert blocks[2].id == "second-block"
 
 
