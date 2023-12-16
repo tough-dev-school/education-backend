@@ -21,7 +21,7 @@ class OrderEmailChanger(BaseService):
         self.order.save()
 
         if self.was_shipped:
-            self.order.ship()
+            self.order.ship(silent=True)
 
     @cached_property
     def was_shipped(self) -> bool:
