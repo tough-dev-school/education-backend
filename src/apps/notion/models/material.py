@@ -9,7 +9,6 @@ from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.db.models import QuerySet
 from django.db.models import UniqueConstraint
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from apps.notion.helpers import uuid_to_id
@@ -68,37 +67,3 @@ class Material(TimestampedModel):
     def get_absolute_url(self) -> str:
         slug = uuid_to_id(str(self.slug))
         return urljoin(settings.FRONTEND_URL, f"materials/{slug}/")
-
-
-class MaterialFile(TimestampedModel):
-    file = models.FileField(upload_to="materials", unique=True)  # NOQA: VNE002
-
-    class Meta:
-        verbose_name = _("Material file")
-        verbose_name_plural = _("Material files")
-
-    def __str__(self) -> str:
-        return self.file.name
-
-    def get_absolute_url(self) -> str:
-        return self.file.url
-
-
-class NotionCacheEntryQuerySet(QuerySet):
-    def not_expired(self) -> "NotionCacheEntryQuerySet":
-        time_now = timezone.now()
-        return self.filter(expires__gt=time_now)
-
-
-NotionCacheEntryManager = models.Manager.from_queryset(NotionCacheEntryQuerySet)
-
-
-class NotionCacheEntry(TimestampedModel):
-    objects = NotionCacheEntryManager()
-
-    cache_key = models.CharField(max_length=255, unique=True, db_index=True)
-    content = models.JSONField()
-    expires = models.DateTimeField(db_index=True)
-
-    def __str__(self) -> str:
-        return self.cache_key
