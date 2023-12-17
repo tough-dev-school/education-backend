@@ -5,6 +5,7 @@ from typing import Generator
 
 from apps.notion.rewrite import apply_our_adjustments
 from apps.notion.types import BlockData
+from apps.notion.types import BlockFormat
 from apps.notion.types import BlockId
 from apps.notion.types import BlockProperties
 from apps.notion.types import BlockType
@@ -26,11 +27,23 @@ class NotionBlock:
         return apply_our_adjustments(self.data)
 
     @property
+    def type(self) -> BlockType | None:
+        with contextlib.suppress(KeyError):
+            return self.data["value"]["type"]
+
+    @property
     def content(self) -> list[BlockId]:
         try:
             return self.data["value"]["content"]
         except KeyError:
             return list()
+
+    @property
+    def format(self) -> BlockFormat:
+        try:
+            return self.data["value"]["format"]
+        except KeyError:
+            return {}
 
     @property
     def properties(self) -> BlockProperties:
@@ -40,11 +53,6 @@ class NotionBlock:
                 result[property_name] = value[0][0]  # type: ignore
 
         return result
-
-    @property
-    def type(self) -> BlockType | None:
-        with contextlib.suppress(KeyError):
-            return self.data["value"]["type"]
 
 
 class NotionBlockList(UserList[NotionBlock]):

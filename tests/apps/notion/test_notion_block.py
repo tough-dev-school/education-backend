@@ -40,3 +40,18 @@ def test_content(block, expected):
 )
 def test_block_properties(block, expected):
     assert NotionBlock(id="test", data=block).properties == expected
+
+
+@pytest.mark.parametrize(
+    ("block", "expected"),
+    [
+        ({}, {}),
+        ({"value": {"no": "data"}}, {}),
+        ({"value": {"format": {
+            "size": "100x300",
+            "source": "https://typicalmacuser.jpg",
+        }}}, {'size': "100x300", "source": "https://typicalmacuser.jpg"}),
+    ]
+)
+def test_block_format(block, expected):
+    assert NotionBlock(id="test", data=block).format == expected

@@ -36,13 +36,20 @@ BlockType = Literal[
 TextProperty = list[str | list]
 
 
+class BlockFormat(TypedDict, total=False):
+    page_icon: str
+    page_cover: str
+    page_cover_position: str
+
+
 class BlockValue(TypedDict, total=False):
     id: BlockId
+    type: BlockType
+    format: BlockFormat
     content: list[BlockId]
     parent_id: str
     parent_table: str
     properties: dict[str, TextProperty]
-    type: BlockType
 
 
 class BlockData(TypedDict, total=False):
@@ -61,6 +68,7 @@ class BlockProperties(TypedDict, total=False):
 __all__ = [
     "BlockId",
     "BlockData",
+    "BlockFormat",
     "BlockProperties",
     "BlockType",
     "TextProperty",
