@@ -1,6 +1,6 @@
 import pytest
 
-from apps.amocrm.dto import AmoCRMNoteDTO
+from apps.amocrm.dto import AmoCRMLeadNoteDTO
 
 
 @pytest.fixture
@@ -22,7 +22,7 @@ def _successful_create_lead_note_response(post):
 
 @pytest.fixture
 def dto():
-    return AmoCRMNoteDTO()
+    return AmoCRMLeadNoteDTO()
 
 
 @pytest.mark.usefixtures("_successful_create_lead_note_response")

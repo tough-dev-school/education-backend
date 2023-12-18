@@ -1,7 +1,7 @@
 from apps.amocrm.client import http
 
 
-class AmoCRMNoteDTO:
+class AmoCRMLeadNoteDTO:
     """https://www.amocrm.ru/developers/content/crm_platform/events-and-notes#notes-common-info"""
 
     def create_lead_note(self, lead_id: int, service_name: str, note_text: str) -> int:
