@@ -1,5 +1,6 @@
 import pytest
 from apps.amocrm.dto import AmoCRMLeadTaskDTO
+from apps.amocrm.definitions import AmoCRMTaskType
 
 
 @pytest.fixture
@@ -68,12 +69,12 @@ def dto():
 
 @pytest.mark.usefixtures("_successful_lead_tasks_response")
 def test_amo_crm_task_dto_return_amocrm_tasks(dto):
-    got = dto.get_lead_tasks(lead_id=1781381)
+    got = dto.get_tasks(lead_id=1781381)
 
     assert got == [
         {
             "id": 894053,
-            "task_type_id": 1,
+            "task_type_id": AmoCRMTaskType.CONTACT,
             "is_completed": False,
             "text": "hi!",
         },
@@ -82,7 +83,7 @@ def test_amo_crm_task_dto_return_amocrm_tasks(dto):
 
 @pytest.mark.usefixtures("_successful_lead_tasks_response")
 def test_get_lead_tasks_call_amo_client_with_correct_params(dto, get):
-    dto.get_lead_tasks(lead_id=1781381)
+    dto.get_tasks(lead_id=1781381)
 
     get.assert_called_once_with(
         url="/api/v4/tasks",
@@ -95,19 +96,34 @@ def test_get_lead_tasks_call_amo_client_with_correct_params(dto, get):
     )
 
 
+def test_get_lead_task_filtered_by_completed_call_amo_client_with_correct_params(dto, get):
+    dto.get_tasks(lead_id=1781381, is_completed=True)
+
+    get.assert_called_once_with(
+        url="/api/v4/tasks",
+        expected_status_codes=[200, 204],
+        params={
+            "filter[entity_type]": "leads",
+            "filter[entity_id]": 1781381,
+            "filter[is_completed]": 1,
+            "order[created_at]": "desc",
+        },
+    )
+
+
 def test_get_lead_tasks_return_empty_list_if_no_matching_tasks(dto, get):
     get.return_value = {}
 
-    got = dto.get_lead_tasks(lead_id=1781381)
+    got = dto.get_tasks(lead_id=1781381)
 
     assert got == []
 
 
 @pytest.mark.usefixtures("_successful_lead_task_created_response")
-def test_create_lead_task_call_amo_client_with_correct_params(dto, post, mocker):
-    got = dto.create_lead_task(
+def test_create_lead_task_call_amo_client_with_correct_params(dto, post):
+    got = dto.create_task(
         lead_id=1781381,
-        task_type_id=1,
+        task_type_id=AmoCRMTaskType.CONTACT,
         task_text="hi!",
         timestamp_complete_till=1702640934,
         responsible_user_id=10446146,

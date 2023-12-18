@@ -1,8 +1,8 @@
+from http import HTTPStatus
 from typing import TypedDict
 
-from httpx import codes as status_codes
-
 from apps.amocrm.client import http
+from apps.amocrm.definitions import AmoCRMTaskType
 
 
 class AmoCRMTask(TypedDict):
@@ -13,7 +13,7 @@ class AmoCRMTask(TypedDict):
     """
 
     id: int
-    task_type_id: int
+    task_type_id: AmoCRMTaskType
     is_completed: bool
     text: str
 
@@ -21,17 +21,20 @@ class AmoCRMTask(TypedDict):
 class AmoCRMLeadTaskDTO:
     """https://www.amocrm.ru/developers/content/crm_platform/tasks-api"""
 
-    def get_lead_tasks(self, lead_id: int) -> list[AmoCRMTask]:
+    def get_tasks(self, lead_id: int, is_completed: bool | None = None) -> list[AmoCRMTask]:
         params = {
             "filter[entity_type]": "leads",
             "filter[entity_id]": lead_id,
             "order[created_at]": "desc",
         }
 
+        if is_completed is not None:
+            params["filter[is_completed]"] = 1 if is_completed else 0
+
         response_data = http.get(
             url="/api/v4/tasks",
             params=params,
-            expected_status_codes=[status_codes.OK, status_codes.NO_CONTENT],
+            expected_status_codes=[HTTPStatus.OK, HTTPStatus.NO_CONTENT],
         )
 
         if not response_data:
@@ -47,7 +50,7 @@ class AmoCRMLeadTaskDTO:
             for task_data in response_data["_embedded"]["tasks"]
         ]
 
-    def create_lead_task(self, lead_id: int, task_type_id: int, task_text: str, timestamp_complete_till: int, responsible_user_id: int) -> int:
+    def create_task(self, lead_id: int, task_type_id: AmoCRMTaskType, task_text: str, timestamp_complete_till: int, responsible_user_id: int) -> int:
         data = {
             "entity_type": "leads",
             "entity_id": lead_id,
