@@ -18,7 +18,7 @@ class AmoCRMTask(TypedDict):
     text: str
 
 
-class AmoCRMTaskDTO:
+class AmoCRMLeadTaskDTO:
     """https://www.amocrm.ru/developers/content/crm_platform/tasks-api"""
 
     def get_lead_tasks(self, lead_id: int) -> list[AmoCRMTask]:

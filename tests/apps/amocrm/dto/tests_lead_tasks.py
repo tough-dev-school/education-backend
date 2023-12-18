@@ -1,5 +1,5 @@
 import pytest
-from apps.amocrm.dto import AmoCRMTaskDTO
+from apps.amocrm.dto import AmoCRMLeadTaskDTO
 
 
 @pytest.fixture
@@ -63,7 +63,7 @@ def _successful_lead_task_created_response(post):
 
 @pytest.fixture
 def dto():
-    return AmoCRMTaskDTO()
+    return AmoCRMLeadTaskDTO()
 
 
 @pytest.mark.usefixtures("_successful_lead_tasks_response")
