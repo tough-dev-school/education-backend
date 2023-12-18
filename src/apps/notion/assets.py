@@ -1,5 +1,9 @@
+from os.path import basename
 from urllib.parse import quote
 
+from django.core.files.base import ContentFile
+
+from apps.notion.models import NotionAsset
 from apps.notion.types import BlockData as NotionBlockData
 from core.helpers import append_to_query_string
 
@@ -31,5 +35,25 @@ def get_asset_url(asset: str, block_data: NotionBlockData) -> str:
     )
 
 
+def save_asset(url: str, original_url: str) -> None:
+    """Saves asset with `url` as NotionAsset with `original_url` as a key"""
+    from apps.notion.client import NotionClient
+
+    fetched = NotionClient.fetch_asset(url)
+
+    asset = NotionAsset.objects.get_or_create(url=original_url)[0]
+    asset.file.save(
+        name=basename(original_url),  # will be randomized by RandomFileName
+        content=ContentFile(fetched),
+    )
+
+
 def is_notion_url(url: str) -> bool:
     return any(notion_url in url for notion_url in NOTION_URLS)
+
+
+__all__ = [
+    "get_asset_url",
+    "is_notion_url",
+    "save_asset",
+]
