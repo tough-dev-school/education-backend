@@ -2,14 +2,38 @@
 from typing import Literal, TypedDict
 
 BlockId = str
+BlockType = Literal[
+    "alias",
+    "bookmark",
+    "bulleted_list",
+    "callout",
+    "code",
+    "collection_view",
+    "column",
+    "column_list",
+    "copy_indicator",
+    "divider",
+    "external_object_instance",
+    "file",
+    "header",
+    "image",
+    "numbered_list",
+    "page",
+    "quote",
+    "sub_header",
+    "sub_sub_header",
+    "table",
+    "table_of_contents",
+    "table_row",
+    "text",
+    "to_do",
+    "toggle",
+    "transclusion_container",
+    "transclusion_reference",
+    "video",
+]
 
 TextProperty = list[str | list]
-
-
-class Properties(TypedDict, total=False):
-    title: TextProperty
-    caption: TextProperty
-    last_edited_time: int
 
 
 class BlockValue(TypedDict, total=False):
@@ -17,25 +41,8 @@ class BlockValue(TypedDict, total=False):
     content: list[BlockId]
     parent_id: str
     parent_table: str
-    properties: Properties
-    type: Literal[
-        "page",
-        "text",
-        "bookmark",
-        "callout",
-        "code",
-        "column",
-        "column_list",
-        "decorator",
-        "equation",
-        "header",
-        "image",
-        "divider",
-        "sub_header",
-        "sub_sub_header",
-        "bulleted_list",
-        "numbered_list",
-    ]
+    properties: dict[str, TextProperty]
+    type: BlockType
 
 
 class BlockData(TypedDict, total=False):
@@ -43,8 +50,18 @@ class BlockData(TypedDict, total=False):
     value: BlockValue
 
 
+class BlockProperties(TypedDict, total=False):
+    title: str
+    caption: str
+    size: str
+    language: str
+    source: str
+
+
 __all__ = [
     "BlockId",
     "BlockData",
+    "BlockProperties",
+    "BlockType",
     "TextProperty",
 ]

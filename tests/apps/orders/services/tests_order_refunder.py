@@ -196,23 +196,27 @@ def test_update_user_tags(paid_order, mock_rebuild_tags, refund):
 
     refund(paid_order)
 
-    mock_rebuild_tags.assert_called_once_with(student_id=paid_order.user.id, subscribe=False)
+    mock_rebuild_tags.assert_called_once_with(student_id=paid_order.user.id)
 
 
-@pytest.mark.usefixtures("_enable_amocrm")
-def test_call_update_user_celery_chain_with_subscription(paid_order, refund, mocker):
-    mock_celery_chain = mocker.patch("celery.chain")
-    mock_first_rebuild_tags = mocker.patch("apps.users.tasks.rebuild_tags.si")
-    mock_second_push_customer = mocker.patch("apps.amocrm.tasks.push_user.si")
-    mock_third_return_order_in_amocrm = mocker.patch("apps.amocrm.tasks.return_order.si")
+@pytest.mark.dashamail
+def test_update_dashamail(paid_order, refund, mocker):
+    update_subscription = mocker.patch("apps.dashamail.tasks.DashamailSubscriber.subscribe")
 
     refund(paid_order)
 
-    mock_celery_chain.assert_called_once_with(
-        mock_first_rebuild_tags(student_id=paid_order.user.id, subscribe=True),
-        mock_second_push_customer(user_id=paid_order.user.id),
-        mock_third_return_order_in_amocrm(order_id=paid_order.id),
-    )
+    update_subscription.assert_called_once()
+
+
+@pytest.mark.usefixtures("_enable_amocrm")
+def test_amocrm_is_updated(paid_order, refund, mocker):
+    push_user = mocker.patch("apps.amocrm.tasks.AmoCRMUserPusher.__call__")
+    push_order = mocker.patch("apps.amocrm.tasks.AmoCRMOrderPusher.__call__")
+
+    refund(paid_order)
+
+    push_user.assert_called_once()
+    push_order.assert_called_once()
 
 
 def test_fail_if_bank_is_set_but_unknown(paid_order, refund):
