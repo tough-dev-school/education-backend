@@ -3,6 +3,9 @@ import contextlib
 from dataclasses import dataclass
 from typing import Generator
 
+from apps.notion import tasks
+from apps.notion.assets import get_asset_url
+from apps.notion.assets import is_notion_url
 from apps.notion.rewrite import apply_our_adjustments
 from apps.notion.types import BlockData
 from apps.notion.types import BlockFormat
@@ -22,9 +25,6 @@ class NotionBlock:
     @classmethod
     def from_json(cls, data: dict) -> "NotionBlock":
         return cls(id=data["id"], data=data["data"])
-
-    def get_data(self) -> BlockData:
-        return apply_our_adjustments(self.data)
 
     @property
     def type(self) -> BlockType | None:
@@ -53,6 +53,27 @@ class NotionBlock:
                 result[property_name] = value[0][0]  # type: ignore
 
         return result
+
+    def get_data(self) -> BlockData:
+        return apply_our_adjustments(self.data)
+
+    def get_assets_to_save(self) -> list[str]:  # NOQA: CCR001
+        """Returns a list of asset urls as defined in notion response
+        Returnes only assets to fetch
+
+        """
+        if self.type == "image":
+            return [self.properties["source"]]
+
+        if self.type == "page":
+            result = list()
+            for key in ("page_icon", "page_cover"):
+                if key in self.format and is_notion_url(self.format[key]):  # type: ignore
+                    result.append(self.format[key])  # type: ignore
+
+            return result
+
+        return []
 
 
 class NotionBlockList(UserList[NotionBlock]):
