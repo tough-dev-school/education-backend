@@ -36,13 +36,13 @@ class OrderPaidSetter(BaseService):
         self.mark_order_as_paid()
         self.ship()
 
+        self.write_success_admin_log()
         self.send_happiness_message()
 
         self.rebuild_user_tags()
         self.update_amocrm()
         self.update_dashamail()
         self.update_dashamail_directcrm()
-        self.write_success_admin_log()
 
     def mark_order_as_paid(self) -> None:
         self.order.paid = timezone.now()

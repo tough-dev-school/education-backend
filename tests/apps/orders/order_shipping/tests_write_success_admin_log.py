@@ -29,7 +29,7 @@ def test_success_admin_log_created_via_task(order, write_admin_log):
     write_admin_log.assert_called_once()
 
 
-def test_break_if_current_user_could_not_be_captured(another_user, mocker, order):
+def test_do_not_break_if_current_user_could_not_be_captured(another_user, mocker, order):
     mocker.patch("apps.orders.services.order_paid_setter.get_current_user", return_value=None)
     order.update(user=another_user)
 
