@@ -27,7 +27,7 @@ def dto():
 
 @pytest.mark.usefixtures("_successful_create_lead_note_response")
 def test_create_lead_note_call_amo_crm_client_with_correct_params(dto, post):
-    got = dto.create_lead_note(
+    got = dto.create_note(
         lead_id=1781381,
         service_name="🤖 🏦 🤖",
         note_text="Оплата отклонена, т.к. клиент хочет заплатить слишком много",
