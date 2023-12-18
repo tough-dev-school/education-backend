@@ -1,5 +1,9 @@
 import pytest
-from apps.amocrm.dto import AmoCRMLeadTaskDTO
+from apps.amocrm.dto import AmoCRMLead
+
+pytestmark = [
+    pytest.mark.django_db,
+]
 
 
 @pytest.fixture
@@ -62,13 +66,13 @@ def _successful_lead_task_created_response(post):
 
 
 @pytest.fixture
-def dto():
-    return AmoCRMLeadTaskDTO()
+def dto(order_with_lead):
+    return AmoCRMLead(order=order_with_lead)
 
 
 @pytest.mark.usefixtures("_successful_lead_tasks_response")
 def test_amo_crm_task_dto_return_amocrm_tasks(dto):
-    got = dto.get_lead_tasks(lead_id=1781381)
+    got = dto.get_tasks()
 
     assert got == [
         {
@@ -81,15 +85,15 @@ def test_amo_crm_task_dto_return_amocrm_tasks(dto):
 
 
 @pytest.mark.usefixtures("_successful_lead_tasks_response")
-def test_get_lead_tasks_call_amo_client_with_correct_params(dto, get):
-    dto.get_lead_tasks(lead_id=1781381)
+def test_get_lead_tasks_call_amo_client_with_correct_params(dto, get, order_with_lead):
+    dto.get_tasks()
 
     get.assert_called_once_with(
         url="/api/v4/tasks",
         expected_status_codes=[200, 204],  # NO_CONTENT - 204 is returned when there are no tasks matching the filter
         params={
             "filter[entity_type]": "leads",
-            "filter[entity_id]": 1781381,
+            "filter[entity_id]": order_with_lead.amocrm_lead.amocrm_id,
             "order[created_at]": "desc",
         },
     )
@@ -98,15 +102,14 @@ def test_get_lead_tasks_call_amo_client_with_correct_params(dto, get):
 def test_get_lead_tasks_return_empty_list_if_no_matching_tasks(dto, get):
     get.return_value = {}
 
-    got = dto.get_lead_tasks(lead_id=1781381)
+    got = dto.get_tasks()
 
     assert got == []
 
 
 @pytest.mark.usefixtures("_successful_lead_task_created_response")
-def test_create_lead_task_call_amo_client_with_correct_params(dto, post, mocker):
-    got = dto.create_lead_task(
-        lead_id=1781381,
+def test_create_lead_task_call_amo_client_with_correct_params(dto, post, order_with_lead):
+    got = dto.create_task(
         task_type_id=1,
         task_text="hi!",
         timestamp_complete_till=1702640934,
@@ -118,7 +121,7 @@ def test_create_lead_task_call_amo_client_with_correct_params(dto, post, mocker)
         url="/api/v4/tasks",
         data=[
             {
-                "entity_id": 1781381,
+                "entity_id": order_with_lead.amocrm_lead.amocrm_id,
                 "entity_type": "leads",
                 "task_type_id": 1,
                 "text": "hi!",

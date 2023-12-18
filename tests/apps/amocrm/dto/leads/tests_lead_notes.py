@@ -1,6 +1,10 @@
 import pytest
 
-from apps.amocrm.dto import AmoCRMNoteDTO
+from apps.amocrm.dto import AmoCRMLead
+
+pytestmark = [
+    pytest.mark.django_db,
+]
 
 
 @pytest.fixture
@@ -21,21 +25,20 @@ def _successful_create_lead_note_response(post):
 
 
 @pytest.fixture
-def dto():
-    return AmoCRMNoteDTO()
+def dto(order_with_lead):
+    return AmoCRMLead(order=order_with_lead)
 
 
 @pytest.mark.usefixtures("_successful_create_lead_note_response")
-def test_create_lead_note_call_amo_crm_client_with_correct_params(dto, post):
-    got = dto.create_lead_note(
-        lead_id=1781381,
+def test_create_lead_note_call_amo_crm_client_with_correct_params(dto, post, order_with_lead):
+    got = dto.create_note(
         service_name="🤖 🏦 🤖",
         note_text="Оплата отклонена, т.к. клиент хочет заплатить слишком много",
     )
 
     assert got == 1949919
     post.assert_called_once_with(
-        url="/api/v4/leads/1781381/notes",
+        url=f"/api/v4/leads/{order_with_lead.amocrm_lead.amocrm_id}/notes",
         data=[
             {
                 "note_type": "service_message",
