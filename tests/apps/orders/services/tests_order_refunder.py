@@ -16,7 +16,7 @@ from core import current_user
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures("_set_current_user"),
+    pytest.mark.usefixtures("mock_order_refund_service_current_user"),
 ]
 
 
@@ -184,8 +184,8 @@ def test_do_not_break_if_order_without_item_was_refunded(refund, paid_order, moc
     assert send_mail_context["refunded_item"] == "not-set"
 
 
-def test_break_if_current_user_could_not_be_captured(paid_order, refund):
-    current_user.unset_current_user()
+def test_break_if_current_user_could_not_be_captured(mocker, refund):
+    mocker.patch("apps.orders.services.order_refunder.get_current_user", return_value=None)
 
     with pytest.raises(AttributeError):
         refund(paid_order)
@@ -223,7 +223,7 @@ def test_fail_if_bank_is_set_but_unknown(paid_order, refund):
 
 
 @pytest.mark.freeze_time
-def test_success_admin_log_created(paid_order, refund):
+def test_success_admin_log_created(paid_order, refund, user):
     refund(paid_order)
 
     log = LogEntry.objects.get()
@@ -233,7 +233,7 @@ def test_success_admin_log_created(paid_order, refund):
     assert log.content_type_id == ContentType.objects.get_for_model(paid_order).id
     assert log.object_id == str(paid_order.id)
     assert log.object_repr == str(paid_order)
-    assert log.user == current_user.get_current_user()
+    assert log.user == user
 
 
 def test_success_admin_log_created_via_task(paid_order, refund, write_admin_log):

@@ -4,5 +4,5 @@ from core import current_user
 
 
 @pytest.fixture
-def _set_current_user(user):
-    current_user.set_current_user(user)
+def current_user(mocker, user):
+    mocker.patch("core.current_user.get_current_user", return_value=user)

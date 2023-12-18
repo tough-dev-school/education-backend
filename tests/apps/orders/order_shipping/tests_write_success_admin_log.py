@@ -6,16 +6,14 @@ from django.contrib.admin.models import LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 
-from core import current_user
-
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures("_set_current_user"),
+    pytest.mark.usefixtures("current_user"),
 ]
 
 
 @pytest.mark.freeze_time
-def test_success_admin_log_created(order):
+def test_success_admin_log_created(order, user):
     order.set_paid()
 
     log = LogEntry.objects.get()
@@ -25,7 +23,7 @@ def test_success_admin_log_created(order):
     assert log.content_type_id == ContentType.objects.get_for_model(order).id
     assert log.object_id == str(order.id)
     assert log.object_repr == str(order)
-    assert log.user == current_user.get_current_user()
+    assert log.user == user
 
 
 def test_success_admin_log_created_via_task(order, write_admin_log):
@@ -34,9 +32,9 @@ def test_success_admin_log_created_via_task(order, write_admin_log):
     write_admin_log.assert_called_once()
 
 
-def test_break_if_current_user_could_not_be_captured(order):
-    current_user.unset_current_user()
-
+def test_break_if_current_user_could_not_be_captured(mocker, order):
+    mocker.patch("core.current_user.get_current_user", return_value=None)
+    
     with does_not_raise():
         order.set_paid()
 
