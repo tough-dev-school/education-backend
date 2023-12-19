@@ -19,7 +19,7 @@ class AmoCRMOperator(TypedDict):
 class AmoCRMOperatorDTO:
     """Methods to work with AmoCRM users."""
 
-    def get_users(self) -> list[AmoCRMOperator]:
+    def get(self) -> list[AmoCRMOperator]:
         """Return all the users from AmoCRM. The number of users is expected not to exceed 250, and pagination is not needed."""
         params = {"limit": 250}
 

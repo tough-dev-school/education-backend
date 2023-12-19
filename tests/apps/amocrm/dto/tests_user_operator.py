@@ -50,7 +50,7 @@ def dto():
 
 
 def test_amo_crm_operator_dto_return_users(dto):
-    got = dto.get_users()
+    got = dto.get()
 
     assert got == [
         {
@@ -62,7 +62,7 @@ def test_amo_crm_operator_dto_return_users(dto):
 
 
 def test_amo_crm_operator_call_amo_client_with_correct_params(dto, get):
-    dto.get_users()
+    dto.get()
 
     get.assert_called_once_with(
         url="/api/v4/users",
