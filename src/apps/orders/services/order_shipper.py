@@ -1,13 +1,14 @@
 from dataclasses import dataclass
 
+from django.contrib.admin.models import CHANGE
+from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 
 from apps.orders.models import Order
-from core.services import BaseService
-from django.contrib.admin.models import CHANGE
-from django.contrib.contenttypes.models import ContentType
-from core.tasks import write_admin_log
 from core.current_user import get_current_user
+from core.services import BaseService
+from core.tasks import write_admin_log
+
 
 @dataclass
 class OrderShipper(BaseService):
@@ -41,5 +42,5 @@ class OrderShipper(BaseService):
             content_type_id=ContentType.objects.get_for_model(self.order).id,
             object_id=self.order.id,
             object_repr=str(self.order),
-            user_id=get_current_user().id,
+            user_id=get_current_user().id,  # type: ignore[union-attr]
         )

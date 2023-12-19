@@ -1,4 +1,4 @@
-Pxmanage = poetry run python src/manage.py
+manage = poetry run python src/manage.py
 SIMULTANEOUS_TEST_JOBS=4
 
 compilemessages:
