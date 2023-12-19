@@ -43,7 +43,6 @@ def handler():
     return lambda webhook_event: StripeWebhookHandler(webhook_event)()
 
 
-@pytest.mark.usefixtures("mock_order_shiper_service_current_user")
 def test_create_stripe_notification_on_checkout_session_completed(handler, webhook_checkout_session_completed, order, construct_event):
     event_checkout_session_completed = construct_event(webhook_checkout_session_completed)
 

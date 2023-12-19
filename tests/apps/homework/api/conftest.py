@@ -43,7 +43,7 @@ def child_answer(answer, mixer):
 
 
 @pytest.fixture
-def purchase(factory, course, api, mock_order_shiper_service_current_user):
+def purchase(factory, course, api):
     order = factory.order(user=api.user, item=course)
     order.set_paid()
 

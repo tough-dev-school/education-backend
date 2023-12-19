@@ -32,7 +32,7 @@ def update_dashamail(mocker):
 def update_dashamail_directcrm(mocker):
     return mocker.patch("apps.dashamail.tasks.directcrm_events.OrderPaid.send")
 
-@pytest.mark.usefixtures("_enable_amocrm", "mock_order_shiper_service_current_user")
+@pytest.mark.usefixtures("_enable_amocrm")
 def test_amocrm_is_updated(order, update_amocrm_order, update_amocrm_user):
     order.set_paid()
 
@@ -41,7 +41,6 @@ def test_amocrm_is_updated(order, update_amocrm_order, update_amocrm_user):
 
 
 @pytest.mark.user_tags_rebuild
-@pytest.mark.usefixtures("mock_order_shiper_service_current_user")
 def test_tags_are_rebuilt(order):
     assert 'any-purchase' not in order.user.tags
 
@@ -52,7 +51,6 @@ def test_tags_are_rebuilt(order):
 
 
 @pytest.mark.dashamail
-@pytest.mark.usefixtures("mock_order_shiper_service_current_user")
 def test_dashamail_is_updated(order, update_dashamail):
     order.set_paid()
 
@@ -60,7 +58,6 @@ def test_dashamail_is_updated(order, update_dashamail):
 
 
 @pytest.mark.dashamail
-@pytest.mark.usefixtures("mock_order_shiper_service_current_user")
 def test_dashamail_directm_is_updated(order, update_dashamail_directcrm):
     order.set_paid()
 

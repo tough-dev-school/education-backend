@@ -13,7 +13,7 @@ def course(factory, product_group):
 
 
 @pytest.fixture
-def paid_order(factory, mock_order_shiper_service_current_user, user, course):
+def paid_order(factory, user, course):
     return factory.order(
         is_paid=True,
         user=user,

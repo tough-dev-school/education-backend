@@ -8,7 +8,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def paid_tinkoff_order(order, mixer, mock_order_shiper_service_current_user):
+def paid_tinkoff_order(order, mixer):
     order.update(bank_id="tinkoff_bank")
     order.set_paid()
 

@@ -8,7 +8,6 @@ pytestmark = [
 ]
 
 
-@pytest.mark.usefixtures("mock_order_shiper_service_current_user")
 def test_works(order):
     assert order.paid is None
 
@@ -19,7 +18,6 @@ def test_works(order):
     assert order.study is not None
 
 
-@pytest.mark.usefixtures("mock_order_shiper_service_current_user")
 def test_ships(order, course, user, ship):
     order.set_paid()
 
@@ -34,7 +32,7 @@ def test_not_ships_if_order_is_already_paid(order, ship):
     ship.assert_not_called()
 
 
-def test_shipment_date(mock_order_shiper_service_current_user, order):
+def test_shipment_date(order):
     order.set_paid()
     order.refresh_from_db()
 
@@ -58,7 +56,6 @@ def test_shipment_date_is_not_reset(order, ship):
     assert order.shipped == datetime(2000, 11, 12, 1, 13, tzinfo=timezone.utc)
 
 
-@pytest.mark.usefixtures("mock_order_shiper_service_current_user")
 def test_unpaid_date_is_reset(order):
     order.update(unpaid=datetime(2032, 12, 1, 15, 13, tzinfo=timezone.utc))
 

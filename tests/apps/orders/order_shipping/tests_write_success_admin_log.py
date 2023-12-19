@@ -12,7 +12,7 @@ pytestmark = pytest.mark.django_db
 @pytest.mark.freeze_time
 def test_success_admin_log_created(mocker, order, user):
     mocker.patch("apps.orders.services.order_shipper.OrderShipper.write_success_admin_log")
-
+    
     order.set_paid()
 
     log = LogEntry.objects.last()

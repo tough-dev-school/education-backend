@@ -10,7 +10,9 @@ pytestmark = [
 
 
 @pytest.fixture
-def order(factory):
+def order(factory, mocker):
+    mocker.patch("apps.orders.services.order_shipper.OrderShipper.write_success_admin_log")
+
     return factory.order(bank_id="stripe")
 
 
@@ -27,7 +29,7 @@ def _disable_signature_verification(mocker):
     mocker.patch("stripe.webhook.WebhookSignature.verify_header", return_value=True)
 
 
-def test(anon, mock_order_shiper_service_current_user, webhook_checkout_completed, order):
+def test(anon, webhook_checkout_completed, order):
     anon.post("/api/v2/banking/stripe-webhooks/", webhook_checkout_completed, expected_status_code=200)
 
     order.refresh_from_db()

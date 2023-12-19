@@ -18,7 +18,9 @@ def user(mixer):
 
 
 @pytest.fixture
-def order(order, user):
+def order(mocker, order, user):
+    mocker.patch("apps.orders.services.order_shipper.OrderShipper.write_success_admin_log")
+
     return order.update(user=user)
 
 

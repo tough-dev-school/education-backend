@@ -11,7 +11,6 @@ def test_user_without_purchases_has_no_configuration(user):
 
 
 @pytest.mark.parametrize("is_order_paid", [True, False])
-@pytest.mark.usefixtures("mock_order_shiper_service_current_user")
 def test_course_with_configuration(factory, configuration, user, is_order_paid):
     factory.order(user=user, item=configuration.course, is_paid=is_order_paid)
 
@@ -19,7 +18,6 @@ def test_course_with_configuration(factory, configuration, user, is_order_paid):
 
 
 @pytest.mark.parametrize("is_order_paid", [True, False])
-@pytest.mark.usefixtures("mock_order_shiper_service_current_user")
 def test_last_course_contains_no_configuration(factory, course, user, is_order_paid):
     factory.order(user=user, item=course, is_paid=is_order_paid)
 

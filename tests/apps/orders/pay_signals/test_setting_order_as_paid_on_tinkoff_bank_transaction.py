@@ -10,7 +10,9 @@ pytestmark = [
 
 
 @pytest.fixture
-def order(factory):
+def order(factory, mocker):
+    mocker.patch("apps.orders.services.order_shipper.OrderShipper.write_success_admin_log")
+
     return factory.order(bank_id="tinkoff_bank")
 
 
@@ -44,7 +46,6 @@ def bank_data():
 
 
 
-@pytest.mark.usefixtures("mock_order_shiper_service_current_user")
 def test_ok(anon, order, bank_data):
     anon.post(
         "/api/v2/banking/tinkoff-notifications/",

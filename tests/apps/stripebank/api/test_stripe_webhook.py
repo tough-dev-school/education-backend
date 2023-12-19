@@ -25,6 +25,7 @@ def test_checkout_session_completed(anon, webhook_checkout_session_completed, or
     spy_stripe_webhook_handler.assert_called_once()
 
 
+@pytest.mark.usefixtures("stripe_notification_checkout_completed")
 def test_charge_refunded(anon, webhook_charge_refunded, order, spy_stripe_webhook_handler):
     anon.post("/api/v2/banking/stripe-webhooks/", webhook_charge_refunded, expected_status_code=200)
 

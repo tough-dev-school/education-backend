@@ -4,14 +4,16 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def order(factory, course, mock_order_shiper_service_current_user, user):
+def order(factory, course, mocker, user):
+    mocker.patch("apps.orders.services.order_shipper.OrderShipper.write_success_admin_log")
+
     order = factory.order(user=user, item=course, is_paid=True)
 
     return order
 
 
 @pytest.fixture
-def another_order(factory, mock_order_shiper_service_current_user, user):
+def another_order(factory, user):
     order = factory.order(user=user, is_paid=True)
 
     return order

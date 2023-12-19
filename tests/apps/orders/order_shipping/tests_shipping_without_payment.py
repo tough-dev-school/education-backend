@@ -5,7 +5,6 @@ from django.utils import timezone
 pytestmark = [pytest.mark.django_db]
 
 
-@pytest.mark.usefixtures("mock_order_shiper_service_current_user")
 def test_order_is_shipped_even_if_it_is_not_paid(order, ship, course, user):
     result = order.ship_without_payment()
 
@@ -13,7 +12,6 @@ def test_order_is_shipped_even_if_it_is_not_paid(order, ship, course, user):
     ship.assert_called_once_with(course, to=user, order=order)
 
 
-@pytest.mark.usefixtures("mock_order_shiper_service_current_user")
 def test_order_is_marked_as_shipped_even_if_it_is_not_paid(order):
     order.ship_without_payment()
 

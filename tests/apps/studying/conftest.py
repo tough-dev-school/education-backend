@@ -17,7 +17,9 @@ def course(factory):
 
 
 @pytest.fixture(autouse=True)
-def order(factory, course, api, mock_order_shiper_service_current_user):
+def order(factory, course, api, mocker):
+    mocker.patch("apps.orders.services.order_shipper.OrderShipper.write_success_admin_log")
+    
     return factory.order(
         user=api.user,
         item=course,
