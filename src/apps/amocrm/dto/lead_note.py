@@ -4,7 +4,7 @@ from apps.amocrm.client import http
 class AmoCRMLeadNoteDTO:
     """https://www.amocrm.ru/developers/content/crm_platform/events-and-notes#notes-common-info"""
 
-    def create(self, lead_id: int, service_name: str, note_text: str) -> int:
+    def create_service_message(self, lead_id: int, service_name: str, note_text: str) -> int:
         data = {
             "note_type": "service_message",
             "params": {
