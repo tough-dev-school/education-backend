@@ -37,6 +37,7 @@ class NotionClient:
             self.attempted_blocks += new_blocks_to_fetch  # save blocks that we already have tried to fetch, to make sure we will not request them again even if notion does not return them
             page.blocks += self.fetch_blocks(new_blocks_to_fetch)
 
+        page.save_assets()
         return page
 
     def fetch_page(self, page_id: str) -> NotionPage:

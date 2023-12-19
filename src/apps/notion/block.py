@@ -76,7 +76,7 @@ class NotionBlock:
         return []
 
     def save_assets(self) -> None:
-        """Download and save all assets in the block"""
+        """Asynchronously download and save all assets in the block"""
         for asset in self.get_assets_to_save():
             tasks.save_asset.apply_async(
                 kwargs={
