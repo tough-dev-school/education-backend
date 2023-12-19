@@ -36,11 +36,13 @@ class OrderShipper(BaseService):
         self.order.save(update_fields=["shipped", "modified"])
 
     def write_success_admin_log(self) -> None:
+        user = get_current_user() or self.order.user
+
         write_admin_log.delay(
             action_flag=CHANGE,
             change_message=self.log,
             content_type_id=ContentType.objects.get_for_model(self.order).id,
             object_id=self.order.id,
             object_repr=str(self.order),
-            user_id=get_current_user().id,  # type: ignore[union-attr]
+            user_id=user.id,
         )
