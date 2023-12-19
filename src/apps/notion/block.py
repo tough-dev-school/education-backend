@@ -6,6 +6,8 @@ from typing import Generator
 from apps.notion.rewrite import apply_our_adjustments
 from apps.notion.types import BlockData
 from apps.notion.types import BlockId
+from apps.notion.types import BlockProperties
+from apps.notion.types import BlockType
 
 
 @dataclass
@@ -31,7 +33,16 @@ class NotionBlock:
             return list()
 
     @property
-    def type(self) -> str | None:
+    def properties(self) -> BlockProperties:
+        result: BlockProperties = dict()
+        if "value" in self.data:
+            for property_name, value in self.data["value"].get("properties", {}).items():
+                result[property_name] = value[0][0]  # type: ignore
+
+        return result
+
+    @property
+    def type(self) -> BlockType | None:
         with contextlib.suppress(KeyError):
             return self.data["value"]["type"]
 
@@ -43,13 +54,14 @@ class NotionBlockList(UserList[NotionBlock]):
         return cls(blocks)
 
     def ordered(self) -> "NotionBlockList":
-        """Blockes in order from the first_page_block"""
         if self.first_page_block is None:
             return self
 
         result = self.__class__([self.first_page_block])
-        for block_id in self.first_page_block.content:
-            result.append(self.get_block(block_id))
+
+        for block in self.data:
+            if block.id is None or block.id != self.first_page_block.id:
+                result.append(block)
 
         return result
 

@@ -43,39 +43,24 @@ def page() -> NotionPage:
     return NotionPage(
         blocks=NotionBlockList(
             [
-                NotionBlock(id="block-1", data={"role": "reader-1", "value": {"parent_table": "test", "parent_id": "100500"}}),
+                NotionBlock(
+                    id="block-1",
+                    data={
+                    "role": "reader-1",
+                    "value": {  # type: ignore
+                        "parent_table": "test",
+                        "parent_id": "100500",
+                        "_key_to_drop": "value_to_drop",
+                    }},
+                ),
                 NotionBlock(id="block-2", data={"value": {"parent_id": "100600"}}),
+                NotionBlock(id="block-3", data={
+                    "value": {"type": "page", "content": ["block-1", "block-2"],
+                }}),
             ]
         )
     )
 
-
-@pytest.fixture
-def page_as_dict(page):
-    first_block = page.blocks[0]
-    second_block = page.blocks[1]
-    return {
-        "blocks": [
-            {
-                "id": first_block.id,
-                "data": first_block.data,
-            },
-            {
-                "id": second_block.id,
-                "data": second_block.data,
-            },
-        ]
-    }
-
-
-@pytest.fixture
-def cache_entry(not_expired_datetime, page_as_dict, mixer):
-    return mixer.blend(
-        "notion.NotionCacheEntry",
-        cache_key="some_key",
-        content=page_as_dict,
-        expires=not_expired_datetime,
-    )
 
 
 @pytest.fixture
