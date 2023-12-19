@@ -104,7 +104,7 @@ class NotionClient:
         )
         response = client.get(
             url=f"{settings.NOTION_MIDDLEWARE_URL}/v1/asset/?url={url}",
-            timeout=settings.NOTION_MIDDLEWARE_TIMEOUT,
+            timeout=settings.NOTION_MIDDLEWARE_ASSET_FETCHING_TIMEOUT,
         )
 
         if response.status_code != 200:

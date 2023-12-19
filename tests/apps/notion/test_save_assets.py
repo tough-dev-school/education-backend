@@ -2,6 +2,7 @@ import pytest
 from apps.notion.block import NotionBlock
 from apps.notion.models import NotionAsset
 from apps.notion import exceptions
+from celery.exceptions import Retry
 
 
 pytestmark = [pytest.mark.django_db]
@@ -68,5 +69,5 @@ def test_page_cover_and_icon_are_both_fetched(page):
 def test_failure(image, respx_mock):
     respx_mock.get(url="http://notion.middleware/v1/asset/?url=https:%2F%2Fnotion.so%2Fimage%2Fsecure.notion-static.com%252Ftypicalmacuser.jpg?table=100500&id=test-block&cache=v2").respond(status_code=400)
 
-    with pytest.raises(exceptions.HTTPError):
+    with pytest.raises(Retry):
         image.save_assets()
