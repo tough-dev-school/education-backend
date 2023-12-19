@@ -3,7 +3,7 @@ from django.core.management.commands.startapp import Command as BaseCommand
 
 
 class Command(BaseCommand):
-    def handle(self, **options) -> None:
+    def handle(self, **options):
         directory = settings.BASE_DIR.parent / "apps" / options["name"]
         directory.mkdir()
 
