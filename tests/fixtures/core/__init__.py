@@ -2,7 +2,7 @@ from tests.fixtures.core.api import anon
 from tests.fixtures.core.api import api
 from tests.fixtures.core.api import as_
 from tests.fixtures.core.api import as_user
-from tests.fixtures.core.current_user import mock_order_refund_service_current_user
+from tests.fixtures.core.current_user import mock_order_refund_service_current_user, mock_order_shiper_service_current_user
 from tests.fixtures.core.factory import factory
 from tests.fixtures.core.factory import mixer
 from tests.fixtures.core.pause_slow_background_jobs import _pause_dashamail
@@ -19,6 +19,7 @@ __all__ = [
     "factory",
     "mixer",
     "mock_order_refund_service_current_user",
+    "mock_order_shiper_service_current_user",
     "send_mail",
     "kamchatka_timezone",
     "write_admin_log",

@@ -58,7 +58,9 @@ def webhook_charge_refunded(load_stipe_webhook):
 
 
 @pytest.fixture
-def stripe_notification_checkout_completed(order, mixer):
+def stripe_notification_checkout_completed(order, mixer, mocker):
+    mocker.patch("apps.orders.services.order_shipper.OrderShipper.write_success_admin_log")
+
     return mixer.blend(
         "stripebank.StripeNotification",
         order=order,

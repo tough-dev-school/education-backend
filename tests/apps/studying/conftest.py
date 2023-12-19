@@ -17,7 +17,7 @@ def course(factory):
 
 
 @pytest.fixture(autouse=True)
-def order(factory, course, api):
+def order(factory, course, api, mock_order_shiper_service_current_user):
     return factory.order(
         user=api.user,
         item=course,

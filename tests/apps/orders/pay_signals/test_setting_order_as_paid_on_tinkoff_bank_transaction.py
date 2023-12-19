@@ -43,6 +43,8 @@ def bank_data():
     }
 
 
+
+@pytest.mark.usefixtures("mock_order_shiper_service_current_user")
 def test_ok(anon, order, bank_data):
     anon.post(
         "/api/v2/banking/tinkoff-notifications/",

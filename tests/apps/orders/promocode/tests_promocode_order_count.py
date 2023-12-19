@@ -23,6 +23,7 @@ def test_zero():
     assert promocode.order_count == 0
 
 
+@pytest.mark.usefixtures("mock_order_shiper_service_current_user")
 def test_two(factory, ten_percent_promocode):
     factory.cycle(2).order(promocode=ten_percent_promocode, is_paid=True)
 
@@ -31,6 +32,7 @@ def test_two(factory, ten_percent_promocode):
     assert promocode.order_count == 2
 
 
+@pytest.mark.usefixtures("mock_order_shiper_service_current_user")
 def test_another_promocode(factory, another_promocode):
     factory.cycle(2).order(promocode=another_promocode, is_paid=True)
 

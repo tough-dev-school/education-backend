@@ -62,7 +62,9 @@ def mock_rebuild_tags(mocker):
 
 
 @pytest.fixture
-def not_paid_order(factory, user, course):
+def not_paid_order(factory, mocker, user, course):
+    mocker.patch("apps.orders.services.order_shipper.OrderShipper.write_success_admin_log")
+
     order = factory.order(
         user=user,
         item=course,
@@ -75,7 +77,9 @@ def not_paid_order(factory, user, course):
 
 
 @pytest.fixture
-def paid_order(not_paid_order):
+def paid_order(mocker, not_paid_order):
+    mocker.patch("apps.orders.services.order_shipper.OrderShipper.write_success_admin_log")
+
     return not_paid_order.update(paid=datetime.fromisoformat("2022-12-10 09:23Z"))  # set manually to skip side effects
 
 

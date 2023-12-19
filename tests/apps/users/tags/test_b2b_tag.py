@@ -26,7 +26,7 @@ def test_with_recently_added_personal_domain(user, new_personal_domain, domain):
 
 
 @pytest.mark.parametrize("domain", ["mail.ru", "gmail.com", "yandex.ru"])
-def test_with_default_personal_domains(user, domain):
+def test_with_default_personal_domains(user, domain, mocker):
     user.update(email=f"somemail@{domain}")
 
     generate_tags(user)

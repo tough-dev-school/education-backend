@@ -24,6 +24,7 @@ def test_order_purchased(user):
     assert "popug-3__purchased" in user.tags
 
 
+@pytest.mark.usefixtures("mock_order_shiper_service_current_user")
 def test_order_started_and_then_purchased(user, non_paid_order):
     non_paid_order.set_paid()
 
@@ -35,6 +36,7 @@ def test_order_started_and_then_purchased(user, non_paid_order):
     assert "popug-3__purchased" in user.tags
 
 
+@pytest.mark.usefixtures("mock_order_shiper_service_current_user")
 def test_started_and_purchased_orders_for_same_product_group(user, course, factory):
     another_course_same_group = factory.course(slug=f"{course.group.slug}-vip", group=course.group)
     factory.order(is_paid=False, item=another_course_same_group, user=user)

@@ -9,7 +9,7 @@ def study(order):
 
 
 @pytest.fixture
-def order(course, user, factory):
+def order(course, mock_order_shiper_service_current_user, user, factory):
     return factory.order(item=course, user=user, is_paid=True)
 
 

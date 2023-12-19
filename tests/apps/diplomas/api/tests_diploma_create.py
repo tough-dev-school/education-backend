@@ -12,7 +12,7 @@ def student(mixer):
 
 
 @pytest.fixture(autouse=True)
-def order(factory, course, student):
+def order(factory, course, mock_order_shiper_service_current_user, student):
     return factory.order(user=student, item=course, is_paid=True)
 
 

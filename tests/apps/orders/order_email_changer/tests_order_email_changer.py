@@ -45,6 +45,7 @@ def test_order_not_reshipped_when_it_is_not_paid(email_changer, order, ship, uns
     unship.assert_not_called()
 
 
+@pytest.mark.usefixtures("mock_order_shiper_service_current_user")
 def test_order_is_reshipped_when_it_was_paid(email_changer, factory, course, ship, unship, user):
     order = factory.order(item=course, is_paid=True)
     changer = email_changer(order=order, email=user.email)

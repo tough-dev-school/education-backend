@@ -19,7 +19,7 @@ def users(mixer):
 
 
 @pytest.fixture(autouse=True)
-def _allow_course_access(factory, users, course):
+def _allow_course_access(factory, mock_order_shiper_service_current_user, users, course):
     for user in users:
         order = factory.order(user=user)
         order.set_item(course)

@@ -11,7 +11,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def order(factory, course):
+def order(factory, course, mock_order_shiper_service_current_user):
     order = factory.order(item=course, is_paid=True)  # any item should be suitable here
     order.ship()
 

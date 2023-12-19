@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.fixture
-def order(factory, amocrm_course, amocrm_user):
+def order(factory, amocrm_course, amocrm_user, mock_order_shiper_service_current_user):
     order = factory.order(item=amocrm_course.course, user=amocrm_user.user, is_paid=True)
     return order
 
@@ -19,5 +19,5 @@ def paid_order_with_lead(user, course, factory, amocrm_lead):
 
 
 @pytest.fixture
-def paid_order_without_lead(user, course, factory):
+def paid_order_without_lead(user, course, factory, mock_order_shiper_service_current_user):
     return factory.order(user=user, item=course, is_paid=True, author=user)

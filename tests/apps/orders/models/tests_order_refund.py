@@ -8,7 +8,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def paid_order(factory):
+def paid_order(factory, mock_order_shiper_service_current_user):
     return factory.order(is_paid=True)
 
 

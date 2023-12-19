@@ -16,6 +16,7 @@ def spy_stripe_webhook_handler(mocker):
     return mocker.spy(StripeWebhookHandler, "__call__")
 
 
+@pytest.mark.usefixtures("mock_order_shiper_service_current_user")
 def test_checkout_session_completed(anon, webhook_checkout_session_completed, order, spy_stripe_webhook_handler):
     anon.post("/api/v2/banking/stripe-webhooks/", webhook_checkout_session_completed, expected_status_code=200)
 
