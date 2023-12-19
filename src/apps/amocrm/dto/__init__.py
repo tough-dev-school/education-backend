@@ -2,8 +2,8 @@ from apps.amocrm.dto.catalogs import AmoCRMCatalogs
 from apps.amocrm.dto.customer import AmoCRMCustomer
 from apps.amocrm.dto.groups import AmoCRMGroups
 from apps.amocrm.dto.lead import AmoCRMLead
-from apps.amocrm.dto.lead_notes import AmoCRMLeadNoteDTO
-from apps.amocrm.dto.lead_tasks import AmoCRMLeadTaskDTO
+from apps.amocrm.dto.lead_note import AmoCRMLeadNoteDTO
+from apps.amocrm.dto.lead_task import AmoCRMLeadTaskDTO
 from apps.amocrm.dto.pipelines import AmoCRMPipelines
 from apps.amocrm.dto.product import AmoCRMProduct
 from apps.amocrm.dto.transaction import AmoCRMTransaction

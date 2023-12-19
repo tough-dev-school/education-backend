@@ -21,7 +21,7 @@ class AmoCRMTask(TypedDict):
 class AmoCRMLeadTaskDTO:
     """https://www.amocrm.ru/developers/content/crm_platform/tasks-api"""
 
-    def get_tasks(self, lead_id: int, is_completed: bool | None = None) -> list[AmoCRMTask]:
+    def get(self, lead_id: int, is_completed: bool | None = None) -> list[AmoCRMTask]:
         params = {
             "filter[entity_type]": "leads",
             "filter[entity_id]": lead_id,
@@ -50,7 +50,7 @@ class AmoCRMLeadTaskDTO:
             for task_data in response_data["_embedded"]["tasks"]
         ]
 
-    def create_task(self, lead_id: int, task_type_id: AmoCRMTaskType, task_text: str, timestamp_complete_till: int, responsible_user_id: int) -> int:
+    def create(self, lead_id: int, task_type_id: AmoCRMTaskType, task_text: str, timestamp_complete_till: int, responsible_user_id: int) -> int:
         data = {
             "entity_type": "leads",
             "entity_id": lead_id,
