@@ -5,7 +5,6 @@ import celery
 
 from django.conf import settings
 from django.contrib.admin.models import CHANGE
-from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
@@ -68,8 +67,9 @@ class OrderRefunder(BaseService):
     def write_success_admin_log(self) -> None:
         write_admin_log.delay(
             action_flag=CHANGE,
+            app="orders",
             change_message="Order refunded",
-            content_type_id=ContentType.objects.get_for_model(self.order).id,
+            model="Order",
             object_id=self.order.id,
             object_repr=str(self.order),
             user_id=get_current_user().id,  # type: ignore[union-attr]

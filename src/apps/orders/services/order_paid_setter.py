@@ -4,7 +4,6 @@ from celery import chain
 
 from django.conf import settings
 from django.contrib.admin.models import CHANGE
-from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 
 from apps.amocrm.tasks import amocrm_enabled
@@ -96,8 +95,9 @@ class OrderPaidSetter(BaseService):
 
         write_admin_log.delay(
             action_flag=CHANGE,
+            app="orders",
             change_message="Order paid",
-            content_type_id=ContentType.objects.get_for_model(self.order).id,
+            model="Order",
             object_id=self.order.id,
             object_repr=str(self.order),
             user_id=user.id,

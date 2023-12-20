@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
 from django.contrib.admin.models import CHANGE
-from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 
 from apps.orders.models import Order
@@ -40,8 +39,9 @@ class OrderShipper(BaseService):
 
         write_admin_log.delay(
             action_flag=CHANGE,
+            app="orders",
             change_message=self.log,
-            content_type_id=ContentType.objects.get_for_model(self.order).id,
+            model="Order",
             object_id=self.order.id,
             object_repr=str(self.order),
             user_id=user.id,
