@@ -1,15 +1,18 @@
 from collections.abc import Iterable
+from typing import TYPE_CHECKING
 
 import httpx
 from sentry_sdk import add_breadcrumb
 
 from django.conf import settings
 
-from apps.notion.block import NotionBlockList
 from apps.notion.exceptions import HTTPError
 from apps.notion.helpers import id_to_uuid
 from apps.notion.page import NotionPage
 from apps.notion.types import BlockId
+
+if TYPE_CHECKING:
+    from apps.notion.block import NotionBlockList
 
 
 class NotionClient:
@@ -34,6 +37,7 @@ class NotionClient:
             self.attempted_blocks += new_blocks_to_fetch  # save blocks that we already have tried to fetch, to make sure we will not request them again even if notion does not return them
             page.blocks += self.fetch_blocks(new_blocks_to_fetch)
 
+        page.save_assets()
         return page
 
     def fetch_page(self, page_id: str) -> NotionPage:
@@ -51,8 +55,10 @@ class NotionClient:
 
         return NotionPage.from_api_response(response)
 
-    def fetch_blocks(self, blocks: Iterable[BlockId]) -> NotionBlockList:
+    def fetch_blocks(self, blocks: Iterable[BlockId]) -> "NotionBlockList":
         """Fetch a list of notion blocks"""
+        from apps.notion.block import NotionBlockList
+
         response = self.fetch(
             resource="syncRecordValues",
             request_body={
@@ -64,6 +70,7 @@ class NotionClient:
 
     @staticmethod
     def fetch(resource: str, request_body: dict) -> dict:
+        """Query notion through our middleware"""
         add_breadcrumb(category="http", message=f"Sending notion request for {resource}", level="debug", data=request_body)
 
         client = httpx.Client(
@@ -86,3 +93,21 @@ class NotionClient:
         add_breadcrumb(category="http", message=f"Got notion response for {resource}", level="debug", data=notion_response)
 
         return notion_response
+
+    @staticmethod
+    def fetch_asset(url: str) -> bytes:
+        """Fetch asset through our middleware"""
+        add_breadcrumb(category="http", message="Fetching notion asset", level="debug", data={url: url})
+
+        client = httpx.Client(
+            http2=True,
+        )
+        response = client.get(
+            url=f"{settings.NOTION_MIDDLEWARE_URL}/v1/asset/?url={url}",
+            timeout=settings.NOTION_MIDDLEWARE_ASSET_FETCHING_TIMEOUT,
+        )
+
+        if response.status_code != 200:
+            raise HTTPError(f"{ response.http_version } error {response.status_code} fetching asset {url}: {response.text}")
+
+        return response.content

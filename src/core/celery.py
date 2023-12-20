@@ -22,7 +22,10 @@ celery.conf.update(
     task_ignore_result=True,
     task_store_errors_even_if_ignored=True,
     task_acks_late=True,
-    task_routes={"apps.amocrm.tasks.*": {"queue": "amocrm"}},
+    task_routes={
+        "apps.amocrm.tasks.*": {"queue": "amocrm"},
+        "notion.*": {"queue": "notion"},
+    },
     timezone=env("TIME_ZONE", cast=str, default="Europe/Moscow"),
     enable_utc=False,
     beat_schedule={

@@ -201,13 +201,21 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: docker service update app_worker --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }} --with-registry-auth
 
-      - name: update celery amocrm worker image
+      - name: update amocrm worker image
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: circle
           key: ${{ secrets.DEPLOY_KEY }}
           script: docker service update app_amocrm-worker --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }} --with-registry-auth
+
+      - name: update notion worker image
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: circle
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: docker service update app_notion-worker --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }} --with-registry-auth
 
       - name: update celery scheduler image
         uses: appleboy/ssh-action@v0.1.7

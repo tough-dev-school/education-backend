@@ -3,8 +3,12 @@ import contextlib
 from dataclasses import dataclass
 from typing import Generator
 
+from apps.notion import tasks
+from apps.notion.assets import get_asset_url
+from apps.notion.assets import is_notion_url
 from apps.notion.rewrite import apply_our_adjustments
 from apps.notion.types import BlockData
+from apps.notion.types import BlockFormat
 from apps.notion.types import BlockId
 from apps.notion.types import BlockProperties
 from apps.notion.types import BlockType
@@ -22,8 +26,10 @@ class NotionBlock:
     def from_json(cls, data: dict) -> "NotionBlock":
         return cls(id=data["id"], data=data["data"])
 
-    def get_data(self) -> BlockData:
-        return apply_our_adjustments(self.data)
+    @property
+    def type(self) -> BlockType | None:
+        with contextlib.suppress(KeyError):
+            return self.data["value"]["type"]
 
     @property
     def content(self) -> list[BlockId]:
@@ -31,6 +37,13 @@ class NotionBlock:
             return self.data["value"]["content"]
         except KeyError:
             return list()
+
+    @property
+    def format(self) -> BlockFormat:
+        try:
+            return self.data["value"]["format"]
+        except KeyError:
+            return {}
 
     @property
     def properties(self) -> BlockProperties:
@@ -41,10 +54,36 @@ class NotionBlock:
 
         return result
 
-    @property
-    def type(self) -> BlockType | None:
-        with contextlib.suppress(KeyError):
-            return self.data["value"]["type"]
+    def get_data(self) -> BlockData:
+        return apply_our_adjustments(self.data)
+
+    def get_assets_to_save(self) -> list[str]:  # NOQA: CCR001
+        """Returns a list of asset urls as defined in notion response
+        Returnes only assets to fetch
+
+        """
+        if self.type == "image":
+            return [self.properties["source"]]
+
+        if self.type == "page":
+            result = list()
+            for key in ("page_icon", "page_cover"):
+                if key in self.format and is_notion_url(self.format[key]):  # type: ignore
+                    result.append(self.format[key])  # type: ignore
+
+            return result
+
+        return []
+
+    def save_assets(self) -> None:
+        """Asynchronously download and save all assets in the block"""
+        for asset in self.get_assets_to_save():
+            tasks.save_asset.apply_async(
+                kwargs={
+                    "original_url": asset,
+                    "url": get_asset_url(asset, self.data),
+                },
+            )
 
 
 class NotionBlockList(UserList[NotionBlock]):

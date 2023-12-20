@@ -153,7 +153,7 @@ def test_user_always_gets_page_from_existing_cache(settings, cache_entry, env_va
 
 
 @pytest.mark.usefixtures("current_user_staff")
-def test_staff_user_get_page_from_cache_if_env_cache(settings, cache_entry, cache_set, fetch_page):
+def test_staff_user_get_page_from_cache_if_cache_only_mode_is_enabled(settings, cache_entry, cache_set, fetch_page):
     settings.NOTION_CACHE_ONLY = bool("On")
 
     get_cached_page(cache_entry.cache_key)
@@ -163,7 +163,7 @@ def test_staff_user_get_page_from_cache_if_env_cache(settings, cache_entry, cach
 
 
 @pytest.mark.usefixtures("current_user_staff")
-def test_staff_user_get_page_from_notion_if_not_env_cache(settings, cache_entry, cache_set, fetch_page):
+def test_staff_user_get_page_from_notion_if_cache_only_mode_is_disabled(settings, cache_entry, cache_set, fetch_page):
     settings.NOTION_CACHE_ONLY = bool("")
 
     got = get_cached_page(cache_entry.cache_key)

@@ -36,3 +36,8 @@ class NotionPage:
         if self.blocks.first_page_block is not None:
             with contextlib.suppress(KeyError, IndexError):
                 return self.blocks.first_page_block.data["value"]["properties"]["title"][0][0]
+
+    def save_assets(self) -> None:
+        """Save assets from all underlying blocks"""
+        for block in self.blocks:
+            block.save_assets()
