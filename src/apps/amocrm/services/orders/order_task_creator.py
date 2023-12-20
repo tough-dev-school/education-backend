@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import timedelta
-from typing import ClassVar, NamedTuple
+from typing import NamedTuple
 
 from django.utils import timezone
 from django.utils.functional import cached_property
@@ -27,6 +27,7 @@ class AmoCRMOrderTaskData(NamedTuple):
     task_name: str
     task_type_id: AmoCRMTaskType
     task_responsible_user_email: str
+    task_deadline_timedelta: timedelta = timedelta(days=3)
     service_note: AmoCRMOrderTaskDataServiceNote | None = None
 
 
@@ -41,8 +42,6 @@ class AmoCRMOrderTaskCreator(BaseService):
 
     order: Order
     task_data: AmoCRMOrderTaskData
-
-    task_deadline_timedelta: ClassVar[timedelta] = timedelta(days=3)
 
     @cached_property
     def lead_id(self) -> int:
@@ -83,7 +82,7 @@ class AmoCRMOrderTaskCreator(BaseService):
             if task["text"] == self.task_data.task_name and task["task_type_id"] == self.task_data.task_type_id:
                 return task["id"]
 
-        task_deadline = timezone.now() + self.task_deadline_timedelta
+        task_deadline = timezone.now() + self.task_data.task_deadline_timedelta
 
         return AmoCRMLeadTaskDTO().create(
             lead_id=self.lead_id,

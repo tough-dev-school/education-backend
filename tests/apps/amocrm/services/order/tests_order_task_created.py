@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import timedelta
 import pytest
 
 from apps.amocrm.definitions import AmoCRMTaskType
@@ -93,6 +94,13 @@ def task_creator(order_with_lead, payment_rejected_task_data):
     )()
 
 
+
+def test_order_task_data_default_timedelta(create_order_task_data):
+    task_data = create_order_task_data()
+
+    assert task_data.task_deadline_timedelta == timedelta(days=3)
+
+
 @pytest.mark.freeze_time("2024-01-01 00:00:00Z")
 def test_create_amocrm_lead_task_and_lead_note(task_creator, mock_lead_tasks_create, mock_lead_note_create_service_message, amocrm_lead):
     task_creator()
@@ -106,7 +114,7 @@ def test_create_amocrm_lead_task_and_lead_note(task_creator, mock_lead_tasks_cre
         lead_id=amocrm_lead.amocrm_id,
         task_type_id=AmoCRMTaskType.CONTACT,
         task_text="Отказ платёжной системы",
-        timestamp_complete_till=int(datetime(2024, 1, 4, 0, 0, 0).timestamp()),  # 3 days deadline
+        timestamp_complete_till=int(datetime(2024, 1, 4, 0, 0, 0).timestamp()),  # 3 days deadline by default
         responsible_user_id=888777,
     )
 
