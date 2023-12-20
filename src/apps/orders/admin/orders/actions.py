@@ -89,8 +89,10 @@ def generate_diplomas(modeladmin: Any, request: HttpRequest, queryset: QuerySet)
 @admin.action(description=_("Accept homework"))
 def accept_homework(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
     studies = Study.objects.filter(order__in=queryset)
-
     studies.update(homework_accepted=True)
+
+    for study in studies:
+        modeladmin.log_change(request, study, "Homework accepted")
 
     modeladmin.message_user(request, f"{studies.count()} homeworks accepted")
 
@@ -98,7 +100,9 @@ def accept_homework(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -
 @admin.action(description=_("Disaccept homework"))
 def disaccept_homework(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
     studies = Study.objects.filter(order__in=queryset)
-
     studies.update(homework_accepted=True)
+
+    for study in studies:
+        modeladmin.log_change(request, study, "Homework disaccepted")
 
     modeladmin.message_user(request, f"{studies.count()} homeworks disaccepted")
