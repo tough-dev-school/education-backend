@@ -3,7 +3,8 @@ import pytest
 
 @pytest.fixture
 def order(factory, amocrm_course, amocrm_user):
-    return factory.order(item=amocrm_course.course, user=amocrm_user.user, is_paid=True)
+    order = factory.order(item=amocrm_course.course, user=amocrm_user.user, is_paid=True)
+    return order
 
 
 @pytest.fixture
