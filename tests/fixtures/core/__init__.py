@@ -10,7 +10,6 @@ from tests.fixtures.core.pause_slow_background_jobs import _pause_dashamail
 from tests.fixtures.core.pause_slow_background_jobs import _pause_tags
 from tests.fixtures.core.send_mail import send_mail
 from tests.fixtures.core.timezone import kamchatka_timezone
-from tests.fixtures.core.write_admin_log import write_admin_log
 
 __all__ = [
     "anon",
@@ -21,7 +20,6 @@ __all__ = [
     "mixer",
     "send_mail",
     "kamchatka_timezone",
-    "write_admin_log",
     "_pause_auditlog",
     "_pause_dashamail",
     "_pause_tags",

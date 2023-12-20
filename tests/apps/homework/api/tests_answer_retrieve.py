@@ -76,7 +76,6 @@ def test_answers_with_parents_have_parent_field(api, question, answer, another_a
     assert "parent" in got
 
 
-@pytest.mark.usefixtures("_set_current_user")
 def test_403_for_not_purchased_users(api, answer, purchase):
     purchase.refund()
 
@@ -86,7 +85,6 @@ def test_403_for_not_purchased_users(api, answer, purchase):
     )
 
 
-@pytest.mark.usefixtures("_set_current_user")
 def test_ok_for_superusers_even_when_they_did_not_purchase_the_course(api, answer, purchase):
     purchase.refund()
 
@@ -98,7 +96,6 @@ def test_ok_for_superusers_even_when_they_did_not_purchase_the_course(api, answe
     )
 
 
-@pytest.mark.usefixtures("_set_current_user")
 def test_ok_for_users_with_permission_even_when_they_did_not_purchase_the_course(api, answer, purchase):
     purchase.refund()
 
@@ -110,7 +107,6 @@ def test_ok_for_users_with_permission_even_when_they_did_not_purchase_the_course
     )
 
 
-@pytest.mark.usefixtures("_set_current_user")
 def test_configurable_permissions_checking(api, answer, purchase, settings):
     purchase.refund()
 

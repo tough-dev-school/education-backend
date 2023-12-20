@@ -20,7 +20,6 @@ def test_sending_mail(course, user, send_mail):
     send_mail.assert_called_once_with(to=user.email, template_id="100500")
 
 
-@pytest.mark.usefixtures("_set_current_user")
 def test_non_purchased(course, user, send_mail, order):
     order.refund()
 

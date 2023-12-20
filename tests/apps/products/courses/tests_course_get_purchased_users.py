@@ -35,7 +35,6 @@ def test_single_user_in_two_orders(course, order, another_order):
     assert len(course.get_purchased_users()) == 1
 
 
-@pytest.mark.usefixtures("_set_current_user")
 def test_non_purchased(course, order):
     order.refund()
 
