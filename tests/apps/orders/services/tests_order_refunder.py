@@ -228,6 +228,7 @@ def test_fail_if_bank_is_set_but_unknown(paid_order, refund):
         refund(paid_order)
 
 
+@pytest.mark.auditlog
 @pytest.mark.freeze_time
 def test_success_admin_log_created(mocker, paid_order, refund, user):
     refund(paid_order)
