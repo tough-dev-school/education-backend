@@ -28,7 +28,7 @@ def order(factory, course, api, mocker):
 
 
 @pytest.fixture
-def unpaid_order(mock_order_refund_service_current_user, order):
+def unpaid_order(_set_current_user, order):
     order.refund()
 
     return order

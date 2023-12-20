@@ -11,14 +11,14 @@ def mock_stripe_refund(mocker):
     return mocker.patch("stripe.Refund.create")
 
 
-@pytest.mark.usefixtures("mock_order_refund_service_current_user")
+@pytest.mark.usefixtures("_set_current_user")
 def test_refund(stripe, stripe_notification_checkout_completed, mock_stripe_refund):
     stripe.refund()
 
     mock_stripe_refund.assert_called_once_with(payment_intent=stripe_notification_checkout_completed.payment_intent)
 
 
-@pytest.mark.usefixtures("mock_order_refund_service_current_user")
+@pytest.mark.usefixtures("_set_current_user")
 def test_not_fail_if_last_notification_not_linked_with_order(stripe, stripe_notification_checkout_completed, mixer, mock_stripe_refund):
     mixer.blend(
         "stripebank.StripeNotification",

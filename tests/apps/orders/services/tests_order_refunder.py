@@ -16,7 +16,7 @@ from core import current_user
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures("mock_order_refund_service_current_user"),
+    pytest.mark.usefixtures("_set_current_user"),
 ]
 
 

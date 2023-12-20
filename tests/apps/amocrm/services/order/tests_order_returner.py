@@ -19,14 +19,14 @@ def mock_delete_transaction(mocker):
 
 
 @pytest.fixture
-def unpaid_order(mixer, mock_order_refund_service_current_user, paid_order_with_lead):
+def unpaid_order(_set_current_user, mixer, paid_order_with_lead):
     mixer.blend("amocrm.AmoCRMOrderTransaction", order=paid_order_with_lead, amocrm_id=876)
     paid_order_with_lead.refund()
     return paid_order_with_lead
 
 
 @pytest.fixture
-def unpaid_order_not_in_amo(mock_order_refund_service_current_user, paid_order_without_lead):
+def unpaid_order_not_in_amo(_set_current_user, paid_order_without_lead):
     paid_order_without_lead.refund()
     return paid_order_without_lead
 
