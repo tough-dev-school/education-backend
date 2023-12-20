@@ -43,7 +43,6 @@ def bank_data():
     }
 
 
-
 def test_ok(anon, order, bank_data):
     anon.post(
         "/api/v2/banking/tinkoff-notifications/",
