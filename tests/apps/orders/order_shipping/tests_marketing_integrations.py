@@ -32,7 +32,7 @@ def update_dashamail(mocker):
 def update_dashamail_directcrm(mocker):
     return mocker.patch("apps.dashamail.tasks.directcrm_events.OrderPaid.send")
 
-@pytest.mark.usefixtures("_enable_amocrm")
+@pytest.mark.usefixtures('_enable_amocrm')
 def test_amocrm_is_updated(order, update_amocrm_order, update_amocrm_user):
     order.set_paid()
 
