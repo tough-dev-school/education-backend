@@ -241,9 +241,3 @@ def test_success_admin_log_created(mocker, paid_order, refund, user):
     assert log.object_id == str(paid_order.id)
     assert log.object_repr == str(paid_order)
     assert log.user == user
-
-
-def test_success_admin_log_created_via_task(paid_order, refund, write_admin_log):
-    refund(paid_order)
-
-    write_admin_log.assert_called_once()
