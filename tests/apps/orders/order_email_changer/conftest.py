@@ -31,9 +31,7 @@ def unship(mocker):
 
 
 @pytest.fixture
-def order(factory, mocker, nameless_user, course):
-    mocker.patch("apps.orders.services.order_shipper.OrderShipper.write_success_admin_log")
-
+def order(factory, nameless_user, course):
     return factory.order(user=nameless_user, item=course)
 
 

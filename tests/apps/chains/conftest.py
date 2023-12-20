@@ -9,9 +9,7 @@ def study(order):
 
 
 @pytest.fixture
-def order(course, mocker, user, factory):
-    mocker.patch("apps.orders.services.order_shipper.OrderShipper.write_success_admin_log")
-
+def order(course, user, factory):
     return factory.order(item=course, user=user, is_paid=True)
 
 

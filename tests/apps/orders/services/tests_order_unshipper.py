@@ -11,9 +11,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def order(factory, course, mocker):
-    mocker.patch("apps.orders.services.order_shipper.OrderShipper.write_success_admin_log")
-
+def order(factory, course):
     order = factory.order(item=course, is_paid=True)  # any item should be suitable here
     order.ship()
 

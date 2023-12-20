@@ -62,7 +62,7 @@ def mock_rebuild_tags(mocker):
 
 
 @pytest.fixture
-def not_paid_order(factory, mocker, user, course):
+def not_paid_order(course, factory, mocker, user):
     mocker.patch("apps.orders.services.order_shipper.OrderShipper.write_success_admin_log")
 
     order = factory.order(
@@ -230,7 +230,7 @@ def test_fail_if_bank_is_set_but_unknown(paid_order, refund):
 
 @pytest.mark.auditlog
 @pytest.mark.freeze_time
-def test_success_admin_log_created(mocker, paid_order, refund, user):
+def test_success_admin_log_created(paid_order, refund, user):
     refund(paid_order)
 
     log = LogEntry.objects.get()

@@ -9,9 +9,7 @@ def ship(mocker):
 
 
 @pytest.fixture
-def order(factory, mocker):
-    mocker.patch("apps.orders.services.order_shipper.OrderShipper.write_success_admin_log")
-
+def order(factory):
     return factory.order()
 
 

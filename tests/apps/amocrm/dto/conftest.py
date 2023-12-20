@@ -37,9 +37,7 @@ def course(amocrm_course, factory):
 
 
 @pytest.fixture
-def order(amocrm_user, course, factory, mocker):
-    mocker.patch("apps.orders.services.order_shipper.OrderShipper.write_success_admin_log")
-
+def order(amocrm_user, course, factory):
     order = factory.order(
         user=amocrm_user.user,
         item=course,

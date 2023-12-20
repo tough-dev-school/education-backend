@@ -2,9 +2,7 @@ import pytest
 
 
 @pytest.fixture
-def order(factory, amocrm_course, amocrm_user, mocker):
-    mocker.patch("apps.orders.services.order_shipper.OrderShipper.write_success_admin_log")
-
+def order(factory, amocrm_course, amocrm_user):
     return factory.order(item=amocrm_course.course, user=amocrm_user.user, is_paid=True)
 
 
