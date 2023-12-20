@@ -2,6 +2,12 @@ import pytest
 
 
 @pytest.fixture(autouse=True)
+def _pause_auditlog(mocker, request):
+    if request.node.get_closest_marker("auditlog") is None:
+        mocker.patch("core.tasks.write_admin_log.delay")
+
+
+@pytest.fixture(autouse=True)
 def _pause_dashamail(mocker, request):
     """Pause dashamail background jobs"""
     if request.node.get_closest_marker("dashamail") is None:

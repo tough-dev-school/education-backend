@@ -190,6 +190,7 @@ filterwarnings = [
     "ignore:unclosed file:ResourceWarning",
 ]
 markers = [
+    "auditlog: enable admin logging",
     "freeze_time: freezing time marker (pytest-freezegun does not register it)",
     "single_thread: marked tests should be ran only in single thread",
     "slow: tests with inentional slow run",

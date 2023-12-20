@@ -6,7 +6,10 @@ from django.contrib.admin.models import LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 
-pytestmark = pytest.mark.django_db
+pytestmark = [
+    pytest.mark.auditlog,
+    pytest.mark.django_db,
+]
 
 
 @pytest.fixture
