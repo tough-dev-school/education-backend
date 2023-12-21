@@ -48,6 +48,7 @@ def page() -> NotionPage:
                     data={
                     "role": "reader-1",
                     "value": {  # type: ignore
+                        "id": "block-1",
                         "parent_table": "test",
                         "parent_id": "100500",
                         "_key_to_drop": "value_to_drop",
@@ -55,8 +56,14 @@ def page() -> NotionPage:
                 ),
                 NotionBlock(id="block-2", data={"value": {"parent_id": "100600"}}),
                 NotionBlock(id="block-3", data={
-                    "value": {"type": "page", "content": ["block-1", "block-2"],
-                }}),
+                    "value": {
+                        "type": "page",
+                        "content": ["block-1", "block-2"],
+                        "format": {
+                            "page_cover": "secure.notion-static.com/typicalmacuser.jpg",
+                        },
+                    }
+                }),
             ]
         )
     )

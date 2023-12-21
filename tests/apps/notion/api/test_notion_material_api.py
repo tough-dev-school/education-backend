@@ -1,6 +1,8 @@
 import pytest
 from django.utils import timezone
 from datetime import timedelta
+from apps.notion.models import NotionAsset
+
 
 pytestmark = [
     pytest.mark.django_db,
@@ -36,6 +38,18 @@ def get_cached_material(api, disable_notion_cache, raw_notion_cache_entry, mock_
 
     return _get_cached_material
 
+
+@pytest.fixture
+def fetched_asset() -> NotionAsset:
+    from apps.notion.rewrite.fetched_assets import get_asset_mapping
+
+    get_asset_mapping.cache_clear()
+    return NotionAsset.objects.create(
+        url="secure.notion-static.com/typicalmacuser.jpg",
+        file="assets/typicalmacuser-downloaded.jpg",
+        size=100,
+        md5_sum="D34DBEEF",
+    )
 
 @pytest.mark.parametrize("material_id", ["0e5693d2-173a-4f77-ae81-06813b6e5329", "0e5693d2173a4f77ae8106813b6e5329"])
 def test_both_formats_work_with_id(api, material_id, mock_notion_response):
@@ -81,6 +95,19 @@ def test_extra_tags_are_dropped_from_cached_material(get_cached_material, materi
     got = get_cached_material(material.page_id)
 
     assert "_key_to_drop" not in got["block-1"]["value"]
+
+
+@pytest.mark.usefixtures("fetched_asset")
+def test_asset_paths_are_rewritten_during_upstream_api_call(api, material):
+    got = api.get(f"/api/v2/notion/materials/{material.page_id}/")
+
+    assert got["block-3"]["value"]["format"]["page_cover"] == "/media/assets/typicalmacuser-downloaded.jpg"
+
+@pytest.mark.usefixtures("fetched_asset")
+def test_asset_paths_are_rewritten_for_cached_material(get_cached_material, material):
+    got = get_cached_material(material.page_id)
+
+    assert got["block-3"]["value"]["format"]["page_cover"] == "/media/assets/typicalmacuser-downloaded.jpg"
 
 
 def test_404_for_non_existant_materials(api, mock_notion_response):
