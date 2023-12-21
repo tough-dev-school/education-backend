@@ -9,6 +9,9 @@ def _auditlog(mocker, request):
         mocker.patch("apps.orders.services.order_paid_setter.OrderPaidSetter.write_success_admin_log")
         mocker.patch("apps.orders.services.order_refunder.OrderRefunder.write_success_admin_log")
 
+    else:
+        request.getfixturevalue("_set_current_user")
+
 
 @pytest.fixture(autouse=True)
 def _dashamail(mocker, request):

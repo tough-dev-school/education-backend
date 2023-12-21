@@ -6,6 +6,8 @@ from django.contrib.admin.models import LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 
+from core import current_user
+
 pytestmark = [
     pytest.mark.auditlog,
     pytest.mark.django_db,
@@ -18,7 +20,6 @@ def order(factory):
 
 
 @pytest.mark.freeze_time
-@pytest.mark.usefixtures("_set_current_user")
 def test_paid_log_created(order, user):
     order.set_paid()
 
@@ -32,7 +33,9 @@ def test_paid_log_created(order, user):
     assert log.user == user
 
 
-def test_log_author_is_student_when_set_paid_by_anon(order):
+def test_log_author_is_student_when_set_paid_by_anon(mocker, order):
+    mocker.patch("apps.orders.services.order_paid_setter.get_current_user", return_value=None)
+
     order.set_paid()
 
     assert LogEntry.objects.get().user == order.user
