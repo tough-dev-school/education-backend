@@ -72,6 +72,7 @@ class OrderRefunder(BaseService):
             model="Order",
             object_id=self.order.id,
             object_repr=str(self.order),
+            user_id=get_current_user().id,  # type: ignore[union-attr]
         )
 
     def update_user_tags(self) -> None:
