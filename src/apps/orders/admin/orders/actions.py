@@ -98,7 +98,11 @@ def accept_homework(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -
     studies.update(homework_accepted=True)
 
     for study in studies.iterator():
-        modeladmin.log_change(request, study, "Homework accepted")
+        modeladmin.log_change(
+            message="Homework accepted",
+            obj=study,
+            request=request,
+        )
 
     modeladmin.message_user(request, f"{studies.count()} homeworks accepted")
 
@@ -109,6 +113,10 @@ def disaccept_homework(modeladmin: Any, request: HttpRequest, queryset: QuerySet
     studies.update(homework_accepted=True)
 
     for study in studies.iterator():
-        modeladmin.log_change(request, study, "Homework disaccepted")
+        modeladmin.log_change(
+            message="Homework disaccepted",
+            obj=study,
+            request=request,
+        )
 
     modeladmin.message_user(request, f"{studies.count()} homeworks disaccepted")
