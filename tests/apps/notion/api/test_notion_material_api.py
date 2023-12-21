@@ -23,6 +23,20 @@ def raw_notion_cache_entry(page, material, mixer):
     )
 
 
+@pytest.fixture
+def get_cached_material(api, disable_notion_cache, raw_notion_cache_entry, mock_notion_response):
+    disable_notion_cache.return_value = False
+    assert raw_notion_cache_entry.content["blocks"][0]["id"] == "block-1"  # make sure cash entry is not ordered
+
+    def _get_cached_material(page_id: str):
+        got = api.get(f"/api/v2/notion/materials/{page_id}/")
+        mock_notion_response.assert_not_called()  # make sure we hit the cache
+
+        return got
+
+    return _get_cached_material
+
+
 @pytest.mark.parametrize("material_id", ["0e5693d2-173a-4f77-ae81-06813b6e5329", "0e5693d2173a4f77ae8106813b6e5329"])
 def test_both_formats_work_with_id(api, material_id, mock_notion_response):
     api.get(f"/api/v2/notion/materials/{material_id}/")
@@ -44,15 +58,27 @@ def test_content_is_passed_from_notion_client(api, material):
     assert got["block-2"]["value"]["parent_id"] == "100600"
 
 
-def test_page_block_goes_first(api, material):
+def test_page_block_goes_first_during_upstream_api_call(api, material):
     """Despite block-3 is the last block, it should be first cuz it the block with type=="page" """
     got = api.get(f"/api/v2/notion/materials/{material.page_id}/")
 
     assert list(got.keys())[0] == "block-3"
 
 
-def test_our_adjustments_are_applied_during_api_call(api, material):
+def test_page_block_goes_first_for_cached_material(get_cached_material, material):
+    got = get_cached_material(material.page_id)
+
+    assert list(got.keys())[0] == "block-3"  # page block goes first
+
+
+def test_extra_tags_are_dropped_during_upstram_api_call(api, material):
     got = api.get(f"/api/v2/notion/materials/{material.page_id}/")
+
+    assert "_key_to_drop" not in got["block-1"]["value"]
+
+
+def test_extra_tags_are_dropped_from_cached_material(get_cached_material, material):
+    got = get_cached_material(material.page_id)
 
     assert "_key_to_drop" not in got["block-1"]["value"]
 
@@ -66,16 +92,6 @@ def test_404_for_non_existant_materials(api, mock_notion_response):
 def test_404_for_inactive_materials(api, mock_notion_response, material):
     material.update(active=False)
 
-    api.get("/api/v2/notion/materials/0e5693d2173a4f77ae8106813b6e5329/", expected_status_code=404)
+    api.get(f"/api/v2/notion/materials/{material.page_id}/", expected_status_code=404)
 
     mock_notion_response.assert_not_called()
-
-def test_our_adjustments_are_applied_for_cached_materials(api, material, disable_notion_cache, mock_notion_response, raw_notion_cache_entry):
-    disable_notion_cache.return_value = False
-    assert raw_notion_cache_entry.content["blocks"][0]["id"] == "block-1"  # make sure cash entry is not ordered
-
-    got = api.get(f"/api/v2/notion/materials/{material.page_id}/")
-
-    mock_notion_response.assert_not_called()  # make sure we hit the cache
-    assert "_key_to_drop" not in got["block-1"]["value"]  # extra tags are deleted
-    assert list(got.keys())[0] == "block-3"  # page block goes first
