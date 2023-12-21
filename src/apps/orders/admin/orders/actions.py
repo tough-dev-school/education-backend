@@ -58,6 +58,12 @@ def ship_without_payment(modeladmin: Any, request: HttpRequest, queryset: QueryS
 
     for order in queryset.iterator():
         if order.ship_without_payment():
+            modeladmin.log_change(
+                message="Order shipped without payment",
+                obj=order,
+                request=request,
+            )
+
             shipped_count += 1
 
     modeladmin.message_user(request, f"{shipped_count} orders shipped")

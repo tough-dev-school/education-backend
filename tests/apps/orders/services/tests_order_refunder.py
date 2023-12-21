@@ -62,9 +62,7 @@ def mock_rebuild_tags(mocker):
 
 
 @pytest.fixture
-def not_paid_order(course, factory, mocker, user):
-    mocker.patch("apps.orders.services.order_shipper.OrderShipper.write_success_admin_log")
-
+def not_paid_order(course, factory, user):
     order = factory.order(
         user=user,
         item=course,
