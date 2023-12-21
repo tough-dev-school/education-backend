@@ -38,8 +38,7 @@ def image():
 
 @pytest.fixture(autouse=True)
 def _mock_middleware_response(respx_mock):
-    respx_mock.get(url="http://notion.middleware/v1/asset/?url=https:%2F%2Fnotion.so%2Fimage%2Fsecure.notion-static.com%252Ftypicalmacuser.jpg?table=100500&id=test-block&cache=v2").respond(content=b"test-img-content")
-    respx_mock.get(url="http://notion.middleware/v1/asset/?url=https:%2F%2Fnotion.so%2Fimage%2Fsecure.notion-static.com%252Ftypicalmacuser_icon.jpg?table=100500&id=test-block&cache=v2").respond(content=b"test-icon-content")
+    respx_mock.post(url="http://notion.middleware/v1/asset/").respond(content=b"test-img-content")
 
 
 def test_image(image):
@@ -67,7 +66,7 @@ def test_page_cover_and_icon_are_both_fetched(page):
 
 
 def test_failure(image, respx_mock):
-    respx_mock.get(url="http://notion.middleware/v1/asset/?url=https:%2F%2Fnotion.so%2Fimage%2Fsecure.notion-static.com%252Ftypicalmacuser.jpg?table=100500&id=test-block&cache=v2").respond(status_code=400)
+    respx_mock.post(url="http://notion.middleware/v1/asset/").respond(status_code=400)
 
     with pytest.raises(Retry):
         image.save_assets()
