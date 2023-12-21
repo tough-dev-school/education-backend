@@ -8,6 +8,8 @@ from core.models import TimestampedModel
 class NotionAsset(TimestampedModel):
     url = models.URLField(max_length=1024, unique=True, db_index=True)
     file = models.FileField(upload_to=RandomFileName("assets"), unique=True)  # NOQA: VNE002
+    size = models.IntegerField(_("Image size in bytes"))
+    md5_sum = models.CharField(max_length=32)
 
     class Meta:
         verbose_name = _("Notion asset")

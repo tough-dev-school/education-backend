@@ -47,6 +47,8 @@ def test_image(image):
     asset = NotionAsset.objects.get(url="secure.notion-static.com/typicalmacuser.jpg")
 
     assert asset.file.read() == b"test-img-content"
+    assert asset.size == 16
+    assert asset.md5_sum == "c87337eddb4771e90e429e8c34d178a4"
 
 
 def test_page_cover(page):
@@ -55,6 +57,8 @@ def test_page_cover(page):
     asset = NotionAsset.objects.get(url="secure.notion-static.com/typicalmacuser.jpg")
 
     assert asset.file.read() == b"test-img-content"
+    assert asset.size == 16
+    assert asset.md5_sum == "c87337eddb4771e90e429e8c34d178a4"
 
 
 def test_page_cover_and_icon_are_both_fetched(page):

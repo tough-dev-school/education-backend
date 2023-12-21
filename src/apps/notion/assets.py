@@ -1,3 +1,4 @@
+from hashlib import md5
 from os.path import basename
 from urllib.parse import quote
 
@@ -41,7 +42,13 @@ def save_asset(url: str, original_url: str) -> None:
 
     fetched = NotionClient.fetch_asset(url)
 
-    asset = NotionAsset.objects.get_or_create(url=original_url)[0]
+    asset = NotionAsset.objects.get_or_create(
+        url=original_url,
+        defaults={
+            "size": len(fetched),
+            "md5_sum": md5(fetched).hexdigest(),
+        },
+    )[0]
     asset.file.save(
         name=basename(original_url),  # will be randomized by RandomFileName
         content=ContentFile(fetched),
