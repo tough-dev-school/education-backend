@@ -41,14 +41,18 @@ def save_asset(url: str, original_url: str) -> None:
     from apps.notion.client import NotionClient
 
     fetched = NotionClient.fetch_asset(url)
+    hashsum = md5(fetched).hexdigest()
 
-    asset = NotionAsset.objects.get_or_create(
+    asset, created = NotionAsset.objects.get_or_create(
         url=original_url,
         defaults={
             "size": len(fetched),
-            "md5_sum": md5(fetched).hexdigest(),
+            "md5_sum": hashsum,
         },
-    )[0]
+    )
+    if not created and asset.md5_sum == hashsum:  # do not query s3 if asset is not changed
+        return
+
     asset.file.save(
         name=basename(original_url),  # will be randomized by RandomFileName
         content=ContentFile(fetched),
