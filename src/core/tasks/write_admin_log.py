@@ -12,18 +12,17 @@ def write_admin_log(
     change_message: str,
     model: str,
     object_id: int,
-    object_repr: str,
     user_id: int,
 ) -> None:
-    model = apps.get_model(app, model)  # type: ignore[assignment]
+    content_type_id = ContentType.objects.get(app_label=app, model=model.lower()).id
 
-    content_type_id = ContentType.objects.get_for_model(model).id  # type: ignore[arg-type]
+    obj = apps.get_model(app, model).objects.get(id=object_id)
 
     LogEntry.objects.log_action(
         action_flag=action_flag,
         change_message=change_message,
         content_type_id=content_type_id,
         object_id=object_id,
-        object_repr=object_repr,
+        object_repr=str(obj),
         user_id=user_id,
     )

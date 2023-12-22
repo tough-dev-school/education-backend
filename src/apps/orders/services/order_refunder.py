@@ -71,7 +71,6 @@ class OrderRefunder(BaseService):
             change_message="Order refunded",
             model="Order",
             object_id=self.order.id,
-            object_repr=str(self.order),
             user_id=get_current_user().id,  # type: ignore[union-attr]
         )
 

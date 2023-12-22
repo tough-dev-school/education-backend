@@ -99,7 +99,6 @@ class OrderPaidSetter(BaseService):
             change_message="Order paid",
             model="Order",
             object_id=self.order.id,
-            object_repr=str(self.order),
             user_id=user.id,
         )
 
