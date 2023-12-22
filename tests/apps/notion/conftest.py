@@ -11,12 +11,26 @@ pytestmark = [
     pytest.mark.django_db,
 ]
 
+@pytest.fixture
+def _cdn_dev_storage(settings):
+    settings.STORAGES = {
+        "default": {
+            "BACKEND": "core.storages.ProdReadOnlyStorage",
+        },
+    }
+    settings.AWS_S3_CUSTOM_DOMAIN = "cdn.tough-dev.school"
+
 
 @pytest.fixture(autouse=True)
 def _isolate_mapping_cache():
     """asset links mappings are LRU-cached, so we need to reset it before year test run"""
     notion_so_assets.get_already_fetched_assets.cache_clear()
     fetched_assets.get_asset_mapping.cache_clear()
+
+    yield
+    notion_so_assets.get_already_fetched_assets.cache_clear()
+    fetched_assets.get_asset_mapping.cache_clear()
+
 
 @pytest.fixture
 def staff_user(mixer):

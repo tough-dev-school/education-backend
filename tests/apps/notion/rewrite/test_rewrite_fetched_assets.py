@@ -2,10 +2,12 @@ import pytest
 from apps.notion.types import BlockValue
 from apps.notion.models import NotionAsset
 from apps.notion.rewrite import rewrite_fetched_assets
-from apps.notion.rewrite.fetched_assets import get_asset_mapping
 from contextlib import nullcontext as does_not_raise
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [
+    pytest.mark.django_db,
+    pytest.mark.usefixtures("_cdn_dev_storage"),
+]
 
 
 def rewrite(block) -> BlockValue:
@@ -47,7 +49,7 @@ def test_image_not_rewritten(image):
 
 @pytest.mark.usefixtures("asset")
 def test_image_rewritten(image):
-    assert rewrite(image)["properties"]["source"] == [["/media/assets/macuser.png"]]
+    assert rewrite(image)["properties"]["source"] == [["https://cdn.tough-dev.school/assets/macuser.png"]]
 
 
 @pytest.mark.usefixtures("another_asset")
@@ -58,8 +60,8 @@ def test_page_not_rewritten(page):
 
 @pytest.mark.usefixtures("asset", "icon_asset")
 def test_page_rewritten(page):
-    assert rewrite(page)["format"]["page_cover"] == "/media/assets/macuser.png"
-    assert rewrite(page)["format"]["page_icon"] == "/media/assets/macuser_icon.png"
+    assert rewrite(page)["format"]["page_cover"] == "https://cdn.tough-dev.school/assets/macuser.png"
+    assert rewrite(page)["format"]["page_icon"] == "https://cdn.tough-dev.school/assets/macuser_icon.png"
 
 
 @pytest.mark.parametrize("param", ["page_cover", "page_icon"])
@@ -67,3 +69,9 @@ def test_page_without_cover_and_icon(page, param):
     del page["value"]["format"][param]
     with does_not_raise():
         rewrite(page)
+
+
+@pytest.mark.usefixtures("asset")
+def test_https_rewrite(image, mocker):
+    mocker.patch('core.storages.ProdReadOnlyStorage.url', return_value='http://cdn.tough-dev.school/assets/macuser.png')
+    assert rewrite(image)["properties"]["source"] == [["https://cdn.tough-dev.school/assets/macuser.png"]]

@@ -7,7 +7,7 @@ from apps.notion.types import BlockData as NotionBlockData
 
 @lru_cache
 def get_asset_mapping() -> Mapping[str, str]:
-    return {asset.url: asset.file.url for asset in NotionAsset.objects.all().iterator()}
+    return {asset.url: asset.get_absolute_url() for asset in NotionAsset.objects.all().iterator()}
 
 
 def rewrite_fetched_assets(block_data: NotionBlockData) -> NotionBlockData:
