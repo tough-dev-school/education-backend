@@ -1,6 +1,7 @@
 import pytest
-from apps.amocrm.dto import AmoCRMLeadTaskDTO
+
 from apps.amocrm import amo_types
+from apps.amocrm.dto import AmoCRMLeadTaskDTO
 
 
 @pytest.fixture

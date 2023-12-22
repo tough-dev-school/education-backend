@@ -1,4 +1,5 @@
 import pytest
+
 from apps.amocrm.dto import AmoCRMOperatorDTO
 
 

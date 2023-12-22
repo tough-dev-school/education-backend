@@ -1,7 +1,7 @@
 import pytest
 
-from apps.amocrm.dto.catalogs import AmoCRMCatalogsDTO
 from apps.amocrm import amo_types
+from apps.amocrm.dto.catalogs import AmoCRMCatalogsDTO
 
 pytestmark = [
     pytest.mark.django_db,
