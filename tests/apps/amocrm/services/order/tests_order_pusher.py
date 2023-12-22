@@ -20,13 +20,13 @@ def mock_create_transaction(mocker):
 
 @pytest.fixture
 def mock_create_lead(mocker):
-    mocker.patch("apps.amocrm.dto.lead.AmoCRMLead.create", return_value=11111)
-    return mocker.patch("apps.amocrm.dto.lead.AmoCRMLead.__init__", return_value=None)
+    mocker.patch("apps.amocrm.dto.lead.AmoCRMLeadDTO.create", return_value=11111)
+    return mocker.patch("apps.amocrm.dto.lead.AmoCRMLeadDTO.__init__", return_value=None)
 
 
 @pytest.fixture
 def mock_update_lead(mocker):
-    return mocker.patch("apps.amocrm.dto.lead.AmoCRMLead.update")
+    return mocker.patch("apps.amocrm.dto.lead.AmoCRMLeadDTO.update")
 
 
 @pytest.fixture

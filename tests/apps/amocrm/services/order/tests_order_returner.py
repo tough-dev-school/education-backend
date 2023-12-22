@@ -10,7 +10,7 @@ pytestmark = [
 
 @pytest.fixture
 def mock_update_lead(mocker):
-    return mocker.patch("apps.amocrm.dto.lead.AmoCRMLead.update")
+    return mocker.patch("apps.amocrm.dto.lead.AmoCRMLeadDTO.update")
 
 
 @pytest.fixture
