@@ -1,4 +1,4 @@
-from apps.amocrm.dto.catalogs import AmoCRMCatalogs
+from apps.amocrm.dto.catalogs import AmoCRMCatalogsDTO
 from apps.amocrm.dto.customer import AmoCRMCustomer
 from apps.amocrm.dto.groups import AmoCRMGroups
 from apps.amocrm.dto.lead import AmoCRMLead
@@ -16,7 +16,7 @@ __all__ = [
     "AmoCRMLead",
     "AmoCRMTransaction",
     "AmoCRMPipelines",
-    "AmoCRMCatalogs",
+    "AmoCRMCatalogsDTO",
     "AmoCRMOperatorDTO",
     "AmoCRMLeadNoteDTO",
     "AmoCRMLeadTaskDTO",

@@ -2,7 +2,7 @@ from typing import Literal
 
 from django.conf import settings
 
-from apps.amocrm.dto import AmoCRMCatalogs
+from apps.amocrm.dto import AmoCRMCatalogsDTO
 from apps.amocrm.dto import AmoCRMPipelines
 from apps.amocrm.dto.pipelines import Pipeline
 from apps.amocrm.exceptions import AmoCRMCacheException
@@ -39,24 +39,24 @@ def b2c_pipeline_id() -> int:
 
 
 def contact_field_id(field_code: CONTACTS_FIELDS_CODES) -> int:
-    for field in AmoCRMCatalogs.get_contacts_fields():
-        if field["code"] == field_code:
-            return field["id"]
+    for field in AmoCRMCatalogsDTO.get_contacts_fields():
+        if field.code == field_code:
+            return field.id
     raise AmoCRMCacheException(f"Cannot retrieve {field_code} contact field")
 
 
 def products_catalog_id() -> int:
-    for catalog in AmoCRMCatalogs.get():
-        if catalog["type"] == "products":
-            return catalog["id"]
+    for catalog in AmoCRMCatalogsDTO.get():
+        if catalog.type == "products":
+            return catalog.id
     raise AmoCRMCacheException("Cannot retrieve products catalog id")
 
 
 def product_field_id(field_code: PRODUCTS_FIELDS_CODES) -> int:
     product_catalog_id = products_catalog_id()
-    for field in AmoCRMCatalogs.get_fields(catalog_id=product_catalog_id):
-        if field["code"] == field_code:
-            return field["id"]
+    for field in AmoCRMCatalogsDTO.get_fields(catalog_id=product_catalog_id):
+        if field.code == field_code:
+            return field.id
     raise AmoCRMCacheException(f"Cannot retrieve {field_code} product field")
 
 
