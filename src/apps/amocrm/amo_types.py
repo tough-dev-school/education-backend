@@ -65,3 +65,18 @@ class Pipeline(NamedTuple):
     id: int
     name: str
     statuses: list[PipelineStatus]
+
+
+class UserOperator(NamedTuple):
+    """Represents amocrm's User.
+
+    The 'UserOperator' is used to distinguish from the 'AmoCRMUser' model that link amocrm's customers.
+
+    Only fields that are used in the app are listed.
+    All the available fields are listed in docs:
+    https://www.amocrm.ru/developers/content/crm_platform/users-api#users-list
+    """
+
+    id: int
+    name: str
+    email: str

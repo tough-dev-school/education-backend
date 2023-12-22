@@ -7,7 +7,7 @@ from apps.amocrm.dto.lead_task import AmoCRMLeadTaskDTO
 from apps.amocrm.dto.pipelines import AmoCRMPipelinesDTO
 from apps.amocrm.dto.product import AmoCRMProductDTO
 from apps.amocrm.dto.transaction import AmoCRMTransactionDTO
-from apps.amocrm.dto.user_operator import AmoCRMOperatorDTO
+from apps.amocrm.dto.user_operator import AmoCRMUserOperatorDTO
 
 __all__ = [
     "AmoCRMCatalogsDTO",
@@ -19,5 +19,5 @@ __all__ = [
     "AmoCRMPipelinesDTO",
     "AmoCRMProductDTO",
     "AmoCRMTransactionDTO",
-    "AmoCRMOperatorDTO",
+    "AmoCRMUserOperatorDTO",
 ]
