@@ -1,6 +1,6 @@
 from apps.amocrm.dto.catalogs import AmoCRMCatalogsDTO
 from apps.amocrm.dto.customer import AmoCRMCustomerDTO
-from apps.amocrm.dto.groups import AmoCRMGroups
+from apps.amocrm.dto.groups import AmoCRMGroupsDTO
 from apps.amocrm.dto.lead import AmoCRMLead
 from apps.amocrm.dto.lead_note import AmoCRMLeadNoteDTO
 from apps.amocrm.dto.lead_task import AmoCRMLeadTaskDTO
@@ -12,7 +12,7 @@ from apps.amocrm.dto.user_operator import AmoCRMOperatorDTO
 __all__ = [
     "AmoCRMCustomerDTO",
     "AmoCRMProduct",
-    "AmoCRMGroups",
+    "AmoCRMGroupsDTO",
     "AmoCRMLead",
     "AmoCRMTransaction",
     "AmoCRMPipelines",
