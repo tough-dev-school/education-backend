@@ -4,7 +4,7 @@ import pytest
 @pytest.fixture(autouse=True)
 def _auditlog(mocker, request):
     if request.node.get_closest_marker("auditlog") is None:
-        mocker.patch("core.tasks.write_admin_log.delay")
+        mocker.patch("core.tasks.write_admin_log.write_admin_log.delay")
 
         mocker.patch("apps.orders.services.order_paid_setter.OrderPaidSetter.write_success_admin_log")
         mocker.patch("apps.orders.services.order_refunder.OrderRefunder.write_success_admin_log")
