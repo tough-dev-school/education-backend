@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.fixture(autouse=True)
-def _auditlog(mocker, request):
+def _auditlog_marker_setup(mocker, request):
     if request.node.get_closest_marker("auditlog") is None:
         mocker.patch("core.tasks.write_admin_log.write_admin_log.delay")
 
@@ -14,7 +14,7 @@ def _auditlog(mocker, request):
 
 
 @pytest.fixture(autouse=True)
-def _dashamail(mocker, request):
+def _dashamail_marker_setup(mocker, request):
     if request.node.get_closest_marker("dashamail") is None:
         mocker.patch("apps.dashamail.tasks.update_subscription.delay")
         mocker.patch("apps.dashamail.tasks.update_subscription.apply_async")
@@ -28,7 +28,7 @@ def _dashamail(mocker, request):
         mocker.patch("apps.dashamail.tasks.directcrm_subscribe.apply_async")
 
 @pytest.fixture(autouse=True)
-def _user_tags_rebuild(mocker, request):
+def _user_tags_rebuild_marker_setup(mocker, request):
     if request.node.get_closest_marker("user_tags_rebuild") is None:
         mocker.patch("apps.users.tasks.rebuild_tags.delay")
         mocker.patch("apps.users.tasks.rebuild_tags.apply_async")
