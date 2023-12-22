@@ -102,8 +102,11 @@ class NotionClient:
         client = httpx.Client(
             http2=True,
         )
-        response = client.get(
-            url=f"{settings.NOTION_MIDDLEWARE_URL}/v1/asset/?url={url}",
+        response = client.post(
+            url=f"{settings.NOTION_MIDDLEWARE_URL}/v1/asset/",
+            json={
+                "url": url,
+            },
             timeout=settings.NOTION_MIDDLEWARE_ASSET_FETCHING_TIMEOUT,
         )
 
