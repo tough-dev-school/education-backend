@@ -1,5 +1,4 @@
 import pytest
-from apps.notion.block import NotionBlock
 
 from apps.notion.page import NotionPage
 
