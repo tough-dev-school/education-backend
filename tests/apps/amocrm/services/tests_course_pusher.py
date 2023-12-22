@@ -10,12 +10,12 @@ pytestmark = [
 
 @pytest.fixture
 def mock_create(mocker):
-    return mocker.patch("apps.amocrm.dto.product.AmoCRMProduct.create", return_value=555)
+    return mocker.patch("apps.amocrm.dto.product.AmoCRMProductDTO.create", return_value=555)
 
 
 @pytest.fixture
 def mock_update(mocker):
-    return mocker.patch("apps.amocrm.dto.product.AmoCRMProduct.update")
+    return mocker.patch("apps.amocrm.dto.product.AmoCRMProductDTO.update")
 
 
 def test_call_create_if_amocrm_course_not_exist(course, mock_create):

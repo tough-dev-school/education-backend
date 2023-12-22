@@ -1,6 +1,6 @@
 import pytest
 
-from apps.amocrm.dto import AmoCRMProduct
+from apps.amocrm.dto import AmoCRMProductDTO
 
 pytestmark = [
     pytest.mark.django_db,
@@ -38,13 +38,13 @@ def _successful_create_response(post):
 
 @pytest.mark.usefixtures("_successful_create_response")
 def test_create_response(course, post):
-    got = AmoCRMProduct(course=course).create()
+    got = AmoCRMProductDTO(course=course).create()
 
     assert got == 14229449
 
 
 def test_create_contact(course, post):
-    AmoCRMProduct(course=course).create()
+    AmoCRMProductDTO(course=course).create()
 
     post.assert_called_once_with(
         url="/api/v4/catalogs/900/elements",
@@ -63,7 +63,7 @@ def test_create_contact(course, post):
 
 
 def test_update(course, patch):
-    AmoCRMProduct(course=course).update()
+    AmoCRMProductDTO(course=course).update()
 
     patch.assert_called_once_with(
         url="/api/v4/catalogs/900/elements",
