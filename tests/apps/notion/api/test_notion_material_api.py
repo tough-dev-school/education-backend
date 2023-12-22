@@ -6,7 +6,10 @@ from apps.notion.models import NotionAsset
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures("mock_notion_response"),
+    pytest.mark.usefixtures(
+        "mock_notion_response",
+        "_cdn_dev_storage",
+    ),
 ]
 
 
@@ -41,9 +44,6 @@ def get_cached_material(api, disable_notion_cache, raw_notion_cache_entry, mock_
 
 @pytest.fixture
 def fetched_asset() -> NotionAsset:
-    from apps.notion.rewrite.fetched_assets import get_asset_mapping
-
-    get_asset_mapping.cache_clear()
     return NotionAsset.objects.create(
         url="secure.notion-static.com/typicalmacuser.jpg",
         file="assets/typicalmacuser-downloaded.jpg",
@@ -107,7 +107,7 @@ def test_non_fetched_assets_are_rewritten_to_notion_so_urls_during_upstream_api_
 def test_fetched_assets_paths_are_rewritten_during_upstream_api_call(api, material):
     got = api.get(f"/api/v2/notion/materials/{material.page_id}/")
 
-    assert got["block-3"]["value"]["format"]["page_cover"] == "/media/assets/typicalmacuser-downloaded.jpg"
+    assert got["block-3"]["value"]["format"]["page_cover"] == "https://cdn.tough-dev.school/assets/typicalmacuser-downloaded.jpg"
 
 def test_non_fetched_asset_paths_are_rewritten_to_notion_so_urls_for_cached_material(get_cached_material, material):
     got = get_cached_material(material.page_id)
@@ -119,7 +119,7 @@ def test_non_fetched_asset_paths_are_rewritten_to_notion_so_urls_for_cached_mate
 def test_fetched_asset_paths_are_rewritten_for_cached_material(get_cached_material, material):
     got = get_cached_material(material.page_id)
 
-    assert got["block-3"]["value"]["format"]["page_cover"] == "/media/assets/typicalmacuser-downloaded.jpg"
+    assert got["block-3"]["value"]["format"]["page_cover"] == "https://cdn.tough-dev.school/assets/typicalmacuser-downloaded.jpg"
 
 
 def test_404_for_non_existant_materials(api, mock_notion_response):

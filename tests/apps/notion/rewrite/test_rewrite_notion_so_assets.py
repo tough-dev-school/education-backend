@@ -1,7 +1,5 @@
 import pytest
 from apps.notion.types import BlockValue
-from apps.notion.models import NotionAsset
-from apps.notion.rewrite.notion_so_assets import get_already_fetched_assets
 from apps.notion.rewrite import rewrite_notion_so_assets
 from contextlib import nullcontext as does_not_raise
 
