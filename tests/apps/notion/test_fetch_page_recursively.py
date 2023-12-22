@@ -29,7 +29,7 @@ def page() -> NotionPage:
 
 @pytest.fixture
 def _mock_fetching_asset(respx_mock):
-    respx_mock.get("http://notion.middleware/v1/asset/?url=https:%2F%2Fnotion.so%2Fimage%2Fhttps%253A%252F%252Fsecure.notion-static.com%252Ftypicalmacuser.jpg?table=test-table&id=block2&cache=v2").respond(content=b"typical")
+    respx_mock.post("http://notion.middleware/v1/asset/").respond(content=b"typical")
 
 
 def test_one_pass(notion, page, fetch_page, fetch_blocks):

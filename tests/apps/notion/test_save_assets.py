@@ -38,8 +38,7 @@ def image():
 
 @pytest.fixture(autouse=True)
 def _mock_middleware_response(respx_mock):
-    respx_mock.get(url="http://notion.middleware/v1/asset/?url=https:%2F%2Fnotion.so%2Fimage%2Fsecure.notion-static.com%252Ftypicalmacuser.jpg?table=100500&id=test-block&cache=v2").respond(content=b"test-img-content")
-    respx_mock.get(url="http://notion.middleware/v1/asset/?url=https:%2F%2Fnotion.so%2Fimage%2Fsecure.notion-static.com%252Ftypicalmacuser_icon.jpg?table=100500&id=test-block&cache=v2").respond(content=b"test-icon-content")
+    respx_mock.post(url="http://notion.middleware/v1/asset/").respond(content=b"test-img-content")
 
 
 def test_image(image):
@@ -48,6 +47,8 @@ def test_image(image):
     asset = NotionAsset.objects.get(url="secure.notion-static.com/typicalmacuser.jpg")
 
     assert asset.file.read() == b"test-img-content"
+    assert asset.size == 16
+    assert asset.md5_sum == "c87337eddb4771e90e429e8c34d178a4"
 
 
 def test_page_cover(page):
@@ -56,6 +57,8 @@ def test_page_cover(page):
     asset = NotionAsset.objects.get(url="secure.notion-static.com/typicalmacuser.jpg")
 
     assert asset.file.read() == b"test-img-content"
+    assert asset.size == 16
+    assert asset.md5_sum == "c87337eddb4771e90e429e8c34d178a4"
 
 
 def test_page_cover_and_icon_are_both_fetched(page):
@@ -66,8 +69,22 @@ def test_page_cover_and_icon_are_both_fetched(page):
     assert NotionAsset.objects.count() == 2  # make sure both assets are fetched
 
 
+@pytest.mark.parametrize(("hash", "should_not_override"), [
+    ("c87337eddb4771e90e429e8c34d178a4", True),
+    ("not-so-hashy", False),
+])
+
+def test_asset_is_not_overiden(image, mocker, hash, should_not_override):
+    NotionAsset.objects.create(url="secure.notion-static.com/typicalmacuser.jpg", md5_sum=hash, size=16)
+    save = mocker.spy(NotionAsset, "save")
+
+    image.save_assets()
+
+    assert (save.call_count == 0) is should_not_override
+
+
 def test_failure(image, respx_mock):
-    respx_mock.get(url="http://notion.middleware/v1/asset/?url=https:%2F%2Fnotion.so%2Fimage%2Fsecure.notion-static.com%252Ftypicalmacuser.jpg?table=100500&id=test-block&cache=v2").respond(status_code=400)
+    respx_mock.post(url="http://notion.middleware/v1/asset/").respond(status_code=400)
 
     with pytest.raises(Retry):
         image.save_assets()
