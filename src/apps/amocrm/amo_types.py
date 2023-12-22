@@ -44,3 +44,24 @@ class Task(NamedTuple):
     task_type_id: TaskType
     is_completed: bool
     text: str
+
+
+class PipelineStatus(NamedTuple):
+    """Represents status of amocrm's Pipeline. The statuses may be system of user-defined.
+
+    https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines#Общая-информация
+    """
+
+    id: int
+    name: str
+
+
+class Pipeline(NamedTuple):
+    """Represents amocrm's Pipeline
+
+    https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines
+    """
+
+    id: int
+    name: str
+    statuses: list[PipelineStatus]

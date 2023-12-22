@@ -2,9 +2,9 @@ from typing import Literal
 
 from django.conf import settings
 
+from apps.amocrm import amo_types
 from apps.amocrm.dto import AmoCRMCatalogsDTO
-from apps.amocrm.dto import AmoCRMPipelines
-from apps.amocrm.dto.pipelines import Pipeline
+from apps.amocrm.dto import AmoCRMPipelinesDTO
 from apps.amocrm.exceptions import AmoCRMCacheException
 
 STATUSES_NAMES = Literal["unsorted", "first_contact", "purchased", "closed"]
@@ -18,24 +18,24 @@ PRODUCTS_FIELDS_CODES = Literal["SKU", "PRICE", "SPECIAL_PRICE_1", "GROUP", "DES
 CONTACTS_FIELDS_CODES = Literal["POSITION", "PHONE", "EMAIL"]
 
 
-def _b2c_pipeline() -> Pipeline:
-    for pipeline in AmoCRMPipelines.get():
-        if pipeline["name"] == settings.AMOCRM_B2C_PIPELINE_NAME:
+def _b2c_pipeline() -> amo_types.Pipeline:
+    for pipeline in AmoCRMPipelinesDTO.get():
+        if pipeline.name == settings.AMOCRM_B2C_PIPELINE_NAME:
             return pipeline
     raise AmoCRMCacheException("Cannot retrieve b2c pipeline")
 
 
 def b2c_pipeline_status_id(status_name: STATUSES_NAMES) -> int:
     ru_status = STATUSES_NAMES_TRANSLATE[status_name]
-    for status in _b2c_pipeline()["statuses"]:
-        if status["name"] == ru_status:
-            return status["id"]
+    for status in _b2c_pipeline().statuses:
+        if status.name == ru_status:
+            return status.id
 
     raise AmoCRMCacheException(f"Cannot retrieve {status_name} ({ru_status}) status in {settings.AMOCRM_B2C_PIPELINE_NAME} pipeline")
 
 
 def b2c_pipeline_id() -> int:
-    return _b2c_pipeline()["id"]
+    return _b2c_pipeline().id
 
 
 def contact_field_id(field_code: CONTACTS_FIELDS_CODES) -> int:
