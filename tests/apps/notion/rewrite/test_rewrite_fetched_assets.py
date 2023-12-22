@@ -13,37 +13,6 @@ def rewrite(block) -> BlockValue:
 
 
 @pytest.fixture
-def image():
-    return {
-        "value": {
-            "type": "image",
-            "properties": {
-                "size": [[ "228KB" ]],
-                "source": [[ "https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d95897d2-8698-468b-ac09-0870070855c9/typicalmacuser.png"]],
-            },
-        },
-    }
-
-@pytest.fixture
-def page():
-    return {
-        "value": {
-            "type": "page",
-            "format": {
-                "page_cover": "https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d95897d2-8698-468b-ac09-0870070855c9/typicalmacuser.png",
-                "page_icon": "https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d95897d2-8698-468b-ac09-0870070855c9/typicalmacuser_icon.png",
-            },
-        },
-    }
-
-@pytest.fixture(autouse=True)
-def _isolate_rewrite_mapping_cache():
-    """get_asset_mapping() is LRU-cached, so we need to reset it after year test run"""
-    yield
-    get_asset_mapping.cache_clear()
-
-
-@pytest.fixture
 def asset() -> NotionAsset:
     return NotionAsset.objects.create(
         url="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d95897d2-8698-468b-ac09-0870070855c9/typicalmacuser.png",

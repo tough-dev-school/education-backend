@@ -4,11 +4,19 @@ from apps.notion.block import NotionBlock
 from apps.notion.block import NotionBlockList
 from apps.notion.client import NotionClient
 from apps.notion.page import NotionPage
+from apps.notion.rewrite import fetched_assets, notion_so_assets
+
 
 pytestmark = [
     pytest.mark.django_db,
 ]
 
+
+@pytest.fixture(autouse=True)
+def _isolate_mapping_cache():
+    """asset links mappings are LRU-cached, so we need to reset it before year test run"""
+    notion_so_assets.get_already_fetched_assets.cache_clear()
+    fetched_assets.get_asset_mapping.cache_clear()
 
 @pytest.fixture
 def staff_user(mixer):
@@ -57,11 +65,13 @@ def page() -> NotionPage:
                 NotionBlock(id="block-2", data={"value": {"parent_id": "100600"}}),
                 NotionBlock(id="block-3", data={
                     "value": {
+                        "id": "block-3",
                         "type": "page",
                         "content": ["block-1", "block-2"],
                         "format": {
                             "page_cover": "secure.notion-static.com/typicalmacuser.jpg",
                         },
+                        "parent_table": "test-parent-table",
                     }
                 }),
             ]
