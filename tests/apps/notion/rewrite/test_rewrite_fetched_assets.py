@@ -69,3 +69,9 @@ def test_page_without_cover_and_icon(page, param):
     del page["value"]["format"][param]
     with does_not_raise():
         rewrite(page)
+
+
+@pytest.mark.usefixtures("asset")
+def test_https_rewrite(image, mocker):
+    mocker.patch('core.storages.ProdReadOnlyStorage.url', return_value='http://cdn.tough-dev.school/assets/macuser.png')
+    assert rewrite(image)["properties"]["source"] == [["https://cdn.tough-dev.school/assets/macuser.png"]]

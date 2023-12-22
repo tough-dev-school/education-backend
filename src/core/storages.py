@@ -1,5 +1,6 @@
-from storages.backends.s3boto3 import S3Boto3Storage
 from typing import no_type_check
+
+from storages.backends.s3boto3 import S3Boto3Storage
 
 
 class ProdReadOnlyStorage(S3Boto3Storage):
