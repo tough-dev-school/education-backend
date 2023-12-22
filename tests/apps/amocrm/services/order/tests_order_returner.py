@@ -15,7 +15,7 @@ def mock_update_lead(mocker):
 
 @pytest.fixture
 def mock_delete_transaction(mocker):
-    return mocker.patch("apps.amocrm.dto.transaction.AmoCRMTransaction.delete")
+    return mocker.patch("apps.amocrm.dto.transaction.AmoCRMTransactionDTO.delete")
 
 
 @pytest.fixture

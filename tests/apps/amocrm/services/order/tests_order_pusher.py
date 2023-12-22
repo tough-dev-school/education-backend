@@ -14,8 +14,8 @@ pytestmark = [
 
 @pytest.fixture
 def mock_create_transaction(mocker):
-    mocker.patch("apps.amocrm.dto.transaction.AmoCRMTransaction.create", return_value=22222)
-    return mocker.patch("apps.amocrm.dto.transaction.AmoCRMTransaction.__init__", return_value=None)
+    mocker.patch("apps.amocrm.dto.transaction.AmoCRMTransactionDTO.create", return_value=22222)
+    return mocker.patch("apps.amocrm.dto.transaction.AmoCRMTransactionDTO.__init__", return_value=None)
 
 
 @pytest.fixture

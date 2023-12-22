@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from apps.amocrm.dto import AmoCRMLeadDTO
-from apps.amocrm.dto import AmoCRMTransaction
+from apps.amocrm.dto import AmoCRMTransactionDTO
 from apps.orders.models import Order
 from core.services import BaseService
 
@@ -17,5 +17,5 @@ class AmoCRMOrderReturner(BaseService):
             return
 
         AmoCRMLeadDTO(order=self.order).update(status="closed")
-        AmoCRMTransaction(order=self.order).delete()
+        AmoCRMTransactionDTO(order=self.order).delete()
         self.order.amocrm_transaction.delete()

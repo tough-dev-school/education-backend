@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from apps.amocrm.dto import AmoCRMLeadDTO
-from apps.amocrm.dto import AmoCRMTransaction
+from apps.amocrm.dto import AmoCRMTransactionDTO
 from apps.amocrm.exceptions import AmoCRMServiceException
 from apps.amocrm.models import AmoCRMOrderLead
 from apps.amocrm.models import AmoCRMOrderTransaction
@@ -52,7 +52,7 @@ class AmoCRMOrderPusher(BaseService):
 
     def create_order(self) -> None:
         AmoCRMLeadDTO(order=self.order).update(status="purchased")
-        transaction_id = AmoCRMTransaction(order=self.order).create()
+        transaction_id = AmoCRMTransactionDTO(order=self.order).create()
         self.order.amocrm_transaction = AmoCRMOrderTransaction.objects.create(amocrm_id=transaction_id)
         self.order.save()
 
