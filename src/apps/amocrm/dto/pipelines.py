@@ -1,22 +1,10 @@
-from typing import TypedDict
-
+from apps.amocrm import types
 from apps.amocrm.client import http
 
 
-class PipelineStatus(TypedDict):
-    id: int
-    name: str
-
-
-class Pipeline(TypedDict):
-    id: int
-    name: str
-    statuses: list[PipelineStatus]
-
-
-class AmoCRMPipelines:  # NOQA: PIE798
+class AmoCRMPipelinesDTO:  # NOQA: PIE798
     @classmethod
-    def get(cls) -> list[Pipeline]:
+    def get(cls) -> list[types.Pipeline]:
         """
         Returns all amocrm pipelines
         https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines
@@ -25,9 +13,9 @@ class AmoCRMPipelines:  # NOQA: PIE798
         return [cls._pipeline_from_response(data=pipeline) for pipeline in response["_embedded"]["pipelines"]]
 
     @staticmethod
-    def _pipeline_from_response(data: dict) -> Pipeline:
-        return Pipeline(
+    def _pipeline_from_response(data: dict) -> types.Pipeline:
+        return types.Pipeline(
             id=data["id"],
             name=data["name"],
-            statuses=[PipelineStatus(id=status["id"], name=status["name"]) for status in data["_embedded"]["statuses"]],
+            statuses=[types.PipelineStatus(id=status["id"], name=status["name"]) for status in data["_embedded"]["statuses"]],
         )

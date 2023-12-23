@@ -1,4 +1,4 @@
-from apps.amocrm.dto import AmoCRMGroups
+from apps.amocrm.dto import AmoCRMGroupsDTO
 from apps.amocrm.models import AmoCRMProductGroup
 from apps.products.models import Group
 from core.services import BaseService
@@ -19,7 +19,7 @@ class AmoCRMGroupsPusher(BaseService):
     @staticmethod
     def push_all_groups() -> list[tuple[str, int]]:
         groups_to_push = Group.objects.all()
-        return AmoCRMGroups(groups=groups_to_push).push()
+        return AmoCRMGroupsDTO(groups=groups_to_push).push()
 
     @staticmethod
     def save_new_groups_ids(pushed_groups: list[tuple[str, int]]) -> None:

@@ -21,11 +21,11 @@ class Product(TypedDict):
 
 
 @dataclass
-class AmoCRMProduct:
+class AmoCRMProductDTO:
     course: Course
 
     def create(self) -> int:
-        """Create product in amocrm and returns its amocrm_id"""
+        """Create product (the element of catalog in amocrm's terms) in amocrm and returns its amocrm_id"""
 
         response = http.post(
             url=f"/api/v4/catalogs/{self._get_catalog_id()}/elements",

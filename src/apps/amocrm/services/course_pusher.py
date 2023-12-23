@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from apps.amocrm.dto import AmoCRMProduct
+from apps.amocrm.dto import AmoCRMProductDTO
 from apps.amocrm.models import AmoCRMCourse
 from apps.products.models import Course
 from core.services import BaseService
@@ -19,11 +19,11 @@ class AmoCRMCoursePusher(BaseService):
             self.update_course(course=self.course)
 
     def create_course(self, course: Course) -> None:
-        course_id = AmoCRMProduct(course=course).create()
+        course_id = AmoCRMProductDTO(course=course).create()
         AmoCRMCourse.objects.create(
             course=course,
             amocrm_id=course_id,
         )
 
     def update_course(self, course: Course) -> None:
-        AmoCRMProduct(course=course).update()
+        AmoCRMProductDTO(course=course).update()

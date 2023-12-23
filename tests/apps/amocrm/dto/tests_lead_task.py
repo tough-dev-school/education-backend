@@ -1,6 +1,7 @@
 import pytest
+
+from apps.amocrm import types
 from apps.amocrm.dto import AmoCRMLeadTaskDTO
-from apps.amocrm.definitions import AmoCRMTaskType
 
 
 @pytest.fixture
@@ -72,12 +73,12 @@ def test_amo_crm_task_dto_return_amocrm_tasks(dto):
     got = dto.get(lead_id=1781381)
 
     assert got == [
-        {
-            "id": 894053,
-            "task_type_id": AmoCRMTaskType.CONTACT,
-            "is_completed": False,
-            "text": "hi!",
-        },
+        types.Task(
+            id=894053,
+            task_type_id=types.TaskType.CONTACT,
+            is_completed=False,
+            text="hi!",
+        ),
     ]
 
 
@@ -123,7 +124,7 @@ def test_get_lead_tasks_return_empty_list_if_no_matching_tasks(dto, get):
 def test_create_lead_task_call_amo_client_with_correct_params(dto, post):
     got = dto.create(
         lead_id=1781381,
-        task_type_id=AmoCRMTaskType.CONTACT,
+        task_type_id=types.TaskType.CONTACT,
         task_text="hi!",
         timestamp_complete_till=1702640934,
         responsible_user_id=10446146,

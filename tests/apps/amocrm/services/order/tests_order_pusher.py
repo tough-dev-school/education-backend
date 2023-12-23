@@ -14,19 +14,19 @@ pytestmark = [
 
 @pytest.fixture
 def mock_create_transaction(mocker):
-    mocker.patch("apps.amocrm.dto.transaction.AmoCRMTransaction.create", return_value=22222)
-    return mocker.patch("apps.amocrm.dto.transaction.AmoCRMTransaction.__init__", return_value=None)
+    mocker.patch("apps.amocrm.dto.transaction.AmoCRMTransactionDTO.create", return_value=22222)
+    return mocker.patch("apps.amocrm.dto.transaction.AmoCRMTransactionDTO.__init__", return_value=None)
 
 
 @pytest.fixture
 def mock_create_lead(mocker):
-    mocker.patch("apps.amocrm.dto.lead.AmoCRMLead.create", return_value=11111)
-    return mocker.patch("apps.amocrm.dto.lead.AmoCRMLead.__init__", return_value=None)
+    mocker.patch("apps.amocrm.dto.lead.AmoCRMLeadDTO.create", return_value=11111)
+    return mocker.patch("apps.amocrm.dto.lead.AmoCRMLeadDTO.__init__", return_value=None)
 
 
 @pytest.fixture
 def mock_update_lead(mocker):
-    return mocker.patch("apps.amocrm.dto.lead.AmoCRMLead.update")
+    return mocker.patch("apps.amocrm.dto.lead.AmoCRMLeadDTO.update")
 
 
 @pytest.fixture

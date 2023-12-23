@@ -1,6 +1,7 @@
 import pytest
 
-from apps.amocrm.dto.catalogs import AmoCRMCatalogs
+from apps.amocrm import types
+from apps.amocrm.dto.catalogs import AmoCRMCatalogsDTO
 
 pytestmark = [
     pytest.mark.django_db,
@@ -100,16 +101,16 @@ def _successful_get_fields_response(get):
 
 @pytest.mark.usefixtures("_successful_get_catalogs_response")
 def test_get_returns_list_of_catalogs(get):
-    got = AmoCRMCatalogs.get()
+    got = AmoCRMCatalogsDTO.get()
 
     assert got == [
-        dict(id=11271, name="Товары", type="products"),
-        dict(id=11273, name="Мои юр. лица", type="suppliers"),
+        types.Catalog(id=11271, name="Товары", type="products"),
+        types.Catalog(id=11273, name="Мои юр. лица", type="suppliers"),
     ]
 
 
 def test_get_catalogs_call_url(get):
-    AmoCRMCatalogs.get()
+    AmoCRMCatalogsDTO.get()
 
     get.assert_called_once_with(
         url="/api/v4/catalogs",
@@ -120,16 +121,16 @@ def test_get_catalogs_call_url(get):
 
 @pytest.mark.usefixtures("_successful_get_fields_response")
 def test_get_fields_returns_list_of_fields(get):
-    got = AmoCRMCatalogs.get_fields(catalog_id=777)
+    got = AmoCRMCatalogsDTO.get_fields(catalog_id=777)
 
     assert got == [
-        dict(id=2235143, code="SKU"),
-        dict(id=2235149, code="GROUP"),
+        types.CatalogField(id=2235143, code="SKU"),
+        types.CatalogField(id=2235149, code="GROUP"),
     ]
 
 
 def test_get_fields_call_url(get):
-    AmoCRMCatalogs.get_fields(catalog_id=777)
+    AmoCRMCatalogsDTO.get_fields(catalog_id=777)
 
     get.assert_called_once_with(
         url="/api/v4/catalogs/777/custom_fields",
@@ -140,16 +141,16 @@ def test_get_fields_call_url(get):
 
 @pytest.mark.usefixtures("_successful_get_fields_response")
 def test_get_contacts_fields_returns_list_of_fields(get):
-    got = AmoCRMCatalogs.get_contacts_fields()
+    got = AmoCRMCatalogsDTO.get_contacts_fields()
 
     assert got == [
-        dict(id=2235143, code="SKU"),
-        dict(id=2235149, code="GROUP"),
+        types.CatalogField(id=2235143, code="SKU"),
+        types.CatalogField(id=2235149, code="GROUP"),
     ]
 
 
 def test_get_contacts_fields_call_url(get):
-    AmoCRMCatalogs.get_contacts_fields()
+    AmoCRMCatalogsDTO.get_contacts_fields()
 
     get.assert_called_once_with(
         url="/api/v4/contacts/custom_fields",
