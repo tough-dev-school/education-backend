@@ -1,6 +1,6 @@
 import pytest
 
-from apps.amocrm import amo_types
+from apps.amocrm import types
 from apps.amocrm.dto import AmoCRMUserOperatorDTO
 
 
@@ -55,7 +55,7 @@ def test_amo_crm_operator_dto_return_users(dto):
     got = dto.get()
 
     assert got == [
-        amo_types.UserOperator(
+        types.UserOperator(
             id=10450722,
             name="Петруша Иванов",
             email="petrusha@ivanov.ru",

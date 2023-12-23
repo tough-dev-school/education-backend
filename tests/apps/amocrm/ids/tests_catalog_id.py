@@ -1,20 +1,20 @@
 import pytest
 
-from apps.amocrm import amo_types
+from apps.amocrm import types
 from apps.amocrm.exceptions import AmoCRMCacheException
 from apps.amocrm.ids import products_catalog_id
 
 
 @pytest.fixture
 def products_catalog():
-    return amo_types.Catalog(id=333, name="Products", type="products")
+    return types.Catalog(id=333, name="Products", type="products")
 
 
 @pytest.fixture
 def catalogs(products_catalog):
     return [
         products_catalog,
-        amo_types.Catalog(id=123, name="Useless", type="meh"),
+        types.Catalog(id=123, name="Useless", type="meh"),
     ]
 
 
@@ -30,7 +30,7 @@ def test_return_catalog_id(products_catalog):
 
 
 def test_fail_if_no_products_catalog(mock_get_catalogs):
-    mock_get_catalogs.return_value = [amo_types.Catalog(id=111, name="NotWhatINeed", type="sad-story")]
+    mock_get_catalogs.return_value = [types.Catalog(id=111, name="NotWhatINeed", type="sad-story")]
 
     with pytest.raises(AmoCRMCacheException):
         products_catalog_id()

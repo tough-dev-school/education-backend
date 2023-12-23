@@ -1,6 +1,6 @@
 import pytest
 
-from apps.amocrm import amo_types
+from apps.amocrm import types
 from apps.amocrm.exceptions import AmoCRMCacheException
 from apps.amocrm.ids import b2c_pipeline_id
 from apps.amocrm.ids import b2c_pipeline_status_id
@@ -8,19 +8,19 @@ from apps.amocrm.ids import b2c_pipeline_status_id
 
 @pytest.fixture
 def unsorted_status():
-    return amo_types.PipelineStatus(id=5, name="Неразобранное")
+    return types.PipelineStatus(id=5, name="Неразобранное")
 
 
 @pytest.fixture
 def b2c_pipeline(unsorted_status):
-    return amo_types.Pipeline(id=333, name="b2c", statuses=[unsorted_status])
+    return types.Pipeline(id=333, name="b2c", statuses=[unsorted_status])
 
 
 @pytest.fixture
 def pipelines(b2c_pipeline):
     return [
         b2c_pipeline,
-        amo_types.Pipeline(id=111, name="individual", statuses=[amo_types.PipelineStatus(id=10, name="hm status")]),
+        types.Pipeline(id=111, name="individual", statuses=[types.PipelineStatus(id=10, name="hm status")]),
     ]
 
 
@@ -43,7 +43,7 @@ def test_return_pipeline_status_id(unsorted_status):
 
 def test_fail_if_no_such_pipeline(mock_get_pipelines):
     mock_get_pipelines.return_value = [
-        amo_types.Pipeline(id=111, name="individual", statuses=[amo_types.PipelineStatus(id=10, name="hm status")]),
+        types.Pipeline(id=111, name="individual", statuses=[types.PipelineStatus(id=10, name="hm status")]),
     ]
 
     with pytest.raises(AmoCRMCacheException):

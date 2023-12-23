@@ -1,13 +1,13 @@
 from http import HTTPStatus
 
-from apps.amocrm import amo_types
+from apps.amocrm import types
 from apps.amocrm.client import http
 
 
 class AmoCRMLeadTaskDTO:
     """https://www.amocrm.ru/developers/content/crm_platform/tasks-api"""
 
-    def get(self, lead_id: int, is_completed: bool | None = None) -> list[amo_types.Task]:
+    def get(self, lead_id: int, is_completed: bool | None = None) -> list[types.Task]:
         params = {
             "filter[entity_type]": "leads",
             "filter[entity_id]": lead_id,
@@ -27,7 +27,7 @@ class AmoCRMLeadTaskDTO:
             return []
 
         return [
-            amo_types.Task(
+            types.Task(
                 id=task_data["id"],
                 task_type_id=task_data["task_type_id"],
                 is_completed=task_data["is_completed"],
@@ -36,7 +36,7 @@ class AmoCRMLeadTaskDTO:
             for task_data in response_data["_embedded"]["tasks"]
         ]
 
-    def create(self, lead_id: int, task_type_id: amo_types.TaskType, task_text: str, timestamp_complete_till: int, responsible_user_id: int) -> int:
+    def create(self, lead_id: int, task_type_id: types.TaskType, task_text: str, timestamp_complete_till: int, responsible_user_id: int) -> int:
         data = {
             "entity_type": "leads",
             "entity_id": lead_id,

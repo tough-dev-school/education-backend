@@ -2,7 +2,7 @@ from typing import Literal
 
 from django.conf import settings
 
-from apps.amocrm import amo_types
+from apps.amocrm import types
 from apps.amocrm.dto import AmoCRMCatalogsDTO
 from apps.amocrm.dto import AmoCRMPipelinesDTO
 from apps.amocrm.exceptions import AmoCRMCacheException
@@ -18,7 +18,7 @@ PRODUCTS_FIELDS_CODES = Literal["SKU", "PRICE", "SPECIAL_PRICE_1", "GROUP", "DES
 CONTACTS_FIELDS_CODES = Literal["POSITION", "PHONE", "EMAIL"]
 
 
-def _b2c_pipeline() -> amo_types.Pipeline:
+def _b2c_pipeline() -> types.Pipeline:
     for pipeline in AmoCRMPipelinesDTO.get():
         if pipeline.name == settings.AMOCRM_B2C_PIPELINE_NAME:
             return pipeline

@@ -1,6 +1,6 @@
 import pytest
 
-from apps.amocrm import amo_types
+from apps.amocrm import types
 from apps.amocrm.dto.catalogs import AmoCRMCatalogsDTO
 
 pytestmark = [
@@ -104,8 +104,8 @@ def test_get_returns_list_of_catalogs(get):
     got = AmoCRMCatalogsDTO.get()
 
     assert got == [
-        amo_types.Catalog(id=11271, name="Товары", type="products"),
-        amo_types.Catalog(id=11273, name="Мои юр. лица", type="suppliers"),
+        types.Catalog(id=11271, name="Товары", type="products"),
+        types.Catalog(id=11273, name="Мои юр. лица", type="suppliers"),
     ]
 
 
@@ -124,8 +124,8 @@ def test_get_fields_returns_list_of_fields(get):
     got = AmoCRMCatalogsDTO.get_fields(catalog_id=777)
 
     assert got == [
-        amo_types.CatalogField(id=2235143, code="SKU"),
-        amo_types.CatalogField(id=2235149, code="GROUP"),
+        types.CatalogField(id=2235143, code="SKU"),
+        types.CatalogField(id=2235149, code="GROUP"),
     ]
 
 
@@ -144,8 +144,8 @@ def test_get_contacts_fields_returns_list_of_fields(get):
     got = AmoCRMCatalogsDTO.get_contacts_fields()
 
     assert got == [
-        amo_types.CatalogField(id=2235143, code="SKU"),
-        amo_types.CatalogField(id=2235149, code="GROUP"),
+        types.CatalogField(id=2235143, code="SKU"),
+        types.CatalogField(id=2235149, code="GROUP"),
     ]
 
 

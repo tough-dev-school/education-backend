@@ -1,6 +1,6 @@
 import pytest
 
-from apps.amocrm import amo_types
+from apps.amocrm import types
 from apps.amocrm.exceptions import AmoCRMCacheException
 from apps.amocrm.ids import product_field_id
 
@@ -12,14 +12,14 @@ def mock_get_catalog_id(mocker):
 
 @pytest.fixture
 def group_field():
-    return amo_types.CatalogField(id=333, code="GROUP")
+    return types.CatalogField(id=333, code="GROUP")
 
 
 @pytest.fixture
 def fields(group_field):
     return [
         group_field,
-        amo_types.CatalogField(id=123, code="EXTERNAL_ID"),
+        types.CatalogField(id=123, code="EXTERNAL_ID"),
     ]
 
 
@@ -35,7 +35,7 @@ def test_return_id_if_in_cache(group_field):
 
 
 def test_fail_if_not_in_cache_and_not_in_response(mock_get_catalog_fields):
-    mock_get_catalog_fields.return_value = [amo_types.CatalogField(id=123, code="EXTERNAL_ID")]
+    mock_get_catalog_fields.return_value = [types.CatalogField(id=123, code="EXTERNAL_ID")]
 
     with pytest.raises(AmoCRMCacheException):
         product_field_id("GROUP")

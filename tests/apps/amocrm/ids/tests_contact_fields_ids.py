@@ -1,20 +1,20 @@
 import pytest
 
-from apps.amocrm import amo_types
+from apps.amocrm import types
 from apps.amocrm.exceptions import AmoCRMCacheException
 from apps.amocrm.ids import contact_field_id
 
 
 @pytest.fixture
 def email_field():
-    return amo_types.CatalogField(id=333, code="EMAIL")
+    return types.CatalogField(id=333, code="EMAIL")
 
 
 @pytest.fixture
 def fields(email_field):
     return [
         email_field,
-        amo_types.CatalogField(id=123, code="PHONE"),
+        types.CatalogField(id=123, code="PHONE"),
     ]
 
 
@@ -30,7 +30,7 @@ def test_return_field_id(email_field):
 
 
 def test_fail_if_not_in_cache_and_not_in_response(mock_get_contact_fields):
-    mock_get_contact_fields.return_value = [amo_types.CatalogField(id=123, code="PHONE")]
+    mock_get_contact_fields.return_value = [types.CatalogField(id=123, code="PHONE")]
 
     with pytest.raises(AmoCRMCacheException):
         contact_field_id("EMAIL")

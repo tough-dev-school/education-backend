@@ -1,6 +1,6 @@
 import pytest
 
-from apps.amocrm import amo_types
+from apps.amocrm import types
 from apps.amocrm.dto.pipelines import AmoCRMPipelinesDTO
 
 pytestmark = [
@@ -108,21 +108,21 @@ def test_get_pipelines_return_list_of_pipelines(get):
     got = AmoCRMPipelinesDTO.get()
 
     assert got == [
-        amo_types.Pipeline(
+        types.Pipeline(
             id=7028886,
             name="b2b",
             statuses=[
-                amo_types.PipelineStatus(id=58962662, name="Переговоры"),
-                amo_types.PipelineStatus(id=142, name="Успешно реализовано"),
-                amo_types.PipelineStatus(id=143, name="Закрыто и не реализовано"),
+                types.PipelineStatus(id=58962662, name="Переговоры"),
+                types.PipelineStatus(id=142, name="Успешно реализовано"),
+                types.PipelineStatus(id=143, name="Закрыто и не реализовано"),
             ],
         ),
-        amo_types.Pipeline(
+        types.Pipeline(
             id=7055602,
             name="individual",
             statuses=[
-                amo_types.PipelineStatus(id=59144290, name="Неразобранное"),
-                amo_types.PipelineStatus(id=59144298, name="подготовить индивидуальный план"),
+                types.PipelineStatus(id=59144290, name="Неразобранное"),
+                types.PipelineStatus(id=59144298, name="подготовить индивидуальный план"),
             ],
         ),
     ]
