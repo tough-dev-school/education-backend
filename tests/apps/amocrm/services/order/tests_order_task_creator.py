@@ -187,7 +187,7 @@ def test_call_lead_task_dto_get_with_correct_params(task_creator, mock_lead_task
 def test_raise_if_responsible_user_email_not_exists_in_amocrm_user_operators(task_creator, create_order_task_data, mock_user_operator_get):
     task_data = create_order_task_data(task_responsible_user_email="petrovich@email.com")
 
-    with pytest.raises(AmoCRMOrderTaskCreatorException, match="Theres is no AmoCRM operators with email"):
+    with pytest.raises(AmoCRMOrderTaskCreatorException, match="There is no AmoCRM operators with email"):
         task_creator(task_data=task_data)
 
     mock_user_operator_get.assert_called_once()

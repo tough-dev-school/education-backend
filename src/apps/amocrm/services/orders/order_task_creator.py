@@ -59,7 +59,7 @@ class AmoCRMOrderTaskCreator(BaseService):
             if amo_user_operator.email == self.task_data.task_responsible_user_email:
                 return amo_user_operator.id
 
-        raise AmoCRMOrderTaskCreatorException(f"Theres is no AmoCRM operators with email '{self.task_data.task_responsible_user_email}'")
+        raise AmoCRMOrderTaskCreatorException(f"There is no AmoCRM operators with email '{self.task_data.task_responsible_user_email}'")
 
     def act(self) -> None:
         self.validate_order()
