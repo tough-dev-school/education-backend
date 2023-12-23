@@ -10,12 +10,15 @@ from apps.amocrm.dto import AmoCRMLeadNoteDTO
 from apps.amocrm.dto import AmoCRMLeadTaskDTO
 from apps.amocrm.dto import AmoCRMUserOperatorDTO
 from apps.orders.models import Order
-from core.exceptions import AppServiceException
 from core.services import BaseService
 
 
-class AmoCRMOrderTaskCreatorException(AppServiceException):
-    pass
+class AmoCRMOrderTaskCreatorException(Exception):
+    """Raise when the AmoCRMOrderTaskCreator fails.
+
+    The exception is inherited from the base 'Exception' because the service is intended for internal usage only.
+    This implies that any exceptions are indicative of programming errors and must be captured by Sentry.
+    """
 
 
 class AmoCRMOrderTaskDataServiceNote(NamedTuple):

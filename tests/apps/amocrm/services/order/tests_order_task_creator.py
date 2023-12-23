@@ -8,6 +8,7 @@ from apps.amocrm.services.orders.order_task_creator import AmoCRMOrderTaskCreato
 from apps.amocrm.services.orders.order_task_creator import AmoCRMOrderTaskData
 from apps.amocrm.services.orders.order_task_creator import AmoCRMOrderTaskDataServiceNote
 from apps.orders.models import Order
+from core.exceptions import AppServiceException
 
 pytestmark = [
     pytest.mark.django_db,
@@ -196,5 +197,7 @@ def test_raise_if_order_or_same_deal_orders_not_linked_with_amocrm_lead(task_cre
     order_with_lead.update(amocrm_lead=None)
     Order.objects.same_deal(order_with_lead).update(amocrm_lead=None)
 
-    with pytest.raises(AmoCRMOrderTaskCreatorException, match="There is no AmoCRM lead linked to order's deal"):
+    with pytest.raises(AmoCRMOrderTaskCreatorException, match="There is no AmoCRM lead linked to order's deal") as exc_info:
         task_creator()
+
+    assert not isinstance(exc_info.value, AppServiceException), "Should not be AppServiceException cause it's programming error"
