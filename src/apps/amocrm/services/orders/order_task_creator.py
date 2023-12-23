@@ -5,10 +5,10 @@ from typing import NamedTuple
 from django.utils import timezone
 from django.utils.functional import cached_property
 
-from apps.amocrm.definitions import AmoCRMTaskType
+from apps.amocrm import types
 from apps.amocrm.dto import AmoCRMLeadNoteDTO
 from apps.amocrm.dto import AmoCRMLeadTaskDTO
-from apps.amocrm.dto import AmoCRMOperatorDTO
+from apps.amocrm.dto import AmoCRMUserOperatorDTO
 from apps.orders.models import Order
 from core.exceptions import AppServiceException
 from core.services import BaseService
@@ -25,7 +25,7 @@ class AmoCRMOrderTaskDataServiceNote(NamedTuple):
 
 class AmoCRMOrderTaskData(NamedTuple):
     task_name: str
-    task_type_id: AmoCRMTaskType
+    task_type_id: types.TaskType
     task_responsible_user_email: str
     task_deadline_timedelta: timedelta = timedelta(days=3)
     service_note: AmoCRMOrderTaskDataServiceNote | None = None
@@ -52,9 +52,9 @@ class AmoCRMOrderTaskCreator(BaseService):
 
     @cached_property
     def responsible_user_id(self) -> int:
-        for amo_operator in AmoCRMOperatorDTO().get():
-            if amo_operator["email"] == self.task_data.task_responsible_user_email:
-                return amo_operator["id"]
+        for amo_user_operator in AmoCRMUserOperatorDTO().get():
+            if amo_user_operator.email == self.task_data.task_responsible_user_email:
+                return amo_user_operator.id
 
         raise AmoCRMOrderTaskCreatorException(f"Theres is no AmoCRM operators with email '{self.task_data.task_responsible_user_email}'")
 
@@ -77,11 +77,18 @@ class AmoCRMOrderTaskCreator(BaseService):
             return None
         raise AmoCRMOrderTaskCreatorException("There is no AmoCRM lead linked to order's deal")
 
-    def create_lead_task_if_needed(self) -> int:
-        for task in AmoCRMLeadTaskDTO().get(lead_id=self.lead_id, is_completed=False):
-            if task["text"] == self.task_data.task_name and task["task_type_id"] == self.task_data.task_type_id:
-                return task["id"]
+    def create_lead_task_if_needed(self) -> None:
+        existed_task_id = self.get_matched_not_completed_lead_task()
 
+        if not existed_task_id:
+            self.create_lead_task()
+
+    def get_matched_not_completed_lead_task(self) -> int | None:
+        for amo_task in AmoCRMLeadTaskDTO().get(lead_id=self.lead_id, is_completed=False):
+            if amo_task.text == self.task_data.task_name and amo_task.task_type_id == self.task_data.task_type_id:
+                return amo_task.id
+
+    def create_lead_task(self) -> int:
         task_deadline = timezone.now() + self.task_data.task_deadline_timedelta
 
         return AmoCRMLeadTaskDTO().create(
