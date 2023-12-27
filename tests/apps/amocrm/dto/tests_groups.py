@@ -1,6 +1,6 @@
 import pytest
 
-from apps.amocrm.dto import AmoCRMGroups
+from apps.amocrm.dto import AmoCRMGroupsDTO
 from apps.products.models import Group
 
 pytestmark = [
@@ -46,7 +46,7 @@ def _successful_response(patch):
 def test_response_as_list_of_pairs(patch):
     groups = Group.objects.all()
 
-    got = AmoCRMGroups(groups=groups).push()
+    got = AmoCRMGroupsDTO(groups=groups).push()
 
     assert got == [("popug", 6453), ("hehe", 6457)]
 
@@ -55,7 +55,7 @@ def test_response_as_list_of_pairs(patch):
 def test_call_with_id_if_already_exist(patch):
     groups = Group.objects.all()
 
-    AmoCRMGroups(groups=groups).push()
+    AmoCRMGroupsDTO(groups=groups).push()
 
     patch.assert_called_once_with(
         url="/api/v4/catalogs/900/custom_fields",

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 from core.files import RandomFileName
@@ -19,4 +20,7 @@ class NotionAsset(TimestampedModel):
         return self.file.name
 
     def get_absolute_url(self) -> str:
+        if settings.AWS_S3_URL_PROTOCOL != "http":
+            return self.file.url.replace("http://", "https://")  # for some weird reason we can get http:// links here
+
         return self.file.url

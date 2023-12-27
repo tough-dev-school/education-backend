@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class AmoCRMLead:
+class AmoCRMLeadDTO:
     order: Order
 
     def create(self) -> int:

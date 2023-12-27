@@ -1,27 +1,13 @@
 from http import HTTPStatus
-from typing import TypedDict
 
+from apps.amocrm import types
 from apps.amocrm.client import http
-from apps.amocrm.definitions import AmoCRMTaskType
-
-
-class AmoCRMTask(TypedDict):
-    """Only fields that are used in the app are listed.
-
-    All the available fields are listed in docs:
-    https://www.amocrm.ru/developers/content/crm_platform/tasks-api#tasks-list
-    """
-
-    id: int
-    task_type_id: AmoCRMTaskType
-    is_completed: bool
-    text: str
 
 
 class AmoCRMLeadTaskDTO:
     """https://www.amocrm.ru/developers/content/crm_platform/tasks-api"""
 
-    def get(self, lead_id: int, is_completed: bool | None = None) -> list[AmoCRMTask]:
+    def get(self, lead_id: int, is_completed: bool | None = None) -> list[types.Task]:
         params = {
             "filter[entity_type]": "leads",
             "filter[entity_id]": lead_id,
@@ -41,7 +27,7 @@ class AmoCRMLeadTaskDTO:
             return []
 
         return [
-            AmoCRMTask(
+            types.Task(
                 id=task_data["id"],
                 task_type_id=task_data["task_type_id"],
                 is_completed=task_data["is_completed"],
@@ -50,7 +36,7 @@ class AmoCRMLeadTaskDTO:
             for task_data in response_data["_embedded"]["tasks"]
         ]
 
-    def create(self, lead_id: int, task_type_id: AmoCRMTaskType, task_text: str, timestamp_complete_till: int, responsible_user_id: int) -> int:
+    def create(self, lead_id: int, task_type_id: types.TaskType, task_text: str, timestamp_complete_till: int, responsible_user_id: int) -> int:
         data = {
             "entity_type": "leads",
             "entity_id": lead_id,

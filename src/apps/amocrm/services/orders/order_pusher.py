@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from apps.amocrm.dto import AmoCRMLead
-from apps.amocrm.dto import AmoCRMTransaction
+from apps.amocrm.dto import AmoCRMLeadDTO
+from apps.amocrm.dto import AmoCRMTransactionDTO
 from apps.amocrm.exceptions import AmoCRMServiceException
 from apps.amocrm.models import AmoCRMOrderLead
 from apps.amocrm.models import AmoCRMOrderTransaction
@@ -46,13 +46,13 @@ class AmoCRMOrderPusher(BaseService):
                 self.reactivate_lead_in_amocrm()
 
     def create_lead(self) -> None:
-        lead_id = AmoCRMLead(order=self.order).create()
+        lead_id = AmoCRMLeadDTO(order=self.order).create()
         self.order.amocrm_lead = AmoCRMOrderLead.objects.create(amocrm_id=lead_id)
         self.order.save()
 
     def create_order(self) -> None:
-        AmoCRMLead(order=self.order).update(status="purchased")
-        transaction_id = AmoCRMTransaction(order=self.order).create()
+        AmoCRMLeadDTO(order=self.order).update(status="purchased")
+        transaction_id = AmoCRMTransactionDTO(order=self.order).create()
         self.order.amocrm_transaction = AmoCRMOrderTransaction.objects.create(amocrm_id=transaction_id)
         self.order.save()
 
@@ -78,7 +78,7 @@ class AmoCRMOrderPusher(BaseService):
 
     def reactivate_lead_in_amocrm(self) -> None:
         """Actualize lead's price, created_at and set lead to 'active' status"""
-        AmoCRMLead(order=self.order).update(status="first_contact")
+        AmoCRMLeadDTO(order=self.order).update(status="first_contact")
 
     def order_must_be_pushed(self) -> bool:
         if self.order.is_b2b:

@@ -1,5 +1,7 @@
 import pytest
-from apps.amocrm.dto import AmoCRMOperatorDTO
+
+from apps.amocrm import types
+from apps.amocrm.dto import AmoCRMUserOperatorDTO
 
 
 @pytest.fixture(autouse=True)
@@ -46,18 +48,18 @@ def _successful_get_users_response(get):
 
 @pytest.fixture
 def dto():
-    return AmoCRMOperatorDTO()
+    return AmoCRMUserOperatorDTO()
 
 
 def test_amo_crm_operator_dto_return_users(dto):
     got = dto.get()
 
     assert got == [
-        {
-            "id": 10450722,
-            "name": "Петруша Иванов",
-            "email": "petrusha@ivanov.ru",
-        },
+        types.UserOperator(
+            id=10450722,
+            name="Петруша Иванов",
+            email="petrusha@ivanov.ru",
+        ),
     ]
 
 
