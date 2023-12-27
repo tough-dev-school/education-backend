@@ -1,16 +1,22 @@
 from contextlib import nullcontext as does_not_raise
 from datetime import datetime
-from datetime import timezone
+from datetime import timezone as dt_timezone
 import pytest
 
-from core import current_user
+from django.contrib.admin.models import CHANGE
+from django.contrib.admin.models import LogEntry
+from django.contrib.contenttypes.models import ContentType
+from django.utils import timezone
+
+from apps.banking.exceptions import BankDoesNotExist
 from apps.banking.selector import BANKS
 from apps.orders.services import OrderRefunder
 from apps.orders.services import OrderUnshipper
-from apps.banking.exceptions import BankDoesNotExist
+from core import current_user
 
 pytestmark = [
     pytest.mark.django_db,
+    pytest.mark.usefixtures("_set_current_user"),
 ]
 
 
@@ -28,11 +34,6 @@ def _adjust_settings(settings):
 @pytest.fixture
 def _enable_amocrm(settings):
     settings.AMOCRM_BASE_URL = "https://amo.amo.amo"
-
-
-@pytest.fixture(autouse=True)
-def _set_current_user(user):
-    current_user.set_current_user(user)
 
 
 @pytest.fixture(autouse=True)
@@ -61,7 +62,7 @@ def mock_rebuild_tags(mocker):
 
 
 @pytest.fixture
-def not_paid_order(factory, user, course):
+def not_paid_order(course, factory, user):
     order = factory.order(
         user=user,
         item=course,
@@ -89,7 +90,7 @@ def test_set_order_unpaid_and_unshipped(paid_order, refund):
 
     paid_order.refresh_from_db()
     assert paid_order.paid is None
-    assert paid_order.unpaid == datetime(2032, 12, 1, 15, 30, tzinfo=timezone.utc)
+    assert paid_order.unpaid == datetime(2032, 12, 1, 15, 30, tzinfo=dt_timezone.utc)
     assert paid_order.shipped is None
     assert not hasattr(paid_order, "study"), "Study record should be deleted at this point"
 
@@ -183,14 +184,11 @@ def test_do_not_break_if_order_without_item_was_refunded(refund, paid_order, moc
     assert send_mail_context["refunded_item"] == "not-set"
 
 
-def test_do_not_break_if_current_user_could_not_be_captured(refund, paid_order, mock_send_mail, get_send_mail_call_email_context):
-    current_user.unset_current_user()
+def test_break_if_current_user_could_not_be_captured(mocker, refund):
+    mocker.patch("apps.orders.services.order_refunder.get_current_user", return_value=None)
 
-    with does_not_raise():
+    with pytest.raises(AttributeError):
         refund(paid_order)
-
-    send_mail_context = get_send_mail_call_email_context(mock_send_mail)
-    assert send_mail_context["refund_author"] == "unknown"
 
 
 def test_update_user_tags(paid_order, mock_rebuild_tags, refund):
@@ -226,3 +224,18 @@ def test_fail_if_bank_is_set_but_unknown(paid_order, refund):
 
     with pytest.raises(BankDoesNotExist, match="does not exists"):
         refund(paid_order)
+
+
+@pytest.mark.auditlog
+@pytest.mark.freeze_time
+def test_success_admin_log_created(paid_order, refund, user):
+    refund(paid_order)
+
+    log = LogEntry.objects.get()
+    assert log.action_flag == CHANGE
+    assert log.action_time == timezone.now()
+    assert log.change_message == "Order refunded"
+    assert log.content_type_id == ContentType.objects.get_for_model(paid_order).id
+    assert log.object_id == str(paid_order.id)
+    assert log.object_repr == str(paid_order)
+    assert log.user == user

@@ -4,6 +4,7 @@ from urllib.parse import urljoin
 import celery
 
 from django.conf import settings
+from django.contrib.admin.models import CHANGE
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
@@ -20,6 +21,7 @@ from apps.users.tasks import rebuild_tags
 from core.current_user import get_current_user
 from core.pricing import format_price
 from core.services import BaseService
+from core.tasks import write_admin_log
 
 
 @dataclass
@@ -46,6 +48,7 @@ class OrderRefunder(BaseService):
             self.mark_order_as_not_paid()
 
         OrderUnshipper(order=self.order)()
+        self.write_success_admin_log()
         self.notify_dangerous_operation_happened()
 
         self.update_user_tags()
@@ -60,6 +63,16 @@ class OrderRefunder(BaseService):
     def do_bank_refund_if_needed(self) -> None:
         if self.bank and settings.BANKS_REFUNDS_ENABLED:
             self.bank.refund()
+
+    def write_success_admin_log(self) -> None:
+        write_admin_log.delay(
+            action_flag=CHANGE,
+            app="orders",
+            change_message="Order refunded",
+            model="Order",
+            object_id=self.order.id,
+            user_id=get_current_user().id,  # type: ignore[union-attr]
+        )
 
     def update_user_tags(self) -> None:
         rebuild_tags.delay(student_id=self.order.user_id)
@@ -97,7 +110,7 @@ class OrderRefunder(BaseService):
         return {
             "order_id": self.order.pk,
             "refunded_item": self.order.item.name if self.order.item else "not-set",
-            "refund_author": str(get_current_user() or "unknown"),
+            "refund_author": str(get_current_user()),
             "payment_method_name": self.payment_method_before_service_call,
             "price": format_price(self.order.price),
             "order_admin_site_url": urljoin(
