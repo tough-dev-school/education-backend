@@ -3035,13 +3035,13 @@ testing = ["filelock"]
 
 [[package]]
 name = "python-benedict"
-version = "0.33.0"
+version = "0.33.1"
 description = "python-benedict is a dict subclass with keylist/keypath/keyattr support, normalized I/O operations (base64, csv, ini, json, pickle, plist, query-string, toml, xls, xml, yaml) and many utilities... for humans, obviously."
 optional = false
 python-versions = "*"
 files = [
-    {file = "python-benedict-0.33.0.tar.gz", hash = "sha256:0a783caa1776cf73e890725be30be4310031f2e62d320ee8b8445fcfcb51b493"},
-    {file = "python_benedict-0.33.0-py3-none-any.whl", hash = "sha256:2b6c2ee1edba2794bfe868e66b0eec260df899125b6187a63f486535b8db3dcc"},
+    {file = "python-benedict-0.33.1.tar.gz", hash = "sha256:e65ecfc16b505b0fefa08ed97c65f6f93cf32c0309dd2e1614fc0f58f22b2c4e"},
+    {file = "python_benedict-0.33.1-py3-none-any.whl", hash = "sha256:8838ebe33ed7508d37472346e67516fcf525ebc717a6f48b37aa00e0b89bc463"},
 ]
 
 [package.dependencies]
@@ -3051,9 +3051,9 @@ requests = ">=2.26.0,<3.0.0"
 
 [package.extras]
 all = ["python-benedict[io,parse,s3]"]
-html = ["beautifulsoup4 (>=4.12.0,<5.0.0)"]
+html = ["beautifulsoup4 (>=4.12.0,<5.0.0)", "python-benedict[xml]"]
 io = ["python-benedict[html,toml,xls,xml,yaml]"]
-parse = ["ftfy (>=6.0.0,<7.0.0)", "mailchecker (>=4.1.0,<6.0.0)", "phonenumbers (>=8.12.0,<9.0.0)", "python-dateutil (>=2.8.0,<3.0.0)"]
+parse = ["ftfy (>=6.0.0,<7.0.0)", "mailchecker (>=4.1.0,<7.0.0)", "phonenumbers (>=8.12.0,<9.0.0)", "python-dateutil (>=2.8.0,<3.0.0)"]
 s3 = ["boto3 (>=1.24.89,<2.0.0)"]
 toml = ["toml (>=0.10.2,<1.0.0)"]
 xls = ["openpyxl (>=3.0.0,<4.0.0)", "xlrd (>=2.0.0,<3.0.0)"]
