@@ -4,16 +4,20 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from apps.orders.models import Order
+from apps.orders.services import OrderCourseChanger
 from apps.orders.services import OrderCreator
 from apps.orders.services import OrderEmailChanger
 
 
 class OrderChangeForm(forms.ModelForm):
-    email = forms.CharField(help_text=_("If changed user, receives welcome letter one more time"))
+    email = forms.CharField(label=_("Email"), help_text=_("User receives new welcome letter"))
 
     class Meta:
         model = Order
         fields = "__all__"
+        help_texts = {
+            "course": _("User receives new welcome letter"),
+        }
 
     def __init__(self, *args: Any, **kwargs: dict[str, Any]) -> None:
         order = kwargs["instance"]
@@ -41,11 +45,17 @@ class OrderChangeForm(forms.ModelForm):
 
     def call_services(self, order: Order) -> None:
         self._change_email_if_required(order)
+        self._change_course_if_required(order)
 
     def _change_email_if_required(self, order: Order) -> None:
         if self.initial["email"] != self.cleaned_data["email"]:
             email_changer = OrderEmailChanger(order=order, email=self.cleaned_data["email"])
             email_changer()
+
+    def _change_course_if_required(self, order: Order) -> None:
+        if self.initial["course"] != self.cleaned_data["course"].pk:
+            course_changer = OrderCourseChanger(order=order, course=self.cleaned_data["course"])
+            course_changer()
 
 
 class OrderAddForm(forms.ModelForm):
