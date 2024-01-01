@@ -1,4 +1,5 @@
 import pytest
+import datetime
 from apps.orders.services import OrderEmailChanger
 
 pytestmark = [pytest.mark.django_db]
@@ -101,3 +102,14 @@ def test_first_and_last_name_remain_the_same_after_email_change(email_changer, f
     assert order.user.email == "circus@gmail.com"
     assert order.user.first_name == "Kamaz"
     assert order.user.last_name == "Otkhodov"
+
+
+def test_paid_date_is_not_changed_during_email_changing(email_changer, user, order):
+    """Important business story: paid date is not altered during course change"""
+    order.update(paid="2001-01-01 15:30+00:00")
+    changer = email_changer(order, email=user.email)
+
+    changer()
+    order.refresh_from_db()
+
+    assert order.paid == datetime.datetime(2001, 1, 1, 15, 30, tzinfo=datetime.timezone.utc)
