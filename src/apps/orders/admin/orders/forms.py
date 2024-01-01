@@ -10,11 +10,14 @@ from apps.orders.services import OrderEmailChanger
 
 
 class OrderChangeForm(forms.ModelForm):
-    email = forms.CharField(help_text=_("User receives new welcome letter"))
+    email = forms.CharField(label=_("Email"), help_text=_("User receives new welcome letter"))
 
     class Meta:
         model = Order
         fields = "__all__"
+        help_texts = {
+            "course": _("User receives new welcome letter"),
+        }
 
     def __init__(self, *args: Any, **kwargs: dict[str, Any]) -> None:
         order = kwargs["instance"]
