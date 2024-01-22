@@ -13,6 +13,11 @@ class GroupAdmin(ModelAdmin):
     list_display = ["id", "name", "slug"]
     list_editable = ["name", "slug"]
 
+    fields = [
+        "name",
+        "slug",
+    ]
+
     def save_model(self, request: HttpRequest, obj: Group, form: Any, change: Any) -> None:
         super().save_model(request, obj, form, change)
 
