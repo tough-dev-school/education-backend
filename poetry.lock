@@ -3548,13 +3548,13 @@ testing-integration = ["build[virtualenv] (>=1.0.3)", "filelock (>=3.4.0)", "jar
 
 [[package]]
 name = "shortuuid"
-version = "1.0.11"
+version = "1.0.12"
 description = "A generator library for concise, unambiguous and URL-safe UUIDs."
 optional = false
 python-versions = ">=3.5"
 files = [
-    {file = "shortuuid-1.0.11-py3-none-any.whl", hash = "sha256:27ea8f28b1bd0bf8f15057a3ece57275d2059d2b0bb02854f02189962c13b6aa"},
-    {file = "shortuuid-1.0.11.tar.gz", hash = "sha256:fc75f2615914815a8e4cb1501b3a513745cb66ef0fd5fc6fb9f8c3fa3481f789"},
+    {file = "shortuuid-1.0.12-py3-none-any.whl", hash = "sha256:dd855d8c10ced5dc2790b97e31f16ad55a6f4871b478feb4351dd3128a8aa82b"},
+    {file = "shortuuid-1.0.12.tar.gz", hash = "sha256:c39f1b348b3c1e9b115a954b33b76c8c522d2d177a9d20acdbb20d24fac3ccfd"},
 ]
 
 [[package]]
