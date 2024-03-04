@@ -1,9 +1,8 @@
-from abc import ABCMeta
-from abc import abstractmethod
+import uuid
+from abc import ABCMeta, abstractmethod
 from decimal import Decimal
 from typing import TYPE_CHECKING
 from urllib.parse import urljoin
-import uuid
 
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _

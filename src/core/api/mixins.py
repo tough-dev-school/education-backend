@@ -1,21 +1,18 @@
-from typing import Any, Protocol, Sequence
-
-from rest_framework.request import Request
+from collections.abc import Sequence
+from typing import Any, Protocol
 
 from django.db.models import QuerySet
+from rest_framework.request import Request
 
 
 class BaseListAPIView(Protocol):
     @property
-    def pagination_disabled(self) -> bool:
-        ...
+    def pagination_disabled(self) -> bool: ...
 
     @property
-    def request(self) -> Request:
-        ...
+    def request(self) -> Request: ...
 
-    def paginate_queryset(self, queryset: QuerySet | Sequence[Any]) -> None | Sequence[Any]:
-        ...
+    def paginate_queryset(self, queryset: QuerySet | Sequence[Any]) -> None | Sequence[Any]: ...
 
 
 class DisablePaginationWithQueryParamMixin:

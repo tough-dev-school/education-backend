@@ -3,18 +3,12 @@ from decimal import Decimal
 from typing import Optional  # NOQA: I251
 
 from django.core.exceptions import ValidationError
-from django.db.models import Case
-from django.db.models import CheckConstraint
-from django.db.models import Count
-from django.db.models import Q
-from django.db.models import QuerySet
-from django.db.models import When
+from django.db.models import Case, CheckConstraint, Count, Q, QuerySet, When
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from apps.products.models import Course
-from core.models import models
-from core.models import TimestampedModel
+from core.models import TimestampedModel, models
 
 
 class PromoCodeQuerySet(QuerySet):

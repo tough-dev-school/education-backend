@@ -2,32 +2,30 @@
 
 import uuid
 
-from django.db import migrations
-from django.db import models
+from django.db import migrations, models
 
 
 def make_random_uuids_for_existing_materials(apps, schema_editor):
-    for material in apps.get_model('notion.Material').objects.all():
+    for material in apps.get_model("notion.Material").objects.all():
         material.slug = uuid.uuid4()
-        material.save(update_fields=['slug'])
+        material.save(update_fields=["slug"])
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('notion', '0003_HomePageMaterial'),
+        ("notion", "0003_HomePageMaterial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='material',
-            name='slug',
+            model_name="material",
+            name="slug",
             field=models.UUIDField(db_index=True, blank=True, null=True),
         ),
         migrations.RunPython(make_random_uuids_for_existing_materials),
         migrations.AlterField(
-            model_name='material',
-            name='slug',
+            model_name="material",
+            name="slug",
             field=models.UUIDField(db_index=True, unique=True, default=uuid.uuid4),
         ),
     ]

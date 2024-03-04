@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0003_RenameCoursesAppPt1'),
-        ('mailing', '0001_EmailLogEntryMovedToDedicatedApp'),
+        ("core", "0003_RenameCoursesAppPt1"),
+        ("mailing", "0001_EmailLogEntryMovedToDedicatedApp"),
     ]
 
     operations = [
         migrations.DeleteModel(
-            name='EmailLogEntry',
+            name="EmailLogEntry",
         ),
     ]

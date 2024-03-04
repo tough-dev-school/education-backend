@@ -4,7 +4,6 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 
 from core.test.factory import register
 
-
 if TYPE_CHECKING:
     from core.test.factory import FixtureFactory
 

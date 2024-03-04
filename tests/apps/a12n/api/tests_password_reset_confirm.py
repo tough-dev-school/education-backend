@@ -1,5 +1,4 @@
 import pytest
-
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes

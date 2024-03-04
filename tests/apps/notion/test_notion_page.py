@@ -1,9 +1,7 @@
 import pytest
-
 from respx import MockRouter
 
-from apps.notion.exceptions import NotionResponseError
-from apps.notion.exceptions import NotSharedForWeb
+from apps.notion.exceptions import NotionResponseError, NotSharedForWeb
 
 pytestmark = [
     pytest.mark.django_db,
@@ -38,6 +36,7 @@ def ok():
         },
     }
 
+
 @pytest.fixture
 def set_response(respx_mock: MockRouter):
     def _set_response(response):
@@ -45,13 +44,16 @@ def set_response(respx_mock: MockRouter):
 
     return _set_response
 
+
 @pytest.fixture
 def get_page(notion):
     return lambda: notion.fetch_page("0cb348b3a2d24c05bc944e2302fa553")
 
+
 @pytest.fixture
 def get_blocks(get_page):
     return lambda: get_page().blocks.ordered()
+
 
 def test_ok(set_response, ok, get_blocks):
     set_response(ok)
@@ -118,7 +120,8 @@ def test_block_without_title_does_not_break_page_title_2(set_response, ok, get_p
 
 
 def test_not_shared_exception(get_page, set_response):
-    set_response({
+    set_response(
+        {
             "recordMap": {},  # not shared page looks excactly like this
         },
     )

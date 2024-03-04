@@ -1,6 +1,5 @@
-from datetime import datetime
-from datetime import timedelta
-from typing import Callable
+from collections.abc import Callable
+from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.utils import timezone

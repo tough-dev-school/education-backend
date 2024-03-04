@@ -1,14 +1,15 @@
 from dj_rest_auth.views import PasswordChangeView as DjRestAuthPasswordChangeView
 from dj_rest_auth.views import PasswordResetConfirmView as DjRestAuthPasswordResetConfirmView
-
 from django.urls import path
 
-from apps.a12n.api.views import ObtainJSONWebTokenViaPasswordlessToken
-from apps.a12n.api.views import ObtainJSONWebTokenViaUserId
-from apps.a12n.api.views import ObtainJSONWebTokenView
-from apps.a12n.api.views import RefreshJSONWebTokenView
-from apps.a12n.api.views import RequestPasswordLessToken
-from apps.a12n.api.views import RequestPasswordResetView
+from apps.a12n.api.views import (
+    ObtainJSONWebTokenViaPasswordlessToken,
+    ObtainJSONWebTokenViaUserId,
+    ObtainJSONWebTokenView,
+    RefreshJSONWebTokenView,
+    RequestPasswordLessToken,
+    RequestPasswordResetView,
+)
 
 urlpatterns = [
     path("token/", ObtainJSONWebTokenView.as_view()),

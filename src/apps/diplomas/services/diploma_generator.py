@@ -2,13 +2,11 @@ from dataclasses import dataclass
 from urllib.parse import urljoin
 
 import httpx
-from retry import retry
-
 from django.conf import settings
 from django.core.files.base import ContentFile
+from retry import retry
 
-from apps.diplomas.models import Diploma
-from apps.diplomas.models import DiplomaTemplate
+from apps.diplomas.models import Diploma, DiplomaTemplate
 from apps.products.models import Course
 from apps.studying.models import Study
 from apps.users.models import User

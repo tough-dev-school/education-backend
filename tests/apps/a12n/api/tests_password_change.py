@@ -1,5 +1,4 @@
 import pytest
-
 from django.contrib.auth.hashers import check_password
 
 pytestmark = [pytest.mark.django_db]

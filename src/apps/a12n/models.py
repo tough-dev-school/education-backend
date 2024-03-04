@@ -1,13 +1,11 @@
-from datetime import datetime
-from datetime import timedelta
-from urllib.parse import urljoin
 import uuid
+from datetime import datetime, timedelta
+from urllib.parse import urljoin
 
 from django.conf import settings
 from django.utils import timezone
 
-from core.models import models
-from core.models import TimestampedModel
+from core.models import TimestampedModel, models
 
 
 def default_expiration() -> datetime:

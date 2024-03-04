@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
-from apps.dashamail.lists.dto import DashamailList
-from apps.dashamail.lists.dto import DashamailSubscriber
+from apps.dashamail.lists.dto import DashamailList, DashamailSubscriber
 from apps.products.models import Course
 from apps.users.models import User
 from core.services import BaseService

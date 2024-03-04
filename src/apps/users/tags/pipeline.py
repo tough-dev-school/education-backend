@@ -1,4 +1,4 @@
-from typing import Type, TYPE_CHECKING
+from typing import TYPE_CHECKING, Type
 
 from django.conf import settings
 from django.utils.module_loading import import_string

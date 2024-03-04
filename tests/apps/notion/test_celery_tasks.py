@@ -1,7 +1,6 @@
 import pytest
 
-from apps.notion.tasks import update_cache_for_all_pages
-from apps.notion.tasks import update_cache
+from apps.notion.tasks import update_cache, update_cache_for_all_pages
 
 pytestmark = [
     pytest.mark.django_db,

@@ -3,11 +3,13 @@ import pytest
 
 @pytest.fixture
 def user(mixer):
-    return mixer.blend('users.User', email="big@guy.com")
+    return mixer.blend("users.User", email="big@guy.com")
+
 
 @pytest.fixture
 def order(factory, course, user):
-    return factory.order(item=course, user=user, is_paid=False, price='100500.65')
+    return factory.order(item=course, user=user, is_paid=False, price="100500.65")
+
 
 @pytest.fixture
 def course(factory):

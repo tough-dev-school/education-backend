@@ -4,18 +4,17 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0009_add_telegram_username'),
+        ("users", "0009_add_telegram_username"),
     ]
 
     operations = [
         migrations.RemoveConstraint(
-            model_name='user',
-            name='unique_github_username',
+            model_name="user",
+            name="unique_github_username",
         ),
         migrations.RemoveConstraint(
-            model_name='user',
-            name='unique_linkedin_username',
+            model_name="user",
+            name="unique_linkedin_username",
         ),
     ]

@@ -1,10 +1,8 @@
 from typing import Any
 
+from apps.products.models import Course, Group
 from core.helpers import random_string
 from core.test.factory import register
-
-from apps.products.models import Course
-from apps.products.models import Group
 
 
 @register
@@ -19,7 +17,6 @@ def course(self: Any, slug: str | None = None, group: Group | None = None, **kwa
 
 @register
 def group(self: Any, slug: str | None = None, **kwargs: dict[str, Any]) -> Group:
-
     return self.mixer.blend(
         "products.Group",
         slug=slug if slug is not None else random_string(49),

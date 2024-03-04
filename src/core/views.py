@@ -1,8 +1,7 @@
+from django.views.generic import RedirectView
 from rest_framework import permissions
 from rest_framework.request import Request
 from rest_framework.views import APIView
-
-from django.views.generic import RedirectView
 
 from apps.users.models import User
 

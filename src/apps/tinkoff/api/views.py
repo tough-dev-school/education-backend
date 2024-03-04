@@ -1,15 +1,13 @@
 from typing import Any
 
+from django.http import HttpResponse
 from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.views import APIView
 
-from django.http import HttpResponse
-
 from apps.orders.models import Order
 from apps.tinkoff.api.permissions import DolyameNetmaskPermission
-from apps.tinkoff.api.serializers import DolyameNotificationSerializer
-from apps.tinkoff.api.serializers import PaymentNotificationSerializer
+from apps.tinkoff.api.serializers import DolyameNotificationSerializer, PaymentNotificationSerializer
 from apps.tinkoff.token_validator import TinkoffNotificationsTokenValidator
 
 

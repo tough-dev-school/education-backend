@@ -1,12 +1,7 @@
-from contextlib import nullcontext as does_not_raise
 import pytest
-
-from django.contrib.admin.models import CHANGE
-from django.contrib.admin.models import LogEntry
+from django.contrib.admin.models import CHANGE, LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
-
-from core import current_user
 
 pytestmark = [
     pytest.mark.auditlog,
@@ -19,7 +14,7 @@ def order(factory):
     return factory.order()
 
 
-@pytest.mark.freeze_time
+@pytest.mark.freeze_time()
 @pytest.mark.usefixtures("_set_current_user")
 def test_paid_log_created(order, user):
     order.set_paid()

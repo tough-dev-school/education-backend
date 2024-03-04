@@ -1,5 +1,6 @@
-import pytest
 from typing import TYPE_CHECKING
+
+import pytest
 
 if TYPE_CHECKING:
     from apps.products.models import Course

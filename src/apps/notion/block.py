@@ -1,17 +1,12 @@
-from collections import UserList
 import contextlib
+from collections import UserList
 from dataclasses import dataclass
 from typing import Generator
 
 from apps.notion import tasks
-from apps.notion.assets import get_asset_url
-from apps.notion.assets import is_notion_url
+from apps.notion.assets import get_asset_url, is_notion_url
 from apps.notion.rewrite import apply_our_adjustments
-from apps.notion.types import BlockData
-from apps.notion.types import BlockFormat
-from apps.notion.types import BlockId
-from apps.notion.types import BlockProperties
-from apps.notion.types import BlockType
+from apps.notion.types import BlockData, BlockFormat, BlockId, BlockProperties, BlockType
 
 
 @dataclass

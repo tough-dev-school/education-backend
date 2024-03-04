@@ -1,4 +1,5 @@
 from functools import partial
+
 import pytest
 
 from apps.studying.shipment import CourseShipment

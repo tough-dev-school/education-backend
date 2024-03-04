@@ -4,14 +4,18 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('orders', '0016_UnpaidDate'),
+        ("orders", "0016_UnpaidDate"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='order',
-            options={'ordering': ['-id'], 'permissions': [('pay_order', 'May mark orders as paid'), ('unpay_order', 'May mark orders as unpaid')], 'verbose_name': 'Order', 'verbose_name_plural': 'Orders'},
+            name="order",
+            options={
+                "ordering": ["-id"],
+                "permissions": [("pay_order", "May mark orders as paid"), ("unpay_order", "May mark orders as unpaid")],
+                "verbose_name": "Order",
+                "verbose_name_plural": "Orders",
+            },
         ),
     ]

@@ -1,8 +1,6 @@
 import random
 import string
-from urllib.parse import parse_qsl
-from urllib.parse import urlparse
-from urllib.parse import urlunparse
+from urllib.parse import parse_qsl, urlparse, urlunparse
 
 
 def lower_first(string: str) -> str:

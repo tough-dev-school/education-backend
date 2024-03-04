@@ -1,5 +1,4 @@
 import pytest
-
 from respx import MockRouter
 
 from apps.diplomas.models import Diploma

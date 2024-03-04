@@ -2,9 +2,7 @@ from dataclasses import dataclass
 
 from django.db.models import QuerySet
 
-from apps.homework.models import Answer
-from apps.homework.models import AnswerCrossCheck
-from apps.homework.models import Question
+from apps.homework.models import Answer, AnswerCrossCheck, Question
 from apps.homework.services.answer_crosscheck_dispatcher import AnswerCrossCheckDispatcher
 from apps.mailing.tasks import send_mail
 from apps.users.models import User

@@ -1,4 +1,5 @@
 """typing for amocrm dto responses"""
+
 from enum import IntEnum
 from typing import NamedTuple
 

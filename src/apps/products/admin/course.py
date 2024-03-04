@@ -7,8 +7,7 @@ from apps.amocrm import tasks
 from apps.mailing.admin.email_configuration import EmailConfigurationAdmin
 from apps.products.admin.courses import actions
 from apps.products.models import Course
-from core.admin import admin
-from core.admin import ModelAdmin
+from core.admin import ModelAdmin, admin
 
 
 @admin.register(Course)

@@ -1,18 +1,15 @@
 from contextlib import nullcontext as does_not_raise
 from datetime import datetime
 from datetime import timezone as dt_timezone
-import pytest
 
-from django.contrib.admin.models import CHANGE
-from django.contrib.admin.models import LogEntry
+import pytest
+from django.contrib.admin.models import CHANGE, LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 
 from apps.banking.exceptions import BankDoesNotExist
 from apps.banking.selector import BANKS
-from apps.orders.services import OrderRefunder
-from apps.orders.services import OrderUnshipper
-from core import current_user
+from apps.orders.services import OrderRefunder, OrderUnshipper
 
 pytestmark = [
     pytest.mark.django_db,
@@ -199,7 +196,7 @@ def test_update_user_tags(paid_order, mock_rebuild_tags, refund):
     mock_rebuild_tags.assert_called_once_with(student_id=paid_order.user.id)
 
 
-@pytest.mark.dashamail
+@pytest.mark.dashamail()
 def test_update_dashamail(paid_order, refund, mocker):
     update_subscription = mocker.patch("apps.dashamail.tasks.DashamailSubscriber.subscribe")
 
@@ -226,8 +223,8 @@ def test_fail_if_bank_is_set_but_unknown(paid_order, refund):
         refund(paid_order)
 
 
-@pytest.mark.auditlog
-@pytest.mark.freeze_time
+@pytest.mark.auditlog()
+@pytest.mark.freeze_time()
 def test_success_admin_log_created(paid_order, refund, user):
     refund(paid_order)
 

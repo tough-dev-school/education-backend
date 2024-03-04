@@ -1,12 +1,9 @@
 from dataclasses import dataclass
 
 from django.db import transaction
-from django.db.models import Count
-from django.db.models import Q
-from django.db.models import QuerySet
+from django.db.models import Count, Q, QuerySet
 
-from apps.homework.models import Answer
-from apps.homework.models import AnswerCrossCheck
+from apps.homework.models import Answer, AnswerCrossCheck
 from apps.users.models import User
 from core.services import BaseService
 

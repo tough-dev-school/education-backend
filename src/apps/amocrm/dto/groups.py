@@ -1,5 +1,5 @@
+from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Iterable
 
 from apps.amocrm.client import http
 from apps.products.models import Group
@@ -19,8 +19,7 @@ class AmoCRMGroupsDTO:
         Updates product catalog field
         returns list of pairs like [(group_slug, amocrm_id), ...]
         """
-        from apps.amocrm.ids import product_field_id
-        from apps.amocrm.ids import products_catalog_id
+        from apps.amocrm.ids import product_field_id, products_catalog_id
 
         groups_as_product_fields = [self._get_group_as_product_field(group=group) for group in self.groups]
         response = http.patch(

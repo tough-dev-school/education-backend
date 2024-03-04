@@ -1,11 +1,8 @@
+from django.urls import include, path
 from rest_framework.routers import SimpleRouter
 
-from django.urls import include
-from django.urls import path
-
 from apps.homework.api import views
-from apps.homework.api.viewsets import AnswerViewSet
-from apps.homework.api.viewsets import ReactionViewSet
+from apps.homework.api.viewsets import AnswerViewSet, ReactionViewSet
 
 router = SimpleRouter()
 router.register("answers", AnswerViewSet)

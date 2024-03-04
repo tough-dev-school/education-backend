@@ -3,8 +3,7 @@ from typing import Literal
 from django.conf import settings
 
 from apps.amocrm import types
-from apps.amocrm.dto import AmoCRMCatalogsDTO
-from apps.amocrm.dto import AmoCRMPipelinesDTO
+from apps.amocrm.dto import AmoCRMCatalogsDTO, AmoCRMPipelinesDTO
 from apps.amocrm.exceptions import AmoCRMCacheException
 
 STATUSES_NAMES = Literal["unsorted", "first_contact", "purchased", "closed"]

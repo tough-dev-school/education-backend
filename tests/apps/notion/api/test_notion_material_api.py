@@ -1,8 +1,9 @@
+from datetime import timedelta
+
 import pytest
 from django.utils import timezone
-from datetime import timedelta
-from apps.notion.models import NotionAsset
 
+from apps.notion.models import NotionAsset
 
 pytestmark = [
     pytest.mark.django_db,
@@ -50,6 +51,7 @@ def fetched_asset() -> NotionAsset:
         size=100,
         md5_sum="D34DBEEF",
     )
+
 
 @pytest.mark.parametrize("material_id", ["0e5693d2-173a-4f77-ae81-06813b6e5329", "0e5693d2173a4f77ae8106813b6e5329"])
 def test_both_formats_work_with_id(api, material_id, mock_notion_response):
@@ -100,7 +102,10 @@ def test_extra_tags_are_dropped_from_cached_material(get_cached_material, materi
 def test_non_fetched_assets_are_rewritten_to_notion_so_urls_during_upstream_api_call(api, material):
     got = api.get(f"/api/v2/notion/materials/{material.page_id}/")
 
-    assert got["block-3"]["value"]["format"]["page_cover"] == "https://notion.so/image/secure.notion-static.com%2Ftypicalmacuser.jpg?table=test-parent-table&id=block-3&cache=v2"
+    assert (
+        got["block-3"]["value"]["format"]["page_cover"]
+        == "https://notion.so/image/secure.notion-static.com%2Ftypicalmacuser.jpg?table=test-parent-table&id=block-3&cache=v2"
+    )
 
 
 @pytest.mark.usefixtures("fetched_asset")
@@ -109,10 +114,14 @@ def test_fetched_assets_paths_are_rewritten_during_upstream_api_call(api, materi
 
     assert got["block-3"]["value"]["format"]["page_cover"] == "https://cdn.tough-dev.school/assets/typicalmacuser-downloaded.jpg"
 
+
 def test_non_fetched_asset_paths_are_rewritten_to_notion_so_urls_for_cached_material(get_cached_material, material):
     got = get_cached_material(material.page_id)
 
-    assert got["block-3"]["value"]["format"]["page_cover"] == "https://notion.so/image/secure.notion-static.com%2Ftypicalmacuser.jpg?table=test-parent-table&id=block-3&cache=v2"
+    assert (
+        got["block-3"]["value"]["format"]["page_cover"]
+        == "https://notion.so/image/secure.notion-static.com%2Ftypicalmacuser.jpg?table=test-parent-table&id=block-3&cache=v2"
+    )
 
 
 @pytest.mark.usefixtures("fetched_asset")

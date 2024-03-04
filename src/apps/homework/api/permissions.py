@@ -1,12 +1,11 @@
 from datetime import timedelta
 from typing import Any
 
+from django.conf import settings
+from django.utils import timezone
 from rest_framework import permissions
 from rest_framework.request import Request
 from rest_framework.views import APIView
-
-from django.conf import settings
-from django.utils import timezone
 
 from apps.homework.models import Question
 

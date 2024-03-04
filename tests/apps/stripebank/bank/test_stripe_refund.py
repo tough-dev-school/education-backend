@@ -1,5 +1,4 @@
 import pytest
-from contextlib import nullcontext as does_not_raise
 
 pytestmark = [
     pytest.mark.django_db,
@@ -9,6 +8,7 @@ pytestmark = [
 @pytest.fixture(autouse=True)
 def mock_stripe_refund(mocker):
     return mocker.patch("stripe.Refund.create")
+
 
 def test_refund(stripe, stripe_notification_checkout_completed, mock_stripe_refund):
     stripe.refund()

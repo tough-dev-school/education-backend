@@ -1,14 +1,11 @@
-from httpx import HTTPError
-
 from django import forms
+from httpx import HTTPError
 
 from apps.notion import helpers
 from apps.notion.client import NotionClient
 from apps.notion.exceptions import NotionError
-from apps.notion.models import Material
-from apps.notion.models import MaterialFile
-from core.admin import admin
-from core.admin import ModelAdmin
+from apps.notion.models import Material, MaterialFile
+from core.admin import ModelAdmin, admin
 
 
 class NotionMaterialForm(forms.ModelForm):
@@ -54,5 +51,4 @@ class NotionMaterialAdmin(ModelAdmin):
 
 
 @admin.register(MaterialFile)
-class MaterialFileAdmin(ModelAdmin):
-    ...
+class MaterialFileAdmin(ModelAdmin): ...

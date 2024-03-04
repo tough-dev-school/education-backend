@@ -6,9 +6,7 @@ from django.utils import timezone
 from django.utils.functional import cached_property
 
 from apps.amocrm import types
-from apps.amocrm.dto import AmoCRMLeadNoteDTO
-from apps.amocrm.dto import AmoCRMLeadTaskDTO
-from apps.amocrm.dto import AmoCRMUserOperatorDTO
+from apps.amocrm.dto import AmoCRMLeadNoteDTO, AmoCRMLeadTaskDTO, AmoCRMUserOperatorDTO
 from apps.orders.models import Order
 from core.services import BaseService
 

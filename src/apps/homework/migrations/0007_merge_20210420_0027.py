@@ -4,11 +4,9 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('homework', '0006_SeeAllQuestionsPermission'),
-        ('homework', '0006_AnswerAccessLogEntry'),
+        ("homework", "0006_SeeAllQuestionsPermission"),
+        ("homework", "0006_AnswerAccessLogEntry"),
     ]
 
-    operations = [
-    ]
+    operations = []

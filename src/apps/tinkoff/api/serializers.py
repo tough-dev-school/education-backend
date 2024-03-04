@@ -1,8 +1,7 @@
 from _decimal import Decimal
 from rest_framework import serializers
 
-from apps.tinkoff.models import DolyameNotification
-from apps.tinkoff.models import PaymentNotification
+from apps.tinkoff.models import DolyameNotification, PaymentNotification
 
 
 class PaymentNotificationSerializer(serializers.ModelSerializer):

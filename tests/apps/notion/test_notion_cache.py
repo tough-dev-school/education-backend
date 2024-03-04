@@ -1,13 +1,10 @@
 from datetime import timedelta
-import pytest
 
+import pytest
 from django.utils import timezone
 
-from apps.notion.block import NotionBlock
-from apps.notion.block import NotionBlockList
-from apps.notion.cache import get_cached_page
-from apps.notion.cache import NotionCache
-from apps.notion.cache import TIMEOUT
+from apps.notion.block import NotionBlock, NotionBlockList
+from apps.notion.cache import TIMEOUT, NotionCache, get_cached_page
 from apps.notion.models import NotionCacheEntry
 from apps.notion.page import NotionPage
 

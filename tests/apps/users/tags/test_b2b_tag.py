@@ -1,7 +1,6 @@
 import pytest
 
 from apps.users.tags.pipeline import generate_tags
-from apps.mailing.models import PersonalEmailDomain
 
 pytestmark = [
     pytest.mark.django_db,

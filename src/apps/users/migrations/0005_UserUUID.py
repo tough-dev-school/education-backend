@@ -2,32 +2,30 @@
 
 import uuid
 
-from django.db import migrations
-from django.db import models
+from django.db import migrations, models
 
 
 def set_random_uuid_for_all_users(apps, schema_editor):
-    for user in apps.get_model('users.User').objects.filter(uuid__isnull=True).iterator():
+    for user in apps.get_model("users.User").objects.filter(uuid__isnull=True).iterator():
         user.uuid = uuid.uuid4()
-        user.save(update_fields=['uuid'])
+        user.save(update_fields=["uuid"])
 
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('users', '0004_NamesInEnglish'),
+        ("users", "0004_NamesInEnglish"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='uuid',
+            model_name="user",
+            name="uuid",
             field=models.UUIDField(null=True),
         ),
         migrations.RunPython(set_random_uuid_for_all_users),
         migrations.AlterField(
-            model_name='user',
-            name='uuid',
+            model_name="user",
+            name="uuid",
             field=models.UUIDField(db_index=True, default=uuid.uuid4, unique=True),
         ),
-
     ]

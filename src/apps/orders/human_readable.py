@@ -1,8 +1,7 @@
 from django.utils.html import format_html
 from django.utils.translation import gettext as _
 
-from apps.banking.selector import BANK_KEYS
-from apps.banking.selector import get_bank
+from apps.banking.selector import BANK_KEYS, get_bank
 from apps.orders.models import Order
 
 

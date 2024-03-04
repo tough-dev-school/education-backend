@@ -2,44 +2,42 @@
 
 import uuid
 
-from django.db import migrations
-from django.db import models
 import django.db.models.deletion
+from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('studying', '0001_initial'),
+        ("studying", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Diploma',
+            name="Diploma",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('modified', models.DateTimeField(blank=True, db_index=True, null=True)),
-                ('slug', models.UUIDField(db_index=True, default=uuid.uuid4, unique=True)),
-                ('language', models.CharField(choices=[('RU', 'Russian'), ('EN', 'English')], db_index=True, max_length=3)),
-                ('image', models.ImageField(upload_to='')),
-                ('study', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='studying.study')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("created", models.DateTimeField(auto_now_add=True, db_index=True)),
+                ("modified", models.DateTimeField(blank=True, db_index=True, null=True)),
+                ("slug", models.UUIDField(db_index=True, default=uuid.uuid4, unique=True)),
+                ("language", models.CharField(choices=[("RU", "Russian"), ("EN", "English")], db_index=True, max_length=3)),
+                ("image", models.ImageField(upload_to="")),
+                ("study", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="studying.study")),
             ],
             options={
-                'verbose_name': 'Diploma',
-                'verbose_name_plural': 'Diplomas',
-                'ordering': ['-id'],
-                'permissions': [('access_all_diplomas', 'May access diplomas of all students')],
+                "verbose_name": "Diploma",
+                "verbose_name_plural": "Diplomas",
+                "ordering": ["-id"],
+                "permissions": [("access_all_diplomas", "May access diplomas of all students")],
             },
         ),
         migrations.AddIndex(
-            model_name='diploma',
-            index=models.Index(fields=['study', 'language'], name='diplomas_di_study_i_b71641_idx'),
+            model_name="diploma",
+            index=models.Index(fields=["study", "language"], name="diplomas_di_study_i_b71641_idx"),
         ),
         migrations.AddConstraint(
-            model_name='diploma',
-            constraint=models.UniqueConstraint(fields=('study', 'language'), name='unique_study'),
+            model_name="diploma",
+            constraint=models.UniqueConstraint(fields=("study", "language"), name="unique_study"),
         ),
     ]

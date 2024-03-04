@@ -1,5 +1,4 @@
 import pytest
-
 from django.core import mail
 
 pytestmark = [pytest.mark.django_db]

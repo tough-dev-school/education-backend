@@ -1,9 +1,8 @@
-from functools import reduce
 import operator
+from functools import reduce
 from typing import Any
 
 from behaviors.behaviors import Timestamped
-
 from django.db import models
 
 __all__ = [

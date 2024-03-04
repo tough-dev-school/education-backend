@@ -1,10 +1,9 @@
 from typing import Any
 
+from django.db.models import QuerySet
 from rest_framework.exceptions import NotFound
 from rest_framework.request import Request
 from rest_framework.response import Response
-
-from django.db.models import QuerySet
 
 from apps.notion.api.serializers import NotionPageSerializer
 from apps.notion.api.throttling import NotionThrottle

@@ -1,9 +1,8 @@
 import pytest
-
 from respx import MockRouter
 
-from core.test.api_client import DRFClient
 from apps.notion.models import NotionCacheEntry
+from core.test.api_client import DRFClient
 
 pytestmark = [
     pytest.mark.django_db,

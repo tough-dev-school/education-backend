@@ -4,18 +4,17 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('products', '0002_CourseGenitiveName'),
+        ("products", "0002_CourseGenitiveName"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='course',
-            options={'ordering': ['-id']},
+            name="course",
+            options={"ordering": ["-id"]},
         ),
         migrations.AlterModelOptions(
-            name='record',
-            options={'ordering': ['-id']},
+            name="record",
+            options={"ordering": ["-id"]},
         ),
     ]

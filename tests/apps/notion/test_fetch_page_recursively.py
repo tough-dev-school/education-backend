@@ -1,13 +1,13 @@
 import pytest
 
-from apps.notion.block import NotionBlock
-from apps.notion.block import NotionBlockList
-from apps.notion.page import NotionPage
+from apps.notion.block import NotionBlock, NotionBlockList
 from apps.notion.models import NotionAsset
+from apps.notion.page import NotionPage
 
 pytestmark = [
     pytest.mark.django_db,
 ]
+
 
 @pytest.fixture
 def page() -> NotionPage:
@@ -68,15 +68,23 @@ def test_fetching_does_not_get_stuck_in_inifinite_loop_when_notion_does_not_retu
 def test_assets_are_fetched(notion, page, fetch_page, fetch_blocks):
     fetch_page.return_value = page
     fetch_blocks.side_effect = [
-        NotionBlockList([NotionBlock(id="block2", data={
-            "value": {
-                "id": "block2",
-                "type": "image",
-                "properties": {
-                    "source": [["https://secure.notion-static.com/typicalmacuser.jpg"]],
-                },
-                "parent_table": "test-table",
-        }})]),
+        NotionBlockList(
+            [
+                NotionBlock(
+                    id="block2",
+                    data={
+                        "value": {
+                            "id": "block2",
+                            "type": "image",
+                            "properties": {
+                                "source": [["https://secure.notion-static.com/typicalmacuser.jpg"]],
+                            },
+                            "parent_table": "test-table",
+                        }
+                    },
+                )
+            ]
+        ),
     ]
 
     notion.fetch_page_recursively(page_id="100500")

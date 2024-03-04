@@ -1,5 +1,4 @@
 import pytest
-
 from emoji import EMOJI_DATA
 
 from apps.homework.models.reaction import Reaction

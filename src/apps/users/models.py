@@ -1,10 +1,9 @@
+import uuid
 from typing import cast
 from urllib.parse import urljoin
-import uuid
 
 from django.conf import settings
-from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import Permission
+from django.contrib.auth.models import AbstractUser, Permission
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GinIndex
 from django.db.models import TextChoices
@@ -12,8 +11,7 @@ from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
 from apps.diplomas.models import Languages
-from core.models import models
-from core.models import TestUtilsMixin
+from core.models import TestUtilsMixin, models
 from core.types import Language
 
 

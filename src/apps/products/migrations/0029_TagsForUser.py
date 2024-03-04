@@ -2,8 +2,7 @@
 import random
 import string
 
-from django.db import migrations
-from django.db import models
+from django.db import migrations, models
 
 
 def set_default_slug_to_group(apps, schema_editor):
@@ -12,13 +11,13 @@ def set_default_slug_to_group(apps, schema_editor):
     groups = Group.objects.all()
 
     def random_string():
-        return ''.join(random.choices(string.ascii_lowercase, k=10))
+        return "".join(random.choices(string.ascii_lowercase, k=10))
 
     def get_product_group_slug(group):
         first_course = Course.objects.filter(group=group).first()
         if first_course is None:
             return random_string()
-        return '-'.join(first_course.slug.split('-')[:-1])
+        return "-".join(first_course.slug.split("-")[:-1])
 
     for group in groups:
         slug = get_product_group_slug(group)
@@ -33,7 +32,6 @@ def revert_set_default_slug_to_group(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("products", "0028_CourseCoverField"),
     ]
@@ -45,9 +43,5 @@ class Migration(migrations.Migration):
             field=models.SlugField(null=True, unique=True),
         ),
         migrations.RunPython(set_default_slug_to_group, reverse_code=revert_set_default_slug_to_group),
-        migrations.AlterField(
-            model_name='group',
-            name='slug',
-            field=models.SlugField(null=False, unique=True)
-        ),
+        migrations.AlterField(model_name="group", name="slug", field=models.SlugField(null=False, unique=True)),
     ]

@@ -2,9 +2,8 @@ from collections.abc import Iterable
 from typing import TYPE_CHECKING
 
 import httpx
-from sentry_sdk import add_breadcrumb
-
 from django.conf import settings
+from sentry_sdk import add_breadcrumb
 
 from apps.notion.exceptions import HTTPError
 from apps.notion.helpers import id_to_uuid

@@ -1,8 +1,7 @@
 from celery import Task
-from httpx import TransportError
-
 from django.apps import apps
 from django.conf import settings
+from httpx import TransportError
 
 from apps.amocrm.client import AmoCRMClient
 from apps.amocrm.client.http import AmoCRMClientException

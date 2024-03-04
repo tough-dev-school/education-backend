@@ -4,14 +4,17 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('homework', '0005_GodAnswerUsers'),
+        ("homework", "0005_GodAnswerUsers"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='question',
-            options={'permissions': [('see_all_questions', 'May see questions for all homeworks')], 'verbose_name': 'Homework', 'verbose_name_plural': 'Homeworks'},
+            name="question",
+            options={
+                "permissions": [("see_all_questions", "May see questions for all homeworks")],
+                "verbose_name": "Homework",
+                "verbose_name_plural": "Homeworks",
+            },
         ),
     ]

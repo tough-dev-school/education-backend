@@ -1,5 +1,5 @@
-from datetime import datetime
-from datetime import timezone
+from datetime import datetime, timezone
+
 import pytest
 
 from apps.orders.models import Order

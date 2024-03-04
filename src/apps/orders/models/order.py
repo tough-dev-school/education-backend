@@ -1,9 +1,7 @@
-from typing import Iterable
+from collections.abc import Iterable
 
 import shortuuid
-
-from django.db.models import CheckConstraint
-from django.db.models import QuerySet
+from django.db.models import CheckConstraint, QuerySet
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
@@ -11,9 +9,7 @@ from apps.banking.selector import BANK_CHOICES
 from apps.orders.exceptions import UnknownItemException
 from apps.orders.fields import ItemField
 from apps.products.models import Product
-from core.models import models
-from core.models import only_one_or_zero_is_set
-from core.models import TimestampedModel
+from core.models import TimestampedModel, models, only_one_or_zero_is_set
 
 
 class OrderQuerySet(QuerySet):

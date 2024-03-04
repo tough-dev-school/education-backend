@@ -1,7 +1,6 @@
+from django.db.models import QuerySet
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
-
-from django.db.models import QuerySet
 
 from apps.products.models import Course
 from apps.studying.api.serializers import CourseSerializer

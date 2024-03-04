@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('homework', '0003_AnswerTree'),
+        ("homework", "0003_AnswerTree"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='answer',
-            options={'ordering': ['created'], 'verbose_name': 'Homework answer', 'verbose_name_plural': 'Homework answers'},
+            name="answer",
+            options={"ordering": ["created"], "verbose_name": "Homework answer", "verbose_name_plural": "Homework answers"},
         ),
     ]

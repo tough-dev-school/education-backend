@@ -1,9 +1,9 @@
 from typing import Any
 
-from core.test.factory import register
 from apps.diplomas.models import Diploma
 from apps.products.models import Course
 from apps.users.models import User
+from core.test.factory import register
 
 
 @register

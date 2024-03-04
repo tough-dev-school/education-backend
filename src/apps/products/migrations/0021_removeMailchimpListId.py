@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('products', '0020_InternationalNames'),
+        ("products", "0020_InternationalNames"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='course',
-            name='mailchimp_list_id',
+            model_name="course",
+            name="mailchimp_list_id",
         ),
     ]

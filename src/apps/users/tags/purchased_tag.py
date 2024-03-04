@@ -1,4 +1,5 @@
-from typing import final, Generator, TYPE_CHECKING
+from collections.abc import Generator
+from typing import TYPE_CHECKING, final
 
 from django.db.models import QuerySet
 

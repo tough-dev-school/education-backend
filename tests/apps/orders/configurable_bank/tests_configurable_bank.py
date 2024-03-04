@@ -1,4 +1,5 @@
 from decimal import Decimal
+
 import pytest
 
 from apps.orders.models import Order

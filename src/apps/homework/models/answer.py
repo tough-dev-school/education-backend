@@ -1,26 +1,20 @@
 import textwrap
-from urllib.parse import urljoin
-from urllib.parse import urlparse
 import uuid
-
-from tree_queries.models import TreeNode
-from tree_queries.query import TreeQuerySet
+from urllib.parse import urljoin, urlparse
 
 from django.conf import settings
-from django.db.models import Count
-from django.db.models import Prefetch
-from django.db.models import Q
+from django.db.models import Count, Prefetch, Q
 from django.db.models.query_utils import FilteredRelation
 from django.utils.translation import gettext_lazy as _
+from tree_queries.models import TreeNode
+from tree_queries.query import TreeQuerySet
 
 from apps.homework.models.reaction import Reaction
 from apps.orders.models import Order
 from apps.products.models import Course
 from apps.users.models import User
-from core.markdown import markdownify
-from core.markdown import remove_html
-from core.models import models
-from core.models import TestUtilsMixin
+from core.markdown import markdownify, remove_html
+from core.models import TestUtilsMixin, models
 
 
 class AnswerQuerySet(TreeQuerySet):

@@ -2,8 +2,7 @@ from dataclasses import dataclass
 from functools import partial
 
 from apps.chains import tasks
-from apps.chains.models import Message
-from apps.chains.models import Progress
+from apps.chains.models import Message, Progress
 from apps.mailing.tasks import send_mail
 from apps.studying.models import Study
 from core.services import BaseService

@@ -1,8 +1,9 @@
-import pytest
-from typing import Callable
+from collections.abc import Callable
 
-from core.test.api_client import DRFClient
+import pytest
+
 from apps.users.models import User
+from core.test.api_client import DRFClient
 
 
 @pytest.fixture

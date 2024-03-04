@@ -1,6 +1,5 @@
 from core.files import RandomFileName
-from core.models import models
-from core.models import TimestampedModel
+from core.models import TimestampedModel, models
 
 
 class AnswerImage(TimestampedModel):

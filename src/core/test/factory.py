@@ -1,5 +1,5 @@
+from collections.abc import Callable
 from functools import partial
-from typing import Callable
 
 from faker import Faker
 from mixer.backend.django import mixer

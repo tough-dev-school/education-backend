@@ -5,14 +5,16 @@ compilemessages:
 	$(manage) compilemessages
 
 fmt:
-	poetry run autoflake --in-place --remove-all-unused-imports --recursive src
-	poetry run isort src
-	poetry run black src
+	poetry run ruff format src tests
+	poetry run ruff check src tests --fix
+	poetry run toml-sort pyproject.toml
 
 lint:
 	$(manage) makemigrations --check --no-input --dry-run
-	poetry run flake8 src
+	poetry run ruff format --check src tests
+	poetry run ruff check src tests
 	poetry run mypy src
+	poetry run toml-sort pyproject.toml --check
 	poetry run pymarkdown scan README.md
 
 messages: compilemessages

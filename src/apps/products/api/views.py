@@ -1,20 +1,16 @@
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
-from drf_spectacular.utils import extend_schema
-from drf_spectacular.utils import OpenApiParameter
+from django.http import HttpResponseRedirect
+from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from django.http import HttpResponseRedirect
-
 from apps.banking import price_calculator
-from apps.banking.selector import BANK_KEYS
-from apps.banking.selector import get_bank_or_default
+from apps.banking.selector import BANK_KEYS, get_bank_or_default
 from apps.orders.api.serializers import PromocodeSerializer
-from apps.orders.api.throttling import PromocodeThrottle
-from apps.orders.api.throttling import PurchaseThrottle
+from apps.orders.api.throttling import PromocodeThrottle, PurchaseThrottle
 from apps.orders.models import PromoCode
 from apps.orders.services import OrderCreator
 from apps.products.api.serializers import PurchaseSerializer

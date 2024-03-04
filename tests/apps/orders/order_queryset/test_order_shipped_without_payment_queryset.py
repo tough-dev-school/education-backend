@@ -1,5 +1,4 @@
 import pytest
-
 from django.utils import timezone
 
 from apps.orders.models import Order

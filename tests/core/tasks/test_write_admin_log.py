@@ -1,6 +1,6 @@
 from contextlib import nullcontext as does_not_raise
-import pytest
 
+import pytest
 from django.contrib.admin.models import CHANGE, LogEntry
 
 from core.tasks import write_admin_log

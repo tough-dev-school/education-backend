@@ -1,5 +1,5 @@
-from decimal import Decimal
 import random
+from decimal import Decimal
 from typing import Any
 
 from apps.orders.models import Order
@@ -19,10 +19,10 @@ def order(
     author: User | None = None,
     price: Decimal | None = None,
     bank_id: str | None = "tinkoff_bank",
-    **kwargs: dict[str, Any]
+    **kwargs: dict[str, Any],
 ) -> Order:
-    user = user if user else self.mixer.blend('users.User')
-    price = price if price is not None else Decimal('%d.%d' % (random.randint(1, 100500), random.randint(0, 99)))
+    user = user if user else self.mixer.blend("users.User")
+    price = price if price is not None else Decimal("%d.%d" % (random.randint(1, 100500), random.randint(0, 99)))
     course = item if item else self.course(price=price)
 
     order = self.mixer.blend(
@@ -33,7 +33,8 @@ def order(
         bank_id=bank_id,
         user=user,
         author=author if author else user,
-    **kwargs)
+        **kwargs,
+    )
 
     if is_paid:
         order.set_paid(silent=True)

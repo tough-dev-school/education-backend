@@ -1,4 +1,5 @@
 import json
+
 import pytest
 
 from apps.stripebank.bank import StripeBank

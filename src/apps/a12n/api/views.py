@@ -1,11 +1,10 @@
 from dj_rest_auth import views as dj_rest_auth_views
+from django.conf import settings
+from django.shortcuts import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_jwt import views as jwt
-
-from django.conf import settings
-from django.shortcuts import get_object_or_404
 
 from apps.a12n.api.serializers import PasswordResetSerializer
 from apps.a12n.api.throttling import AuthAnonRateThrottle

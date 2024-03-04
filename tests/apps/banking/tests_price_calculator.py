@@ -1,4 +1,5 @@
 from decimal import Decimal
+
 import pytest
 
 from apps.banking import price_calculator
@@ -15,8 +16,7 @@ from apps.banking import price_calculator
     ],
 )
 def test(price, ue, expected):
-    class MockBank:
-        ...
+    class MockBank: ...
 
     MockBank.ue = ue
 

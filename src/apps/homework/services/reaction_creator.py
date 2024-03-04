@@ -1,12 +1,11 @@
-from dataclasses import dataclass
-from typing import Callable
 import uuid
+from collections.abc import Callable
+from dataclasses import dataclass
 from uuid import UUID
-
-from emoji import is_emoji
 
 from django.db import IntegrityError
 from django.utils.translation import gettext_lazy as _
+from emoji import is_emoji
 
 from apps.homework.models import Answer
 from apps.homework.models.reaction import Reaction

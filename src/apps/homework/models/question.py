@@ -1,12 +1,11 @@
+import uuid
 from typing import Any
 from urllib.parse import urljoin
-import uuid
 
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
-from core.models import models
-from core.models import TimestampedModel
+from core.models import TimestampedModel, models
 
 
 class Question(TimestampedModel):

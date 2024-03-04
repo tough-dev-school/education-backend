@@ -1,14 +1,11 @@
+from django.db.models import QuerySet
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-
-from django.db.models import QuerySet
 
 from apps.homework.api import serializers
 from apps.homework.api.filtersets import AnswerCommentFilterSet
 from apps.homework.api.permissions import ShouldHavePurchasedCoursePermission
-from apps.homework.models import Answer
-from apps.homework.models import AnswerImage
-from apps.homework.models import Question
+from apps.homework.models import Answer, AnswerImage, Question
 
 
 class QuestionView(generics.RetrieveAPIView):

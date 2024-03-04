@@ -1,8 +1,7 @@
-from typing import Optional, TYPE_CHECKING  # NOQA: I251
+from typing import TYPE_CHECKING, Optional  # NOQA: I251
 
 from apps.studying.models import Study
-from core.models import models
-from core.models import TimestampedModel
+from core.models import TimestampedModel, models
 
 if TYPE_CHECKING:
     from apps.chains.models.chain import Chain

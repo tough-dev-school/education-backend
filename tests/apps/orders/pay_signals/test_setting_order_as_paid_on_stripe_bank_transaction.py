@@ -1,6 +1,6 @@
-from datetime import datetime
-from datetime import timezone
 import json
+from datetime import datetime, timezone
+
 import pytest
 
 pytestmark = [
@@ -21,6 +21,7 @@ def webhook_checkout_completed(order):
         bank_data["data"]["object"]["client_reference_id"] = order.slug
 
         return bank_data
+
 
 @pytest.fixture(autouse=True)
 def _disable_signature_verification(mocker):

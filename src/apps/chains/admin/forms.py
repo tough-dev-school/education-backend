@@ -1,8 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from apps.chains.models import Chain
-from apps.chains.models import Message
+from apps.chains.models import Chain, Message
 
 
 class ChainChoiceField(forms.ModelChoiceField):

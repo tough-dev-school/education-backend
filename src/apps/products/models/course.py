@@ -1,8 +1,6 @@
 from django.apps import apps
 from django.core.exceptions import ValidationError
-from django.db.models import OuterRef
-from django.db.models import QuerySet
-from django.db.models import Subquery
+from django.db.models import OuterRef, QuerySet, Subquery
 from django.utils.translation import gettext_lazy as _
 
 from apps.mailing.tasks import send_mail

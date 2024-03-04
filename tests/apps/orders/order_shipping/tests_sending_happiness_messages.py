@@ -1,7 +1,6 @@
 import pytest
 
-from apps.banking.selector import BANK_KEYS
-from apps.banking.selector import BANKS
+from apps.banking.selector import BANK_KEYS, BANKS
 from apps.orders.services import OrderPaidSetter
 
 pytestmark = [pytest.mark.django_db]

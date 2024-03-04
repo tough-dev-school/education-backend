@@ -1,12 +1,11 @@
 from typing import Any
 
+from django.core.exceptions import ImproperlyConfigured
+from django.db.models import QuerySet
 from rest_framework import permissions
 from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
-
-from django.core.exceptions import ImproperlyConfigured
-from django.db.models import QuerySet
 
 from apps.users.api.serializers import UserSerializer
 from apps.users.models import User

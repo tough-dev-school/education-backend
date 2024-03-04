@@ -1,12 +1,14 @@
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
+
 import pytest
 
 from apps.amocrm import types
-from apps.amocrm.services.orders.order_task_creator import AmoCRMOrderTaskCreator
-from apps.amocrm.services.orders.order_task_creator import AmoCRMOrderTaskCreatorException
-from apps.amocrm.services.orders.order_task_creator import AmoCRMOrderTaskData
-from apps.amocrm.services.orders.order_task_creator import AmoCRMOrderTaskDataServiceNote
+from apps.amocrm.services.orders.order_task_creator import (
+    AmoCRMOrderTaskCreator,
+    AmoCRMOrderTaskCreatorException,
+    AmoCRMOrderTaskData,
+    AmoCRMOrderTaskDataServiceNote,
+)
 from apps.orders.models import Order
 from core.exceptions import AppServiceException
 

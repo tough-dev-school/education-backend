@@ -1,9 +1,8 @@
-from dataclasses import dataclass
 import uuid
-
-from rest_framework import serializers
+from dataclasses import dataclass
 
 from django.utils.functional import cached_property
+from rest_framework import serializers
 
 from apps.users.models import User
 from core.services import BaseService

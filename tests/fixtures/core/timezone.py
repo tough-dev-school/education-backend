@@ -1,5 +1,6 @@
-import pytest
 from zoneinfo import ZoneInfo
+
+import pytest
 
 
 @pytest.fixture
