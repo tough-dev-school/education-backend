@@ -1,5 +1,4 @@
 import pytest
-
 from _decimal import Decimal
 
 pytestmark = [pytest.mark.django_db]
@@ -18,7 +17,6 @@ def push_customer(mocker):
 @pytest.fixture
 def push_order(mocker):
     return mocker.patch("apps.amocrm.tasks.push_order.si")
-
 
 
 def test_if_subscribe_and_amocrm_enabled(create, user, course, update_user_chain, push_customer, settings, push_order):
@@ -44,9 +42,7 @@ def test_if_not_subscribe_and_amocrm_enabled(create, user, course, update_user_c
     )
 
 
-def test_if_not_subscribe_and_amocrm_disabled(
-    create, user, course, push_customer, push_order
-):
+def test_if_not_subscribe_and_amocrm_disabled(create, user, course, push_customer, push_order):
     user.update(email="")
 
     create(user=user, item=course)
@@ -65,9 +61,7 @@ def test_dont_call_if_free_order(create, user, course, push_customer, settings, 
     push_order.assert_not_called()
 
 
-def test_if_not_subscribe_and_not_push_to_amocrm(
-    create, user, course, push_customer, settings, push_order
-):
+def test_if_not_subscribe_and_not_push_to_amocrm(create, user, course, push_customer, settings, push_order):
     settings.AMOCRM_BASE_URL = "https://amo.amo.amo"
     user.update(email="")
 

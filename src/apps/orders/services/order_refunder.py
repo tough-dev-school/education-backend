@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from urllib.parse import urljoin
 
 import celery
-
 from django.conf import settings
 from django.contrib.admin.models import CHANGE
 from django.urls import reverse

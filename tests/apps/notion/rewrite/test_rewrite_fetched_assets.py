@@ -1,8 +1,10 @@
+from contextlib import nullcontext as does_not_raise
+
 import pytest
-from apps.notion.types import BlockValue
+
 from apps.notion.models import NotionAsset
 from apps.notion.rewrite import rewrite_fetched_assets
-from contextlib import nullcontext as does_not_raise
+from apps.notion.types import BlockValue
 
 pytestmark = [
     pytest.mark.django_db,
@@ -20,8 +22,9 @@ def asset() -> NotionAsset:
         url="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d95897d2-8698-468b-ac09-0870070855c9/typicalmacuser.png",
         file="assets/macuser.png",
         size=100,
-        md5_sum='DEADBEEF',
+        md5_sum="DEADBEEF",
     )
+
 
 @pytest.fixture
 def icon_asset() -> NotionAsset:
@@ -29,8 +32,9 @@ def icon_asset() -> NotionAsset:
         url="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d95897d2-8698-468b-ac09-0870070855c9/typicalmacuser_icon.png",
         file="assets/macuser_icon.png",
         size=100,
-        md5_sum='DEADBEEF',
+        md5_sum="DEADBEEF",
     )
+
 
 @pytest.fixture
 def another_asset() -> NotionAsset:
@@ -38,13 +42,15 @@ def another_asset() -> NotionAsset:
         url="https://some-other.url/test.png",
         file="assets/macuser.png",
         size=100,
-        md5_sum='DEADBEEF',
+        md5_sum="DEADBEEF",
     )
 
 
 @pytest.mark.usefixtures("another_asset")
 def test_image_not_rewritten(image):
-    assert rewrite(image)["properties"]["source"] == [["https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d95897d2-8698-468b-ac09-0870070855c9/typicalmacuser.png"]]
+    assert rewrite(image)["properties"]["source"] == [
+        ["https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d95897d2-8698-468b-ac09-0870070855c9/typicalmacuser.png"]
+    ]
 
 
 @pytest.mark.usefixtures("asset")
@@ -54,8 +60,14 @@ def test_image_rewritten(image):
 
 @pytest.mark.usefixtures("another_asset")
 def test_page_not_rewritten(page):
-    assert rewrite(page)["format"]["page_cover"] == "https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d95897d2-8698-468b-ac09-0870070855c9/typicalmacuser.png"
-    assert rewrite(page)["format"]["page_icon"] == "https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d95897d2-8698-468b-ac09-0870070855c9/typicalmacuser_icon.png"
+    assert (
+        rewrite(page)["format"]["page_cover"]
+        == "https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d95897d2-8698-468b-ac09-0870070855c9/typicalmacuser.png"
+    )
+    assert (
+        rewrite(page)["format"]["page_icon"]
+        == "https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d95897d2-8698-468b-ac09-0870070855c9/typicalmacuser_icon.png"
+    )
 
 
 @pytest.mark.usefixtures("asset", "icon_asset")
@@ -73,5 +85,5 @@ def test_page_without_cover_and_icon(page, param):
 
 @pytest.mark.usefixtures("asset")
 def test_https_rewrite(image, mocker):
-    mocker.patch('core.storages.ProdReadOnlyStorage.url', return_value='http://cdn.tough-dev.school/assets/macuser.png')
+    mocker.patch("core.storages.ProdReadOnlyStorage.url", return_value="http://cdn.tough-dev.school/assets/macuser.png")
     assert rewrite(image)["properties"]["source"] == [["https://cdn.tough-dev.school/assets/macuser.png"]]

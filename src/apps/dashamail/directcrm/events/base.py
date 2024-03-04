@@ -1,10 +1,7 @@
-from abc import ABCMeta
-from abc import abstractmethod
-from abc import abstractproperty
+from abc import ABCMeta, abstractmethod, abstractproperty
 from decimal import Decimal
 
 import httpx
-
 from django.conf import settings
 
 from apps.dashamail import exceptions

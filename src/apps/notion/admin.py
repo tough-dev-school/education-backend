@@ -51,5 +51,4 @@ class NotionMaterialAdmin(ModelAdmin):
 
 
 @admin.register(MaterialFile)
-class MaterialFileAdmin(ModelAdmin):
-    ...
+class MaterialFileAdmin(ModelAdmin): ...

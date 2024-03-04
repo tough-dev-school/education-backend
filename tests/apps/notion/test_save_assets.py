@@ -1,39 +1,45 @@
 import pytest
-from apps.notion.block import NotionBlock
-from apps.notion.models import NotionAsset
-from apps.notion import exceptions
 from celery.exceptions import Retry
 
+from apps.notion.block import NotionBlock
+from apps.notion.models import NotionAsset
 
 pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
 def page():
-    return NotionBlock(id="test-block", data={
-        "value": {
-            "id": "test-block",
-            "type": "page",
-            "format": {
-                "page_cover": "secure.notion-static.com/typicalmacuser.jpg",
-            },
-            "parent_table": "100500",
-        }
-    })
+    return NotionBlock(
+        id="test-block",
+        data={
+            "value": {
+                "id": "test-block",
+                "type": "page",
+                "format": {
+                    "page_cover": "secure.notion-static.com/typicalmacuser.jpg",
+                },
+                "parent_table": "100500",
+            }
+        },
+    )
+
 
 @pytest.fixture
 def image():
-    return NotionBlock(id="test-block", data={
-        "value": {
-            "id": "test-block",
-            "type": "image",
-            "properties": {
-                "size": [["100x500"]],
-                "source": [["secure.notion-static.com/typicalmacuser.jpg"]],
-            },
-            "parent_table": "100500",
-        }
-    })
+    return NotionBlock(
+        id="test-block",
+        data={
+            "value": {
+                "id": "test-block",
+                "type": "image",
+                "properties": {
+                    "size": [["100x500"]],
+                    "source": [["secure.notion-static.com/typicalmacuser.jpg"]],
+                },
+                "parent_table": "100500",
+            }
+        },
+    )
 
 
 @pytest.fixture(autouse=True)
@@ -69,11 +75,13 @@ def test_page_cover_and_icon_are_both_fetched(page):
     assert NotionAsset.objects.count() == 2  # make sure both assets are fetched
 
 
-@pytest.mark.parametrize(("hash", "should_not_override"), [
-    ("c87337eddb4771e90e429e8c34d178a4", True),
-    ("not-so-hashy", False),
-])
-
+@pytest.mark.parametrize(
+    ("hash", "should_not_override"),
+    [
+        ("c87337eddb4771e90e429e8c34d178a4", True),
+        ("not-so-hashy", False),
+    ],
+)
 def test_asset_is_not_overiden(image, mocker, hash, should_not_override):
     NotionAsset.objects.create(url="secure.notion-static.com/typicalmacuser.jpg", md5_sum=hash, size=16)
     save = mocker.spy(NotionAsset, "save")

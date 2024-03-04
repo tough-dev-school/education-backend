@@ -25,6 +25,7 @@ def _pause_dashamail(mocker, request):
         mocker.patch("apps.dashamail.tasks.directcrm_subscribe.si")
         mocker.patch("apps.dashamail.tasks.directcrm_subscribe.apply_async")
 
+
 @pytest.fixture(autouse=True)
 def _pause_tags(mocker, request):
     """Pause background flags rebuilding"""

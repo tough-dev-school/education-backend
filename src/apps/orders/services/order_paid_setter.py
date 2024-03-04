@@ -1,22 +1,18 @@
 from dataclasses import dataclass
 
 from celery import chain
-
 from django.conf import settings
 from django.contrib.admin.models import CHANGE
 from django.utils import timezone
 
-from apps.amocrm.tasks import amocrm_enabled
-from apps.amocrm.tasks import push_order
-from apps.amocrm.tasks import push_user
+from apps.amocrm.tasks import amocrm_enabled, push_order, push_user
 from apps.dashamail import tasks as dashamail
 from apps.orders import human_readable
 from apps.orders.models import Order
 from apps.users.tasks import rebuild_tags
 from core.current_user import get_current_user
 from core.services import BaseService
-from core.tasks import send_telegram_message
-from core.tasks import write_admin_log
+from core.tasks import send_telegram_message, write_admin_log
 
 
 @dataclass
@@ -62,9 +58,7 @@ class OrderPaidSetter(BaseService):
             chain(
                 push_user.si(user_id=self.order.user_id),
                 push_order.si(order_id=self.order.id),
-            ).apply_async(
-                countdown=30
-            )  # hope tags are rebuilt by this time
+            ).apply_async(countdown=30)  # hope tags are rebuilt by this time
 
     def update_dashamail(self) -> None:
         dashamail.update_subscription.apply_async(

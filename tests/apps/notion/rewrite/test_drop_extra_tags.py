@@ -2,6 +2,7 @@ import pytest
 
 from apps.notion.rewrite import drop_extra_tags
 
+
 @pytest.fixture
 def block():
     return {

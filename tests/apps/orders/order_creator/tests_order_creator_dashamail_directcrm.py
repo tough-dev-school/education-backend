@@ -1,4 +1,5 @@
 import pytest
+
 from apps.dashamail.lists.dto import DashamailList
 
 pytestmark = [
@@ -6,9 +7,11 @@ pytestmark = [
     pytest.mark.dashamail,
 ]
 
+
 @pytest.fixture(autouse=True)
 def update_dashamail(mocker):
     return mocker.patch("apps.dashamail.tasks.DashamailSubscriber.subscribe")
+
 
 @pytest.fixture(autouse=True)
 def update_dashamail_directcrm(mocker):
@@ -34,6 +37,4 @@ def test_event_is_pushed(create, user, course, update_dashamail_directcrm):
 def test_user_is_subscribed_to_the_dedicated_maillist(create, user, course, update_dashamail):
     create(user=user, item=course)
 
-    update_dashamail.assert_called_once_with(
-        to=DashamailList(list_id=500500)
-    )
+    update_dashamail.assert_called_once_with(to=DashamailList(list_id=500500))

@@ -1,5 +1,4 @@
-class NotionError(Exception):
-    ...
+class NotionError(Exception): ...
 
 
 class NotSharedForWeb(NotionError):
@@ -10,8 +9,7 @@ class NotionResponseError(NotionError):
     """Notion returned some error"""
 
 
-class HTTPError(NotionError):
-    ...
+class HTTPError(NotionError): ...
 
 
 __all__ = [

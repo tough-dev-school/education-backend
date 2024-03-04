@@ -1,20 +1,17 @@
 import contextlib
+import uuid
 from typing import Optional  # NOQA: I251
 from urllib.parse import urljoin
-import uuid
 
 from django.apps import apps
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.db.models import Q
-from django.db.models import QuerySet
-from django.db.models import UniqueConstraint
+from django.db.models import Q, QuerySet, UniqueConstraint
 from django.utils.translation import gettext_lazy as _
 
 from apps.notion.helpers import uuid_to_id
 from apps.users.models import User
-from core.models import models
-from core.models import TimestampedModel
+from core.models import TimestampedModel, models
 
 
 class MaterialQuerySet(QuerySet):

@@ -1,5 +1,4 @@
 import httpx
-
 from django.conf import settings
 
 from apps.dashamail import exceptions

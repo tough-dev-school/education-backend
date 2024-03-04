@@ -1,4 +1,5 @@
 """(incomplete) typing for notion responses"""
+
 from typing import Literal, TypedDict
 
 BlockId = str

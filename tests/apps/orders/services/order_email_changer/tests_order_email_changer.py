@@ -1,9 +1,10 @@
-import pytest
 import datetime
+
+import pytest
+
 from apps.orders.services import OrderEmailChanger
 
 pytestmark = [pytest.mark.django_db]
-
 
 
 @pytest.fixture

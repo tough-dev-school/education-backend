@@ -3,9 +3,7 @@ from typing import Mapping
 
 from apps.notion.helpers import uuid_to_id
 from apps.notion.models import Material
-from apps.notion.types import BlockData
-from apps.notion.types import BlockId
-from apps.notion.types import TextProperty
+from apps.notion.types import BlockData, BlockId, TextProperty
 
 
 def rewrite_links(notion_block_data: BlockData) -> BlockData:

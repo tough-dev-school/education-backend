@@ -21,6 +21,7 @@ def block():
         },
     }
 
+
 def rewrite(block):
     return rewrite_links(block)["value"]["properties"]
 
@@ -111,7 +112,6 @@ def test_recursivity(block):
             ]
         ],  # NOQA: JS102
     ]  # NOQA: JS102
-    ...
 
 
 @pytest.mark.parametrize("link", ["https://text.com", "https://text.com?good=to-go"])
@@ -137,6 +137,7 @@ def test_external_links_are_not_rewritten(block, link):
             ],
         ],
     ]
+
 
 @pytest.mark.parametrize("link", ["/id-not-in-mapping", "/id-not-in-mapping?good=to-go"])
 def test_links_not_from_mapping_are_not_rewritten(block, link):

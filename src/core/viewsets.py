@@ -114,5 +114,4 @@ class AppViewSet(MultiSerializerMixin, ModelViewSet):
         return response
 
 
-class CreateDeleteAppViewSet(MultiSerializerMixin, CreateModelMixin, DestroyModelMixin, GenericViewSet):
-    ...
+class CreateDeleteAppViewSet(MultiSerializerMixin, CreateModelMixin, DestroyModelMixin, GenericViewSet): ...

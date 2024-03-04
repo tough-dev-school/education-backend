@@ -1,8 +1,7 @@
 from django.db.models import QuerySet
 from django.utils import timezone
 
-from core.models import models
-from core.models import TimestampedModel
+from core.models import TimestampedModel, models
 
 
 class NotionCacheEntryQuerySet(QuerySet):

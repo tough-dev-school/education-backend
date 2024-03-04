@@ -4,11 +4,9 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from apps.dashamail.tasks import update_subscription as update_dashamail_subscription
-from apps.users.models import Student
-from apps.users.models import User
+from apps.users.models import Student, User
 from apps.users.services import UserCreator
-from core.admin import admin
-from core.admin import ModelAdmin
+from core.admin import ModelAdmin, admin
 
 
 class PasswordLessUserCreationForm(forms.ModelForm):

@@ -16,12 +16,10 @@ from core.admin.widgets import AppNumberInput
 
 class DjangoModelAdminProtocol(Protocol):
     @property
-    def add_form(self) -> str | None:
-        ...
+    def add_form(self) -> str | None: ...
 
     @property
-    def add_fieldsets(self) -> Sequence[tuple[str | None, Any]]:
-        ...
+    def add_fieldsets(self) -> Sequence[tuple[str | None, Any]]: ...
 
 
 class AppAdminMixin:

@@ -1,5 +1,4 @@
 import httpx
-
 from django.apps import apps
 
 from apps.notion.exceptions import NotionError
