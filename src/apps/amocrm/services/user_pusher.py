@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from apps.amocrm.dto import AmoCRMCustomer
+from apps.amocrm.dto import AmoCRMCustomerDTO
 from apps.amocrm.models import AmoCRMUser
 from apps.users.models import User
 from core.services import BaseService
@@ -19,7 +19,7 @@ class AmoCRMUserPusher(BaseService):
             self.update_user(user=self.user)
 
     def create_user(self, user: User) -> None:
-        customer_id, contact_id = AmoCRMCustomer(user=user).create()
+        customer_id, contact_id = AmoCRMCustomerDTO(user=user).create()
         AmoCRMUser.objects.create(
             user=user,
             customer_id=customer_id,
@@ -27,4 +27,4 @@ class AmoCRMUserPusher(BaseService):
         )
 
     def update_user(self, user: User) -> None:
-        AmoCRMCustomer(user=user).update()
+        AmoCRMCustomerDTO(user=user).update()

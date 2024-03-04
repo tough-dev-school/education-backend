@@ -10,6 +10,12 @@ def _settings_amocrm(settings):
     settings.AMOCRM_AUTHORIZATION_CODE = "1337yep"
 
 
+@pytest.fixture(autouse=True)
+def _disable_automatic_amocrm_updating(mocker):
+    mocker.patch("apps.orders.services.order_paid_setter.OrderPaidSetter.update_amocrm", return_value=None)
+    mocker.patch("apps.orders.services.order_refunder.OrderRefunder.update_amocrm")
+
+
 @pytest.fixture
 def amocrm_user(mixer, user):
     return mixer.blend("amocrm.AmoCRMUser", user=user, customer_id=4444, contact_id=5555)
@@ -18,13 +24,6 @@ def amocrm_user(mixer, user):
 @pytest.fixture
 def amocrm_course(mixer, course):
     return mixer.blend("amocrm.AmoCRMCourse", course=course, amocrm_id=999111)
-
-
-@pytest.fixture(autouse=True)
-def _mock_tasks_with_paid_setter(mocker):
-    mocker.patch("apps.orders.services.order_paid_setter.OrderPaidSetter.after_shipment", return_value=None)
-    mocker.patch("apps.orders.services.order_refunder.OrderRefunder.update_integrations", return_value=None)
-    mocker.patch("apps.studying.shipment_factory.unship", return_value=None)
 
 
 @pytest.fixture

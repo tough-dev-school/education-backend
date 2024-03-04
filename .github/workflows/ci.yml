@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: build
         uses: ./.github/actions/build
 
       - name: restore mypy cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: .mypy_cache
           key: mypy-cache-${{ github.ref_name }}
@@ -48,7 +48,7 @@ jobs:
           - 6379:6379
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: build
         uses: ./.github/actions/build
@@ -90,7 +90,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: build
         uses: ./.github/actions/build
@@ -167,7 +167,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: draft sentry release
         uses: getsentry/action-release@v1
@@ -201,13 +201,21 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: docker service update app_worker --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }} --with-registry-auth
 
-      - name: update celery amocrm worker image
+      - name: update amocrm worker image
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: circle
           key: ${{ secrets.DEPLOY_KEY }}
           script: docker service update app_amocrm-worker --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }} --with-registry-auth
+
+      - name: update notion worker image
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: circle
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: docker service update app_notion-worker --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }} --with-registry-auth
 
       - name: update celery scheduler image
         uses: appleboy/ssh-action@v0.1.7

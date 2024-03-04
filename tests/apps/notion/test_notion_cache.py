@@ -14,6 +14,16 @@ pytestmark = [
 
 
 @pytest.fixture
+def cache_entry(not_expired_datetime, page, mixer):
+    return mixer.blend(
+        "notion.NotionCacheEntry",
+        cache_key="some_key",
+        content=page.to_json(),
+        expires=not_expired_datetime,
+    )
+
+
+@pytest.fixture
 def current_user_staff(mocker, staff_user):
     return mocker.patch("apps.notion.cache.get_current_user", return_value=staff_user)
 
@@ -24,12 +34,12 @@ def current_user_casual(mocker, user):
 
 
 @pytest.fixture
-def mock_cache_set(mocker):
+def cache_set(mocker):
     return mocker.patch("apps.notion.cache.NotionCache.set")
 
 
 @pytest.fixture
-def mock_fetch_page(mocker):
+def fetch_page(mocker):
     return mocker.patch("apps.notion.client.NotionClient.fetch_page_recursively")
 
 
@@ -69,18 +79,18 @@ def expired_cache_entry(cache_entry, expired_datetime):
     return cache_entry.update(expires=expired_datetime)
 
 
-def test_set(cache, page, page_as_dict):
+def test_set(cache, page):
     cache.set("some_key", page)
 
     cache_entry = NotionCacheEntry.objects.get()
-    assert cache_entry.content == page_as_dict
+    assert cache_entry.content == page.to_json()
 
 
-def test_set_callable(cache, page_from_callable, page_as_dict):
+def test_set_callable(cache, page_from_callable, page):
     cache.set("some_key", page_from_callable)
 
     cache_entry = NotionCacheEntry.objects.get()
-    assert cache_entry.content == page_as_dict
+    assert cache_entry.content == page.to_json()
     page_from_callable.assert_called_once()
 
 
@@ -130,32 +140,32 @@ def test_get_or_set_set_if_doesnt_exist(cache, another_page):
 
 @pytest.mark.parametrize("env_value", ["On", ""])
 @pytest.mark.usefixtures("current_user_casual")
-def test_user_always_gets_page_from_existing_cache(settings, cache_entry, env_value, mock_cache_set, mock_fetch_page):
+def test_user_always_gets_page_from_existing_cache(settings, cache_entry, env_value, cache_set, fetch_page):
     settings.NOTION_CACHE_ONLY = bool(env_value)
 
     get_cached_page(cache_entry.cache_key)
 
-    mock_cache_set.assert_not_called()
-    mock_fetch_page.assert_not_called()
+    cache_set.assert_not_called()
+    fetch_page.assert_not_called()
 
 
 @pytest.mark.usefixtures("current_user_staff")
-def test_staff_user_get_page_from_cache_if_env_cache(settings, cache_entry, mock_cache_set, mock_fetch_page):
+def test_staff_user_get_page_from_cache_if_cache_only_mode_is_enabled(settings, cache_entry, cache_set, fetch_page):
     settings.NOTION_CACHE_ONLY = bool("On")
 
     get_cached_page(cache_entry.cache_key)
 
-    mock_cache_set.assert_not_called()
-    mock_fetch_page.assert_not_called()
+    cache_set.assert_not_called()
+    fetch_page.assert_not_called()
 
 
 @pytest.mark.usefixtures("current_user_staff")
-def test_staff_user_get_page_from_notion_if_not_env_cache(settings, cache_entry, mock_cache_set, mock_fetch_page):
+def test_staff_user_get_page_from_notion_if_cache_only_mode_is_disabled(settings, cache_entry, cache_set, fetch_page):
     settings.NOTION_CACHE_ONLY = bool("")
 
     got = get_cached_page(cache_entry.cache_key)
 
-    mock_page = mock_fetch_page.return_value
-    assert got == mock_page
-    mock_cache_set.assert_called_once_with(cache_entry.cache_key, mock_page)
-    mock_fetch_page.assert_called_once_with(cache_entry.cache_key)
+    page = fetch_page.return_value
+    assert got == page
+    cache_set.assert_called_once_with(cache_entry.cache_key, page)
+    fetch_page.assert_called_once_with(cache_entry.cache_key)

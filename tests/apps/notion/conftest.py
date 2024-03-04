@@ -3,10 +3,32 @@ import pytest
 from apps.notion.block import NotionBlock, NotionBlockList
 from apps.notion.client import NotionClient
 from apps.notion.page import NotionPage
+from apps.notion.rewrite import fetched_assets, notion_so_assets
+
 
 pytestmark = [
     pytest.mark.django_db,
 ]
+
+@pytest.fixture
+def _cdn_dev_storage(settings):
+    settings.STORAGES = {
+        "default": {
+            "BACKEND": "core.storages.ProdReadOnlyStorage",
+        },
+    }
+    settings.AWS_S3_CUSTOM_DOMAIN = "cdn.tough-dev.school"
+
+
+@pytest.fixture(autouse=True)
+def _isolate_mapping_cache():
+    """asset links mappings are LRU-cached, so we need to reset it before year test run"""
+    notion_so_assets.get_already_fetched_assets.cache_clear()
+    fetched_assets.get_asset_mapping.cache_clear()
+
+    yield
+    notion_so_assets.get_already_fetched_assets.cache_clear()
+    fetched_assets.get_asset_mapping.cache_clear()
 
 
 @pytest.fixture
@@ -42,39 +64,33 @@ def page() -> NotionPage:
     return NotionPage(
         blocks=NotionBlockList(
             [
-                NotionBlock(id="block-1", data={"role": "reader-1", "value": {"last_edited_time": 1642356660000}}),
-                NotionBlock(id="block-2", data={"role": "reader-2"}),
+                NotionBlock(
+                    id="block-1",
+                    data={
+                    "role": "reader-1",
+                    "value": {  # type: ignore
+                        "id": "block-1",
+                        "parent_table": "test",
+                        "parent_id": "100500",
+                        "_key_to_drop": "value_to_drop",
+                    }},
+                ),
+                NotionBlock(id="block-2", data={"value": {"parent_id": "100600"}}),
+                NotionBlock(id="block-3", data={
+                    "value": {
+                        "id": "block-3",
+                        "type": "page",
+                        "content": ["block-1", "block-2"],
+                        "format": {
+                            "page_cover": "secure.notion-static.com/typicalmacuser.jpg",
+                        },
+                        "parent_table": "test-parent-table",
+                    }
+                }),
             ]
         )
     )
 
-
-@pytest.fixture
-def page_as_dict(page):
-    first_block = page.blocks[0]
-    second_block = page.blocks[1]
-    return {
-        "blocks": [
-            {
-                "id": first_block.id,
-                "data": first_block.data,
-            },
-            {
-                "id": second_block.id,
-                "data": second_block.data,
-            },
-        ]
-    }
-
-
-@pytest.fixture
-def cache_entry(not_expired_datetime, page_as_dict, mixer):
-    return mixer.blend(
-        "notion.NotionCacheEntry",
-        cache_key="some_key",
-        content=page_as_dict,
-        expires=not_expired_datetime,
-    )
 
 
 @pytest.fixture

@@ -51,7 +51,6 @@ class OrderAdmin(ModelAdmin):
         actions.generate_diplomas,
     ]
     readonly_fields = [
-        "slug",
         "author",
         "login_as",
         "paid",
@@ -63,13 +62,7 @@ class OrderAdmin(ModelAdmin):
         (
             None,
             {
-                "fields": ["slug", "user", "price", "email", "author", "login_as", "paid", "shipped", "unpaid"],
-            },
-        ),
-        (
-            _("Item"),
-            {
-                "fields": ["course", "record", "bundle"],
+                "fields": ["user", "course", "price", "email", "author", "login_as", "paid", "shipped", "unpaid"],
             },
         ),
     ]
@@ -121,7 +114,7 @@ class OrderAdmin(ModelAdmin):
 
         login_as_url = Student.objects.get(pk=obj.user_id).get_absolute_url()
 
-        return f'<a href="{login_as_url}" target="_blank">Зайти от имени студента</a>'
+        return f'<a href="{login_as_url}" target="_blank">Зайти</a>'
 
     def has_pay_permission(self, request: Request) -> bool:
         return request.user.has_perm("orders.pay_order")

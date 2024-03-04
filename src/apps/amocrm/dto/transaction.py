@@ -5,7 +5,7 @@ from apps.orders.models import Order
 
 
 @dataclass
-class AmoCRMTransaction:
+class AmoCRMTransactionDTO:
     order: Order
 
     def create(self) -> int:

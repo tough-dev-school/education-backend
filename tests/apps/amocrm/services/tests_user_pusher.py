@@ -10,12 +10,12 @@ pytestmark = [
 
 @pytest.fixture
 def _mock_create(mocker):
-    mocker.patch("apps.amocrm.dto.customer.AmoCRMCustomer.create", return_value=(4444, 5555))
+    mocker.patch("apps.amocrm.dto.customer.AmoCRMCustomerDTO.create", return_value=(4444, 5555))
 
 
 @pytest.fixture
 def mock_update(mocker):
-    return mocker.patch("apps.amocrm.dto.customer.AmoCRMCustomer.update")
+    return mocker.patch("apps.amocrm.dto.customer.AmoCRMCustomerDTO.update")
 
 
 @pytest.mark.usefixtures("_mock_create")

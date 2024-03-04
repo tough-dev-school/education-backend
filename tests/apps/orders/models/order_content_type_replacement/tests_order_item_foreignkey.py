@@ -12,7 +12,7 @@ def test_empty_order(order, course):
 
 
 def test_order_with_course(order, course):
-    order = order(course=course)
+    order = order(item=course)
 
     field = order.get_item_foreignkey(course)
 

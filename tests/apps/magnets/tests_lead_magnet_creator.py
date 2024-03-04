@@ -6,11 +6,6 @@ from apps.users.models import User
 pytestmark = [pytest.mark.django_db]
 
 
-@pytest.fixture(autouse=True)
-def rebuild_tags(mocker):
-    return mocker.patch("apps.users.services.user_creator.rebuild_tags.delay")
-
-
 @pytest.fixture
 def execute(mocker):
     return mocker.patch("apps.magnets.models.EmailLeadMagnetCampaign.execute")
@@ -51,13 +46,6 @@ def test_existing_user(creator, mixer):
     user.refresh_from_db()
 
     assert get_user() == user
-
-
-def test_user_is_subscribed_with_tags(creator, mixer, rebuild_tags):
-    user = mixer.blend(User, first_name="Фёдор", last_name="Шаляпин", email="support@m1crosoft.com")
-    creator(name="r00t", email="support@m1crosoft.com")()
-
-    rebuild_tags.assert_called_once_with(student_id=user.id, subscribe=True)
 
 
 def test_log_entry_is_created(creator, campaign):

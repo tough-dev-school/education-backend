@@ -1,3 +1,4 @@
+from apps.orders.services.order_course_changer import OrderCourseChanger
 from apps.orders.services.order_creator import OrderCreator
 from apps.orders.services.order_diploma_generator import OrderDiplomaGenerator
 from apps.orders.services.order_email_changer import OrderEmailChanger
@@ -8,6 +9,7 @@ from apps.orders.services.order_unshipper import OrderUnshipper
 
 __all__ = [
     "OrderCreator",
+    "OrderCourseChanger",
     "OrderDiplomaGenerator",
     "OrderEmailChanger",
     "OrderPaidSetter",

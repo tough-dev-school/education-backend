@@ -1,7 +1,7 @@
-from core.tasks.dashamail import update_dashamail_subscription
 from core.tasks.tg import send_telegram_message
+from core.tasks.write_admin_log import write_admin_log
 
 __all__ = [
     "send_telegram_message",
-    "update_dashamail_subscription",
+    "write_admin_log",
 ]

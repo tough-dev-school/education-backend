@@ -1,6 +1,6 @@
 import pytest
 
-from apps.amocrm.dto import AmoCRMTransaction
+from apps.amocrm.dto import AmoCRMTransactionDTO
 
 pytestmark = [
     pytest.mark.django_db,
@@ -27,13 +27,13 @@ def _successful_create_transaction_response(post):
 
 @pytest.mark.usefixtures("_successful_create_transaction_response")
 def test_create(order):
-    transaction_id = AmoCRMTransaction(order=order).create()
+    transaction_id = AmoCRMTransactionDTO(order=order).create()
 
     assert transaction_id == 684537
 
 
 def test_create_call(order, post):
-    AmoCRMTransaction(order=order).create()
+    AmoCRMTransactionDTO(order=order).create()
 
     post.assert_called_once_with(
         url="/api/v4/customers/4444/transactions",
@@ -58,7 +58,7 @@ def test_create_call(order, post):
 
 
 def test_delete_call(order, delete):
-    AmoCRMTransaction(order=order).delete()
+    AmoCRMTransactionDTO(order=order).delete()
 
     delete.assert_called_once_with(
         url="/api/v4/customers/transactions/22222",

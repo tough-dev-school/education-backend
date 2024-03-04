@@ -5,7 +5,7 @@ from apps.users.models import User
 
 
 @dataclass
-class AmoCRMCustomer:
+class AmoCRMCustomerDTO:
     user: User
 
     def create(self) -> tuple[int, int]:

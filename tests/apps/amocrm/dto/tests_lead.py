@@ -1,6 +1,6 @@
 import pytest
 
-from apps.amocrm.dto import AmoCRMLead
+from apps.amocrm.dto import AmoCRMLeadDTO
 
 pytestmark = [
     pytest.mark.django_db,
@@ -22,28 +22,28 @@ def _successful_create_lead_response(post):
 
 @pytest.fixture
 def mock_create_lead(mocker):
-    return mocker.patch("apps.amocrm.dto.lead.AmoCRMLead._create_lead", return_value=11111)
+    return mocker.patch("apps.amocrm.dto.lead.AmoCRMLeadDTO._create_lead", return_value=11111)
 
 
 @pytest.fixture
 def mock_link_course_to_lead(mocker):
-    return mocker.patch("apps.amocrm.dto.lead.AmoCRMLead._link_course_to_lead")
+    return mocker.patch("apps.amocrm.dto.lead.AmoCRMLeadDTO._link_course_to_lead")
 
 
 @pytest.fixture
 def mock_update_price(mocker):
-    return mocker.patch("apps.amocrm.dto.lead.AmoCRMLead._set_price_from_order")
+    return mocker.patch("apps.amocrm.dto.lead.AmoCRMLeadDTO._set_price_from_order")
 
 
 @pytest.mark.usefixtures("mock_create_lead", "mock_link_course_to_lead", "mock_update_price")
 def test_create_return_lead_id(order):
-    lead_id = AmoCRMLead(order=order).create()
+    lead_id = AmoCRMLeadDTO(order=order).create()
 
     assert lead_id == 11111
 
 
 def test_create(order, mock_create_lead, mock_link_course_to_lead, mock_update_price):
-    AmoCRMLead(order=order).create()
+    AmoCRMLeadDTO(order=order).create()
 
     mock_create_lead.assert_called_once()
     mock_link_course_to_lead.assert_called_once_with(lead_id=11111, course_id=999111)
@@ -52,13 +52,13 @@ def test_create(order, mock_create_lead, mock_link_course_to_lead, mock_update_p
 
 @pytest.mark.usefixtures("_successful_create_lead_response")
 def test_create_lead_response(order, post):
-    got = AmoCRMLead(order=order)._create_lead()
+    got = AmoCRMLeadDTO(order=order)._create_lead()
 
     assert got == 11111
 
 
 def test_create_lead(order, post):
-    AmoCRMLead(order=order)._create_lead()
+    AmoCRMLeadDTO(order=order)._create_lead()
 
     post.assert_called_once_with(
         url="/api/v4/leads/complex",
@@ -75,7 +75,7 @@ def test_create_lead(order, post):
 
 
 def test_update_lead_status(order, patch):
-    AmoCRMLead(order=order).update(status="closed")
+    AmoCRMLeadDTO(order=order).update(status="closed")
 
     patch.assert_called_once_with(
         url="/api/v4/leads",
@@ -92,7 +92,7 @@ def test_update_lead_status(order, patch):
 
 
 def test_update_lead(order, patch):
-    AmoCRMLead(order=order).update()
+    AmoCRMLeadDTO(order=order).update()
 
     patch.assert_called_once_with(
         url="/api/v4/leads",
@@ -108,7 +108,7 @@ def test_update_lead(order, patch):
 
 
 def test_link_course_to_lead(order, post):
-    AmoCRMLead(order=order)._link_course_to_lead(lead_id=5555, course_id=8888)
+    AmoCRMLeadDTO(order=order)._link_course_to_lead(lead_id=5555, course_id=8888)
 
     post.assert_called_once_with(
         url="/api/v4/leads/5555/link",

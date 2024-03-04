@@ -6,7 +6,7 @@ from apps.products.models import Group
 
 
 @dataclass
-class AmoCRMGroups:
+class AmoCRMGroupsDTO:
     """
     Product group is just a ENUM field for Product in amocrm
     This DTO creates and updates product groups with single request

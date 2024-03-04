@@ -30,7 +30,7 @@ def course(amocrm_course, factory):
         name="Popug",
         slug="popug-003",
         price=200,
-        group__slug="popug-group",
+        group=factory.group(slug="popug-group"),
         amocrm_course=amocrm_course,
     )
 
@@ -39,7 +39,7 @@ def course(amocrm_course, factory):
 def order(amocrm_user, course, factory):
     order = factory.order(
         user=amocrm_user.user,
-        course=course,
+        item=course,
         price=Decimal(100),
         slug="Gu2g7SXFxfepif4UkLNhzx",
         amocrm_transaction__amocrm_id=22222,

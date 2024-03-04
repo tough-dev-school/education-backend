@@ -2,7 +2,10 @@ import pytest
 
 from apps.users.tags.pipeline import generate_tags
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [
+    pytest.mark.django_db,
+    pytest.mark.user_tags_rebuild,
+]
 
 
 @pytest.mark.usefixtures("non_paid_order")
@@ -30,19 +33,6 @@ def test_order_started_and_then_purchased(user, non_paid_order):
     assert "popug-3__started" not in user.tags
     assert "popug-3-self__purchased" in user.tags
     assert "popug-3__purchased" in user.tags
-
-
-def test_started_and_purchased_orders_for_same_course(user, factory):
-    course_no_group = factory.course(slug="how-to-be-007", group=None, price=14)
-    factory.order(is_paid=False, item=course_no_group, user=user)
-    factory.order(is_paid=True, item=course_no_group, user=user)
-
-    generate_tags(user)
-
-    assert "how-to-be-007__purchased" in user.tags
-    assert "how-to-be-007__started" not in user.tags
-    assert "how-to-be__purchased" not in user.tags  # there is no group, no tag for no group
-    assert "how-to-be__started" not in user.tags
 
 
 def test_started_and_purchased_orders_for_same_product_group(user, course, factory):

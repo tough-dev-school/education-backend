@@ -5,6 +5,7 @@ from apps.users.tags.pipeline import generate_tags
 pytestmark = [
     pytest.mark.django_db,
     pytest.mark.single_thread,
+    pytest.mark.user_tags_rebuild,
 ]
 
 

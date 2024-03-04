@@ -5,7 +5,6 @@ from faker import Faker
 
 from core.test.factory import register
 
-faker = Faker()
 
 if TYPE_CHECKING:
     from core.test.factory import FixtureFactory
@@ -13,4 +12,4 @@ if TYPE_CHECKING:
 
 @register
 def image(self: "FixtureFactory", name: str = "image.gif", content_type: str = "image/gif") -> SimpleUploadedFile:
-    return SimpleUploadedFile(name=name, content=faker.image(), content_type=content_type)
+    return SimpleUploadedFile(name=name, content=self.faker.image(), content_type=content_type)
