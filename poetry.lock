@@ -2492,13 +2492,13 @@ testing = ["filelock"]
 
 [[package]]
 name = "python-benedict"
-version = "0.33.1"
+version = "0.33.2"
 description = "python-benedict is a dict subclass with keylist/keypath/keyattr support, normalized I/O operations (base64, csv, ini, json, pickle, plist, query-string, toml, xls, xml, yaml) and many utilities... for humans, obviously."
 optional = false
 python-versions = "*"
 files = [
-    {file = "python-benedict-0.33.1.tar.gz", hash = "sha256:e65ecfc16b505b0fefa08ed97c65f6f93cf32c0309dd2e1614fc0f58f22b2c4e"},
-    {file = "python_benedict-0.33.1-py3-none-any.whl", hash = "sha256:8838ebe33ed7508d37472346e67516fcf525ebc717a6f48b37aa00e0b89bc463"},
+    {file = "python-benedict-0.33.2.tar.gz", hash = "sha256:662de43bffb4e127da2056447f8ddd7f6f5c89b72dd66d289cf9abd1cc2720c8"},
+    {file = "python_benedict-0.33.2-py3-none-any.whl", hash = "sha256:50a69b601b34d4ad7b67fe94e3266ec05046bc547a4132fe43fd8fbd41aeefaa"},
 ]
 
 [package.dependencies]
