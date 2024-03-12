@@ -1190,13 +1190,13 @@ bcrypt = ["bcrypt"]
 
 [[package]]
 name = "django-anymail"
-version = "10.2"
-description = "Django email backends and webhooks for Amazon SES, Brevo (Sendinblue),     MailerSend, Mailgun, Mailjet, Mandrill, Postal, Postmark, Resend,     SendGrid, and SparkPost"
+version = "10.3"
+description = "Django email backends and webhooks for Amazon SES, Brevo (Sendinblue),     MailerSend, Mailgun, Mailjet, Mandrill, Postal, Postmark, Resend,     SendGrid, SparkPost and Unisender Go"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "django_anymail-10.2-py3-none-any.whl", hash = "sha256:ca273abbc04b5ce06d1f3b3e5f28e2d79331519198fa6d6b5ba1b5aa5eea02f7"},
-    {file = "django_anymail-10.2.tar.gz", hash = "sha256:1f3006d3b16874aaa32976078da6cdc9baa7f5274cf80e3fc51a288887617aaf"},
+    {file = "django_anymail-10.3-py3-none-any.whl", hash = "sha256:1e72f059e96930d3675d35fe4c61f82b138ae4a7fcb0337be39dcb4823f94a4f"},
+    {file = "django_anymail-10.3.tar.gz", hash = "sha256:35d8ec20b06000af3c1638492e32f416fd1a584f0a572cded03f1bc570169ed0"},
 ]
 
 [package.dependencies]
