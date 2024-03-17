@@ -37,7 +37,7 @@ def _successful_create_response(post):
 
 
 @pytest.mark.usefixtures("_successful_create_response")
-def test_create_response(course, post):
+def test_create_response(course):
     got = AmoCRMProductDTO(course=course).create()
 
     assert got == 14229449

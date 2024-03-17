@@ -66,7 +66,8 @@ def test_calls_post_with_correct_params_when_no_refresh_token(token_getter, post
     )
 
 
-def test_update_cached_tokens(token_getter, post):
+@pytest.mark.usefixtures("post")
+def test_update_cached_tokens(token_getter):
     cache.set("amocrm_access_token", None)
     cache.set("amocrm_refresh_token", "so-refreshing")
 

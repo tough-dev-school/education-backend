@@ -28,7 +28,7 @@ def test_message_is_sent(send_message, message, study, owl):
     )
 
 
-def test_message_is_sent_only_once(send_message, message, study, owl):
+def test_message_is_sent_only_once(send_message, owl):
     send_message()
     send_message()
 

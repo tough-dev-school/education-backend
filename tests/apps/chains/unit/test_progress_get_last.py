@@ -17,16 +17,16 @@ def test_no_progress(study, chain):
     assert Progress.objects.get_last_progress(chain, study) is None
 
 
-def test_single_progress(chain, study, mixer, progress):
+def test_single_progress(chain, study, progress):
     assert Progress.objects.get_last_progress(chain, study) == progress
 
 
 @pytest.mark.usefixtures("progress")
-def test_same_chain_is_used(another_chain, study, mixer, progress):
+def test_same_chain_is_used(another_chain, study):
     assert Progress.objects.get_last_progress(another_chain, study) is None
 
 
-def test_latest_progress_is_used(mixer, freezer, chain, study, progress, message):
+def test_latest_progress_is_used(mixer, freezer, chain, study, message):
     freezer.move_to("2032-12-01 16:30")
 
     latest_progress = mixer.blend("chains.Progress", message=message, study=study)

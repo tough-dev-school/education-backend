@@ -28,7 +28,7 @@ def test_getting_token_ok(api, get_token):
     assert "token" in got
 
 
-def test_getting_token_by_email(user, api, get_token):
+def test_getting_token_by_email(user, get_token):
     user = UserCreator(name="lol bar", email="lolbar@example.com")()
     user.set_password("123456")
     user.save()

@@ -73,7 +73,8 @@ def test_create(user):
     assert contact_id == 22222
 
 
-def test_update(user, amocrm_user, mock_update_customer, mock_update_contact):
+@pytest.mark.usefixtures("amocrm_user")
+def test_update(user, mock_update_customer, mock_update_contact):
     AmoCRMCustomerDTO(user=user).update()
 
     mock_update_customer.assert_called_once_with(customer_id=4444)
@@ -81,7 +82,7 @@ def test_update(user, amocrm_user, mock_update_customer, mock_update_contact):
 
 
 @pytest.mark.usefixtures("_successful_create_contact_response")
-def test_create_contact_response(user, post):
+def test_create_contact_response(user):
     got = AmoCRMCustomerDTO(user=user)._create_contact()
 
     assert got == 72845935
@@ -121,7 +122,7 @@ def test_update_contact(user, patch):
 
 
 @pytest.mark.usefixtures("_successful_create_customer_response")
-def test_create_customer_response(user, post):
+def test_create_customer_response(user):
     got = AmoCRMCustomerDTO(user=user)._create_customer()
 
     assert got == 1369385

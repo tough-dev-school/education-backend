@@ -67,7 +67,7 @@ def test_non_root_answers_are_ok(api, answer, another_answer):
     api.get(f"/api/v2/homework/answers/{answer.slug}/", expected_status_code=200)
 
 
-def test_answers_with_parents_have_parent_field(api, question, answer, another_answer):
+def test_answers_with_parents_have_parent_field(api, answer, another_answer):
     """Just to document weird behavior of our API: the parent is showed for not root answers only."""
     answer.update(parent=another_answer)
 

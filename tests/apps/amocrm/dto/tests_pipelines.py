@@ -104,7 +104,7 @@ def _successful_response(get):
 
 
 @pytest.mark.usefixtures("_successful_response")
-def test_get_pipelines_return_list_of_pipelines(get):
+def test_get_pipelines_return_list_of_pipelines():
     got = AmoCRMPipelinesDTO.get()
 
     assert got == [

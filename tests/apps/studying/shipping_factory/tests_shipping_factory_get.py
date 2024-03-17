@@ -10,7 +10,7 @@ def test_course(course):
     assert factory.get(course) == CourseShipment
 
 
-def test_non_found(mixer, user):
+def test_non_found(user):
     """Shipping some non-shippable stuf ergo stuff without a registered shipment"""
     with pytest.raises(factory.ShipmentAlgorithmNotFound):
         factory.get(user)

@@ -51,7 +51,7 @@ def test_create(order, mock_create_lead, mock_link_course_to_lead, mock_update_p
 
 
 @pytest.mark.usefixtures("_successful_create_lead_response")
-def test_create_lead_response(order, post):
+def test_create_lead_response(order):
     got = AmoCRMLeadDTO(order=order)._create_lead()
 
     assert got == 11111

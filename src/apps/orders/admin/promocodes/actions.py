@@ -8,5 +8,5 @@ from core.admin import admin
 
 
 @admin.action(description=_("Deactivate selected promo codes"))
-def deactivate(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
+def deactivate(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:  # noqa: ARG001
     queryset.update(active=False)

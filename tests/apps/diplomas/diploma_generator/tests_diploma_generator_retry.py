@@ -13,7 +13,7 @@ RUNS = 0
 
 
 def generate_exception_n_times(times: int):
-    def generator(request):
+    def generator(request):  # noqa: ARG001
         global RUNS
         if RUNS < times:
             RUNS += 1

@@ -51,7 +51,7 @@ def another_study(another_order):
     return another_order.study
 
 
-def test(study, parent_message, message, assert_message_is_sent, freezer):
+def test(parent_message, message, assert_message_is_sent, freezer):
     tasks.send_active_chains()
     assert_message_is_sent(parent_message)  # root message is sent for the first time
 
@@ -74,7 +74,7 @@ def test_two_users(parent_message, message, assert_message_is_sent, freezer, stu
     assert_message_is_sent(message, to=another_study.student)
 
 
-def test_second_message_is_not_sent_when_it_is_too_early(study, parent_message, message, assert_message_is_sent, assert_nothing_is_sent):
+def test_second_message_is_not_sent_when_it_is_too_early(parent_message, assert_message_is_sent, assert_nothing_is_sent):
     tasks.send_active_chains()
     assert_message_is_sent(parent_message)  # root message is sent for the first time
 
@@ -82,9 +82,7 @@ def test_second_message_is_not_sent_when_it_is_too_early(study, parent_message, 
     assert_nothing_is_sent()  # nothing should be sent right after that, cuz time has not come
 
 
-def test_message_is_not_sent_when_study_model_disappeares_during_learning(
-    study, parent_message, assert_message_is_sent, assert_nothing_is_sent, freezer, order
-):
+def test_message_is_not_sent_when_study_model_disappeares_during_learning(parent_message, assert_message_is_sent, assert_nothing_is_sent, freezer, order):
     tasks.send_active_chains()
     assert_message_is_sent(parent_message)  # root message is sent for the first time
 
@@ -95,7 +93,7 @@ def test_message_is_not_sent_when_study_model_disappeares_during_learning(
     assert_nothing_is_sent()  # nothing should be sent cuz student has canceled learning
 
 
-def test_message_is_not_sent_when_sending_is_disabled(study, parent_message, assert_nothing_is_sent, chain):
+def test_message_is_not_sent_when_sending_is_disabled(assert_nothing_is_sent, chain):
     chain.update(sending_is_active=False)
 
     tasks.send_active_chains()

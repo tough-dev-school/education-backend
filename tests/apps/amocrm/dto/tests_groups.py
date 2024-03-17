@@ -43,7 +43,7 @@ def _successful_response(patch):
 
 
 @pytest.mark.usefixtures("_successful_response")
-def test_response_as_list_of_pairs(patch):
+def test_response_as_list_of_pairs():
     groups = Group.objects.all()
 
     got = AmoCRMGroupsDTO(groups=groups).push()

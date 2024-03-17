@@ -7,5 +7,5 @@ from rest_framework.exceptions import PermissionDenied
 
 
 @receiver(user_locked_out)
-def raise_permission_denied(*args: Any, **kwargs: Any) -> None:
+def raise_permission_denied(*args: Any, **kwargs: Any) -> None:  # noqa: ARG001
     raise PermissionDenied(_("Too many failed login attempts"))

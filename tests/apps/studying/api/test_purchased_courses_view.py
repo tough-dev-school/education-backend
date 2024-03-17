@@ -56,7 +56,7 @@ def test_pagination_could_be_disable_with_query_param(api, course, disable_pagin
         "any-other-value",
     ],
 )
-def test_paginated_response_with_disable_pagination_false_or_invalid_value(api, course, disable_pagination_value):
+def test_paginated_response_with_disable_pagination_false_or_invalid_value(api, disable_pagination_value):
     got = api.get(f"/api/v2/studies/purchased/?disable_pagination={disable_pagination_value}")
 
     assert "results" in got

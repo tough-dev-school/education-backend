@@ -100,7 +100,7 @@ def _successful_get_fields_response(get):
 
 
 @pytest.mark.usefixtures("_successful_get_catalogs_response")
-def test_get_returns_list_of_catalogs(get):
+def test_get_returns_list_of_catalogs():
     got = AmoCRMCatalogsDTO.get()
 
     assert got == [
@@ -120,7 +120,7 @@ def test_get_catalogs_call_url(get):
 
 
 @pytest.mark.usefixtures("_successful_get_fields_response")
-def test_get_fields_returns_list_of_fields(get):
+def test_get_fields_returns_list_of_fields():
     got = AmoCRMCatalogsDTO.get_fields(catalog_id=777)
 
     assert got == [
@@ -140,7 +140,7 @@ def test_get_fields_call_url(get):
 
 
 @pytest.mark.usefixtures("_successful_get_fields_response")
-def test_get_contacts_fields_returns_list_of_fields(get):
+def test_get_contacts_fields_returns_list_of_fields():
     got = AmoCRMCatalogsDTO.get_contacts_fields()
 
     assert got == [

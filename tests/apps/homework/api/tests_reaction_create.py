@@ -40,10 +40,10 @@ def test_create_reaction_fields(api, url, emoji, answer):
 
 
 @pytest.mark.parametrize("emoji", ["common text", "😄🧑🏿‍🦱", ""])
-def test_create_fails_if_not_a_single_emoji(api, url, emoji, answer):
+def test_create_fails_if_not_a_single_emoji(api, url, emoji):
     api.post(url, {"emoji": emoji, "slug": "3fa85f64-5717-4562-b3fc-2c963f66afa6"}, expected_status_code=400)
 
 
 @pytest.mark.parametrize("bad_slug", ["lmao bottom text", "3fa85f64-5717-fake-b3fc-2c963f66afa6", ""])
-def test_create_fails_if_not_a_valid_slug(api, url, emoji, answer, bad_slug):
+def test_create_fails_if_not_a_valid_slug(api, url, emoji, bad_slug):
     api.post(url, {"emoji": emoji, "slug": bad_slug}, expected_status_code=400)

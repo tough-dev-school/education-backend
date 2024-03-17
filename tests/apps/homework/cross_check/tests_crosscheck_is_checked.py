@@ -23,7 +23,7 @@ def test_checked_if_there_are_comments_from_checker(crosscheck, mixer, another_u
     assert crosscheck.is_checked() is True
 
 
-def test_not_checked_if_answers_are_not_children_of_the_checked_answer(crosscheck, mixer, another_user, answer):
+def test_not_checked_if_answers_are_not_children_of_the_checked_answer(crosscheck, mixer, another_user):
     mixer.blend("homework.Answer", author=another_user)
 
     assert crosscheck.is_checked() is False
