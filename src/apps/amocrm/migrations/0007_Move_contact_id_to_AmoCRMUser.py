@@ -4,6 +4,8 @@ from django.db import migrations, models
 
 
 def move_contacts_to_amocrm_user(apps, schema_editor):
+    del schema_editor
+
     for contact in apps.get_model("amocrm.AmoCRMUserContact").objects.all().iterator():
         amocrm_user = contact.user.amocrm_user
         amocrm_user.contact_id = contact.amocrm_id

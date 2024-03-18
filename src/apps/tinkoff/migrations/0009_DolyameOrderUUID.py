@@ -6,6 +6,8 @@ from django.db.models.functions import Cast, Replace
 
 
 def link_old_orders(apps, schema_editor):
+    del schema_editor
+
     apps.get_model("tinkoff.DolyameNotification").objects.update(
         order_id=Cast(
             Replace(F("old_order_id"), Value("tds-"), Value("")),

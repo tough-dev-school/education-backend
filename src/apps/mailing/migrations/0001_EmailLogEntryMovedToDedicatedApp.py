@@ -8,6 +8,8 @@ def migrate_from_previous_table(apps, schema_editor):
 
     but right now i am completely offline and this code is way much better then no code
     """
+    del schema_editor
+
     EmailLogEntry = apps.get_model("mailing.EmailLogEntry")
 
     previous_entries = apps.get_model("core.EmailLogEntry").objects.values(

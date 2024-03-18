@@ -6,6 +6,8 @@ from django.db.models import F
 
 
 def link_old_orders(apps, schema_editor):
+    del schema_editor
+
     apps.get_model("tinkoff.CreditNotification").objects.update(
         order_id=F("old_order_id"),
     )

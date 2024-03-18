@@ -12,6 +12,8 @@ COURSES = [
 
 
 def create_progress_records(apps, schema_editor):
+    del schema_editor
+
     for message in apps.get_model("chains.Message").objects.filter(chain_id__in=CHAINS).iterator():
         for study in apps.get_model("studying.Study").objects.filter(course_id__in=COURSES).iterator():
             apps.get_model("chains.Progress").objects.get_or_create(message=message, study=study)

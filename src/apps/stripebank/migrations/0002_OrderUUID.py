@@ -11,12 +11,16 @@ def delete_orders_that_do_not_belong_to_us(apps, schema_editor):
 
     Let's remove them now
     """
+    del schema_editor
+
     apps.get_model("stripebank.StripeNotification").objects.exclude(
         old_order_id__icontains="tds-",
     ).delete()
 
 
 def link_orders(apps, schema_editor):
+    del schema_editor
+
     apps.get_model("stripebank.StripeNotification").objects.update(
         order_id=Cast(
             Replace(F("old_order_id"), Value("tds-"), Value("")),

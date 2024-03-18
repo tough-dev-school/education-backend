@@ -6,6 +6,8 @@ from django.db.models.functions import Concat
 
 
 def set_legacy_uuid_for_previous_orders(apps, schema_editor):
+    del schema_editor
+
     apps.get_model("orders.Order").objects.update(slug=Concat(Value("tds-"), F("id")))
 
 

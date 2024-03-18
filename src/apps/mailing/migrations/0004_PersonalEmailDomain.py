@@ -3,6 +3,8 @@ from django.db import migrations, models
 
 
 def populate_with_default_domains(apps, schema_editor):
+    del schema_editor
+
     personal_domains = (
         "gmail.com",
         "icloud.com",

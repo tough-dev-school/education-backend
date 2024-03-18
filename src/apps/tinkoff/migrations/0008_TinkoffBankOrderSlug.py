@@ -6,12 +6,16 @@ from django.db.models import F
 
 
 def remove_orphan_transactions(apps, schema_editor):
+    del schema_editor
+
     apps.get_model("tinkoff.PaymentNotification").objects.filter(
         old_order_id__in=[948, 1153, 1166, 1167],
     ).delete()
 
 
 def link_old_orders(apps, schema_editor):
+    del schema_editor
+
     apps.get_model("tinkoff.PaymentNotification").objects.update(
         order_id=F("old_order_id"),
     )

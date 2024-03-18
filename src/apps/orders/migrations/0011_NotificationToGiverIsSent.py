@@ -4,6 +4,8 @@ from django.db import migrations, models
 
 
 def mark_giver_notification_as_sent_for_all_previous_orders(apps, schema_editor):
+    del schema_editor
+
     apps.get_model("orders.Order").objects.filter(giver__isnull=False).update(notification_to_giver_is_sent=True)
 
 

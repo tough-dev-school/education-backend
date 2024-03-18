@@ -7,6 +7,8 @@ from django.db import migrations, models
 
 
 def set_order_author(apps, schema_editor):
+    del schema_editor
+
     LogEntry = apps.get_model("admin.LogEntry")
     Order = apps.get_model("orders.Order")
 
