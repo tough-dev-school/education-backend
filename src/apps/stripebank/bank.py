@@ -10,9 +10,9 @@ from apps.stripebank.models import StripeNotification
 
 
 class StripeBank(Bank):
-    ue = 90  # ue stands for «условные единицы», this is some humour from 2000's
-    currency = "EUR"
-    currency_symbol = "€"
+    ue = 80  # ue stands for «условные единицы», this is some humour from 2000's
+    currency = "USD"
+    currency_symbol = "$"
     acquiring_percent = Decimal(4)
     name = _("Stripe")
 
