@@ -35,7 +35,7 @@ def test_default(notifier, answer, user):
     assert notifier.get_notification_context(user) == dict(
         discussion_url="https://frontend/lms/homework/answers/f593d1a9-120c-4c92-bed0-9f037537d4f4/",
         discussion_name="Вторая домашка",
-        answer_title="Сарынь на кичку!",
+        answer_text="Сарынь на кичку!",
         author_name="Петрович Львов",
         is_non_root_answer_author="1",
     )
@@ -56,7 +56,7 @@ def test_html_is_stripped(notifier, answer):
 
     context = notifier(answer).get_notification_context(answer.author)
 
-    assert context["answer_title"] == "Россия вперёд!"
+    assert context["answer_text"] == "Россия вперёд!"
 
 
 def test_is_root_answer_author_flag(notifier, answer):
