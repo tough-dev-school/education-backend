@@ -244,6 +244,8 @@ known-local-folder = ["apps", "core"]
     "ANN201",  # missing return type annotation for public function `{}`
     "ANN202",  # missing return type annotation for private function `{}`
     "ANN204",  # missing return type annotation for special method `{}`
+    "ANN205",  # missing return type annotation for staticmethod `{}`
+    "ANN206",  # missing return type annotation for classmethod `{}`
 ]
 "*/migrations/*" = [
     "ANN001",  # missing type annotation for function argument `{}`
@@ -252,6 +254,8 @@ known-local-folder = ["apps", "core"]
     "ANN201",  # missing return type annotation for public function `{}`
     "ANN202",  # missing return type annotation for private function `{}`
     "ANN204",  # missing return type annotation for special method `{}`
+    "ANN205",  # missing return type annotation for staticmethod `{}`
+    "ANN206",  # missing return type annotation for classmethod `{}`
 ]
 "src/core/conf/*" = [
     "ANN001",  # missing type annotation for function argument `{}`
@@ -260,6 +264,8 @@ known-local-folder = ["apps", "core"]
     "ANN201",  # missing return type annotation for public function `{}`
     "ANN202",  # missing return type annotation for private function `{}`
     "ANN204",  # missing return type annotation for special method `{}`
+    "ANN205",  # missing return type annotation for staticmethod `{}`
+    "ANN206",  # missing return type annotation for classmethod `{}`
 ]
 "src/core/test/*" = [
     "ANN001",  # missing type annotation for function argument `{}`
@@ -268,6 +274,8 @@ known-local-folder = ["apps", "core"]
     "ANN201",  # missing return type annotation for public function `{}`
     "ANN202",  # missing return type annotation for private function `{}`
     "ANN204",  # missing return type annotation for special method `{}`
+    "ANN205",  # missing return type annotation for staticmethod `{}`
+    "ANN206",  # missing return type annotation for classmethod `{}`
 ]
 "tests/*" = [
     "ANN001",  # missing type annotation for function argument `{}`
@@ -276,6 +284,8 @@ known-local-folder = ["apps", "core"]
     "ANN201",  # missing return type annotation for public function `{}`
     "ANN202",  # missing return type annotation for private function `{}`
     "ANN204",  # missing return type annotation for special method `{}`
+    "ANN205",  # missing return type annotation for staticmethod `{}`
+    "ANN206",  # missing return type annotation for classmethod `{}`
 ]
 
 [tool.tomlsort]
