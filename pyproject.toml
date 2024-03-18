@@ -132,6 +132,7 @@ ignore = [
     "A003",  # class attribute `{}` is shadowing a Python builtin
     "ANN101",  # missing type annotation for `self` in method
     "ANN102",  # missing type annotation for `cls` in classmethod
+    "ANN401",  # dynamically typed expressions (typing.Any) are disallowed in `{}`
     "ARG002",  # unused method argument: `{}`
     "ARG005",  # unused lambda argument: `{}`
     "B018",  # found useless expression. Either assign it to a variable or remove it
