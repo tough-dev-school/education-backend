@@ -130,8 +130,6 @@ ignore = [
     "A001",  # variable `{}` is shadowing a Python builtin
     "A002",  # argument `{}` is shadowing a Python builtin
     "A003",  # class attribute `{}` is shadowing a Python builtin
-    "ANN002",  # missing type annotation for `{}`
-    "ANN003",  # missing type annotation for `{}`
     "ANN101",  # missing type annotation for `self` in method
     "ANN102",  # missing type annotation for `cls` in classmethod
     "ANN201",  # missing return type annotation for public function `{}`
@@ -245,18 +243,28 @@ known-local-folder = ["apps", "core"]
 [tool.ruff.lint.per-file-ignores]
 "*/management/*" = [
     "ANN001",  # missing type annotation for function argument `{}`
+    "ANN002",  # missing type annotations for `*args`
+    "ANN003",  # missing type annotations for `**kwargs`
 ]
 "*/migrations/*" = [
     "ANN001",  # missing type annotation for function argument `{}`
+    "ANN002",  # missing type annotations for `*args`
+    "ANN003",  # missing type annotations for `**kwargs`
 ]
 "src/core/conf/*" = [
     "ANN001",  # missing type annotation for function argument `{}`
+    "ANN002",  # missing type annotations for `*args`
+    "ANN003",  # missing type annotations for `**kwargs`
 ]
 "src/core/test/*" = [
     "ANN001",  # missing type annotation for function argument `{}`
+    "ANN002",  # missing type annotations for `*args`
+    "ANN003",  # missing type annotations for `**kwargs`
 ]
 "tests/*" = [
     "ANN001",  # missing type annotation for function argument `{}`
+    "ANN002",  # missing type annotations for `*args`
+    "ANN003",  # missing type annotations for `**kwargs`
 ]
 
 [tool.tomlsort]
