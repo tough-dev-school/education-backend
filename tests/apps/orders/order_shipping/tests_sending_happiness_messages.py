@@ -32,7 +32,8 @@ def test(tg_message, order, mock_get_happiness_message):
     )
 
 
-def test_no_notifications_for_already_paid_orders(tg_message, order, mock_get_happiness_message):
+@pytest.mark.usefixtures("mock_get_happiness_message")
+def test_no_notifications_for_already_paid_orders(tg_message, order):
     order.set_paid()
     order.set_paid()
 

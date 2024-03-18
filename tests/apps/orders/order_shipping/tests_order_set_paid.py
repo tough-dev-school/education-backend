@@ -47,7 +47,7 @@ def test_order_is_not_shipped_again_if_already_shipped(order, ship):
     ship.assert_not_called()
 
 
-def test_shipment_date_is_not_reset(order, ship):
+def test_shipment_date_is_not_reset(order):
     order.update(shipped=datetime(2000, 11, 12, 1, 13, tzinfo=timezone.utc))
 
     order.set_paid()

@@ -91,7 +91,7 @@ def test_empty_parent(api, question):
     assert created.parent is None
 
 
-def test_create_answer_without_parent_do_not_have_parent_field_in_response(api, question, answer):
+def test_create_answer_without_parent_do_not_have_parent_field_in_response(api, question):
     """Just to document weird behavior of our API: we hide the parent field when it is empty"""
     got = api.post(
         "/api/v2/homework/answers/",

@@ -17,7 +17,7 @@ def another_answer_reaction(another_answer, reaction):
 
 
 @pytest.fixture
-def child_of_another_answer(mixer, question, another_answer, another_user, api):
+def child_of_another_answer(mixer, question, another_answer, another_user):
     return mixer.blend(
         "homework.Answer",
         question=question,
@@ -42,7 +42,8 @@ def test_no_descendants_by_default(get_answer_comments):
     assert got["descendants"] == []
 
 
-def test_child_answers(get_answer_comments, another_answer):
+@pytest.mark.usefixtures("another_answer")
+def test_child_answers(get_answer_comments):
     got = get_answer_comments()[0]
 
     assert len(got["descendants"]) == 1
@@ -50,7 +51,7 @@ def test_child_answers(get_answer_comments, another_answer):
 
 @pytest.mark.freeze_time("2022-10-09 10:30:12+12:00")  # +12 hours kamchatka timezone
 @pytest.mark.usefixtures("kamchatka_timezone")
-def test_child_answers_fields(get_answer_comments, answer, another_answer, another_answer_reaction):
+def test_child_answers_fields(get_answer_comments, answer, another_answer):
     got = get_answer_comments()[0]
 
     descendant = got["descendants"][0]

@@ -5,6 +5,8 @@ from django.db import migrations, models
 
 
 def set_previous_acquiring_percent(apps, schema_editor):
+    del schema_editor
+
     Order = apps.get_model("orders.Order")
 
     Order.objects.filter(desired_bank="stripe").update(

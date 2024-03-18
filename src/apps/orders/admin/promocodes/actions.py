@@ -9,4 +9,6 @@ from core.admin import admin
 
 @admin.action(description=_("Deactivate selected promo codes"))
 def deactivate(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
+    del modeladmin, request
+
     queryset.update(active=False)

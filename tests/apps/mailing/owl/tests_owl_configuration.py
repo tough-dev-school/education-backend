@@ -49,7 +49,8 @@ def test_defaults(owl):
     assert owl.msg.reply_to == [DEFAULT_REPLY_TO]
 
 
-def test_custom(owl, configuration):
+@pytest.mark.usefixtures("configuration")
+def test_custom(owl):
     assert owl.backend_name == TEST_BACKEND
     assert owl.msg.from_email == TEST_FROM_EMAIL
     assert owl.msg.reply_to == [TEST_REPLY_TO]

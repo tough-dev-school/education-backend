@@ -51,7 +51,7 @@ def student_without_english_name(student):
     return student.update(first_name_en="", last_name_en="")
 
 
-def test_diplomas_are_regenerated(student, diploma_ru, diploma_en, order):
+def test_diplomas_are_regenerated(student, diploma_ru, diploma_en):
     DiplomaRegenerator(student)()
 
     diploma_ru.refresh_from_db()
@@ -60,7 +60,7 @@ def test_diplomas_are_regenerated(student, diploma_ru, diploma_en, order):
     assert diploma_en.modified is not None
 
 
-def test_task_diplomas_regenerated(student, course, order, diploma_ru, diploma_en):
+def test_task_diplomas_regenerated(student, diploma_ru, diploma_en):
     tasks.regenerate_diplomas.delay(student_id=student.id)
 
     diploma_ru.refresh_from_db()
@@ -69,7 +69,8 @@ def test_task_diplomas_regenerated(student, course, order, diploma_ru, diploma_e
     assert diploma_en.modified is not None
 
 
-def test_email_is_sent(send_mail, student, diploma_ru):
+@pytest.mark.usefixtures("diploma_ru")
+def test_email_is_sent(send_mail, student):
     DiplomaRegenerator(student)()
 
     send_mail.assert_called_once_with(
@@ -79,7 +80,7 @@ def test_email_is_sent(send_mail, student, diploma_ru):
     )
 
 
-def test_task_call_regenerator(student, course, order, diploma_ru, mock_diploma_regenerator):
+def test_task_call_regenerator(student, mock_diploma_regenerator):
     tasks.regenerate_diplomas.delay(student_id=student.id)
 
     mock_diploma_regenerator.assert_called_once()

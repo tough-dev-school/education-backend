@@ -6,6 +6,8 @@ from django.db import migrations, models
 
 
 def set_default_slug_to_group(apps, schema_editor):
+    del schema_editor
+
     Group = apps.get_model("products", "Group")
     Course = apps.get_model("products", "Course")
     groups = Group.objects.all()
@@ -27,6 +29,8 @@ def set_default_slug_to_group(apps, schema_editor):
 
 
 def revert_set_default_slug_to_group(apps, schema_editor):
+    del schema_editor
+
     Group = apps.get_model("products", "Group")
     Group.objects.update(slug=None)
 

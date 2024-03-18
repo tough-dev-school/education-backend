@@ -5,6 +5,8 @@ from django.db import migrations, models
 
 
 def rename_old_slugs(apps, schema_editor):
+    del schema_editor
+
     for diploma in apps.get_model("diplomas.Diploma").objects.all():
         diploma.slug = shortuuid.uuid()
         diploma.save()

@@ -43,7 +43,8 @@ def test_correct_calls(order_returner, unpaid_order, mock_update_lead, mock_dele
     mock_delete_transaction.assert_called_once()
 
 
-def test_delete_transaction(order_returner, unpaid_order, mock_update_lead, mock_delete_transaction):
+@pytest.mark.usefixtures("mock_delete_transaction", "mock_update_lead")
+def test_delete_transaction(order_returner, unpaid_order):
     order_returner(unpaid_order)
 
     assert AmoCRMOrderTransaction.objects.count() == 0

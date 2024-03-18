@@ -5,6 +5,8 @@ from django.db import migrations, models
 
 
 def set_relations(apps, schema_editor):
+    del schema_editor
+
     AmoCRMOrderLead = apps.get_model("amocrm", "AmoCRMOrderLead")
     AmoCRMOrderTransaction = apps.get_model("amocrm", "AmoCRMOrderTransaction")
     for lead in AmoCRMOrderLead.objects.all():

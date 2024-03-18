@@ -7,6 +7,8 @@ from django.db.models.fields import json
 
 
 def retrieve_and_set_event_type_payment_intent(apps, schema_editor):
+    del schema_editor
+
     StripeNotification = apps.get_model("stripebank", "StripeNotification")
 
     if StripeNotification.objects.exclude(raw__type="checkout.session.completed").exists():

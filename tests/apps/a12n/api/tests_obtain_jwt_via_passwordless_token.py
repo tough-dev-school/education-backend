@@ -65,7 +65,7 @@ def test_token_is_marked_as_used(get_token, token):
         (lambda *args: "sh1t", 401),
     ],
 )
-def test_received_token_works(api, get_token, anon, token, extract_token, status_code):
+def test_received_token_works(get_token, anon, token, extract_token, status_code):
     token = extract_token(get_token(token=str(token.token)))
 
     anon.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")

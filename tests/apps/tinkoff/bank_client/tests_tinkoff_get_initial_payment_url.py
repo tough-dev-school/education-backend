@@ -24,7 +24,7 @@ def test_ok_initial_payment_url(tinkoff):
     assert tinkoff.get_initial_payment_url() == "https://pay.ment/url"
 
 
-def test_initial_payment_url_payload(tinkoff, req, settings):
+def test_initial_payment_url_payload(tinkoff, req):
     assert tinkoff.get_initial_payment_url() == "https://mocked.in.fixture/"
 
     payload = req.call_args[1]["payload"]

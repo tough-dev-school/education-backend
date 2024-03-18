@@ -36,7 +36,7 @@ def test_the_message_is_not_sent_when_there_is_no_template_id(send_mail, shipmen
     send_mail.assert_not_called()
 
 
-def test_antispam_is_disabled(send_mail, shipment, user):
+def test_antispam_is_disabled(send_mail, shipment):
     shipment()()
 
     send_mail.assert_called_once()

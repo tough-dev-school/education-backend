@@ -140,7 +140,6 @@ ignore = [
     "ANN204",  # missing return type annotation for special method `{}`
     "ANN206",  # missing return type annotation for class method `{}`
     "ANN401",  # dynamically typed expressions (typing.Any) are disallowed in `{}`
-    "ARG001",  # unused function argument: `{}`
     "ARG002",  # unused method argument: `{}`
     "ARG005",  # unused lambda argument: `{}`
     "B018",  # found useless expression. Either assign it to a variable or remove it

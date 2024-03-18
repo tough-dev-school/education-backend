@@ -47,7 +47,7 @@ def submit_answer(api):
 
 
 @pytest.fixture
-def submit_homework(users, submit_answer, mailoutbox):
+def submit_homework(users, submit_answer):
     def _submit(question):
         for user in users:
             submit_answer(

@@ -4,6 +4,8 @@ from django.db import migrations, models
 
 
 def set_ue_rate_for_stripe_bank(apps, schema_editor):
+    del schema_editor
+
     apps.get_model("orders.Order").objects.filter(
         desired_bank="stripe",
     ).update(

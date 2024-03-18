@@ -11,6 +11,8 @@ from apps.homework.models import Answer
 
 @receiver(post_save, sender=Answer)
 def send_new_answer_notification(instance: Model, created: Any, **kwargs: dict[str, Any]) -> None:
+    del kwargs
+
     if settings.DISABLE_NEW_ANSWER_NOTIFICATIONS:
         return
 

@@ -30,7 +30,7 @@ def test_ok(api, question, answer):
     assert got[0]["reactions"] == []
 
 
-def test_has_reaction_fields_if_there_is_reaction(api, question, answer, reaction):
+def test_has_reaction_fields_if_there_is_reaction(api, question, reaction):
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 
     reactions = got[0]["reactions"]
@@ -152,7 +152,8 @@ def test_pagination_could_be_disable_with_query_param(api, question, answer, dis
         "any-other-value",
     ],
 )
-def test_paginated_response_with_disable_pagination_false_or_invalid_value(api, question, answer, disable_pagination_value):
+@pytest.mark.usefixtures("answer")
+def test_paginated_response_with_disable_pagination_false_or_invalid_value(api, question, disable_pagination_value):
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}&disable_pagination={disable_pagination_value}")
 
     assert "results" in got

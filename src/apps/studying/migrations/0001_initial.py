@@ -6,6 +6,8 @@ from django.db import migrations, models
 
 
 def create_study_records_for_all_purcased_courses(apps, schema_editor):
+    del schema_editor
+
     Study = apps.get_model("studying.Study")
     Order = apps.get_model("orders.Order")
 

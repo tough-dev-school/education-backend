@@ -10,6 +10,8 @@ from apps.tinkoff.models import PaymentNotification as TinkoffPaymentNotificatio
 
 @receiver(post_save, sender=TinkoffPaymentNotification)
 def mark_order_as_paid_on_tinkoff_bank_transactions(instance: TinkoffPaymentNotification, created: bool, **kwargs: dict[str, Any]) -> None:
+    del kwargs
+
     if not created:
         return
 
@@ -21,6 +23,8 @@ def mark_order_as_paid_on_tinkoff_bank_transactions(instance: TinkoffPaymentNoti
 
 @receiver(post_save, sender=StripeNotification)
 def mark_order_as_paid_on_stripe_notifications(instance: StripeNotification, created: bool, **kwargs: dict[str, Any]) -> None:
+    del kwargs
+
     if not created:
         return
 
@@ -32,6 +36,8 @@ def mark_order_as_paid_on_stripe_notifications(instance: StripeNotification, cre
 
 @receiver(post_save, sender=DolyameNotification)
 def mark_order_as_paid_on_dolyame_notifications(instance: DolyameNotification, created: bool, **kwargs: dict[str, Any]) -> None:
+    del kwargs
+
     if not created:
         return
 
