@@ -9,7 +9,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def _successful_response(get):
+def _successful_response(get) -> None:
     get.return_value = {
         "_total_items": 3,
         "_links": {"self": {"href": "https://test.amocrm.ru/api/v4/leads/pipelines"}},

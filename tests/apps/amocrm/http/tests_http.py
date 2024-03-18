@@ -11,7 +11,7 @@ pytestmark = [
 
 
 @pytest.fixture(autouse=True)
-def _cached_tokens():
+def _cached_tokens() -> None:
     cache.set("amocrm_access_token", "token")
     cache.set("amocrm_refresh_token", "refresh-token")
 

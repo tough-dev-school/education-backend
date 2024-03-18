@@ -7,13 +7,13 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def _set_tinkoff_credentials(settings):
+def _set_tinkoff_credentials(settings) -> None:
     settings.TINKOFF_TERMINAL_KEY = "k3y"
     settings.TINKOFF_TERMINAL_PASSWORD = "123456"
 
 
 @pytest.fixture(autouse=True)
-def _set_absolute_host(settings):
+def _set_absolute_host(settings) -> None:
     settings.ABSOLUTE_HOST = "https://tst.hst"
     settings.FRONTEND_URL = "https://front.tst.hst"
 

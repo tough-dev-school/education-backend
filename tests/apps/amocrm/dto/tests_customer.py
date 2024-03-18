@@ -8,7 +8,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def _successful_create_customer_response(post):
+def _successful_create_customer_response(post) -> None:
     post.return_value = {
         "_links": {"self": {"href": "https://test.amocrm.ru/api/v4/customers"}},
         "_embedded": {
@@ -31,7 +31,7 @@ def _successful_create_customer_response(post):
 
 
 @pytest.fixture
-def _successful_create_contact_response(post):
+def _successful_create_contact_response(post) -> None:
     post.return_value = {
         "_links": {"self": {"href": "https://test.amocrm.ru/api/v4/contacts"}},
         "_embedded": {
@@ -49,7 +49,7 @@ def _successful_create_contact_response(post):
 
 
 @pytest.fixture
-def _mock_create_calls(mocker):
+def _mock_create_calls(mocker) -> None:
     mocker.patch("apps.amocrm.dto.customer.AmoCRMCustomerDTO._create_customer", return_value=11111)
     mocker.patch("apps.amocrm.dto.customer.AmoCRMCustomerDTO._create_contact", return_value=22222)
     mocker.patch("apps.amocrm.dto.customer.AmoCRMCustomerDTO._link_customer_to_contact", return_value=None)

@@ -3,14 +3,14 @@ from storages.backends.s3boto3 import S3Boto3Storage
 
 
 class ProdReadOnlyStorage(S3Boto3Storage):
-    def exists(self, *args, **kwargs):  # noqa: ANN002, ANN003
+    def exists(self, *args, **kwargs) -> bool:  # noqa: ANN002, ANN003
         return True
 
-    def delete(self, *args, **kwargs):  # noqa: ANN002, ANN003
+    def delete(self, *args, **kwargs) -> None:  # noqa: ANN002, ANN003
         return
 
-    def size(self, *args, **kwargs):  # noqa: ANN002, ANN003
+    def size(self, *args, **kwargs) -> int:  # noqa: ANN002, ANN003
         return 100500
 
-    def save(self, *args, **kwargs):  # noqa: ANN002, ANN003
+    def save(self, *args, **kwargs) -> None:  # noqa: ANN002, ANN003
         return None

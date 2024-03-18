@@ -43,7 +43,7 @@ def image():
 
 
 @pytest.fixture(autouse=True)
-def _mock_middleware_response(respx_mock):
+def _mock_middleware_response(respx_mock) -> None:
     respx_mock.post(url="http://notion.middleware/v1/asset/").respond(content=b"test-img-content")
 
 

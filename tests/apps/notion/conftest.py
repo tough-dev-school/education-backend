@@ -11,7 +11,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def _cdn_dev_storage(settings):
+def _cdn_dev_storage(settings) -> None:
     settings.STORAGES = {
         "default": {
             "BACKEND": "core.storages.ProdReadOnlyStorage",
@@ -45,7 +45,7 @@ def notion() -> NotionClient:
 
 
 @pytest.fixture(autouse=True)
-def _freeze_notion_middleware_url(settings):
+def _freeze_notion_middleware_url(settings) -> None:
     settings.NOTION_MIDDLEWARE_URL = "http://notion.middleware"
 
 

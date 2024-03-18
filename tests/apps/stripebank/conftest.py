@@ -13,12 +13,12 @@ def stripe(order):
 
 
 @pytest.fixture(autouse=True)
-def _set_stripe_key(settings):
+def _set_stripe_key(settings) -> None:
     settings.STRIPE_API_KEY = "sk_test_100500"
 
 
 @pytest.fixture(autouse=True)
-def _fix_stripe_course(mocker):
+def _fix_stripe_course(mocker) -> None:
     mocker.patch("apps.stripebank.bank.StripeBank.ue", 70)  # let it be forever :'(
 
 
@@ -42,7 +42,7 @@ def load_stipe_webhook():
 
 
 @pytest.fixture
-def _disable_signature_verification(mocker):
+def _disable_signature_verification(mocker) -> None:
     mocker.patch("stripe.webhook.WebhookSignature.verify_header", return_value=True)
 
 

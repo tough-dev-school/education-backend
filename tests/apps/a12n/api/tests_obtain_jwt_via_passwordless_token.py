@@ -7,7 +7,7 @@ pytestmark = [
 
 
 @pytest.fixture(autouse=True)
-def _enable_passwordless_token_expiration(settings):
+def _enable_passwordless_token_expiration(settings) -> None:
     settings.DANGEROUSLY_MAKE_ONE_TIME_PASSWORDLESS_TOKEN_MULTI_PASS = False
 
 

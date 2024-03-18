@@ -4,7 +4,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def _freeze_absolute_url(settings):
+def _freeze_absolute_url(settings) -> None:
     settings.FRONTEND_URL = "https://frontend/lms/"
 
 

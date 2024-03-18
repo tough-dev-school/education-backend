@@ -11,7 +11,7 @@ pytestmark = [
 
 
 @pytest.fixture(autouse=True)
-def _set_en_locale(settings):
+def _set_en_locale(settings) -> None:
     settings.LANGUAGE_CODE = "en"
 
 

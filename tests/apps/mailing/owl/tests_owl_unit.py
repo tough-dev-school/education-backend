@@ -6,7 +6,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def _freeze_sender(settings):
+def _freeze_sender(settings) -> None:
     settings.DEFAULT_FROM_EMAIL = "Jesus Christ <me@christ.com>"
 
 

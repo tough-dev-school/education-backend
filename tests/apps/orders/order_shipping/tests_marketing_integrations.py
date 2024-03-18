@@ -6,7 +6,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def _enable_amocrm(settings):
+def _enable_amocrm(settings) -> None:
     settings.AMOCRM_BASE_URL = "https://test.amocrm.ru"
     settings.AMOCRM_REDIRECT_URL = "https://test-education.ru"
     settings.AMOCRM_INTEGRATION_ID = "4815162342"

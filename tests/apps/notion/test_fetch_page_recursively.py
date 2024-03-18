@@ -28,7 +28,7 @@ def page() -> NotionPage:
 
 
 @pytest.fixture
-def _mock_fetching_asset(respx_mock):
+def _mock_fetching_asset(respx_mock) -> None:
     respx_mock.post("http://notion.middleware/v1/asset/").respond(content=b"typical")
 
 

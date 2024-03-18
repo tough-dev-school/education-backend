@@ -46,14 +46,14 @@ def dolyame_bank(mocker):
 
 
 @pytest.fixture(autouse=True)
-def _freeze_ue_rate(mocker):
+def _freeze_ue_rate(mocker) -> None:
     mocker.patch("apps.tinkoff.bank.TinkoffBank.ue", 11)
     mocker.patch("apps.stripebank.bank.StripeBank.ue", 33)
     mocker.patch("apps.tinkoff.dolyame.Dolyame.ue", 44)
 
 
 @pytest.fixture(autouse=True)
-def _freeze_acquiring_percent(mocker):
+def _freeze_acquiring_percent(mocker) -> None:
     mocker.patch("apps.tinkoff.bank.TinkoffBank.acquiring_percent", "1.2")
     mocker.patch("apps.stripebank.bank.StripeBank.acquiring_percent", "1.4")
     mocker.patch("apps.tinkoff.dolyame.Dolyame.acquiring_percent", "1.5")

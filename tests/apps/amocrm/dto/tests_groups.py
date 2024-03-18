@@ -9,7 +9,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def _successful_response(patch):
+def _successful_response(patch) -> None:
     patch.return_value = {
         "_total_items": 1,
         "_embedded": {

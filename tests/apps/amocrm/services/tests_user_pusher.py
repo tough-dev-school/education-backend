@@ -9,7 +9,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def _mock_create(mocker):
+def _mock_create(mocker) -> None:
     mocker.patch("apps.amocrm.dto.customer.AmoCRMCustomerDTO.create", return_value=(4444, 5555))
 
 

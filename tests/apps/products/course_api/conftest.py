@@ -19,7 +19,7 @@ def payment_url(mocker):
 def bank(mocker):
     class FakeBank:
         @classmethod
-        def get_initial_payment_url(self):
+        def get_initial_payment_url(self) -> str:
             return "https://bank.test/pay/"
 
     return mocker.patch.object(TinkoffBank, "__init__", return_value=None)

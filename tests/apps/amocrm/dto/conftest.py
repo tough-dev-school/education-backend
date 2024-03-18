@@ -6,7 +6,7 @@ from django.utils import timezone
 
 
 @pytest.fixture(autouse=True)
-def _mock_cached_fields_id(mocker):
+def _mock_cached_fields_id(mocker) -> None:
     mocker.patch("apps.amocrm.ids.contact_field_id", return_value=2235143)
     mocker.patch("apps.amocrm.ids.product_field_id", return_value=800)
     mocker.patch("apps.amocrm.ids.products_catalog_id", return_value=900)

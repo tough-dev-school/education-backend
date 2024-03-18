@@ -19,7 +19,7 @@ def users(mixer):
 
 
 @pytest.fixture(autouse=True)
-def _allow_course_access(factory, users, course):
+def _allow_course_access(factory, users, course) -> None:
     for user in users:
         order = factory.order(user=user)
         order.set_item(course)
@@ -27,13 +27,13 @@ def _allow_course_access(factory, users, course):
 
 
 @pytest.fixture(autouse=True)
-def _allow_email_sending(settings):
+def _allow_email_sending(settings) -> None:
     settings.EMAIL_ENABLED = True
 
 
 @pytest.fixture
 def submit_answer(api):
-    def _submit(author, answer, question):
+    def _submit(author, answer, question) -> None:
         api.auth(author)
         api.post(
             "/api/v2/homework/answers/",
@@ -48,7 +48,7 @@ def submit_answer(api):
 
 @pytest.fixture
 def submit_homework(users, submit_answer):
-    def _submit(question):
+    def _submit(question) -> None:
         for user in users:
             submit_answer(
                 author=user,

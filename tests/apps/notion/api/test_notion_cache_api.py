@@ -16,7 +16,7 @@ def as_staff(staff_user):
 
 
 @pytest.fixture(autouse=True)
-def _ok(respx_mock: MockRouter):
+def _ok(respx_mock: MockRouter) -> None:
     respx_mock.route(url="http://notion.middleware/v1/notion/loadPageChunk/").respond(
         json={
             "recordMap": {

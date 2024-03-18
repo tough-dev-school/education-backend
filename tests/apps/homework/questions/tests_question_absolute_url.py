@@ -4,7 +4,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def _set_frontend_url(settings):
+def _set_frontend_url(settings) -> None:
     settings.FRONTEND_URL = "https://education.borshev.com/lms/"
 
 

@@ -132,11 +132,6 @@ ignore = [
     "A003",  # class attribute `{}` is shadowing a Python builtin
     "ANN101",  # missing type annotation for `self` in method
     "ANN102",  # missing type annotation for `cls` in classmethod
-    "ANN201",  # missing return type annotation for public function `{}`
-    "ANN202",  # missing return type annotation for private function `{}`
-    "ANN204",  # missing return type annotation for special method `{}`
-    "ANN206",  # missing return type annotation for class method `{}`
-    "ANN401",  # dynamically typed expressions (typing.Any) are disallowed in `{}`
     "ARG002",  # unused method argument: `{}`
     "ARG005",  # unused lambda argument: `{}`
     "B018",  # found useless expression. Either assign it to a variable or remove it
@@ -245,26 +240,41 @@ known-local-folder = ["apps", "core"]
     "ANN001",  # missing type annotation for function argument `{}`
     "ANN002",  # missing type annotations for `*args`
     "ANN003",  # missing type annotations for `**kwargs`
+    "ANN201",  # missing return type annotation for public function `{}`
+    "ANN202",  # missing return type annotation for private function `{}`
+    "ANN204",  # missing return type annotation for special method `{}`
 ]
 "*/migrations/*" = [
     "ANN001",  # missing type annotation for function argument `{}`
     "ANN002",  # missing type annotations for `*args`
     "ANN003",  # missing type annotations for `**kwargs`
+    "ANN201",  # missing return type annotation for public function `{}`
+    "ANN202",  # missing return type annotation for private function `{}`
+    "ANN204",  # missing return type annotation for special method `{}`
 ]
 "src/core/conf/*" = [
     "ANN001",  # missing type annotation for function argument `{}`
     "ANN002",  # missing type annotations for `*args`
     "ANN003",  # missing type annotations for `**kwargs`
+    "ANN201",  # missing return type annotation for public function `{}`
+    "ANN202",  # missing return type annotation for private function `{}`
+    "ANN204",  # missing return type annotation for special method `{}`
 ]
 "src/core/test/*" = [
     "ANN001",  # missing type annotation for function argument `{}`
     "ANN002",  # missing type annotations for `*args`
     "ANN003",  # missing type annotations for `**kwargs`
+    "ANN201",  # missing return type annotation for public function `{}`
+    "ANN202",  # missing return type annotation for private function `{}`
+    "ANN204",  # missing return type annotation for special method `{}`
 ]
 "tests/*" = [
     "ANN001",  # missing type annotation for function argument `{}`
     "ANN002",  # missing type annotations for `*args`
     "ANN003",  # missing type annotations for `**kwargs`
+    "ANN201",  # missing return type annotation for public function `{}`
+    "ANN202",  # missing return type annotation for private function `{}`
+    "ANN204",  # missing return type annotation for special method `{}`
 ]
 
 [tool.tomlsort]

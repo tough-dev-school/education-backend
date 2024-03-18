@@ -7,7 +7,7 @@ url = "/api/v2/auth/password/reset/"
 
 
 @pytest.fixture(autouse=True)
-def _set_frontend_url(settings):
+def _set_frontend_url(settings) -> None:
     settings.FRONTEND_URL = "http://frontend"
 
 
@@ -17,7 +17,7 @@ def user(mixer):
 
 
 @pytest.fixture(autouse=True)
-def _freeze_make_token(mocker):
+def _freeze_make_token(mocker) -> None:
     mocker.patch("django.contrib.auth.tokens.default_token_generator.make_token", return_value="__TOKEN__")
 
 

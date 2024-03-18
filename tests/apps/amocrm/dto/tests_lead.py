@@ -8,7 +8,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def _successful_create_lead_response(post):
+def _successful_create_lead_response(post) -> None:
     post.return_value = [
         {
             "id": 11111,

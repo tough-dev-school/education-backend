@@ -5,7 +5,7 @@ from apps.amocrm.dto import AmoCRMUserOperatorDTO
 
 
 @pytest.fixture(autouse=True)
-def _successful_get_users_response(get):
+def _successful_get_users_response(get) -> None:
     get.return_value = {
         "_total_items": 1,
         "_page": 1,

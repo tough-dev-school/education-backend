@@ -45,7 +45,7 @@ class AppAdminMixin:
             *self.global_exclude,
         )
 
-    def get_form(self: DjangoModelAdminProtocol, request: Any, obj: Type[models.Model] | None = None, **kwargs: Any):  # type: ignore
+    def get_form(self: DjangoModelAdminProtocol, request: Any, obj: Type[models.Model] | None = None, **kwargs: Any) -> str | None:
         """Use special form during object creation"""
         defaults = {}
         if obj is None and hasattr(self, "add_form") and self.add_form is not None:
@@ -54,7 +54,7 @@ class AppAdminMixin:
 
         return super().get_form(request, obj, **defaults)  # type: ignore
 
-    def get_fieldsets(self: DjangoModelAdminProtocol, request: Any, obj: Type[models.Model] | None = None):  # type: ignore
+    def get_fieldsets(self: DjangoModelAdminProtocol, request: Any, obj: Type[models.Model] | None = None) -> "Sequence[tuple[str | None, Any]]":
         """Use special fieldset during object creation"""
         if not obj and hasattr(self, "add_fieldsets") and self.add_fieldsets is not None:
             return self.add_fieldsets

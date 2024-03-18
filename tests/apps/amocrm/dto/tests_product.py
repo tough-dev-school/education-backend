@@ -8,7 +8,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def _successful_create_response(post):
+def _successful_create_response(post) -> None:
     post.return_value = {
         "_links": {"self": {"href": "https://test.amocrm.ru/api/v4/catalogs/11271/elements"}},
         "_embedded": {

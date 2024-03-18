@@ -8,7 +8,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def _successful_create_transaction_response(post):
+def _successful_create_transaction_response(post) -> None:
     post.return_value = {
         "_total_items": 1,
         "_embedded": {

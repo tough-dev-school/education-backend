@@ -13,7 +13,7 @@ def event(order):
 
 
 @pytest.fixture(autouse=True)
-def _configure_dashamail_directcrm(settings):
+def _configure_dashamail_directcrm(settings) -> None:
     settings.DASHAMAIL_DIRECTCRM_ENDPOINT = "test-endpoint"
     settings.DASHAMAIL_DIRECTCRM_SECRET_KEY = "s3cr3t"
 

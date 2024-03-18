@@ -14,7 +14,7 @@ def order(factory):
 
 
 @pytest.fixture(autouse=True)
-def _disable_dolyame_authn(mocker):
+def _disable_dolyame_authn(mocker) -> None:
     mocker.patch("apps.tinkoff.api.permissions.DolyameNetmaskPermission.has_permission", return_value=True)
 
 
