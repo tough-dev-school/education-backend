@@ -2728,13 +2728,13 @@ test = ["fixtures", "mock", "purl", "pytest", "requests-futures", "sphinx", "tes
 
 [[package]]
 name = "respx"
-version = "0.20.2"
+version = "0.21.0"
 description = "A utility for mocking out the Python HTTPX and HTTP Core libraries."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "respx-0.20.2-py2.py3-none-any.whl", hash = "sha256:ab8e1cf6da28a5b2dd883ea617f8130f77f676736e6e9e4a25817ad116a172c9"},
-    {file = "respx-0.20.2.tar.gz", hash = "sha256:07cf4108b1c88b82010f67d3c831dae33a375c7b436e54d87737c7f9f99be643"},
+    {file = "respx-0.21.0-py2.py3-none-any.whl", hash = "sha256:0293d9c92b58f5d31bf24e4545129779b4194de156227eae8f5f8eedb5eaa6cc"},
+    {file = "respx-0.21.0.tar.gz", hash = "sha256:30f6ec0e82d00bc7b664d79155e5df34ce40b5183f6eb4460e371ced7ae7232e"},
 ]
 
 [package.dependencies]
@@ -3506,4 +3506,4 @@ brotli = ["Brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "99af7e8854242199e5e377c2eed282327a3ba96c073c11d2ed30e9dfdc14eb6f"
+content-hash = "bcca63687ec9e219311170344d39920b5baa36ba6fc3ec2d74badb97199a6d66"
