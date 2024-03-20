@@ -63,6 +63,10 @@ class Bank(metaclass=ABCMeta):
     def user(self) -> "User":
         return self.order.user
 
+    @property
+    def is_partial_refund_available(self) -> bool:
+        return False
+
     def get_formatted_amount(self, amount: Decimal) -> int:
         from apps.banking import price_calculator
 

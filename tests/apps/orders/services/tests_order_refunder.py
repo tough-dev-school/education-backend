@@ -10,6 +10,7 @@ from django.utils import timezone
 from apps.banking.exceptions import BankDoesNotExist
 from apps.banking.selector import BANKS
 from apps.orders.services import OrderRefunder, OrderUnshipper
+from apps.orders.services.order_refunder import OrderRefunderException
 
 pytestmark = [
     pytest.mark.django_db,
@@ -36,6 +37,16 @@ def _enable_amocrm(settings):
 @pytest.fixture(autouse=True)
 def mock_dolyame_refund(mocker):
     return mocker.patch("apps.tinkoff.dolyame.Dolyame.refund")
+
+
+@pytest.fixture(autouse=True)
+def mock_tinkoff_refund(mocker):
+    return mocker.patch("apps.tinkoff.bank.TinkoffBank.refund")
+
+
+@pytest.fixture(autouse=True)
+def mock_stripe_refund(mocker):
+    return mocker.patch("apps.stripebank.bank.StripeBank.refund")
 
 
 @pytest.fixture(autouse=True)
@@ -77,8 +88,21 @@ def paid_order(not_paid_order):
 
 
 @pytest.fixture
+def paid_tinkoff_order(paid_order):
+    return paid_order.update(bank_id="tinkoff_bank")
+
+
+@pytest.fixture
+def paid_stripe_order(paid_order):
+    return paid_order.update(bank_id="stripe")
+
+
+@pytest.fixture
 def refund():
-    return lambda order: OrderRefunder(order=order)()
+    def _refund(order, amount=None):
+        return OrderRefunder(order=order, amount=amount)()
+
+    return _refund
 
 
 @pytest.mark.freeze_time("2032-12-01 15:30Z")
@@ -166,6 +190,8 @@ def test_refund_notification_email_context_and_template_correct(refund, paid_ord
             refund_author="Авраам Соломонович Пейзенгольц",
             payment_method_name=BANKS["dolyame"].name,
             price="999",
+            amount="999",
+            available_to_refund="0",
             order_admin_site_url=f"http://absolute-url.url/admin/orders/order/{paid_order.id}/change/",
         ),
     )
@@ -231,8 +257,111 @@ def test_success_admin_log_created(paid_order, refund, user):
     log = LogEntry.objects.get()
     assert log.action_flag == CHANGE
     assert log.action_time == timezone.now()
-    assert log.change_message == "Order refunded"
+    assert log.change_message == "Order refunded: refunded amount: 999, available to refund: 0"
     assert log.content_type_id == ContentType.objects.get_for_model(paid_order).id
     assert log.object_id == str(paid_order.id)
     assert log.object_repr == str(paid_order)
     assert log.user == user
+
+
+def test_partial_refund_exceed_available_amount(paid_tinkoff_order, refund):
+    with pytest.raises(OrderRefunderException) as e:
+        refund(paid_tinkoff_order, 1000)
+
+    assert "Amount to refund is more than available" in str(e)
+
+
+def test_partial_refund_dolyame(paid_order, refund):
+    """No partial refunds available for dolyame"""
+    with pytest.raises(OrderRefunderException) as e:
+        refund(paid_order, 500)
+
+    assert "Partial refund is not available" in str(e)
+
+
+def test_partial_refund_tinkoff(paid_tinkoff_order, refund):
+    paid_tinkoff_order.update(bank_id="tinkoff_bank")
+
+    refund(paid_tinkoff_order, 500)
+
+    paid_tinkoff_order.refresh_from_db()
+    assert paid_tinkoff_order.refund_amount == 500
+    assert paid_tinkoff_order.available_to_refund_amount == 499
+
+
+def test_partial_refund_stripe(paid_stripe_order, refund):
+    paid_stripe_order.update(bank_id="stripe")
+
+    refund(paid_stripe_order, 500)
+
+    paid_stripe_order.refresh_from_db()
+    assert paid_stripe_order.refund_amount == 500
+    assert paid_stripe_order.available_to_refund_amount == 499
+
+
+def test_partial_refund_order_not_unshipped(paid_tinkoff_order, refund, spy_unshipper):
+    refund(paid_tinkoff_order, 500)
+
+    spy_unshipper.assert_not_called()
+
+
+@pytest.mark.auditlog()
+@pytest.mark.freeze_time()
+def test_partial_refund_success_admin_log_created(paid_tinkoff_order, refund, user):
+    refund(paid_tinkoff_order, 500)
+
+    log = LogEntry.objects.get()
+    assert log.action_flag == CHANGE
+    assert log.action_time == timezone.now()
+    assert log.change_message == "Order refunded: refunded amount: 500, available to refund: 499"
+    assert log.content_type_id == ContentType.objects.get_for_model(paid_tinkoff_order).id
+    assert log.object_id == str(paid_tinkoff_order.id)
+    assert log.object_repr == str(paid_tinkoff_order)
+    assert log.user == user
+
+
+def test_partial_refund_notification_email_context_and_template_correct(refund, paid_tinkoff_order, mock_send_mail, mocker):
+    refund(paid_tinkoff_order, 500)
+
+    mock_send_mail.assert_called_with(
+        to=mocker.ANY,
+        template_id="order-refunded",
+        disable_antispam=True,
+        ctx=dict(
+            order_id=paid_tinkoff_order.id,
+            refunded_item="Кройка и шитьё",
+            refund_author="Авраам Соломонович Пейзенгольц",
+            payment_method_name=BANKS["tinkoff_bank"].name,
+            price="999",
+            amount="500",
+            available_to_refund="499",
+            order_admin_site_url=f"http://absolute-url.url/admin/orders/order/{paid_tinkoff_order.id}/change/",
+        ),
+    )
+
+
+def test_refund_partially_refunded_order(paid_tinkoff_order, refund):
+    paid_tinkoff_order.update(refund_amount=500)
+    refund(paid_tinkoff_order)
+
+    paid_tinkoff_order.refresh_from_db()
+    assert paid_tinkoff_order.refund_amount == 999
+    assert paid_tinkoff_order.available_to_refund_amount == 0
+
+
+def test_partial_refund_not_set_unpaid(paid_tinkoff_order, refund):
+    refund(paid_tinkoff_order, 500)
+
+    paid_tinkoff_order.refresh_from_db()
+    assert paid_tinkoff_order.available_to_refund_amount == 499
+    assert paid_tinkoff_order.paid is not None
+    assert paid_tinkoff_order.unpaid is None
+
+
+def test_partial_refund_set_unpaid(paid_tinkoff_order, refund):
+    refund(paid_tinkoff_order, 999)
+
+    paid_tinkoff_order.refresh_from_db()
+    assert paid_tinkoff_order.available_to_refund_amount == 0
+    assert paid_tinkoff_order.paid is None
+    assert paid_tinkoff_order.unpaid is not None

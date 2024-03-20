@@ -16,6 +16,10 @@ class TinkoffBank(Bank):
     acquiring_percent = Decimal("2.49")
     name = _("Tinkoff")
 
+    @property
+    def is_partial_refund_available(self) -> bool:
+        return True
+
     def get_initial_payment_url(self) -> str:
         return self.Init()["PaymentURL"]
 

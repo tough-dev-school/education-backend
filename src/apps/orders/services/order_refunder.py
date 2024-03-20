@@ -20,9 +20,14 @@ from apps.orders.models import Order
 from apps.orders.services.order_unshipper import OrderUnshipper
 from apps.users.tasks import rebuild_tags
 from core.current_user import get_current_user
+from core.exceptions import AppServiceException
 from core.pricing import format_price
 from core.services import BaseService
 from core.tasks import write_admin_log
+
+
+class OrderRefunderException(AppServiceException):
+    pass
 
 
 @dataclass
@@ -47,12 +52,14 @@ class OrderRefunder(BaseService):
         return Bank(order=self.order) if Bank else None
 
     def act(self) -> None:
+        self.amount_to_refund = self.get_amount_to_refund()
+
         if self.order.paid:
             self.do_bank_refund_if_needed()
             self.update_refund_amount()
             self.mark_order_as_not_paid_if_needed()
 
-        if self.order.unpaid:
+        if not self.order.paid:  # if afterward order was fully refunded or was never paid
             OrderUnshipper(order=self.order)()
 
         self.write_success_admin_log()
@@ -63,8 +70,10 @@ class OrderRefunder(BaseService):
         self.update_dashamail()
 
     def validate(self) -> None:
+        if self.amount and self.amount != self.order.price and self.bank and not self.bank.is_partial_refund_available:
+            raise OrderRefunderException(_("Partial refund is not available"))
         if self.amount and self.order.available_to_refund_amount < self.amount:
-            raise ValueError(_("Amount to refund is more than available"))
+            raise OrderRefunderException(_("Amount to refund is more than available"))
 
     def get_amount_to_refund(self) -> Decimal:
         """
