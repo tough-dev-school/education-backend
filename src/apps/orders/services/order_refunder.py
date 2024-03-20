@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from decimal import Decimal
 from urllib.parse import urljoin
 
 import celery
@@ -7,6 +8,7 @@ from django.contrib.admin.models import CHANGE
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
+from django.utils.translation import gettext as _
 
 from apps.amocrm import tasks as amocrm
 from apps.banking.base import Bank
@@ -29,9 +31,12 @@ class OrderRefunder(BaseService):
 
     If order is not paid just unship and register in integrations.
     If order is paid and is suitable for bank refund - do it.
+    If amount is not specified - refund full available to refund amount.
+    Available to refund amount = initial order price - already refunded amount.
     """
 
     order: Order
+    amount: Decimal | None = None
 
     def __post_init__(self) -> None:
         self.payment_method_before_service_call = human_readable.get_order_payment_method_name(self.order)
@@ -44,9 +49,12 @@ class OrderRefunder(BaseService):
     def act(self) -> None:
         if self.order.paid:
             self.do_bank_refund_if_needed()
-            self.mark_order_as_not_paid()
+            self.update_refund_amount()
+            self.mark_order_as_not_paid_if_needed()
 
-        OrderUnshipper(order=self.order)()
+        if self.order.unpaid:
+            OrderUnshipper(order=self.order)()
+
         self.write_success_admin_log()
         self.notify_dangerous_operation_happened()
 
@@ -54,20 +62,40 @@ class OrderRefunder(BaseService):
         self.update_amocrm()
         self.update_dashamail()
 
-    def mark_order_as_not_paid(self) -> None:
-        self.order.paid = None
-        self.order.unpaid = timezone.now()
-        self.order.save(update_fields=["paid", "unpaid", "modified"])
+    def validate(self) -> None:
+        if self.amount and self.order.available_to_refund_amount < self.amount:
+            raise ValueError(_("Amount to refund is more than available"))
+
+    def get_amount_to_refund(self) -> Decimal:
+        """
+        Using this in email.
+        Not using self.order.price for total refund because order can already be partially refunded.
+        """
+        return self.amount or self.order.available_to_refund_amount
+
+    def update_refund_amount(self) -> None:
+        """Update amount of refunded money."""
+        if self.amount is not None:
+            self.order.refund_amount += self.amount
+        else:
+            self.order.refund_amount = self.order.price
+        self.order.save(update_fields=["refund_amount", "modified"])
+
+    def mark_order_as_not_paid_if_needed(self) -> None:
+        if self.order.available_to_refund_amount == 0:
+            self.order.paid = None
+            self.order.unpaid = timezone.now()
+            self.order.save(update_fields=["paid", "unpaid", "modified"])
 
     def do_bank_refund_if_needed(self) -> None:
         if self.bank and settings.BANKS_REFUNDS_ENABLED:
-            self.bank.refund()
+            self.bank.refund(self.amount)
 
     def write_success_admin_log(self) -> None:
         write_admin_log.delay(
             action_flag=CHANGE,
             app="orders",
-            change_message="Order refunded",
+            change_message=f"Order refunded: refunded amount: {self.amount or self.amount_to_refund}, available to refund: {self.order.available_to_refund_amount}",
             model="Order",
             object_id=self.order.id,
             user_id=get_current_user().id,  # type: ignore[union-attr]
@@ -112,6 +140,8 @@ class OrderRefunder(BaseService):
             "refund_author": str(get_current_user()),
             "payment_method_name": self.payment_method_before_service_call,
             "price": format_price(self.order.price),
+            "amount": format_price(self.amount_to_refund),
+            "available_to_refund": format_price(self.order.available_to_refund_amount),
             "order_admin_site_url": urljoin(
                 settings.ABSOLUTE_HOST,
                 reverse("admin:orders_order_change", args=[self.order.pk]),

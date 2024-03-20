@@ -30,7 +30,7 @@ class StripeBank(Bank):
 
         return session.url
 
-    def refund(self) -> None:
+    def refund(self, amount: Decimal | None = None) -> None:
         stripe.api_key = settings.STRIPE_API_KEY
 
         latest_payment_notification = (
@@ -40,7 +40,8 @@ class StripeBank(Bank):
             ).order_by("-id")
         )[0]
 
-        stripe.Refund.create(payment_intent=latest_payment_notification.payment_intent)
+        refund_amount_data = {"amount": self.get_formatted_amount(amount)} if amount else {}
+        stripe.Refund.create(payment_intent=latest_payment_notification.payment_intent, **refund_amount_data)
 
     def get_items(self) -> list[dict[str, Any]]:
         return [

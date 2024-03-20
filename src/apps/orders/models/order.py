@@ -1,4 +1,5 @@
 from collections.abc import Iterable
+from decimal import Decimal
 
 import shortuuid
 from django.db.models import CheckConstraint, QuerySet
@@ -48,6 +49,7 @@ class Order(TimestampedModel):
     )
     unpaid = models.DateTimeField(_("Date when order got unpaid"), null=True, blank=True)
     shipped = models.DateTimeField(_("Date when order was shipped"), null=True, blank=True)
+    refund_amount = models.DecimalField(_("Refund amount"), max_digits=9, decimal_places=2, default=0)
 
     bank_id = models.CharField(_("User-requested bank string"), choices=BANK_CHOICES, blank=True, max_length=32)
     ue_rate = models.IntegerField(_("Purchase-time UE rate"))
@@ -85,6 +87,10 @@ class Order(TimestampedModel):
     @property
     def is_b2b(self) -> bool:
         return self.author_id != self.user_id
+
+    @property
+    def available_to_refund_amount(self) -> Decimal:
+        return self.price - self.refund_amount
 
     @property
     def item(self) -> Product:  # type: ignore
@@ -129,10 +135,10 @@ class Order(TimestampedModel):
 
         OrderPaidSetter(self, silent=silent)()
 
-    def refund(self) -> None:
+    def refund(self, amount: Decimal | None = None) -> None:
         from apps.orders.services import OrderRefunder
 
-        OrderRefunder(self)()
+        OrderRefunder(self, amount)()
 
     def ship(self, silent: bool | None = False) -> None:
         from apps.orders.services import OrderShipper
