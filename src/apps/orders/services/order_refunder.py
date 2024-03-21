@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from decimal import Decimal
 from urllib.parse import urljoin
 
-import celery
 from django.conf import settings
 from django.contrib.admin.models import CHANGE
 from django.urls import reverse
@@ -10,7 +9,6 @@ from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext as _
 
-from apps.amocrm import tasks as amocrm
 from apps.banking.base import Bank
 from apps.banking.selector import get_bank
 from apps.dashamail import tasks as dashamail
@@ -69,7 +67,6 @@ class OrderRefunder(BaseService):
         self.notify_dangerous_operation_happened()
 
         self.update_user_tags()
-        self.update_amocrm()
         self.update_dashamail()
 
     def validate(self) -> None:
@@ -111,20 +108,11 @@ class OrderRefunder(BaseService):
     def update_user_tags(self) -> None:
         rebuild_tags.delay(student_id=self.order.user_id)
 
-    def update_amocrm(self) -> None:
-        if not amocrm.amocrm_enabled():
-            return
-
-        celery.chain(
-            amocrm.push_user.si(user_id=self.order.user.id),
-            amocrm.push_order.si(order_id=self.order.id),
-        ).apply_async(countdown=10)
-
     def update_dashamail(self) -> None:
         dashamail.update_subscription.apply_async(
             kwargs={"student_id": self.order.user_id},
             countdown=30,
-        )  # hope rebuild_tags from update_amocrm is complete
+        )  # hope rebuild_tags from update_user_tags is complete
 
     def notify_dangerous_operation_happened(self) -> None:
         if not settings.BANKS_REFUNDS_ENABLED:

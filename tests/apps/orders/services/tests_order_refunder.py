@@ -30,11 +30,6 @@ def _adjust_settings(settings):
     ]
 
 
-@pytest.fixture
-def _enable_amocrm(settings):
-    settings.AMOCRM_BASE_URL = "https://amo.amo.amo"
-
-
 @pytest.fixture(autouse=True)
 def mock_dolyame_refund(mocker):
     return mocker.patch("apps.tinkoff.dolyame.Dolyame.refund")
@@ -230,17 +225,6 @@ def test_update_dashamail(paid_order, refund, mocker):
     refund(paid_order)
 
     update_subscription.assert_called_once()
-
-
-@pytest.mark.usefixtures("_enable_amocrm")
-def test_amocrm_is_updated(paid_order, refund, mocker):
-    push_user = mocker.patch("apps.amocrm.tasks.AmoCRMUserPusher.__call__")
-    push_order = mocker.patch("apps.amocrm.tasks.AmoCRMOrderPusher.__call__")
-
-    refund(paid_order)
-
-    push_user.assert_called_once()
-    push_order.assert_called_once()
 
 
 def test_fail_if_bank_is_set_but_unknown(paid_order, refund):
