@@ -1,6 +1,8 @@
 import pytest
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [
+    pytest.mark.django_db,
+]
 
 
 @pytest.fixture
@@ -26,7 +28,7 @@ def order(factory, course, api):
 
 
 @pytest.fixture
-def unpaid_order(order):
-    order.refund(order.author)
+def unpaid_order(order, _set_current_user):
+    order.refund()
 
     return order

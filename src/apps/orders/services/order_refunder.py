@@ -41,11 +41,14 @@ class OrderRefunder(BaseService):
     """
 
     order: Order
-    author: User
     amount: Decimal | None = None
 
     def __post_init__(self) -> None:
         self.payment_method_before_service_call = human_readable.get_order_payment_method_name(self.order)
+
+    @cached_property
+    def refund_author(self) -> User:
+        return get_current_user()  # type: ignore
 
     @cached_property
     def bank(self) -> Bank | None:
@@ -83,7 +86,7 @@ class OrderRefunder(BaseService):
         return self.amount or self.order.available_to_refund_amount
 
     def create_refund_entry(self) -> None:
-        Refund.objects.create(order=self.order, author=self.author, amount=self.amount_to_refund)
+        Refund.objects.create(order=self.order, author=self.refund_author, amount=self.amount_to_refund)
 
     def mark_order_as_not_paid_if_needed(self) -> None:
         if self.order.available_to_refund_amount == 0:
@@ -102,7 +105,7 @@ class OrderRefunder(BaseService):
             change_message=f"Order refunded: refunded amount: {format_price(self.amount or self.amount_to_refund)}, available to refund: {format_price(self.order.available_to_refund_amount)}",
             model="Order",
             object_id=self.order.id,
-            user_id=get_current_user().id,  # type: ignore[union-attr]
+            user_id=self.refund_author.id,
         )
 
     def update_user_tags(self) -> None:
@@ -132,7 +135,7 @@ class OrderRefunder(BaseService):
         return {
             "order_id": self.order.pk,
             "refunded_item": self.order.item.name if self.order.item else "not-set",
-            "refund_author": str(get_current_user()),
+            "refund_author": str(self.refund_author),
             "payment_method_name": self.payment_method_before_service_call,
             "price": format_price(self.order.price),
             "amount": format_price(self.amount_to_refund),

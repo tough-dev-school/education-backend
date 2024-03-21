@@ -94,9 +94,9 @@ def paid_stripe_order(paid_order):
 
 
 @pytest.fixture
-def refund(user):
+def refund():
     def _refund(order, amount=None):
-        return OrderRefunder(order=order, author=user, amount=amount)()
+        return OrderRefunder(order=order, amount=amount)()
 
     return _refund
 
