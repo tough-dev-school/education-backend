@@ -1,5 +1,6 @@
 from collections.abc import Iterable
 from decimal import Decimal
+from typing import TYPE_CHECKING
 
 import shortuuid
 from django.db.models import CheckConstraint, QuerySet
@@ -11,6 +12,9 @@ from apps.orders.exceptions import UnknownItemException
 from apps.orders.fields import ItemField
 from apps.products.models import Product
 from core.models import TimestampedModel, models, only_one_or_zero_is_set
+
+if TYPE_CHECKING:
+    from apps.users.models import User
 
 
 class OrderQuerySet(QuerySet):
@@ -49,7 +53,6 @@ class Order(TimestampedModel):
     )
     unpaid = models.DateTimeField(_("Date when order got unpaid"), null=True, blank=True)
     shipped = models.DateTimeField(_("Date when order was shipped"), null=True, blank=True)
-    refund_amount = models.DecimalField(_("Refund amount"), max_digits=9, decimal_places=2, default=0)
 
     bank_id = models.CharField(_("User-requested bank string"), choices=BANK_CHOICES, blank=True, max_length=32)
     ue_rate = models.IntegerField(_("Purchase-time UE rate"))
@@ -87,6 +90,10 @@ class Order(TimestampedModel):
     @property
     def is_b2b(self) -> bool:
         return self.author_id != self.user_id
+
+    @property
+    def refund_amount(self) -> Decimal:
+        return Decimal(self.refunds.aggregate(models.Sum("amount")).get("amount__sum") or 0)
 
     @property
     def available_to_refund_amount(self) -> Decimal:
@@ -135,10 +142,10 @@ class Order(TimestampedModel):
 
         OrderPaidSetter(self, silent=silent)()
 
-    def refund(self, amount: Decimal | None = None) -> None:
+    def refund(self, author: "User", amount: Decimal | None = None) -> None:
         from apps.orders.services import OrderRefunder
 
-        OrderRefunder(self, amount)()
+        OrderRefunder(self, author, amount)()
 
     def ship(self, silent: bool | None = False) -> None:
         from apps.orders.services import OrderShipper

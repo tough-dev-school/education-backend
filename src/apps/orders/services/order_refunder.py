@@ -17,7 +17,9 @@ from apps.dashamail import tasks as dashamail
 from apps.mailing import tasks as mailing_tasks
 from apps.orders import human_readable
 from apps.orders.models import Order
+from apps.orders.models.refund import Refund
 from apps.orders.services.order_unshipper import OrderUnshipper
+from apps.users.models import User
 from apps.users.tasks import rebuild_tags
 from core.current_user import get_current_user
 from core.exceptions import AppServiceException
@@ -41,6 +43,7 @@ class OrderRefunder(BaseService):
     """
 
     order: Order
+    author: User
     amount: Decimal | None = None
 
     def __post_init__(self) -> None:
@@ -55,8 +58,8 @@ class OrderRefunder(BaseService):
         self.amount_to_refund = self.get_amount_to_refund()
 
         if self.order.paid:
+            self.create_refund_entry()
             self.do_bank_refund_if_needed()
-            self.update_refund_amount()
             self.mark_order_as_not_paid_if_needed()
 
         if not self.order.paid:  # if afterward order was fully refunded or was never paid
@@ -82,13 +85,8 @@ class OrderRefunder(BaseService):
         """
         return self.amount or self.order.available_to_refund_amount
 
-    def update_refund_amount(self) -> None:
-        """Update amount of refunded money."""
-        if self.amount is not None:
-            self.order.refund_amount += self.amount
-        else:
-            self.order.refund_amount = self.order.price
-        self.order.save(update_fields=["refund_amount", "modified"])
+    def create_refund_entry(self) -> None:
+        Refund.objects.create(order=self.order, author=self.author, amount=self.amount_to_refund)
 
     def mark_order_as_not_paid_if_needed(self) -> None:
         if self.order.available_to_refund_amount == 0:
@@ -104,7 +102,7 @@ class OrderRefunder(BaseService):
         write_admin_log.delay(
             action_flag=CHANGE,
             app="orders",
-            change_message=f"Order refunded: refunded amount: {self.amount or self.amount_to_refund}, available to refund: {self.order.available_to_refund_amount}",
+            change_message=f"Order refunded: refunded amount: {format_price(self.amount or self.amount_to_refund)}, available to refund: {format_price(self.order.available_to_refund_amount)}",
             model="Order",
             object_id=self.order.id,
             user_id=get_current_user().id,  # type: ignore[union-attr]

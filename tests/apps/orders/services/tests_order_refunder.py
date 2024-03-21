@@ -9,6 +9,7 @@ from django.utils import timezone
 
 from apps.banking.exceptions import BankDoesNotExist
 from apps.banking.selector import BANKS
+from apps.orders.models.refund import Refund
 from apps.orders.services import OrderRefunder, OrderUnshipper
 from apps.orders.services.order_refunder import OrderRefunderException
 
@@ -98,9 +99,9 @@ def paid_stripe_order(paid_order):
 
 
 @pytest.fixture
-def refund():
+def refund(user):
     def _refund(order, amount=None):
-        return OrderRefunder(order=order, amount=amount)()
+        return OrderRefunder(order=order, author=user, amount=amount)()
 
     return _refund
 
@@ -341,7 +342,7 @@ def test_partial_refund_notification_email_context_and_template_correct(refund, 
 
 
 def test_refund_partially_refunded_order(paid_tinkoff_order, refund):
-    paid_tinkoff_order.update(refund_amount=500)
+    refund(paid_tinkoff_order, 500)
     refund(paid_tinkoff_order)
 
     paid_tinkoff_order.refresh_from_db()
@@ -365,3 +366,21 @@ def test_partial_refund_set_unpaid(paid_tinkoff_order, refund):
     assert paid_tinkoff_order.available_to_refund_amount == 0
     assert paid_tinkoff_order.paid is None
     assert paid_tinkoff_order.unpaid is not None
+
+
+def test_refund_is_created(paid_order, refund, user):
+    refund(paid_order)
+
+    refund = Refund.objects.first()
+    assert refund.amount == 999
+    assert refund.order == paid_order
+    assert refund.author == user
+
+
+def test_partial_refund_is_created(paid_tinkoff_order, refund, user):
+    refund(paid_tinkoff_order, 500)
+
+    refund = Refund.objects.first()
+    assert refund.amount == 500
+    assert refund.order == paid_tinkoff_order
+    assert refund.author == user
