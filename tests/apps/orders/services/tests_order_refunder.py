@@ -368,6 +368,7 @@ def test_refund_is_created(paid_order, refund, user):
     assert refund.amount == 999
     assert refund.order == paid_order
     assert refund.author == user
+    assert refund.bank_id == paid_order.bank_id
 
 
 def test_partial_refund_is_created(paid_tinkoff_order, refund, user):
@@ -377,3 +378,4 @@ def test_partial_refund_is_created(paid_tinkoff_order, refund, user):
     assert refund.amount == 500
     assert refund.order == paid_tinkoff_order
     assert refund.author == user
+    assert refund.bank_id == paid_tinkoff_order.bank_id

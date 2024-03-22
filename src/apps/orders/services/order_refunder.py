@@ -89,7 +89,12 @@ class OrderRefunder(BaseService):
         return self.amount or self.available_to_refund_amount
 
     def create_refund_entry(self) -> None:
-        Refund.objects.create(order=self.order, author=self.refund_author, amount=self.amount_to_refund)
+        Refund.objects.create(
+            order=self.order,
+            author=self.refund_author,
+            amount=self.amount_to_refund,
+            bank_id=self.order.bank_id,
+        )
 
     def mark_order_as_not_paid_if_needed(self) -> None:
         if self.available_to_refund_amount == 0:
