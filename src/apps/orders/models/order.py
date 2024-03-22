@@ -2,7 +2,8 @@ from collections.abc import Iterable
 from decimal import Decimal
 
 import shortuuid
-from django.db.models import CheckConstraint, QuerySet
+from django.db.models import CheckConstraint, QuerySet, Sum, Value
+from django.db.models.functions import Coalesce
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
@@ -27,6 +28,12 @@ class OrderQuerySet(QuerySet):
 
     def same_deal(self, order: "Order") -> "OrderQuerySet":
         return self.filter(user=order.user, course=order.course).exclude(pk=order.pk)
+
+    def with_refund_amount(self) -> "OrderQuerySet":
+        return self.annotate(refund_amount=Coalesce(Sum("refunds__amount"), Value(Decimal(0))))
+
+    def with_available_to_refund_amount(self) -> "OrderQuerySet":
+        return self.with_refund_amount().annotate(available_to_refund_amount=(models.F("price") - models.F("refund_amount")))
 
 
 OrderManager = models.Manager.from_queryset(OrderQuerySet)
@@ -86,14 +93,6 @@ class Order(TimestampedModel):
     @property
     def is_b2b(self) -> bool:
         return self.author_id != self.user_id
-
-    @property
-    def refund_amount(self) -> Decimal:
-        return Decimal(self.refunds.aggregate(models.Sum("amount")).get("amount__sum") or 0)
-
-    @property
-    def available_to_refund_amount(self) -> Decimal:
-        return self.price - self.refund_amount
 
     @property
     def item(self) -> Product:  # type: ignore

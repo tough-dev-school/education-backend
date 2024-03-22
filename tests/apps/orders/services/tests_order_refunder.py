@@ -9,7 +9,7 @@ from django.utils import timezone
 
 from apps.banking.exceptions import BankDoesNotExist
 from apps.banking.selector import BANKS
-from apps.orders.models.refund import Refund
+from apps.orders.models import Order, Refund
 from apps.orders.services import OrderRefunder, OrderUnshipper
 from apps.orders.services.order_refunder import OrderRefunderException
 
@@ -269,9 +269,9 @@ def test_partial_refund_tinkoff(paid_tinkoff_order, refund):
 
     refund(paid_tinkoff_order, 500)
 
-    paid_tinkoff_order.refresh_from_db()
-    assert paid_tinkoff_order.refund_amount == 500
-    assert paid_tinkoff_order.available_to_refund_amount == 499
+    order = Order.objects.with_available_to_refund_amount().get(pk=paid_tinkoff_order.pk)
+    assert order.refund_amount == 500
+    assert order.available_to_refund_amount == 499
 
 
 def test_partial_refund_stripe(paid_stripe_order, refund):
@@ -279,15 +279,24 @@ def test_partial_refund_stripe(paid_stripe_order, refund):
 
     refund(paid_stripe_order, 500)
 
-    paid_stripe_order.refresh_from_db()
-    assert paid_stripe_order.refund_amount == 500
-    assert paid_stripe_order.available_to_refund_amount == 499
+    order = Order.objects.with_available_to_refund_amount().get(pk=paid_stripe_order.pk)
+    assert order.refund_amount == 500
+    assert order.available_to_refund_amount == 499
 
 
 def test_partial_refund_order_not_unshipped(paid_tinkoff_order, refund, spy_unshipper):
     refund(paid_tinkoff_order, 500)
 
     spy_unshipper.assert_not_called()
+
+
+def test_partial_refund_order_unshipped_when_total_refund_eq_price(paid_tinkoff_order, refund, spy_unshipper):
+    refund(paid_tinkoff_order, 100)
+    refund(paid_tinkoff_order, 99)
+    refund(paid_tinkoff_order, 400)
+    refund(paid_tinkoff_order, 400)
+
+    spy_unshipper.assert_called_once()
 
 
 @pytest.mark.auditlog()
@@ -329,27 +338,27 @@ def test_refund_partially_refunded_order(paid_tinkoff_order, refund):
     refund(paid_tinkoff_order, 500)
     refund(paid_tinkoff_order)
 
-    paid_tinkoff_order.refresh_from_db()
-    assert paid_tinkoff_order.refund_amount == 999
-    assert paid_tinkoff_order.available_to_refund_amount == 0
+    order = Order.objects.with_available_to_refund_amount().get(pk=paid_tinkoff_order.pk)
+    assert order.refund_amount == 999
+    assert order.available_to_refund_amount == 0
 
 
 def test_partial_refund_not_set_unpaid(paid_tinkoff_order, refund):
     refund(paid_tinkoff_order, 500)
 
-    paid_tinkoff_order.refresh_from_db()
-    assert paid_tinkoff_order.available_to_refund_amount == 499
-    assert paid_tinkoff_order.paid is not None
-    assert paid_tinkoff_order.unpaid is None
+    order = Order.objects.with_available_to_refund_amount().get(pk=paid_tinkoff_order.pk)
+    assert order.available_to_refund_amount == 499
+    assert order.paid is not None
+    assert order.unpaid is None
 
 
 def test_partial_refund_set_unpaid(paid_tinkoff_order, refund):
     refund(paid_tinkoff_order, 999)
 
-    paid_tinkoff_order.refresh_from_db()
-    assert paid_tinkoff_order.available_to_refund_amount == 0
-    assert paid_tinkoff_order.paid is None
-    assert paid_tinkoff_order.unpaid is not None
+    order = Order.objects.with_available_to_refund_amount().get(pk=paid_tinkoff_order.pk)
+    assert order.available_to_refund_amount == 0
+    assert order.paid is None
+    assert order.unpaid is not None
 
 
 def test_refund_is_created(paid_order, refund, user):

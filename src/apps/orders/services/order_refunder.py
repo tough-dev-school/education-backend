@@ -14,8 +14,7 @@ from apps.banking.selector import get_bank
 from apps.dashamail import tasks as dashamail
 from apps.mailing import tasks as mailing_tasks
 from apps.orders import human_readable
-from apps.orders.models import Order
-from apps.orders.models.refund import Refund
+from apps.orders.models import Order, Refund
 from apps.orders.services.order_unshipper import OrderUnshipper
 from apps.users.models import User
 from apps.users.tasks import rebuild_tags
@@ -50,6 +49,10 @@ class OrderRefunder(BaseService):
     def refund_author(self) -> User:
         return get_current_user()  # type: ignore
 
+    @property
+    def available_to_refund_amount(self) -> Decimal:
+        return Order.objects.with_available_to_refund_amount().get(pk=self.order.pk).available_to_refund_amount
+
     @cached_property
     def bank(self) -> Bank | None:
         Bank = get_bank(self.order.bank_id)
@@ -58,8 +61,8 @@ class OrderRefunder(BaseService):
     def act(self) -> None:
         self.amount_to_refund = self.get_amount_to_refund()
 
+        self.create_refund_entry()
         if self.order.paid:
-            self.create_refund_entry()
             self.do_bank_refund_if_needed()
             self.mark_order_as_not_paid_if_needed()
 
@@ -75,7 +78,7 @@ class OrderRefunder(BaseService):
     def validate(self) -> None:
         if self.amount and self.amount != self.order.price and self.bank and not self.bank.is_partial_refund_available:
             raise OrderRefunderException(_("Partial refund is not available"))
-        if self.amount and self.order.available_to_refund_amount < self.amount:
+        if self.amount and self.available_to_refund_amount < self.amount:
             raise OrderRefunderException(_("Amount to refund is more than available"))
 
     def get_amount_to_refund(self) -> Decimal:
@@ -83,13 +86,13 @@ class OrderRefunder(BaseService):
         Using this in email.
         Not using self.order.price for total refund because order can already be partially refunded.
         """
-        return self.amount or self.order.available_to_refund_amount
+        return self.amount or self.available_to_refund_amount
 
     def create_refund_entry(self) -> None:
         Refund.objects.create(order=self.order, author=self.refund_author, amount=self.amount_to_refund)
 
     def mark_order_as_not_paid_if_needed(self) -> None:
-        if self.order.available_to_refund_amount == 0:
+        if self.available_to_refund_amount == 0:
             self.order.paid = None
             self.order.unpaid = timezone.now()
             self.order.save(update_fields=["paid", "unpaid", "modified"])
@@ -102,7 +105,7 @@ class OrderRefunder(BaseService):
         write_admin_log.delay(
             action_flag=CHANGE,
             app="orders",
-            change_message=f"Order refunded: refunded amount: {format_price(self.amount or self.amount_to_refund)}, available to refund: {format_price(self.order.available_to_refund_amount)}",
+            change_message=f"Order refunded: refunded amount: {format_price(self.amount or self.amount_to_refund)}, available to refund: {format_price(self.available_to_refund_amount)}",
             model="Order",
             object_id=self.order.id,
             user_id=self.refund_author.id,
@@ -139,7 +142,7 @@ class OrderRefunder(BaseService):
             "payment_method_name": self.payment_method_before_service_call,
             "price": format_price(self.order.price),
             "amount": format_price(self.amount_to_refund),
-            "available_to_refund": format_price(self.order.available_to_refund_amount),
+            "available_to_refund": format_price(self.available_to_refund_amount),
             "order_admin_site_url": urljoin(
                 settings.ABSOLUTE_HOST,
                 reverse("admin:orders_order_change", args=[self.order.pk]),
