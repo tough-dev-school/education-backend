@@ -16,7 +16,7 @@ def user(mixer):
 
 
 @pytest.fixture(autouse=True)
-def _freeze_frontend_url(mocker) -> None:
+def _freeze_frontend_url(mocker):
     mocker.patch("apps.a12n.models.PasswordlessAuthToken.get_absolute_url", return_value="https://frontend/auth/__TOKEN__")
 
 

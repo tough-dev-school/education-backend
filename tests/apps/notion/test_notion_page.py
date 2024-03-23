@@ -39,7 +39,7 @@ def ok():
 
 @pytest.fixture
 def set_response(respx_mock: MockRouter):
-    def _set_response(response) -> None:
+    def _set_response(response):
         respx_mock.route(url="http://notion.middleware/v1/notion/loadPageChunk/").respond(json=response)
 
     return _set_response

@@ -18,7 +18,7 @@ pytestmark = [
 
 
 @pytest.fixture(autouse=True)
-def _adjust_settings(settings) -> None:
+def _adjust_settings(settings):
     settings.BANKS_REFUNDS_ENABLED = True
     settings.ABSOLUTE_HOST = "http://absolute-url.url"
 
@@ -29,7 +29,7 @@ def _adjust_settings(settings) -> None:
 
 
 @pytest.fixture
-def _enable_amocrm(settings) -> None:
+def _enable_amocrm(settings):
     settings.AMOCRM_BASE_URL = "https://amo.amo.amo"
 
 

@@ -9,7 +9,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def _successful_get_catalogs_response(get) -> None:
+def _successful_get_catalogs_response(get):
     get.return_value = {
         "_links": {"self": {"href": "/api/v4/catalogs", "method": "get"}},
         "_embedded": {
@@ -48,7 +48,7 @@ def _successful_get_catalogs_response(get) -> None:
 
 
 @pytest.fixture
-def _successful_get_fields_response(get) -> None:
+def _successful_get_fields_response(get):
     get.return_value = {
         "_total_items": 5,
         "_page": 1,

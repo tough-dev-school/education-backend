@@ -13,7 +13,7 @@ def commenter(mixer):
 
 
 @pytest.fixture(autouse=True)
-def _enable_new_answer_notification(settings) -> None:
+def _enable_new_answer_notification(settings):
     settings.DISABLE_NEW_ANSWER_NOTIFICATIONS = False
 
 

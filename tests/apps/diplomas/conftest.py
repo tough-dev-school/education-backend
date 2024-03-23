@@ -8,7 +8,7 @@ from apps.users.models import User
 
 
 @pytest.fixture(autouse=True)
-def _set_diploma_generator_url(settings) -> None:
+def _set_diploma_generator_url(settings):
     settings.DIPLOMA_GENERATOR_HOST = "https://secret.generator.com/"
     settings.DIPLOMA_GENERATOR_TOKEN = "zeroc00l"
 

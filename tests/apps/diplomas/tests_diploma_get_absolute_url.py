@@ -4,7 +4,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def _set_frontend_url(settings) -> None:
+def _set_frontend_url(settings):
     settings.DIPLOMA_FRONTEND_URL = "https://certificates.borshev.com/"
 
 

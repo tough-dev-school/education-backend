@@ -14,7 +14,7 @@ def order(factory):
 
 
 @pytest.fixture(autouse=True)
-def _tinkoff_credentials(settings) -> None:
+def _tinkoff_credentials(settings):
     settings.TINKOFF_TERMINAL_KEY = "testDEMO"
     settings.TINKOFF_TERMINAL_PASSWORD = "Dfsfh56dgKl"
 

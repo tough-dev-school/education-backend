@@ -11,7 +11,7 @@ def send_mail(mocker):
 
 
 @pytest.fixture(autouse=True)
-def _freeze_frontend_host(settings) -> None:
+def _freeze_frontend_host(settings):
     settings.FRONTEND_URL = "https://school.host"
 
 

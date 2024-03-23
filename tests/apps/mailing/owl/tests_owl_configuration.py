@@ -15,7 +15,7 @@ TEST_REPLY_TO = "Mark Z Humanizm attorney <devnull@fb.com>"
 
 
 @pytest.fixture(autouse=True)
-def _settings(settings) -> None:
+def _settings(settings):
     settings.DEBUG = False
     settings.EMAIL_BACKEND = DEFAULT_BACKEND
     settings.DEFAULT_FROM_EMAIL = DEFAULT_FROM_EMAIL

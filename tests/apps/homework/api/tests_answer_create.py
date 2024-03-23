@@ -9,7 +9,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def _no_purchase(purchase) -> None:
+def _no_purchase(purchase):
     purchase.update(paid=None)
 
 

@@ -9,7 +9,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def _set_locale(settings) -> None:
+def _set_locale(settings):
     settings.LANGUAGE_CODE = "en"
 
 

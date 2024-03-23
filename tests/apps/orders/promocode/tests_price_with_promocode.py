@@ -7,7 +7,7 @@ pytestmark = [
 
 
 @pytest.fixture(autouse=True)
-def _freeze_stripe_course(mocker) -> None:
+def _freeze_stripe_course(mocker):
     mocker.patch("apps.stripebank.bank.StripeBank.ue", 70)  # let it be forever :'(
 
 

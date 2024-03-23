@@ -26,7 +26,7 @@ def another_answer(mixer, question):
 
 
 @pytest.fixture(autouse=True)
-def _freeze_absolute_url(settings) -> None:
+def _freeze_absolute_url(settings):
     settings.FRONTEND_URL = "https://frontend/lms/"
 
 

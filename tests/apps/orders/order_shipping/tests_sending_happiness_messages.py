@@ -7,7 +7,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def _adjust_settings(settings) -> None:
+def _adjust_settings(settings):
     settings.HAPPINESS_MESSAGES_CHAT_ID = "aaa100500"
     settings.LANGUAGE_CODE = "en"
 

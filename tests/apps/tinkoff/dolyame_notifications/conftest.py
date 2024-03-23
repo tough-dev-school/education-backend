@@ -4,7 +4,7 @@ from core.test.api_client import DRFClient
 
 
 @pytest.fixture(autouse=True)
-def _credentials(settings) -> None:
+def _credentials(settings):
     settings.DOLYAME_LOGIN = "root"
     settings.DOLYAME_PASSWORD = "l0ve"
     settings.DOLYAME_CERTIFICATE_PATH = "tests/apps/tinkoff/.fixtures/testing.pem"

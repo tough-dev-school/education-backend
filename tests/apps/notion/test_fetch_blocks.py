@@ -3,7 +3,7 @@ from respx import MockRouter
 
 
 @pytest.fixture
-def _ok(respx_mock: MockRouter) -> None:
+def _ok(respx_mock: MockRouter):
     respx_mock.route(url="http://notion.middleware/v1/notion/syncRecordValues/").respond(
         json={
             "recordMap": {

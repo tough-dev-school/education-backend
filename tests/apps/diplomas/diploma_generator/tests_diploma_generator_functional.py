@@ -10,7 +10,7 @@ pytestmark = [
 
 
 @pytest.fixture(autouse=True)
-def _mock_response(respx_mock: MockRouter) -> None:
+def _mock_response(respx_mock: MockRouter):
     respx_mock.route().respond(content=b"TYPICAL MAC USER JPG")
 
 

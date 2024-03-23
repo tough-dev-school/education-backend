@@ -5,7 +5,7 @@ from apps.amocrm.dto import AmoCRMLeadTaskDTO
 
 
 @pytest.fixture
-def _successful_lead_tasks_response(get) -> None:
+def _successful_lead_tasks_response(get):
     get.return_value = {
         "_page": 1,
         "_links": {
@@ -44,7 +44,7 @@ def _successful_lead_tasks_response(get) -> None:
 
 
 @pytest.fixture
-def _successful_lead_task_created_response(post) -> None:
+def _successful_lead_task_created_response(post):
     post.return_value = {
         "_links": {"self": {"href": "https://thelord.amocrm.ru/api/v4/tasks"}},
         "_embedded": {

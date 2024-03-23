@@ -6,14 +6,14 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def _credentials(settings) -> None:
+def _credentials(settings):
     settings.DOLYAME_LOGIN = "root"
     settings.DOLYAME_PASSWORD = "l0ve"
     settings.DOLYAME_CERTIFICATE_PATH = "tests/apps/tinkoff/.fixtures/testing.pem"
 
 
 @pytest.fixture(autouse=True)
-def _absolute_host(settings) -> None:
+def _absolute_host(settings):
     settings.ABSOLUTE_HOST = "https://tst.hst"
 
 

@@ -4,7 +4,7 @@ from apps.amocrm.dto import AmoCRMLeadNoteDTO
 
 
 @pytest.fixture
-def _successful_create_lead_note_response(post) -> None:
+def _successful_create_lead_note_response(post):
     post.return_value = {
         "_links": {"self": {"href": "https://thelord.amocrm.ru/api/v4/leads/1781381/notes"}},
         "_embedded": {
