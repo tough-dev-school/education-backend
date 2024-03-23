@@ -1,16 +1,14 @@
-# type: ignore
-from storages.backends.s3boto3 import S3Boto3Storage
+from storages.backends.s3boto3 import S3Boto3Storage  # type: ignore[import-untyped]
 
 
 class ProdReadOnlyStorage(S3Boto3Storage):
-    def exists(self, *args, **kwargs) -> bool:  # noqa: ANN002, ANN003
+    def exists(self, name: str) -> bool:
+        del name
+
         return True
 
-    def delete(self, *args, **kwargs) -> None:  # noqa: ANN002, ANN003
-        return
+    def delete(self, name: str) -> None:
+        del name
 
-    def size(self, *args, **kwargs) -> int:  # noqa: ANN002, ANN003
+    def size(self) -> int:
         return 100500
-
-    def save(self, *args, **kwargs) -> None:  # noqa: ANN002, ANN003
-        return None
