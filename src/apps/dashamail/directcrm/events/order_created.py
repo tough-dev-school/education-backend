@@ -5,7 +5,7 @@ from apps.orders.models import Order
 class OrderCreated(Event):
     name = "OrderCreate"
 
-    def __init__(self, order: Order):
+    def __init__(self, order: Order) -> None:
         self.order = order
 
     def to_json(self) -> dict:
