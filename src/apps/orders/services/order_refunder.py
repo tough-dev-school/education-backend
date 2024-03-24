@@ -80,6 +80,8 @@ class OrderRefunder(BaseService):
             raise OrderRefunderException(_("Partial refund is not available"))
         if self.amount and self.available_to_refund_amount < self.amount:
             raise OrderRefunderException(_("Amount to refund is more than available"))
+        if self.amount is not None and self.amount <= 0:
+            raise OrderRefunderException(_("Amount to refund should be more than 0"))
 
     def get_amount_to_refund(self) -> Decimal:
         """

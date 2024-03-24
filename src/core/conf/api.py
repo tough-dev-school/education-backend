@@ -1,6 +1,6 @@
 from core.conf.environ import env
 
-DISABLE_THROTTLING = env("DISABLE_THROTTLING", cast=bool, default=env("DEBUG"))
+DISABLE_THROTTLING = env("DISABLE_THROTTLING", cast=bool, default=False)
 
 REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": [

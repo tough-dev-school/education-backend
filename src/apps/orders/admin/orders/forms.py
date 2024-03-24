@@ -78,3 +78,7 @@ class OrderAddForm(forms.ModelForm):
 
     def save_m2m(self, *args: Any, **kwargs: dict[str, Any]) -> None:
         """For some weird reason django requires this method to be present"""
+
+
+class OrderRefundForm(forms.Form):
+    amount = forms.DecimalField(label=_("Amount"))

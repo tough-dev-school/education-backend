@@ -408,7 +408,7 @@ msgstr "Пометить оплаченным"
 
 #: src/apps/orders/admin/orders/actions.py:29
 msgid "Refund"
-msgstr "Вернуть"
+msgstr "Вернуть полностью"
 
 #: src/apps/orders/admin/orders/actions.py:44
 #, python-brace-format
@@ -524,7 +524,27 @@ msgstr "Когда оплачен"
 
 #: src/apps/orders/models/order.py:53
 msgid "Date when order got unpaid"
-msgstr "Когда вернули деньги"
+msgstr "Когда полностью вернули деньги"
+
+#: src/apps/orders/admin/orders/admin.py:169
+msgid "Available to refund amount"
+msgstr "Доступно для возврата"
+
+#: src/apps/orders/admin/orders/forms.py:84
+msgid "Amount"
+msgstr "Сколько нужно вернуть"
+
+#: src/apps/orders/admin/orders/admin.py:113
+msgid "Order is refunded"
+msgstr "Возврат оформлен"
+
+#: src/apps/orders/admin/orders/admin.py:122
+msgid "Partial refund"
+msgstr "Частичный возврат"
+
+#: src/apps/orders/admin/orders/admin.py:123
+msgid "You can refund up to"
+msgstr "Можно вернуть"
 
 #: src/apps/orders/models/order.py:54
 msgid "Date when order was shipped"

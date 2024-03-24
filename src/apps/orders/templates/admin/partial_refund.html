@@ -1,0 +1,15 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
+
+{% block content %}
+    <div id="content-main">
+        <form method="post">
+            {% csrf_token %}
+            <p>{{ help_text }}: {{ available_to_refund_amount }}</p>
+            {{ form.as_p }}
+            <div class="submit-row">
+                <input type="submit" value="Submit" class="default">
+            </div>
+        </form>
+    </div>
+{% endblock %}
