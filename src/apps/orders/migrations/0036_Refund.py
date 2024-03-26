@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                         blank=True,
                         choices=[("dolyame", "Dolyame"), ("stripe", "Stripe"), ("tinkoff_bank", "Tinkoff"), ("zero_price", "Zero Price")],
                         max_length=32,
-                        verbose_name="User-requested bank string",
+                        verbose_name="Order bank at the moment of refund",
                     ),
                 ),
                 (

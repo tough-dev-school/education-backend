@@ -7,6 +7,11 @@ pytestmark = [
 ]
 
 
+@pytest.fixture(autouse=True)
+def set_current_user(_set_current_user):
+    return _set_current_user
+
+
 @pytest.fixture
 def api(api):
     """We test it as normal student, not superuser to check permissions"""
@@ -25,7 +30,7 @@ def order(factory, course, api):
 
 
 @pytest.fixture
-def unpaid_order(order, _set_current_user):
+def unpaid_order(order):
     order.refund()
 
     return order

@@ -17,3 +17,12 @@ def test_with_refunds(order):
     order.refund(150)
 
     assert Order.objects.with_refund_amount().get(pk=order.pk).refund_amount == 250
+
+
+def test_only_related_refunds_aggregated(factory, order):
+    another_order = factory.order(price=1000)
+    order.refund(100)
+    another_order.refund(150)
+
+    assert Order.objects.with_refund_amount().get(pk=order.pk).refund_amount == 100
+    assert Order.objects.with_refund_amount().get(pk=another_order.pk).refund_amount == 150
