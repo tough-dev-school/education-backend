@@ -33,7 +33,8 @@ def refund(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
 
     for order in queryset.iterator():
         if throttle.allow_request(request, view=modeladmin):
-            order.refund()
+            available_to_refund_amount = Order.objects.with_available_to_refund_amount().get(pk=order.pk).available_to_refund_amount
+            order.refund(available_to_refund_amount)
             refunded_orders.append(order)
         else:
             non_refunded_orders.append(order)

@@ -95,7 +95,7 @@ def paid_stripe_order(paid_order):
 
 @pytest.fixture
 def refund():
-    def _refund(order, amount=None):
+    def _refund(order, amount):
         return OrderRefunder(order=order, amount=amount)()
 
     return _refund
@@ -103,7 +103,7 @@ def refund():
 
 @pytest.mark.freeze_time("2032-12-01 15:30Z")
 def test_set_order_unpaid_and_unshipped(paid_order, refund):
-    refund(paid_order)
+    refund(paid_order, paid_order.price)
 
     paid_order.refresh_from_db()
     assert paid_order.paid is None
@@ -113,13 +113,13 @@ def test_set_order_unpaid_and_unshipped(paid_order, refund):
 
 
 def test_refund_order_in_bank(paid_order, refund, mock_dolyame_refund):
-    refund(paid_order)
+    refund(paid_order, paid_order.price)
 
     mock_dolyame_refund.assert_called_once()
 
 
 def test_call_unshipper_to_unship(paid_order, refund, spy_unshipper):
-    refund(paid_order)
+    refund(paid_order, paid_order.price)
 
     spy_unshipper.assert_called_once()
     called_service = spy_unshipper.call_args.args[0]
@@ -127,7 +127,7 @@ def test_call_unshipper_to_unship(paid_order, refund, spy_unshipper):
 
 
 def test_do_not_set_unpaid_if_order_unpaid(not_paid_order, refund):
-    refund(not_paid_order)
+    refund(not_paid_order, not_paid_order.price)
 
     not_paid_order.refresh_from_db()
     assert not_paid_order.paid is None
@@ -135,7 +135,7 @@ def test_do_not_set_unpaid_if_order_unpaid(not_paid_order, refund):
 
 
 def test_do_not_call_bank_refund_if_order_unpaid(not_paid_order, refund, mock_dolyame_refund):
-    refund(not_paid_order)
+    refund(not_paid_order, not_paid_order.price)
 
     mock_dolyame_refund.assert_not_called()
 
@@ -143,7 +143,7 @@ def test_do_not_call_bank_refund_if_order_unpaid(not_paid_order, refund, mock_do
 def test_do_not_call_bank_refund_if_refunds_disabled(paid_order, refund, mock_dolyame_refund, settings):
     settings.BANKS_REFUNDS_ENABLED = False
 
-    refund(paid_order)
+    refund(paid_order, paid_order.price)
 
     mock_dolyame_refund.assert_not_called()
 
@@ -152,17 +152,17 @@ def test_do_not_break_and_not_try_call_bank_refund_if_bank_id_is_empty(paid_orde
     paid_order.update(bank_id="")
 
     with does_not_raise():
-        refund(paid_order)
+        refund(paid_order, paid_order.price)
 
 
 def test_unship_order_despite_it_unpaid(not_paid_order, refund, spy_unshipper):
-    refund(not_paid_order)
+    refund(not_paid_order, not_paid_order.price)
 
     spy_unshipper.assert_called_once()
 
 
 def test_order_refunded_all_refund_watchers_notified(paid_order, refund, mock_send_mail, mocker):
-    refund(paid_order)
+    refund(paid_order, paid_order.price)
 
     mock_send_mail.assert_has_calls(
         any_order=True,
@@ -174,7 +174,7 @@ def test_order_refunded_all_refund_watchers_notified(paid_order, refund, mock_se
 
 
 def test_refund_notification_email_context_and_template_correct(refund, paid_order, mock_send_mail, mocker):
-    refund(paid_order)
+    refund(paid_order, paid_order.price)
 
     mock_send_mail.assert_called_with(
         to=mocker.ANY,
@@ -197,7 +197,7 @@ def test_do_not_break_if_order_without_item_was_refunded(refund, paid_order, moc
     paid_order.update(course=None)
 
     with does_not_raise():
-        refund(paid_order)
+        refund(paid_order, paid_order.price)
 
     send_mail_context = get_send_mail_call_email_context(mock_send_mail)
     assert send_mail_context["refunded_item"] == "not-set"
@@ -207,13 +207,13 @@ def test_break_if_current_user_could_not_be_captured(mocker, refund):
     mocker.patch("apps.orders.services.order_refunder.get_current_user", return_value=None)
 
     with pytest.raises(AttributeError):
-        refund(paid_order)
+        refund(paid_order, paid_order.price)
 
 
 def test_update_user_tags(paid_order, mock_rebuild_tags, refund):
     paid_order.user.update(email="")
 
-    refund(paid_order)
+    refund(paid_order, paid_order.price)
 
     mock_rebuild_tags.assert_called_once_with(student_id=paid_order.user.id)
 
@@ -222,7 +222,7 @@ def test_update_user_tags(paid_order, mock_rebuild_tags, refund):
 def test_update_dashamail(paid_order, refund, mocker):
     update_subscription = mocker.patch("apps.dashamail.tasks.DashamailSubscriber.subscribe")
 
-    refund(paid_order)
+    refund(paid_order, paid_order.price)
 
     update_subscription.assert_called_once()
 
@@ -231,13 +231,13 @@ def test_fail_if_bank_is_set_but_unknown(paid_order, refund):
     paid_order.update(bank_id="tinkoff_credit")
 
     with pytest.raises(BankDoesNotExist, match="does not exists"):
-        refund(paid_order)
+        refund(paid_order, paid_order.price)
 
 
 @pytest.mark.auditlog()
 @pytest.mark.freeze_time()
 def test_success_admin_log_created(paid_order, refund, user):
-    refund(paid_order)
+    refund(paid_order, paid_order.price)
 
     log = LogEntry.objects.get()
     assert log.action_flag == CHANGE
@@ -334,15 +334,6 @@ def test_partial_refund_notification_email_context_and_template_correct(refund, 
     )
 
 
-def test_refund_partially_refunded_order(paid_tinkoff_order, refund):
-    refund(paid_tinkoff_order, 500)
-    refund(paid_tinkoff_order)
-
-    order = Order.objects.with_available_to_refund_amount().get(pk=paid_tinkoff_order.pk)
-    assert order.refund_amount == 999
-    assert order.available_to_refund_amount == 0
-
-
 def test_partial_refund_not_set_unpaid(paid_tinkoff_order, refund):
     refund(paid_tinkoff_order, 500)
 
@@ -362,7 +353,7 @@ def test_partial_refund_set_unpaid(paid_tinkoff_order, refund):
 
 
 def test_refund_is_created(paid_order, refund, user):
-    refund(paid_order)
+    refund(paid_order, paid_order.price)
 
     refund = Refund.objects.first()
     assert refund.amount == 999
