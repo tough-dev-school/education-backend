@@ -1,6 +1,5 @@
 from contextlib import nullcontext as does_not_raise
 from datetime import datetime
-from datetime import timezone as dt_timezone
 
 import pytest
 from django.contrib.admin.models import CHANGE, LogEntry
@@ -9,7 +8,9 @@ from django.utils import timezone
 
 from apps.banking.exceptions import BankDoesNotExist
 from apps.banking.selector import BANKS
+from apps.orders.models import Order, Refund
 from apps.orders.services import OrderRefunder, OrderUnshipper
+from apps.orders.services.order_refunder import OrderRefunderException
 
 pytestmark = [
     pytest.mark.django_db,
@@ -28,14 +29,19 @@ def _adjust_settings(settings):
     ]
 
 
-@pytest.fixture
-def _enable_amocrm(settings):
-    settings.AMOCRM_BASE_URL = "https://amo.amo.amo"
-
-
 @pytest.fixture(autouse=True)
 def mock_dolyame_refund(mocker):
     return mocker.patch("apps.tinkoff.dolyame.Dolyame.refund")
+
+
+@pytest.fixture(autouse=True)
+def mock_tinkoff_refund(mocker):
+    return mocker.patch("apps.tinkoff.bank.TinkoffBank.refund")
+
+
+@pytest.fixture(autouse=True)
+def mock_stripe_refund(mocker):
+    return mocker.patch("apps.stripebank.bank.StripeBank.refund")
 
 
 @pytest.fixture(autouse=True)
@@ -77,29 +83,41 @@ def paid_order(not_paid_order):
 
 
 @pytest.fixture
+def paid_tinkoff_order(paid_order):
+    return paid_order.update(bank_id="tinkoff_bank")
+
+
+@pytest.fixture
+def paid_stripe_order(paid_order):
+    return paid_order.update(bank_id="stripe")
+
+
+@pytest.fixture
 def refund():
-    return lambda order: OrderRefunder(order=order)()
+    def _refund(order, amount):
+        return OrderRefunder(order=order, amount=amount)()
+
+    return _refund
 
 
 @pytest.mark.freeze_time("2032-12-01 15:30Z")
 def test_set_order_unpaid_and_unshipped(paid_order, refund):
-    refund(paid_order)
+    refund(paid_order, paid_order.price)
 
     paid_order.refresh_from_db()
     assert paid_order.paid is None
-    assert paid_order.unpaid == datetime(2032, 12, 1, 15, 30, tzinfo=dt_timezone.utc)
     assert paid_order.shipped is None
     assert not hasattr(paid_order, "study"), "Study record should be deleted at this point"
 
 
 def test_refund_order_in_bank(paid_order, refund, mock_dolyame_refund):
-    refund(paid_order)
+    refund(paid_order, paid_order.price)
 
     mock_dolyame_refund.assert_called_once()
 
 
 def test_call_unshipper_to_unship(paid_order, refund, spy_unshipper):
-    refund(paid_order)
+    refund(paid_order, paid_order.price)
 
     spy_unshipper.assert_called_once()
     called_service = spy_unshipper.call_args.args[0]
@@ -107,15 +125,14 @@ def test_call_unshipper_to_unship(paid_order, refund, spy_unshipper):
 
 
 def test_do_not_set_unpaid_if_order_unpaid(not_paid_order, refund):
-    refund(not_paid_order)
+    refund(not_paid_order, not_paid_order.price)
 
     not_paid_order.refresh_from_db()
     assert not_paid_order.paid is None
-    assert not_paid_order.unpaid is None
 
 
 def test_do_not_call_bank_refund_if_order_unpaid(not_paid_order, refund, mock_dolyame_refund):
-    refund(not_paid_order)
+    refund(not_paid_order, not_paid_order.price)
 
     mock_dolyame_refund.assert_not_called()
 
@@ -123,7 +140,7 @@ def test_do_not_call_bank_refund_if_order_unpaid(not_paid_order, refund, mock_do
 def test_do_not_call_bank_refund_if_refunds_disabled(paid_order, refund, mock_dolyame_refund, settings):
     settings.BANKS_REFUNDS_ENABLED = False
 
-    refund(paid_order)
+    refund(paid_order, paid_order.price)
 
     mock_dolyame_refund.assert_not_called()
 
@@ -132,17 +149,17 @@ def test_do_not_break_and_not_try_call_bank_refund_if_bank_id_is_empty(paid_orde
     paid_order.update(bank_id="")
 
     with does_not_raise():
-        refund(paid_order)
+        refund(paid_order, paid_order.price)
 
 
 def test_unship_order_despite_it_unpaid(not_paid_order, refund, spy_unshipper):
-    refund(not_paid_order)
+    refund(not_paid_order, not_paid_order.price)
 
     spy_unshipper.assert_called_once()
 
 
 def test_order_refunded_all_refund_watchers_notified(paid_order, refund, mock_send_mail, mocker):
-    refund(paid_order)
+    refund(paid_order, paid_order.price)
 
     mock_send_mail.assert_has_calls(
         any_order=True,
@@ -154,7 +171,7 @@ def test_order_refunded_all_refund_watchers_notified(paid_order, refund, mock_se
 
 
 def test_refund_notification_email_context_and_template_correct(refund, paid_order, mock_send_mail, mocker):
-    refund(paid_order)
+    refund(paid_order, paid_order.price)
 
     mock_send_mail.assert_called_with(
         to=mocker.ANY,
@@ -166,6 +183,8 @@ def test_refund_notification_email_context_and_template_correct(refund, paid_ord
             refund_author="Авраам Соломонович Пейзенгольц",
             payment_method_name=BANKS["dolyame"].name,
             price="999",
+            amount="999",
+            available_to_refund="0",
             order_admin_site_url=f"http://absolute-url.url/admin/orders/order/{paid_order.id}/change/",
         ),
     )
@@ -175,7 +194,7 @@ def test_do_not_break_if_order_without_item_was_refunded(refund, paid_order, moc
     paid_order.update(course=None)
 
     with does_not_raise():
-        refund(paid_order)
+        refund(paid_order, paid_order.price)
 
     send_mail_context = get_send_mail_call_email_context(mock_send_mail)
     assert send_mail_context["refunded_item"] == "not-set"
@@ -185,13 +204,13 @@ def test_break_if_current_user_could_not_be_captured(mocker, refund):
     mocker.patch("apps.orders.services.order_refunder.get_current_user", return_value=None)
 
     with pytest.raises(AttributeError):
-        refund(paid_order)
+        refund(paid_order, paid_order.price)
 
 
 def test_update_user_tags(paid_order, mock_rebuild_tags, refund):
     paid_order.user.update(email="")
 
-    refund(paid_order)
+    refund(paid_order, paid_order.price)
 
     mock_rebuild_tags.assert_called_once_with(student_id=paid_order.user.id)
 
@@ -200,39 +219,149 @@ def test_update_user_tags(paid_order, mock_rebuild_tags, refund):
 def test_update_dashamail(paid_order, refund, mocker):
     update_subscription = mocker.patch("apps.dashamail.tasks.DashamailSubscriber.subscribe")
 
-    refund(paid_order)
+    refund(paid_order, paid_order.price)
 
     update_subscription.assert_called_once()
-
-
-@pytest.mark.usefixtures("_enable_amocrm")
-def test_amocrm_is_updated(paid_order, refund, mocker):
-    push_user = mocker.patch("apps.amocrm.tasks.AmoCRMUserPusher.__call__")
-    push_order = mocker.patch("apps.amocrm.tasks.AmoCRMOrderPusher.__call__")
-
-    refund(paid_order)
-
-    push_user.assert_called_once()
-    push_order.assert_called_once()
 
 
 def test_fail_if_bank_is_set_but_unknown(paid_order, refund):
     paid_order.update(bank_id="tinkoff_credit")
 
     with pytest.raises(BankDoesNotExist, match="does not exists"):
-        refund(paid_order)
+        refund(paid_order, paid_order.price)
 
 
 @pytest.mark.auditlog()
 @pytest.mark.freeze_time()
 def test_success_admin_log_created(paid_order, refund, user):
-    refund(paid_order)
+    refund(paid_order, paid_order.price)
 
     log = LogEntry.objects.get()
     assert log.action_flag == CHANGE
     assert log.action_time == timezone.now()
-    assert log.change_message == "Order refunded"
+    assert log.change_message == "Order refunded: refunded amount: 999, available to refund: 0"
     assert log.content_type_id == ContentType.objects.get_for_model(paid_order).id
     assert log.object_id == str(paid_order.id)
     assert log.object_repr == str(paid_order)
     assert log.user == user
+
+
+def test_partial_refund_exceed_available_amount(paid_tinkoff_order, refund):
+    with pytest.raises(OrderRefunderException) as e:
+        refund(paid_tinkoff_order, 1000)
+
+    assert "Amount to refund is more than available" in str(e)
+
+
+def test_partial_refund_dolyame(paid_order, refund):
+    """No partial refunds available for dolyame"""
+    with pytest.raises(OrderRefunderException) as e:
+        refund(paid_order, 500)
+
+    assert "Partial refund is not available" in str(e)
+
+
+def test_partial_refund_tinkoff(paid_tinkoff_order, refund):
+    paid_tinkoff_order.update(bank_id="tinkoff_bank")
+
+    refund(paid_tinkoff_order, 500)
+
+    order = Order.objects.with_available_to_refund_amount().get(pk=paid_tinkoff_order.pk)
+    assert order.refund_amount == 500
+    assert order.available_to_refund_amount == 499
+
+
+def test_partial_refund_stripe(paid_stripe_order, refund):
+    paid_stripe_order.update(bank_id="stripe")
+
+    refund(paid_stripe_order, 500)
+
+    order = Order.objects.with_available_to_refund_amount().get(pk=paid_stripe_order.pk)
+    assert order.refund_amount == 500
+    assert order.available_to_refund_amount == 499
+
+
+def test_partial_refund_order_not_unshipped(paid_tinkoff_order, refund, spy_unshipper):
+    refund(paid_tinkoff_order, 500)
+
+    spy_unshipper.assert_not_called()
+
+
+def test_partial_refund_order_unshipped_when_total_refund_eq_price(paid_tinkoff_order, refund, spy_unshipper):
+    refund(paid_tinkoff_order, 100)
+    refund(paid_tinkoff_order, 99)
+    refund(paid_tinkoff_order, 400)
+    refund(paid_tinkoff_order, 400)
+
+    spy_unshipper.assert_called_once()
+
+
+@pytest.mark.auditlog()
+@pytest.mark.freeze_time()
+def test_partial_refund_success_admin_log_created(paid_tinkoff_order, refund, user):
+    refund(paid_tinkoff_order, 500)
+
+    log = LogEntry.objects.get()
+    assert log.action_flag == CHANGE
+    assert log.action_time == timezone.now()
+    assert log.change_message == "Order refunded: refunded amount: 500, available to refund: 499"
+    assert log.content_type_id == ContentType.objects.get_for_model(paid_tinkoff_order).id
+    assert log.object_id == str(paid_tinkoff_order.id)
+    assert log.object_repr == str(paid_tinkoff_order)
+    assert log.user == user
+
+
+def test_partial_refund_notification_email_context_and_template_correct(refund, paid_tinkoff_order, mock_send_mail, mocker):
+    refund(paid_tinkoff_order, 500)
+
+    mock_send_mail.assert_called_with(
+        to=mocker.ANY,
+        template_id="order-refunded",
+        disable_antispam=True,
+        ctx=dict(
+            order_id=paid_tinkoff_order.id,
+            refunded_item="Кройка и шитьё",
+            refund_author="Авраам Соломонович Пейзенгольц",
+            payment_method_name=BANKS["tinkoff_bank"].name,
+            price="999",
+            amount="500",
+            available_to_refund="499",
+            order_admin_site_url=f"http://absolute-url.url/admin/orders/order/{paid_tinkoff_order.id}/change/",
+        ),
+    )
+
+
+def test_partial_refund_not_set_unpaid(paid_tinkoff_order, refund):
+    refund(paid_tinkoff_order, 500)
+
+    order = Order.objects.with_available_to_refund_amount().get(pk=paid_tinkoff_order.pk)
+    assert order.available_to_refund_amount == 499
+    assert order.paid is not None
+
+
+def test_partial_refund_set_unpaid(paid_tinkoff_order, refund):
+    refund(paid_tinkoff_order, 999)
+
+    order = Order.objects.with_available_to_refund_amount().get(pk=paid_tinkoff_order.pk)
+    assert order.available_to_refund_amount == 0
+    assert order.paid is None
+
+
+def test_refund_is_created(paid_order, refund, user):
+    refund(paid_order, paid_order.price)
+
+    refund = Refund.objects.first()
+    assert refund.amount == 999
+    assert refund.order == paid_order
+    assert refund.author == user
+    assert refund.bank_id == paid_order.bank_id
+
+
+def test_partial_refund_is_created(paid_tinkoff_order, refund, user):
+    refund(paid_tinkoff_order, 500)
+
+    refund = Refund.objects.first()
+    assert refund.amount == 500
+    assert refund.order == paid_tinkoff_order
+    assert refund.author == user
+    assert refund.bank_id == paid_tinkoff_order.bank_id

@@ -61,7 +61,6 @@ class OrderAddForm(forms.ModelForm):
     author = forms.CharField(required=False, widget=forms.HiddenInput)
     paid = forms.CharField(required=False, widget=forms.HiddenInput)
     shipped = forms.CharField(required=False, widget=forms.HiddenInput)
-    unpaid = forms.CharField(required=False, widget=forms.HiddenInput)
 
     class Meta:
         model = Order

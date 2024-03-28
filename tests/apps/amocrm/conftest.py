@@ -13,7 +13,6 @@ def _settings_amocrm(settings):
 @pytest.fixture(autouse=True)
 def _disable_automatic_amocrm_updating(mocker):
     mocker.patch("apps.orders.services.order_paid_setter.OrderPaidSetter.update_amocrm", return_value=None)
-    mocker.patch("apps.orders.services.order_refunder.OrderRefunder.update_amocrm")
 
 
 @pytest.fixture

@@ -10,11 +10,6 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def rebuild_tags(mocker):
-    return mocker.patch("apps.users.tasks.rebuild_tags.si")
-
-
-@pytest.fixture
-def rebuild_tags(mocker):
     return mocker.patch("apps.users.tasks.rebuild_tags.delay")
 
 

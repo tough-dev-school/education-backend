@@ -1,7 +1,9 @@
 from collections.abc import Iterable
+from decimal import Decimal
 
 import shortuuid
-from django.db.models import CheckConstraint, QuerySet
+from django.db.models import CheckConstraint, QuerySet, Sum, Value
+from django.db.models.functions import Coalesce
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
@@ -27,6 +29,12 @@ class OrderQuerySet(QuerySet):
     def same_deal(self, order: "Order") -> "OrderQuerySet":
         return self.filter(user=order.user, course=order.course).exclude(pk=order.pk)
 
+    def with_refund_amount(self) -> "OrderQuerySet":
+        return self.annotate(refund_amount=Coalesce(Sum("refunds__amount"), Value(Decimal(0))))
+
+    def with_available_to_refund_amount(self) -> "OrderQuerySet":
+        return self.with_refund_amount().annotate(available_to_refund_amount=(models.F("price") - models.F("refund_amount")))
+
 
 OrderManager = models.Manager.from_queryset(OrderQuerySet)
 
@@ -46,7 +54,6 @@ class Order(TimestampedModel):
         null=True,
         blank=True,
     )
-    unpaid = models.DateTimeField(_("Date when order got unpaid"), null=True, blank=True)
     shipped = models.DateTimeField(_("Date when order was shipped"), null=True, blank=True)
 
     bank_id = models.CharField(_("User-requested bank string"), choices=BANK_CHOICES, blank=True, max_length=32)
@@ -129,10 +136,10 @@ class Order(TimestampedModel):
 
         OrderPaidSetter(self, silent=silent)()
 
-    def refund(self) -> None:
+    def refund(self, amount: Decimal) -> None:
         from apps.orders.services import OrderRefunder
 
-        OrderRefunder(self)()
+        OrderRefunder(self, amount)()
 
     def ship(self, silent: bool | None = False) -> None:
         from apps.orders.services import OrderShipper
