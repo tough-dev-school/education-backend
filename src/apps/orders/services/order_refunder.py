@@ -6,7 +6,6 @@ from django.conf import settings
 from django.contrib.admin.models import CHANGE
 from django.db import transaction
 from django.urls import reverse
-from django.utils import timezone
 from django.utils.translation import gettext as _
 
 from apps.banking.base import Bank
@@ -35,7 +34,6 @@ class OrderRefunder(BaseService):
 
     If order is not paid just unship and register in integrations.
     If order is paid and is suitable for bank refund - do it.
-    If amount is not specified - refund full available to refund amount.
     Available to refund amount = initial order price - already refunded amount.
     """
 
@@ -93,8 +91,7 @@ class OrderRefunder(BaseService):
     def mark_order_as_not_paid_if_needed(self) -> None:
         if self.available_to_refund_amount == 0:
             self.order.paid = None
-            self.order.unpaid = timezone.now()
-            self.order.save(update_fields=["paid", "unpaid", "modified"])
+            self.order.save(update_fields=["paid", "modified"])
 
     def do_bank_refund_if_needed(self) -> None:
         if self.bank and settings.BANKS_REFUNDS_ENABLED:

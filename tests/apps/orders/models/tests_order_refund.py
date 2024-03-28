@@ -1,5 +1,3 @@
-from datetime import datetime, timezone
-
 import pytest
 
 from apps.orders.services import OrderRefunder
@@ -22,7 +20,6 @@ def test_set_payment_and_shipment_attributes(paid_order):
     paid_order.refresh_from_db()
     assert paid_order.paid is None
     assert paid_order.shipped is None
-    assert paid_order.unpaid == datetime(2022, 4, 19, 19, 23, tzinfo=timezone.utc)
 
 
 def test_refund_actually_call_refunder_service(paid_order, mocker):

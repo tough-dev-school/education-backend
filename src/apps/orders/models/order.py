@@ -54,7 +54,6 @@ class Order(TimestampedModel):
         null=True,
         blank=True,
     )
-    unpaid = models.DateTimeField(_("Date when order got unpaid"), null=True, blank=True)
     shipped = models.DateTimeField(_("Date when order was shipped"), null=True, blank=True)
 
     bank_id = models.CharField(_("User-requested bank string"), choices=BANK_CHOICES, blank=True, max_length=32)

@@ -55,14 +55,13 @@ class OrderAdmin(ModelAdmin):
         "login_as",
         "paid",
         "shipped",
-        "unpaid",
     ]
 
     fieldsets = [
         (
             None,
             {
-                "fields": ["user", "course", "price", "email", "author", "login_as", "paid", "shipped", "unpaid"],
+                "fields": ["user", "course", "price", "email", "author", "login_as", "paid", "shipped"],
             },
         ),
     ]

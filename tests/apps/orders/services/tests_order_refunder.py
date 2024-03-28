@@ -1,6 +1,5 @@
 from contextlib import nullcontext as does_not_raise
 from datetime import datetime
-from datetime import timezone as dt_timezone
 
 import pytest
 from django.contrib.admin.models import CHANGE, LogEntry
@@ -107,7 +106,6 @@ def test_set_order_unpaid_and_unshipped(paid_order, refund):
 
     paid_order.refresh_from_db()
     assert paid_order.paid is None
-    assert paid_order.unpaid == datetime(2032, 12, 1, 15, 30, tzinfo=dt_timezone.utc)
     assert paid_order.shipped is None
     assert not hasattr(paid_order, "study"), "Study record should be deleted at this point"
 
@@ -131,7 +129,6 @@ def test_do_not_set_unpaid_if_order_unpaid(not_paid_order, refund):
 
     not_paid_order.refresh_from_db()
     assert not_paid_order.paid is None
-    assert not_paid_order.unpaid is None
 
 
 def test_do_not_call_bank_refund_if_order_unpaid(not_paid_order, refund, mock_dolyame_refund):
@@ -340,7 +337,6 @@ def test_partial_refund_not_set_unpaid(paid_tinkoff_order, refund):
     order = Order.objects.with_available_to_refund_amount().get(pk=paid_tinkoff_order.pk)
     assert order.available_to_refund_amount == 499
     assert order.paid is not None
-    assert order.unpaid is None
 
 
 def test_partial_refund_set_unpaid(paid_tinkoff_order, refund):
@@ -349,7 +345,6 @@ def test_partial_refund_set_unpaid(paid_tinkoff_order, refund):
     order = Order.objects.with_available_to_refund_amount().get(pk=paid_tinkoff_order.pk)
     assert order.available_to_refund_amount == 0
     assert order.paid is None
-    assert order.unpaid is not None
 
 
 def test_refund_is_created(paid_order, refund, user):
