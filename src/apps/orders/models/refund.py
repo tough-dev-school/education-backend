@@ -1,11 +1,22 @@
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from apps.banking.selector import BANK_CHOICES
 from core.models import TimestampedModel
 
 
+class RefundQuerySet(models.QuerySet):
+    def today(self) -> "RefundQuerySet":
+        return self.filter(created__date=timezone.now().date())
+
+
+RefundManager = models.Manager.from_queryset(RefundQuerySet)
+
+
 class Refund(TimestampedModel):
+    objects = RefundManager()
+
     order = models.ForeignKey("orders.Order", verbose_name=_("Order"), on_delete=models.CASCADE, related_name="refunds")
     amount = models.DecimalField(_("Amount"), max_digits=9, decimal_places=2)
     author = models.ForeignKey("users.User", verbose_name=_("Author"), on_delete=models.PROTECT, editable=False, related_name="created_refunds")

@@ -8,6 +8,7 @@ from apps.orders import human_readable
 from apps.orders.admin.orders import actions
 from apps.orders.admin.orders.filters import OrderStatusFilter
 from apps.orders.admin.orders.forms import OrderAddForm, OrderChangeForm
+from apps.orders.admin.refunds.admin import RefundInline
 from apps.orders.models import Order
 from apps.users.models import Student
 from core.admin import ModelAdmin, admin
@@ -55,16 +56,18 @@ class OrderAdmin(ModelAdmin):
         "login_as",
         "paid",
         "shipped",
+        "available_to_refund_amount",
     ]
 
     fieldsets = [
         (
             None,
             {
-                "fields": ["user", "course", "price", "email", "author", "login_as", "paid", "shipped"],
+                "fields": ["user", "course", "price", "email", "author", "login_as", "paid", "shipped", "available_to_refund_amount"],
             },
         ),
     ]
+    inlines = [RefundInline]
 
     @property
     def media(self) -> Media:
@@ -114,6 +117,11 @@ class OrderAdmin(ModelAdmin):
         login_as_url = Student.objects.get(pk=obj.user_id).get_absolute_url()
 
         return f'<a href="{login_as_url}" target="_blank">Зайти</a>'
+
+    @admin.display(description=_("Available to refund amount"))
+    def available_to_refund_amount(self, obj: Order) -> str:
+        amount = Order.objects.with_available_to_refund_amount().get(pk=obj.pk).available_to_refund_amount
+        return format_price(amount)
 
     def has_pay_permission(self, request: Request) -> bool:
         return request.user.has_perm("orders.pay_order")

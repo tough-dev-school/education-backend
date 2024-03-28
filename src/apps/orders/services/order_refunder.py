@@ -57,8 +57,9 @@ class OrderRefunder(BaseService):
         return Bank(order=self.order) if Bank else None
 
     @transaction.atomic
-    def act(self) -> None:
-        self.create_refund_entry()
+    def act(self) -> "Refund":
+        refund = self.create_refund_entry()
+
         if self.order.paid:
             self.do_bank_refund_if_needed()
             self.mark_order_as_not_paid_if_needed()
@@ -71,8 +72,11 @@ class OrderRefunder(BaseService):
 
         self.update_user_tags()
         self.update_dashamail()
+        return refund
 
     def validate(self) -> None:
+        if Refund.objects.today().count() >= 5:
+            raise OrderRefunderException(_("Order has not been refunded. Up to 5 refunds per day are allowed. Please come back tomorrow."))
         if self.amount != self.order.price and self.bank and not self.bank.is_partial_refund_available:
             raise OrderRefunderException(_("Partial refund is not available"))
         if self.available_to_refund_amount < self.amount:
@@ -80,8 +84,8 @@ class OrderRefunder(BaseService):
         if self.amount <= 0:
             raise OrderRefunderException(_("Amount to refund should be more than 0"))
 
-    def create_refund_entry(self) -> None:
-        Refund.objects.create(
+    def create_refund_entry(self) -> Refund:
+        return Refund.objects.create(
             order=self.order,
             author=self.refund_author,
             amount=self.amount,
