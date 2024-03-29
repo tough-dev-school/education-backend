@@ -70,7 +70,7 @@ jobs:
         run: make test -e SIMULTANEOUS_TEST_JOBS=${{ steps.cpu-cores.outputs.count }}
 
       - name: publish test results
-        uses: phoenix-actions/test-reporting@v12
+        uses: phoenix-actions/test-reporting@v13
         if: always()
         with:
           name: Test results
