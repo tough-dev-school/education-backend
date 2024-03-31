@@ -7,11 +7,11 @@ class ModelAdmin(AppAdminMixin, admin.ModelAdmin):  # type: ignore
     pass
 
 
-class StackedInline(AppAdminMixin, admin.StackedInline):  # type: ignore[misc]
+class StackedInline(AppAdminMixin, admin.StackedInline):
     pass
 
 
-class TabularInline(AppAdminMixin, admin.TabularInline):  # type: ignore[misc]
+class TabularInline(AppAdminMixin, admin.TabularInline):
     pass
 
 

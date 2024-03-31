@@ -6,6 +6,7 @@ from typing import Any, Protocol, Type
 from django.contrib.humanize.templatetags.humanize import naturalday
 from django.db import models
 from django.db.models import Field
+from django.http import HttpRequest
 from django.template.defaultfilters import capfirst, time
 from django.utils import timezone
 from django.utils.html import format_html
@@ -54,7 +55,7 @@ class AppAdminMixin:
 
         return super().get_form(request, obj, **defaults)  # type: ignore
 
-    def get_fieldsets(self: DjangoModelAdminProtocol, request: Any, obj: Type[models.Model] | None = None) -> Sequence[tuple[str | None, Any]]:
+    def get_fieldsets(self: DjangoModelAdminProtocol, request: HttpRequest, obj: models.Model | None = None) -> Any:
         """Use special fieldset during object creation"""
         if not obj and hasattr(self, "add_fieldsets") and self.add_fieldsets is not None:
             return self.add_fieldsets
