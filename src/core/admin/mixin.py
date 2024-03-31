@@ -55,7 +55,7 @@ class AppAdminMixin:
 
         return super().get_form(request, obj, **defaults)  # type: ignore
 
-    def get_fieldsets(self: DjangoModelAdminProtocol, request: HttpRequest, obj: models.Model | None = None) -> Any:
+    def get_fieldsets(self: DjangoModelAdminProtocol, request: HttpRequest, obj: Type[models.Model] | None = None) -> Any:
         """Use special fieldset during object creation"""
         if not obj and hasattr(self, "add_fieldsets") and self.add_fieldsets is not None:
             return self.add_fieldsets
