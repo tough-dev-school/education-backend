@@ -48,10 +48,6 @@ class OrderRefunder(BaseService):
         return get_current_user()  # type: ignore
 
     @property
-    def available_to_refund_amount(self) -> Decimal:
-        return Order.objects.with_available_to_refund_amount().get(pk=self.order.pk).available_to_refund_amount
-
-    @property
     def bank(self) -> Bank | None:
         Bank = get_bank(self.order.bank_id)
         return Bank(order=self.order) if Bank else None
@@ -59,11 +55,12 @@ class OrderRefunder(BaseService):
     @transaction.atomic
     def act(self) -> "Refund":
         refund = self.create_refund_entry()
+        self.update_price()
 
         if self.order.paid:
             self.do_bank_refund_if_needed()
 
-        if not self.order.paid or self.available_to_refund_amount == 0:  # if afterward order was fully refunded or was never paid
+        if not self.order.paid or self.order.price == 0:  # if afterward order was fully refunded or was never paid
             OrderUnshipper(order=self.order)()
 
         self.write_success_admin_log()
@@ -80,7 +77,7 @@ class OrderRefunder(BaseService):
             raise OrderRefunderException(_("Order has not been refunded. Up to 5 refunds per day are allowed. Please come back tomorrow."))
         if self.amount != self.order.price and self.bank and not self.bank.is_partial_refund_available:
             raise OrderRefunderException(_("Partial refund is not available"))
-        if self.available_to_refund_amount < self.amount:
+        if self.order.price < self.amount:
             raise OrderRefunderException(_("Amount to refund is more than available"))
         if self.amount <= 0:
             raise OrderRefunderException(_("Amount to refund should be more than 0"))
@@ -93,11 +90,6 @@ class OrderRefunder(BaseService):
             bank_id=self.order.bank_id,
         )
 
-    def mark_order_as_not_paid_if_needed(self) -> None:
-        if self.available_to_refund_amount == 0:
-            self.order.paid = None
-            self.order.save(update_fields=["paid", "modified"])
-
     def do_bank_refund_if_needed(self) -> None:
         if self.bank and settings.BANKS_REFUNDS_ENABLED:
             self.bank.refund(self.amount)
@@ -106,7 +98,7 @@ class OrderRefunder(BaseService):
         write_admin_log.delay(
             action_flag=CHANGE,
             app="orders",
-            change_message=f"Order refunded: refunded amount: {format_price(self.amount)}, available to refund: {format_price(self.available_to_refund_amount)}",
+            change_message=f"Order refunded: refunded amount - {format_price(self.amount)}",
             model="Order",
             object_id=self.order.id,
             user_id=self.refund_author.id,
@@ -143,9 +135,12 @@ class OrderRefunder(BaseService):
             "payment_method_name": self.payment_method_before_service_call,
             "price": format_price(self.order.price),
             "amount": format_price(self.amount),
-            "available_to_refund": format_price(self.available_to_refund_amount),
             "order_admin_site_url": urljoin(
                 settings.ABSOLUTE_HOST,
                 reverse("admin:orders_order_change", args=[self.order.pk]),
             ),
         }
+
+    def update_price(self) -> None:
+        self.order.price = self.order.price - self.amount
+        self.order.save(update_fields=["price"])

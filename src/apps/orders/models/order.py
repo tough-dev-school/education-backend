@@ -2,8 +2,7 @@ from collections.abc import Iterable
 from decimal import Decimal
 
 import shortuuid
-from django.db.models import CheckConstraint, QuerySet, Sum, Value
-from django.db.models.functions import Coalesce
+from django.db.models import CheckConstraint, Q, QuerySet
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
@@ -15,11 +14,14 @@ from core.models import TimestampedModel, models, only_one_or_zero_is_set
 
 
 class OrderQuerySet(QuerySet):
-    def paid(self, invert: bool | None = False) -> "OrderQuerySet":
-        return self.filter(paid__isnull=invert)
+    def paid(self) -> "OrderQuerySet":
+        return self.filter(paid__isnull=False, price__gt=0)
+
+    def unpaid(self) -> "OrderQuerySet":
+        return self.filter(Q(paid__isnull=False, price=0) | Q(paid__isnull=True))
 
     def shipped_without_payment(self) -> "OrderQuerySet":
-        return self.paid(invert=True).filter(shipped__isnull=False)
+        return self.unpaid().filter(shipped__isnull=False)
 
     def available_to_confirm(self) -> "OrderQuerySet":
         return self.filter(
@@ -28,12 +30,6 @@ class OrderQuerySet(QuerySet):
 
     def same_deal(self, order: "Order") -> "OrderQuerySet":
         return self.filter(user=order.user, course=order.course).exclude(pk=order.pk)
-
-    def with_refund_amount(self) -> "OrderQuerySet":
-        return self.annotate(refund_amount=Coalesce(Sum("refunds__amount"), Value(Decimal(0))))
-
-    def with_available_to_refund_amount(self) -> "OrderQuerySet":
-        return self.with_refund_amount().annotate(available_to_refund_amount=(models.F("price") - models.F("refund_amount")))
 
 
 OrderManager = models.Manager.from_queryset(OrderQuerySet)

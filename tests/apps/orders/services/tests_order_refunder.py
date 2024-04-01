@@ -1,6 +1,6 @@
+import time
 from contextlib import nullcontext as does_not_raise
 from datetime import datetime
-import time
 
 import pytest
 from django.contrib.admin.models import CHANGE, LogEntry
@@ -9,7 +9,7 @@ from django.utils import timezone
 
 from apps.banking.exceptions import BankDoesNotExist
 from apps.banking.selector import BANKS
-from apps.orders.models import Order, Refund
+from apps.orders.models import Refund
 from apps.orders.services import OrderRefunder, OrderUnshipper
 from apps.orders.services.order_refunder import OrderRefunderException
 
@@ -183,9 +183,8 @@ def test_refund_notification_email_context_and_template_correct(refund, paid_ord
             refunded_item="Кройка и шитьё",
             refund_author="Авраам Соломонович Пейзенгольц",
             payment_method_name=BANKS["dolyame"].name,
-            price="999",
+            price="0",
             amount="999",
-            available_to_refund="0",
             order_admin_site_url=f"http://absolute-url.url/admin/orders/order/{paid_order.id}/change/",
         ),
     )
@@ -240,7 +239,7 @@ def test_success_admin_log_created(paid_order, refund, user):
     log = LogEntry.objects.get()
     assert log.action_flag == CHANGE
     assert log.action_time == timezone.now()
-    assert log.change_message == "Order refunded: refunded amount: 999, available to refund: 0"
+    assert log.change_message == "Order refunded: refunded amount - 999"
     assert log.content_type_id == ContentType.objects.get_for_model(paid_order).id
     assert log.object_id == str(paid_order.id)
     assert log.object_repr == str(paid_order)
@@ -267,9 +266,8 @@ def test_partial_refund_tinkoff(paid_tinkoff_order, refund):
 
     refund(paid_tinkoff_order, 500)
 
-    order = Order.objects.with_available_to_refund_amount().get(pk=paid_tinkoff_order.pk)
-    assert order.refund_amount == 500
-    assert order.available_to_refund_amount == 499
+    paid_tinkoff_order.refresh_from_db()
+    assert paid_tinkoff_order.price == 499
 
 
 def test_partial_refund_stripe(paid_stripe_order, refund):
@@ -277,9 +275,8 @@ def test_partial_refund_stripe(paid_stripe_order, refund):
 
     refund(paid_stripe_order, 500)
 
-    order = Order.objects.with_available_to_refund_amount().get(pk=paid_stripe_order.pk)
-    assert order.refund_amount == 500
-    assert order.available_to_refund_amount == 499
+    paid_stripe_order.refresh_from_db()
+    assert paid_stripe_order.price == 499
 
 
 def test_partial_refund_order_not_unshipped(paid_tinkoff_order, refund, spy_unshipper):
@@ -305,7 +302,7 @@ def test_partial_refund_success_admin_log_created(paid_tinkoff_order, refund, us
     log = LogEntry.objects.get()
     assert log.action_flag == CHANGE
     assert log.action_time == timezone.now()
-    assert log.change_message == "Order refunded: refunded amount: 500, available to refund: 499"
+    assert log.change_message == "Order refunded: refunded amount - 500"
     assert log.content_type_id == ContentType.objects.get_for_model(paid_tinkoff_order).id
     assert log.object_id == str(paid_tinkoff_order.id)
     assert log.object_repr == str(paid_tinkoff_order)
@@ -324,9 +321,8 @@ def test_partial_refund_notification_email_context_and_template_correct(refund, 
             refunded_item="Кройка и шитьё",
             refund_author="Авраам Соломонович Пейзенгольц",
             payment_method_name=BANKS["tinkoff_bank"].name,
-            price="999",
+            price="499",
             amount="500",
-            available_to_refund="499",
             order_admin_site_url=f"http://absolute-url.url/admin/orders/order/{paid_tinkoff_order.id}/change/",
         ),
     )
@@ -335,17 +331,17 @@ def test_partial_refund_notification_email_context_and_template_correct(refund, 
 def test_partial_refund_not_set_unpaid(paid_tinkoff_order, refund):
     refund(paid_tinkoff_order, 500)
 
-    order = Order.objects.with_available_to_refund_amount().get(pk=paid_tinkoff_order.pk)
-    assert order.available_to_refund_amount == 499
-    assert order.paid is not None
+    paid_tinkoff_order.refresh_from_db()
+    assert paid_tinkoff_order.price == 499
+    assert paid_tinkoff_order.paid is not None
 
 
 def test_partial_refund_set_unpaid(paid_tinkoff_order, refund):
     refund(paid_tinkoff_order, 999)
 
-    order = Order.objects.with_available_to_refund_amount().get(pk=paid_tinkoff_order.pk)
-    assert order.available_to_refund_amount == 0
-    assert order.paid is not None
+    paid_tinkoff_order.refresh_from_db()
+    assert paid_tinkoff_order.price == 0
+    assert paid_tinkoff_order.paid is not None
 
 
 def test_refund_is_created(paid_order, refund, user):
@@ -367,6 +363,7 @@ def test_partial_refund_is_created(paid_tinkoff_order, refund, user):
     assert refund.author == user
     assert refund.bank_id == paid_tinkoff_order.bank_id
 
+
 def test_5_per_day_limit(factory, paid_tinkoff_order, refund):
     factory.cycle(5).refund(order=paid_tinkoff_order, amount=100)
     time.sleep(10)
@@ -375,6 +372,7 @@ def test_5_per_day_limit(factory, paid_tinkoff_order, refund):
         refund(paid_tinkoff_order, 100)
 
     assert "Up to 5 refunds per day are allowed" in str(e)
+
 
 def test_1_per_10_seconds_limit(paid_tinkoff_order, refund):
     refund(paid_tinkoff_order, 100)
