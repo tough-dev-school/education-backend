@@ -62,9 +62,8 @@ class OrderRefunder(BaseService):
 
         if self.order.paid:
             self.do_bank_refund_if_needed()
-            self.mark_order_as_not_paid_if_needed()
 
-        if not self.order.paid:  # if afterward order was fully refunded or was never paid
+        if not self.order.paid or self.available_to_refund_amount == 0:  # if afterward order was fully refunded or was never paid
             OrderUnshipper(order=self.order)()
 
         self.write_success_admin_log()
@@ -75,6 +74,8 @@ class OrderRefunder(BaseService):
         return refund
 
     def validate(self) -> None:
+        if Refund.objects.last_ten_seconds(order_id=self.order.pk).count() >= 1:
+            raise OrderRefunderException(_("Order has not been refunded. Up to 1 refund per 10 seconds is allowed. Please try again later."))
         if Refund.objects.today().count() >= 5:
             raise OrderRefunderException(_("Order has not been refunded. Up to 5 refunds per day are allowed. Please come back tomorrow."))
         if self.amount != self.order.price and self.bank and not self.bank.is_partial_refund_available:

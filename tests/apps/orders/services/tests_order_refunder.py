@@ -1,5 +1,6 @@
 from contextlib import nullcontext as does_not_raise
 from datetime import datetime
+import time
 
 import pytest
 from django.contrib.admin.models import CHANGE, LogEntry
@@ -105,7 +106,7 @@ def test_set_order_unpaid_and_unshipped(paid_order, refund):
     refund(paid_order, paid_order.price)
 
     paid_order.refresh_from_db()
-    assert paid_order.paid is None
+    assert paid_order.paid is not None
     assert paid_order.shipped is None
     assert not hasattr(paid_order, "study"), "Study record should be deleted at this point"
 
@@ -288,10 +289,10 @@ def test_partial_refund_order_not_unshipped(paid_tinkoff_order, refund, spy_unsh
 
 
 def test_partial_refund_order_unshipped_when_total_refund_eq_price(paid_tinkoff_order, refund, spy_unshipper):
-    refund(paid_tinkoff_order, 100)
-    refund(paid_tinkoff_order, 99)
-    refund(paid_tinkoff_order, 400)
-    refund(paid_tinkoff_order, 400)
+    refund(paid_tinkoff_order, 500)
+    time.sleep(10)
+
+    refund(paid_tinkoff_order, 499)
 
     spy_unshipper.assert_called_once()
 
@@ -344,7 +345,7 @@ def test_partial_refund_set_unpaid(paid_tinkoff_order, refund):
 
     order = Order.objects.with_available_to_refund_amount().get(pk=paid_tinkoff_order.pk)
     assert order.available_to_refund_amount == 0
-    assert order.paid is None
+    assert order.paid is not None
 
 
 def test_refund_is_created(paid_order, refund, user):
@@ -365,3 +366,20 @@ def test_partial_refund_is_created(paid_tinkoff_order, refund, user):
     assert refund.order == paid_tinkoff_order
     assert refund.author == user
     assert refund.bank_id == paid_tinkoff_order.bank_id
+
+def test_5_per_day_limit(factory, paid_tinkoff_order, refund):
+    factory.cycle(5).refund(order=paid_tinkoff_order, amount=100)
+    time.sleep(10)
+
+    with pytest.raises(OrderRefunderException) as e:
+        refund(paid_tinkoff_order, 100)
+
+    assert "Up to 5 refunds per day are allowed" in str(e)
+
+def test_1_per_10_seconds_limit(paid_tinkoff_order, refund):
+    refund(paid_tinkoff_order, 100)
+
+    with pytest.raises(OrderRefunderException) as e:
+        refund(paid_tinkoff_order, 100)
+
+    assert "Up to 1 refund per 10 seconds is allowed" in str(e)

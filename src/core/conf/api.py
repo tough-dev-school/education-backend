@@ -24,7 +24,6 @@ REST_FRAMEWORK = {
         "notion-materials": "100/hour",
         "promocode": "100/hour",
         "purchase": "100/hour",
-        "order-refund": "5/day",
     },
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }

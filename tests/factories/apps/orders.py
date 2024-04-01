@@ -2,7 +2,7 @@ import random
 from decimal import Decimal
 from typing import Any
 
-from apps.orders.models import Order
+from apps.orders.models import Order, Refund
 from apps.products.models import Product
 from apps.users.models import User
 from core.helpers import random_string
@@ -40,3 +40,8 @@ def order(
         order.set_paid(silent=True)
 
     return order
+
+
+@register
+def refund(self: Any, **kwargs: dict[str, Any]) -> Refund:
+    return self.mixer.blend("orders.Refund", **kwargs)

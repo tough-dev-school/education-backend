@@ -1,3 +1,5 @@
+import time
+
 import pytest
 
 from apps.orders.models import Order
@@ -14,6 +16,7 @@ def test_no_refunds(order):
 
 def test_with_refunds(order):
     order.refund(100)
+    time.sleep(10)
     order.refund(150)
 
     assert Order.objects.with_refund_amount().get(pk=order.pk).refund_amount == 250

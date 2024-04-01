@@ -18,7 +18,7 @@ def test_set_payment_and_shipment_attributes(paid_order):
     paid_order.refund(paid_order.price)
 
     paid_order.refresh_from_db()
-    assert paid_order.paid is None
+    assert paid_order.paid is not None
     assert paid_order.shipped is None
 
 
