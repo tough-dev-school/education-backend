@@ -130,15 +130,8 @@ ignore = [
     "A001",  # variable `{}` is shadowing a Python builtin
     "A002",  # argument `{}` is shadowing a Python builtin
     "A003",  # class attribute `{}` is shadowing a Python builtin
-    "ANN001",  # missing type annotation for function argument `{}`
-    "ANN002",  # missing type annotation for `{}`
-    "ANN003",  # missing type annotation for `{}`
     "ANN101",  # missing type annotation for `self` in method
     "ANN102",  # missing type annotation for `cls` in classmethod
-    "ANN201",  # missing return type annotation for public function `{}`
-    "ANN202",  # missing return type annotation for private function `{}`
-    "ANN204",  # missing return type annotation for special method `{}`
-    "ANN206",  # missing return type annotation for class method `{}`
     "ANN401",  # dynamically typed expressions (typing.Any) are disallowed in `{}`
     "ARG002",  # unused method argument: `{}`
     "ARG005",  # unused lambda argument: `{}`
@@ -228,6 +221,8 @@ ignore = [
     "SIM300",  # yoda conditions are discouraged, use `{}` instead
     "SLF001",  # private member accessed: `{}`
     "TCH001",  # move application import `{}` into a type-checking block
+    "TCH002",  # move third-party import `{}` into a type-checking block
+    "TCH003",  # move standart library import `{}` into a type-checking block
     "TRY003",  # avoid specifying long messages outside the exception class
     "TRY300",  # consider moving this statement to an `else` block
     "UP006",  # use `{}` instead of `{}` for type annotation
@@ -242,6 +237,23 @@ ban-relative-imports = "all"
 
 [tool.ruff.lint.isort]
 known-local-folder = ["apps", "core"]
+
+[tool.ruff.lint.per-file-ignores]
+"*/management/*" = [
+    "ANN",  # flake8-annotations
+]
+"*/migrations/*" = [
+    "ANN",  # flake8-annotations
+]
+"src/core/conf/*" = [
+    "ANN",  # flake8-annotations
+]
+"src/core/test/api_client.py" = [
+    "ANN",  # flake8-annotations
+]
+"tests/*" = [
+    "ANN",  # flake8-annotations
+]
 
 [tool.tomlsort]
 all = true

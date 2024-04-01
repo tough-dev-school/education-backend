@@ -5,7 +5,7 @@ from faker import Faker
 from mixer.backend.django import mixer
 
 
-def register(method):
+def register(method: Callable) -> Callable:
     name = method.__name__
     FixtureRegistry.METHODS[name] = method
     return method
@@ -22,17 +22,17 @@ class FixtureRegistry:
 
 
 class CycleFixtureFactory:
-    def __init__(self, factory, count: int):
+    def __init__(self, factory: "FixtureFactory", count: int) -> None:
         self.factory = factory
         self.count = count
 
-    def __getattr__(self, name):
+    def __getattr__(self, name: str) -> Callable | None:
         if hasattr(self.factory, name):
             return lambda *args, **kwargs: [getattr(self.factory, name)(*args, **kwargs) for _ in range(self.count)]
 
 
 class FixtureFactory:
-    def __init__(self):
+    def __init__(self) -> None:
         self.mixer = mixer
         self.registry = FixtureRegistry()
 
@@ -40,11 +40,11 @@ class FixtureFactory:
     def faker(self) -> Faker:
         return Faker()
 
-    def __getattr__(self, name):
+    def __getattr__(self, name: str) -> Callable:
         method = self.registry.get(name)
         return partial(method, self)
 
-    def cycle(self, count) -> CycleFixtureFactory:
+    def cycle(self, count: int) -> CycleFixtureFactory:
         """
         Run given method X times:
             factory.cycle(5).order()  # gives 5 orders
