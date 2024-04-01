@@ -52,11 +52,11 @@ def test_root_answer(notifier, answer, another_answer):
 
 
 def test_html_is_stripped(notifier, answer):
-    answer.update(text="# Россия вперёд!")
+    answer.update(text="# Вил би стриппед")
 
     context = notifier(answer).get_notification_context(answer.author)
 
-    assert context["answer_text"] == "Россия вперёд!"
+    assert context["answer_text"] == "Вил би стриппед"
 
 
 def test_is_root_answer_author_flag(notifier, answer):
