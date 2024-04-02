@@ -1,4 +1,4 @@
-# Backend for [education.borshev.com](http://education.borshev.com/)
+# Backend for [tough-dev.school](https://tough-dev.school/)
 
 ![CI](https://github.com/tough-dev-school/education-backend/actions/workflows/ci.yml/badge.svg) [![Maintainability](https://api.codeclimate.com/v1/badges/fe9fb0b64052a426f355/maintainability)](https://codeclimate.com/github/f213/education-backend/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/fe9fb0b64052a426f355/test_coverage)](https://codeclimate.com/github/f213/education-backend/test_coverage)
 
