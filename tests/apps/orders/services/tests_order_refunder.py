@@ -101,6 +101,48 @@ def refund():
     return _refund
 
 
+def test_5_per_day_limit(factory, paid_tinkoff_order, refund):
+    factory.cycle(5).refund(order=paid_tinkoff_order, amount=100)
+    time.sleep(10)
+
+    with pytest.raises(OrderRefunderException) as e:
+        refund(paid_tinkoff_order, 100)
+
+    assert "Up to 5 refunds per day are allowed" in str(e)
+
+
+def test_1_per_10_seconds_limit(paid_tinkoff_order, refund):
+    refund(paid_tinkoff_order, 100)
+
+    with pytest.raises(OrderRefunderException) as e:
+        refund(paid_tinkoff_order, 100)
+
+    assert "Up to 1 refund per 10 seconds is allowed" in str(e)
+
+
+def test_refund_shipped_unpaid_order_for_non_zero_amount(not_paid_order, refund):
+    with pytest.raises(OrderRefunderException) as e:
+        refund(not_paid_order, 100)
+
+    not_paid_order.refresh_from_db()
+    assert "Only 0 can be refunded for not paid order" in str(e)
+    assert not_paid_order.shipped is not None
+
+
+def test_refund_shipped_unpaid_order(not_paid_order, refund):
+    refund(not_paid_order, 0)
+
+    not_paid_order.refresh_from_db()
+    assert not_paid_order.shipped is None
+
+
+def test_refund_negative_amount(paid_tinkoff_order, refund):
+    with pytest.raises(OrderRefunderException) as e:
+        refund(paid_tinkoff_order, -1)
+
+    assert "Amount to refund should be more or equal 0" in str(e)
+
+
 @pytest.mark.freeze_time("2032-12-01 15:30Z")
 def test_set_order_unpaid_and_unshipped(paid_order, refund):
     refund(paid_order, paid_order.price)
@@ -125,15 +167,8 @@ def test_call_unshipper_to_unship(paid_order, refund, spy_unshipper):
     assert called_service.order == paid_order
 
 
-def test_do_not_set_unpaid_if_order_unpaid(not_paid_order, refund):
-    refund(not_paid_order, not_paid_order.price)
-
-    not_paid_order.refresh_from_db()
-    assert not_paid_order.paid is None
-
-
 def test_do_not_call_bank_refund_if_order_unpaid(not_paid_order, refund, mock_dolyame_refund):
-    refund(not_paid_order, not_paid_order.price)
+    refund(not_paid_order, 0)
 
     mock_dolyame_refund.assert_not_called()
 
@@ -154,7 +189,7 @@ def test_do_not_break_and_not_try_call_bank_refund_if_bank_id_is_empty(paid_orde
 
 
 def test_unship_order_despite_it_unpaid(not_paid_order, refund, spy_unshipper):
-    refund(not_paid_order, not_paid_order.price)
+    refund(not_paid_order, 0)
 
     spy_unshipper.assert_called_once()
 
@@ -362,22 +397,3 @@ def test_partial_refund_is_created(paid_tinkoff_order, refund, user):
     assert refund.order == paid_tinkoff_order
     assert refund.author == user
     assert refund.bank_id == paid_tinkoff_order.bank_id
-
-
-def test_5_per_day_limit(factory, paid_tinkoff_order, refund):
-    factory.cycle(5).refund(order=paid_tinkoff_order, amount=100)
-    time.sleep(10)
-
-    with pytest.raises(OrderRefunderException) as e:
-        refund(paid_tinkoff_order, 100)
-
-    assert "Up to 5 refunds per day are allowed" in str(e)
-
-
-def test_1_per_10_seconds_limit(paid_tinkoff_order, refund):
-    refund(paid_tinkoff_order, 100)
-
-    with pytest.raises(OrderRefunderException) as e:
-        refund(paid_tinkoff_order, 100)
-
-    assert "Up to 1 refund per 10 seconds is allowed" in str(e)

@@ -70,17 +70,32 @@ class OrderRefunder(BaseService):
         self.update_dashamail()
         return refund
 
-    def validate(self) -> None:
+    def get_validators(self) -> list:
+        return [
+            self.validate_throttling,
+            self.validate_partial_available,
+            self.validate_amount,
+        ]
+
+    def validate_throttling(self) -> None:
         if Refund.objects.last_ten_seconds(order_id=self.order.pk).count() >= 1:
             raise OrderRefunderException(_("Order has not been refunded. Up to 1 refund per 10 seconds is allowed. Please try again later."))
         if Refund.objects.today().count() >= 5:
             raise OrderRefunderException(_("Order has not been refunded. Up to 5 refunds per day are allowed. Please come back tomorrow."))
-        if self.amount != self.order.price and self.bank and not self.bank.is_partial_refund_available:
+
+    def validate_partial_available(self) -> None:
+        partial_available = self.bank.is_partial_refund_available if self.bank else True
+
+        if self.order.paid and self.amount != self.order.price is not None and not partial_available:
             raise OrderRefunderException(_("Partial refund is not available"))
+
+    def validate_amount(self) -> None:
+        if self.amount > 0 and not self.order.paid:
+            raise OrderRefunderException(_("Only 0 can be refunded for not paid order"))
         if self.order.price < self.amount:
             raise OrderRefunderException(_("Amount to refund is more than available"))
-        if self.amount <= 0:
-            raise OrderRefunderException(_("Amount to refund should be more than 0"))
+        if self.amount < 0:
+            raise OrderRefunderException(_("Amount to refund should be more or equal 0"))
 
     def create_refund_entry(self) -> Refund:
         return Refund.objects.create(
