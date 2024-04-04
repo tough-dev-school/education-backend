@@ -17,11 +17,11 @@ class OrderQuerySet(QuerySet):
     def paid(self) -> "OrderQuerySet":
         return self.filter(paid__isnull=False, price__gt=0)
 
-    def unpaid(self) -> "OrderQuerySet":
+    def not_paid(self) -> "OrderQuerySet":
         return self.filter(Q(paid__isnull=False, price=0) | Q(paid__isnull=True))
 
     def shipped_without_payment(self) -> "OrderQuerySet":
-        return self.unpaid().filter(shipped__isnull=False)
+        return self.not_paid().filter(shipped__isnull=False)
 
     def available_to_confirm(self) -> "OrderQuerySet":
         return self.filter(

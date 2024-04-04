@@ -57,8 +57,7 @@ class OrderRefunder(BaseService):
         refund = self.create_refund_entry()
         self.update_price()
 
-        if self.order.paid:
-            self.do_bank_refund_if_needed()
+        self.do_bank_refund()
 
         if not self.order.paid or self.order.price == 0:  # if afterward order was fully refunded or was never paid
             OrderUnshipper(order=self.order)()
@@ -105,8 +104,8 @@ class OrderRefunder(BaseService):
             bank_id=self.order.bank_id,
         )
 
-    def do_bank_refund_if_needed(self) -> None:
-        if self.bank and settings.BANKS_REFUNDS_ENABLED:
+    def do_bank_refund(self) -> None:
+        if self.amount and self.bank and settings.BANKS_REFUNDS_ENABLED:
             self.bank.refund(self.amount)
 
     def write_success_admin_log(self) -> None:
@@ -158,4 +157,4 @@ class OrderRefunder(BaseService):
 
     def update_price(self) -> None:
         self.order.price = self.order.price - self.amount
-        self.order.save(update_fields=["price"])
+        self.order.save(update_fields=["modified", "price"])
