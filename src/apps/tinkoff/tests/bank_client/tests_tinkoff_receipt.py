@@ -8,14 +8,14 @@ def user(order):
     return order.user
 
 
-def test_tinkoff_receipt(user, tinkoff) -> None:
+def test_tinkoff_receipt(user, tinkoff):
     got = tinkoff.get_receipt()
 
     assert got["Email"] == user.email
     assert got["Taxation"] == "usn_income"
 
 
-def test_tinkoff_items(tinkoff) -> None:
+def test_tinkoff_items(tinkoff):
     got = tinkoff.get_receipt()["Items"]
 
     assert len(got) == 1

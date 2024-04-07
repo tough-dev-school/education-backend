@@ -16,9 +16,9 @@ from apps.tinkoff.bank import TinkoffBank
         ("", TinkoffBank),
     ],
 )
-def test(desired, result) -> None:
+def test(desired, result):
     assert get_bank_or_default(desired) == result
 
 
-def test_default_bank() -> None:
+def test_default_bank():
     assert get_bank_or_default() == TinkoffBank

@@ -9,7 +9,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def _set_locale(settings) -> None:
+def _set_locale(settings):
     settings.LANGUAGE_CODE = "en"
 
 
@@ -29,7 +29,7 @@ def emoji(emoji_list):
 
 
 @pytest.mark.parametrize("emoji", ["👌", "🐍", "🧑🏿‍🦱", "👨‍👨‍👧‍👧"])
-def test_success_creation(create, user, answer, emoji) -> None:
+def test_success_creation(create, user, answer, emoji):
     reaction = create(emoji=emoji, author=user, answer=answer)
 
     assert reaction.emoji == emoji
@@ -37,19 +37,19 @@ def test_success_creation(create, user, answer, emoji) -> None:
     assert reaction.answer == answer
 
 
-def test_creation_with_custom_slug(create, user, answer) -> None:
+def test_creation_with_custom_slug(create, user, answer):
     reaction = create(emoji="👌", slug="3fa85f64-5717-4562-b3fc-2c963f66afa6", author=user, answer=answer)
 
     assert str(reaction.slug) == "3fa85f64-5717-4562-b3fc-2c963f66afa6"
 
 
 @pytest.mark.parametrize("emoji", ["👌🐍", "snake🐍", "🏝️rest", "🙃🙂", "✄"])
-def test_fail_if_not_a_single_emoji(create, user, answer, emoji) -> None:
+def test_fail_if_not_a_single_emoji(create, user, answer, emoji):
     with pytest.raises(ReactionCreatorException, match="Invalid emoji symbol"):
         create(emoji=emoji, author=user, answer=answer)
 
 
-def test_fail_if_user_rich_limit(create, user, answer, emoji_list) -> None:
+def test_fail_if_user_rich_limit(create, user, answer, emoji_list):
     limit = Reaction.MAX_REACTIONS_FROM_ONE_AUTHOR
     for i in range(limit):
         create(emoji=emoji_list[i], author=user, answer=answer)
@@ -58,7 +58,7 @@ def test_fail_if_user_rich_limit(create, user, answer, emoji_list) -> None:
         create(emoji=emoji_list[limit], author=user, answer=answer)
 
 
-def test_fail_if_user_made_same_reaction(create, user, answer, emoji) -> None:
+def test_fail_if_user_made_same_reaction(create, user, answer, emoji):
     create(emoji=emoji, author=user, answer=answer)
 
     with pytest.raises(ReactionCreatorException, match="Unique emoji per author"):

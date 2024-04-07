@@ -37,7 +37,7 @@ def call_purchase(api):
         " zaboy@gmail.com",
     ],
 )
-def test(call_purchase, bank, email) -> None:
+def test(call_purchase, bank, email):
     call_purchase(name="Забой Шахтёров", email=email)
 
     bank.assert_called_once()

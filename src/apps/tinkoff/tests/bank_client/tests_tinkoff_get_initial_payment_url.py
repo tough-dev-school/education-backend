@@ -13,7 +13,7 @@ def req(mocker):
     )
 
 
-def test_ok_initial_payment_url(tinkoff) -> None:
+def test_ok_initial_payment_url(tinkoff):
     tinkoff.m.post("https://securepay.tinkoff.ru/v2/Init/").respond(
         json={
             "Success": True,
@@ -24,7 +24,7 @@ def test_ok_initial_payment_url(tinkoff) -> None:
     assert tinkoff.get_initial_payment_url() == "https://pay.ment/url"
 
 
-def test_initial_payment_url_payload(tinkoff, req) -> None:
+def test_initial_payment_url_payload(tinkoff, req):
     assert tinkoff.get_initial_payment_url() == "https://mocked.in.fixture/"
 
     payload = req.call_args[1]["payload"]
@@ -39,5 +39,5 @@ def test_initial_payment_url_payload(tinkoff, req) -> None:
     assert "NotificationURL" in payload
 
 
-def test_notification_url(tinkoff) -> None:
+def test_notification_url(tinkoff):
     assert tinkoff.get_notification_url() == "https://tst.hst/api/v2/banking/tinkoff-notifications/"

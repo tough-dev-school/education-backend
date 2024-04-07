@@ -8,7 +8,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def _successful_create_response(post) -> None:
+def _successful_create_response(post):
     post.return_value = {
         "_links": {"self": {"href": "https://test.amocrm.ru/api/v4/catalogs/11271/elements"}},
         "_embedded": {
@@ -37,13 +37,13 @@ def _successful_create_response(post) -> None:
 
 
 @pytest.mark.usefixtures("_successful_create_response")
-def test_create_response(course) -> None:
+def test_create_response(course):
     got = AmoCRMProductDTO(course=course).create()
 
     assert got == 14229449
 
 
-def test_create_contact(course, post) -> None:
+def test_create_contact(course, post):
     AmoCRMProductDTO(course=course).create()
 
     post.assert_called_once_with(
@@ -62,7 +62,7 @@ def test_create_contact(course, post) -> None:
     )
 
 
-def test_update(course, patch) -> None:
+def test_update(course, patch):
     AmoCRMProductDTO(course=course).update()
 
     patch.assert_called_once_with(

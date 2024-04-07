@@ -11,7 +11,7 @@ pytestmark = [
 
 
 @pytest.fixture(autouse=True)
-def _cached_tokens() -> None:
+def _cached_tokens():
     cache.set("amocrm_access_token", "token")
     cache.set("amocrm_refresh_token", "refresh-token")
 
@@ -45,12 +45,12 @@ class MockResponse:
         ),
     ],
 )
-def test_format_url(url, expected) -> None:
+def test_format_url(url, expected):
     assert http.format_url(url) == expected
 
 
 @pytest.mark.parametrize(("method", "token"), [("post", "some-token"), ("patch", "another-token")])
-def test_request_has_authorization_header(method, token, mocker) -> None:
+def test_request_has_authorization_header(method, token, mocker):
     mock_request = mocker.patch(f"httpx.Client.{method}", return_value=MockResponse())
     cache.set("amocrm_access_token", token)
     request = getattr(http, method)
@@ -69,7 +69,7 @@ def test_request_has_authorization_header(method, token, mocker) -> None:
     )
 
 
-def test_get_ok(respx_mock) -> None:
+def test_get_ok(respx_mock):
     respx_mock.get(url="https://test.amocrm.ru/api/v4/companies?limit=100500").respond(json={"ok": True})
 
     got = http.get("api/v4/companies", params={"limit": 100500})
@@ -77,14 +77,14 @@ def test_get_ok(respx_mock) -> None:
     assert "ok" in got
 
 
-def test_get_ok_with_expected_status_code(respx_mock) -> None:
+def test_get_ok_with_expected_status_code(respx_mock):
     respx_mock.get(url="https://test.amocrm.ru/api/v4/companies?limit=100500").respond(json={"ok": True}, status_code=321)
     got = http.get("api/v4/companies", expected_status_codes=[321], params={"limit": 100500})
 
     assert "ok" in got
 
 
-def test_get_cached(respx_mock, amocrm_not_allowing_cache_headers) -> None:
+def test_get_cached(respx_mock, amocrm_not_allowing_cache_headers):
     respx_mock.get("https://test.amocrm.ru/api/v4/companies?limit=100500").respond(
         200,
         json={"ok": "bar"},
@@ -98,7 +98,7 @@ def test_get_cached(respx_mock, amocrm_not_allowing_cache_headers) -> None:
     assert "ok" in got  # client used cached value and didn't fail with 500
 
 
-def test_delete_ok(respx_mock) -> None:
+def test_delete_ok(respx_mock):
     respx_mock.delete(url="https://test.amocrm.ru/api/v4/transactions/444")
 
     got = http.delete("api/v4/transactions/444")
@@ -106,7 +106,7 @@ def test_delete_ok(respx_mock) -> None:
     assert got == {}
 
 
-def test_delete_ok_with_expected_status_code(respx_mock) -> None:
+def test_delete_ok_with_expected_status_code(respx_mock):
     respx_mock.delete(url="https://test.amocrm.ru/api/v4/transactions/444").respond(status_code=321)
 
     got = http.delete("api/v4/transactions/444", expected_status_codes=[321])
@@ -115,7 +115,7 @@ def test_delete_ok_with_expected_status_code(respx_mock) -> None:
 
 
 @pytest.mark.parametrize("method", ["post", "patch"])
-def test_request_ok(respx_mock, method) -> None:
+def test_request_ok(respx_mock, method):
     getattr(respx_mock, method)(url="https://test.amocrm.ru/api/v4/companies").respond(json={"ok": True})
     request = getattr(http, method)
 
@@ -125,7 +125,7 @@ def test_request_ok(respx_mock, method) -> None:
 
 
 @pytest.mark.parametrize("method", ["post", "patch"])
-def test_ok_with_expected_status_code(respx_mock, method) -> None:
+def test_ok_with_expected_status_code(respx_mock, method):
     getattr(respx_mock, method)(url="https://test.amocrm.ru/api/v4/companies").respond(json={"ok": True}, status_code=100500)
     request = getattr(http, method)
 
@@ -135,7 +135,7 @@ def test_ok_with_expected_status_code(respx_mock, method) -> None:
 
 
 @pytest.mark.parametrize("method", ["post", "patch"])
-def test_request_fail(respx_mock, method) -> None:
+def test_request_fail(respx_mock, method):
     getattr(respx_mock, method)(url="https://test.amocrm.ru/api/v4/companies").respond(status_code=210)
     request = getattr(http, method)
 
@@ -144,7 +144,7 @@ def test_request_fail(respx_mock, method) -> None:
 
 
 @pytest.mark.parametrize("method", ["post", "patch"])
-def test_request_fail_with_body(respx_mock, method) -> None:
+def test_request_fail_with_body(respx_mock, method):
     getattr(respx_mock, method)(url="https://test.amocrm.ru/api/v4/companies").respond(status_code=210, json={"info": "damn we lost"})
     request = getattr(http, method)
 
@@ -153,7 +153,7 @@ def test_request_fail_with_body(respx_mock, method) -> None:
 
 
 @pytest.mark.parametrize("method", ["post", "patch"])
-def test_request_fail_because_of_errors_in_response(respx_mock, method) -> None:
+def test_request_fail_because_of_errors_in_response(respx_mock, method):
     getattr(respx_mock, method)(url="https://test.amocrm.ru/api/v4/companies").respond(json={"_embedded": {"errors": [["All my life is an error"]]}})
     request = getattr(http, method)
 

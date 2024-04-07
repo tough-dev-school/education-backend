@@ -33,7 +33,7 @@ def dashamail_api(mocker):
 
 
 @pytest.mark.usefixtures("subscriber")
-def test_user_is_updated_when_he_exists(dashamail_api, user) -> None:
+def test_user_is_updated_when_he_exists(dashamail_api, user):
     DashamailSubscriber(user).subscribe()
 
     dashamail_api.assert_called_once_with(
@@ -57,7 +57,7 @@ def test_user_is_updated_when_he_exists(dashamail_api, user) -> None:
         ("hehe@yandex.ru", "hehe@yandex.ru"),
     ],
 )
-def test_user_gets_subscribed_when_he_didnt_exist(dashamail_api, user, email, expected) -> None:
+def test_user_gets_subscribed_when_he_didnt_exist(dashamail_api, user, email, expected):
     user.email = email
     DashamailSubscriber(user).subscribe()
 
@@ -74,7 +74,7 @@ def test_user_gets_subscribed_when_he_didnt_exist(dashamail_api, user, email, ex
 
 
 @pytest.mark.usefixtures("nonexistant_subscriber")
-def test_custom_list_id(dashamail_api, user) -> None:
+def test_custom_list_id(dashamail_api, user):
     DashamailSubscriber(user).subscribe(to=DashamailList(list_id=200500))
 
     dashamail_api.assert_called_once_with(

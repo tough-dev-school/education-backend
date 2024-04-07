@@ -14,7 +14,7 @@ def mock_group_push(mocker):
 
 
 @pytest.mark.usefixtures("_amocrm_groups")
-def test_save_amocrm_groups() -> None:
+def test_save_amocrm_groups():
     AmoCRMGroupsPusher()()
 
     assert Group.objects.get(slug="popug").amocrm_group.amocrm_id == 444

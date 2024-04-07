@@ -6,25 +6,25 @@ from apps.homework.models import AnswerCrossCheck
 pytestmark = [pytest.mark.django_db]
 
 
-def test_crosschecks_are_created(question_dispatcher) -> None:
+def test_crosschecks_are_created(question_dispatcher):
     question_dispatcher()
 
     assert AnswerCrossCheck.objects.count() == 2
 
 
-def test_question_method_does_the_same(question) -> None:
+def test_question_method_does_the_same(question):
     question.dispatch_crosscheck(answers_per_user=1)
 
     assert AnswerCrossCheck.objects.count() == 2
 
 
-def test_task_does_the_same(question) -> None:
+def test_task_does_the_same(question):
     tasks.disptach_crosscheck.delay(question_id=question.pk, answers_per_user=1)
 
     assert AnswerCrossCheck.objects.count() == 2
 
 
-def test_email_is_sent(question_dispatcher, send_mail, mocker, answers) -> None:
+def test_email_is_sent(question_dispatcher, send_mail, mocker, answers):
     question_dispatcher()
 
     assert send_mail.call_count == 2

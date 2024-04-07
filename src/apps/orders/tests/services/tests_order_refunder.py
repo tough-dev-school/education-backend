@@ -18,7 +18,7 @@ pytestmark = [
 
 
 @pytest.fixture(autouse=True)
-def _adjust_settings(settings) -> None:
+def _adjust_settings(settings):
     settings.BANKS_REFUNDS_ENABLED = True
     settings.ABSOLUTE_HOST = "http://absolute-url.url"
 
@@ -29,7 +29,7 @@ def _adjust_settings(settings) -> None:
 
 
 @pytest.fixture
-def _enable_amocrm(settings) -> None:
+def _enable_amocrm(settings):
     settings.AMOCRM_BASE_URL = "https://amo.amo.amo"
 
 
@@ -82,7 +82,7 @@ def refund():
 
 
 @pytest.mark.freeze_time("2032-12-01 15:30Z")
-def test_set_order_unpaid_and_unshipped(paid_order, refund) -> None:
+def test_set_order_unpaid_and_unshipped(paid_order, refund):
     refund(paid_order)
 
     paid_order.refresh_from_db()
@@ -92,13 +92,13 @@ def test_set_order_unpaid_and_unshipped(paid_order, refund) -> None:
     assert not hasattr(paid_order, "study"), "Study record should be deleted at this point"
 
 
-def test_refund_order_in_bank(paid_order, refund, mock_dolyame_refund) -> None:
+def test_refund_order_in_bank(paid_order, refund, mock_dolyame_refund):
     refund(paid_order)
 
     mock_dolyame_refund.assert_called_once()
 
 
-def test_call_unshipper_to_unship(paid_order, refund, spy_unshipper) -> None:
+def test_call_unshipper_to_unship(paid_order, refund, spy_unshipper):
     refund(paid_order)
 
     spy_unshipper.assert_called_once()
@@ -106,7 +106,7 @@ def test_call_unshipper_to_unship(paid_order, refund, spy_unshipper) -> None:
     assert called_service.order == paid_order
 
 
-def test_do_not_set_unpaid_if_order_unpaid(not_paid_order, refund) -> None:
+def test_do_not_set_unpaid_if_order_unpaid(not_paid_order, refund):
     refund(not_paid_order)
 
     not_paid_order.refresh_from_db()
@@ -114,13 +114,13 @@ def test_do_not_set_unpaid_if_order_unpaid(not_paid_order, refund) -> None:
     assert not_paid_order.unpaid is None
 
 
-def test_do_not_call_bank_refund_if_order_unpaid(not_paid_order, refund, mock_dolyame_refund) -> None:
+def test_do_not_call_bank_refund_if_order_unpaid(not_paid_order, refund, mock_dolyame_refund):
     refund(not_paid_order)
 
     mock_dolyame_refund.assert_not_called()
 
 
-def test_do_not_call_bank_refund_if_refunds_disabled(paid_order, refund, mock_dolyame_refund, settings) -> None:
+def test_do_not_call_bank_refund_if_refunds_disabled(paid_order, refund, mock_dolyame_refund, settings):
     settings.BANKS_REFUNDS_ENABLED = False
 
     refund(paid_order)
@@ -128,20 +128,20 @@ def test_do_not_call_bank_refund_if_refunds_disabled(paid_order, refund, mock_do
     mock_dolyame_refund.assert_not_called()
 
 
-def test_do_not_break_and_not_try_call_bank_refund_if_bank_id_is_empty(paid_order, refund) -> None:
+def test_do_not_break_and_not_try_call_bank_refund_if_bank_id_is_empty(paid_order, refund):
     paid_order.update(bank_id="")
 
     with does_not_raise():
         refund(paid_order)
 
 
-def test_unship_order_despite_it_unpaid(not_paid_order, refund, spy_unshipper) -> None:
+def test_unship_order_despite_it_unpaid(not_paid_order, refund, spy_unshipper):
     refund(not_paid_order)
 
     spy_unshipper.assert_called_once()
 
 
-def test_order_refunded_all_refund_watchers_notified(paid_order, refund, mock_send_mail, mocker) -> None:
+def test_order_refunded_all_refund_watchers_notified(paid_order, refund, mock_send_mail, mocker):
     refund(paid_order)
 
     mock_send_mail.assert_has_calls(
@@ -153,7 +153,7 @@ def test_order_refunded_all_refund_watchers_notified(paid_order, refund, mock_se
     )
 
 
-def test_refund_notification_email_context_and_template_correct(refund, paid_order, mock_send_mail, mocker) -> None:
+def test_refund_notification_email_context_and_template_correct(refund, paid_order, mock_send_mail, mocker):
     refund(paid_order)
 
     mock_send_mail.assert_called_with(
@@ -171,7 +171,7 @@ def test_refund_notification_email_context_and_template_correct(refund, paid_ord
     )
 
 
-def test_do_not_break_if_order_without_item_was_refunded(refund, paid_order, mock_send_mail, get_send_mail_call_email_context) -> None:
+def test_do_not_break_if_order_without_item_was_refunded(refund, paid_order, mock_send_mail, get_send_mail_call_email_context):
     paid_order.update(course=None)
 
     with does_not_raise():
@@ -181,14 +181,14 @@ def test_do_not_break_if_order_without_item_was_refunded(refund, paid_order, moc
     assert send_mail_context["refunded_item"] == "not-set"
 
 
-def test_break_if_current_user_could_not_be_captured(mocker, refund) -> None:
+def test_break_if_current_user_could_not_be_captured(mocker, refund):
     mocker.patch("apps.orders.services.order_refunder.get_current_user", return_value=None)
 
     with pytest.raises(AttributeError):
         refund(paid_order)
 
 
-def test_update_user_tags(paid_order, mock_rebuild_tags, refund) -> None:
+def test_update_user_tags(paid_order, mock_rebuild_tags, refund):
     paid_order.user.update(email="")
 
     refund(paid_order)
@@ -197,7 +197,7 @@ def test_update_user_tags(paid_order, mock_rebuild_tags, refund) -> None:
 
 
 @pytest.mark.dashamail()
-def test_update_dashamail(paid_order, refund, mocker) -> None:
+def test_update_dashamail(paid_order, refund, mocker):
     update_subscription = mocker.patch("apps.dashamail.tasks.DashamailSubscriber.subscribe")
 
     refund(paid_order)
@@ -206,7 +206,7 @@ def test_update_dashamail(paid_order, refund, mocker) -> None:
 
 
 @pytest.mark.usefixtures("_enable_amocrm")
-def test_amocrm_is_updated(paid_order, refund, mocker) -> None:
+def test_amocrm_is_updated(paid_order, refund, mocker):
     push_user = mocker.patch("apps.amocrm.tasks.AmoCRMUserPusher.__call__")
     push_order = mocker.patch("apps.amocrm.tasks.AmoCRMOrderPusher.__call__")
 
@@ -216,7 +216,7 @@ def test_amocrm_is_updated(paid_order, refund, mocker) -> None:
     push_order.assert_called_once()
 
 
-def test_fail_if_bank_is_set_but_unknown(paid_order, refund) -> None:
+def test_fail_if_bank_is_set_but_unknown(paid_order, refund):
     paid_order.update(bank_id="tinkoff_credit")
 
     with pytest.raises(BankDoesNotExist, match="does not exists"):
@@ -225,7 +225,7 @@ def test_fail_if_bank_is_set_but_unknown(paid_order, refund) -> None:
 
 @pytest.mark.auditlog()
 @pytest.mark.freeze_time()
-def test_success_admin_log_created(paid_order, refund, user) -> None:
+def test_success_admin_log_created(paid_order, refund, user):
     refund(paid_order)
 
     log = LogEntry.objects.get()

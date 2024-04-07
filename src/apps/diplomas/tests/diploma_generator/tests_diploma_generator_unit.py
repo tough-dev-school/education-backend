@@ -8,7 +8,7 @@ pytestmark = [
 ]
 
 
-def test_study_object(generator, order) -> None:
+def test_study_object(generator, order):
     generator = generator(language="RU")
 
     assert generator.study == order.study, "study object is returned"
@@ -23,7 +23,7 @@ def test_study_object(generator, order) -> None:
         (User.GENDERS.MALE, "m"),
     ],
 )
-def test_sex(generator, gender, expected) -> None:
+def test_sex(generator, gender, expected):
     generator = generator(language="RU")
     generator.student.gender = gender
 
@@ -32,7 +32,7 @@ def test_sex(generator, gender, expected) -> None:
     assert template_context["sex"] == expected
 
 
-def test_user_name_ru(generator) -> None:
+def test_user_name_ru(generator):
     generator = generator(language="RU")
     generator.student.first_name = "Авраам"
     generator.student.last_name = "Линкольн"
@@ -42,7 +42,7 @@ def test_user_name_ru(generator) -> None:
     assert template_context["name"] == "Авраам Линкольн"
 
 
-def test_user_name_en(generator) -> None:
+def test_user_name_en(generator):
     generator = generator(language="EN")
     generator.student.first_name_en = "Abraham"
     generator.student.last_name_en = "Lincoln"
@@ -52,7 +52,7 @@ def test_user_name_en(generator) -> None:
     assert template_context["name"] == "Abraham Lincoln"
 
 
-def test_additional_course_context(generator, course) -> None:
+def test_additional_course_context(generator, course):
     course.update(diploma_template_context={"test": "__mocked"})
 
     generator = generator(language="RU")
@@ -62,14 +62,14 @@ def test_additional_course_context(generator, course) -> None:
     assert template_context["test"] == "__mocked"
 
 
-def test_bad_language(generator) -> None:
+def test_bad_language(generator):
     generator = generator(language="EN")
 
     with pytest.raises(DiplomaTemplate.DoesNotExist):
         generator.get_external_service_url()
 
 
-def test_no_template_for_homework(generator, order) -> None:
+def test_no_template_for_homework(generator, order):
     order.study.update(homework_accepted=True)
 
     generator = generator(language="RU")
@@ -78,7 +78,7 @@ def test_no_template_for_homework(generator, order) -> None:
         generator.get_external_service_url()
 
 
-def test_external_service_url(generator, settings) -> None:
+def test_external_service_url(generator, settings):
     settings.DIPLOMA_GENERATOR_HOST = "https://secret.generator.com/"
 
     generator = generator(language="RU")

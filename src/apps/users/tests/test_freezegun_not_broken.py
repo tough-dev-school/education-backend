@@ -8,7 +8,7 @@ pytestmark = [
 
 
 @pytest.mark.freeze_time("2022-11-23")
-def test_queryset_return_updated_data_while_time_freezed() -> None:
+def test_queryset_return_updated_data_while_time_freezed():
     """
     Django-cachalot uses time as a key for cache and does not compatible with `freezegun`.
     Test to be sure that queryset returns updated data == cachalot is disabled.

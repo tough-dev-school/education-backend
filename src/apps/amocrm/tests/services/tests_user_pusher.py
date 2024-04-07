@@ -9,7 +9,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def _mock_create(mocker) -> None:
+def _mock_create(mocker):
     mocker.patch("apps.amocrm.dto.customer.AmoCRMCustomerDTO.create", return_value=(4444, 5555))
 
 
@@ -19,7 +19,7 @@ def mock_update(mocker):
 
 
 @pytest.mark.usefixtures("_mock_create")
-def test_create_user(user) -> None:
+def test_create_user(user):
     AmoCRMUserPusher(user=user)()
 
     amocrm_user = AmoCRMUser.objects.get()
@@ -28,7 +28,7 @@ def test_create_user(user) -> None:
 
 
 @pytest.mark.usefixtures("amocrm_user")
-def test_update_user(user, mock_update) -> None:
+def test_update_user(user, mock_update):
     AmoCRMUserPusher(user=user)()
 
     mock_update.assert_called_once()

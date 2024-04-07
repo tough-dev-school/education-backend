@@ -12,13 +12,13 @@ def order(factory, course, user):
     return order
 
 
-def test_sending_mail(course, user, send_mail) -> None:
+def test_sending_mail(course, user, send_mail):
     course.send_email_to_all_purchased_users(template_id="100500")
 
     send_mail.assert_called_once_with(to=user.email, template_id="100500")
 
 
-def test_non_purchased(course, send_mail, order) -> None:
+def test_non_purchased(course, send_mail, order):
     order.refund()
 
     course.send_email_to_all_purchased_users(template_id="100500")

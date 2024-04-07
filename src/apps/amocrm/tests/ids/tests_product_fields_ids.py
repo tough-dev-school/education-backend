@@ -28,13 +28,13 @@ def mock_get_catalog_fields(mocker, fields):
     return mocker.patch("apps.amocrm.dto.catalogs.AmoCRMCatalogsDTO.get_fields", return_value=fields)
 
 
-def test_return_id_if_in_cache(group_field) -> None:
+def test_return_id_if_in_cache(group_field):
     got = product_field_id("GROUP")
 
     assert got == group_field.id
 
 
-def test_fail_if_not_in_cache_and_not_in_response(mock_get_catalog_fields) -> None:
+def test_fail_if_not_in_cache_and_not_in_response(mock_get_catalog_fields):
     mock_get_catalog_fields.return_value = [types.CatalogField(id=123, code="EXTERNAL_ID")]
 
     with pytest.raises(AmoCRMCacheException):

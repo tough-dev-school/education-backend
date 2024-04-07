@@ -5,7 +5,7 @@ pytestmark = [
 ]
 
 
-def test_items(dolyame) -> None:
+def test_items(dolyame):
     got = dolyame.get_items()
 
     assert len(got) == 1
@@ -20,7 +20,7 @@ def test_items(dolyame) -> None:
     assert got[0]["receipt"]["measurement_unit"] == "шт"
 
 
-def test_user(dolyame) -> None:
+def test_user(dolyame):
     got = dolyame.get_client_info()
 
     assert got["first_name"] == "Авраам Соломонович"

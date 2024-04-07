@@ -40,7 +40,7 @@ def tinkoff(paid_tinkoff_order):
     return TinkoffBank(order=paid_tinkoff_order)
 
 
-def test_send_correct_refund_request(tinkoff, retrieve_request_json) -> None:
+def test_send_correct_refund_request(tinkoff, retrieve_request_json):
     tinkoff.refund()
 
     refund_request = retrieve_request_json()

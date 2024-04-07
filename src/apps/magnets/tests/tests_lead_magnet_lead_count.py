@@ -17,13 +17,13 @@ def another_campaign(mixer):
     return mixer.blend("magnets.EmailLeadMagnetCampaign")
 
 
-def test_zero() -> None:
+def test_zero():
     campaign = get_annotated_campaign()
 
     assert campaign.lead_count == 0
 
 
-def test_two(mixer, campaign) -> None:
+def test_two(mixer, campaign):
     mixer.cycle(2).blend("magnets.LeadCampaignLogEntry", campaign=campaign)
 
     campaign = get_annotated_campaign()
@@ -31,7 +31,7 @@ def test_two(mixer, campaign) -> None:
     assert campaign.lead_count == 2
 
 
-def test_another_campaign(mixer, another_campaign) -> None:
+def test_another_campaign(mixer, another_campaign):
     mixer.cycle(2).blend("magnets.LeadCampaignLogEntry", campaign=another_campaign)
 
     campaign = get_annotated_campaign()

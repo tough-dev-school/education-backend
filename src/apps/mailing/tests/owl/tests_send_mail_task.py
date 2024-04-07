@@ -26,13 +26,13 @@ ARGS = dict(
 )
 
 
-def test_init(init) -> None:
+def test_init(init):
     send_mail(**ARGS)
 
     init.assert_called_once_with(**ARGS)
 
 
-def test_call(call) -> None:
+def test_call(call):
     send_mail(**ARGS)
 
     call.assert_called_once()

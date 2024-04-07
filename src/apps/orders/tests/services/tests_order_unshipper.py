@@ -32,7 +32,7 @@ def unship(order):
 
 
 @pytest.mark.freeze_time("2023-01-20 08:00Z")
-def test_unshipper_actually_unship_order_and_item_and_nothing_else(order, unship, mock_item_unshipping) -> None:
+def test_unshipper_actually_unship_order_and_item_and_nothing_else(order, unship, mock_item_unshipping):
     unship()
 
     order.refresh_from_db()
@@ -42,7 +42,7 @@ def test_unshipper_actually_unship_order_and_item_and_nothing_else(order, unship
     mock_item_unshipping.assert_called_once()
 
 
-def test_does_not_unship_twice(unship, mock_item_unshipping, mocker) -> None:
+def test_does_not_unship_twice(unship, mock_item_unshipping, mocker):
     mock_order_save = mocker.patch("apps.orders.models.Order.save")
     unship()
 
@@ -52,7 +52,7 @@ def test_does_not_unship_twice(unship, mock_item_unshipping, mocker) -> None:
     mock_item_unshipping.assert_called_once()
 
 
-def test_does_not_break_if_item_not_set(order, unship, mock_item_unshipping) -> None:
+def test_does_not_break_if_item_not_set(order, unship, mock_item_unshipping):
     order.update(course=None)
 
     unship()

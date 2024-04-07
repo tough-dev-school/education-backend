@@ -17,7 +17,7 @@ def owl(mocker):
 
 @pytest.fixture
 def assert_message_is_sent(owl, study):
-    def _assert(message: Message, to: User | None = None, reset: bool | None = True) -> None:
+    def _assert(message: Message, to: User | None = None, reset: bool | None = True):
         student = to or study.student
         owl.assert_any_call(
             to=student.email,
@@ -51,7 +51,7 @@ def another_study(another_order):
     return another_order.study
 
 
-def test(parent_message, message, assert_message_is_sent, freezer) -> None:
+def test(parent_message, message, assert_message_is_sent, freezer):
     tasks.send_active_chains()
     assert_message_is_sent(parent_message)  # root message is sent for the first time
 
@@ -61,7 +61,7 @@ def test(parent_message, message, assert_message_is_sent, freezer) -> None:
     assert_message_is_sent(message)  # second message is sent
 
 
-def test_two_users(parent_message, message, assert_message_is_sent, freezer, study, another_study) -> None:
+def test_two_users(parent_message, message, assert_message_is_sent, freezer, study, another_study):
     tasks.send_active_chains()
 
     assert_message_is_sent(parent_message, to=study.student, reset=False)
@@ -74,7 +74,7 @@ def test_two_users(parent_message, message, assert_message_is_sent, freezer, stu
     assert_message_is_sent(message, to=another_study.student)
 
 
-def test_second_message_is_not_sent_when_it_is_too_early(parent_message, assert_message_is_sent, assert_nothing_is_sent) -> None:
+def test_second_message_is_not_sent_when_it_is_too_early(parent_message, assert_message_is_sent, assert_nothing_is_sent):
     tasks.send_active_chains()
     assert_message_is_sent(parent_message)  # root message is sent for the first time
 
@@ -82,9 +82,7 @@ def test_second_message_is_not_sent_when_it_is_too_early(parent_message, assert_
     assert_nothing_is_sent()  # nothing should be sent right after that, cuz time has not come
 
 
-def test_message_is_not_sent_when_study_model_disappeares_during_learning(
-    parent_message, assert_message_is_sent, assert_nothing_is_sent, freezer, order
-) -> None:
+def test_message_is_not_sent_when_study_model_disappeares_during_learning(parent_message, assert_message_is_sent, assert_nothing_is_sent, freezer, order):
     tasks.send_active_chains()
     assert_message_is_sent(parent_message)  # root message is sent for the first time
 
@@ -95,7 +93,7 @@ def test_message_is_not_sent_when_study_model_disappeares_during_learning(
     assert_nothing_is_sent()  # nothing should be sent cuz student has canceled learning
 
 
-def test_message_is_not_sent_when_sending_is_disabled(assert_nothing_is_sent, chain) -> None:
+def test_message_is_not_sent_when_sending_is_disabled(assert_nothing_is_sent, chain):
     chain.update(sending_is_active=False)
 
     tasks.send_active_chains()

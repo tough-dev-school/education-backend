@@ -38,7 +38,7 @@ def req(order):
 
 
 @pytest.mark.usefixtures("_disable_token_validation")
-def test_success_creation(anon, req, order) -> None:
+def test_success_creation(anon, req, order):
     anon.post("/api/v2/banking/tinkoff-notifications/", req, expected_status_code=200)
 
     instance = PaymentNotification.objects.last()
@@ -58,7 +58,7 @@ def test_success_creation(anon, req, order) -> None:
 
 
 @pytest.mark.usefixtures("_disable_token_validation")
-def test_success_response(anon, req) -> None:
+def test_success_response(anon, req):
     got = anon.post("/api/v2/banking/tinkoff-notifications/", req, expected_status_code=200)
 
     assert got == "OK"
@@ -66,13 +66,13 @@ def test_success_response(anon, req) -> None:
 
 @pytest.mark.parametrize("card_id", ["", None])
 @pytest.mark.usefixtures("_disable_token_validation")
-def test_empty_card_id(anon, req, card_id) -> None:
+def test_empty_card_id(anon, req, card_id):
     req["CardId"] = card_id
 
     anon.post("/api/v2/banking/tinkoff-notifications/", req, expected_status_code=200)
 
 
-def test_creation_with_invalid_token(anon, req) -> None:
+def test_creation_with_invalid_token(anon, req):
     req["Token"] = "1nv4l1d"
 
     with pytest.raises(TinkoffPaymentNotificationInvalidToken):

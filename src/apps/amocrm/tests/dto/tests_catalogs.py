@@ -9,7 +9,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def _successful_get_catalogs_response(get) -> None:
+def _successful_get_catalogs_response(get):
     get.return_value = {
         "_links": {"self": {"href": "/api/v4/catalogs", "method": "get"}},
         "_embedded": {
@@ -48,7 +48,7 @@ def _successful_get_catalogs_response(get) -> None:
 
 
 @pytest.fixture
-def _successful_get_fields_response(get) -> None:
+def _successful_get_fields_response(get):
     get.return_value = {
         "_total_items": 5,
         "_page": 1,
@@ -100,7 +100,7 @@ def _successful_get_fields_response(get) -> None:
 
 
 @pytest.mark.usefixtures("_successful_get_catalogs_response")
-def test_get_returns_list_of_catalogs() -> None:
+def test_get_returns_list_of_catalogs():
     got = AmoCRMCatalogsDTO.get()
 
     assert got == [
@@ -109,7 +109,7 @@ def test_get_returns_list_of_catalogs() -> None:
     ]
 
 
-def test_get_catalogs_call_url(get) -> None:
+def test_get_catalogs_call_url(get):
     AmoCRMCatalogsDTO.get()
 
     get.assert_called_once_with(
@@ -120,7 +120,7 @@ def test_get_catalogs_call_url(get) -> None:
 
 
 @pytest.mark.usefixtures("_successful_get_fields_response")
-def test_get_fields_returns_list_of_fields() -> None:
+def test_get_fields_returns_list_of_fields():
     got = AmoCRMCatalogsDTO.get_fields(catalog_id=777)
 
     assert got == [
@@ -129,7 +129,7 @@ def test_get_fields_returns_list_of_fields() -> None:
     ]
 
 
-def test_get_fields_call_url(get) -> None:
+def test_get_fields_call_url(get):
     AmoCRMCatalogsDTO.get_fields(catalog_id=777)
 
     get.assert_called_once_with(
@@ -140,7 +140,7 @@ def test_get_fields_call_url(get) -> None:
 
 
 @pytest.mark.usefixtures("_successful_get_fields_response")
-def test_get_contacts_fields_returns_list_of_fields() -> None:
+def test_get_contacts_fields_returns_list_of_fields():
     got = AmoCRMCatalogsDTO.get_contacts_fields()
 
     assert got == [
@@ -149,7 +149,7 @@ def test_get_contacts_fields_returns_list_of_fields() -> None:
     ]
 
 
-def test_get_contacts_fields_call_url(get) -> None:
+def test_get_contacts_fields_call_url(get):
     AmoCRMCatalogsDTO.get_contacts_fields()
 
     get.assert_called_once_with(

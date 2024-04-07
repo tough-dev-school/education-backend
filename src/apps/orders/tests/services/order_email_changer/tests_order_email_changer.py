@@ -42,7 +42,7 @@ def subscribe(mocker):
     return mocker.patch("apps.dashamail.tasks.update_subscription.delay")
 
 
-def test_user_is_changed(email_changer, user, order) -> None:
+def test_user_is_changed(email_changer, user, order):
     changer = email_changer(order, email=user.email)
 
     changer()
@@ -53,7 +53,7 @@ def test_user_is_changed(email_changer, user, order) -> None:
     assert order.user.last_name == "Otkhodov"
 
 
-def test_initial_user_name_is_not_changed_during_email_change(email_changer, user, order) -> None:
+def test_initial_user_name_is_not_changed_during_email_change(email_changer, user, order):
     changer = email_changer(order, email=user.email)
 
     changer()
@@ -63,7 +63,7 @@ def test_initial_user_name_is_not_changed_during_email_change(email_changer, use
     assert user.last_name == "Otkhodov"
 
 
-def test_user_is_created_if_email_does_not_exist(email_changer, order) -> None:
+def test_user_is_created_if_email_does_not_exist(email_changer, order):
     changer = email_changer(order, email="circus@gmail.com")
 
     changer()
@@ -74,7 +74,7 @@ def test_user_is_created_if_email_does_not_exist(email_changer, order) -> None:
     assert order.user.last_name == ""
 
 
-def test_order_not_reshipped_when_it_is_not_paid(email_changer, order, ship, unship) -> None:
+def test_order_not_reshipped_when_it_is_not_paid(email_changer, order, ship, unship):
     order.paid = None
     changer = email_changer(order, email="circus@gmail.com")
 
@@ -84,7 +84,7 @@ def test_order_not_reshipped_when_it_is_not_paid(email_changer, order, ship, uns
     unship.assert_not_called()
 
 
-def test_order_is_reshipped_when_it_was_paid(email_changer, factory, course, ship, unship, user) -> None:
+def test_order_is_reshipped_when_it_was_paid(email_changer, factory, course, ship, unship, user):
     order = factory.order(item=course, is_paid=True)
     changer = email_changer(order=order, email=user.email)
 
@@ -94,7 +94,7 @@ def test_order_is_reshipped_when_it_was_paid(email_changer, factory, course, shi
     unship.assert_called_once_with(order=order)
 
 
-def test_first_and_last_name_remain_the_same_after_email_change(email_changer, factory, user, course) -> None:
+def test_first_and_last_name_remain_the_same_after_email_change(email_changer, factory, user, course):
     order = factory.order(user=user, item=course)
     changer = email_changer(order, email="circus@gmail.com")
 
@@ -105,7 +105,7 @@ def test_first_and_last_name_remain_the_same_after_email_change(email_changer, f
     assert order.user.last_name == "Otkhodov"
 
 
-def test_paid_date_is_not_changed_during_email_changing(email_changer, user, order) -> None:
+def test_paid_date_is_not_changed_during_email_changing(email_changer, user, order):
     """Important business story: paid date is not altered during course change"""
     order.update(paid="2001-01-01 15:30+00:00")
     changer = email_changer(order, email=user.email)

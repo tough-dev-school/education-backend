@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Never
 
 from django.utils.translation import gettext_lazy as _
 
@@ -23,7 +23,7 @@ class Record(Shippable):
     def name_genitive(self) -> str:
         return self.course.name_genitive
 
-    def save(self, *args: Any, **kwargs: Any) -> None:
+    def save(self, *args: Any, **kwargs: Any) -> Never:
         raise RuntimeError("Deprecated model")
 
     def get_url(self, expires: int = 30 * 24 * 60 * 60) -> str:

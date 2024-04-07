@@ -6,7 +6,7 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture(autouse=True)
-def _freeze_sender(settings) -> None:
+def _freeze_sender(settings):
     settings.DEFAULT_FROM_EMAIL = "Jesus Christ <me@christ.com>"
 
 
@@ -18,24 +18,24 @@ def _freeze_sender(settings) -> None:
         ({"a": "b"}, {"a": "b"}),
     ],
 )
-def test_ctx_dict(ctx, expected) -> None:
+def test_ctx_dict(ctx, expected):
     owl = Owl("test@test.org", 100500, ctx=ctx)
     assert owl.msg.merge_global_data == expected
 
 
-def test_subject() -> None:
+def test_subject():
     owl = Owl("test@test.org", 100500, subject="Some email subject")
 
     assert owl.subject == "Some email subject"
 
 
-def test_omitted_subject() -> None:
+def test_omitted_subject():
     owl = Owl("test@test.org", 100500)
 
     assert owl.subject == ""
 
 
-def test_msg_params() -> None:
+def test_msg_params():
     owl = Owl("test@test.org", 100500, subject="Some email subject", ctx={"a": "b"})
 
     assert owl.msg.from_email == "Jesus Christ <me@christ.com>"

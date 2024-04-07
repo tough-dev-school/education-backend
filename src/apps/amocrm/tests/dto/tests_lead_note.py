@@ -4,7 +4,7 @@ from apps.amocrm.dto import AmoCRMLeadNoteDTO
 
 
 @pytest.fixture
-def _successful_create_lead_note_response(post) -> None:
+def _successful_create_lead_note_response(post):
     post.return_value = {
         "_links": {"self": {"href": "https://thelord.amocrm.ru/api/v4/leads/1781381/notes"}},
         "_embedded": {
@@ -26,7 +26,7 @@ def dto():
 
 
 @pytest.mark.usefixtures("_successful_create_lead_note_response")
-def test_create_service_message_call_amo_crm_client_with_correct_params(dto, post) -> None:
+def test_create_service_message_call_amo_crm_client_with_correct_params(dto, post):
     got = dto.create_service_message(
         lead_id=1781381,
         service_name="🤖 🏦 🤖",

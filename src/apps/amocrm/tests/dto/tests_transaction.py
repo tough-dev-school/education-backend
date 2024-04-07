@@ -8,7 +8,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def _successful_create_transaction_response(post) -> None:
+def _successful_create_transaction_response(post):
     post.return_value = {
         "_total_items": 1,
         "_embedded": {
@@ -26,13 +26,13 @@ def _successful_create_transaction_response(post) -> None:
 
 
 @pytest.mark.usefixtures("_successful_create_transaction_response")
-def test_create(order) -> None:
+def test_create(order):
     transaction_id = AmoCRMTransactionDTO(order=order).create()
 
     assert transaction_id == 684537
 
 
-def test_create_call(order, post) -> None:
+def test_create_call(order, post):
     AmoCRMTransactionDTO(order=order).create()
 
     post.assert_called_once_with(
@@ -57,7 +57,7 @@ def test_create_call(order, post) -> None:
     )
 
 
-def test_delete_call(order, delete) -> None:
+def test_delete_call(order, delete):
     AmoCRMTransactionDTO(order=order).delete()
 
     delete.assert_called_once_with(

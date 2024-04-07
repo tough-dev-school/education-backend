@@ -13,7 +13,7 @@ pytestmark = [pytest.mark.django_db]
         ("", "male"),
     ],
 )
-def test_printable_gender(mixer, gender, expected) -> None:
+def test_printable_gender(mixer, gender, expected):
     user = mixer.blend("users.User", gender=gender)
 
     assert user.get_printable_gender() == expected

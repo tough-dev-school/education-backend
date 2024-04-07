@@ -20,7 +20,7 @@ pytestmark = [
         ("> а хули ты?", "<blockquote>\n<p>а хули ты?</p>\n</blockquote>"),
     ],
 )
-def test_markdown_gets_sanitized(api, answer, text, expected) -> None:
+def test_markdown_gets_sanitized(api, answer, text, expected):
     answer.update(text=text)
 
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")

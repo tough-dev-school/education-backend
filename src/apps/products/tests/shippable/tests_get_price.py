@@ -15,7 +15,7 @@ def test_promocode(mixer):
     return mixer.blend("orders.PromoCode", name="TESTCODE", discount_percent=10)
 
 
-def test_get_price(course) -> None:
+def test_get_price(course):
     assert course.get_price() == Decimal("100500.00")
 
 
@@ -28,5 +28,5 @@ def test_get_price(course) -> None:
         ("NONEXISTANT_PROMO_CODE_FROM_EV1L_H4XX0R", "100500"),
     ],
 )
-def test_get_price_with_promocode(course, promocode, expected) -> None:
+def test_get_price_with_promocode(course, promocode, expected):
     assert course.get_price(promocode=promocode) == Decimal(expected)

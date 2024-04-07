@@ -30,38 +30,38 @@ def initial_token(api):
         return get_jwt(api.user)
 
 
-def test_refresh_token_ok(initial_token, refresh_token) -> None:
+def test_refresh_token_ok(initial_token, refresh_token):
     got = refresh_token(initial_token)
 
     assert "token" in got
 
 
-def test_refreshed_token_is_a_token(initial_token, refresh_token) -> None:
+def test_refreshed_token_is_a_token(initial_token, refresh_token):
     got = refresh_token(initial_token)
 
     assert len(got["token"]) > 32
 
 
-def test_refreshed_token_is_new_one(initial_token, refresh_token) -> None:
+def test_refreshed_token_is_new_one(initial_token, refresh_token):
     got = refresh_token(initial_token)
 
     assert got["token"] != initial_token
 
 
-def test_refresh_token_fails_with_incorrect_previous_token(refresh_token) -> None:
+def test_refresh_token_fails_with_incorrect_previous_token(refresh_token):
     got = refresh_token("some-invalid-previous-token", expected_status_code=400)
 
     assert "non_field_errors" in got
 
 
-def test_token_is_not_allowed_to_refresh_if_expired(initial_token, refresh_token) -> None:
+def test_token_is_not_allowed_to_refresh_if_expired(initial_token, refresh_token):
     with freeze_time("2049-02-05"):
         got = refresh_token(initial_token, expected_status_code=400)
 
     assert "expired" in got["non_field_errors"][0]
 
 
-def test_received_token_works(anon, refresh_token, initial_token) -> None:
+def test_received_token_works(anon, refresh_token, initial_token):
     token = refresh_token(initial_token)["token"]
 
     anon.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")

@@ -3,7 +3,7 @@ import pytest
 pytestmark = [pytest.mark.django_db]
 
 
-def test_item(stripe) -> None:
+def test_item(stripe):
     result = stripe.get_items()
 
     assert result == [
@@ -29,7 +29,7 @@ def test_item(stripe) -> None:
         (105, 200),
     ],
 )
-def test_price(stripe, price, expected) -> None:
+def test_price(stripe, price, expected):
     stripe.order.update(price=price)
 
     result = stripe.get_items()

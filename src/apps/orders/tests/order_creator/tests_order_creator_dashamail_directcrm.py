@@ -28,13 +28,13 @@ def course(factory, group):
     return factory.course(group=group)
 
 
-def test_event_is_pushed(create, user, course, update_dashamail_directcrm) -> None:
+def test_event_is_pushed(create, user, course, update_dashamail_directcrm):
     create(user=user, item=course)
 
     update_dashamail_directcrm.assert_called_once()
 
 
-def test_user_is_subscribed_to_the_dedicated_maillist(create, user, course, update_dashamail) -> None:
+def test_user_is_subscribed_to_the_dedicated_maillist(create, user, course, update_dashamail):
     create(user=user, item=course)
 
     update_dashamail.assert_called_once_with(to=DashamailList(list_id=500500))

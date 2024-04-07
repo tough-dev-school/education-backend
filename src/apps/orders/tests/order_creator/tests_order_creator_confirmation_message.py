@@ -11,17 +11,17 @@ def send_mail(mocker):
 
 
 @pytest.fixture(autouse=True)
-def _freeze_frontend_host(settings) -> None:
+def _freeze_frontend_host(settings):
     settings.FRONTEND_URL = "https://school.host"
 
 
-def test_message_is_not_sent_by_default(create, user, course, send_mail) -> None:
+def test_message_is_not_sent_by_default(create, user, course, send_mail):
     create(user=user, item=course)
 
     send_mail.assert_not_called()
 
 
-def test_message_is_not_sent_on_non_free_courses(course, send_mail) -> None:
+def test_message_is_not_sent_on_non_free_courses(course, send_mail):
     course.update(
         confirmation_template_id="test-confirmation-template-id",
         price=100500,
@@ -30,7 +30,7 @@ def test_message_is_not_sent_on_non_free_courses(course, send_mail) -> None:
     send_mail.assert_not_called()
 
 
-def test_message_is_sent_when_course_has_confirmation_template_id(create, user, course, send_mail) -> None:
+def test_message_is_sent_when_course_has_confirmation_template_id(create, user, course, send_mail):
     course.update(
         confirmation_template_id="test-confirmation-template-id",
         price=0,

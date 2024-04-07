@@ -15,7 +15,7 @@ def spy_stripe_webhook_handler(mocker):
     return mocker.spy(StripeWebhookHandler, "__call__")
 
 
-def test_checkout_session_completed(anon, webhook_checkout_session_completed, order, spy_stripe_webhook_handler) -> None:
+def test_checkout_session_completed(anon, webhook_checkout_session_completed, order, spy_stripe_webhook_handler):
     anon.post("/api/v2/banking/stripe-webhooks/", webhook_checkout_session_completed, expected_status_code=200)
 
     stripe_notification = StripeNotification.objects.last()
@@ -25,7 +25,7 @@ def test_checkout_session_completed(anon, webhook_checkout_session_completed, or
 
 
 @pytest.mark.usefixtures("stripe_notification_checkout_completed")
-def test_charge_refunded(anon, webhook_charge_refunded, order, spy_stripe_webhook_handler) -> None:
+def test_charge_refunded(anon, webhook_charge_refunded, order, spy_stripe_webhook_handler):
     anon.post("/api/v2/banking/stripe-webhooks/", webhook_charge_refunded, expected_status_code=200)
 
     stripe_notification = StripeNotification.objects.last()
@@ -34,7 +34,7 @@ def test_charge_refunded(anon, webhook_charge_refunded, order, spy_stripe_webhoo
     spy_stripe_webhook_handler.assert_called_once()
 
 
-def test_raise_if_signature_not_valid(anon, webhook_checkout_session_completed, mocker, spy_stripe_webhook_handler) -> None:
+def test_raise_if_signature_not_valid(anon, webhook_checkout_session_completed, mocker, spy_stripe_webhook_handler):
     mocker.patch(
         "stripe.webhook.WebhookSignature.verify_header",
         side_effect=stripe.error.SignatureVerificationError("invalid signature", sig_header="not-valid-signature"),

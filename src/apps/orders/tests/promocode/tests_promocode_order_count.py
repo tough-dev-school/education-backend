@@ -17,13 +17,13 @@ def another_promocode(mixer):
     return mixer.blend(PromoCode, discount_percent=15)
 
 
-def test_zero() -> None:
+def test_zero():
     promocode = get_annotated_promocode()
 
     assert promocode.order_count == 0
 
 
-def test_two(factory, ten_percent_promocode) -> None:
+def test_two(factory, ten_percent_promocode):
     factory.cycle(2).order(promocode=ten_percent_promocode, is_paid=True)
 
     promocode = get_annotated_promocode()
@@ -31,7 +31,7 @@ def test_two(factory, ten_percent_promocode) -> None:
     assert promocode.order_count == 2
 
 
-def test_another_promocode(factory, another_promocode) -> None:
+def test_another_promocode(factory, another_promocode):
     factory.cycle(2).order(promocode=another_promocode, is_paid=True)
 
     promocode = get_annotated_promocode()
@@ -39,7 +39,7 @@ def test_another_promocode(factory, another_promocode) -> None:
     assert promocode.order_count == 0
 
 
-def test_not_paid_orders(factory, ten_percent_promocode) -> None:
+def test_not_paid_orders(factory, ten_percent_promocode):
     factory.cycle(2).order(promocode=ten_percent_promocode, is_paid=False)
 
     promocode = get_annotated_promocode()

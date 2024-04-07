@@ -14,7 +14,7 @@ def order(factory):
 
 
 @pytest.fixture(autouse=True)
-def _disable_dolyame_authn(mocker) -> None:
+def _disable_dolyame_authn(mocker):
     mocker.patch("apps.tinkoff.api.permissions.DolyameNetmaskPermission.has_permission", return_value=True)
 
 
@@ -41,7 +41,7 @@ def notification(order):
     return _notification
 
 
-def test_ok(api, order, notification) -> None:
+def test_ok(api, order, notification):
     api.post(
         "/api/v2/banking/dolyame-notifications/",
         notification(
@@ -56,7 +56,7 @@ def test_ok(api, order, notification) -> None:
 
 
 @pytest.mark.parametrize("status", ["approved", "rejected"])
-def test_wr0ng_status(api, order, notification, status) -> None:
+def test_wr0ng_status(api, order, notification, status):
     api.post(
         "/api/v2/banking/dolyame-notifications/",
         notification(

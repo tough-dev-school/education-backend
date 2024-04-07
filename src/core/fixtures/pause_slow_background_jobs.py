@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.fixture(autouse=True)
-def _pause_auditlog(mocker, request) -> None:
+def _pause_auditlog(mocker, request):
     if request.node.get_closest_marker("auditlog") is None:
         mocker.patch("core.tasks.write_admin_log.write_admin_log.delay")
 
@@ -11,7 +11,7 @@ def _pause_auditlog(mocker, request) -> None:
 
 
 @pytest.fixture(autouse=True)
-def _pause_dashamail(mocker, request) -> None:
+def _pause_dashamail(mocker, request):
     """Pause dashamail background jobs"""
     if request.node.get_closest_marker("dashamail") is None:
         mocker.patch("apps.dashamail.tasks.update_subscription.delay")
@@ -27,7 +27,7 @@ def _pause_dashamail(mocker, request) -> None:
 
 
 @pytest.fixture(autouse=True)
-def _pause_tags(mocker, request) -> None:
+def _pause_tags(mocker, request):
     """Pause background flags rebuilding"""
     if request.node.get_closest_marker("user_tags_rebuild") is None:
         mocker.patch("apps.users.tasks.rebuild_tags.delay")

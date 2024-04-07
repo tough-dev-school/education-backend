@@ -35,7 +35,7 @@ def diploma_generator(mocker):
 
 
 @pytest.mark.parametrize("language", [Languages.RU, Languages.EN])
-def test_single_language(diploma_generator, order, student, course, template, language) -> None:
+def test_single_language(diploma_generator, order, student, course, template, language):
     template.update(language=language)
 
     OrderDiplomaGenerator(order=order)()
@@ -47,7 +47,7 @@ def test_single_language(diploma_generator, order, student, course, template, la
     )
 
 
-def test_task(diploma_generator, order, student, course) -> None:
+def test_task(diploma_generator, order, student, course):
     tasks.generate_diploma.delay(order_id=order.id)
 
     diploma_generator.assert_called_once_with(
@@ -57,7 +57,7 @@ def test_task(diploma_generator, order, student, course) -> None:
     )
 
 
-def test_student_without_a_name_does_not_get_the_diploma(diploma_generator, order, mocker) -> None:
+def test_student_without_a_name_does_not_get_the_diploma(diploma_generator, order, mocker):
     mocker.patch("apps.users.models.User.get_printable_name", return_value=None)
 
     tasks.generate_diploma.delay(order_id=order.id)
@@ -65,7 +65,7 @@ def test_student_without_a_name_does_not_get_the_diploma(diploma_generator, orde
     diploma_generator.assert_not_called()
 
 
-def test_do_not_generate_diploma_for_order_not_matched_homework_accepted(diploma_generator, template, order) -> None:
+def test_do_not_generate_diploma_for_order_not_matched_homework_accepted(diploma_generator, template, order):
     template.update(homework_accepted=True)
 
     OrderDiplomaGenerator(order=order)()

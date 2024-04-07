@@ -5,10 +5,10 @@ from apps.tinkoff.dolyame import Dolyame
 
 
 class Command(BaseCommand):
-    def add_arguments(self, parser) -> None:
+    def add_arguments(self, parser):
         parser.add_argument("order_ids", nargs="+", type=int)
 
-    def handle(self, *args, **options) -> None:
+    def handle(self, *args, **options):
         for order_id in options["order_ids"]:
             order = Order.objects.get(pk=order_id)
             dolyame = Dolyame(order=order)

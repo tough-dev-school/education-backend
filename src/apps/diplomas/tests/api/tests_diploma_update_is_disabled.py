@@ -10,7 +10,7 @@ def api(api):
     return api
 
 
-def test(api, factory, diploma) -> None:
+def test(api, factory, diploma):
     api.put(
         f"/api/v2/diplomas/{diploma.slug}/",
         {

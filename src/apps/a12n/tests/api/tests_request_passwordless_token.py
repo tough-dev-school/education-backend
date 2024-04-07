@@ -16,11 +16,11 @@ def user(mixer):
 
 
 @pytest.fixture(autouse=True)
-def _freeze_frontend_url(mocker) -> None:
+def _freeze_frontend_url(mocker):
     mocker.patch("apps.a12n.models.PasswordlessAuthToken.get_absolute_url", return_value="https://frontend/auth/__TOKEN__")
 
 
-def test_token_is_created(anon, user) -> None:
+def test_token_is_created(anon, user):
     anon.get("/api/v2/auth/passwordless-token/request/zer0c00l@h4xx.net/")
 
     token = PasswordlessAuthToken.objects.last()
@@ -31,7 +31,7 @@ def test_token_is_created(anon, user) -> None:
     assert token.used is None
 
 
-def test_email_is_sent(anon, send_mail) -> None:
+def test_email_is_sent(anon, send_mail):
     anon.get("/api/v2/auth/passwordless-token/request/zer0c00l@h4xx.net/")
 
     send_mail.assert_called_once_with(
@@ -52,20 +52,20 @@ def test_email_is_sent(anon, send_mail) -> None:
         " ",
     ],
 )
-def test_ev1l_user(anon, send_mail, email) -> None:
+def test_ev1l_user(anon, send_mail, email):
     anon.get(f"/api/v2/auth/passwordless-token/request/{email}/")
 
     assert PasswordlessAuthToken.objects.count() == 0
     send_mail.assert_not_called()
 
 
-def test_email_case_sensitive(anon) -> None:
+def test_email_case_sensitive(anon):
     anon.get("/api/v2/auth/passwordless-token/request/ZER0C00L@h4xx.net/")
 
     assert PasswordlessAuthToken.objects.count() == 0
 
 
-def test_disabled_user_with_the_same_email_does_not_break_authentication(user, anon, mixer) -> None:
+def test_disabled_user_with_the_same_email_does_not_break_authentication(user, anon, mixer):
     mixer.blend("users.User", email=user.email, is_active=False)
 
     anon.get("/api/v2/auth/passwordless-token/request/zer0c00l@h4xx.net/")
@@ -73,7 +73,7 @@ def test_disabled_user_with_the_same_email_does_not_break_authentication(user, a
     assert PasswordlessAuthToken.objects.last().user == user
 
 
-def test_uses_passwordless_template_id_settings(anon, settings, send_mail) -> None:
+def test_uses_passwordless_template_id_settings(anon, settings, send_mail):
     settings.PASSWORDLESS_TOKEN_TEMPLATE_ID = "new-passwordless-template-id"
 
     anon.get("/api/v2/auth/passwordless-token/request/zer0c00l@h4xx.net/")

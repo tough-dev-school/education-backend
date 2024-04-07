@@ -18,25 +18,25 @@ def get(dispatcher, answers):
     return _get
 
 
-def test_already_checked_answers_are_excluded(get, user, mixer, answers) -> None:
+def test_already_checked_answers_are_excluded(get, user, mixer, answers):
     mixer.blend("homework.AnswerCrossCheck", answer=answers[0], checker=user)
 
     assert get(user) != answers[0]
 
 
-def test_answers_with_exclude_flag_are_excluded(get, user) -> None:
+def test_answers_with_exclude_flag_are_excluded(get, user):
     Answer.objects.all().update(do_not_crosscheck=True)
 
     assert get(user) is None
 
 
-def test_answer_authors_are_excluded(get, user, answers) -> None:
+def test_answer_authors_are_excluded(get, user, answers):
     answers[0].update(author=user)
 
     assert get(user) != answers[0]
 
 
-def test_answers_without_crosschecks_are_preferred(get, user, another_user, mixer, answers) -> None:
+def test_answers_without_crosschecks_are_preferred(get, user, another_user, mixer, answers):
     mixer.blend("homework.AnswerCrossCheck", answer=answers[1], checker=user)
 
     assert get(another_user) == answers[0]

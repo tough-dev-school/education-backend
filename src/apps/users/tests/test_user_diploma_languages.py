@@ -28,7 +28,7 @@ def create_user(mixer):
         ("", "", "", "", set()),
     ],
 )
-def test_diploma_languages(create_user, first_name_ru, last_name_ru, first_name_en, last_name_en, expected_languages) -> None:
+def test_diploma_languages(create_user, first_name_ru, last_name_ru, first_name_en, last_name_en, expected_languages):
     user = create_user(first_name_ru, last_name_ru, first_name_en, last_name_en)
 
     assert user.diploma_languages == expected_languages

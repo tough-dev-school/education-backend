@@ -8,7 +8,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def _successful_create_customer_response(post) -> None:
+def _successful_create_customer_response(post):
     post.return_value = {
         "_links": {"self": {"href": "https://test.amocrm.ru/api/v4/customers"}},
         "_embedded": {
@@ -31,7 +31,7 @@ def _successful_create_customer_response(post) -> None:
 
 
 @pytest.fixture
-def _successful_create_contact_response(post) -> None:
+def _successful_create_contact_response(post):
     post.return_value = {
         "_links": {"self": {"href": "https://test.amocrm.ru/api/v4/contacts"}},
         "_embedded": {
@@ -49,7 +49,7 @@ def _successful_create_contact_response(post) -> None:
 
 
 @pytest.fixture
-def _mock_create_calls(mocker) -> None:
+def _mock_create_calls(mocker):
     mocker.patch("apps.amocrm.dto.customer.AmoCRMCustomerDTO._create_customer", return_value=11111)
     mocker.patch("apps.amocrm.dto.customer.AmoCRMCustomerDTO._create_contact", return_value=22222)
     mocker.patch("apps.amocrm.dto.customer.AmoCRMCustomerDTO._link_customer_to_contact", return_value=None)
@@ -66,7 +66,7 @@ def mock_update_contact(mocker):
 
 
 @pytest.mark.usefixtures("_mock_create_calls")
-def test_create(user) -> None:
+def test_create(user):
     customer_id, contact_id = AmoCRMCustomerDTO(user=user).create()
 
     assert customer_id == 11111
@@ -74,7 +74,7 @@ def test_create(user) -> None:
 
 
 @pytest.mark.usefixtures("amocrm_user")
-def test_update(user, mock_update_customer, mock_update_contact) -> None:
+def test_update(user, mock_update_customer, mock_update_contact):
     AmoCRMCustomerDTO(user=user).update()
 
     mock_update_customer.assert_called_once_with(customer_id=4444)
@@ -82,13 +82,13 @@ def test_update(user, mock_update_customer, mock_update_contact) -> None:
 
 
 @pytest.mark.usefixtures("_successful_create_contact_response")
-def test_create_contact_response(user) -> None:
+def test_create_contact_response(user):
     got = AmoCRMCustomerDTO(user=user)._create_contact()
 
     assert got == 72845935
 
 
-def test_create_contact(user, post) -> None:
+def test_create_contact(user, post):
     AmoCRMCustomerDTO(user=user)._create_contact()
 
     post.assert_called_once_with(
@@ -104,7 +104,7 @@ def test_create_contact(user, post) -> None:
     )
 
 
-def test_update_contact(user, patch) -> None:
+def test_update_contact(user, patch):
     AmoCRMCustomerDTO(user=user)._update_contact(contact_id=5555)
 
     patch.assert_called_once_with(
@@ -122,13 +122,13 @@ def test_update_contact(user, patch) -> None:
 
 
 @pytest.mark.usefixtures("_successful_create_customer_response")
-def test_create_customer_response(user) -> None:
+def test_create_customer_response(user):
     got = AmoCRMCustomerDTO(user=user)._create_customer()
 
     assert got == 1369385
 
 
-def test_create_customer(user, post) -> None:
+def test_create_customer(user, post):
     AmoCRMCustomerDTO(user=user)._create_customer()
 
     post.assert_called_once_with(
@@ -142,7 +142,7 @@ def test_create_customer(user, post) -> None:
     )
 
 
-def test_update_customer(user, patch) -> None:
+def test_update_customer(user, patch):
     AmoCRMCustomerDTO(user=user)._update_customer(customer_id=5555)
 
     patch.assert_called_once_with(
@@ -157,7 +157,7 @@ def test_update_customer(user, patch) -> None:
     )
 
 
-def test_link_customer_to_contact(user, post) -> None:
+def test_link_customer_to_contact(user, post):
     AmoCRMCustomerDTO(user=user)._link_customer_to_contact(customer_id=5555, contact_id=8888)
 
     post.assert_called_once_with(

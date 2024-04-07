@@ -10,5 +10,5 @@ def api(api):
     return api
 
 
-def test(api, diploma) -> None:
+def test(api, diploma):
     api.delete(f"/api/v2/diplomas/{diploma.slug}/", expected_status_code=405)

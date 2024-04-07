@@ -18,7 +18,7 @@ def lead_data():
     }
 
 
-def test_creating(api, lead_data) -> None:
+def test_creating(api, lead_data):
     api.post("/api/v2/leads/email/eggs/", lead_data, format="multipart")
 
     created = get_user()
@@ -28,14 +28,14 @@ def test_creating(api, lead_data) -> None:
     assert created.email == "monty@python.org"
 
 
-def test_creating_response(api, lead_data) -> None:
+def test_creating_response(api, lead_data):
     got = api.post("/api/v2/leads/email/eggs/", lead_data, format="multipart")
 
     assert got["ok"] is True
     assert got["message"] == "No spam, only ham"
 
 
-def test_nameless(api, lead_data) -> None:
+def test_nameless(api, lead_data):
     del lead_data["name"]
 
     api.post("/api/v2/leads/email/eggs/", lead_data, format="multipart")
@@ -45,13 +45,13 @@ def test_nameless(api, lead_data) -> None:
     assert created.email == "monty@python.org"
 
 
-def test_emailless_should_fail(api, lead_data) -> None:
+def test_emailless_should_fail(api, lead_data):
     del lead_data["email"]
 
     api.post("/api/v2/leads/email/eggs/", lead_data, format="multipart", expected_status_code=400)
 
 
-def test_recaptcha_fail(api, lead_data, settings) -> None:
+def test_recaptcha_fail(api, lead_data, settings):
     settings.DRF_RECAPTCHA_TESTING_PASS = False
 
     got = api.post("/api/v2/leads/email/eggs/", lead_data, format="multipart", expected_status_code=400)

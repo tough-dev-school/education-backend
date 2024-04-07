@@ -30,7 +30,7 @@ def payload(student, course, image):
     }
 
 
-def test_uploading(api, payload, course, student) -> None:
+def test_uploading(api, payload, course, student):
     api.user.add_perm("diplomas.diploma.add_diploma")
 
     api.post("/api/v2/diplomas/", payload, format="multipart")
@@ -45,9 +45,9 @@ def test_uploading(api, payload, course, student) -> None:
     assert created.image.path.endswith(".gif")
 
 
-def test_no_anon(anon, payload) -> None:
+def test_no_anon(anon, payload):
     anon.post("/api/v2/diplomas/", payload, format="multipart", expected_status_code=401)
 
 
-def test_no_perm(api, payload) -> None:
+def test_no_perm(api, payload):
     api.post("/api/v2/diplomas/", payload, format="multipart", expected_status_code=403)

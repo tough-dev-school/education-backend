@@ -7,7 +7,7 @@ pytestmark = [
 
 
 @pytest.fixture(autouse=True)
-def _enable_passwordless_token_expiration(settings) -> None:
+def _enable_passwordless_token_expiration(settings):
     settings.DANGEROUSLY_MAKE_ONE_TIME_PASSWORDLESS_TOKEN_MULTI_PASS = False
 
 
@@ -30,23 +30,23 @@ def get_token(api):
     return _get_token
 
 
-def test_invalid_token(get_token) -> None:
+def test_invalid_token(get_token):
     get_token("1nvalid", expected_status_code=404)
 
 
-def test_expired_token(get_token, token) -> None:
+def test_expired_token(get_token, token):
     token.update(expires="1999-01-01 00:00+04:00")
 
     get_token(token=str(token.token), expected_status_code=404)
 
 
-def test_valid_token(get_token, token) -> None:
+def test_valid_token(get_token, token):
     got = get_token(token=str(token.token))
 
     assert len(got["token"]) > 32  # every stuff that is long enough, may be a JWT token
 
 
-def test_token_is_marked_as_used(get_token, token) -> None:
+def test_token_is_marked_as_used(get_token, token):
     get_token(token=str(token.token))
 
     token.refresh_from_db()
@@ -65,7 +65,7 @@ def test_token_is_marked_as_used(get_token, token) -> None:
         (lambda *args: "sh1t", 401),
     ],
 )
-def test_received_token_works(get_token, anon, token, extract_token, status_code) -> None:
+def test_received_token_works(get_token, anon, token, extract_token, status_code):
     token = extract_token(get_token(token=str(token.token)))
 
     anon.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")

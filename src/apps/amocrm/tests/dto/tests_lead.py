@@ -8,7 +8,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def _successful_create_lead_response(post) -> None:
+def _successful_create_lead_response(post):
     post.return_value = [
         {
             "id": 11111,
@@ -36,13 +36,13 @@ def mock_update_price(mocker):
 
 
 @pytest.mark.usefixtures("mock_create_lead", "mock_link_course_to_lead", "mock_update_price")
-def test_create_return_lead_id(order) -> None:
+def test_create_return_lead_id(order):
     lead_id = AmoCRMLeadDTO(order=order).create()
 
     assert lead_id == 11111
 
 
-def test_create(order, mock_create_lead, mock_link_course_to_lead, mock_update_price) -> None:
+def test_create(order, mock_create_lead, mock_link_course_to_lead, mock_update_price):
     AmoCRMLeadDTO(order=order).create()
 
     mock_create_lead.assert_called_once()
@@ -51,13 +51,13 @@ def test_create(order, mock_create_lead, mock_link_course_to_lead, mock_update_p
 
 
 @pytest.mark.usefixtures("_successful_create_lead_response")
-def test_create_lead_response(order) -> None:
+def test_create_lead_response(order):
     got = AmoCRMLeadDTO(order=order)._create_lead()
 
     assert got == 11111
 
 
-def test_create_lead(order, post) -> None:
+def test_create_lead(order, post):
     AmoCRMLeadDTO(order=order)._create_lead()
 
     post.assert_called_once_with(
@@ -74,7 +74,7 @@ def test_create_lead(order, post) -> None:
     )
 
 
-def test_update_lead_status(order, patch) -> None:
+def test_update_lead_status(order, patch):
     AmoCRMLeadDTO(order=order).update(status="closed")
 
     patch.assert_called_once_with(
@@ -91,7 +91,7 @@ def test_update_lead_status(order, patch) -> None:
     )
 
 
-def test_update_lead(order, patch) -> None:
+def test_update_lead(order, patch):
     AmoCRMLeadDTO(order=order).update()
 
     patch.assert_called_once_with(
@@ -107,7 +107,7 @@ def test_update_lead(order, patch) -> None:
     )
 
 
-def test_link_course_to_lead(order, post) -> None:
+def test_link_course_to_lead(order, post):
     AmoCRMLeadDTO(order=order)._link_course_to_lead(lead_id=5555, course_id=8888)
 
     post.assert_called_once_with(

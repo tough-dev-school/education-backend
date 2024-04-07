@@ -17,7 +17,7 @@ def order(factory):
 
 
 @pytest.mark.parametrize("model", ["order", "Order", "ORDER", "OrDeR"])
-def test_model_param_is_case_insensitive(model, order, user) -> None:
+def test_model_param_is_case_insensitive(model, order, user):
     with does_not_raise():
         write_admin_log.delay(
             action_flag=CHANGE,

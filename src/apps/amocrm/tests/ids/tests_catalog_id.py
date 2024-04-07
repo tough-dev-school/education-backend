@@ -23,13 +23,13 @@ def mock_get_catalogs(mocker, catalogs):
     return mocker.patch("apps.amocrm.dto.catalogs.AmoCRMCatalogsDTO.get", return_value=catalogs)
 
 
-def test_return_catalog_id(products_catalog) -> None:
+def test_return_catalog_id(products_catalog):
     got = products_catalog_id()
 
     assert got == products_catalog.id
 
 
-def test_fail_if_no_products_catalog(mock_get_catalogs) -> None:
+def test_fail_if_no_products_catalog(mock_get_catalogs):
     mock_get_catalogs.return_value = [types.Catalog(id=111, name="NotWhatINeed", type="sad-story")]
 
     with pytest.raises(AmoCRMCacheException):

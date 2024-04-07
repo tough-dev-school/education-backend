@@ -10,11 +10,11 @@ pytestmark = [
 
 
 @pytest.fixture(autouse=True)
-def _mock_response(respx_mock: MockRouter) -> None:
+def _mock_response(respx_mock: MockRouter):
     respx_mock.route().respond(content=b"TYPICAL MAC USER JPG")
 
 
-def test_service(generator, student, course) -> None:
+def test_service(generator, student, course):
     generator = generator(language="RU")
 
     diploma = generator()
@@ -24,7 +24,7 @@ def test_service(generator, student, course) -> None:
     assert diploma.study.course == course
 
 
-def test_diploma_is_regenerated_when_it_already_exists(generator, student, course) -> None:
+def test_diploma_is_regenerated_when_it_already_exists(generator, student, course):
     generator = generator(language="RU")
 
     first_diploma = generator()
@@ -36,7 +36,7 @@ def test_diploma_is_regenerated_when_it_already_exists(generator, student, cours
     assert second_diploma.study.course == course
 
 
-def test_task(student, course) -> None:
+def test_task(student, course):
     generate_diploma.delay(student_id=student.id, course_id=course.id, language="RU")
 
     diploma = Diploma.objects.get(study__student=student, study__course=course)

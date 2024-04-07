@@ -5,7 +5,7 @@ from apps.dashamail.directcrm import events
 pytestmark = [pytest.mark.django_db]
 
 
-def test_order_created(order) -> None:
+def test_order_created(order):
     event = events.OrderCreated(order)
 
     assert event.to_json() == {
@@ -27,7 +27,7 @@ def test_order_created(order) -> None:
     }
 
 
-def test_order_paid(order) -> None:
+def test_order_paid(order):
     event = events.OrderPaid(order)
 
     assert event.to_json() == {

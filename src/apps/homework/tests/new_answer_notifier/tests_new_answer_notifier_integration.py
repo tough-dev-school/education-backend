@@ -13,7 +13,7 @@ def commenter(mixer):
 
 
 @pytest.fixture(autouse=True)
-def _enable_new_answer_notification(settings) -> None:
+def _enable_new_answer_notification(settings):
     settings.DISABLE_NEW_ANSWER_NOTIFICATIONS = False
 
 
@@ -39,7 +39,7 @@ def reply(api):
     return _reply
 
 
-def test_notifying_author(reply, answer, get_notified_users) -> None:
+def test_notifying_author(reply, answer, get_notified_users):
     reply(
         answer,
         {
@@ -50,7 +50,7 @@ def test_notifying_author(reply, answer, get_notified_users) -> None:
     assert get_notified_users() == [answer.author.email]
 
 
-def test_not_notifying_commenter(reply, answer, commenter, get_notified_users) -> None:
+def test_not_notifying_commenter(reply, answer, commenter, get_notified_users):
     reply(
         answer,
         {
@@ -62,7 +62,7 @@ def test_not_notifying_commenter(reply, answer, commenter, get_notified_users) -
     assert commenter.email not in get_notified_users()
 
 
-def test_notifying_another_commenter(reply, answer, another_user, commenter, get_notified_users) -> None:
+def test_notifying_another_commenter(reply, answer, another_user, commenter, get_notified_users):
     reply(
         answer,
         {
@@ -82,7 +82,7 @@ def test_notifying_another_commenter(reply, answer, another_user, commenter, get
     assert set(get_notified_users()) == {answer.author.email, answer.author.email, commenter.email}
 
 
-def test_disabling_feature_disables_sending(reply, answer, settings, get_notified_users) -> None:
+def test_disabling_feature_disables_sending(reply, answer, settings, get_notified_users):
     settings.DISABLE_NEW_ANSWER_NOTIFICATIONS = True
 
     reply(
@@ -95,7 +95,7 @@ def test_disabling_feature_disables_sending(reply, answer, settings, get_notifie
     assert get_notified_users() == []
 
 
-def test_editing_answer_does_not_send_email_for_the_second_time(reply, answer, get_notified_users) -> None:
+def test_editing_answer_does_not_send_email_for_the_second_time(reply, answer, get_notified_users):
     reply(
         answer,
         {

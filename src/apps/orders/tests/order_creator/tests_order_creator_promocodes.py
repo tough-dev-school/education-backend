@@ -22,7 +22,7 @@ def testcode(mixer):
         ("3V1l", 100500),
     ],
 )
-def test(promocode, expected, user, course, create) -> None:
+def test(promocode, expected, user, course, create):
     order = create(user=user, item=course, promocode=promocode)
 
     order.refresh_from_db()

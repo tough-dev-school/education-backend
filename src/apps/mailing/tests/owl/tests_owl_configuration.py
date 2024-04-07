@@ -15,7 +15,7 @@ TEST_REPLY_TO = "Mark Z Humanizm attorney <devnull@fb.com>"
 
 
 @pytest.fixture(autouse=True)
-def _settings(settings) -> None:
+def _settings(settings):
     settings.DEBUG = False
     settings.EMAIL_BACKEND = DEFAULT_BACKEND
     settings.DEFAULT_FROM_EMAIL = DEFAULT_FROM_EMAIL
@@ -43,26 +43,26 @@ def owl(owl):
     return owl()
 
 
-def test_defaults(owl) -> None:
+def test_defaults(owl):
     assert owl.backend_name == DEFAULT_BACKEND
     assert owl.msg.from_email == DEFAULT_FROM_EMAIL
     assert owl.msg.reply_to == [DEFAULT_REPLY_TO]
 
 
 @pytest.mark.usefixtures("configuration")
-def test_custom(owl) -> None:
+def test_custom(owl):
     assert owl.backend_name == TEST_BACKEND
     assert owl.msg.from_email == TEST_FROM_EMAIL
     assert owl.msg.reply_to == [TEST_REPLY_TO]
 
 
-def test_default_backend_for_configuration_with_unset_backend(owl, configuration) -> None:
+def test_default_backend_for_configuration_with_unset_backend(owl, configuration):
     configuration.return_value.backend = EmailConfiguration.BACKEND.UNSET
 
     assert owl.backend_name == DEFAULT_BACKEND
 
 
-def test_backend_options_are_applyed(owl, configuration, mocker) -> None:
+def test_backend_options_are_applyed(owl, configuration, mocker):
     configuration.return_value.backend_options = {"test": "__mocked"}
 
     backend_init = mocker.patch(f"{TEST_BACKEND}.__init__", return_value=None)

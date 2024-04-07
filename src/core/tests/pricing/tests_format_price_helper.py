@@ -17,9 +17,9 @@ pytestmark = [pytest.mark.django_db]
         ("0.5", "0,5"),
     ],
 )
-def test(input, expected) -> None:
+def test(input, expected):
     assert format_price(Decimal(input)) == expected
 
 
-def test_None() -> None:
+def test_None():
     assert format_price(None) == "0"

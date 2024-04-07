@@ -4,7 +4,7 @@ from django.core import mail
 pytestmark = [pytest.mark.django_db]
 
 
-def test_sending(owl) -> None:
+def test_sending(owl):
     owl()()
 
     assert len(mail.outbox) == 1
@@ -16,7 +16,7 @@ def test_sending(owl) -> None:
         lambda settings: setattr(settings, "EMAIL_ENABLED", False),
     ],
 )
-def test_kill_switch(owl, switch, settings) -> None:
+def test_kill_switch(owl, switch, settings):
     switch(settings)
 
     owl()()

@@ -7,7 +7,7 @@ from apps.tinkoff.models import DolyameNotification
 pytestmark = [pytest.mark.django_db]
 
 
-def test_data(api, order, notification, payment_schedule) -> None:
+def test_data(api, order, notification, payment_schedule):
     api.post("/api/v2/banking/dolyame-notifications/", notification(status="approved", payment_schedule=payment_schedule), expected_status_code=200)
 
     notification = DolyameNotification.objects.last()
@@ -26,7 +26,7 @@ def test_data(api, order, notification, payment_schedule) -> None:
 
 
 @pytest.mark.parametrize("status", ["rejected", "canceled", "committed", "refunded"])
-def test_status(api, notification, status) -> None:
+def test_status(api, notification, status):
     api.post("/api/v2/banking/dolyame-notifications/", notification(status=status), expected_status_code=200)
 
     notification = DolyameNotification.objects.last()
@@ -34,13 +34,13 @@ def test_status(api, notification, status) -> None:
     assert notification.status == status
 
 
-def test_autocommit_is_sent(api, notification, order, respx_mock) -> None:
+def test_autocommit_is_sent(api, notification, order, respx_mock):
     respx_mock.post(url=f"https://partner.dolyame.ru/v1/orders/{order.slug}/commit").respond(json={})
 
     api.post("/api/v2/banking/dolyame-notifications/", notification(status="wait_for_commit"), expected_status_code=200)
 
 
-def test_permission(fake_client, notification) -> None:
+def test_permission(fake_client, notification):
     fake_client.post("/api/v2/banking/dolyame-notifications/", notification(status="approved"), expected_status_code=401)
 
     assert not DolyameNotification.objects.exists()

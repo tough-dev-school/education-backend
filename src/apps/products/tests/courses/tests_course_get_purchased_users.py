@@ -18,27 +18,27 @@ def another_order(factory, user):
 
 
 @pytest.mark.usefixtures("user")
-def test_nothing(course) -> None:
+def test_nothing(course):
     assert len(course.get_purchased_users()) == 0
 
 
 @pytest.mark.usefixtures("order")
-def test_one_user(course, user) -> None:
+def test_one_user(course, user):
     assert user in course.get_purchased_users()
 
 
-def test_single_user_in_two_orders(course, order, another_order) -> None:
+def test_single_user_in_two_orders(course, order, another_order):
     another_order.update(course=order.course)
 
     assert len(course.get_purchased_users()) == 1
 
 
-def test_non_purchased(course, order) -> None:
+def test_non_purchased(course, order):
     order.refund()
 
     assert len(course.get_purchased_users()) == 0
 
 
 @pytest.mark.usefixtures("another_order")
-def test_another_order(course) -> None:
+def test_another_order(course):
     assert len(course.get_purchased_users()) == 0

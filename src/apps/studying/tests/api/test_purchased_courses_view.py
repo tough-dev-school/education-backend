@@ -3,7 +3,7 @@ import pytest
 pytestmark = [pytest.mark.django_db]
 
 
-def test_list(api, course) -> None:
+def test_list(api, course):
     got = api.get("/api/v2/studies/purchased/")["results"]
 
     assert got[0]["id"] == course.id
@@ -15,13 +15,13 @@ def test_list(api, course) -> None:
 
 
 @pytest.mark.usefixtures("unpaid_order")
-def test_list_includes_only_purchased(api) -> None:
+def test_list_includes_only_purchased(api):
     got = api.get("/api/v2/studies/purchased/")["results"]
 
     assert len(got) == 0
 
 
-def test_list_excludes_courses_that_should_not_be_displayed_in_lms(api, course) -> None:
+def test_list_excludes_courses_that_should_not_be_displayed_in_lms(api, course):
     course.update(display_in_lms=False)
 
     got = api.get("/api/v2/studies/purchased/")["results"]
@@ -29,7 +29,7 @@ def test_list_excludes_courses_that_should_not_be_displayed_in_lms(api, course) 
     assert len(got) == 0
 
 
-def test_no_anon(anon) -> None:
+def test_no_anon(anon):
     anon.get("/api/v2/studies/purchased/", expected_status_code=401)
 
 
@@ -41,7 +41,7 @@ def test_no_anon(anon) -> None:
         "1",
     ],
 )
-def test_pagination_could_be_disable_with_query_param(api, course, disable_pagination_value) -> None:
+def test_pagination_could_be_disable_with_query_param(api, course, disable_pagination_value):
     got = api.get(f"/api/v2/studies/purchased/?disable_pagination={disable_pagination_value}")
 
     assert len(got) == 1
@@ -56,7 +56,7 @@ def test_pagination_could_be_disable_with_query_param(api, course, disable_pagin
         "any-other-value",
     ],
 )
-def test_paginated_response_with_disable_pagination_false_or_invalid_value(api, disable_pagination_value) -> None:
+def test_paginated_response_with_disable_pagination_false_or_invalid_value(api, disable_pagination_value):
     got = api.get(f"/api/v2/studies/purchased/?disable_pagination={disable_pagination_value}")
 
     assert "results" in got

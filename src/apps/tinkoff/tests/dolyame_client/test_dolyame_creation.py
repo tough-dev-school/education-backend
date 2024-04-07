@@ -11,7 +11,7 @@ def add_create_response(respx_mock: MockRouter):
     ).respond(json={"link": "__mocked"})
 
 
-def test_order_data(dolyame, order, retrieve_request_json) -> None:
+def test_order_data(dolyame, order, retrieve_request_json):
     dolyame.get_initial_payment_url()
 
     create_request = retrieve_request_json()
@@ -26,13 +26,13 @@ def test_order_data(dolyame, order, retrieve_request_json) -> None:
     assert create_request["fiscalization_settings"]["type"] == "enabled"
 
 
-def test_return_value(dolyame) -> None:
+def test_return_value(dolyame):
     url = dolyame.get_initial_payment_url()
 
     assert url == "__mocked"
 
 
-def test_random_idempotency_key_inserted_in_headers(dolyame, respx_mock) -> None:
+def test_random_idempotency_key_inserted_in_headers(dolyame, respx_mock):
     dolyame.get_initial_payment_url()
 
     create_request_headers = respx_mock.calls.last.request.headers

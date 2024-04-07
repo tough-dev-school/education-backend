@@ -6,11 +6,11 @@ pytestmark = [
 ]
 
 
-def test_no_anon(anon) -> None:
+def test_no_anon(anon):
     anon.get("/api/v2/diplomas/", expected_status_code=401)
 
 
-def test_ok(api, diploma) -> None:
+def test_ok(api, diploma):
     api.auth(diploma.study.student)
 
     got = api.get("/api/v2/diplomas/")["results"]
@@ -24,13 +24,13 @@ def test_ok(api, diploma) -> None:
     assert ".gif" in got[0]["image"]
 
 
-def test_no_diplomas_of_other_users(api) -> None:
+def test_no_diplomas_of_other_users(api):
     got = api.get("/api/v2/diplomas/")["results"]
 
     assert len(got) == 0
 
 
-def test_superuser_can_access_diplomas_of_other_users(api) -> None:
+def test_superuser_can_access_diplomas_of_other_users(api):
     api.user.update(is_superuser=True)
 
     got = api.get("/api/v2/diplomas/")["results"]
@@ -38,7 +38,7 @@ def test_superuser_can_access_diplomas_of_other_users(api) -> None:
     assert len(got) == 1
 
 
-def test_user_with_permission_can_access_diplomas_of_other_users(api) -> None:
+def test_user_with_permission_can_access_diplomas_of_other_users(api):
     api.user.add_perm("diplomas.diploma.access_all_diplomas")
 
     got = api.get("/api/v2/diplomas/")["results"]
@@ -54,7 +54,7 @@ def test_user_with_permission_can_access_diplomas_of_other_users(api) -> None:
         "1",
     ],
 )
-def test_pagination_could_be_disable_with_query_param(api, diploma, disable_pagination_value) -> None:
+def test_pagination_could_be_disable_with_query_param(api, diploma, disable_pagination_value):
     api.auth(diploma.study.student)
 
     got = api.get(f"/api/v2/diplomas/?disable_pagination={disable_pagination_value}")
@@ -71,7 +71,7 @@ def test_pagination_could_be_disable_with_query_param(api, diploma, disable_pagi
         "any-other-value",
     ],
 )
-def test_paginated_response_with_disable_pagination_false_or_invalid_value(api, diploma, disable_pagination_value) -> None:
+def test_paginated_response_with_disable_pagination_false_or_invalid_value(api, diploma, disable_pagination_value):
     api.auth(diploma.study.student)
 
     got = api.get(f"/api/v2/diplomas/?disable_pagination={disable_pagination_value}")

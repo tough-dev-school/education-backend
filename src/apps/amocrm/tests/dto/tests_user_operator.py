@@ -5,7 +5,7 @@ from apps.amocrm.dto import AmoCRMUserOperatorDTO
 
 
 @pytest.fixture(autouse=True)
-def _successful_get_users_response(get) -> None:
+def _successful_get_users_response(get):
     get.return_value = {
         "_total_items": 1,
         "_page": 1,
@@ -51,7 +51,7 @@ def dto():
     return AmoCRMUserOperatorDTO()
 
 
-def test_amo_crm_operator_dto_return_users(dto) -> None:
+def test_amo_crm_operator_dto_return_users(dto):
     got = dto.get()
 
     assert got == [
@@ -63,7 +63,7 @@ def test_amo_crm_operator_dto_return_users(dto) -> None:
     ]
 
 
-def test_amo_crm_operator_call_amo_client_with_correct_params(dto, get) -> None:
+def test_amo_crm_operator_call_amo_client_with_correct_params(dto, get):
     dto.get()
 
     get.assert_called_once_with(

@@ -61,11 +61,11 @@ from apps.notion.block import NotionBlock
         ),
     ],
 )
-def test_page(block, expected) -> None:
+def test_page(block, expected):
     assert NotionBlock(id="test-block", data=block).get_assets_to_save() == expected
 
 
-def test_image() -> None:
+def test_image():
     block = NotionBlock(
         id="test-block",
         data={

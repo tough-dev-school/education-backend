@@ -10,7 +10,7 @@ def diploma_with_another_lang(mixer, diploma):
     return mixer.blend("diplomas.Diploma", study=diploma.study, language=Languages.RU)
 
 
-def test(anon, diploma) -> None:
+def test(anon, diploma):
     got = anon.get(f"/api/v2/diplomas/{diploma.slug}/")
 
     assert got["language"] == "EN"
@@ -20,7 +20,7 @@ def test(anon, diploma) -> None:
     assert got["course"]["name"] == diploma.study.course.name
 
 
-def test_other_languages(anon, diploma, diploma_with_another_lang) -> None:
+def test_other_languages(anon, diploma, diploma_with_another_lang):
     got = anon.get(f"/api/v2/diplomas/{diploma.slug}/")
 
     assert got["other_languages"][0]["slug"] == diploma_with_another_lang.slug
@@ -29,7 +29,7 @@ def test_other_languages(anon, diploma, diploma_with_another_lang) -> None:
     assert got["other_languages"][0]["course"]["name"] == diploma_with_another_lang.study.course.name
 
 
-def test_no_diplomas_from_another_students(anon, diploma, diploma_with_another_lang, mixer) -> None:
+def test_no_diplomas_from_another_students(anon, diploma, diploma_with_another_lang, mixer):
     diploma_with_another_lang.update(study=mixer.blend("studying.Study"))
 
     got = anon.get(f"/api/v2/diplomas/{diploma.slug}/")

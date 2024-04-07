@@ -9,7 +9,7 @@ def get_order():
     return Order.objects.last()
 
 
-def test_user(create, user, course) -> None:
+def test_user(create, user, course):
     order = create(user=user, item=course)
 
     order.refresh_from_db()
@@ -17,7 +17,7 @@ def test_user(create, user, course) -> None:
     assert order.user == user
 
 
-def test_course(create, user, course) -> None:
+def test_course(create, user, course):
     order = create(user=user, item=course)
 
     order.refresh_from_db()
@@ -26,7 +26,7 @@ def test_course(create, user, course) -> None:
     assert order.item == course
 
 
-def test_free_course(create, user, course) -> None:
+def test_free_course(create, user, course):
     course.update(price=0)
 
     order = create(user=user, item=course)
@@ -38,7 +38,7 @@ def test_free_course(create, user, course) -> None:
     assert order.paid is None
 
 
-def test_course_manual(create, user, course) -> None:
+def test_course_manual(create, user, course):
     order = create(user=user, item=course)
 
     order.refresh_from_db()
@@ -48,7 +48,7 @@ def test_course_manual(create, user, course) -> None:
 
 
 @pytest.mark.parametrize("price", [0, 200500])
-def test_forced_price(create, user, course, price) -> None:
+def test_forced_price(create, user, course, price):
     order = create(user=user, item=course, price=price)
 
     order.refresh_from_db()

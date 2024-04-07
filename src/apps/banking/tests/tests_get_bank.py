@@ -16,10 +16,10 @@ from apps.tinkoff.bank import TinkoffBank
         ("", None),
     ],
 )
-def test_get_bank_return_bank_class_by_id_or_none_if_empty(bank_id, result) -> None:
+def test_get_bank_return_bank_class_by_id_or_none_if_empty(bank_id, result):
     assert get_bank(bank_id) == result
 
 
-def test_raise_if_bank_id_not_empty_and_not_exists() -> None:
+def test_raise_if_bank_id_not_empty_and_not_exists():
     with pytest.raises(BankDoesNotExist):
         get_bank("credit_bank")

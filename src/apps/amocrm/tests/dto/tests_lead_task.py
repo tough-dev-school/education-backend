@@ -5,7 +5,7 @@ from apps.amocrm.dto import AmoCRMLeadTaskDTO
 
 
 @pytest.fixture
-def _successful_lead_tasks_response(get) -> None:
+def _successful_lead_tasks_response(get):
     get.return_value = {
         "_page": 1,
         "_links": {
@@ -44,7 +44,7 @@ def _successful_lead_tasks_response(get) -> None:
 
 
 @pytest.fixture
-def _successful_lead_task_created_response(post) -> None:
+def _successful_lead_task_created_response(post):
     post.return_value = {
         "_links": {"self": {"href": "https://thelord.amocrm.ru/api/v4/tasks"}},
         "_embedded": {
@@ -69,7 +69,7 @@ def dto():
 
 
 @pytest.mark.usefixtures("_successful_lead_tasks_response")
-def test_amo_crm_task_dto_return_amocrm_tasks(dto) -> None:
+def test_amo_crm_task_dto_return_amocrm_tasks(dto):
     got = dto.get(lead_id=1781381)
 
     assert got == [
@@ -83,7 +83,7 @@ def test_amo_crm_task_dto_return_amocrm_tasks(dto) -> None:
 
 
 @pytest.mark.usefixtures("_successful_lead_tasks_response")
-def test_get_lead_tasks_call_amo_client_with_correct_params(dto, get) -> None:
+def test_get_lead_tasks_call_amo_client_with_correct_params(dto, get):
     dto.get(lead_id=1781381)
 
     get.assert_called_once_with(
@@ -97,7 +97,7 @@ def test_get_lead_tasks_call_amo_client_with_correct_params(dto, get) -> None:
     )
 
 
-def test_get_lead_task_filtered_by_completed_call_amo_client_with_correct_params(dto, get) -> None:
+def test_get_lead_task_filtered_by_completed_call_amo_client_with_correct_params(dto, get):
     dto.get(lead_id=1781381, is_completed=True)
 
     get.assert_called_once_with(
@@ -112,7 +112,7 @@ def test_get_lead_task_filtered_by_completed_call_amo_client_with_correct_params
     )
 
 
-def test_get_lead_tasks_return_empty_list_if_no_matching_tasks(dto, get) -> None:
+def test_get_lead_tasks_return_empty_list_if_no_matching_tasks(dto, get):
     get.return_value = {}
 
     got = dto.get(lead_id=1781381)
@@ -121,7 +121,7 @@ def test_get_lead_tasks_return_empty_list_if_no_matching_tasks(dto, get) -> None
 
 
 @pytest.mark.usefixtures("_successful_lead_task_created_response")
-def test_create_lead_task_call_amo_client_with_correct_params(dto, post) -> None:
+def test_create_lead_task_call_amo_client_with_correct_params(dto, post):
     got = dto.create(
         lead_id=1781381,
         task_type_id=types.TaskType.CONTACT,

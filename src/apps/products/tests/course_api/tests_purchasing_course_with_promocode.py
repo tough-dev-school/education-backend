@@ -27,7 +27,7 @@ def another_course(factory):
         ("3V1L_H4XX0R", 1900),
     ],
 )
-def test_purchasing_with_promocode(call_purchase, course, promocode, expected) -> None:
+def test_purchasing_with_promocode(call_purchase, course, promocode, expected):
     call_purchase(promocode=promocode)
 
     placed = get_order()
@@ -36,7 +36,7 @@ def test_purchasing_with_promocode(call_purchase, course, promocode, expected) -
     assert placed.price == Decimal(expected)
 
 
-def test_incompatible_promocode(call_purchase, another_course, testcode) -> None:
+def test_incompatible_promocode(call_purchase, another_course, testcode):
     testcode.courses.add(another_course)
 
     call_purchase(promocode="TESTCODE")
@@ -46,7 +46,7 @@ def test_incompatible_promocode(call_purchase, another_course, testcode) -> None
 
 
 @pytest.mark.freeze_time("2032-12-01 23:59")
-def test_expired_promocode(call_purchase, testcode) -> None:
+def test_expired_promocode(call_purchase, testcode):
     testcode.update(expires="2032-11-01 15:30:00+02:00")
 
     call_purchase(promocode="TESTCODE")
@@ -55,7 +55,7 @@ def test_expired_promocode(call_purchase, testcode) -> None:
     assert placed.price == Decimal("1900"), "promocode should not be accepteed"
 
 
-def test_promocode_is_stored(call_purchase, testcode) -> None:
+def test_promocode_is_stored(call_purchase, testcode):
     call_purchase(promocode="TESTCODE")
 
     placed = get_order()
@@ -63,7 +63,7 @@ def test_promocode_is_stored(call_purchase, testcode) -> None:
     assert placed.promocode == testcode
 
 
-def test_promocode_is_empty_when_no_promocode_supplied(call_purchase) -> None:
+def test_promocode_is_empty_when_no_promocode_supplied(call_purchase):
     call_purchase()
 
     placed = get_order()

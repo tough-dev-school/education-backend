@@ -19,7 +19,7 @@ def get_log_entry():
     return LeadCampaignLogEntry.objects.last()
 
 
-def test(creator) -> None:
+def test(creator):
     creator(name="Фёдор Шаляпин", email="support@m1crosoft.com")()
 
     created = get_user()
@@ -29,7 +29,7 @@ def test(creator) -> None:
     assert created.last_name == "Шаляпин"
 
 
-def test_nameless(creator) -> None:
+def test_nameless(creator):
     creator(email="support@m1crosoft.com")()
 
     created = get_user()
@@ -39,7 +39,7 @@ def test_nameless(creator) -> None:
     assert created.last_name == ""
 
 
-def test_existing_user(creator, mixer) -> None:
+def test_existing_user(creator, mixer):
     user = mixer.blend(User, first_name="Фёдор", last_name="Шаляпин", email="support@m1crosoft.com")
     creator(name="Фёдор Шаляпин", email="support@m1crosoft.com")()
 
@@ -48,7 +48,7 @@ def test_existing_user(creator, mixer) -> None:
     assert get_user() == user
 
 
-def test_log_entry_is_created(creator, campaign) -> None:
+def test_log_entry_is_created(creator, campaign):
     creator(name="Фёдор Шаляпин", email="support@m1crosoft.com")()
 
     log_entry = get_log_entry()
@@ -57,7 +57,7 @@ def test_log_entry_is_created(creator, campaign) -> None:
     assert log_entry.user == get_user()  # created user
 
 
-def test_campaign_is_executed(creator, mixer, execute) -> None:
+def test_campaign_is_executed(creator, mixer, execute):
     user = mixer.blend(User, first_name="Фёдор", last_name="Шаляпин", email="support@m1crosoft.com")
 
     creator(name="Фёдор Шаляпин", email="support@m1crosoft.com")()

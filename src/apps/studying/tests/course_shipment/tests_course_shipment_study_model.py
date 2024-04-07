@@ -10,13 +10,13 @@ def another_order(factory, user, course):
     return factory.order(user=user, item=course)
 
 
-def test_study_record_is_created(shipment, user, order, course) -> None:
+def test_study_record_is_created(shipment, user, order, course):
     shipment()()
 
     assert Study.objects.filter(student=user, order=order, course=course).exists()
 
 
-def test_study_record_is_deleted_when_unshipping(shipment, user, order, course) -> None:
+def test_study_record_is_deleted_when_unshipping(shipment, user, order, course):
     study = Study.objects.create(student=user, order=order, course=course)
 
     shipment().unship()
@@ -25,7 +25,7 @@ def test_study_record_is_deleted_when_unshipping(shipment, user, order, course) 
         study.refresh_from_db()
 
 
-def test_study_record_is_ok_even_when_it_already_exists(shipment, user, course, another_order) -> None:
+def test_study_record_is_ok_even_when_it_already_exists(shipment, user, course, another_order):
     Study.objects.create(student=user, order=another_order, course=course)
 
     shipment()()

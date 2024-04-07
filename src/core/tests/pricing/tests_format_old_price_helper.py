@@ -16,9 +16,9 @@ pytestmark = [pytest.mark.django_db]
         ("200.95", 100500, "2̶0̶0̶,̶9̶5̶ 100\xa0500 ₽"),
     ],
 )
-def test(old_price, price, expected) -> None:
+def test(old_price, price, expected):
     assert format_old_price(Decimal(old_price), Decimal(price)) == expected
 
 
-def test_None() -> None:
+def test_None():
     assert format_old_price(None, 500) == "500 ₽"

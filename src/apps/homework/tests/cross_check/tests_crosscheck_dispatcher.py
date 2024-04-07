@@ -11,7 +11,7 @@ def dispatcher(dispatcher, answers):
 
 
 @pytest.mark.repeat(10)
-def test_records_are_created(dispatcher, answers, user, another_user) -> None:
+def test_records_are_created(dispatcher, answers, user, another_user):
     dispatcher()
 
     assert AnswerCrossCheck.objects.filter(answer=answers[0]).exists()
@@ -21,7 +21,7 @@ def test_records_are_created(dispatcher, answers, user, another_user) -> None:
     assert AnswerCrossCheck.objects.filter(checker=another_user).exists()
 
 
-def test_records_are_returned(dispatcher) -> None:
+def test_records_are_returned(dispatcher):
     records = dispatcher()
 
     assert len(records) == 2

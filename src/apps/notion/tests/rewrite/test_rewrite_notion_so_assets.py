@@ -13,7 +13,7 @@ def rewrite(block) -> BlockValue:
 
 
 @pytest.mark.usefixtures("another_asset")
-def test_image_is_rewritten_if_not_in_asset_cache(image) -> None:
+def test_image_is_rewritten_if_not_in_asset_cache(image):
     assert rewrite(image)["properties"]["source"] == [
         [
             "https://notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd95897d2-8698-468b-ac09-0870070855c9%2Ftypicalmacuser.png?table=test&id=image-block&cache=v2"
@@ -22,14 +22,14 @@ def test_image_is_rewritten_if_not_in_asset_cache(image) -> None:
 
 
 @pytest.mark.usefixtures("asset")
-def test_image_is_not_rewritten_if_asset_is_in_cache(image) -> None:
+def test_image_is_not_rewritten_if_asset_is_in_cache(image):
     assert rewrite(image)["properties"]["source"] == [
         ["https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d95897d2-8698-468b-ac09-0870070855c9/typicalmacuser.png"]
     ]
 
 
 @pytest.mark.usefixtures("another_asset")
-def test_page_is_rewritten_if_not_in_asset_cache(page) -> None:
+def test_page_is_rewritten_if_not_in_asset_cache(page):
     rewritten = rewrite(page)["format"]
     assert (
         rewritten["page_cover"]
@@ -42,7 +42,7 @@ def test_page_is_rewritten_if_not_in_asset_cache(page) -> None:
 
 
 @pytest.mark.usefixtures("asset", "icon_asset")
-def test_page_is_not_rewritten_if_cover_and_icon_are_in_asset_cache(page) -> None:
+def test_page_is_not_rewritten_if_cover_and_icon_are_in_asset_cache(page):
     assert (
         rewrite(page)["format"]["page_cover"]
         == "https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d95897d2-8698-468b-ac09-0870070855c9/typicalmacuser.png"
@@ -54,7 +54,7 @@ def test_page_is_not_rewritten_if_cover_and_icon_are_in_asset_cache(page) -> Non
 
 
 @pytest.mark.parametrize("param", ["page_cover", "page_icon"])
-def test_page_without_cover_and_icon(page, param) -> None:
+def test_page_without_cover_and_icon(page, param):
     del page["value"]["format"][param]
     with does_not_raise():
         rewrite(page)

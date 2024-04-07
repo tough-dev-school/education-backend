@@ -13,7 +13,7 @@ def answer_from_another_user(another_user, another_answer, question):
 
 @pytest.mark.freeze_time("2022-10-09 10:30:12+12:00")  # +12 hours kamchatka timezone
 @pytest.mark.usefixtures("kamchatka_timezone")
-def test_ok(api, question, answer) -> None:
+def test_ok(api, question, answer):
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 
     assert len(got[0]) == 9
@@ -30,7 +30,7 @@ def test_ok(api, question, answer) -> None:
     assert got[0]["reactions"] == []
 
 
-def test_has_reaction_fields_if_there_is_reaction(api, question, reaction) -> None:
+def test_has_reaction_fields_if_there_is_reaction(api, question, reaction):
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 
     reactions = got[0]["reactions"]
@@ -43,7 +43,7 @@ def test_has_reaction_fields_if_there_is_reaction(api, question, reaction) -> No
     assert reactions[0]["author"]["last_name"] == reaction.author.last_name
 
 
-def test_has_descendants_is_true_if_answer_has_children(api, question, answer, another_answer) -> None:
+def test_has_descendants_is_true_if_answer_has_children(api, question, answer, another_answer):
     another_answer.update(parent=answer)
 
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
@@ -51,7 +51,7 @@ def test_has_descendants_is_true_if_answer_has_children(api, question, answer, a
     assert got[0]["has_descendants"] is True
 
 
-def test_nplusone(api, question, answer, another_answer, django_assert_num_queries, mixer) -> None:
+def test_nplusone(api, question, answer, another_answer, django_assert_num_queries, mixer):
     for _ in range(5):
         mixer.blend("homework.Reaction", author=api.user, answer=answer)
         mixer.blend("homework.Reaction", author=api.user, answer=another_answer)
@@ -61,13 +61,13 @@ def test_nplusone(api, question, answer, another_answer, django_assert_num_queri
 
 
 @pytest.mark.usefixtures("answer")
-def test_answers_from_other_questions_are_excluded(api, another_question) -> None:
+def test_answers_from_other_questions_are_excluded(api, another_question):
     got = api.get(f"/api/v2/homework/answers/?question={another_question.slug}")["results"]
 
     assert len(got) == 0
 
 
-def test_non_root_answers_are_excluded(api, question, answer, answer_from_another_user) -> None:
+def test_non_root_answers_are_excluded(api, question, answer, answer_from_another_user):
     answer.update(parent=answer_from_another_user)
 
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
@@ -77,7 +77,7 @@ def test_non_root_answers_are_excluded(api, question, answer, answer_from_anothe
 
 
 @pytest.mark.usefixtures("answer", "answer_from_another_user")
-def test_answers_from_other_questions_are_excluded_even_if_user_has_the_permission(api, another_question) -> None:
+def test_answers_from_other_questions_are_excluded_even_if_user_has_the_permission(api, another_question):
     api.user.add_perm("homework.answer.see_all_answers")
 
     got = api.get(f"/api/v2/homework/answers/?question={another_question.slug}")["results"]
@@ -86,13 +86,13 @@ def test_answers_from_other_questions_are_excluded_even_if_user_has_the_permissi
 
 
 @pytest.mark.usefixtures("answer_from_another_user")
-def test_answers_from_another_authors_are_excluded(api, question) -> None:
+def test_answers_from_another_authors_are_excluded(api, question):
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 
     assert len(got) == 0
 
 
-def test_answers_from_another_authors_are_included_if_already_seen(api, mixer, question, answer_from_another_user) -> None:
+def test_answers_from_another_authors_are_included_if_already_seen(api, mixer, question, answer_from_another_user):
     mixer.blend("homework.AnswerAccessLogEntry", user=api.user, answer=answer_from_another_user)
 
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
@@ -100,7 +100,7 @@ def test_answers_from_another_authors_are_included_if_already_seen(api, mixer, q
     assert len(got) == 1
 
 
-def test_answers_from_another_authors_are_excluded_if_author_is_filtered(api, mixer, question, answer_from_another_user) -> None:
+def test_answers_from_another_authors_are_excluded_if_author_is_filtered(api, mixer, question, answer_from_another_user):
     mixer.blend("homework.AnswerAccessLogEntry", user=api.user, answer=answer_from_another_user)
 
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}&author={api.user.uuid}")["results"]
@@ -108,7 +108,7 @@ def test_answers_from_another_authors_are_excluded_if_author_is_filtered(api, mi
     assert len(got) == 0
 
 
-def test_access_log_entries_from_another_users_do_not_break_the_select(api, mixer, question, answer) -> None:
+def test_access_log_entries_from_another_users_do_not_break_the_select(api, mixer, question, answer):
     mixer.cycle(5).blend("homework.AnswerAccessLogEntry", question=question, answer=answer)
 
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
@@ -117,7 +117,7 @@ def test_access_log_entries_from_another_users_do_not_break_the_select(api, mixe
 
 
 @pytest.mark.usefixtures("answer_from_another_user")
-def test_users_with_permission_may_see_all_answers(api, question) -> None:
+def test_users_with_permission_may_see_all_answers(api, question):
     api.user.add_perm("homework.answer.see_all_answers")
 
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
@@ -125,7 +125,7 @@ def test_users_with_permission_may_see_all_answers(api, question) -> None:
     assert len(got) == 1
 
 
-def test_no_anon(anon, question) -> None:
+def test_no_anon(anon, question):
     anon.get(f"/api/v2/homework/answers/?question={question.slug}", expected_status_code=401)
 
 
@@ -137,7 +137,7 @@ def test_no_anon(anon, question) -> None:
         "1",
     ],
 )
-def test_pagination_could_be_disable_with_query_param(api, question, answer, disable_pagination_value) -> None:
+def test_pagination_could_be_disable_with_query_param(api, question, answer, disable_pagination_value):
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}&disable_pagination={disable_pagination_value}")
 
     assert len(got) == 1
@@ -153,7 +153,7 @@ def test_pagination_could_be_disable_with_query_param(api, question, answer, dis
     ],
 )
 @pytest.mark.usefixtures("answer")
-def test_paginated_response_with_disable_pagination_false_or_invalid_value(api, question, disable_pagination_value) -> None:
+def test_paginated_response_with_disable_pagination_false_or_invalid_value(api, question, disable_pagination_value):
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}&disable_pagination={disable_pagination_value}")
 
     assert "results" in got

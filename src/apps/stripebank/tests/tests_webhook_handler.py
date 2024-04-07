@@ -43,7 +43,7 @@ def handler():
     return lambda webhook_event: StripeWebhookHandler(webhook_event)()
 
 
-def test_create_stripe_notification_on_checkout_session_completed(handler, webhook_checkout_session_completed, order, construct_event) -> None:
+def test_create_stripe_notification_on_checkout_session_completed(handler, webhook_checkout_session_completed, order, construct_event):
     event_checkout_session_completed = construct_event(webhook_checkout_session_completed)
 
     handler(event_checkout_session_completed)
@@ -59,7 +59,7 @@ def test_create_stripe_notification_on_checkout_session_completed(handler, webho
 
 
 @pytest.mark.usefixtures("stripe_notification_checkout_completed")
-def test_create_stripe_notification_on_charge_refunded(handler, order, webhook_charge_refunded, construct_event) -> None:
+def test_create_stripe_notification_on_charge_refunded(handler, order, webhook_charge_refunded, construct_event):
     event_charge_refunded = construct_event(webhook_charge_refunded)
 
     handler(event_charge_refunded)
@@ -73,7 +73,7 @@ def test_create_stripe_notification_on_charge_refunded(handler, order, webhook_c
     assert refund_stripe_notification.raw == webhook_charge_refunded
 
 
-def test_create_notification_for_safe_low_interested_events(handler, webhook_payment_intent_succeeded, construct_event, mock_capture_message) -> None:
+def test_create_notification_for_safe_low_interested_events(handler, webhook_payment_intent_succeeded, construct_event, mock_capture_message):
     event_payment_succeeded = construct_event(webhook_payment_intent_succeeded)
 
     handler(event_payment_succeeded)
@@ -89,7 +89,7 @@ def test_create_notification_for_safe_low_interested_events(handler, webhook_pay
 
 
 @pytest.mark.usefixtures("remove_all_safe_low_interested_event_type")
-def test_create_notification_and_alert_fow_unknown_events(handler, webhook_payment_intent_succeeded, construct_event, mock_capture_message) -> None:
+def test_create_notification_and_alert_fow_unknown_events(handler, webhook_payment_intent_succeeded, construct_event, mock_capture_message):
     event_payment_succeeded = construct_event(webhook_payment_intent_succeeded)
 
     handler(event_payment_succeeded)

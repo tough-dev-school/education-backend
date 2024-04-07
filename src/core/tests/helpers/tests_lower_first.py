@@ -11,5 +11,5 @@ from core.helpers import lower_first
         ("Камаз Навоза", "камаз Навоза"),
     ],
 )
-def test(input, expected) -> None:
+def test(input, expected):
     assert lower_first(input) == expected

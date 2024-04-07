@@ -4,11 +4,11 @@ from apps.mailing import tasks
 
 
 class Command(BaseCommand):
-    def add_arguments(self, parser) -> None:
+    def add_arguments(self, parser):
         parser.add_argument("--email", type=str, required=True, help="Destination email")
         parser.add_argument("--template_id", type=str, required=True, help="Postmark template id")
 
-    def handle(self, *args, email: str, template_id: str, **options) -> None:
+    def handle(self, *args, email: str, template_id: str, **options):
         tasks.send_mail(
             to=email,
             template_id=template_id,

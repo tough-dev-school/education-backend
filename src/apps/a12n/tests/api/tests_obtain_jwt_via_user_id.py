@@ -10,7 +10,7 @@ def random_user(mixer):
     return mixer.blend("users.User")
 
 
-def test(api, mixer, random_user) -> None:
+def test(api, mixer, random_user):
     superuser = mixer.blend("users.User", is_superuser=True)
     api.auth(superuser)
 
@@ -20,11 +20,11 @@ def test(api, mixer, random_user) -> None:
     assert token["user_id"] == random_user.id
 
 
-def test_no_anon(anon, random_user) -> None:
+def test_no_anon(anon, random_user):
     anon.get(f"/api/v2/auth/as/{random_user.pk}/", expected_status_code=401)
 
 
-def test_no_regular_users(api, mixer, random_user) -> None:
+def test_no_regular_users(api, mixer, random_user):
     regular_user = mixer.blend("users.User", is_superuser=False)
     api.auth(regular_user)
 

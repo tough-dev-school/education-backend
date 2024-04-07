@@ -51,7 +51,7 @@ def purchase(factory, course, api):
 
 
 @pytest.fixture
-def _no_purchase(purchase) -> None:
+def _no_purchase(purchase):
     """Invalidate the purchase"""
     purchase.update(paid=None)
 

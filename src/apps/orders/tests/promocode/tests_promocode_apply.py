@@ -19,7 +19,7 @@ def course(course):
         ("100", 0),
     ],
 )
-def test_discount_percent(discount_percent, expected, course, mixer) -> None:
+def test_discount_percent(discount_percent, expected, course, mixer):
     promocode = mixer.blend("orders.PromoCode", discount_percent=discount_percent)
 
     assert promocode.apply(course) == Decimal(expected)
@@ -34,7 +34,7 @@ def test_discount_percent(discount_percent, expected, course, mixer) -> None:
         (100_600, 100_500),  # greater then the course price
     ],
 )
-def test_discount_value(discount_value, expected, course, mixer) -> None:
+def test_discount_value(discount_value, expected, course, mixer):
     promocode = mixer.blend("orders.PromoCode", discount_percent=None, discount_value=discount_value)
 
     assert promocode.apply(course) == Decimal(expected)

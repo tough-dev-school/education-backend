@@ -9,7 +9,7 @@ pytestmark = [
 
 
 @pytest.mark.usefixtures("non_paid_order")
-def test_order_started(user) -> None:
+def test_order_started(user):
     generate_tags(user)
 
     assert "popug-3-self__started" in user.tags
@@ -17,14 +17,14 @@ def test_order_started(user) -> None:
 
 
 @pytest.mark.usefixtures("paid_order")
-def test_order_purchased(user) -> None:
+def test_order_purchased(user):
     generate_tags(user)
 
     assert "popug-3-self__purchased" in user.tags
     assert "popug-3__purchased" in user.tags
 
 
-def test_order_started_and_then_purchased(user, non_paid_order) -> None:
+def test_order_started_and_then_purchased(user, non_paid_order):
     non_paid_order.set_paid()
 
     generate_tags(user)
@@ -35,7 +35,7 @@ def test_order_started_and_then_purchased(user, non_paid_order) -> None:
     assert "popug-3__purchased" in user.tags
 
 
-def test_started_and_purchased_orders_for_same_product_group(user, course, factory) -> None:
+def test_started_and_purchased_orders_for_same_product_group(user, course, factory):
     another_course_same_group = factory.course(slug=f"{course.group.slug}-vip", group=course.group)
     factory.order(is_paid=False, item=another_course_same_group, user=user)
     factory.order(is_paid=True, item=course, user=user)

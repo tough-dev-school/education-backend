@@ -13,7 +13,7 @@ pytestmark = [pytest.mark.django_db]
         (timezone.now(), True),
     ],
 )
-def test_true(order, paid, is_present) -> None:
+def test_true(order, paid, is_present):
     order.update(paid=paid)
 
     assert (order in Order.objects.paid()) is is_present
@@ -26,7 +26,7 @@ def test_true(order, paid, is_present) -> None:
         (timezone.now(), False),
     ],
 )
-def test_invert(order, paid, is_present) -> None:
+def test_invert(order, paid, is_present):
     order.update(paid=paid)
 
     assert (order in Order.objects.paid(invert=True)) is is_present

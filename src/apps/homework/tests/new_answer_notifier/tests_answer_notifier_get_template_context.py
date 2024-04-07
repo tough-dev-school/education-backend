@@ -26,11 +26,11 @@ def another_answer(mixer, question):
 
 
 @pytest.fixture(autouse=True)
-def _freeze_absolute_url(settings) -> None:
+def _freeze_absolute_url(settings):
     settings.FRONTEND_URL = "https://frontend/lms/"
 
 
-def test_default(notifier, answer, user) -> None:
+def test_default(notifier, answer, user):
     notifier = notifier(answer)
     assert notifier.get_notification_context(user) == dict(
         discussion_url="https://frontend/lms/homework/answers/f593d1a9-120c-4c92-bed0-9f037537d4f4/",
@@ -41,7 +41,7 @@ def test_default(notifier, answer, user) -> None:
     )
 
 
-def test_root_answer(notifier, answer, another_answer) -> None:
+def test_root_answer(notifier, answer, another_answer):
     answer.update(parent=another_answer)
 
     context = notifier(answer).get_notification_context(answer.author)
@@ -51,7 +51,7 @@ def test_root_answer(notifier, answer, another_answer) -> None:
     ), "Should be the link to the first answer with anchor to the current"
 
 
-def test_html_is_stripped(notifier, answer) -> None:
+def test_html_is_stripped(notifier, answer):
     answer.update(text="# Вил би стриппед")
 
     context = notifier(answer).get_notification_context(answer.author)
@@ -59,7 +59,7 @@ def test_html_is_stripped(notifier, answer) -> None:
     assert context["answer_text"] == "Вил би стриппед"
 
 
-def test_is_root_answer_author_flag(notifier, answer) -> None:
+def test_is_root_answer_author_flag(notifier, answer):
     context = notifier(answer).get_notification_context(answer.author)
 
     assert context["is_root_answer_author"] == "1"

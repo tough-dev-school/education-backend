@@ -22,13 +22,13 @@ def get_token(api):
     return _get_token
 
 
-def test_getting_token_ok(api, get_token) -> None:
+def test_getting_token_ok(api, get_token):
     got = get_token(api.user.username, api.password)
 
     assert "token" in got
 
 
-def test_getting_token_by_email(user, get_token) -> None:
+def test_getting_token_by_email(user, get_token):
     user = UserCreator(name="lol bar", email="lolbar@example.com")()
     user.set_password("123456")
     user.save()
@@ -38,7 +38,7 @@ def test_getting_token_by_email(user, get_token) -> None:
     assert "token" in got
 
 
-def test_getting_token_case_sensitive_email(get_token) -> None:
+def test_getting_token_case_sensitive_email(get_token):
     user = UserCreator(name="lol bar", email="lolbar@example.com")()
     user.set_password("123456")
     user.save()
@@ -48,7 +48,7 @@ def test_getting_token_case_sensitive_email(get_token) -> None:
     assert "non_field_errors" in got2
 
 
-def test_getting_token_case_sensitive_username(get_token, mixer) -> None:
+def test_getting_token_case_sensitive_username(get_token, mixer):
     user = mixer.blend("users.User", username="Jimbo", email="jimbo@example.com")
     user.set_password("123456")
     user.save()
@@ -57,7 +57,7 @@ def test_getting_token_case_sensitive_username(get_token, mixer) -> None:
     assert "non_field_errors" in got2
 
 
-def test_getting_token_is_a_token(api, get_token) -> None:
+def test_getting_token_is_a_token(api, get_token):
     got = get_token(api.user.username, api.password)
 
     payload = decode_jwt_without_validation(got["token"])
@@ -66,13 +66,13 @@ def test_getting_token_is_a_token(api, get_token) -> None:
     assert payload["user_public_id"] == str(api.user.uuid)
 
 
-def test_getting_token_with_incorrect_password(api, get_token) -> None:
+def test_getting_token_with_incorrect_password(api, get_token):
     got = get_token(api.user.username, "z3r0c00l", expected_status_code=400)
 
     assert "non_field_errors" in got
 
 
-def test_getting_token_when_banned_by_axes(api, get_token, settings) -> None:
+def test_getting_token_when_banned_by_axes(api, get_token, settings):
     settings.AXES_FAILURE_LIMIT = 0
 
     got = get_token(api.user.username, api.password, expected_status_code=403)
@@ -91,7 +91,7 @@ def test_getting_token_when_banned_by_axes(api, get_token, settings) -> None:
         (lambda *args: "sh1t", 401),
     ],
 )
-def test_received_token_works(api, get_token, anon, extract_token, status_code) -> None:
+def test_received_token_works(api, get_token, anon, extract_token, status_code):
     token = extract_token(get_token(api.user.username, api.password))
 
     anon.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")

@@ -15,7 +15,7 @@ from apps.banking import price_calculator
         (130, 50, 3),
     ],
 )
-def test(price, ue, expected) -> None:
+def test(price, ue, expected):
     class MockBank: ...
 
     MockBank.ue = ue

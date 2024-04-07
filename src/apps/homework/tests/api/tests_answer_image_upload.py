@@ -5,7 +5,7 @@ from apps.homework.models import AnswerImage
 pytestmark = [pytest.mark.django_db]
 
 
-def test_image_is_created(api, factory) -> None:
+def test_image_is_created(api, factory):
     api.post(
         "/api/v2/homework/answers/image/",
         {
@@ -19,7 +19,7 @@ def test_image_is_created(api, factory) -> None:
     assert created.image.path.endswith(".gif")
 
 
-def test_response(api, factory) -> None:
+def test_response(api, factory):
     response = api.post(
         "/api/v2/homework/answers/image/",
         {
@@ -32,7 +32,7 @@ def test_response(api, factory) -> None:
     assert response["image"].endswith(".gif"), "Contains given extension"
 
 
-def test_wrong_extension(api, factory) -> None:
+def test_wrong_extension(api, factory):
     response = api.post(
         "/api/v2/homework/answers/image/",
         {
@@ -45,7 +45,7 @@ def test_wrong_extension(api, factory) -> None:
     assert "exe" in response["image"][0]
 
 
-def test_no_anon(anon, factory) -> None:
+def test_no_anon(anon, factory):
     anon.post(
         "/api/v2/homework/answers/image/",
         {

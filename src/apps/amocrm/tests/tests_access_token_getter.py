@@ -30,7 +30,7 @@ def post(mocker, mock_response):
     return mocker.patch("httpx.Client.post", return_value=mock_response)
 
 
-def test_calls_post_with_correct_params_when_no_access_token(token_getter, post) -> None:
+def test_calls_post_with_correct_params_when_no_access_token(token_getter, post):
     cache.set("amocrm_access_token", None)
     cache.set("amocrm_refresh_token", "so-refreshing")
 
@@ -48,7 +48,7 @@ def test_calls_post_with_correct_params_when_no_access_token(token_getter, post)
     )
 
 
-def test_calls_post_with_correct_params_when_no_refresh_token(token_getter, post) -> None:
+def test_calls_post_with_correct_params_when_no_refresh_token(token_getter, post):
     cache.set("amocrm_access_token", None)
     cache.set("amocrm_refresh_token", None)
 
@@ -67,7 +67,7 @@ def test_calls_post_with_correct_params_when_no_refresh_token(token_getter, post
 
 
 @pytest.mark.usefixtures("post")
-def test_update_cached_tokens(token_getter) -> None:
+def test_update_cached_tokens(token_getter):
     cache.set("amocrm_access_token", None)
     cache.set("amocrm_refresh_token", "so-refreshing")
 

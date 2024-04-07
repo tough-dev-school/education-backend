@@ -14,7 +14,7 @@ def order(factory):
 
 
 @pytest.fixture(autouse=True)
-def _tinkoff_credentials(settings) -> None:
+def _tinkoff_credentials(settings):
     settings.TINKOFF_TERMINAL_KEY = "testDEMO"
     settings.TINKOFF_TERMINAL_PASSWORD = "Dfsfh56dgKl"
 
@@ -42,7 +42,7 @@ def bank_data():
     }
 
 
-def test_ok(anon, order, bank_data) -> None:
+def test_ok(anon, order, bank_data):
     anon.post(
         "/api/v2/banking/tinkoff-notifications/",
         bank_data(Status="CONFIRMED", OrderId=order.slug),
@@ -55,7 +55,7 @@ def test_ok(anon, order, bank_data) -> None:
 
 
 @pytest.mark.parametrize("status", ["AUTHORIZED", "CANCELLED"])
-def test_wrong_status(anon, order, bank_data, status) -> None:
+def test_wrong_status(anon, order, bank_data, status):
     anon.post(
         "/api/v2/banking/tinkoff-notifications/",
         bank_data(Status=status, OrderId=order.slug),

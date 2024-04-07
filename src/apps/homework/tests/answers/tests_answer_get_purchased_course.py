@@ -37,24 +37,24 @@ def latest_purchase(factory, another_course, user):
     )
 
 
-def test_single_course(answer, course) -> None:
+def test_single_course(answer, course):
     assert answer.get_purchased_course() == course
 
 
-def test_multiple_courses_in_the_homework(answer, course, another_course) -> None:
+def test_multiple_courses_in_the_homework(answer, course, another_course):
     answer.question.courses.add(another_course)
 
     assert answer.get_purchased_course() == course
 
 
 @pytest.mark.usefixtures("latest_purchase")
-def test_latest_purchased_is_returned(answer, another_course) -> None:
+def test_latest_purchased_is_returned(answer, another_course):
     answer.question.courses.add(another_course)
 
     assert answer.get_purchased_course() == another_course
 
 
-def test_purchases_from_another_users_are_ignored(answer, purchase, mixer) -> None:
+def test_purchases_from_another_users_are_ignored(answer, purchase, mixer):
     purchase.update(user=mixer.blend("users.User"))
 
     assert answer.get_purchased_course() is None

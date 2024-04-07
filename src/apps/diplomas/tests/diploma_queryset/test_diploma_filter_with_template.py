@@ -17,13 +17,13 @@ def query():
     return lambda: Diploma.objects.filter_with_template()
 
 
-def test_diploma_with_template_in_query(diploma, query) -> None:
+def test_diploma_with_template_in_query(diploma, query):
     diplomas = query()
 
     assert diploma in diplomas
 
 
-def test_exclude_diplomas_not_matching_template_course(factory, query, template, diploma) -> None:
+def test_exclude_diplomas_not_matching_template_course(factory, query, template, diploma):
     template.update(course=factory.course())
 
     diplomas = query()
@@ -31,7 +31,7 @@ def test_exclude_diplomas_not_matching_template_course(factory, query, template,
     assert diploma not in diplomas
 
 
-def test_exclude_diplomas_not_matching_template_language(query, template, diploma) -> None:
+def test_exclude_diplomas_not_matching_template_language(query, template, diploma):
     template.update(language=Languages.EN)
 
     diplomas = query()
@@ -39,7 +39,7 @@ def test_exclude_diplomas_not_matching_template_language(query, template, diplom
     assert diploma not in diplomas
 
 
-def test_exclude_diplomas_not_matching_template_homework_accepted(query, template, diploma) -> None:
+def test_exclude_diplomas_not_matching_template_homework_accepted(query, template, diploma):
     template.update(homework_accepted=True)
 
     diplomas = query()

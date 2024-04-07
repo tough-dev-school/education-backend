@@ -7,7 +7,7 @@ pytestmark = [pytest.mark.django_db]
 url = "/api/v2/auth/password/change/"
 
 
-def test_password_actually_changed(as_user, user) -> None:
+def test_password_actually_changed(as_user, user):
     data = {
         "new_password1": "prefer_use_1password",
         "new_password2": "prefer_use_1password",
@@ -26,7 +26,7 @@ def test_password_actually_changed(as_user, user) -> None:
         "123458910",  # forbid numeric only
     ],
 )
-def test_basic_password_strength_validation(as_user, password) -> None:
+def test_basic_password_strength_validation(as_user, password):
     data = {
         "new_password1": password,
         "new_password2": password,
@@ -35,5 +35,5 @@ def test_basic_password_strength_validation(as_user, password) -> None:
     as_user.post(url, data=data, expected_status_code=400)
 
 
-def test_anon_forbidden(anon) -> None:
+def test_anon_forbidden(anon):
     anon.post(url, data={}, expected_status_code=401)

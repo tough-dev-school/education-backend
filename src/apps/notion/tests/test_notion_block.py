@@ -11,7 +11,7 @@ from apps.notion.block import NotionBlock
         ({"value": {"type": "testing"}}, "testing"),
     ],
 )
-def test_block_type(block, expected) -> None:
+def test_block_type(block, expected):
     assert NotionBlock(id="test", data=block).type == expected
 
 
@@ -23,7 +23,7 @@ def test_block_type(block, expected) -> None:
         ({"value": {"content": ["a", "b"]}}, ["a", "b"]),
     ],
 )
-def test_content(block, expected) -> None:
+def test_content(block, expected):
     assert NotionBlock(id="test", data=block).content == expected
 
 
@@ -45,7 +45,7 @@ def test_content(block, expected) -> None:
         ),
     ],
 )
-def test_block_properties(block, expected) -> None:
+def test_block_properties(block, expected):
     assert NotionBlock(id="test", data=block).properties == expected
 
 
@@ -67,5 +67,5 @@ def test_block_properties(block, expected) -> None:
         ),
     ],
 )
-def test_block_format(block, expected) -> None:
+def test_block_format(block, expected):
     assert NotionBlock(id="test", data=block).format == expected

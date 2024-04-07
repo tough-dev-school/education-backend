@@ -13,7 +13,7 @@ def rebuild_tags(mocker):
     return mocker.patch("apps.users.tasks.rebuild_tags.si")
 
 
-@pytest.fixture
+@pytest.fixture  # type: ignore[no-redef]
 def rebuild_tags(mocker):
     return mocker.patch("apps.users.tasks.rebuild_tags.delay")
 
@@ -37,7 +37,7 @@ def get_order():
     return Order.objects.last()
 
 
-def test_order(call_purchase, course) -> None:
+def test_order(call_purchase, course):
     call_purchase()
 
     placed = get_order()
@@ -47,7 +47,7 @@ def test_order(call_purchase, course) -> None:
     assert not hasattr(placed, "study")  # Study record is not created yet, because order is not paid
 
 
-def test_user(call_purchase) -> None:
+def test_user(call_purchase):
     call_purchase()
 
     placed = get_order()
@@ -57,7 +57,7 @@ def test_user(call_purchase) -> None:
     assert placed.user.email == "zaboy@gmail.com"
 
 
-def test_analytics_metadata(call_purchase) -> None:
+def test_analytics_metadata(call_purchase):
     call_purchase(
         analytics=json.dumps(
             {
@@ -72,7 +72,7 @@ def test_analytics_metadata(call_purchase) -> None:
     assert placed.analytics["empty"] is None
 
 
-def test_order_creation_does_not_fail_with_nonexistant_params(call_purchase) -> None:
+def test_order_creation_does_not_fail_with_nonexistant_params(call_purchase):
     """Need this test cuz we may alter frontend request without corresponding changes on backend"""
     call_purchase(
         {
@@ -97,13 +97,13 @@ def test_order_creation_does_not_fail_with_nonexistant_params(call_purchase) -> 
         (0, False),
     ],
 )
-def test_user_is_subscribed_to_dashamail_if_allowed(call_purchase, wants_to_subscribe, should_be_subscribed, update_dashamail) -> None:
+def test_user_is_subscribed_to_dashamail_if_allowed(call_purchase, wants_to_subscribe, should_be_subscribed, update_dashamail):
     call_purchase(subscribe=wants_to_subscribe)
 
     assert (update_dashamail.call_count == 1) is should_be_subscribed
 
 
-def test_integrations_are_updated(call_purchase, rebuild_tags, push_customer_to_amocrm, push_order_to_amocrm, settings) -> None:
+def test_integrations_are_updated(call_purchase, rebuild_tags, push_customer_to_amocrm, push_order_to_amocrm, settings):
     settings.AMOCRM_BASE_URL = "https://mamo.amo.criminal"
 
     call_purchase()
@@ -116,7 +116,7 @@ def test_integrations_are_updated(call_purchase, rebuild_tags, push_customer_to_
     push_order_to_amocrm.assert_called_once_with(order_id=placed.id)
 
 
-def test_by_default_user_is_not_subscribed(call_purchase) -> None:
+def test_by_default_user_is_not_subscribed(call_purchase):
     call_purchase()
 
     placed = get_order()
@@ -124,19 +124,19 @@ def test_by_default_user_is_not_subscribed(call_purchase) -> None:
     assert placed.user.subscribed is False
 
 
-def test_redirect(call_purchase) -> None:
+def test_redirect(call_purchase):
     response = call_purchase(as_response=True)
 
     assert response.status_code == 302
     assert response["Location"] == "https://bank.test/pay/"
 
 
-def test_custom_success_url(call_purchase, bank) -> None:
+def test_custom_success_url(call_purchase, bank):
     call_purchase(success_url="https://ok.true/yes")
     assert bank.call_args[1]["success_url"] == "https://ok.true/yes"
 
 
-def test_invalid(client) -> None:
+def test_invalid(client):
     response = client.post("/api/v2/courses/ruloning-oboev/purchase/", {})
 
     assert response.status_code == 400

@@ -46,7 +46,7 @@ def subscriber(mocker):
 
 
 @pytest.mark.usefixtures("nonexistant_subscriber")
-def test_creating_list(dashamail_api, user, course, mocker) -> None:
+def test_creating_list(dashamail_api, user, course, mocker):
     DashamailDirectCRMSubscriber(user=user, product=course)()
 
     assert dashamail_api.call_args_list[0] == mocker.call(
@@ -67,7 +67,7 @@ def test_creating_list(dashamail_api, user, course, mocker) -> None:
 
 
 @pytest.mark.usefixtures("nonexistant_subscriber")
-def test_creating_list_updates_product_group(user, course) -> None:
+def test_creating_list_updates_product_group(user, course):
     DashamailDirectCRMSubscriber(user=user, product=course)()
 
     course.group.refresh_from_db()
@@ -76,7 +76,7 @@ def test_creating_list_updates_product_group(user, course) -> None:
 
 
 @pytest.mark.usefixtures("nonexistant_subscriber")
-def test_existing_list(dashamail_api, user, course) -> None:
+def test_existing_list(dashamail_api, user, course):
     course.group.update(dashamail_list_id=200500)
 
     DashamailDirectCRMSubscriber(user=user, product=course)()
@@ -94,7 +94,7 @@ def test_existing_list(dashamail_api, user, course) -> None:
 
 
 @pytest.mark.usefixtures("subscriber")
-def test_existing_subscriber(dashamail_api, user, course) -> None:
+def test_existing_subscriber(dashamail_api, user, course):
     course.group.update(dashamail_list_id=200500)
 
     DashamailDirectCRMSubscriber(user=user, product=course)()

@@ -27,7 +27,7 @@ def rewrite(block):
 
 
 @pytest.mark.parametrize("prop_name", ["title", "caption"])
-def test_title_is_rewritten(block, prop_name) -> None:
+def test_title_is_rewritten(block, prop_name):
     block["value"]["properties"][prop_name] = [
         "Пыщ-Пыщ",
         [
@@ -52,7 +52,7 @@ def test_title_is_rewritten(block, prop_name) -> None:
 
 
 @pytest.mark.parametrize("prop_name", ["title", "caption"])
-def test_title_is_rewritten_with_get_params(block, prop_name) -> None:
+def test_title_is_rewritten_with_get_params(block, prop_name):
     block["value"]["properties"][prop_name] = [
         "Пыщ-Пыщ",
         [
@@ -76,7 +76,7 @@ def test_title_is_rewritten_with_get_params(block, prop_name) -> None:
     ]
 
 
-def test_recursivity(block) -> None:
+def test_recursivity(block):
     block["value"]["properties"]["title"] = [
         "Пыщ-Пыщ",
         [
@@ -115,7 +115,7 @@ def test_recursivity(block) -> None:
 
 
 @pytest.mark.parametrize("link", ["https://text.com", "https://text.com?good=to-go"])
-def test_external_links_are_not_rewritten(block, link) -> None:
+def test_external_links_are_not_rewritten(block, link):
     block["value"]["properties"]["title"] = [
         "Пыщ-Пыщ",
         [
@@ -140,7 +140,7 @@ def test_external_links_are_not_rewritten(block, link) -> None:
 
 
 @pytest.mark.parametrize("link", ["/id-not-in-mapping", "/id-not-in-mapping?good=to-go"])
-def test_links_not_from_mapping_are_not_rewritten(block, link) -> None:
+def test_links_not_from_mapping_are_not_rewritten(block, link):
     block["value"]["properties"]["title"] = [
         "Пыщ-Пыщ",
         [
@@ -176,7 +176,7 @@ def test_links_not_from_mapping_are_not_rewritten(block, link) -> None:
         ],
     ],
 )
-def test_weird_text(block, weird_text) -> None:
+def test_weird_text(block, weird_text):
     block["value"]["properties"]["title"] = weird_text
 
     result = rewrite(block)

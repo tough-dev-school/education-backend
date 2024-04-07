@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Never
 
 from axes.signals import user_locked_out
 from django.dispatch import receiver
@@ -7,7 +7,7 @@ from rest_framework.exceptions import PermissionDenied
 
 
 @receiver(user_locked_out)
-def raise_permission_denied(*args: Any, **kwargs: Any) -> None:
+def raise_permission_denied(*args: Any, **kwargs: Any) -> Never:
     del args, kwargs
 
     raise PermissionDenied(_("Too many failed login attempts"))

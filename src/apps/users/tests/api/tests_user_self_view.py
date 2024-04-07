@@ -5,7 +5,7 @@ from apps.users.models import User
 pytestmark = [pytest.mark.django_db]
 
 
-def test_ok(api) -> None:
+def test_ok(api):
     got = api.get("/api/v2/users/me/")
 
     assert got["id"] == api.user.pk
@@ -21,13 +21,13 @@ def test_ok(api) -> None:
     assert got["telegram_username"] == api.user.telegram_username
 
 
-def test_anon(anon) -> None:
+def test_anon(anon):
     got = anon.get("/api/v2/users/me/", as_response=True)
 
     assert got.status_code == 401
 
 
-def test_edit_user_data(api) -> None:
+def test_edit_user_data(api):
     api.patch(
         "/api/v2/users/me/",
         {
@@ -42,7 +42,7 @@ def test_edit_user_data(api) -> None:
     assert api.user.last_name == "Otkhodov"
 
 
-def test_edit_user_data_in_english(api) -> None:
+def test_edit_user_data_in_english(api):
     api.patch(
         "/api/v2/users/me/",
         {
@@ -57,7 +57,7 @@ def test_edit_user_data_in_english(api) -> None:
     assert api.user.last_name_en == "OfWaste"
 
 
-def test_edit_gender(api) -> None:
+def test_edit_gender(api):
     api.user.update(gender=User.GENDERS.MALE)
 
     api.patch("/api/v2/users/me/", {"gender": "female"})
@@ -67,7 +67,7 @@ def test_edit_gender(api) -> None:
 
 
 @pytest.mark.parametrize("field", ["github_username", "linkedin_username", "telegram_username"])
-def test_edit_additional_fields(api, field) -> None:
+def test_edit_additional_fields(api, field):
     setattr(api.user, field, "h4x0r")
     api.user.save()
 
@@ -77,7 +77,7 @@ def test_edit_additional_fields(api, field) -> None:
     assert getattr(api.user, field) == "zeroc00l"
 
 
-def test_edit_user_data_response(api) -> None:
+def test_edit_user_data_response(api):
     got = api.patch(
         "/api/v2/users/me/",
         {
@@ -97,7 +97,7 @@ def test_edit_user_data_response(api) -> None:
     "field_used_in_diplomas",
     ["first_name", "last_name", "first_name_en", "last_name_en"],
 )
-def test_user_update_first_or_last_names_triggers_diploma_regeneration(api, mocker, field_used_in_diplomas) -> None:
+def test_user_update_first_or_last_names_triggers_diploma_regeneration(api, mocker, field_used_in_diplomas):
     diploma_regenerator = mocker.patch("apps.diplomas.tasks.regenerate_diplomas.delay")
 
     api.patch(
@@ -110,7 +110,7 @@ def test_user_update_first_or_last_names_triggers_diploma_regeneration(api, mock
     diploma_regenerator.assert_called_once()
 
 
-def test_user_update_gender_triggers_diploma_regeneration(api, mocker) -> None:
+def test_user_update_gender_triggers_diploma_regeneration(api, mocker):
     diploma_regenerator = mocker.patch("apps.diplomas.tasks.regenerate_diplomas.delay")
 
     api.patch(
@@ -127,7 +127,7 @@ def test_user_update_gender_triggers_diploma_regeneration(api, mocker) -> None:
     "field_not_used_in_diplomas",
     ["github_username", "linkedin_username", "telegram_username"],
 )
-def test_non_diploma_fields_not_triggers_diploma_regeneration(api, mocker, field_not_used_in_diplomas) -> None:
+def test_non_diploma_fields_not_triggers_diploma_regeneration(api, mocker, field_not_used_in_diplomas):
     diploma_regenerator = mocker.patch("apps.diplomas.tasks.regenerate_diplomas.delay")
 
     api.patch(

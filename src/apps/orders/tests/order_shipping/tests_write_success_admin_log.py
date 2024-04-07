@@ -16,7 +16,7 @@ def order(factory):
 
 @pytest.mark.freeze_time()
 @pytest.mark.usefixtures("_set_current_user")
-def test_paid_log_created(order, user) -> None:
+def test_paid_log_created(order, user):
     order.set_paid()
 
     log = LogEntry.objects.get()
@@ -29,7 +29,7 @@ def test_paid_log_created(order, user) -> None:
     assert log.user == user
 
 
-def test_log_author_is_student_when_set_paid_by_anon(order) -> None:
+def test_log_author_is_student_when_set_paid_by_anon(order):
     order.set_paid()
 
     assert LogEntry.objects.get().user == order.user

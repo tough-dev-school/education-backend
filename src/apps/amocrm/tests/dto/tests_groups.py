@@ -9,7 +9,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def _successful_response(patch) -> None:
+def _successful_response(patch):
     patch.return_value = {
         "_total_items": 1,
         "_embedded": {
@@ -43,7 +43,7 @@ def _successful_response(patch) -> None:
 
 
 @pytest.mark.usefixtures("_successful_response")
-def test_response_as_list_of_pairs() -> None:
+def test_response_as_list_of_pairs():
     groups = Group.objects.all()
 
     got = AmoCRMGroupsDTO(groups=groups).push()
@@ -52,7 +52,7 @@ def test_response_as_list_of_pairs() -> None:
 
 
 @pytest.mark.usefixtures("_amocrm_groups")
-def test_call_with_id_if_already_exist(patch) -> None:
+def test_call_with_id_if_already_exist(patch):
     groups = Group.objects.all()
 
     AmoCRMGroupsDTO(groups=groups).push()

@@ -36,14 +36,14 @@ def get_answer_comments(api, answer):
     return lambda *args, **kwargs: api.get(f"/api/v2/homework/comments/?answer={answer.slug}", *args, **kwargs)
 
 
-def test_no_descendants_by_default(get_answer_comments) -> None:
+def test_no_descendants_by_default(get_answer_comments):
     got = get_answer_comments()[0]
 
     assert got["descendants"] == []
 
 
 @pytest.mark.usefixtures("another_answer")
-def test_child_answers(get_answer_comments) -> None:
+def test_child_answers(get_answer_comments):
     got = get_answer_comments()[0]
 
     assert len(got["descendants"]) == 1
@@ -51,7 +51,7 @@ def test_child_answers(get_answer_comments) -> None:
 
 @pytest.mark.freeze_time("2022-10-09 10:30:12+12:00")  # +12 hours kamchatka timezone
 @pytest.mark.usefixtures("kamchatka_timezone")
-def test_child_answers_fields(get_answer_comments, answer, another_answer) -> None:
+def test_child_answers_fields(get_answer_comments, answer, another_answer):
     got = get_answer_comments()[0]
 
     descendant = got["descendants"][0]
@@ -71,7 +71,7 @@ def test_child_answers_fields(get_answer_comments, answer, another_answer) -> No
     assert "reactions" in descendant
 
 
-def test_child_answers_reactions_fields(get_answer_comments, another_answer_reaction) -> None:
+def test_child_answers_reactions_fields(get_answer_comments, another_answer_reaction):
     got = get_answer_comments()[0]
 
     reaction = got["descendants"][0]["reactions"][0]
@@ -83,7 +83,7 @@ def test_child_answers_reactions_fields(get_answer_comments, another_answer_reac
     assert reaction["author"]["last_name"] == another_answer_reaction.author.last_name
 
 
-def test_multilevel_child_answers(get_answer_comments, another_answer, child_of_another_answer) -> None:
+def test_multilevel_child_answers(get_answer_comments, another_answer, child_of_another_answer):
     got = get_answer_comments()[0]
 
     assert got["descendants"][0]["slug"] == str(another_answer.slug)
@@ -92,13 +92,13 @@ def test_multilevel_child_answers(get_answer_comments, another_answer, child_of_
 
 
 @pytest.mark.usefixtures("child_of_another_answer")
-def test_only_immediate_siblings_are_included(get_answer_comments) -> None:
+def test_only_immediate_siblings_are_included(get_answer_comments):
     got = get_answer_comments()[0]
 
     assert len(got["descendants"]) == 1
 
 
 @pytest.mark.usefixtures("another_answer", "child_of_another_answer", "another_answer_reaction")
-def test_reasonable_nplusone_queries_for_answers_with_descendants(get_answer_comments, django_assert_num_queries) -> None:
+def test_reasonable_nplusone_queries_for_answers_with_descendants(get_answer_comments, django_assert_num_queries):
     with django_assert_num_queries(12):
         get_answer_comments()

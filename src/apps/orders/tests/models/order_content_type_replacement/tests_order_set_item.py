@@ -11,7 +11,7 @@ def order(order):
     return order()
 
 
-def test_course(order, course) -> None:
+def test_course(order, course):
     order.set_item(course)
     order.save()
 
@@ -20,12 +20,12 @@ def test_course(order, course) -> None:
     assert order.course == course
 
 
-def test_exception_when_there_is_not_foreignkey(order) -> None:
+def test_exception_when_there_is_not_foreignkey(order):
     with pytest.raises(UnknownItemException):
         order.set_item(order)
 
 
-def test_setting_new_item_removes_the_old_one(order, course, another_course) -> None:
+def test_setting_new_item_removes_the_old_one(order, course, another_course):
     order.set_item(course)
     order.save()
 

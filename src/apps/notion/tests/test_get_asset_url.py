@@ -63,7 +63,7 @@ def page_block():
     )
 
 
-def test_image_block(image_block) -> None:
+def test_image_block(image_block):
     assert (
         get_asset_url(
             asset=PATH,
@@ -73,7 +73,7 @@ def test_image_block(image_block) -> None:
     )
 
 
-def test_page_block(page_block) -> None:
+def test_page_block(page_block):
     assert (
         get_asset_url(
             asset=PATH,
@@ -83,7 +83,7 @@ def test_page_block(page_block) -> None:
     )
 
 
-def test_parent_table_is_space(image_block) -> None:
+def test_parent_table_is_space(image_block):
     image_block.data["value"]["parent_table"] = "space"
 
     assert (
@@ -102,7 +102,7 @@ def test_parent_table_is_space(image_block) -> None:
         "💩",
     ],
 )
-def test_non_notion_urls(image_block, url) -> None:
+def test_non_notion_urls(image_block, url):
     image_block.data["value"]["properties"]["source"] = [[url]]
 
     assert (

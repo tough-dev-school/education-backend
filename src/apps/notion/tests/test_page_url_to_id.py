@@ -14,5 +14,5 @@ from apps.notion.helpers import page_url_to_id
         ("https://notion.so/workspace/a-b-c-100500ddf", "100500ddf"),
     ],
 )
-def test(page_url, expected) -> None:
+def test(page_url, expected):
     assert page_url_to_id(page_url) == expected

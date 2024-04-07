@@ -1,8 +1,5 @@
-from collections.abc import Callable
-
 import pytest
 
-from apps.users.models import User
 from core.test.api_client import DRFClient
 
 
@@ -17,13 +14,13 @@ def anon():
 
 
 @pytest.fixture
-def as_() -> Callable[[User | None], DRFClient]:
-    def as_who(user: User | None = None) -> DRFClient:
+def as_():
+    def as_who(user=None):
         return DRFClient(user=user, god_mode=False)
 
     return as_who
 
 
 @pytest.fixture
-def as_user(as_: Callable, user: User) -> DRFClient:
+def as_user(as_, user):
     return as_(user)

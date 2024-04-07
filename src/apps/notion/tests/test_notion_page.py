@@ -39,7 +39,7 @@ def ok():
 
 @pytest.fixture
 def set_response(respx_mock: MockRouter):
-    def _set_response(response) -> None:
+    def _set_response(response):
         respx_mock.route(url="http://notion.middleware/v1/notion/loadPageChunk/").respond(json=response)
 
     return _set_response
@@ -55,7 +55,7 @@ def get_blocks(get_page):
     return lambda: get_page().blocks.ordered()
 
 
-def test_ok(set_response, ok, get_blocks) -> None:
+def test_ok(set_response, ok, get_blocks):
     set_response(ok)
 
     blocks = get_blocks()
@@ -66,7 +66,7 @@ def test_ok(set_response, ok, get_blocks) -> None:
     assert blocks[2].id == "third-block"
 
 
-def test_page_block_is_always_first(set_response, ok, get_blocks) -> None:
+def test_page_block_is_always_first(set_response, ok, get_blocks):
     ok["recordMap"]["block"]["first-block"]["value"]["type"] = "Bullshit"
     ok["recordMap"]["block"]["fourth-block"] = {
         "value": {
@@ -84,7 +84,7 @@ def test_page_block_is_always_first(set_response, ok, get_blocks) -> None:
     assert blocks[2].id == "second-block"
 
 
-def test_page_title(set_response, ok, get_page) -> None:
+def test_page_title(set_response, ok, get_page):
     set_response(ok)
 
     page = get_page()
@@ -92,7 +92,7 @@ def test_page_title(set_response, ok, get_page) -> None:
     assert page.title == "Неделя 1 из 4"
 
 
-def test_abscense_of_the_page_block_does_not_break_page_title(set_response, ok, get_page) -> None:
+def test_abscense_of_the_page_block_does_not_break_page_title(set_response, ok, get_page):
     set_response(ok)
 
     page = get_page()
@@ -101,7 +101,7 @@ def test_abscense_of_the_page_block_does_not_break_page_title(set_response, ok, 
     assert page.title is None
 
 
-def test_block_without_title_does_not_break_page_title_1(set_response, ok, get_page) -> None:
+def test_block_without_title_does_not_break_page_title_1(set_response, ok, get_page):
     set_response(ok)
 
     page = get_page()
@@ -110,7 +110,7 @@ def test_block_without_title_does_not_break_page_title_1(set_response, ok, get_p
     assert page.title is None
 
 
-def test_block_without_title_does_not_break_page_title_2(set_response, ok, get_page) -> None:
+def test_block_without_title_does_not_break_page_title_2(set_response, ok, get_page):
     set_response(ok)
 
     page = get_page()
@@ -119,7 +119,7 @@ def test_block_without_title_does_not_break_page_title_2(set_response, ok, get_p
     assert page.title is None
 
 
-def test_not_shared_exception(get_page, set_response) -> None:
+def test_not_shared_exception(get_page, set_response):
     set_response(
         {
             "recordMap": {},  # not shared page looks excactly like this
@@ -129,7 +129,7 @@ def test_not_shared_exception(get_page, set_response) -> None:
         get_page()
 
 
-def test_wrong_response_exception(get_page, set_response) -> None:
+def test_wrong_response_exception(get_page, set_response):
     set_response({"errorId": "de586d84-7fbb-466b-b633-8b1ae5cf0497", "name": "ValidationError", "message": "Invalid input."})
 
     with pytest.raises(NotionResponseError):

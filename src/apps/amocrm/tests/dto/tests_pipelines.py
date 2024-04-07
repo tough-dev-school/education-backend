@@ -9,7 +9,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def _successful_response(get) -> None:
+def _successful_response(get):
     get.return_value = {
         "_total_items": 3,
         "_links": {"self": {"href": "https://test.amocrm.ru/api/v4/leads/pipelines"}},
@@ -104,7 +104,7 @@ def _successful_response(get) -> None:
 
 
 @pytest.mark.usefixtures("_successful_response")
-def test_get_pipelines_return_list_of_pipelines() -> None:
+def test_get_pipelines_return_list_of_pipelines():
     got = AmoCRMPipelinesDTO.get()
 
     assert got == [
@@ -129,7 +129,7 @@ def test_get_pipelines_return_list_of_pipelines() -> None:
 
 
 @pytest.mark.usefixtures("_successful_response")
-def test_get_pipelines_call_cached(get) -> None:
+def test_get_pipelines_call_cached(get):
     AmoCRMPipelinesDTO.get()
 
     get.assert_called_once_with(url="/api/v4/leads/pipelines", cached=True)

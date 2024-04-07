@@ -26,7 +26,7 @@ from apps.tinkoff.token_validator import TinkoffNotificationsTokenValidator
         },
     ],
 )
-def test_success_validation(payload) -> None:
+def test_success_validation(payload):
     validator = TinkoffNotificationsTokenValidator(payload)
 
     assert validator() is True
@@ -50,7 +50,7 @@ def test_success_validation(payload) -> None:
         },
     ],
 )
-def test_no_token_passed_for_validation(payload) -> None:
+def test_no_token_passed_for_validation(payload):
     validator = TinkoffNotificationsTokenValidator(payload)
 
     with pytest.raises(TinkoffPaymentNotificationNoTokenPassed) as excinfo:
@@ -77,7 +77,7 @@ def test_no_token_passed_for_validation(payload) -> None:
         },
     ],
 )
-def test_failed_validation(payload) -> None:
+def test_failed_validation(payload):
     validator = TinkoffNotificationsTokenValidator(payload)
 
     with pytest.raises(TinkoffPaymentNotificationInvalidToken) as excinfo:

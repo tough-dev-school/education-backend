@@ -28,11 +28,11 @@ def get_answer_to_check(dispatcher):
     return _get_answer_to_check
 
 
-def test_first_answer_is_got(get_answer_to_check, answers, another_user) -> None:
+def test_first_answer_is_got(get_answer_to_check, answers, another_user):
     assert get_answer_to_check(another_user) == answers[0]
 
 
-def test_other_answers_are_ignored(dispatcher, answers) -> None:
+def test_other_answers_are_ignored(dispatcher, answers):
     dispatcher()
 
     assert AnswerCrossCheck.objects.filter(answer=answers[0]).exists()

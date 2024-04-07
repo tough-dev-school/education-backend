@@ -20,7 +20,7 @@ def get_confirm_payload(user):
     }
 
 
-def test_password_actually_was_reset(anon, user, get_confirm_payload) -> None:
+def test_password_actually_was_reset(anon, user, get_confirm_payload):
     data = get_confirm_payload("new_strong_password")
 
     anon.post(url, data=data, expected_status_code=200)
@@ -36,14 +36,14 @@ def test_password_actually_was_reset(anon, user, get_confirm_payload) -> None:
         "12345678910",
     ],
 )
-def test_basic_password_strength_validation(anon, password, get_confirm_payload) -> None:
+def test_basic_password_strength_validation(anon, password, get_confirm_payload):
     data = get_confirm_payload(password)
 
     got = anon.post(url, data=data, expected_status_code=400)
     assert "new_password2" in got
 
 
-def test_error_when_new_passwords_mismatch(anon, get_confirm_payload) -> None:
+def test_error_when_new_passwords_mismatch(anon, get_confirm_payload):
     data = get_confirm_payload("new_strong_password", "mismatched_password")
 
     got = anon.post(url, data=data, expected_status_code=400)
@@ -51,7 +51,7 @@ def test_error_when_new_passwords_mismatch(anon, get_confirm_payload) -> None:
     assert "new_password2" in got
 
 
-def test_same_token_couldnt_be_used_twice(anon, get_confirm_payload) -> None:
+def test_same_token_couldnt_be_used_twice(anon, get_confirm_payload):
     data = get_confirm_payload("new_strong_password")
     anon.post(url, data=data, expected_status_code=200)
 

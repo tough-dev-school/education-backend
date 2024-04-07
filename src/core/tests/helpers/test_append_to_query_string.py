@@ -1,6 +1,6 @@
 import pytest
 
-from src.core.helpers import append_to_query_string
+from core.helpers import append_to_query_string
 
 
 @pytest.mark.parametrize(
@@ -24,5 +24,5 @@ from src.core.helpers import append_to_query_string
         ),
     ],
 )
-def test(data, expected) -> None:
+def test(data, expected):
     assert append_to_query_string(**data) == expected

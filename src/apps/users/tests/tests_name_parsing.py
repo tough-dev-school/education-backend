@@ -14,5 +14,5 @@ pytestmark = [pytest.mark.django_db]
         ("", {"first_name": ""}),
     ],
 )
-def test(name, parsed) -> None:
+def test(name, parsed):
     assert User.parse_name(name) == parsed

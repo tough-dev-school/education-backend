@@ -23,7 +23,7 @@ def student(mixer):
 
 
 @pytest.mark.xfail(reason="Records are deprecated.")
-def test_order_constraints_check_product_with_two_items(student, record, course) -> None:
+def test_order_constraints_check_product_with_two_items(student, record, course):
     with pytest.raises(IntegrityError):
         Order.objects.create(
             price=100,
@@ -35,7 +35,7 @@ def test_order_constraints_check_product_with_two_items(student, record, course)
 
 
 @pytest.mark.xfail(reason="Bundles are deprecated.")
-def test_order_constraints_check_product_with_three_items(student, course, record, bundle) -> None:
+def test_order_constraints_check_product_with_three_items(student, course, record, bundle):
     with pytest.raises(IntegrityError):
         Order.objects.create(
             price=100,

@@ -17,12 +17,12 @@ def url(answer) -> str:
     return f"/api/v2/homework/answers/{answer.slug}/reactions/"
 
 
-def test_ok(api, url, reaction) -> None:
+def test_ok(api, url, reaction):
     api.delete(f"{url}{reaction.slug}/")
 
     with pytest.raises(Reaction.DoesNotExist):
         reaction.refresh_from_db()
 
 
-def test_can_not_destroy_answer_of_another_author(api, url, reaction_of_another_author) -> None:
+def test_can_not_destroy_answer_of_another_author(api, url, reaction_of_another_author):
     api.delete(f"{url}{reaction_of_another_author.slug}/", expected_status_code=403)

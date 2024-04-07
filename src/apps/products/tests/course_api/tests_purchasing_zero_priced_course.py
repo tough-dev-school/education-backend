@@ -16,7 +16,7 @@ def get_order() -> Order | None:
     return Order.objects.last()
 
 
-def test_order_is_created(call_purchase, course) -> None:
+def test_order_is_created(call_purchase, course):
     call_purchase(desired_bank="zero_price", redirect_url="https://thank.you")
 
     placed = get_order()
@@ -29,7 +29,7 @@ def test_order_is_created(call_purchase, course) -> None:
     assert placed.ue_rate == 1
 
 
-def test_redirect(call_purchase) -> None:
+def test_redirect(call_purchase):
     response = call_purchase(as_response=True)
 
     assert response.status_code == 302

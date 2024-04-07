@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Never
 
 from django.db.models import QuerySet
 from rest_framework.exceptions import MethodNotAllowed
@@ -30,8 +30,8 @@ class DiplomaViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
 
         return queryset
 
-    def update(self, request: Request, **kwargs: dict[str, Any]) -> None:  # type: ignore
+    def update(self, request: Request, **kwargs: dict[str, Any]) -> Never:  # type: ignore
         raise MethodNotAllowed(request.method)  # type: ignore
 
-    def destroy(self, request: Request, **kwargs: dict[str, Any]) -> None:  # type: ignore
+    def destroy(self, request: Request, **kwargs: dict[str, Any]) -> Never:  # type: ignore
         raise MethodNotAllowed(request.method)  # type: ignore

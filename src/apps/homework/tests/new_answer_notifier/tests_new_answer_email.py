@@ -3,7 +3,7 @@ import pytest
 pytestmark = [pytest.mark.django_db]
 
 
-def test(notifier, answer, another_answer, send_mail, mocker) -> None:
+def test(notifier, answer, another_answer, send_mail, mocker):
     answer.update(parent=another_answer)
 
     notifier(answer)()

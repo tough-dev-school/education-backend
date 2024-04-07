@@ -36,7 +36,7 @@ def order_returner():
     return lambda order: AmoCRMOrderReturner(order=order)()
 
 
-def test_correct_calls(order_returner, unpaid_order, mock_update_lead, mock_delete_transaction) -> None:
+def test_correct_calls(order_returner, unpaid_order, mock_update_lead, mock_delete_transaction):
     order_returner(unpaid_order)
 
     mock_update_lead.assert_called_once_with(status="closed")
@@ -44,13 +44,13 @@ def test_correct_calls(order_returner, unpaid_order, mock_update_lead, mock_dele
 
 
 @pytest.mark.usefixtures("mock_delete_transaction", "mock_update_lead")
-def test_delete_transaction(order_returner, unpaid_order) -> None:
+def test_delete_transaction(order_returner, unpaid_order):
     order_returner(unpaid_order)
 
     assert AmoCRMOrderTransaction.objects.count() == 0
 
 
-def test_dont_return_if_not_in_amo(order_returner, unpaid_order_not_in_amo, mock_update_lead, mock_delete_transaction) -> None:
+def test_dont_return_if_not_in_amo(order_returner, unpaid_order_not_in_amo, mock_update_lead, mock_delete_transaction):
     order_returner(unpaid_order_not_in_amo)
 
     mock_update_lead.assert_not_called()

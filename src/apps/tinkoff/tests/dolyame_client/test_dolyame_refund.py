@@ -24,7 +24,7 @@ def add_refund_response(order, idempotency_key, respx_mock: MockRouter):
     return add_response
 
 
-def test_send_correct_refund_request(order, idempotency_key, add_refund_response, retrieve_request_json) -> None:
+def test_send_correct_refund_request(order, idempotency_key, add_refund_response, retrieve_request_json):
     add_refund_response()
 
     tasks.refund_dolyame_order(order_id=order.id, idempotency_key=idempotency_key)
@@ -35,7 +35,7 @@ def test_send_correct_refund_request(order, idempotency_key, add_refund_response
     assert len(refund_request["returned_items"]) == 1
 
 
-def test_send_correct_refund_request_per_items_data(order, idempotency_key, add_refund_response, retrieve_request_json) -> None:
+def test_send_correct_refund_request_per_items_data(order, idempotency_key, add_refund_response, retrieve_request_json):
     add_refund_response()
 
     tasks.refund_dolyame_order(order_id=order.id, idempotency_key=idempotency_key)
@@ -51,7 +51,7 @@ def test_send_correct_refund_request_per_items_data(order, idempotency_key, add_
 
 
 @pytest.mark.xfail(strict=True, reason="Just to make sure above code works")
-def test_header(order, idempotency_key, add_refund_response) -> None:
+def test_header(order, idempotency_key, add_refund_response):
     add_refund_response(
         match_headers={
             "X-Correlation-ID": "SOME-OTHER-VALUE",

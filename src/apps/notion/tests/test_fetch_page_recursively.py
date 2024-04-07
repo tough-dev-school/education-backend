@@ -28,11 +28,11 @@ def page() -> NotionPage:
 
 
 @pytest.fixture
-def _mock_fetching_asset(respx_mock) -> None:
+def _mock_fetching_asset(respx_mock):
     respx_mock.post("http://notion.middleware/v1/asset/").respond(content=b"typical")
 
 
-def test_one_pass(notion, page, fetch_page, fetch_blocks) -> None:
+def test_one_pass(notion, page, fetch_page, fetch_blocks):
     fetch_page.return_value = page
     fetch_blocks.return_value = NotionBlockList([NotionBlock(id="block2", data={}), NotionBlock(id="block3", data={})])
 
@@ -42,7 +42,7 @@ def test_one_pass(notion, page, fetch_page, fetch_blocks) -> None:
     assert fetched.blocks.have_block_with_id("block3")
 
 
-def test_two_passes(notion, page, fetch_page, fetch_blocks) -> None:
+def test_two_passes(notion, page, fetch_page, fetch_blocks):
     fetch_page.return_value = page
     fetch_blocks.side_effect = [
         NotionBlockList([NotionBlock(id="block2", data={"value": {"content": ["block4", "block5"]}})]),
@@ -55,7 +55,7 @@ def test_two_passes(notion, page, fetch_page, fetch_blocks) -> None:
     assert fetched.blocks.have_block_with_id("block5")
 
 
-def test_fetching_does_not_get_stuck_in_inifinite_loop_when_notion_does_not_return_one_of_requested_blocks(notion, page, fetch_page, fetch_blocks) -> None:
+def test_fetching_does_not_get_stuck_in_inifinite_loop_when_notion_does_not_return_one_of_requested_blocks(notion, page, fetch_page, fetch_blocks):
     fetch_page.return_value = page
     fetch_blocks.return_value = NotionBlockList([NotionBlock(id="block2", data={})])  # return only block2, despite requested block2 and block3
 
@@ -65,7 +65,7 @@ def test_fetching_does_not_get_stuck_in_inifinite_loop_when_notion_does_not_retu
 
 
 @pytest.mark.usefixtures("_mock_fetching_asset")
-def test_assets_are_fetched(notion, page, fetch_page, fetch_blocks) -> None:
+def test_assets_are_fetched(notion, page, fetch_page, fetch_blocks):
     fetch_page.return_value = page
     fetch_blocks.side_effect = [
         NotionBlockList(

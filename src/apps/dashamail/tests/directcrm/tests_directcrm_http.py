@@ -13,7 +13,7 @@ def event(order):
 
 
 @pytest.fixture(autouse=True)
-def _configure_dashamail_directcrm(settings) -> None:
+def _configure_dashamail_directcrm(settings):
     settings.DASHAMAIL_DIRECTCRM_ENDPOINT = "test-endpoint"
     settings.DASHAMAIL_DIRECTCRM_SECRET_KEY = "s3cr3t"
 
@@ -21,7 +21,7 @@ def _configure_dashamail_directcrm(settings) -> None:
 URL = "https://directcrm.dashamail.com/v3/operations/sync?endpointId=test-endpoint&operation=OrderCreate"
 
 
-def test_ok(event, respx_mock) -> None:
+def test_ok(event, respx_mock):
     respx_mock.post(URL).respond(json={"status": "Success"})
 
     event.send()
@@ -29,14 +29,14 @@ def test_ok(event, respx_mock) -> None:
     assert True, "event should not through anything"
 
 
-def test_failure(event, respx_mock) -> None:
+def test_failure(event, respx_mock):
     respx_mock.post(URL).respond(json={"status": "Fail"})
 
     with pytest.raises(exceptions.DashamailDirectCRMWrongResponse):
         event.send()
 
 
-def test_404(event, respx_mock) -> None:
+def test_404(event, respx_mock):
     respx_mock.post(URL).mock(return_value=Response(401))
 
     with pytest.raises(exceptions.DashamailDirectCRMHTTPException):

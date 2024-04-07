@@ -100,7 +100,7 @@ def task_creator(order_with_lead, payment_rejected_task_data):
 
 
 @pytest.mark.freeze_time("2024-01-01 00:00:00Z")
-def test_create_amocrm_lead_task_and_lead_note_service_message(task_creator, mock_lead_task_create, mock_lead_note_create_service_message, amocrm_lead) -> None:
+def test_create_amocrm_lead_task_and_lead_note_service_message(task_creator, mock_lead_task_create, mock_lead_note_create_service_message, amocrm_lead):
     task_creator()
 
     mock_lead_note_create_service_message.assert_called_once_with(
@@ -118,7 +118,7 @@ def test_create_amocrm_lead_task_and_lead_note_service_message(task_creator, moc
 
 
 @pytest.mark.freeze_time("2024-01-01 00:00:00Z")
-def test_create_amocrm_lead_task_with_custom_deadline_if_it_set(task_creator, mock_lead_task_create, create_order_task_data, mocker) -> None:
+def test_create_amocrm_lead_task_with_custom_deadline_if_it_set(task_creator, mock_lead_task_create, create_order_task_data, mocker):
     task_data = create_order_task_data(task_deadline_timedelta=timedelta(days=5))
 
     task_creator(task_data=task_data)
@@ -132,7 +132,7 @@ def test_create_amocrm_lead_task_with_custom_deadline_if_it_set(task_creator, mo
     )
 
 
-def test_do_not_create_amocrm_task_if_it_exists_already(task_creator, mock_lead_task_get, mock_lead_task_create, mock_lead_note_create_service_message) -> None:
+def test_do_not_create_amocrm_task_if_it_exists_already(task_creator, mock_lead_task_get, mock_lead_task_create, mock_lead_note_create_service_message):
     mock_lead_task_get.return_value = [
         types.Task(id=100500, task_type_id=types.TaskType.CONTACT, text="Отказ платёжной системы", is_completed=False),
     ]
@@ -150,7 +150,7 @@ def test_do_not_create_amocrm_task_if_it_exists_already(task_creator, mock_lead_
         (types.TaskType.CONTACT, "Позвонить клиенту"),  # Same type but different text
     ],
 )
-def test_create_amocrm_task_if_other_task_exists_but_text_not_matched(task_creator, mock_lead_task_get, mock_lead_task_create, task_text, task_type_id) -> None:
+def test_create_amocrm_task_if_other_task_exists_but_text_not_matched(task_creator, mock_lead_task_get, mock_lead_task_create, task_text, task_type_id):
     mock_lead_task_get.return_value = [
         types.Task(id=100500, task_type_id=task_type_id, text=task_text, is_completed=False),
     ]
@@ -160,7 +160,7 @@ def test_create_amocrm_task_if_other_task_exists_but_text_not_matched(task_creat
     mock_lead_task_create.assert_called_once()
 
 
-def test_do_not_create_lead_note_service_message_service_note_not_provided(task_creator, mock_lead_note_create_service_message, create_order_task_data) -> None:
+def test_do_not_create_lead_note_service_message_service_note_not_provided(task_creator, mock_lead_note_create_service_message, create_order_task_data):
     task_data = create_order_task_data(service_note=None)
 
     task_creator(task_data=task_data)
@@ -168,7 +168,7 @@ def test_do_not_create_lead_note_service_message_service_note_not_provided(task_
     mock_lead_note_create_service_message.assert_not_called()
 
 
-def test_same_deal_order_without_lead_not_fail(task_creator, user, course, factory, mock_lead_note_create_service_message, mock_lead_task_create) -> None:
+def test_same_deal_order_without_lead_not_fail(task_creator, user, course, factory, mock_lead_note_create_service_message, mock_lead_task_create):
     same_lead_order_previously_linked_with_amocrm_lead = factory.order(user=user, item=course, amocrm_lead=None)
 
     task_creator(order=same_lead_order_previously_linked_with_amocrm_lead)
@@ -177,7 +177,7 @@ def test_same_deal_order_without_lead_not_fail(task_creator, user, course, facto
     mock_lead_task_create.assert_called_once()
 
 
-def test_call_lead_task_dto_get_with_correct_params(task_creator, mock_lead_task_get, mocker) -> None:
+def test_call_lead_task_dto_get_with_correct_params(task_creator, mock_lead_task_get, mocker):
     task_creator()
 
     mock_lead_task_get.assert_called_once_with(
@@ -186,7 +186,7 @@ def test_call_lead_task_dto_get_with_correct_params(task_creator, mock_lead_task
     )
 
 
-def test_raise_if_responsible_user_email_not_exists_in_amocrm_user_operators(task_creator, create_order_task_data, mock_user_operator_get) -> None:
+def test_raise_if_responsible_user_email_not_exists_in_amocrm_user_operators(task_creator, create_order_task_data, mock_user_operator_get):
     task_data = create_order_task_data(task_responsible_user_email="petrovich@email.com")
 
     with pytest.raises(AmoCRMOrderTaskCreatorException, match="There is no AmoCRM operators with email"):
@@ -195,7 +195,7 @@ def test_raise_if_responsible_user_email_not_exists_in_amocrm_user_operators(tas
     mock_user_operator_get.assert_called_once()
 
 
-def test_raise_if_order_or_same_deal_orders_not_linked_with_amocrm_lead(task_creator, order_with_lead) -> None:
+def test_raise_if_order_or_same_deal_orders_not_linked_with_amocrm_lead(task_creator, order_with_lead):
     order_with_lead.update(amocrm_lead=None)
     Order.objects.same_deal(order_with_lead).update(amocrm_lead=None)
 
