@@ -13,7 +13,7 @@ def reaction_of_another_author(mixer, answer, another_user):
 
 
 @pytest.fixture
-def url(answer) -> str:
+def url(answer):
     return f"/api/v2/homework/answers/{answer.slug}/reactions/"
 
 

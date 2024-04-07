@@ -22,7 +22,7 @@ class FixtureRegistry:
 
 
 class CycleFixtureFactory:
-    def __init__(self, factory: "FixtureFactory", count: int):
+    def __init__(self, factory: "FixtureFactory", count: int) -> None:
         self.factory = factory
         self.count = count
 

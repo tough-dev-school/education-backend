@@ -8,7 +8,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def url(answer) -> str:
+def url(answer):
     return f"/api/v2/homework/answers/{answer.slug}/reactions/"
 
 

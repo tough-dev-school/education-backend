@@ -1,5 +1,5 @@
 from collections.abc import Generator
-from typing import TYPE_CHECKING, Any, Never
+from typing import TYPE_CHECKING, Any
 
 from django.utils.translation import gettext_lazy as _
 
@@ -33,5 +33,5 @@ class Bundle(Shippable):
         for item in self.iterate_bundled_items():
             item.unship(*args, **kwargs)
 
-    def save(self, *args: Any, **kwargs: Any) -> Never:
+    def save(self, *args: Any, **kwargs: Any) -> None:
         raise RuntimeError("Deprecated model")
