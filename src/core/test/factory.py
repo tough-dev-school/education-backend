@@ -32,7 +32,7 @@ class CycleFixtureFactory:
 
 
 class FixtureFactory:
-    def __init__(self):
+    def __init__(self) -> None:
         self.mixer = mixer
         self.registry = FixtureRegistry()
 
