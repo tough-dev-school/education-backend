@@ -57,7 +57,7 @@ def _no_purchase(purchase):
 
 
 @pytest.fixture
-def emoji() -> str:
+def emoji():
     return "🐍"
 
 
