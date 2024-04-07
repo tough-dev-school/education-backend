@@ -82,7 +82,9 @@ def test_second_message_is_not_sent_when_it_is_too_early(parent_message, assert_
     assert_nothing_is_sent()  # nothing should be sent right after that, cuz time has not come
 
 
-def test_message_is_not_sent_when_study_model_disappeares_during_learning(parent_message, assert_message_is_sent, assert_nothing_is_sent, freezer, order) -> None:
+def test_message_is_not_sent_when_study_model_disappeares_during_learning(
+    parent_message, assert_message_is_sent, assert_nothing_is_sent, freezer, order
+) -> None:
     tasks.send_active_chains()
     assert_message_is_sent(parent_message)  # root message is sent for the first time
 
