@@ -2,7 +2,7 @@ from collections.abc import Iterable
 from decimal import Decimal
 
 import shortuuid
-from django.db.models import CheckConstraint, Q, QuerySet
+from django.db.models import CheckConstraint, QuerySet
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
@@ -15,10 +15,10 @@ from core.models import TimestampedModel, models, only_one_or_zero_is_set
 
 class OrderQuerySet(QuerySet):
     def paid(self) -> "OrderQuerySet":
-        return self.filter(paid__isnull=False, price__gt=0)
+        return self.filter(paid__isnull=False)
 
     def not_paid(self) -> "OrderQuerySet":
-        return self.filter(Q(paid__isnull=False, price=0) | Q(paid__isnull=True))
+        return self.filter(paid__isnull=True)
 
     def shipped_without_payment(self) -> "OrderQuerySet":
         return self.not_paid().filter(shipped__isnull=False)
