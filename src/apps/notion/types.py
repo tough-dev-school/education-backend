@@ -48,6 +48,7 @@ class BlockValue(TypedDict, total=False):
     type: BlockType
     format: BlockFormat
     content: list[BlockId]
+    last_edited_time: int
     parent_id: str
     parent_table: str
     properties: dict[str, TextProperty]

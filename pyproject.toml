@@ -170,7 +170,6 @@ ignore = [
     "FBT001",  # boolean-typed position argument in function definition
     "FBT002",  # boolean default position argument in function definition
     "FBT003",  # boolean positional value in function call
-    "INP001",  # file `{}` is part of an implicit namespace package. Add an `__init__.py`
     "INT001",  # f-string is resolved before function call; consider `_("string %s") % arg`
     "ISC001",  # implicitly concatenated string literals on one line
     "N802",  # function name `{}` should be lowercase
@@ -239,19 +238,28 @@ ban-relative-imports = "all"
 known-local-folder = ["apps", "core"]
 
 [tool.ruff.lint.per-file-ignores]
+"*/factory.py" = [
+    "ANN",  # flake8-annotations
+]
+"*/fixtures.py" = [
+    "ANN",  # flake8-annotations
+]
+"*/fixtures/*" = [
+    "ANN",  # flake8-annotations
+]
 "*/management/*" = [
     "ANN",  # flake8-annotations
 ]
 "*/migrations/*" = [
     "ANN",  # flake8-annotations
 ]
+"*/tests/*" = [
+    "ANN",  # flake8-annotations
+]
 "src/core/conf/*" = [
     "ANN",  # flake8-annotations
 ]
 "src/core/test/api_client.py" = [
-    "ANN",  # flake8-annotations
-]
-"tests/*" = [
     "ANN",  # flake8-annotations
 ]
 
