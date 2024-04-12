@@ -1333,17 +1333,17 @@ test = ["coverage[toml] (==5.2)", "flake8 (==3.8.3)", "flake8-blind-except (==0.
 
 [[package]]
 name = "django-ipware"
-version = "6.0.4"
+version = "6.0.5"
 description = "A Django application to retrieve user's IP address"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "django-ipware-6.0.4.tar.gz", hash = "sha256:614d0f0a911f8a765e55b6d358b1715bb85eeb63d1ebb77447d09d645f1343e8"},
-    {file = "django_ipware-6.0.4-py2.py3-none-any.whl", hash = "sha256:09c502ee3b1f8ae08d197d5e1f4397e965d0b201c83de7b5721db1fc460e6ab6"},
+    {file = "django-ipware-6.0.5.tar.gz", hash = "sha256:b39e27403287d6beb0513e694024017dba58d129fd410a1014ac8a1584e73fce"},
+    {file = "django_ipware-6.0.5-py2.py3-none-any.whl", hash = "sha256:a4b73de9a58af9aaa08710da689fb87e39ec470f8df6dc7ee9f8e2d3e0cdef6a"},
 ]
 
 [package.dependencies]
-python-ipware = ">=2.0.0"
+python-ipware = ">=2.0.3"
 
 [[package]]
 name = "django-prettyjson"
@@ -2546,13 +2546,13 @@ files = [
 
 [[package]]
 name = "python-ipware"
-version = "2.0.1"
+version = "2.0.3"
 description = "A Python package to retrieve user's IP address"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "python-ipware-2.0.1.tar.gz", hash = "sha256:9ba4805152ebb85ad5b53797185cd1ce6231e1db60155834f326c8cd61e8af34"},
-    {file = "python_ipware-2.0.1-py3-none-any.whl", hash = "sha256:1992920ef553165dfa35e6ea5a90762f64f3b943cc22ee6b4ec02e2c86d31178"},
+    {file = "python-ipware-2.0.3.tar.gz", hash = "sha256:70cde60542294432eb176ca739a7bad81499dfc6c8d888e5ed3c486f313de090"},
+    {file = "python_ipware-2.0.3-py3-none-any.whl", hash = "sha256:c465f6fba072f791d06892093afd02d558caddb18c953cf7777754b175e0d97f"},
 ]
 
 [package.extras]
