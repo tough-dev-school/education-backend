@@ -63,7 +63,7 @@ def submit_homework(users, submit_answer):
 
 def test_single_homework(users, submit_homework, questions, mailoutbox):
     submit_homework(questions[0])
-    tasks.disptach_crosscheck(questions[0].id)
+    tasks.dispatch_crosscheck(questions[0].id)
 
     assert len(mailoutbox) == 10
 
@@ -75,7 +75,7 @@ def test_triple_homework(users, submit_homework, questions, mailoutbox):
     for _ in range(3):
         submit_homework(questions[0])
 
-    tasks.disptach_crosscheck(questions[0].id)
+    tasks.dispatch_crosscheck(questions[0].id)
 
     assert len(mailoutbox) == 10
     for user in users:

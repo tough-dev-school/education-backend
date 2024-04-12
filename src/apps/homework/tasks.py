@@ -6,7 +6,7 @@ from core.celery import celery
 
 
 @celery.task
-def disptach_crosscheck(question_id: str, *args: Any, **kwargs: dict[str, Any]) -> None:
+def dispatch_crosscheck(question_id: str, *args: Any, **kwargs: dict[str, Any]) -> None:
     question = Question.objects.get(pk=question_id)
     question.dispatch_crosscheck(*args, **kwargs)
 

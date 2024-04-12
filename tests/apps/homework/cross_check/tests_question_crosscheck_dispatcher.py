@@ -19,7 +19,7 @@ def test_question_method_does_the_same(question):
 
 
 def test_task_does_the_same(question):
-    tasks.disptach_crosscheck.delay(question_id=question.pk, answers_per_user=1)
+    tasks.dispatch_crosscheck.delay(question_id=question.pk, answers_per_user=1)
 
     assert AnswerCrossCheck.objects.count() == 2
 
