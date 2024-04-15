@@ -2,12 +2,8 @@ import pytest
 
 pytestmark = [
     pytest.mark.django_db,
+    pytest.mark.usefixtures("send_mail"),
 ]
-
-
-@pytest.fixture(autouse=True)
-def send_mail(mocker):
-    return mocker.patch("apps.mailing.tasks.send_mail.delay")
 
 
 @pytest.fixture(autouse=True)
