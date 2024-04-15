@@ -48,7 +48,7 @@ class OrderPaidSetter(BaseService):
 
     def ship(self) -> None:
         if not self.is_already_shipped and not self.is_already_paid and self.order.item is not None:
-            self.order.ship(silent=self.silent)
+            self.order.ship()
 
     def rebuild_user_tags(self) -> None:
         rebuild_tags.delay(student_id=self.order.user_id)

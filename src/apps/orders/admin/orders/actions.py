@@ -74,7 +74,7 @@ def ship_again_if_paid(modeladmin: Any, request: HttpRequest, queryset: QuerySet
 
     for order in queryset.iterator():
         if order.paid is not None:
-            order.ship(silent=True)
+            order.ship()
             shipped_count += 1
 
     if shipped_count:
