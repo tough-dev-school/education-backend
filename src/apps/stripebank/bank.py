@@ -51,7 +51,7 @@ class StripeBank(Bank):
         return [
             {
                 "price_data": {
-                    "currency": "eur",
+                    "currency": self.currency.lower(),
                     "product_data": {
                         "name": self.order.item.name_international,
                     },

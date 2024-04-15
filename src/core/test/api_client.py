@@ -10,8 +10,8 @@ from apps.users.models import User
 
 
 class DRFClient(APIClient):
-    def __init__(self, user=None, god_mode=True, anon=False, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(self, user=None, god_mode=True, anon=False, **kwargs) -> None:
+        super().__init__(**kwargs)
 
         if not anon:
             self.auth(user, god_mode)

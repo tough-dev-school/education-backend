@@ -6,7 +6,7 @@ compilemessages:
 
 fmt:
 	poetry run ruff format src tests
-	poetry run ruff check src tests --fix
+	poetry run ruff check src tests --fix --unsafe-fixes
 	poetry run toml-sort pyproject.toml
 
 lint:

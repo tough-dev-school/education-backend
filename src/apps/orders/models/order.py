@@ -137,14 +137,14 @@ class Order(TimestampedModel):
 
         OrderRefunder(self, amount)()
 
-    def ship(self, silent: bool | None = False) -> None:
+    def ship(self) -> None:
         from apps.orders.services import OrderShipper
 
-        OrderShipper(self, silent=silent)()
+        OrderShipper(self)()
 
     def ship_without_payment(self) -> bool:
         if self.paid is None:
-            self.ship(silent=True)
+            self.ship()
             return True
 
         return False

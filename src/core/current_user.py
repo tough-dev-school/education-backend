@@ -1,5 +1,7 @@
 from threading import current_thread, local
 
+from django.contrib.auth.models import AnonymousUser
+
 from apps.users.models import User
 
 _thread_locals = local()
@@ -11,7 +13,7 @@ def get_current_user() -> User | None:
         return user
 
 
-def set_current_user(user: User) -> None:
+def set_current_user(user: AnonymousUser | User) -> None:
     setattr(_thread_locals, _thread_key(), user)
 
 
