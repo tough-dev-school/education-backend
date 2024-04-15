@@ -11,7 +11,6 @@ class OrderShipper(BaseService):
     """Ship the order (actually calls item ship() method)"""
 
     order: Order
-    silent: bool | None = False
 
     def act(self) -> None:
         if not self.order.shipped:
