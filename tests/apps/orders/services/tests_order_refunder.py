@@ -15,7 +15,7 @@ from apps.orders.services.order_refunder import OrderRefunderException
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures("_set_current_user"),
+    pytest.mark.usefixtures("_set_current_user", "send_mail"),
 ]
 
 
@@ -45,11 +45,6 @@ def mock_stripe_refund(mocker):
     return mocker.patch("apps.stripebank.bank.StripeBank.refund")
 
 
-@pytest.fixture(autouse=True)
-def mock_send_mail(mocker):
-    return mocker.patch("apps.mailing.tasks.send_mail.delay")
-
-
 @pytest.fixture
 def spy_unshipper(mocker):
     return mocker.spy(OrderUnshipper, "__call__")
@@ -57,7 +52,7 @@ def spy_unshipper(mocker):
 
 @pytest.fixture
 def get_send_mail_call_email_context():
-    return lambda mock_send_mail: mock_send_mail.mock_calls[0].kwargs["ctx"]
+    return lambda send_mail: send_mail.mock_calls[0].kwargs["ctx"]
 
 
 @pytest.fixture
@@ -194,10 +189,10 @@ def test_unship_order_despite_it_unpaid(not_paid_order, refund, spy_unshipper):
     spy_unshipper.assert_called_once()
 
 
-def test_order_refunded_all_refund_watchers_notified(paid_order, refund, mock_send_mail, mocker):
+def test_order_refunded_all_refund_watchers_notified(paid_order, refund, send_mail, mocker):
     refund(paid_order, paid_order.price)
 
-    mock_send_mail.assert_has_calls(
+    send_mail.assert_has_calls(
         any_order=True,
         calls=[
             mocker.call(to="first_refunds_watcher@mail.com", template_id=mocker.ANY, disable_antispam=mocker.ANY, ctx=mocker.ANY),
@@ -206,10 +201,10 @@ def test_order_refunded_all_refund_watchers_notified(paid_order, refund, mock_se
     )
 
 
-def test_refund_notification_email_context_and_template_correct(refund, paid_order, mock_send_mail, mocker):
+def test_refund_notification_email_context_and_template_correct(refund, paid_order, send_mail, mocker):
     refund(paid_order, paid_order.price)
 
-    mock_send_mail.assert_called_with(
+    send_mail.assert_called_with(
         to=mocker.ANY,
         template_id="order-refunded",
         disable_antispam=True,
@@ -225,13 +220,13 @@ def test_refund_notification_email_context_and_template_correct(refund, paid_ord
     )
 
 
-def test_do_not_break_if_order_without_item_was_refunded(refund, paid_order, mock_send_mail, get_send_mail_call_email_context):
+def test_do_not_break_if_order_without_item_was_refunded(refund, paid_order, send_mail, get_send_mail_call_email_context):
     paid_order.update(course=None)
 
     with does_not_raise():
         refund(paid_order, paid_order.price)
 
-    send_mail_context = get_send_mail_call_email_context(mock_send_mail)
+    send_mail_context = get_send_mail_call_email_context(send_mail)
     assert send_mail_context["refunded_item"] == "not-set"
 
 
@@ -344,10 +339,10 @@ def test_partial_refund_success_admin_log_created(paid_tinkoff_order, refund, us
     assert log.user == user
 
 
-def test_partial_refund_notification_email_context_and_template_correct(refund, paid_tinkoff_order, mock_send_mail, mocker):
+def test_partial_refund_notification_email_context_and_template_correct(refund, paid_tinkoff_order, send_mail, mocker):
     refund(paid_tinkoff_order, 500)
 
-    mock_send_mail.assert_called_with(
+    send_mail.assert_called_with(
         to=mocker.ANY,
         template_id="order-refunded",
         disable_antispam=True,
