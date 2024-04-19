@@ -30,7 +30,7 @@ def test_with_default_personal_domains(user, domain):
 
     generate_tags(user)
 
-    assert "b2b" not in user.tags
+    assert "b2b" not in user.tags, user.tags
 
 
 @pytest.mark.parametrize("domain", ["yandex-team.ru", "pwc.com", "fands.dev"])

@@ -16,17 +16,24 @@ class TinkoffBank(Bank):
     acquiring_percent = Decimal("2.49")
     name = _("Tinkoff")
 
+    @property
+    def is_partial_refund_available(self) -> bool:
+        return True
+
     def get_initial_payment_url(self) -> str:
         return self.Init()["PaymentURL"]
 
-    def refund(self) -> None:
+    def refund(self, amount: Decimal | None = None) -> None:
         last_payment_notification = self.order.tinkoff_payment_notifications.order_by("-id")[0]
+
+        refund_amount_data = {"Amount": self.get_formatted_amount(amount)} if amount else {}
 
         self.call(
             "Cancel",
             payload={
                 "PaymentId": last_payment_notification.payment_id,
                 "Receipt": self.get_receipt(),
+                **refund_amount_data,
             },
         )
 

@@ -7,8 +7,8 @@ from django.http.request import HttpRequest
 from django.utils.translation import gettext as _
 
 from apps.orders import tasks
-from apps.orders.admin.orders.throttling import OrderRefundActionThrottle
 from apps.orders.models import Order
+from apps.orders.services.order_refunder import OrderRefunderException
 from apps.studying.models import Study
 from core.admin import admin
 
@@ -27,15 +27,14 @@ def set_paid(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
 
 @admin.action(description=_("Refund"), permissions=["unpay"])
 def refund(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
-    throttle = OrderRefundActionThrottle()
     refunded_orders = []
     non_refunded_orders = []
 
     for order in queryset.iterator():
-        if throttle.allow_request(request, view=modeladmin):
-            order.refund()
+        try:
+            order.refund(order.price)
             refunded_orders.append(order)
-        else:
+        except OrderRefunderException:
             non_refunded_orders.append(order)
 
     if refunded_orders:

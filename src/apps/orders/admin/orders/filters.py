@@ -28,7 +28,7 @@ class OrderStatusFilter(admin.SimpleListFilter):
             return None
 
         if value == "not_paid":
-            return queryset.paid(invert=True).filter(shipped__isnull=True)  # type: ignore
+            return queryset.not_paid().filter(shipped__isnull=True)  # type: ignore
 
         if value == "paid":
             return queryset.paid()  # type: ignore

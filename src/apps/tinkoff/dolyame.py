@@ -42,7 +42,7 @@ class Dolyame(Bank):
 
         return result["link"]
 
-    def refund(self) -> None:
+    def refund(self, amount: Decimal | None = None) -> None:
         self.post(
             method=f"orders/{self.order.slug}/refund",
             payload={

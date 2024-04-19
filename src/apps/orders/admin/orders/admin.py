@@ -8,6 +8,7 @@ from apps.orders import human_readable
 from apps.orders.admin.orders import actions
 from apps.orders.admin.orders.filters import OrderStatusFilter
 from apps.orders.admin.orders.forms import OrderAddForm, OrderChangeForm
+from apps.orders.admin.refunds.admin import RefundInline
 from apps.orders.models import Order
 from apps.users.models import Student
 from core.admin import ModelAdmin, admin
@@ -55,17 +56,17 @@ class OrderAdmin(ModelAdmin):
         "login_as",
         "paid",
         "shipped",
-        "unpaid",
     ]
 
     fieldsets = [
         (
             None,
             {
-                "fields": ["user", "course", "price", "email", "author", "login_as", "paid", "shipped", "unpaid"],
+                "fields": ["user", "course", "price", "email", "author", "login_as", "paid", "shipped"],
             },
         ),
     ]
+    inlines = [RefundInline]
 
     @property
     def media(self) -> Media:

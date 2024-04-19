@@ -16,6 +16,10 @@ class StripeBank(Bank):
     acquiring_percent = Decimal(4)
     name = _("Stripe")
 
+    @property
+    def is_partial_refund_available(self) -> bool:
+        return True
+
     def get_initial_payment_url(self) -> str:
         stripe.api_key = settings.STRIPE_API_KEY
 
@@ -30,7 +34,7 @@ class StripeBank(Bank):
 
         return session.url
 
-    def refund(self) -> None:
+    def refund(self, amount: Decimal | None = None) -> None:
         stripe.api_key = settings.STRIPE_API_KEY
 
         latest_payment_notification = (
@@ -40,7 +44,8 @@ class StripeBank(Bank):
             ).order_by("-id")
         )[0]
 
-        stripe.Refund.create(payment_intent=latest_payment_notification.payment_intent)
+        refund_amount_data = {"amount": self.get_formatted_amount(amount)} if amount else {}
+        stripe.Refund.create(payment_intent=latest_payment_notification.payment_intent, **refund_amount_data)  # type: ignore
 
     def get_items(self) -> list[dict[str, Any]]:
         return [

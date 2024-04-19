@@ -1,4 +1,5 @@
 from collections.abc import Iterable
+from decimal import Decimal
 
 import shortuuid
 from django.db.models import CheckConstraint, QuerySet
@@ -13,11 +14,14 @@ from core.models import TimestampedModel, models, only_one_or_zero_is_set
 
 
 class OrderQuerySet(QuerySet):
-    def paid(self, invert: bool | None = False) -> "OrderQuerySet":
-        return self.filter(paid__isnull=invert)
+    def paid(self) -> "OrderQuerySet":
+        return self.filter(paid__isnull=False)
+
+    def not_paid(self) -> "OrderQuerySet":
+        return self.filter(paid__isnull=True)
 
     def shipped_without_payment(self) -> "OrderQuerySet":
-        return self.paid(invert=True).filter(shipped__isnull=False)
+        return self.not_paid().filter(shipped__isnull=False)
 
     def available_to_confirm(self) -> "OrderQuerySet":
         return self.filter(
@@ -46,7 +50,6 @@ class Order(TimestampedModel):
         null=True,
         blank=True,
     )
-    unpaid = models.DateTimeField(_("Date when order got unpaid"), null=True, blank=True)
     shipped = models.DateTimeField(_("Date when order was shipped"), null=True, blank=True)
 
     bank_id = models.CharField(_("User-requested bank string"), choices=BANK_CHOICES, blank=True, max_length=32)
@@ -129,10 +132,10 @@ class Order(TimestampedModel):
 
         OrderPaidSetter(self, silent=silent)()
 
-    def refund(self) -> None:
+    def refund(self, amount: Decimal) -> None:
         from apps.orders.services import OrderRefunder
 
-        OrderRefunder(self)()
+        OrderRefunder(self, amount)()
 
     def ship(self) -> None:
         from apps.orders.services import OrderShipper

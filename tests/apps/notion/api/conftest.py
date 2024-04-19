@@ -2,7 +2,14 @@ import pytest
 
 from apps.notion.page import NotionPage
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [
+    pytest.mark.django_db,
+]
+
+
+@pytest.fixture(autouse=True)
+def set_current_user(_set_current_user):
+    return _set_current_user
 
 
 @pytest.fixture
@@ -24,7 +31,7 @@ def order(factory, course, api):
 
 @pytest.fixture
 def unpaid_order(order):
-    order.refund()
+    order.refund(order.price)
 
     return order
 

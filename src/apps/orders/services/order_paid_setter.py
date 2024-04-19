@@ -41,10 +41,8 @@ class OrderPaidSetter(BaseService):
 
     def mark_order_as_paid(self) -> None:
         self.order.paid = timezone.now()
-        if not self.is_already_paid:  # reset unpayment date if order is not paid yet
-            self.order.unpaid = None
 
-        self.order.save(update_fields=["paid", "unpaid", "modified"])
+        self.order.save(update_fields=["paid", "modified"])
 
     def ship(self) -> None:
         if not self.is_already_shipped and not self.is_already_paid and self.order.item is not None:

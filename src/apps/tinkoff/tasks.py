@@ -19,4 +19,4 @@ def refund_dolyame_order(order_id: int, idempotency_key: str) -> None:
         idempotency_key=idempotency_key,
     )
 
-    dolyame.refund()
+    dolyame.refund(dolyame.order.price)

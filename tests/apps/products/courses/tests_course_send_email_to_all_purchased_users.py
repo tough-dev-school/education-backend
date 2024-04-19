@@ -1,6 +1,9 @@
 import pytest
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [
+    pytest.mark.django_db,
+    pytest.mark.usefixtures("_set_current_user"),
+]
 
 
 @pytest.fixture(autouse=True)
@@ -19,7 +22,7 @@ def test_sending_mail(course, user, send_mail):
 
 
 def test_non_purchased(course, send_mail, order):
-    order.refund()
+    order.refund(order.price)
 
     course.send_email_to_all_purchased_users(template_id="100500")
 
