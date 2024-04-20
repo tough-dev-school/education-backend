@@ -57,7 +57,8 @@ class OrderRefunder(BaseService):
         refund = self.create_refund_entry()
         self.update_price()
 
-        self.do_bank_refund()
+        if self.amount != 0:
+            self.do_bank_refund()
 
         if not self.order.paid or self.order.price == 0:  # if afterward order was fully refunded or was never paid
             OrderUnshipper(order=self.order)()

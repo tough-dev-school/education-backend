@@ -26,13 +26,14 @@ class TinkoffBank(Bank):
     def refund(self, amount: Decimal | None = None) -> None:
         last_payment_notification = self.order.tinkoff_payment_notifications.order_by("-id")[0]
 
-        refund_amount_data = {"Amount": self.get_formatted_amount(amount)} if amount else {}
+        formatted_amount = self.get_formatted_amount(amount) if amount else self.price
+        refund_amount_data = {"Amount": formatted_amount} if amount else {}
 
         self.call(
             "Cancel",
             payload={
                 "PaymentId": last_payment_notification.payment_id,
-                "Receipt": self.get_receipt(),
+                "Receipt": self.get_receipt(formatted_amount),  # type: ignore
                 **refund_amount_data,
             },
         )
@@ -46,7 +47,7 @@ class TinkoffBank(Bank):
                 "CustomerKey": self.user.id,
                 "SuccessURL": self.success_url,
                 "FailURL": self.fail_url,
-                "Receipt": self.get_receipt(),
+                "Receipt": self.get_receipt(self.price),  # type: ignore
                 "NotificationURL": self.get_notification_url(),
             },
         )
@@ -73,20 +74,20 @@ class TinkoffBank(Bank):
 
         return parsed
 
-    def get_receipt(self) -> dict[str, Any]:
+    def get_receipt(self, amount: int) -> dict[str, Any]:
         return {
             "Email": self.user.email,
             "Taxation": "usn_income",
-            "Items": self.get_items(),
+            "Items": self.get_items(amount),
         }
 
-    def get_items(self) -> list[dict[str, Any]]:
+    def get_items(self, amount: int) -> list[dict[str, Any]]:
         return [
             {
                 "Name": self.order.item.name_receipt,
-                "Price": self.price,
+                "Price": amount,
                 "Quantity": 1,
-                "Amount": self.price,
+                "Amount": amount,
                 "PaymentObject": "service",
                 "Tax": "none",  # fuck
             },
