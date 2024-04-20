@@ -51,6 +51,11 @@ def spy_unshipper(mocker):
 
 
 @pytest.fixture
+def spy_bank_refund(mocker):
+    return mocker.spy(OrderRefunder, "do_bank_refund")
+
+
+@pytest.fixture
 def get_send_mail_call_email_context():
     return lambda send_mail: send_mail.mock_calls[0].kwargs["ctx"]
 
@@ -392,3 +397,9 @@ def test_partial_refund_is_created(paid_tinkoff_order, refund, user):
     assert refund.order == paid_tinkoff_order
     assert refund.author == user
     assert refund.bank_id == paid_tinkoff_order.bank_id
+
+
+def test_bank_refund_is_not_called_if_amount_is_zero(paid_tinkoff_order, refund, spy_bank_refund):
+    refund(paid_tinkoff_order, 0)
+
+    spy_bank_refund.assert_not_called()

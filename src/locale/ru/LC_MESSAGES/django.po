@@ -410,6 +410,14 @@ msgstr "Пометить оплаченным"
 msgid "Refund"
 msgstr "Сделать полный возврат"
 
+#: src/apps/orders/admin/refunds/admin.py:19
+msgid "Partial refund"
+msgstr "Частичный возврат"
+
+#: src/apps/orders/admin/refunds/admin.py:20
+msgid "Partial refunds"
+msgstr "Возвраты"
+
 #: src/apps/orders/admin/orders/actions.py:44
 #, python-brace-format
 msgid "Orders {refunded_orders_as_message} refunded."

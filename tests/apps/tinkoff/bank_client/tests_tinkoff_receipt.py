@@ -9,14 +9,14 @@ def user(order):
 
 
 def test_tinkoff_receipt(user, tinkoff):
-    got = tinkoff.get_receipt()
+    got = tinkoff.get_receipt(10050000)
 
     assert got["Email"] == user.email
     assert got["Taxation"] == "usn_income"
 
 
 def test_tinkoff_items(tinkoff):
-    got = tinkoff.get_receipt()["Items"]
+    got = tinkoff.get_receipt(10050000)["Items"]
 
     assert len(got) == 1
 
