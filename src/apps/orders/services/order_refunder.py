@@ -55,12 +55,16 @@ class OrderRefunder(BaseService):
     @transaction.atomic
     def act(self) -> "Refund":
         refund = self.create_refund_entry()
+
+        # Update price so we don't include refunded amount in finance dashboards
+        # Order price equals to initial price minus refunded amount
         self.update_price()
 
         if self.amount != 0:
             self.do_bank_refund()
 
-        if not self.order.paid or self.order.price == 0:  # if afterward order was fully refunded or was never paid
+        # If afterward order was fully refunded or was never paid
+        if not self.order.paid or self.order.price == 0:
             OrderUnshipper(order=self.order)()
 
         self.write_success_admin_log()
