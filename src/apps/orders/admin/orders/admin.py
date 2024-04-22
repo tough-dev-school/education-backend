@@ -122,7 +122,7 @@ class OrderAdmin(ModelAdmin):
     def has_unpay_permission(self, request: Request) -> bool:
         return request.user.has_perm("orders.unpay_order")
 
-    def get_inlines(self, request: Request, obj: Order) -> list:  # type: ignore
-        if obj.paid and (obj.price != 0 or obj.refunds.exists()):
+    def get_inlines(self, request: Request, obj: "Order | None") -> list:  # type: ignore
+        if obj and obj.paid and (obj.price != 0 or obj.refunds.exists()):
             return [RefundInline]
         return []
