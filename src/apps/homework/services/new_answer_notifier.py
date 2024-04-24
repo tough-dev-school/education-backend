@@ -5,7 +5,7 @@ from django.db.models import QuerySet
 from apps.homework.models import Answer
 from apps.mailing.tasks import send_mail
 from apps.users.models import User
-from core.markdown import markdownify, remove_html
+from core.markdown import markdownify
 from core.services import BaseService
 
 
@@ -37,7 +37,7 @@ class NewAnswerNotifier(BaseService):
         context = {
             "discussion_name": str(self.answer.question),
             "discussion_url": self.answer.get_absolute_url(),
-            "answer_text": remove_html(markdownify(self.answer.text)).strip(),
+            "answer_text": markdownify(self.answer.text).strip(),
             "author_name": str(self.answer.author),
         }
 
