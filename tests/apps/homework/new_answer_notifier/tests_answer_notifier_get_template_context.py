@@ -35,7 +35,7 @@ def test_default(notifier, answer, user):
     assert notifier.get_notification_context(user) == dict(
         discussion_url="https://frontend/lms/homework/answers/f593d1a9-120c-4c92-bed0-9f037537d4f4/",
         discussion_name="Вторая домашка",
-        answer_text="Сарынь на кичку!",
+        answer_text="<p>Сарынь на кичку!</p>",
         author_name="Петрович Львов",
         is_non_root_answer_author="1",
     )
@@ -51,12 +51,12 @@ def test_root_answer(notifier, answer, another_answer):
     ), "Should be the link to the first answer with anchor to the current"
 
 
-def test_html_is_stripped(notifier, answer):
-    answer.update(text="# Вил би стриппед")
+def test_markdown_to_html(notifier, answer):
+    answer.update(text="# Вил би хтмл хедер")
 
     context = notifier(answer).get_notification_context(answer.author)
 
-    assert context["answer_text"] == "Вил би стриппед"
+    assert context["answer_text"] == "<h1>Вил би хтмл хедер</h1>"
 
 
 def test_is_root_answer_author_flag(notifier, answer):
