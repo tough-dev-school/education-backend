@@ -16,3 +16,15 @@ def markdownify(content: str) -> str:
 
 def remove_html(html: str) -> str:
     return bleach.clean(text=html, tags=[], strip=True)
+
+
+def remove_img(html: str) -> str:
+    allowed_tags = settings.BLEACH_ALLOWED_TAGS[:]
+    allowed_tags.remove("img")
+
+    return bleach.clean(
+        text=html,
+        tags=allowed_tags,
+        attributes=[],
+        strip=True,
+    )

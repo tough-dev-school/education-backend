@@ -63,3 +63,13 @@ def test_is_root_answer_author_flag(notifier, answer):
     context = notifier(answer).get_notification_context(answer.author)
 
     assert context["is_root_answer_author"] == "1"
+
+
+def test_img_removed(notifier, answer):
+    answer.update(
+        text="Hello, you![Top 23 Great Job Memes for a Job Well Done That You'll Want to Share | Great  job meme, Job memes, Good job quotes](https://i.pinimg.com/736x/13/ff/49/13ff49773ca9c25ac2116c8bc6c4d2ee.jpg)"
+    )
+
+    text = notifier(answer).get_text_with_markdown()
+
+    assert text == "<p>Hello, you</p>"
