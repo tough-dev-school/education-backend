@@ -5,7 +5,7 @@ from django.db.models import QuerySet
 from apps.homework.models import Answer
 from apps.mailing.tasks import send_mail
 from apps.users.models import User
-from core.markdown import markdownify
+from core.markdown import markdownify, remove_img
 from core.services import BaseService
 
 
@@ -37,7 +37,7 @@ class NewAnswerNotifier(BaseService):
         context = {
             "discussion_name": str(self.answer.question),
             "discussion_url": self.answer.get_absolute_url(),
-            "answer_text": markdownify(self.answer.text).strip(),
+            "answer_text": self.get_text_with_markdown(),
             "author_name": str(self.answer.author),
         }
 
@@ -47,3 +47,6 @@ class NewAnswerNotifier(BaseService):
             context["is_non_root_answer_author"] = "1"
 
         return context
+
+    def get_text_with_markdown(self) -> str:
+        return remove_img(markdownify(self.answer.text).strip())
