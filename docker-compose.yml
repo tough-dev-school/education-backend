@@ -2,19 +2,15 @@ version: '2'
 
 services:
   postgres:
-    image: ghcr.io/tough-dev-school/dev-db
+    image: postgres:13-alpine
+    # contact us to gain access to the anonymized dump
+    # image: ghcr.io/tough-dev-school/dev-db
     environment:
       - POSTGRES_PASSWORD=secret
     ports:
      - 5432:5432
     volumes:
       - dev-db-data:/var/lib/postgresql/data
-
-  notion-middleware:
-    image: ghcr.io/tough-dev-school/notion-middleware
-    env_file: "src/core/.env"
-    ports:
-      - 8001:8000
 
   redis:
     image: redis:6-alpine
