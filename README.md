@@ -15,7 +15,7 @@ This project requires python 3.11. Deps are managed by [Poetry](https://python-p
 Install requirements:
 
 ```bash
-poetry install
+poetry install --no-root
 ```
 
 Configure postgres and redis. It's convenient to use docker and docker-compose:
