@@ -1334,13 +1334,13 @@ test = ["coverage[toml] (==5.2)", "flake8 (==3.8.3)", "flake8-blind-except (==0.
 
 [[package]]
 name = "django-ipware"
-version = "6.0.5"
+version = "7.0.1"
 description = "A Django application to retrieve user's IP address"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "django-ipware-6.0.5.tar.gz", hash = "sha256:b39e27403287d6beb0513e694024017dba58d129fd410a1014ac8a1584e73fce"},
-    {file = "django_ipware-6.0.5-py2.py3-none-any.whl", hash = "sha256:a4b73de9a58af9aaa08710da689fb87e39ec470f8df6dc7ee9f8e2d3e0cdef6a"},
+    {file = "django-ipware-7.0.1.tar.gz", hash = "sha256:d9ec43d2bf7cdf216fed8d494a084deb5761a54860a53b2e74346a4f384cff47"},
+    {file = "django_ipware-7.0.1-py2.py3-none-any.whl", hash = "sha256:db16bbee920f661ae7f678e4270460c85850f03c6761a4eaeb489bdc91f64709"},
 ]
 
 [package.dependencies]
@@ -3509,4 +3509,4 @@ brotli = ["Brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "c7c1a74e42c5d0e11d023025a4613f729bc102decc74774596cda57dc37d3354"
+content-hash = "e160c1684d509529adb3ea041834996b408e6e1f2e6449e4deb18557cae45335"
