@@ -6,6 +6,7 @@ import pytest
 from django.contrib.admin.models import CHANGE, LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
+from freezegun import freeze_time
 
 from apps.banking.exceptions import BankDoesNotExist
 from apps.banking.selector import BANKS
@@ -102,22 +103,24 @@ def refund():
 
 
 def test_5_per_day_limit(factory, paid_tinkoff_order, refund):
-    factory.cycle(5).refund(order=paid_tinkoff_order, amount=100)
-    time.sleep(10)
+    with freeze_time("2022-12-12 12:00Z", tick=True):
+        factory.cycle(5).refund(order=paid_tinkoff_order, amount=100)
+        time.sleep(10)
 
-    with pytest.raises(OrderRefunderException) as e:
-        refund(paid_tinkoff_order, 100)
+        with pytest.raises(OrderRefunderException) as e:
+            refund(paid_tinkoff_order, 100)
 
-    assert "Up to 5 refunds per day are allowed" in str(e)
+        assert "Up to 5 refunds per day are allowed" in str(e)
 
 
 def test_1_per_10_seconds_limit(paid_tinkoff_order, refund):
-    refund(paid_tinkoff_order, 100)
-
-    with pytest.raises(OrderRefunderException) as e:
+    with freeze_time("2022-12-12 12:00Z", tick=True):
         refund(paid_tinkoff_order, 100)
 
-    assert "Up to 1 refund per 10 seconds is allowed" in str(e)
+        with pytest.raises(OrderRefunderException) as e:
+            refund(paid_tinkoff_order, 100)
+
+        assert "Up to 1 refund per 10 seconds is allowed" in str(e)
 
 
 def test_refund_shipped_unpaid_order_for_non_zero_amount(not_paid_order, refund):
