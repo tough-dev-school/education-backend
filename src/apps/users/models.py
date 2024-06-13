@@ -34,11 +34,10 @@ class User(TestUtilsMixin, AbstractUser):
 
     tags = ArrayField(models.CharField(max_length=512), default=list)
     avatar = models.ImageField(
-        verbose_name=_("Cover image"),
+        verbose_name=_("Avatar"),
         upload_to=RandomFileName("users/avatars"),
         null=True,
         blank=True,
-        help_text=_("User avatar"),
     )
 
     class Meta(AbstractUser.Meta):

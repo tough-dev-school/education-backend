@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-13 02:46+0300\n"
+"POT-Creation-Date: 2024-06-13 18:33+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -102,7 +102,7 @@ msgid "Email chain messages"
 msgstr "Письма"
 
 #: apps/diplomas/admin/diploma.py:51 apps/studying/models.py:8
-#: apps/users/models.py:108
+#: apps/users/models.py:107
 msgid "Student"
 msgstr "Студент"
 
@@ -743,7 +743,7 @@ msgstr "Уходит пользователю, если он берёт бесп
 msgid "Confirmation success URL"
 msgstr "Ссылка после успешного подтверждения"
 
-#: apps/products/models/course.py:66 apps/users/models.py:37
+#: apps/products/models/course.py:66
 msgid "Cover image"
 msgstr ""
 
@@ -899,19 +899,19 @@ msgstr "Фамилия на английском"
 msgid "Gender"
 msgstr "Пол"
 
-#: apps/users/models.py:41
-msgid "User avatar"
+#: apps/users/models.py:37
+msgid "Avatar"
 msgstr "Аватар"
 
-#: apps/users/models.py:47
+#: apps/users/models.py:46
 msgid "user"
 msgstr "пользователь"
 
-#: apps/users/models.py:48
+#: apps/users/models.py:47
 msgid "users"
 msgstr "пользователи"
 
-#: apps/users/models.py:109
+#: apps/users/models.py:108
 msgid "Students"
 msgstr "Студенты"
 
