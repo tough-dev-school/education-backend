@@ -11,6 +11,7 @@ from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
 from apps.diplomas.models import Languages
+from core.files import RandomFileName
 from core.models import TestUtilsMixin, models
 from core.types import Language
 
@@ -32,6 +33,13 @@ class User(TestUtilsMixin, AbstractUser):
     telegram_username = models.CharField(max_length=256, blank=True, db_index=True, default="")
 
     tags = ArrayField(models.CharField(max_length=512), default=list)
+    avatar = models.ImageField(
+        verbose_name=_("Cover image"),
+        upload_to=RandomFileName("users/avatars"),
+        null=True,
+        blank=True,
+        help_text=_("User avatar"),
+    )
 
     class Meta(AbstractUser.Meta):
         abstract = False  # type: ignore[assignment]

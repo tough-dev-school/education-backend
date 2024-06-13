@@ -19,6 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
             "github_username",
             "linkedin_username",
             "telegram_username",
+            "avatar",
         ]
 
 
@@ -29,4 +30,5 @@ class UserSafeSerializer(serializers.ModelSerializer):
             "uuid",
             "first_name",
             "last_name",
+            "avatar",
         ]
