@@ -18,6 +18,7 @@ def test_ok(api, answer, question):
     assert got["author"]["uuid"] == str(api.user.uuid)
     assert got["author"]["first_name"] == api.user.first_name
     assert got["author"]["last_name"] == api.user.last_name
+    assert got["author"]["avatar"] is None
     assert got["question"] == str(question.slug)
     assert got["has_descendants"] is False
     assert got["reactions"] == []
