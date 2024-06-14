@@ -1154,16 +1154,16 @@ files = [
 
 [[package]]
 name = "dj-rest-auth"
-version = "5.1.0"
+version = "6.0.0"
 description = "Authentication and Registration in Django Rest Framework"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 files = [
-    {file = "dj-rest-auth-5.1.0.tar.gz", hash = "sha256:2337a17fc9ce35eb294c7dbd9a4c12c7e7e6d448eb827fc67415589204c39d35"},
+    {file = "dj-rest-auth-6.0.0.tar.gz", hash = "sha256:760b45f3a07cd6182e6a20fe07d0c55230c5f950167df724d7914d0dd8c50133"},
 ]
 
 [package.dependencies]
-Django = ">=3.2,<5.0"
+Django = ">=3.2,<6.0"
 djangorestframework = ">=3.13.0"
 
 [package.extras]
@@ -1212,16 +1212,17 @@ resend = ["svix"]
 
 [[package]]
 name = "django-axes"
-version = "6.4.0"
+version = "6.5.0"
 description = "Keep track of failed login attempts in Django-powered sites."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "django-axes-6.4.0.tar.gz", hash = "sha256:aff0e853ae9cddbdd9e8dc703b46915a9960012dab602552f61b43c0777bc731"},
-    {file = "django_axes-6.4.0-py3-none-any.whl", hash = "sha256:70508d108abc19bcfdd3e9ef7c9d526a014029a8e2ba51f03a5a8348d6eca1b9"},
+    {file = "django_axes-6.5.0-py3-none-any.whl", hash = "sha256:bb4d602ef6ab823eb9c41f0957196986ee851756fa38566616f8512cba329661"},
+    {file = "django_axes-6.5.0.tar.gz", hash = "sha256:ee6b11b1331bb69a8fb90da9ecfac790ac95f5277ee04f16f55b4a5eb1593691"},
 ]
 
 [package.dependencies]
+asgiref = ">=3.6.0"
 django = ">=3.2"
 
 [package.extras]
@@ -2662,13 +2663,13 @@ files = [
 
 [[package]]
 name = "redis"
-version = "5.0.5"
+version = "5.0.6"
 description = "Python client for Redis database and key-value store"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "redis-5.0.5-py3-none-any.whl", hash = "sha256:30b47d4ebb6b7a0b9b40c1275a19b87bb6f46b3bed82a89012cf56dea4024ada"},
-    {file = "redis-5.0.5.tar.gz", hash = "sha256:3417688621acf6ee368dec4a04dd95881be24efd34c79f00d31f62bb528800ae"},
+    {file = "redis-5.0.6-py3-none-any.whl", hash = "sha256:c0d6d990850c627bbf7be01c5c4cbaadf67b48593e913bb71c9819c30df37eee"},
+    {file = "redis-5.0.6.tar.gz", hash = "sha256:38473cd7c6389ad3e44a91f4c3eaf6bcb8a9f746007f29bf4fb20824ff0b2197"},
 ]
 
 [package.dependencies]
@@ -3515,4 +3516,4 @@ brotli = ["Brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "2189604436b0a872e736759009d13b2512be4a869551ff6296627925112ecd41"
+content-hash = "7d5ea2a24abd2f0de5403cef76a356379f04e1b5385277798cca966950423c8e"
