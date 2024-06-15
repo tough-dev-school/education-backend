@@ -64,6 +64,7 @@ def test_child_answers_fields(get_answer_comments, answer, another_answer):
     assert descendant["author"]["uuid"] == str(another_answer.author.uuid)
     assert descendant["author"]["first_name"] == another_answer.author.first_name
     assert descendant["author"]["last_name"] == another_answer.author.last_name
+    assert "avatar" in descendant["author"]
     assert "has_descendants" in descendant
     assert "text" in descendant
     assert "src" in descendant
@@ -81,6 +82,7 @@ def test_child_answers_reactions_fields(get_answer_comments, another_answer_reac
     assert reaction["author"]["uuid"] == str(another_answer_reaction.author.uuid)
     assert reaction["author"]["first_name"] == another_answer_reaction.author.first_name
     assert reaction["author"]["last_name"] == another_answer_reaction.author.last_name
+    assert "avatar" in reaction["author"]
 
 
 def test_multilevel_child_answers(get_answer_comments, another_answer, child_of_another_answer):

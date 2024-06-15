@@ -1,3 +1,4 @@
+from collections import defaultdict
 from typing import Any
 
 from celery import group
@@ -27,25 +28,26 @@ def set_paid(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
 
 @admin.action(description=_("Refund"), permissions=["unpay"])
 def refund(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
+    """Full refund for orders"""
     refunded_orders = []
-    non_refunded_orders = []
+    non_refunded_orders = defaultdict(list)
 
     for order in queryset.iterator():
         try:
-            order.refund(order.price)
+            order.refund(order.price if order.paid is not None else 0)
             refunded_orders.append(order)
-        except OrderRefunderException:
-            non_refunded_orders.append(order)
+        except OrderRefunderException as e:
+            non_refunded_orders[str(e)].append(order)
 
     if refunded_orders:
         refunded_orders_as_message = format_orders_for_message(refunded_orders)
         modeladmin.message_user(request, _(f"Orders {refunded_orders_as_message} refunded."))
 
     if non_refunded_orders:
-        non_refunded_orders_as_message = format_orders_for_message(non_refunded_orders)
+        error_messages = "; ".join(f"{error}: {format_orders_for_message(orders)}" for error, orders in non_refunded_orders.items())
         modeladmin.message_user(
             request,
-            _(f"Orders {non_refunded_orders_as_message} have not been refunded. Up to 5 refunds per day are allowed. Please come back tomorrow."),
+            _(f"Some orders have not been refunded: {error_messages}"),
             level=messages.ERROR,
         )
 

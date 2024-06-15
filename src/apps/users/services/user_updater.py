@@ -20,6 +20,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             "github_username",
             "linkedin_username",
             "telegram_username",
+            "avatar",
         ]
 
 
