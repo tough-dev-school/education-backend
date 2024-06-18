@@ -41,14 +41,19 @@ def mock_dolyame_post(mocker):
     return mocker.patch("apps.tinkoff.dolyame.Dolyame.post")
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def mock_tinkoff_refund(mocker):
     return mocker.patch("apps.tinkoff.bank.TinkoffBank.refund")
 
 
 @pytest.fixture(autouse=True)
-def mock_stripe_refund(mocker):
-    return mocker.patch("apps.stripebank.bank.StripeBank.refund")
+def mock_tinkoff_call(mocker):
+    return mocker.patch("apps.tinkoff.bank.TinkoffBank.call")
+
+
+@pytest.fixture(autouse=True)
+def mock_stripe_refund_create(mocker):
+    return mocker.patch("stripe.Refund.create")
 
 
 @pytest.fixture
@@ -90,12 +95,14 @@ def paid_order(not_paid_order):
 
 
 @pytest.fixture
-def paid_tinkoff_order(paid_order):
+def paid_tinkoff_order(paid_order, mixer):
+    mixer.blend("tinkoff.PaymentNotification", order=paid_order, payment_id=9001)
     return paid_order.update(bank_id="tinkoff_bank")
 
 
 @pytest.fixture
-def paid_stripe_order(paid_order):
+def paid_stripe_order(paid_order, mixer):
+    mixer.blend("stripebank.StripeNotification", order=paid_order, event_type="checkout.session.completed")
     return paid_order.update(bank_id="stripe")
 
 
@@ -443,3 +450,18 @@ def test_dolyame_refund_payload(paid_order, refund, mock_dolyame_post):
         ],
         "fiscalization_settings": {"type": "enabled"},
     }
+
+
+def test_tinkoff_refund_payload(paid_tinkoff_order, refund, mock_tinkoff_call):
+    refund(paid_tinkoff_order, paid_tinkoff_order.price)
+
+    mock_tinkoff_call.assert_called_once()
+    payload_amount = mock_tinkoff_call.call_args.kwargs["payload"]["Amount"]
+    assert payload_amount == 99900
+
+
+def test_stripe_refund_payload(paid_stripe_order, refund, mock_stripe_refund_create):
+    refund(paid_stripe_order, paid_stripe_order.price)
+
+    mock_stripe_refund_create.assert_called_once()
+    assert mock_stripe_refund_create.call_args.kwargs["amount"] == 1200
