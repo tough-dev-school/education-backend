@@ -56,12 +56,12 @@ class OrderRefunder(BaseService):
     def act(self) -> "Refund":
         refund = self.create_refund_entry()
 
+        if self.amount != 0:
+            self.do_bank_refund()
+
         # Update price so we don't include refunded amount in finance dashboards
         # Order price equals to initial price minus refunded amount
         self.update_price()
-
-        if self.amount != 0:
-            self.do_bank_refund()
 
         # If afterward order was fully refunded or was never paid
         if not self.order.paid or self.order.price == 0:
