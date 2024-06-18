@@ -31,9 +31,14 @@ def _adjust_settings(settings):
     ]
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def mock_dolyame_refund(mocker):
     return mocker.patch("apps.tinkoff.dolyame.Dolyame.refund")
+
+
+@pytest.fixture(autouse=True)
+def mock_dolyame_post(mocker):
+    return mocker.patch("apps.tinkoff.dolyame.Dolyame.post")
 
 
 @pytest.fixture(autouse=True)
@@ -102,6 +107,7 @@ def refund():
     return _refund
 
 
+@pytest.mark.usefixtures("mock_tinkoff_refund")
 def test_5_per_day_limit(factory, paid_tinkoff_order, refund):
     with freeze_time("2022-12-12 12:00Z", tick=True):
         factory.cycle(5).refund(order=paid_tinkoff_order, amount=100)
@@ -113,6 +119,7 @@ def test_5_per_day_limit(factory, paid_tinkoff_order, refund):
         assert "Up to 5 refunds per day are allowed" in str(e)
 
 
+@pytest.mark.usefixtures("mock_tinkoff_refund")
 def test_1_per_10_seconds_limit(paid_tinkoff_order, refund):
     with freeze_time("2022-12-12 12:00Z", tick=True):
         refund(paid_tinkoff_order, 100)
@@ -170,12 +177,14 @@ def test_call_unshipper_to_unship(paid_order, refund, spy_unshipper):
     assert called_service.order == paid_order
 
 
+@pytest.mark.usefixtures("mock_dolyame_refund")
 def test_do_not_call_bank_refund_if_order_unpaid(not_paid_order, refund, mock_dolyame_refund):
     refund(not_paid_order, 0)
 
     mock_dolyame_refund.assert_not_called()
 
 
+@pytest.mark.usefixtures("mock_dolyame_refund")
 def test_do_not_call_bank_refund_if_refunds_disabled(paid_order, refund, mock_dolyame_refund, settings):
     settings.BANKS_REFUNDS_ENABLED = False
 
@@ -228,6 +237,7 @@ def test_refund_notification_email_context_and_template_correct(refund, paid_ord
     )
 
 
+@pytest.mark.usefixtures("mock_dolyame_refund")
 def test_do_not_break_if_order_without_item_was_refunded(refund, paid_order, send_mail, get_send_mail_call_email_context):
     paid_order.update(course=None)
 
@@ -299,6 +309,7 @@ def test_partial_refund_dolyame(paid_order, refund):
     assert "Partial refund is not available" in str(e)
 
 
+@pytest.mark.usefixtures("mock_tinkoff_refund")
 def test_partial_refund_tinkoff(paid_tinkoff_order, refund):
     paid_tinkoff_order.update(bank_id="tinkoff_bank")
 
@@ -347,6 +358,7 @@ def test_partial_refund_success_admin_log_created(paid_tinkoff_order, refund, us
     assert log.user == user
 
 
+@pytest.mark.usefixtures("mock_tinkoff_refund")
 def test_partial_refund_notification_email_context_and_template_correct(refund, paid_tinkoff_order, send_mail, mocker):
     refund(paid_tinkoff_order, 500)
 
@@ -392,6 +404,7 @@ def test_refund_is_created(paid_order, refund, user):
     assert refund.bank_id == paid_order.bank_id
 
 
+@pytest.mark.usefixtures("mock_tinkoff_refund")
 def test_partial_refund_is_created(paid_tinkoff_order, refund, user):
     refund(paid_tinkoff_order, 500)
 
@@ -406,3 +419,27 @@ def test_bank_refund_is_not_called_if_amount_is_zero(paid_tinkoff_order, refund,
     refund(paid_tinkoff_order, 0)
 
     spy_bank_refund.assert_not_called()
+
+
+def test_dolyame_refund_payload(paid_order, refund, mock_dolyame_post):
+    refund(paid_order, paid_order.price)
+
+    mock_dolyame_post.assert_called_once()
+    payload = mock_dolyame_post.call_args.kwargs["payload"]
+    assert payload == {
+        "amount": "999",
+        "returned_items": [
+            {
+                "name": paid_order.item.name_receipt,
+                "price": "999",
+                "quantity": 1,
+                "receipt": {
+                    "payment_method": "full_payment",
+                    "tax": "none",
+                    "payment_object": "service",
+                    "measurement_unit": "шт",
+                },
+            }
+        ],
+        "fiscalization_settings": {"type": "enabled"},
+    }
