@@ -93,7 +93,10 @@ class Answer(TestUtilsMixin, TreeNode):
 
     def __str__(self) -> str:
         text = remove_html(markdownify(self.text))
-        first_word = text.split()[0]
+        try:
+            first_word = text.split()[0]
+        except IndexError:  # zero length
+            first_word = ""
         resource = urlparse(first_word).netloc
         if resource:
             return f'Ссылка на {resource.split(".")[-2]}'
