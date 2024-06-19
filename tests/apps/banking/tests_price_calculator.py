@@ -13,6 +13,8 @@ from apps.banking import price_calculator
         (120, 50, 2),
         (120.2, 50, "2.40"),
         (130, 50, 3),
+        (999, 80, 12),
+        (999.5, 80, "12.49"),
     ],
 )
 def test(price, ue, expected):
