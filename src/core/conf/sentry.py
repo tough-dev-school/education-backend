@@ -14,9 +14,13 @@ if not env("DEBUG") and SENTRY_DSN:
 
         if event["transaction"] in (
             "/api/v2/healthchecks/{service}/",
+            "/api/v2/users/me/",
+            "/api/v2/studies/purchased/",
             "apps.chains.tasks.send_chain_messages",
             "apps.chains.tasks.send_active_chains",
+            "apps.amocrm.tasks.push_course",
             "/admin/jsi18n/",
+            "/static/admin/",
         ):
             return None
 
