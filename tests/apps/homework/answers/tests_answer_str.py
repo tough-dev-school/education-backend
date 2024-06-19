@@ -41,3 +41,9 @@ def test_html(mixer):
     answer = mixer.blend("homework.Answer", text="## Банзай!")
 
     assert str(answer) == "Банзай!"
+
+
+def test_zero_length(mixer):
+    answer = mixer.blend("homework.Answer", text="")
+
+    assert str(answer) == ""
