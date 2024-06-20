@@ -19,6 +19,7 @@ def test_ok(api):
     assert got["linkedin_username"] == api.user.linkedin_username
     assert got["github_username"] == api.user.github_username
     assert got["telegram_username"] == api.user.telegram_username
+    assert got["avatar"] == api.user.avatar
 
 
 def test_anon(anon):
@@ -138,3 +139,14 @@ def test_non_diploma_fields_not_triggers_diploma_regeneration(api, mocker, field
     )
 
     diploma_regenerator.assert_not_called()
+
+
+def test_user_update_avatar(api, factory):
+    image = factory.image()
+
+    got = api.patch("/api/v2/users/me/", data={"avatar": image}, format="multipart")
+
+    api.user.refresh_from_db()
+    assert "http://" in got["avatar"]
+    assert "/users/avatars/" in got["avatar"]
+    assert ".gif" in api.user.avatar.url

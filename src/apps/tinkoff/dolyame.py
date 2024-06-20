@@ -43,6 +43,9 @@ class Dolyame(Bank):
         return result["link"]
 
     def refund(self, amount: Decimal | None = None) -> None:
+        """No partial refunds are allowed. Always refund the full amount."""
+        del amount
+
         self.post(
             method=f"orders/{self.order.slug}/refund",
             payload={
