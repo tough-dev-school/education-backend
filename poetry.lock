@@ -2939,6 +2939,7 @@ optional = false
 python-versions = ">=3.6"
 files = [
     {file = "sentry_sdk-2.6.0-py2.py3-none-any.whl", hash = "sha256:422b91cb49378b97e7e8d0e8d5a1069df23689d45262b86f54988a7db264e874"},
+    {file = "sentry_sdk-2.6.0.tar.gz", hash = "sha256:65cc07e9c6995c5e316109f138570b32da3bd7ff8d0d0ee4aaf2628c3dd8127d"},
 ]
 
 [package.dependencies]
@@ -3167,18 +3168,18 @@ files = [
 
 [[package]]
 name = "stripe"
-version = "6.7.0"
+version = "9.12.0"
 description = "Python bindings for the Stripe API"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "stripe-6.7.0-py2.py3-none-any.whl", hash = "sha256:a453d6daa633f656297a9323c736fdcb53164418d643fdc30499a6d32ad7933c"},
-    {file = "stripe-6.7.0.tar.gz", hash = "sha256:2794ccc4b4c97070d1cab4385e1d2aad65937b4437b75cc1faf7d67dda8199f4"},
+    {file = "stripe-9.12.0-py2.py3-none-any.whl", hash = "sha256:14dd20ef1e6386a52e1f7aea07701fc6a80223706d72e3509e4966adb599e138"},
+    {file = "stripe-9.12.0.tar.gz", hash = "sha256:cbc526abd0f001c920c323ba7c40cce3dee1647d920e9dbecae3488f37367524"},
 ]
 
 [package.dependencies]
 requests = {version = ">=2.20", markers = "python_version >= \"3.0\""}
-typing-extensions = {version = ">=4.0.0", markers = "python_version >= \"3.7\""}
+typing-extensions = {version = ">=4.5.0", markers = "python_version >= \"3.7\""}
 
 [[package]]
 name = "text-unidecode"
@@ -3514,4 +3515,4 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "7d5ea2a24abd2f0de5403cef76a356379f04e1b5385277798cca966950423c8e"
+content-hash = "1eba9c55632f51e8c3a18f35a3626f440b7b95bb7714e989cfa522d5fd9664ee"
