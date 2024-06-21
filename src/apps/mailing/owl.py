@@ -1,5 +1,7 @@
 from dataclasses import dataclass
+from typing import Callable
 
+from anymail.exceptions import AnymailRequestsAPIError
 from anymail.message import AnymailMessage
 from django.conf import settings
 from django.core import mail
@@ -22,6 +24,10 @@ class Owl(BaseService):
     ctx: dict | None = None
     disable_antispam: bool | None = False
 
+    force_configuration: EmailConfiguration | None = None
+    max_retry_count: int = 1
+    retry_attempt: int = 0
+
     def act(self) -> None:
         if not settings.EMAIL_ENABLED:
             return
@@ -29,8 +35,43 @@ class Owl(BaseService):
         if self.is_sent_already and not self.disable_antispam:
             return
 
-        self.msg.send()
-        self.write_email_log()
+        self.send()
+
+    def send(self) -> None:
+        try:
+            self.msg.send()
+            self.write_email_log()
+        except AnymailRequestsAPIError as e:
+            self.process_exception(e)
+
+    def process_exception(self, e: AnymailRequestsAPIError) -> None:
+        if self.retry_attempt >= self.max_retry_count:
+            raise e
+
+        error_code = e.response.json().get("ErrorCode", None)
+        processor = self._exception_processors.get(error_code, None)
+
+        if processor is not None:
+            return processor(e)
+
+        raise e
+
+    @property
+    def _exception_processors(self) -> dict[int, Callable]:
+        return {
+            1101: self._template_not_found_exception,
+        }
+
+    def _template_not_found_exception(self, e: AnymailRequestsAPIError) -> None:
+        Owl(
+            to=self.to,
+            template_id=self.template_id,
+            subject=self.subject,
+            ctx=self.ctx,
+            force_configuration=self.get_default_configuration(),
+            max_retry_count=self.max_retry_count,
+            retry_attempt=self.retry_attempt + 1,
+        )()
 
     def write_email_log(self) -> None:
         EmailLogEntry.objects.update_or_create(
@@ -56,10 +97,16 @@ class Owl(BaseService):
         return mail.get_connection(
             fail_silently=False,
             backend=self.backend_name,
-            **self.configuration.backend_options,
+            **self.backend_options,
         )
 
     @property
+    def backend_options(self) -> dict:
+        if self.force_configuration:
+            return self.force_configuration.backend_options
+
+        return self.configuration.backend_options
+
     def normalized_message_context(self) -> dict:
         if self.ctx is None:
             return {}
@@ -79,7 +126,7 @@ class Owl(BaseService):
 
     @cached_property
     def backend_name(self) -> str:
-        if self.configuration.backend == EmailConfiguration.BACKEND.UNSET:
+        if self.configuration.backend == EmailConfiguration.BACKEND.UNSET or self.force_configuration is not None:
             return settings.EMAIL_BACKEND
 
         return self.configuration.backend
