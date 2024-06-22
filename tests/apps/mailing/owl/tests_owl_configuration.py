@@ -1,4 +1,5 @@
 import pytest
+
 from apps.mailing.models import EmailConfiguration
 from apps.mailing.owl import Owl
 
