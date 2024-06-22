@@ -100,6 +100,7 @@ class Owl(BaseService):
             **self.configuration.backend_options,
         )
 
+    @property
     def normalized_message_context(self) -> dict:
         if self.ctx is None:
             return {}
