@@ -97,15 +97,8 @@ class Owl(BaseService):
         return mail.get_connection(
             fail_silently=False,
             backend=self.backend_name,
-            **self.backend_options,
+            **self.configuration.backend_options,
         )
-
-    @property
-    def backend_options(self) -> dict:
-        if self.force_configuration:
-            return self.force_configuration.backend_options
-
-        return self.configuration.backend_options
 
     def normalized_message_context(self) -> dict:
         if self.ctx is None:
@@ -122,11 +115,11 @@ class Owl(BaseService):
         """
         Configuration works only in production mode to avoid confusing the developer when settings custom email backend
         """
-        return get_configuration(recipient=self.to) or self.get_default_configuration()
+        return self.force_configuration or get_configuration(recipient=self.to) or self.get_default_configuration()
 
     @cached_property
     def backend_name(self) -> str:
-        if self.configuration.backend == EmailConfiguration.BACKEND.UNSET or self.force_configuration is not None:
+        if self.configuration.backend == EmailConfiguration.BACKEND.UNSET:
             return settings.EMAIL_BACKEND
 
         return self.configuration.backend
