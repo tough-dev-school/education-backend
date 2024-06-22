@@ -1,6 +1,6 @@
 import pytest
-
 from apps.mailing.models import EmailConfiguration
+from apps.mailing.owl import Owl
 
 pytestmark = [pytest.mark.django_db]
 
@@ -51,6 +51,19 @@ def test_defaults(owl):
 
 @pytest.mark.usefixtures("configuration")
 def test_custom(owl):
+    assert owl.backend_name == TEST_BACKEND
+    assert owl.msg.from_email == TEST_FROM_EMAIL
+    assert owl.msg.reply_to == [TEST_REPLY_TO]
+
+
+@pytest.mark.usefixtures("configuration")
+def test_force_custom(email_configration):
+    owl = Owl(
+        to="f@f213.in",
+        template_id="100500",
+        force_configuration=email_configration,
+    )
+
     assert owl.backend_name == TEST_BACKEND
     assert owl.msg.from_email == TEST_FROM_EMAIL
     assert owl.msg.reply_to == [TEST_REPLY_TO]
