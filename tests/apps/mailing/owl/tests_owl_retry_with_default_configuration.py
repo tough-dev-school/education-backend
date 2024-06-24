@@ -3,6 +3,8 @@ from unittest.mock import Mock
 import pytest
 from anymail.exceptions import AnymailRequestsAPIError
 
+from apps.mailing.owl import TemplateNotFoundError
+
 pytestmark = [
     pytest.mark.django_db,
 ]
@@ -10,6 +12,16 @@ pytestmark = [
 DEFAULT_BACKEND = "django.core.mail.backends.dummy.EmailBackend"
 DEFAULT_FROM_EMAIL = "Donald T <trump@employee.trumphotels.com>"
 DEFAULT_REPLY_TO = "Secretary of Donald T <support@trumphotels.com"
+
+
+@pytest.fixture
+def email_configuration(mixer):
+    return mixer.blend("mailing.EmailConfiguration")
+
+
+@pytest.fixture
+def configuration(email_configuration, mocker):
+    return mocker.patch("apps.mailing.owl.get_configuration", return_value=email_configuration)
 
 
 @pytest.fixture(autouse=True)
@@ -23,6 +35,11 @@ def _settings(settings):
 @pytest.fixture
 def mocked_send(mocker):
     return mocker.patch("anymail.message.AnymailMessage.send")
+
+
+@pytest.fixture
+def mocked_owl_send(mocker):
+    return mocker.patch("apps.mailing.owl.Owl.send")
 
 
 @pytest.fixture
@@ -41,24 +58,33 @@ def make_exception(data: dict, status_code: int = 422):
     return AnymailRequestsAPIError(response=response)
 
 
+@pytest.mark.usefixtures("configuration")
 def test_retry_with_default_configuration(owl, mocked_send, template_not_found_exception):
     sender = owl()
     mocked_send.side_effect = [template_not_found_exception, None]
 
     sender()
 
-    assert sender.backend_name == DEFAULT_BACKEND
-    assert sender.msg.from_email == DEFAULT_FROM_EMAIL
-    assert sender.msg.reply_to == [DEFAULT_REPLY_TO]
+    assert mocked_send.call_count == 2
 
 
-def test_raises_if_retry_raised(owl, mocked_send, template_not_found_exception):
-    mocked_send.side_effect = [template_not_found_exception, template_not_found_exception]
+def test_doesnt_retry_if_first_call_was_with_default_configuration(owl, mocked_send, template_not_found_exception):
+    mocked_send.side_effect = [template_not_found_exception, None]
 
-    with pytest.raises(AnymailRequestsAPIError):
+    with pytest.raises(TemplateNotFoundError):
         owl()()
 
-    assert mocked_send.call_count == 2
+    assert mocked_send.call_count == 1
+
+
+@pytest.mark.usefixtures("configuration")
+def test_retry_with_default_configuration(owl, mocker):
+    sender = owl()
+    inner_send = mocker.patch.object(sender, "send")
+
+    sender._retry_with_default_configuration(TemplateNotFoundError())
+
+    inner_send.assert_called_once_with(sender.default_configuration)
 
 
 def test_doesnt_send_with_different_error_code(owl, mocked_send):

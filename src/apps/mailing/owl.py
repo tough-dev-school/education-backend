@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Callable
 
 from anymail.exceptions import AnymailRequestsAPIError
 from anymail.message import AnymailMessage
@@ -14,6 +13,9 @@ from apps.mailing.models import EmailConfiguration, EmailLogEntry
 from core.services import BaseService
 
 
+class TemplateNotFoundError(AnymailRequestsAPIError): ...
+
+
 @dataclass
 class Owl(BaseService):
     """Deliver messages [from Hogwarts] to the particular end-user"""
@@ -24,10 +26,6 @@ class Owl(BaseService):
     ctx: dict | None = None
     disable_antispam: bool | None = False
 
-    force_configuration: EmailConfiguration | None = None
-    max_retry_count: int = 1
-    retry_attempt: int = 0
-
     def act(self) -> None:
         if not settings.EMAIL_ENABLED:
             return
@@ -35,69 +33,57 @@ class Owl(BaseService):
         if self.is_sent_already and not self.disable_antispam:
             return
 
-        self.send()
-
-    def send(self) -> None:
         try:
-            self.msg.send()
+            self.send(self.configuration)
+        except TemplateNotFoundError as e:
+            self._retry_with_default_configuration(e)
+
+    def send(self, configuration: "EmailConfiguration") -> None:
+        message = self.get_message(configuration)
+
+        try:
+            message.send()
             self.write_email_log()
         except AnymailRequestsAPIError as e:
-            self.process_exception(e)
+            self.anymail_exception_handler(e)
 
-    def process_exception(self, e: AnymailRequestsAPIError) -> None:
-        if self.retry_attempt >= self.max_retry_count:
-            raise e
-
-        error_code = e.response.json().get("ErrorCode", None)
-        processor = self._exception_processors.get(error_code, None)
-
-        if processor is not None:
-            return processor(e)
-
-        raise e
-
-    @property
-    def _exception_processors(self) -> dict[int, Callable]:
-        return {
-            1101: self._template_not_found_exception,
-        }
-
-    def _template_not_found_exception(self, e: AnymailRequestsAPIError) -> None:
-        Owl(
-            to=self.to,
-            template_id=self.template_id,
-            subject=self.subject,
-            ctx=self.ctx,
-            force_configuration=self.get_default_configuration(),
-            max_retry_count=self.max_retry_count,
-            retry_attempt=self.retry_attempt + 1,
-        )()
-
-    def write_email_log(self) -> None:
-        EmailLogEntry.objects.update_or_create(
-            email=self.to,
-            template_id=self.template_id,
+    @staticmethod
+    def get_connection(configuration: "EmailConfiguration") -> BaseEmailBackend:
+        return mail.get_connection(
+            fail_silently=False,
+            backend=configuration.backend_name,
+            **configuration.backend_options,
         )
 
-    @cached_property
-    def msg(self) -> AnymailMessage:
+    def get_message(self, configuration: "EmailConfiguration") -> AnymailMessage:
         return AnymailMessage(
             subject=self.subject,
             body="",
             to=[self.to],
-            connection=self.connection,
-            from_email=self.configuration.from_email,
-            reply_to=[self.configuration.reply_to],
+            connection=self.get_connection(configuration),
+            from_email=configuration.from_email,
+            reply_to=[configuration.reply_to],
             template_id=self.template_id,
             merge_global_data=self.normalized_message_context,
         )
 
-    @property
-    def connection(self) -> BaseEmailBackend:
-        return mail.get_connection(
-            fail_silently=False,
-            backend=self.backend_name,
-            **self.configuration.backend_options,
+    def _retry_with_default_configuration(self, error: "TemplateNotFoundError") -> None:
+        if self.configuration == self.default_configuration:
+            raise error
+
+        self.send(self.default_configuration)
+
+    @cached_property
+    def configuration(self) -> EmailConfiguration:
+        return get_configuration(recipient=self.to) or self.default_configuration
+
+    @cached_property
+    def default_configuration(self) -> EmailConfiguration:
+        return EmailConfiguration(
+            backend=EmailConfiguration.BACKEND.UNSET,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            reply_to=settings.DEFAULT_REPLY_TO,
+            backend_options={},
         )
 
     @property
@@ -111,25 +97,17 @@ class Owl(BaseService):
     def is_sent_already(self) -> bool:
         return EmailLogEntry.objects.filter(email=self.to, template_id=self.template_id).exists()
 
-    @cached_property
-    def configuration(self) -> EmailConfiguration:
-        """
-        Configuration works only in production mode to avoid confusing the developer when settings custom email backend
-        """
-        return self.force_configuration or get_configuration(recipient=self.to) or self.get_default_configuration()
-
-    @cached_property
-    def backend_name(self) -> str:
-        if self.configuration.backend == EmailConfiguration.BACKEND.UNSET:
-            return settings.EMAIL_BACKEND
-
-        return self.configuration.backend
+    def write_email_log(self) -> None:
+        EmailLogEntry.objects.update_or_create(
+            email=self.to,
+            template_id=self.template_id,
+        )
 
     @staticmethod
-    def get_default_configuration() -> EmailConfiguration:
-        return EmailConfiguration(
-            backend=EmailConfiguration.BACKEND.UNSET,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            reply_to=settings.DEFAULT_REPLY_TO,
-            backend_options={},
-        )
+    def anymail_exception_handler(exception: AnymailRequestsAPIError) -> None:
+        error_code = exception.response.json().get("ErrorCode", None)
+
+        if error_code == 1101:
+            raise TemplateNotFoundError(exception)
+
+        raise exception
