@@ -38,11 +38,6 @@ def mocked_send(mocker):
 
 
 @pytest.fixture
-def mocked_owl_send(mocker):
-    return mocker.patch("apps.mailing.owl.Owl.send")
-
-
-@pytest.fixture
 def template_not_found_exception():
     return make_exception(
         data={"ErrorCode": 1101, "Message": "The Template's 'Alias' associated with this request is not valid or was not found."},
