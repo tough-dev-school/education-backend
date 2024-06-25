@@ -1,7 +1,5 @@
 import pytest
 
-from apps.mailing.models import EmailConfiguration
-
 pytestmark = [pytest.mark.django_db]
 
 DEFAULT_BACKEND = "django.core.mail.backends.dummy.EmailBackend"
