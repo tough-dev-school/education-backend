@@ -45,7 +45,7 @@ class Owl(BaseService):
             message.send()
             self.write_email_log()
         except AnymailRequestsAPIError as e:
-            self.anymail_exception_handler(e)
+            self.handle_anymail_exception(e)
 
     @staticmethod
     def get_connection(configuration: "EmailConfiguration") -> BaseEmailBackend:
@@ -104,7 +104,7 @@ class Owl(BaseService):
         )
 
     @staticmethod
-    def anymail_exception_handler(exception: AnymailRequestsAPIError) -> None:
+    def handle_anymail_exception(exception: AnymailRequestsAPIError) -> None:
         error_code = exception.response.json().get("ErrorCode", None)
 
         if error_code == 1101:
