@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 from core.models import TimestampedModel, models
@@ -26,3 +27,10 @@ class EmailConfiguration(TimestampedModel):
             return str(self.course)
 
         return super().__str__()  # type: ignore
+
+    @property
+    def backend_name(self) -> str:
+        if self.backend == self.BACKEND.UNSET:
+            return settings.EMAIL_BACKEND
+
+        return self.backend
