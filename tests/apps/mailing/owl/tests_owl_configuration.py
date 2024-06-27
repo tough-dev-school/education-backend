@@ -1,5 +1,7 @@
 import pytest
 
+from apps.mailing.models import EmailConfiguration
+
 pytestmark = [pytest.mark.django_db]
 
 DEFAULT_BACKEND = "django.core.mail.backends.dummy.EmailBackend"
@@ -32,8 +34,8 @@ def email_configration(mixer):
 
 
 @pytest.fixture
-def configuration(email_configration, mocker):
-    return mocker.patch("apps.mailing.owl.get_configuration", return_value=email_configration)
+def configurations(email_configration, mocker):
+    return mocker.patch("apps.mailing.owl.get_configurations", return_value=EmailConfiguration.objects.filter(pk=email_configration.pk))
 
 
 @pytest.fixture
@@ -42,25 +44,27 @@ def owl(owl):
 
 
 def test_defaults(owl):
-    message = owl.get_message(owl.configuration)
+    message = owl.get_message(owl.default_configuration)
 
     assert message.from_email == DEFAULT_FROM_EMAIL
     assert message.reply_to == [DEFAULT_REPLY_TO]
 
 
-@pytest.mark.usefixtures("configuration")
+@pytest.mark.usefixtures("configurations")
 def test_custom(owl):
-    message = owl.get_message(owl.configuration)
+    message = owl.get_message(owl.configurations.first())
 
     assert message.from_email == TEST_FROM_EMAIL
     assert message.reply_to == [TEST_REPLY_TO]
 
 
-def test_backend_options_are_applied(owl, configuration, mocker):
-    configuration.return_value.backend_options = {"test": "__mocked"}
+@pytest.mark.usefixtures("configurations")
+def test_backend_options_are_applied(owl, email_configration, mocker):
+    email_configration.backend_options = {"test": "__mocked"}
+    email_configration.save()
 
     backend_init = mocker.patch(f"{TEST_BACKEND}.__init__", return_value=None)
 
-    owl.get_connection(owl.configuration)  # call the connection property
+    owl.get_connection(owl.configurations.first())  # call the connection property
 
     backend_init.assert_called_once_with(fail_silently=False, test="__mocked")
