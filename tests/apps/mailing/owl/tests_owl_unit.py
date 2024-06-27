@@ -21,7 +21,7 @@ def _freeze_sender(settings):
 def test_ctx_dict(ctx, expected):
     owl = Owl("test@test.org", 100500, ctx=ctx)
 
-    message = owl.get_message(owl.configuration)
+    message = owl.get_message(owl.default_configuration)
 
     assert message.merge_global_data == expected
 
