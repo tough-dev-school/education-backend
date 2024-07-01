@@ -83,9 +83,6 @@ class AmoCRMOrderPusher(BaseService):
             return False
         if self.order.price == 0:
             return False
-        if (
-            Order.objects.paid().same_deal(order=self.order).filter(amocrm_lead__isnull=False, price__gt=0).exists()
-        ):  # we have other paid orders for the same deal
-            return False
-
-        return True
+        return (
+            not Order.objects.paid().same_deal(order=self.order).filter(amocrm_lead__isnull=False, price__gt=0).exists()
+        )  # we have other paid orders for the same deal

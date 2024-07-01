@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 def generate_tags(student: "Student") -> None:
     """Apply configured tag pipeline to the student"""
-    pipeline: list[Type["TagMechanism"]] = [import_string(tag_cls) for tag_cls in settings.TAG_PIPELINE]
+    pipeline: list[Type[TagMechanism]] = [import_string(tag_cls) for tag_cls in settings.TAG_PIPELINE]
     new_tags: set[str] = set()
 
     for tag_class in pipeline:
