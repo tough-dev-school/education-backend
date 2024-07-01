@@ -41,10 +41,7 @@ class ShouldBeAuthorOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        if obj.author == request.user:
-            return True
-
-        return False
+        return obj.author == request.user
 
 
 class MayChangeAnswerOnlyForLimitedTime(permissions.BasePermission):
@@ -52,10 +49,7 @@ class MayChangeAnswerOnlyForLimitedTime(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        if timezone.now() - obj.created < timedelta(days=1):
-            return True
-
-        return False
+        return timezone.now() - obj.created < timedelta(days=1)
 
 
 class MayChangeAnswerOnlyWithoutDescendants(permissions.BasePermission):
@@ -63,7 +57,4 @@ class MayChangeAnswerOnlyWithoutDescendants(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        if obj.get_first_level_descendants().count() == 0:
-            return True
-
-        return False
+        return obj.get_first_level_descendants().count() == 0
