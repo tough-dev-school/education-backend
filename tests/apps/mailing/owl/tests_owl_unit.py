@@ -21,7 +21,7 @@ def _freeze_sender(settings):
 def test_ctx_dict(ctx, expected):
     owl = Owl("test@test.org", 100500, ctx=ctx)
 
-    message = owl.get_message(owl.configuration)
+    message = owl.get_message(owl.default_configuration)
 
     assert message.merge_global_data == expected
 
@@ -41,7 +41,7 @@ def test_omitted_subject():
 def test_msg_params():
     owl = Owl("test@test.org", 100500, subject="Some email subject", ctx={"a": "b"})
 
-    message = owl.get_message(owl.configuration)
+    message = owl.get_message(owl.default_configuration)
 
     assert message.from_email == "Jesus Christ <me@christ.com>"
     assert message.merge_global_data == {"a": "b"}

@@ -5,10 +5,11 @@ from anymail.message import AnymailMessage
 from django.conf import settings
 from django.core import mail
 from django.core.mail.backends.base import BaseEmailBackend
+from django.db.models import QuerySet
 from django.utils.functional import cached_property
 
 from apps.mailing import helpers
-from apps.mailing.configuration import get_configuration
+from apps.mailing.configuration import get_configurations
 from apps.mailing.models import EmailConfiguration, EmailLogEntry
 from core.services import BaseService
 
@@ -33,10 +34,13 @@ class Owl(BaseService):
         if self.is_sent_already and not self.disable_antispam:
             return
 
-        try:
-            self.send(self.configuration)
-        except TemplateNotFoundError as e:
-            self._retry_with_default_configuration(e)
+        for configuration in self.configurations:
+            try:
+                return self.send(configuration)
+            except TemplateNotFoundError:
+                continue
+
+        self.send(self.default_configuration)
 
     def send(self, configuration: "EmailConfiguration") -> None:
         message = self.get_message(configuration)
@@ -67,15 +71,9 @@ class Owl(BaseService):
             merge_global_data=self.normalized_message_context,
         )
 
-    def _retry_with_default_configuration(self, error: "TemplateNotFoundError") -> None:
-        if self.configuration == self.default_configuration:
-            raise error
-
-        self.send(self.default_configuration)
-
     @cached_property
-    def configuration(self) -> EmailConfiguration:
-        return get_configuration(recipient=self.to) or self.default_configuration
+    def configurations(self) -> "QuerySet[EmailConfiguration]":
+        return get_configurations(recipient=self.to)
 
     @cached_property
     def default_configuration(self) -> EmailConfiguration:
