@@ -18,7 +18,7 @@ def get_configuration(*, recipient: str) -> Optional["EmailConfiguration"]:
 
 
 def get_configurations(recipient: str) -> "QuerySet[EmailConfiguration]":
-    return apps.get_model("mailing.EmailConfiguration").objects.filter(course__order__user__email=recipient)
+    return apps.get_model("mailing.EmailConfiguration").objects.filter(course__order__user__email=recipient).order_by("-course__order__created")
 
 
 def get_last_contacted_course(recipient: str) -> Optional["Course"]:

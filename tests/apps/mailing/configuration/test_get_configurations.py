@@ -15,3 +15,19 @@ def test_user_with_purchases(factory, configuration, another_configuration, user
 
     assert get_configurations(recipient=user.email).first() == configuration
     assert get_configurations(recipient=user.email).last() == another_configuration
+
+
+def test_configuration_ordering(factory, configuration, another_configuration, user):
+    factory.order(user=user, item=another_configuration.course)
+    factory.order(user=user, item=configuration.course)
+
+    assert get_configurations(recipient=user.email).first() == configuration
+    assert get_configurations(recipient=user.email).last() == another_configuration
+
+
+def test_another_configuration_ordering(factory, configuration, another_configuration, user):
+    factory.order(user=user, item=configuration.course)
+    factory.order(user=user, item=another_configuration.course)
+
+    assert get_configurations(recipient=user.email).first() == another_configuration
+    assert get_configurations(recipient=user.email).last() == configuration
