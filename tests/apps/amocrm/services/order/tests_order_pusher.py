@@ -1,6 +1,5 @@
-from _decimal import Decimal
-
 import pytest
+from _decimal import Decimal
 
 from apps.amocrm.models import AmoCRMOrderLead, AmoCRMOrderTransaction
 from apps.amocrm.services.orders.order_pusher import AmoCRMOrderPusher, AmoCRMOrderPusherException

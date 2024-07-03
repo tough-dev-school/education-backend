@@ -51,6 +51,11 @@ def mock_tinkoff_call(mocker):
     return mocker.patch("apps.tinkoff.bank.TinkoffBank.call")
 
 
+@pytest.fixture
+def mock_stripe_refund(mocker):
+    return mocker.patch("apps.stripebank.bank.StripeBank.refund")
+
+
 @pytest.fixture(autouse=True)
 def mock_stripe_refund_create(mocker):
     return mocker.patch("stripe.Refund.create")
@@ -95,14 +100,12 @@ def paid_order(not_paid_order):
 
 
 @pytest.fixture
-def paid_tinkoff_order(paid_order, mixer):
-    mixer.blend("tinkoff.PaymentNotification", order=paid_order, payment_id=9001)
+def paid_tinkoff_order(paid_order):
     return paid_order.update(bank_id="tinkoff_bank")
 
 
 @pytest.fixture
-def paid_stripe_order(paid_order, mixer):
-    mixer.blend("stripebank.StripeNotification", order=paid_order, event_type="checkout.session.completed")
+def paid_stripe_order(paid_order):
     return paid_order.update(bank_id="stripe")
 
 
@@ -184,14 +187,12 @@ def test_call_unshipper_to_unship(paid_order, refund, spy_unshipper):
     assert called_service.order == paid_order
 
 
-@pytest.mark.usefixtures("mock_dolyame_refund")
 def test_do_not_call_bank_refund_if_order_unpaid(not_paid_order, refund, mock_dolyame_refund):
     refund(not_paid_order, 0)
 
     mock_dolyame_refund.assert_not_called()
 
 
-@pytest.mark.usefixtures("mock_dolyame_refund")
 def test_do_not_call_bank_refund_if_refunds_disabled(paid_order, refund, mock_dolyame_refund, settings):
     settings.BANKS_REFUNDS_ENABLED = False
 
@@ -326,6 +327,7 @@ def test_partial_refund_tinkoff(paid_tinkoff_order, refund):
     assert paid_tinkoff_order.price == 499
 
 
+@pytest.mark.usefixtures("mock_stripe_refund")
 def test_partial_refund_stripe(paid_stripe_order, refund):
     paid_stripe_order.update(bank_id="stripe")
 
@@ -335,12 +337,14 @@ def test_partial_refund_stripe(paid_stripe_order, refund):
     assert paid_stripe_order.price == 499
 
 
+@pytest.mark.usefixtures("mock_tinkoff_refund")
 def test_partial_refund_order_not_unshipped(paid_tinkoff_order, refund, spy_unshipper):
     refund(paid_tinkoff_order, 500)
 
     spy_unshipper.assert_not_called()
 
 
+@pytest.mark.usefixtures("mock_tinkoff_refund")
 def test_partial_refund_order_unshipped_when_total_refund_eq_price(paid_tinkoff_order, refund, spy_unshipper):
     refund(paid_tinkoff_order, 500)
     time.sleep(10)
@@ -352,6 +356,7 @@ def test_partial_refund_order_unshipped_when_total_refund_eq_price(paid_tinkoff_
 
 @pytest.mark.auditlog()
 @pytest.mark.freeze_time()
+@pytest.mark.usefixtures("mock_tinkoff_refund")
 def test_partial_refund_success_admin_log_created(paid_tinkoff_order, refund, user):
     refund(paid_tinkoff_order, 500)
 
@@ -385,6 +390,7 @@ def test_partial_refund_notification_email_context_and_template_correct(refund, 
     )
 
 
+@pytest.mark.usefixtures("mock_tinkoff_refund")
 def test_partial_refund_not_set_unpaid(paid_tinkoff_order, refund):
     refund(paid_tinkoff_order, 500)
 
@@ -393,6 +399,7 @@ def test_partial_refund_not_set_unpaid(paid_tinkoff_order, refund):
     assert paid_tinkoff_order.paid is not None
 
 
+@pytest.mark.usefixtures("mock_tinkoff_refund")
 def test_partial_refund_set_unpaid(paid_tinkoff_order, refund):
     refund(paid_tinkoff_order, 999)
 
@@ -452,15 +459,16 @@ def test_dolyame_refund_payload(paid_order, refund, mock_dolyame_post):
     }
 
 
-def test_tinkoff_refund_payload(paid_tinkoff_order, refund, mock_tinkoff_call):
+def test_tinkoff_refund_payload(paid_tinkoff_order, refund, mock_tinkoff_call, mixer):
+    mixer.blend("tinkoff.PaymentNotification", order=paid_tinkoff_order, payment_id=9001)
     refund(paid_tinkoff_order, paid_tinkoff_order.price)
 
     mock_tinkoff_call.assert_called_once()
-    payload_amount = mock_tinkoff_call.call_args.kwargs["payload"]["Amount"]
-    assert payload_amount == 99900
+    assert mock_tinkoff_call.call_args.kwargs["payload"]["Amount"] == 99900
 
 
-def test_stripe_refund_payload(paid_stripe_order, refund, mock_stripe_refund_create):
+def test_stripe_refund_payload(paid_stripe_order, refund, mock_stripe_refund_create, mixer):
+    mixer.blend("stripebank.StripeNotification", order=paid_stripe_order, event_type="checkout.session.completed")
     refund(paid_stripe_order, paid_stripe_order.price)
 
     mock_stripe_refund_create.assert_called_once()

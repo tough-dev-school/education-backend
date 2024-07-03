@@ -1,6 +1,5 @@
-from _decimal import Decimal
-
 import pytest
+from _decimal import Decimal
 
 pytestmark = [pytest.mark.django_db]
 
