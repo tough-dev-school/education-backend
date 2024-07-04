@@ -43,6 +43,11 @@ def child_answer(answer, mixer):
 
 
 @pytest.fixture
+def child_answer_of_same_user(answer, question, mixer, api):
+    return mixer.blend("homework.Answer", question=question, parent=answer, author=api.user)
+
+
+@pytest.fixture
 def purchase(factory, course, api):
     order = factory.order(user=api.user, item=course)
     order.set_paid()

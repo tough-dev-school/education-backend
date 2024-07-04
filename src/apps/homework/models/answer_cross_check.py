@@ -1,4 +1,5 @@
 from django.db.models import Index, UniqueConstraint
+from django.utils.translation import gettext_lazy as _
 
 from core.models import TimestampedModel, models
 
@@ -6,6 +7,7 @@ from core.models import TimestampedModel, models
 class AnswerCrossCheck(TimestampedModel):
     answer = models.ForeignKey("homework.Answer", on_delete=models.CASCADE)
     checker = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    is_checked = models.BooleanField(_("Is checked"), default=False)
 
     class Meta:
         indexes = [
@@ -15,6 +17,3 @@ class AnswerCrossCheck(TimestampedModel):
         constraints = [
             UniqueConstraint(fields=["answer", "checker"], name="unique_checker_and_answer"),
         ]
-
-    def is_checked(self) -> bool:
-        return self.answer.descendants().filter(author=self.checker).exists()

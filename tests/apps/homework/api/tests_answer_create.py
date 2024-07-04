@@ -162,3 +162,51 @@ def test_403_if_user_has_not_purchase_record_at_all(api, question, purchase):
 
     created = get_answer()
     assert created is None
+
+
+def test_marks_crosscheck_as_checked(api, question, another_answer, mixer):
+    crosscheck = mixer.blend("homework.AnswerCrossCheck", answer=another_answer, checker=api.user)
+
+    api.post(
+        "/api/v2/homework/answers/",
+        {
+            "text": "Горите в аду!",
+            "question": question.slug,
+            "parent": another_answer.slug,
+        },
+    )
+
+    crosscheck.refresh_from_db()
+    assert crosscheck.is_checked is True
+
+
+def test_doesnt_marks_crosscheck_as_checked_for_another_answer(api, question, another_answer, mixer):
+    crosscheck = mixer.blend("homework.AnswerCrossCheck", checker=api.user)
+
+    api.post(
+        "/api/v2/homework/answers/",
+        {
+            "text": "Горите в аду!",
+            "question": question.slug,
+            "parent": another_answer.slug,
+        },
+    )
+
+    crosscheck.refresh_from_db()
+    assert crosscheck.is_checked is False
+
+
+def test_doesnt_marks_crosscheck_as_checked_for_another_checker(api, question, another_answer, mixer):
+    crosscheck = mixer.blend("homework.AnswerCrossCheck", answer=another_answer)
+
+    api.post(
+        "/api/v2/homework/answers/",
+        {
+            "text": "Горите в аду!",
+            "question": question.slug,
+            "parent": another_answer.slug,
+        },
+    )
+
+    crosscheck.refresh_from_db()
+    assert crosscheck.is_checked is False
