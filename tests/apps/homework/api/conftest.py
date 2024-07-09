@@ -12,6 +12,11 @@ def api(api):
 
 
 @pytest.fixture
+def ya_user(mixer):
+    return mixer.blend("users.User")
+
+
+@pytest.fixture
 def question(mixer, course):
     question = mixer.blend("homework.Question")
     question.courses.add(course)

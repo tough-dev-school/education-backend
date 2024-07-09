@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from django.db import transaction
+from django.utils import timezone
 
 from apps.homework.models import Answer, AnswerCrossCheck
 from apps.users.models import User
@@ -15,12 +16,15 @@ class AnswerCreator(BaseService):
     @transaction.atomic
     def act(self) -> "Answer":
         instance = self.create()
-        self.update_crosscheck_is_checked_state(instance)
+        self.check_crosscheck(instance)
         return instance
 
     def create(self) -> "Answer":
         return Answer.objects.create(**self.data)
 
-    def update_crosscheck_is_checked_state(self, instance: "Answer") -> None:
+    def check_crosscheck(self, instance: "Answer") -> None:
+        """
+        Do nothing if the parent of the current answer does not exist or if the homework is not crosscheckable.
+        """
         if instance.parent:
-            AnswerCrossCheck.objects.filter(answer=instance.parent, checker=self.user).update(is_checked=True)
+            AnswerCrossCheck.objects.filter(answer=instance.parent, checker=self.user).update(checked_at=timezone.now())

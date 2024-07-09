@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 import pytest
 
 from apps.homework.models import Answer
@@ -5,6 +7,7 @@ from apps.homework.models import Answer
 pytestmark = [
     pytest.mark.django_db,
     pytest.mark.usefixtures("purchase"),
+    pytest.mark.freeze_time("2032-01-01 12:30Z"),
 ]
 
 
@@ -177,7 +180,7 @@ def test_marks_crosscheck_as_checked(api, question, another_answer, mixer):
     )
 
     crosscheck.refresh_from_db()
-    assert crosscheck.is_checked is True
+    assert crosscheck.checked_at == datetime(2032, 1, 1, 12, 30, tzinfo=timezone.utc)
 
 
 def test_doesnt_marks_crosscheck_as_checked_for_another_answer(api, question, another_answer, mixer):
@@ -193,11 +196,11 @@ def test_doesnt_marks_crosscheck_as_checked_for_another_answer(api, question, an
     )
 
     crosscheck.refresh_from_db()
-    assert crosscheck.is_checked is False
+    assert crosscheck.checked_at is None
 
 
-def test_doesnt_marks_crosscheck_as_checked_for_another_checker(api, question, another_answer, mixer):
-    crosscheck = mixer.blend("homework.AnswerCrossCheck", answer=another_answer)
+def test_doesnt_marks_crosscheck_as_checked_for_another_checker(api, question, another_answer, ya_user, mixer):
+    crosscheck = mixer.blend("homework.AnswerCrossCheck", answer=another_answer, checker=ya_user)
 
     api.post(
         "/api/v2/homework/answers/",
@@ -209,4 +212,4 @@ def test_doesnt_marks_crosscheck_as_checked_for_another_checker(api, question, a
     )
 
     crosscheck.refresh_from_db()
-    assert crosscheck.is_checked is False
+    assert crosscheck.checked_at is None

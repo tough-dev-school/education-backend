@@ -6,7 +6,7 @@ from apps.homework.models import Answer, AnswerCrossCheck
 
 
 class Command(BaseCommand):
-    help = "Denormalizes is_checked field in AnswerCrossCheck"
+    help = "Fills checked_at field in AnswerCrossCheck with first answer date"
 
     @transaction.atomic
     def handle(self, *args, **kwargs):
@@ -14,5 +14,6 @@ class Command(BaseCommand):
         total = queryset.count()
 
         for item in tqdm(queryset.iterator(), total=total):
-            item.is_checked = Answer.objects.descendants(item.answer).filter(author=item.checker).exists()
-            item.save(update_fields=["is_checked"])
+            answer = Answer.objects.descendants(item.answer).filter(author=item.checker).first()
+            item.checked_at = answer.created if answer else None
+            item.save(update_fields=["checked_at"])

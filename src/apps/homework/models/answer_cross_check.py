@@ -7,7 +7,11 @@ from core.models import TimestampedModel, models
 class AnswerCrossCheck(TimestampedModel):
     answer = models.ForeignKey("homework.Answer", on_delete=models.CASCADE)
     checker = models.ForeignKey("users.User", on_delete=models.CASCADE)
-    is_checked = models.BooleanField(_("Is checked"), default=False)
+    checked_at = models.DateTimeField(
+        _("Date when crosscheck got checked"),
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         indexes = [
