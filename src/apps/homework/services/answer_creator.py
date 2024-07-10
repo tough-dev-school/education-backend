@@ -16,15 +16,20 @@ class AnswerCreator(BaseService):
     @transaction.atomic
     def act(self) -> "Answer":
         instance = self.create()
-        self.check_crosscheck(instance)
+
+        if self.should_check_crosscheck(instance):
+            self.check_crosscheck(instance)
+
         return instance
 
     def create(self) -> "Answer":
         return Answer.objects.create(**self.data)
 
+    def should_check_crosscheck(self, instance: "Answer") -> bool:
+        if instance.parent is None:
+            return False
+
+        return instance.parent.answercrosscheck_set.filter(checker=self.user).exists()
+
     def check_crosscheck(self, instance: "Answer") -> None:
-        """
-        Do nothing if the parent of the current answer does not exist or if the homework is not crosscheckable.
-        """
-        if instance.parent:
-            AnswerCrossCheck.objects.filter(answer=instance.parent, checker=self.user).update(checked_at=timezone.now())
+        instance.parent.answercrosscheck_set.filter(checker=self.user).update(checked_at=timezone.now())
