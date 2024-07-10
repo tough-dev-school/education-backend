@@ -49,6 +49,7 @@ shortuuid = "^1.0.11"
 simplejson = "^3.19.1"
 stripe = "^6.5.0"
 whitenoise = "^6.5.0"
+tqdm = "^4.66.4"
 
 [tool.poetry.group.dev.dependencies]
 boto3-stubs = "^1.28.48"
