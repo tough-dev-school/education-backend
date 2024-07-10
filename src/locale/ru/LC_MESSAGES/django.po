@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-13 18:33+0300\n"
+"POT-Creation-Date: 2024-07-10 15:20+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -50,7 +50,7 @@ msgstr "В списке только не запущенные и не заар�
 
 #: apps/chains/admin/message.py:48 apps/chains/models/chain.py:33
 #: apps/diplomas/admin/diploma.py:55 apps/homework/admin/answer/admin.py:56
-#: apps/homework/admin/answer/admin.py:101 apps/orders/models/order.py:59
+#: apps/homework/admin/answer/admin.py:100 apps/orders/models/order.py:59
 #: apps/products/models/course.py:74 apps/studying/models.py:9
 msgid "Course"
 msgstr "Курс"
@@ -191,20 +191,16 @@ msgid "Crosschecking people"
 msgstr "Учеников проверяет"
 
 #: apps/homework/admin/answer/admin.py:69
-#: apps/homework/admin/answer/admin.py:113 apps/orders/models/refund.py:27
+#: apps/homework/admin/answer/admin.py:112 apps/orders/models/refund.py:27
 msgid "Author"
 msgstr "Автор"
 
-#: apps/homework/admin/answer/admin.py:109
+#: apps/homework/admin/answer/admin.py:108
 msgid "Question"
 msgstr "Вопрос"
 
-#: apps/homework/admin/answer/admin.py:117
+#: apps/homework/admin/answer/admin.py:116
 msgid "View"
-msgstr ""
-
-#: apps/homework/admin/answer/admin.py:122
-msgid "Is checked"
 msgstr ""
 
 #: apps/homework/admin/answer/filters.py:9
@@ -230,6 +226,10 @@ msgstr "Ответы на домашку"
 #: apps/homework/models/answer.py:91
 msgid "May see answers from every user"
 msgstr "Видит все ответы на домашку"
+
+#: apps/homework/models/answer_cross_check.py:11
+msgid "Date when crosscheck got checked"
+msgstr "Когда проверен"
 
 #: apps/homework/models/question.py:20
 msgid "Homeworks"
@@ -292,35 +292,35 @@ msgstr "Почтовая кампания"
 msgid "Email Lead Magnet Campaigns"
 msgstr "Почтовые кампании"
 
-#: apps/mailing/models/configuration.py:10
+#: apps/mailing/models/configuration.py:11
 msgid "Unset"
 msgstr "Дефолтный"
 
-#: apps/mailing/models/configuration.py:11
+#: apps/mailing/models/configuration.py:12
 msgid "Postmark"
 msgstr ""
 
-#: apps/mailing/models/configuration.py:15
+#: apps/mailing/models/configuration.py:16
 msgid "Email sender"
 msgstr "Отправитель"
 
-#: apps/mailing/models/configuration.py:15
+#: apps/mailing/models/configuration.py:16
 msgid "E.g. Fedor Borshev &lt;fedor@borshev.com&gt;. MUST configure postmark!"
 msgstr ""
 
-#: apps/mailing/models/configuration.py:16
+#: apps/mailing/models/configuration.py:17
 msgid "Reply-to header"
 msgstr "Reply-to"
 
-#: apps/mailing/models/configuration.py:16
+#: apps/mailing/models/configuration.py:17
 msgid "E.g. Fedor Borshev &lt;fedor@borshev.com&gt;"
 msgstr ""
 
-#: apps/mailing/models/configuration.py:21
+#: apps/mailing/models/configuration.py:22
 msgid "Email configuration"
 msgstr "Способ отсылки"
 
-#: apps/mailing/models/configuration.py:22
+#: apps/mailing/models/configuration.py:23
 msgid "Email configurations"
 msgstr "Способы отсылки"
 
@@ -395,46 +395,42 @@ msgstr "Файл"
 msgid "Material files"
 msgstr "Файлы"
 
-#: apps/orders/admin/orders/actions.py:20
+#: apps/orders/admin/orders/actions.py:21
 msgid "Set paid"
 msgstr "Пометить оплаченным"
 
-#: apps/orders/admin/orders/actions.py:28 apps/orders/models/refund.py:31
+#: apps/orders/admin/orders/actions.py:29 apps/orders/models/refund.py:31
 msgid "Refund"
 msgstr "Сделать полный возврат"
 
-#: apps/orders/admin/orders/actions.py:42
+#: apps/orders/admin/orders/actions.py:44
 #, python-brace-format
 msgid "Orders {refunded_orders_as_message} refunded."
 msgstr "Заказы {refunded_orders_as_message} возвращены."
 
-#: apps/orders/admin/orders/actions.py:48
+#: apps/orders/admin/orders/actions.py:50
 #, python-brace-format
-msgid ""
-"Orders {non_refunded_orders_as_message} have not been refunded. Up to 5 "
-"refunds per day are allowed. Please come back tomorrow."
+msgid "Some orders have not been refunded: {error_messages}"
 msgstr ""
-"Заказы {non_refunded_orders_as_message} не были возвращены. Разрешено до 5 "
-"возвратов в день, попробуйте снова завтра."
 
-#: apps/orders/admin/orders/actions.py:53
+#: apps/orders/admin/orders/actions.py:55
 msgid "Ship without payments"
 msgstr "Допустить до уроков без оплаты"
 
-#: apps/orders/admin/orders/actions.py:70
+#: apps/orders/admin/orders/actions.py:72
 msgid "Ship again if paid"
 msgstr "Ещё раз выполнить (если заказ не оплачен — не выполнится)"
 
-#: apps/orders/admin/orders/actions.py:83
+#: apps/orders/admin/orders/actions.py:85
 #: apps/products/admin/courses/actions.py:40
 msgid "Generate diplomas"
 msgstr "Сгенерировать дипломы"
 
-#: apps/orders/admin/orders/actions.py:93
+#: apps/orders/admin/orders/actions.py:95
 msgid "Accept homework"
 msgstr "Засчитать домашку"
 
-#: apps/orders/admin/orders/actions.py:108
+#: apps/orders/admin/orders/actions.py:110
 msgid "Disaccept homework"
 msgstr "Не засчитать домашку"
 
@@ -922,6 +918,14 @@ msgstr "Да"
 #: core/admin/filters.py:26
 msgid "No"
 msgstr "Нет"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Orders {non_refunded_orders_as_message} have not been refunded. Up to 5 "
+#~ "refunds per day are allowed. Please come back tomorrow."
+#~ msgstr ""
+#~ "Заказы {non_refunded_orders_as_message} не были возвращены. Разрешено до "
+#~ "5 возвратов в день, попробуйте снова завтра."
 
 #~ msgid "Date when order got unpaid"
 #~ msgstr "Когда вернули деньги"
