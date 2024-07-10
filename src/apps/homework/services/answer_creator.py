@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from django.db import transaction
 from django.utils import timezone
 
-from apps.homework.models import Answer, AnswerCrossCheck
+from apps.homework.models import Answer
 from apps.users.models import User
 from core.services import BaseService
 
