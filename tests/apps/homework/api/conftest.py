@@ -12,6 +12,11 @@ def api(api):
 
 
 @pytest.fixture
+def ya_user(mixer):
+    return mixer.blend("users.User")
+
+
+@pytest.fixture
 def question(mixer, course):
     question = mixer.blend("homework.Question")
     question.courses.add(course)
@@ -40,6 +45,11 @@ def another_answer(mixer, question, api):
 @pytest.fixture
 def child_answer(answer, mixer):
     return mixer.blend("homework.Answer", parent=answer)
+
+
+@pytest.fixture
+def child_answer_of_same_user(answer, question, mixer, api):
+    return mixer.blend("homework.Answer", question=question, parent=answer, author=api.user)
 
 
 @pytest.fixture

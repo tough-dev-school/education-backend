@@ -26,6 +26,8 @@ from apps.homework.models import Answer, AnswerAccessLogEntry
 from apps.homework.models.answer import AnswerQuerySet
 from apps.homework.models.reaction import Reaction
 from apps.homework.services import ReactionCreator
+from apps.homework.services.answer_creator import AnswerCreator
+from apps.homework.services.answer_remover import AnswerRemover
 from core.api.mixins import DisablePaginationWithQueryParamMixin
 from core.viewsets import AppViewSet, CreateDeleteAppViewSet
 
@@ -51,7 +53,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     def create(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        answer = serializer.save()
+        answer = AnswerCreator(data=serializer.validated_data.copy(), user=self.request.user)()  # type: ignore
         answer = self.get_queryset().get(pk=answer.pk)
 
         Serializer = self.get_serializer_class(action="retrieve")
@@ -69,6 +71,10 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
         response.data = Serializer(answer).data
 
         return response
+
+    def destroy(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
+        AnswerRemover(instance=self.get_object())()
+        return Response(status=204)
 
     def get_queryset(self) -> AnswerQuerySet:
         queryset = super().get_queryset()

@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 import pytest
 
 from apps.homework.models import Answer
@@ -5,6 +7,7 @@ from apps.homework.models import Answer
 pytestmark = [
     pytest.mark.django_db,
     pytest.mark.usefixtures("purchase"),
+    pytest.mark.freeze_time("2032-01-01 12:30Z"),
 ]
 
 
@@ -162,3 +165,51 @@ def test_403_if_user_has_not_purchase_record_at_all(api, question, purchase):
 
     created = get_answer()
     assert created is None
+
+
+def test_marks_crosscheck_as_checked(api, question, another_answer, mixer):
+    crosscheck = mixer.blend("homework.AnswerCrossCheck", answer=another_answer, checker=api.user)
+
+    api.post(
+        "/api/v2/homework/answers/",
+        {
+            "text": "Горите в аду!",
+            "question": question.slug,
+            "parent": another_answer.slug,
+        },
+    )
+
+    crosscheck.refresh_from_db()
+    assert crosscheck.checked_at == datetime(2032, 1, 1, 12, 30, tzinfo=timezone.utc)
+
+
+def test_doesnt_marks_crosscheck_as_checked_for_another_answer(api, question, another_answer, mixer):
+    crosscheck = mixer.blend("homework.AnswerCrossCheck", checker=api.user)
+
+    api.post(
+        "/api/v2/homework/answers/",
+        {
+            "text": "Горите в аду!",
+            "question": question.slug,
+            "parent": another_answer.slug,
+        },
+    )
+
+    crosscheck.refresh_from_db()
+    assert crosscheck.checked_at is None
+
+
+def test_doesnt_marks_crosscheck_as_checked_for_another_checker(api, question, another_answer, ya_user, mixer):
+    crosscheck = mixer.blend("homework.AnswerCrossCheck", answer=another_answer, checker=ya_user)
+
+    api.post(
+        "/api/v2/homework/answers/",
+        {
+            "text": "Горите в аду!",
+            "question": question.slug,
+            "parent": another_answer.slug,
+        },
+    )
+
+    crosscheck.refresh_from_db()
+    assert crosscheck.checked_at is None
