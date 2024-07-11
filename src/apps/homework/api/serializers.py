@@ -89,8 +89,10 @@ class AnswerTreeSerializer(AnswerDetailedSerializer):
 
     def get_descendants(self, obj: Answer) -> list[dict]:
         queryset = obj.get_first_level_descendants().with_children_count().select_related("question", "author").prefetch_reactions()
+        visible_answers_count = self.context["request"].user.answercrosscheck_set.visible_answers_count_for_question(obj.question, queryset.count())
+
         serializer = AnswerTreeSerializer(
-            queryset,
+            queryset[:visible_answers_count],
             many=True,
             context=self.context,
         )
