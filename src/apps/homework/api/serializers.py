@@ -4,6 +4,7 @@ from rest_framework import serializers
 
 from apps.homework.models import Answer, AnswerImage, Question
 from apps.homework.models.reaction import Reaction
+from apps.homework.services.answer_by_crosscheck_limiter import AnswerByCrossCheckLimiter
 from apps.users.api.serializers import UserSafeSerializer
 from core.serializers import MarkdownField, SoftField
 
@@ -88,11 +89,11 @@ class AnswerTreeSerializer(AnswerDetailedSerializer):
         ]
 
     def get_descendants(self, obj: Answer) -> list[dict]:
-        queryset = obj.get_first_level_descendants().with_children_count().select_related("question", "author").prefetch_reactions()
-        visible_answers_count = self.context["request"].user.answercrosscheck_set.visible_answers_count_for_question(obj.question, queryset.count())
+        queryset = obj.get_first_level_descendants().with_children_count().select_related("question", "author", "parent").prefetch_reactions()
+        queryset = AnswerByCrossCheckLimiter(answer=obj, queryset=queryset, user=self.context["request"].user)()
 
         serializer = AnswerTreeSerializer(
-            queryset[:visible_answers_count],
+            queryset,
             many=True,
             context=self.context,
         )
