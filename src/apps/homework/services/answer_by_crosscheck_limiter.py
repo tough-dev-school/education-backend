@@ -13,13 +13,16 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class AnswerByCrossCheckLimiter(BaseService):
+class AnswerDescendantsByCrossCheckLimiter(BaseService):
     answer: "Answer"
     user: "User"
-    queryset: "AnswerQuerySet"
 
     def act(self) -> "AnswerQuerySet":
         return self.queryset[: self.allowed_answers_count]
+
+    @cached_property
+    def queryset(self) -> "AnswerQuerySet":
+        return self.answer.get_first_level_descendants().with_children_count().select_related("question", "author", "parent").prefetch_reactions()
 
     @cached_property
     def answers_count(self) -> int:
