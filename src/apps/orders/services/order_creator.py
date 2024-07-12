@@ -1,3 +1,4 @@
+import json
 from dataclasses import dataclass
 from decimal import Decimal
 from typing import Type
@@ -34,7 +35,7 @@ class OrderCreator(BaseService):
     price: Decimal | None = None
     promocode: str | None = None
     desired_bank: str | None = None
-    analytics: dict[str, str | dict] | None = None
+    analytics: str | None = None
 
     subscribe: bool = False
     push_to_amocrm: bool = True
@@ -68,8 +69,18 @@ class OrderCreator(BaseService):
             bank_id=self.desired_bank,
             ue_rate=self.bank.ue,
             acquiring_percent=self.bank.acquiring_percent,
-            analytics=self.analytics if self.analytics is not None else dict(),
+            analytics=self._parse_analytics(self.analytics),
         )
+
+    @staticmethod
+    def _parse_analytics(input: str | None) -> dict:
+        if input is None:
+            return {}
+
+        try:
+            return json.loads(input)
+        except json.JSONDecodeError:
+            return {}
 
     @staticmethod
     def _get_promocode(promocode_name: str | None = None) -> PromoCode | None:

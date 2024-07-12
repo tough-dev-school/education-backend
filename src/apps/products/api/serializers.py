@@ -20,7 +20,7 @@ class PurchaseSerializer(serializers.Serializer):
     success_url = serializers.CharField(max_length=256, required=False)
     redirect_url = serializers.CharField(max_length=256, required=False)
     subscribe = serializers.CharField(max_length=5, default="")
-    analytics = serializers.JSONField(required=False)
+    analytics = serializers.CharField(required=False)
 
     def validate_subscribe(self, value: str | None) -> bool:
         if value:
