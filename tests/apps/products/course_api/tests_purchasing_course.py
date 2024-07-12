@@ -67,6 +67,23 @@ def test_analytics_metadata(call_purchase):
     assert placed.analytics["empty"] is None
 
 
+@pytest.mark.parametrize(
+    "weird",
+    [
+        "None",
+        "'test':'case",
+        "test':case",
+        "test:",
+        "test:'",
+        "test:''",
+    ],
+)
+def test_weird_analytics_params_do_not_break_order_creation(call_purchase, weird):
+    call_purchase(analytics=weird)
+
+    assert get_order() is not None
+
+
 def test_order_creation_does_not_fail_with_nonexistant_params(call_purchase):
     """Need this test cuz we may alter frontend request without corresponding changes on backend"""
     call_purchase(
