@@ -18,7 +18,13 @@ class AnswerDescendantsByCrossCheckLimiter(BaseService):
     user: "User"
 
     def act(self) -> "AnswerQuerySet":
-        return self.queryset[: self.allowed_answers_count]
+        if self.should_limit():
+            return self.queryset[: self.allowed_answers_count]
+
+        return self.queryset
+
+    def should_limit(self) -> bool:
+        return self.answer.get_root_answer().author == self.user
 
     @cached_property
     def queryset(self) -> "AnswerQuerySet":

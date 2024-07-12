@@ -2,7 +2,7 @@ from typing import cast
 
 from rest_framework import serializers
 
-from apps.homework.models import Answer, AnswerImage, Question
+from apps.homework.models import Answer, AnswerCrossCheck, AnswerImage, Question
 from apps.homework.models.reaction import Reaction
 from apps.homework.services.answer_by_crosscheck_limiter import AnswerDescendantsByCrossCheckLimiter
 from apps.users.api.serializers import UserSafeSerializer
@@ -133,3 +133,26 @@ class AnswerImageSerializer(serializers.ModelSerializer):
             "author",
             "image",
         ]
+
+
+class SimpleAnswerSerializer(serializers.ModelSerializer):
+    url = serializers.CharField(source="get_absolute_url")
+
+    class Meta:
+        model = Answer
+        fields = ("url",)
+
+
+class AnswerCrossCheckSerializer(serializers.ModelSerializer):
+    answer = SimpleAnswerSerializer()
+    is_checked = serializers.SerializerMethodField()
+
+    class Meta:
+        model = AnswerCrossCheck
+        fields = (
+            "answer",
+            "is_checked",
+        )
+
+    def get_is_checked(self, obj: "AnswerCrossCheck") -> bool:
+        return obj.checked_at is not None
