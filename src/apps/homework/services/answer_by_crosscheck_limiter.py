@@ -24,14 +24,22 @@ class AnswerDescendantsByCrossCheckLimiter(BaseService):
         return self.queryset
 
     def should_limit(self) -> bool:
-        root_answer_is_not_mine = self.answer.get_root_answer().author != self.user
-        is_not_first_level_descendant = getattr(self.answer.parent, "parent", None) is None
+        """
+        Make no sense to limit answers if the answer is not mine or the answer is not a first level descendant, because it can't be crosschecked
+        """
+        root_answer_is_mine = self.answer.get_root_answer().author == self.user
+        answer_parent_is_first_level_descendant = getattr(self.answer.parent, "parent", None) is None
 
-        return not (root_answer_is_not_mine or is_not_first_level_descendant)
+        return root_answer_is_mine and answer_parent_is_first_level_descendant
 
     @cached_property
     def queryset(self) -> "AnswerQuerySet":
-        return self.answer.get_first_level_descendants().with_children_count().select_related("question", "author", "parent").prefetch_reactions()
+        return (
+            self.answer.get_first_level_descendants()
+            .with_children_count()
+            .select_related("question", "author", "parent", "parent__parent")
+            .prefetch_reactions()
+        )
 
     @cached_property
     def answers_count(self) -> int:
