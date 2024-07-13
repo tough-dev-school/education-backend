@@ -27,10 +27,7 @@ class AnswerDescendantsByCrossCheckLimiter(BaseService):
         root_answer_is_not_mine = self.answer.get_root_answer().author != self.user
         is_not_first_level_descendant = getattr(self.answer.parent, "parent", None) is None
 
-        if root_answer_is_not_mine:
-            return False
-
-        return not is_not_first_level_descendant
+        return not (root_answer_is_not_mine or is_not_first_level_descendant)
 
     @cached_property
     def queryset(self) -> "AnswerQuerySet":
