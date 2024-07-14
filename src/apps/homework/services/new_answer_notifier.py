@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from django.db.models import QuerySet
+from django.utils.functional import cached_property
 
 from apps.homework.models import Answer
 from apps.mailing.tasks import send_mail
@@ -16,6 +17,10 @@ class NewAnswerNotifier(BaseService):
     def act(self) -> None:
         for user_to_notify in self.get_users_to_notify().iterator():
             self.send_mail_to_user(user_to_notify)
+
+    @cached_property
+    def root_answer(self) -> Answer:
+        return self.answer.get_root_answer()
 
     def send_mail_to_user(self, user: User) -> None:
         send_mail.delay(
@@ -41,10 +46,37 @@ class NewAnswerNotifier(BaseService):
             "author_name": str(self.answer.author),
         }
 
-        if user == self.answer.get_root_answer().author:
-            context["is_root_answer_author"] = "1"
-        else:
-            context["is_non_root_answer_author"] = "1"
+        context.update(self.get_root_answer_context(user))
+        context.update(self.get_crosschecks_context(user))
+
+        return context
+
+    def get_root_answer_context(self, user: User) -> dict:
+        if user == self.root_answer.author:
+            return {"is_root_answer_author": "1"}
+
+        return {"is_non_root_answer_author": "1"}
+
+    def get_crosschecks_context(self, user: User) -> dict:
+        crosschecks = user.answercrosscheck_set.filter(answer__question=self.answer.question, checked_at__isnull=True)
+
+        user_is_not_root_answer_author = user != self.root_answer.author
+        answer_parent_is_not_root_answer = self.answer.parent != self.root_answer
+
+        if user_is_not_root_answer_author or answer_parent_is_not_root_answer or not crosschecks.exists():
+            return {"without_not_checked_crosschecks": "1"}
+
+        context: dict[str, list] = {
+            "crosschecks": [],
+        }
+
+        for crosscheck in crosschecks.iterator():
+            context["crosschecks"].append(
+                {
+                    "crosscheck_url": crosscheck.answer.get_absolute_url(),
+                    "crosscheck_author_name": str(crosscheck.answer.author),
+                }
+            )
 
         return context
 
