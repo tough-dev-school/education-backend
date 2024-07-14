@@ -137,10 +137,11 @@ class AnswerImageSerializer(serializers.ModelSerializer):
 
 class SimpleAnswerSerializer(serializers.ModelSerializer):
     url = serializers.CharField(source="get_absolute_url")
+    author = UserSafeSerializer()
 
     class Meta:
         model = Answer
-        fields = ("url",)
+        fields = ("url", "author")
 
 
 class AnswerCrossCheckSerializer(serializers.ModelSerializer):
