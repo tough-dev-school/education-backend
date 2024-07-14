@@ -1,0 +1,35 @@
+<yml_catalog date="2024-07-09 17:30:00"> <!--Дата и время последнего обновления фида-->
+    <shop>
+	    <name>Товарный фид</name> <!--Название файла-->
+	    <company>Школа Сильных Программистов</company>
+	    <url>https://tough-dev.school</url>
+    	<currencies>
+	    	<currency id="RUB" rate="1"/>
+	    	<currency id="USD" rate="80"/>
+    	</currencies>
+	    <offers>
+	    	<offer id="kote-evergreen" available="true">
+			    <name>Анализ Систем</name>
+			    <url>https://tough-dev.school/system-analysis</url>
+			    
+			    <price>25000</price> 
+			    <oldprice>30000</oldprice> 
+			    <currencyId>RUB</currencyId> 
+		    	<duration unit="week">5</duration> 
+		    	<description>Курс о том, как проектировать системы. Новые — чтобы не переделывать, старые — чтобы разобрать на части и ускорить разработку</description>
+		    	
+		    	<!--Если есть рассрочка, то указать минимально возможное количество месяцев. Если рассрочки нет, то указать "Нет"-->
+		    	<param name="Оплата в рассрочку" unit="неделя">6</param>
+		    	
+		    	<!--Если занятия проходят оффлайн, то в этом поле нужно передать город-->
+		    	<param name="Формат занятий">online</param> 
+		    	
+		    	<!--Возможные значения: Стажёр (Intern),Младший (Junior), Средний (Middle),Старший (Senior),Ведущий (Lead). Передать английское название-->
+		    	<param name="Требуемая квалификация">Middle</param> 
+		    	<param name="Получаемая квалификация">Lead</param> 
+		    	<param name="Выдаётся сертификат">Нет</param> 
+		    	<param name="Помощь с трудоустройством">Нет</param> 
+	    	</offer>
+    	</offers>
+    </shop>
+</yml_catalog>
