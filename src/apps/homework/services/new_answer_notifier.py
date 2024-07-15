@@ -1,13 +1,95 @@
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from typing import Type
 
 from django.db.models import QuerySet
 from django.utils.functional import cached_property
 
 from apps.homework.models import Answer
+from apps.homework.models.answer_cross_check import AnswerCrossCheckQuerySet
 from apps.mailing.tasks import send_mail
 from apps.users.models import User
 from core.markdown import markdownify, remove_img
 from core.services import BaseService
+
+
+@dataclass
+class BaseAnswerNotification(ABC):
+    answer: "Answer"
+    user: "User"
+
+    @abstractmethod
+    def get_template_id(self) -> str: ...
+
+    @abstractmethod
+    def get_context(self) -> dict: ...
+
+    @abstractmethod
+    def can_be_sent(self) -> bool: ...
+
+
+@dataclass
+class DefaultAnswerNotification(BaseAnswerNotification):
+    def get_template_id(self) -> str:
+        return "new-answer-notification"
+
+    def get_context(self) -> dict:
+        context = {
+            "discussion_name": str(self.answer.question),
+            "discussion_url": self.answer.get_absolute_url(),
+            "answer_text": self.get_text_with_markdown(),
+            "author_name": str(self.answer.author),
+        }
+
+        if self.answer.is_author_of_root_answer(self.user):
+            context["is_root_answer_author"] = "1"
+
+        context["is_non_root_answer_author"] = "1"
+
+        return context
+
+    def can_be_sent(self) -> bool:
+        return True
+
+    def get_text_with_markdown(self) -> str:
+        return remove_img(markdownify(self.answer.text).strip())
+
+
+@dataclass
+class CrossCheckedAnswerNotification(BaseAnswerNotification):
+    def get_template_id(self) -> str:
+        return "crosschecked-answer-notification"
+
+    def get_context(self) -> dict:
+        crosschecks = []
+
+        for crosscheck in self.crosschecks.iterator():
+            crosschecks.append(
+                {
+                    "crosscheck_url": crosscheck.answer.get_absolute_url(),
+                    "crosscheck_author_name": str(crosscheck.answer.author),
+                }
+            )
+
+        return {
+            "discussion_name": str(self.answer.question),
+            "discussion_url": self.answer.get_absolute_url(),
+            "author_name": str(self.answer.author),
+            "crosschecks": crosschecks,
+        }
+
+    def can_be_sent(self) -> bool:
+        if not self.answer.is_author_of_root_answer(self.user):
+            return False
+
+        if self.answer not in self.answer.get_root_answer().get_first_level_descendants():
+            return False
+
+        return self.crosschecks.exists()
+
+    @cached_property
+    def crosschecks(self) -> "AnswerCrossCheckQuerySet":
+        return self.user.answercrosscheck_set.filter(answer__question=self.answer.question, checked_at__isnull=True)
 
 
 @dataclass
@@ -18,17 +100,31 @@ class NewAnswerNotifier(BaseService):
         for user_to_notify in self.get_users_to_notify().iterator():
             self.send_mail_to_user(user_to_notify)
 
-    @cached_property
-    def root_answer(self) -> Answer:
-        return self.answer.get_root_answer()
-
     def send_mail_to_user(self, user: User) -> None:
+        notification = self.get_notification(user)
+
         send_mail.delay(
             to=user.email,
-            template_id="new-answer-notification",
-            ctx=self.get_notification_context(user),
+            template_id=notification.get_template_id(),
+            ctx=notification.get_context(),
             disable_antispam=True,
         )
+
+    def get_notification(self, user: User) -> BaseAnswerNotification:
+        for notification_class in self.get_notification_classes():
+            notification = notification_class(answer=self.answer, user=user)
+
+            if notification.can_be_sent():
+                return notification
+
+        return DefaultAnswerNotification(answer=self.answer, user=user)
+
+    @staticmethod
+    def get_notification_classes() -> list[Type[BaseAnswerNotification]]:
+        return [
+            CrossCheckedAnswerNotification,
+            DefaultAnswerNotification,
+        ]
 
     def get_users_to_notify(self) -> QuerySet[User]:
         """Get all users that have ever written an answer to the root of the disqussion"""
@@ -37,48 +133,3 @@ class NewAnswerNotifier(BaseService):
         authors = list(authors)  # have to execute this query cuz django-tree-queries fails to compile it
 
         return User.objects.filter(pk__in=authors).exclude(pk=self.answer.author_id)
-
-    def get_notification_context(self, user: User) -> dict:
-        context = {
-            "discussion_name": str(self.answer.question),
-            "discussion_url": self.answer.get_absolute_url(),
-            "answer_text": self.get_text_with_markdown(),
-            "author_name": str(self.answer.author),
-        }
-
-        context.update(self.get_root_answer_context(user))
-        context.update(self.get_crosschecks_context(user))
-
-        return context
-
-    def get_root_answer_context(self, user: User) -> dict:
-        if user == self.root_answer.author:
-            return {"is_root_answer_author": "1"}
-
-        return {"is_non_root_answer_author": "1"}
-
-    def get_crosschecks_context(self, user: User) -> dict:
-        crosschecks = user.answercrosscheck_set.filter(answer__question=self.answer.question, checked_at__isnull=True)
-
-        user_is_not_root_answer_author = user != self.root_answer.author
-        answer_parent_is_not_root_answer = self.answer.parent != self.root_answer
-
-        if user_is_not_root_answer_author or answer_parent_is_not_root_answer or not crosschecks.exists():
-            return {"without_not_checked_crosschecks": "1"}
-
-        context: dict[str, list] = {
-            "crosschecks": [],
-        }
-
-        for crosscheck in crosschecks.iterator():
-            context["crosschecks"].append(
-                {
-                    "crosscheck_url": crosscheck.answer.get_absolute_url(),
-                    "crosscheck_author_name": str(crosscheck.answer.author),
-                }
-            )
-
-        return context
-
-    def get_text_with_markdown(self) -> str:
-        return remove_img(markdownify(self.answer.text).strip())
