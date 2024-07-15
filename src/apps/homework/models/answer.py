@@ -140,7 +140,7 @@ class Answer(TestUtilsMixin, TreeNode):
         return self.get_root_answer().author == user
 
     def get_limited_comments_for_user_by_crosschecks(self, user: "User") -> "AnswerQuerySet":
-        queryset = self.get_first_level_descendants().with_children_count()
+        queryset = self.get_first_level_descendants()
 
         if not self.is_root or not self.is_author_of_root_answer(user):
             return queryset

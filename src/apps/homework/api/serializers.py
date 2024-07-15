@@ -90,6 +90,7 @@ class AnswerTreeSerializer(AnswerDetailedSerializer):
     def get_descendants(self, obj: Answer) -> list[dict]:
         queryset = (
             obj.get_limited_comments_for_user_by_crosschecks(self.context["request"].user)
+            .with_children_count()
             .select_related("question", "author", "parent", "parent__parent")
             .prefetch_reactions()
         )
