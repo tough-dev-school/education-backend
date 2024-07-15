@@ -130,3 +130,24 @@ class Answer(TestUtilsMixin, TreeNode):
 
     def get_first_level_descendants(self) -> "AnswerQuerySet":
         return self.descendants().filter(parent=self.id)
+
+    @property
+    def is_root(self) -> bool:
+        """Can be used to determine homework answer"""
+        return self.parent is None
+
+    def is_author_of_root_answer(self, user: "User") -> bool:
+        return self.get_root_answer().author == user
+
+    def get_limited_comments_for_user_by_crosschecks(self, user: "User") -> "AnswerQuerySet":
+        queryset = self.get_first_level_descendants().with_children_count()
+
+        if not self.is_root or not self.is_author_of_root_answer(user):
+            return queryset
+
+        crosscheck_count = user.answercrosscheck_set.count_for_question(self.question)
+
+        if crosscheck_count["total"] > crosscheck_count["checked"]:
+            return queryset[: crosscheck_count["checked"]]
+
+        return queryset
