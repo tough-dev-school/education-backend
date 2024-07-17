@@ -91,3 +91,20 @@ def test_img_removed(notification, answer):
     text = notification(answer=answer, user=answer.author).get_text_with_markdown()
 
     assert text == "<p>Hello, you</p>"
+
+
+def test_send(notification, send_mail, answer, user):
+    notification(answer=answer, user=user).send()
+
+    send_mail.assert_called_once_with(
+        to=user.email,
+        template_id="new-answer-notification",
+        ctx={
+            "discussion_name": "Вторая домашка",
+            "discussion_url": "https://frontend/lms/homework/answers/f593d1a9-120c-4c92-bed0-9f037537d4f4/",
+            "answer_text": "<p>Сарынь на кичку!</p>",
+            "author_name": "Петрович Львов",
+            "is_non_root_answer_author": "1",
+        },
+        disable_antispam=True,
+    )

@@ -122,3 +122,25 @@ def test_context(notification, answer, child_answer):
             }
         ],
     }
+
+
+@pytest.mark.usefixtures("crosscheck")
+def test_send(notification, answer, child_answer, send_mail):
+    notification(answer=child_answer, user=answer.author).send()
+
+    send_mail.assert_called_once_with(
+        to=answer.author.email,
+        template_id="crosschecked-answer-notification",
+        ctx={
+            "discussion_name": "Вторая домашка",
+            "discussion_url": "https://frontend/lms/homework/answers/f593d1a9-120c-4c92-bed0-9f037537d4f4/#16a973e4-40f1-4887-a502-beeb5677ab42",
+            "author_name": "Василич Теркин",
+            "crosschecks": [
+                {
+                    "crosscheck_url": "https://frontend/lms/homework/answers/f593d1a9-120c-4c92-bed0-9f037537d4f2/",
+                    "crosscheck_author_name": "Василиса Прекрасная",
+                }
+            ],
+        },
+        disable_antispam=True,
+    )

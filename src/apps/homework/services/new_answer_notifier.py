@@ -19,17 +19,41 @@ class BaseAnswerNotification(ABC):
     user: "User"
 
     @abstractmethod
-    def get_template_id(self) -> str: ...
+    def get_template_id(self) -> str:
+        """Return template id for notification, should be a string that is used in the mailing service to get the template"""
+        ...
 
     @abstractmethod
-    def get_context(self) -> dict: ...
+    def get_context(self) -> dict:
+        """
+        Context for template, should be a dictionary with keys and values that will be used in the template
+        """
+        ...
 
     @abstractmethod
-    def can_be_sent(self) -> bool: ...
+    def can_be_sent(self) -> bool:
+        """
+        Return True if notification can be sent, False otherwise
+        For example if user is not author of the answer, he should not receive notification
+        """
+        ...
+
+    def send(self) -> None:
+        """Sends notification, rewrite it if you want to use another way of sending"""
+        send_mail.delay(
+            to=self.user.email,
+            template_id=self.get_template_id(),
+            ctx=self.get_context(),
+            disable_antispam=True,
+        )
 
 
 @dataclass
 class DefaultAnswerNotification(BaseAnswerNotification):
+    """
+    Default notification that is sent to all users that have ever written an answer to the root of the discussion
+    """
+
     def get_template_id(self) -> str:
         return "new-answer-notification"
 
@@ -49,6 +73,7 @@ class DefaultAnswerNotification(BaseAnswerNotification):
         return context
 
     def can_be_sent(self) -> bool:
+        """This is a default notification, so if no other notification can be sent, this one will be sent"""
         return True
 
     def get_text_with_markdown(self) -> str:
@@ -57,6 +82,10 @@ class DefaultAnswerNotification(BaseAnswerNotification):
 
 @dataclass
 class CrossCheckedAnswerNotification(BaseAnswerNotification):
+    """
+    Notification about new answer (homework check), which is a part of p2p cross-checking process
+    """
+
     def get_template_id(self) -> str:
         return "crosschecked-answer-notification"
 
@@ -79,6 +108,9 @@ class CrossCheckedAnswerNotification(BaseAnswerNotification):
         }
 
     def can_be_sent(self) -> bool:
+        """
+        Notification can be sent if author of homework answer (root answer) has not completed crosscheckes and current answer is a part of crosschecking process
+        """
         if not self.answer.is_author_of_root_answer(self.user):
             return False
 
@@ -94,21 +126,15 @@ class CrossCheckedAnswerNotification(BaseAnswerNotification):
 
 @dataclass
 class NewAnswerNotifier(BaseService):
+    """
+    Service that determines which user and what kind of notification should be sent
+    """
+
     answer: Answer
 
     def act(self) -> None:
         for user_to_notify in self.get_users_to_notify().iterator():
-            self.send_mail_to_user(user_to_notify)
-
-    def send_mail_to_user(self, user: User) -> None:
-        notification = self.get_notification(user)
-
-        send_mail.delay(
-            to=user.email,
-            template_id=notification.get_template_id(),
-            ctx=notification.get_context(),
-            disable_antispam=True,
-        )
+            self.get_notification(user_to_notify).send()
 
     def get_notification(self, user: User) -> BaseAnswerNotification:
         for notification_class in self.get_notification_classes():
