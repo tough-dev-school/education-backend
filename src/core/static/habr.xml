@@ -15,7 +15,19 @@
 			    <oldprice>30000</oldprice>
 			    <currencyId>RUB</currencyId>
 		    	<duration unit="week">5</duration>
+          <specialization>Архитектор программного обеспечения</specialization>
           <description>Курс о том, как проектировать большие системы. Новые — чтобы не переделывать, старые — чтобы разобрать на части и ускорить разработку</description>
+          <skills>
+            <skill id="1">Проектирование архитектуры приложений</skill>
+            <skill id="2">Стратегическое планирование</skill>
+            <skill id="3">Анализ требований</skill>
+            <skill id="4">Проектирование</skill>
+            <skill id="5">Управление разработкой</skill>
+            <skill id="6">Развитие бизнеса</skill>
+            <skill id="7">Бизнес аналитика</skill>
+            <skill id="8">Системная аналитика</skill>
+            <skill id="9">Архитектура предприятия</skill>
+          </skills>
 		    	<param name="Оплата в рассрочку" unit="неделя">6</param>
 		    	<param name="Формат занятий">online</param>
 		    	<param name="Требуемая квалификация">Middle</param>
