@@ -89,3 +89,18 @@ def test_can_see_all_answers(get_comments, answers, crosschecks, check_crosschec
     got = get_comments(answers[0].slug)
 
     assert len(got) == 6
+
+
+def test_ordering(get_comments, answers, crosschecks, check_crosscheck):
+    check_crosscheck(crosschecks[0])  # my check
+    check_crosscheck(crosschecks[1])  # my check
+    check_crosscheck(crosschecks[2])
+    check_crosscheck(crosschecks[3])
+
+    got = get_comments(answers[0].slug)
+
+    assert got[0]["created"] < got[1]["created"]
+    assert got[1]["created"] < got[2]["created"]
+    assert got[2]["created"] < got[3]["created"]
+    assert got[3]["created"] < got[4]["created"]
+    assert got[4]["created"] < got[5]["created"]
