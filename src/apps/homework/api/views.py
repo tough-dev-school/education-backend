@@ -3,9 +3,10 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
 from apps.homework.api import serializers
-from apps.homework.api.filtersets import AnswerCommentFilterSet
+from apps.homework.api.filtersets import AnswerCommentFilterSet, AnswerCrossCheckFilterSet
 from apps.homework.api.permissions import ShouldHavePurchasedCoursePermission
-from apps.homework.models import Answer, AnswerImage, Question
+from apps.homework.api.serializers import AnswerCrossCheckSerializer
+from apps.homework.models import Answer, AnswerCrossCheck, AnswerImage, Question
 
 
 class QuestionView(generics.RetrieveAPIView):
@@ -30,3 +31,14 @@ class AnswerImageUploadView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.AnswerImageSerializer
     queryset = AnswerImage.objects.all()
+
+
+class AnswerCrossCheckView(generics.ListAPIView):
+    queryset = AnswerCrossCheck.objects.for_viewset()
+    serializer_class = AnswerCrossCheckSerializer
+    filterset_class = AnswerCrossCheckFilterSet
+    permission_classes = [IsAuthenticated]
+    pagination_class = None
+
+    def get_queryset(self) -> QuerySet[AnswerCrossCheck]:
+        return super().get_queryset().filter(checker=self.request.user)
