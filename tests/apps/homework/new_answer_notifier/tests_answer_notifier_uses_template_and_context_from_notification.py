@@ -16,7 +16,7 @@ def _notification(mocker):
         return_value="n0t1f1cat10n",
     )
     mocker.patch(
-        "apps.homework.services.new_answer_notifier.CrossCheckedAnswerNotification.can_be_sent",
+        "apps.homework.services.new_answer_notifier.CrossCheckedAnswerNotification.should_send",
         return_value=True,
     )
 
