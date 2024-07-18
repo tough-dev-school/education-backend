@@ -18,6 +18,17 @@ class BaseAnswerNotification(ABC):
     answer: "Answer"
     user: "User"
 
+    def send_if_should(self) -> bool:
+        """
+        Send notification if it should be sent and returns True, otherwise returns False
+        Please do not override this method, override send instead
+        """
+        if self.should_send():
+            self.send()
+            return True
+
+        return False
+
     @abstractmethod
     def get_template_id(self) -> str:
         """Return template id for notification, should be a string that is used in the mailing service to get the template"""
@@ -31,7 +42,7 @@ class BaseAnswerNotification(ABC):
         ...
 
     @abstractmethod
-    def can_be_sent(self) -> bool:
+    def should_send(self) -> bool:
         """
         Return True if notification can be sent, False otherwise
         For example if user is not author of the answer, he should not receive notification
@@ -72,7 +83,7 @@ class DefaultAnswerNotification(BaseAnswerNotification):
 
         return context
 
-    def can_be_sent(self) -> bool:
+    def should_send(self) -> bool:
         """This is a default notification, so if no other notification can be sent, this one will be sent"""
         return True
 
@@ -107,7 +118,7 @@ class CrossCheckedAnswerNotification(BaseAnswerNotification):
             "crosschecks": crosschecks,
         }
 
-    def can_be_sent(self) -> bool:
+    def should_send(self) -> bool:
         """
         Notification can be sent if author of homework answer (root answer) has not completed crosscheckes and current answer is a part of crosschecking process
         """
@@ -134,19 +145,15 @@ class NewAnswerNotifier(BaseService):
 
     def act(self) -> None:
         for user_to_notify in self.get_users_to_notify().iterator():
-            self.get_notification(user_to_notify).send()
+            for notification in self.get_notification_classes():
+                notification_instance = notification(answer=self.answer, user=user_to_notify)
 
-    def get_notification(self, user: User) -> BaseAnswerNotification:
-        for notification_class in self.get_notification_classes():
-            notification = notification_class(answer=self.answer, user=user)
-
-            if notification.can_be_sent():
-                return notification
-
-        return DefaultAnswerNotification(answer=self.answer, user=user)
+                if notification_instance.send_if_should():
+                    break
 
     @staticmethod
     def get_notification_classes() -> list[Type[BaseAnswerNotification]]:
+        """Be sure to add all new notifications here in correct priority order"""
         return [
             CrossCheckedAnswerNotification,
             DefaultAnswerNotification,

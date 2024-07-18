@@ -75,36 +75,36 @@ def test_template_id(notification, answer):
 
 
 @pytest.mark.usefixtures("crosscheck")
-def test_can_be_sent(notification, answer, child_answer):
-    assert notification(answer=child_answer, user=answer.author).can_be_sent() is True
+def test_should_send(notification, answer, child_answer):
+    assert notification(answer=child_answer, user=answer.author).should_send() is True
 
 
 @pytest.mark.usefixtures("crosscheck")
 def test_cannot_be_sent_when_user_is_not_root_answer_author(notification, child_answer, ya_answer):
-    assert notification(answer=child_answer, user=ya_answer.author).can_be_sent() is False
+    assert notification(answer=child_answer, user=ya_answer.author).should_send() is False
 
 
 @pytest.mark.usefixtures("crosscheck")
 def test_cannot_be_sent_if_answer_is_root(notification, answer):
-    assert notification(answer=answer, user=answer.author).can_be_sent() is False
+    assert notification(answer=answer, user=answer.author).should_send() is False
 
 
 def test_cannot_be_sent_if_answer_is_a_comment_to_child_answer(notification, answer, comment_on_child_answer):
-    assert notification(answer=comment_on_child_answer, user=answer.author).can_be_sent() is False
+    assert notification(answer=comment_on_child_answer, user=answer.author).should_send() is False
 
 
 def test_cannot_be_sent_if_theres_no_non_completed_crosscheck(notification, answer, child_answer, crosscheck):
     crosscheck.checked_at = "2021-01-01 00:00:00Z"
     crosscheck.save()
 
-    assert notification(answer=child_answer, user=answer.author).can_be_sent() is False
+    assert notification(answer=child_answer, user=answer.author).should_send() is False
 
 
 def test_cannot_be_sent_if_crosscheck_belongs_to_another_question(notification, crosscheck, answer, child_answer, ya_question):
     crosscheck.answer.question = ya_question
     crosscheck.answer.save()
 
-    assert notification(answer=child_answer, user=answer.author).can_be_sent() is False
+    assert notification(answer=child_answer, user=answer.author).should_send() is False
 
 
 @pytest.mark.usefixtures("crosscheck")
@@ -144,3 +144,14 @@ def test_send(notification, answer, child_answer, send_mail):
         },
         disable_antispam=True,
     )
+
+
+@pytest.mark.parametrize("should_send", [True, False])
+def test_send_if_should(notification, answer, mocker, should_send):
+    mocker.patch("apps.homework.services.new_answer_notifier.CrossCheckedAnswerNotification.should_send", return_value=should_send)
+    mocked_send = mocker.patch("apps.homework.services.new_answer_notifier.CrossCheckedAnswerNotification.send")
+
+    got = notification(answer=answer, user=answer.author).send_if_should()
+
+    assert got is should_send
+    assert mocked_send.called is should_send

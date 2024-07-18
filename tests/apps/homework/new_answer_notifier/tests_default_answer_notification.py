@@ -43,8 +43,8 @@ def test_template_id(notification, answer):
     assert notification(answer=answer, user=answer.author).get_template_id() == "new-answer-notification"
 
 
-def test_can_be_sent(notification, answer):
-    assert notification(answer=answer, user=answer.author).can_be_sent() is True
+def test_should_send(notification, answer):
+    assert notification(answer=answer, user=answer.author).should_send() is True
 
 
 def test_default(notification, answer, user):
@@ -108,3 +108,14 @@ def test_send(notification, send_mail, answer, user):
         },
         disable_antispam=True,
     )
+
+
+@pytest.mark.parametrize("should_send", [True, False])
+def test_send_if_should(notification, answer, mocker, should_send):
+    mocker.patch("apps.homework.services.new_answer_notifier.DefaultAnswerNotification.should_send", return_value=should_send)
+    mocked_send = mocker.patch("apps.homework.services.new_answer_notifier.DefaultAnswerNotification.send")
+
+    got = notification(answer=answer, user=answer.author).send_if_should()
+
+    assert got is should_send
+    assert mocked_send.called is should_send
