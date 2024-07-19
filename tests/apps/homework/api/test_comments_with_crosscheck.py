@@ -68,13 +68,23 @@ def get_comments(api) -> "Callable":
     return lambda slug: api.get(f"/api/v2/homework/comments/?answer={slug}")[0]["descendants"]
 
 
+@pytest.fixture
+def _another_checks(mixer, answers, check_crosscheck):
+    crosscheck = mixer.blend("homework.AnswerCrossCheck", answer=answers[0])
+    ya_crosscheck = mixer.blend("homework.AnswerCrossCheck", answer=answers[0])
+    check_crosscheck(crosscheck)
+    check_crosscheck(ya_crosscheck)
+
+
 @pytest.mark.usefixtures("crosschecks")
+@pytest.mark.usefixtures("_another_checks")
 def test_can_see_only_non_crosschecked_answers(get_comments, answers):
     got = get_comments(answers[0].slug)
 
     assert len(got) == 5
 
 
+@pytest.mark.usefixtures("_another_checks")
 def test_can_see_only_one_crosschecked_answer(get_comments, answers, crosschecks, check_crosscheck):
     check_crosscheck(crosschecks[0])  # my check
     check_crosscheck(crosschecks[2])
@@ -85,16 +95,12 @@ def test_can_see_only_one_crosschecked_answer(get_comments, answers, crosschecks
     assert len(got) == 6
 
 
-def test_can_see_all_answers(get_comments, answers, crosschecks, check_crosscheck, mixer):
-    crosscheck = mixer.blend("homework.AnswerCrossCheck", answer=answers[0])
-    ya_crosscheck = mixer.blend("homework.AnswerCrossCheck", answer=answers[0])
-
+@pytest.mark.usefixtures("_another_checks")
+def test_can_see_all_answers(get_comments, answers, crosschecks, check_crosscheck):
     check_crosscheck(crosschecks[0])  # my check
     check_crosscheck(crosschecks[1])  # my check
     check_crosscheck(crosschecks[2])
     check_crosscheck(crosschecks[3])
-    check_crosscheck(crosscheck)
-    check_crosscheck(ya_crosscheck)
 
     got = get_comments(answers[0].slug)
 
