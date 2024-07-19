@@ -45,3 +45,10 @@ def test_email_is_sent(question_dispatcher, send_mail, mocker, answers):
             ),
         ]
     )
+
+
+def test_sets_flag(question):
+    question.dispatch_crosscheck(answers_per_user=1)
+
+    question.refresh_from_db()
+    assert question.hide_crosschecked_answers_from_students_without_checks is True

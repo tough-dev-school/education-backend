@@ -122,6 +122,9 @@ class CrossCheckedAnswerNotification(BaseAnswerNotification):
         """
         Notification can be sent if author of homework answer (root answer) has not completed crosscheckes and current answer is a part of crosschecking process
         """
+        if not self.answer.question.hide_crosschecked_answers_from_students_without_checks:
+            return False
+
         if not self.answer.is_author_of_root_answer(self.user):
             return False
 

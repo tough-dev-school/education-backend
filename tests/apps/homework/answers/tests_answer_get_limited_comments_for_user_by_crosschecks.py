@@ -22,6 +22,13 @@ def users(mixer, api) -> "List[User]":
 
 
 @pytest.fixture
+def question(question):
+    question.hide_crosschecked_answers_from_students_without_checks = True
+    question.save()
+    return question
+
+
+@pytest.fixture
 def answers(mixer, question, users) -> "List[Answer]":
     return [
         mixer.blend("homework.Answer", question=question, author=users[0]),
@@ -63,6 +70,17 @@ def test_cant_see_answers(answers, crosschecks, check_crosscheck):
     got = answers[0].get_limited_comments_for_user_by_crosschecks(answers[0].author)
 
     assert len(got) == 0
+
+
+def test_can_all_answers_if_answers_are_not_hidden_by_question_flag(answers, question, crosschecks, check_crosscheck):
+    question.hide_crosschecked_answers_from_students_without_checks = False
+    question.save()
+    check_crosscheck(crosschecks[2])
+    check_crosscheck(crosschecks[3])
+
+    got = answers[0].get_limited_comments_for_user_by_crosschecks(answers[0].author)
+
+    assert len(got) == 6
 
 
 def test_another_user_can_see_answers(answers, users, crosschecks, check_crosscheck):

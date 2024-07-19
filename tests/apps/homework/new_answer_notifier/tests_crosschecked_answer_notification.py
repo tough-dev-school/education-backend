@@ -13,8 +13,15 @@ def _freeze_absolute_url(settings):
 
 
 @pytest.fixture
+def question(question):
+    question.hide_crosschecked_answers_from_students_without_checks = True
+    question.save()
+    return question
+
+
+@pytest.fixture
 def ya_question(mixer):
-    return mixer.blend("homework.Question")
+    return mixer.blend("homework.Question", hide_crosschecked_answers_from_students_without_checks=True)
 
 
 @pytest.fixture
@@ -77,6 +84,14 @@ def test_template_id(notification, answer):
 @pytest.mark.usefixtures("crosscheck")
 def test_should_send(notification, answer, child_answer):
     assert notification(answer=child_answer, user=answer.author).should_send() is True
+
+
+@pytest.mark.usefixtures("crosscheck")
+def test_cannot_be_sent_when_hide_crosschecked_answers_from_users_is_not_enabled(notification, question, answer, child_answer):
+    question.hide_crosschecked_answers_from_students_without_checks = False
+    question.save()
+
+    assert notification(answer=child_answer, user=answer.author).should_send() is False
 
 
 @pytest.mark.usefixtures("crosscheck")

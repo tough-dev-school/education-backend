@@ -22,6 +22,13 @@ def users(mixer, api) -> "List[User]":
 
 
 @pytest.fixture
+def question(question):
+    question.hide_crosschecked_answers_from_students_without_checks = True
+    question.save()
+    return question
+
+
+@pytest.fixture
 def answers(mixer, question, users) -> "List[Answer]":
     return [
         mixer.blend("homework.Answer", question=question, author=users[0]),
