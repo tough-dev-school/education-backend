@@ -63,13 +63,21 @@ def answers_on_my_answers(mixer, answers):
     return mixer.cycle(5).blend("homework.Answer", question=answers[0].question, parent=answers[0])
 
 
-def test_cant_see_answers(answers, crosschecks, check_crosscheck):
+@pytest.fixture(autouse=True)
+def _another_checks(mixer, answers, check_crosscheck):
+    crosscheck = mixer.blend("homework.AnswerCrossCheck", answer=answers[0])
+    ya_crosscheck = mixer.blend("homework.AnswerCrossCheck", answer=answers[0])
+    check_crosscheck(crosscheck)
+    check_crosscheck(ya_crosscheck)
+
+
+def test_can_answers_from_authors_that_shouldnt_check_my_answer(answers, crosschecks, check_crosscheck):
     check_crosscheck(crosschecks[2])
     check_crosscheck(crosschecks[3])
 
     got = answers[0].get_limited_comments_for_user_by_crosschecks(answers[0].author)
 
-    assert len(got) == 0
+    assert len(got) == 5
 
 
 def test_can_all_answers_if_answers_are_not_hidden_by_question_flag(answers, question, crosschecks, check_crosscheck):
@@ -80,7 +88,7 @@ def test_can_all_answers_if_answers_are_not_hidden_by_question_flag(answers, que
 
     got = answers[0].get_limited_comments_for_user_by_crosschecks(answers[0].author)
 
-    assert len(got) == 6
+    assert len(got) == 8
 
 
 def test_another_user_can_see_answers(answers, users, crosschecks, check_crosscheck):
@@ -89,7 +97,7 @@ def test_another_user_can_see_answers(answers, users, crosschecks, check_crossch
 
     got = answers[0].get_limited_comments_for_user_by_crosschecks(users[1])
 
-    assert len(got) == 6
+    assert len(got) == 8
 
 
 def test_can_see_only_one_answer(answers, crosschecks, check_crosscheck):
@@ -99,7 +107,7 @@ def test_can_see_only_one_answer(answers, crosschecks, check_crosscheck):
 
     got = answers[0].get_limited_comments_for_user_by_crosschecks(answers[0].author)
 
-    assert len(got) == 1
+    assert len(got) == 6
 
 
 def test_can_see_all_answers(answers, crosschecks, check_crosscheck):
@@ -110,4 +118,4 @@ def test_can_see_all_answers(answers, crosschecks, check_crosscheck):
 
     got = answers[0].get_limited_comments_for_user_by_crosschecks(answers[0].author)
 
-    assert len(got) == 6
+    assert len(got) == 8
