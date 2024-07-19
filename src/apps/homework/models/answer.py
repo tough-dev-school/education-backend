@@ -145,9 +145,14 @@ class Answer(TestUtilsMixin, TreeNode):
         if not self.is_root or not self.is_author_of_root_answer(user) or not self.question.hide_crosschecked_answers_from_students_without_checks:
             return queryset
 
+        ids_to_limit = queryset.exclude(answercrosscheck__isnull=True).values_list("id", flat=True)
+
+        if not ids_to_limit.exists():  # no crosschecked answers, so return default queryset to avoid extra queries
+            return queryset
+
         crosscheck_count = user.answercrosscheck_set.count_for_question(self.question)
 
         if crosscheck_count["total"] > crosscheck_count["checked"]:
-            return queryset[: crosscheck_count["checked"]]
+            return queryset.exclude(id__in=ids_to_limit[: crosscheck_count["checked"]])
 
         return queryset
