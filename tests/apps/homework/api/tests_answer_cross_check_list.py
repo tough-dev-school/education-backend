@@ -17,6 +17,13 @@ def crosscheck(mixer, answer, user):
     return mixer.blend("homework.AnswerCrossCheck", answer=answer, checker=user)
 
 
+@pytest.fixture
+def question(question):
+    question.hide_crosschecked_answers_from_students_without_checks = True
+    question.save()
+    return question
+
+
 def test_question_is_required(api):
     got = api.get("/api/v2/homework/crosschecks/", expected_status_code=400)
 
@@ -25,6 +32,16 @@ def test_question_is_required(api):
 
 def test_as_anonymous(anon):
     anon.get("/api/v2/homework/crosschecks/?question=slug", expected_status_code=401)
+
+
+@pytest.mark.usefixtures("crosscheck")
+def test_when_hide_crosscheck_not_enabled(api, question):
+    question.hide_crosschecked_answers_from_students_without_checks = False
+    question.save()
+
+    got = api.get(f"/api/v2/homework/crosschecks/?question={question.slug}")
+
+    assert len(got) == 0
 
 
 def test_base_response(api, question, crosscheck):
