@@ -2,7 +2,7 @@ from typing import cast
 
 from rest_framework import serializers
 
-from apps.homework.models import Answer, AnswerImage, Question
+from apps.homework.models import Answer, AnswerCrossCheck, AnswerImage, Question
 from apps.homework.models.reaction import Reaction
 from apps.users.api.serializers import UserSafeSerializer
 from core.serializers import MarkdownField, SoftField
@@ -88,7 +88,13 @@ class AnswerTreeSerializer(AnswerDetailedSerializer):
         ]
 
     def get_descendants(self, obj: Answer) -> list[dict]:
-        queryset = obj.get_first_level_descendants().with_children_count().select_related("question", "author").prefetch_reactions()
+        queryset = (
+            obj.get_limited_comments_for_user_by_crosschecks(self.context["request"].user)
+            .with_children_count()
+            .select_related("question", "author", "parent", "parent__parent")
+            .prefetch_reactions()
+        )
+
         serializer = AnswerTreeSerializer(
             queryset,
             many=True,
@@ -131,3 +137,27 @@ class AnswerImageSerializer(serializers.ModelSerializer):
             "author",
             "image",
         ]
+
+
+class SimpleAnswerSerializer(serializers.ModelSerializer):
+    url = serializers.CharField(source="get_absolute_url")
+    author = UserSafeSerializer()
+
+    class Meta:
+        model = Answer
+        fields = ("url", "author")
+
+
+class AnswerCrossCheckSerializer(serializers.ModelSerializer):
+    answer = SimpleAnswerSerializer()
+    is_checked = serializers.SerializerMethodField()
+
+    class Meta:
+        model = AnswerCrossCheck
+        fields = (
+            "answer",
+            "is_checked",
+        )
+
+    def get_is_checked(self, obj: "AnswerCrossCheck") -> bool:
+        return obj.checked_at is not None
