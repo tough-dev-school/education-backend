@@ -71,7 +71,7 @@ jobs:
 
       - name: publish test results
         uses: phoenix-actions/test-reporting@v13
-        if: always()
+        if: ${{ !contains(github.triggering_actor, '[bot]') }}
         with:
           name: Test results
           path: "junit-*.xml"
