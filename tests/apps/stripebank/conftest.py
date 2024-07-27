@@ -43,7 +43,7 @@ def load_stipe_webhook():
 
 @pytest.fixture
 def _disable_signature_verification(mocker):
-    mocker.patch("stripe.webhook.WebhookSignature.verify_header", return_value=True)
+    mocker.patch("stripe.WebhookSignature.verify_header", return_value=True)
 
 
 @pytest.fixture

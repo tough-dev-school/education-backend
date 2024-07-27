@@ -25,7 +25,7 @@ def webhook_checkout_completed(order):
 
 @pytest.fixture(autouse=True)
 def _disable_signature_verification(mocker):
-    mocker.patch("stripe.webhook.WebhookSignature.verify_header", return_value=True)
+    mocker.patch("stripe.WebhookSignature.verify_header", return_value=True)
 
 
 def test(anon, webhook_checkout_completed, order):
