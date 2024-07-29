@@ -17,9 +17,7 @@ class TestUtilsMixin:
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-        update_fields = list(kwargs) + ["modified"] if hasattr(self, "modified") else list(kwargs)
-
-        self.save(update_fields=update_fields)
+        self.save()
 
         return self
 
