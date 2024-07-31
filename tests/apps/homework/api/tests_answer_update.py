@@ -18,8 +18,7 @@ def answer(answer, another_answer):
         parent=another_answer,
     )
 
-    answer.refresh_from_db()
-    return answer
+    return answer.refresh()
 
 
 @pytest.fixture

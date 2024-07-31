@@ -49,9 +49,7 @@ def test_valid_token(get_token, token):
 def test_token_is_marked_as_used(get_token, token):
     get_token(token=str(token.token))
 
-    token.refresh_from_db()
-
-    assert token.used is not None
+    assert token.refresh().used is not None
 
 
 @pytest.mark.parametrize(
