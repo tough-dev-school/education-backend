@@ -1,0 +1,70 @@
+{
+    "id": "evt_3O4u2GHFzM1bXe8Q0dbDCjoA",
+    "object": "event",
+    "api_version": "2023-08-16",
+    "created": 1698190161,
+    "data": {
+      "object": {
+        "id": "pi_3O4u2GHFzM1bXe8Q0Yiqnlpp",
+        "object": "payment_intent",
+        "amount": 16700,
+        "amount_capturable": 0,
+        "amount_details": {
+          "tip": {
+          }
+        },
+        "amount_received": 16700,
+        "application": null,
+        "application_fee_amount": null,
+        "automatic_payment_methods": null,
+        "canceled_at": null,
+        "cancellation_reason": null,
+        "capture_method": "automatic",
+        "client_secret": "pi_3O4u2GHFzM1bXe8Q0Yiqnlpp_secret_0cyMhg9iQpLAUa2rtrmzfeeoT",
+        "confirmation_method": "automatic",
+        "created": 1698190160,
+        "currency": "eur",
+        "customer": null,
+        "description": null,
+        "invoice": null,
+        "last_payment_error": null,
+        "latest_charge": "ch_3O4u2GHFzM1bXe8Q09TFRptk",
+        "livemode": false,
+        "metadata": {
+        },
+        "next_action": null,
+        "on_behalf_of": null,
+        "payment_method": "pm_1O4u2FHFzM1bXe8QK7jMkpNc",
+        "payment_method_configuration_details": null,
+        "payment_method_options": {
+          "card": {
+            "installments": null,
+            "mandate_options": null,
+            "network": null,
+            "request_three_d_secure": "automatic"
+          }
+        },
+        "payment_method_types": [
+          "card"
+        ],
+        "processing": null,
+        "receipt_email": null,
+        "review": null,
+        "setup_future_usage": null,
+        "shipping": null,
+        "source": null,
+        "statement_descriptor": null,
+        "statement_descriptor_suffix": null,
+        "status": "succeeded",
+        "transfer_data": null,
+        "transfer_group": null
+      }
+    },
+    "livemode": false,
+    "pending_webhooks": 1,
+    "request": {
+      "id": "req_R2ApVLqoq4wWV0",
+      "idempotency_key": "acca187b-b7de-4e9b-87be-29edcc7b22a5"
+    },
+    "type": "payment_intent.succeeded"
+  }

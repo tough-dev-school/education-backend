@@ -1,0 +1,125 @@
+{
+    "id": "evt_3O42fCHFzM1bXe8Q0YrT6iT7",
+    "object": "event",
+    "api_version": "2023-08-16",
+    "created": 1697985365,
+    "data": {
+        "object": {
+            "id": "ch_3O42fCHFzM1bXe8Q05ZonSIi",
+            "object": "charge",
+            "amount": 100,
+            "amount_captured": 100,
+            "amount_refunded": 100,
+            "application": null,
+            "application_fee": null,
+            "application_fee_amount": null,
+            "balance_transaction": "txn_3O42fCHFzM1bXe8Q02emqYG2",
+            "billing_details": {
+                "address": {
+                    "city": null,
+                    "country": "DE",
+                    "line1": null,
+                    "line2": null,
+                    "postal_code": null,
+                    "state": null
+                },
+                "email": "just-god@gmail.com",
+                "name": "GOD",
+                "phone": null
+            },
+            "calculated_statement_descriptor": "Stripe",
+            "captured": true,
+            "created": 1697984998,
+            "currency": "eur",
+            "customer": null,
+            "description": null,
+            "destination": null,
+            "dispute": null,
+            "disputed": false,
+            "failure_balance_transaction": null,
+            "failure_code": null,
+            "failure_message": null,
+            "fraud_details": {},
+            "invoice": null,
+            "livemode": false,
+            "metadata": {},
+            "on_behalf_of": null,
+            "order": null,
+            "outcome": {
+                "network_status": "approved_by_network",
+                "reason": null,
+                "risk_level": "normal",
+                "risk_score": 42,
+                "seller_message": "Payment complete.",
+                "type": "authorized"
+            },
+            "paid": true,
+            "payment_intent": "pi_3O42fCHFzM1bXe8Q0EbUXgsQ",
+            "payment_method": "pm_1O42fBHFzM1bXe8QE9OFVuN7",
+            "payment_method_details": {
+                "card": {
+                    "amount_authorized": 100,
+                    "brand": "visa",
+                    "checks": {
+                        "address_line1_check": null,
+                        "address_postal_code_check": null,
+                        "cvc_check": "pass"
+                    },
+                    "country": "US",
+                    "exp_month": 11,
+                    "exp_year": 2024,
+                    "extended_authorization": {
+                        "status": "disabled"
+                    },
+                    "fingerprint": "92qKQibMTKkDXOgx",
+                    "funding": "credit",
+                    "incremental_authorization": {
+                        "status": "unavailable"
+                    },
+                    "installments": null,
+                    "last4": "4242",
+                    "mandate": null,
+                    "multicapture": {
+                        "status": "unavailable"
+                    },
+                    "network": "visa",
+                    "network_token": {
+                        "used": false
+                    },
+                    "overcapture": {
+                        "maximum_amount_capturable": 100,
+                        "status": "unavailable"
+                    },
+                    "three_d_secure": null,
+                    "wallet": null
+                },
+                "type": "card"
+            },
+            "receipt_email": null,
+            "receipt_number": null,
+            "receipt_url": "https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xTndTVTNIRnpNMWJYZThRKNXm1KkGMgYqD_wPKhs6LBa3RG0BI-6j7x4e4OwK9JLYdV3Z1u-VscLMuZWgzD674o3UKKecXC8nPmv-",
+            "refunded": true,
+            "review": null,
+            "shipping": null,
+            "source": null,
+            "source_transfer": null,
+            "statement_descriptor": null,
+            "statement_descriptor_suffix": null,
+            "status": "succeeded",
+            "transfer_data": null,
+            "transfer_group": null
+        },
+        "previous_attributes": {
+            "amount_refunded": 0,
+            "receipt_url": "https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xTndTVTNIRnpNMWJYZThRKNTm1KkGMgYpustdMbw6LBZSrcZ2faLSAOAV0veLtqtHAydH31xkfEtTneyJdy-HtfHCaEgZ7bE_RSvz",
+            "refunded": false
+        }
+    },
+    "livemode": false,
+    "pending_webhooks": 1,
+    "request": {
+        "id": "req_2Iy4to9f9pTVer",
+        "idempotency_key": "d081bba6-d7aa-49dd-9d97-7f02d56c235e"
+    },
+    "type": "charge.refunded"
+}
