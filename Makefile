@@ -5,15 +5,15 @@ compilemessages:
 	$(manage) compilemessages
 
 fmt:
-	poetry run ruff format src tests
-	poetry run ruff check src tests --fix --unsafe-fixes
+	poetry run ruff format src
+	poetry run ruff check src --fix --unsafe-fixes
 	poetry run toml-sort pyproject.toml
 
 lint:
 	$(manage) makemigrations --check --no-input --dry-run
-	poetry run ruff format --check src tests
-	poetry run ruff check src tests
-	poetry run mypy src
+	poetry run ruff format --check src
+	poetry run ruff check src
+	cd src && poetry run mypy .
 	poetry run toml-sort pyproject.toml --check
 	poetry run pymarkdown scan README.md
 

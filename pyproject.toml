@@ -239,19 +239,28 @@ ban-relative-imports = "all"
 known-local-folder = ["apps", "core"]
 
 [tool.ruff.lint.per-file-ignores]
+"*/factory.py" = [
+    "ANN",  # flake8-annotations
+]
+"*/fixtures.py" = [
+    "ANN",  # flake8-annotations
+]
+"*/fixtures/*" = [
+    "ANN",  # flake8-annotations
+]
 "*/management/*" = [
     "ANN",  # flake8-annotations
 ]
 "*/migrations/*" = [
     "ANN",  # flake8-annotations
 ]
+"*/tests/*" = [
+    "ANN",  # flake8-annotations
+]
 "src/core/conf/*" = [
     "ANN",  # flake8-annotations
 ]
 "src/core/test/api_client.py" = [
-    "ANN",  # flake8-annotations
-]
-"tests/*" = [
     "ANN",  # flake8-annotations
 ]
 
