@@ -43,9 +43,7 @@ def test_existing_user(creator, mixer):
     user = mixer.blend(User, first_name="Фёдор", last_name="Шаляпин", email="support@m1crosoft.com")
     creator(name="Фёдор Шаляпин", email="support@m1crosoft.com")()
 
-    user.refresh_from_db()
-
-    assert get_user() == user
+    assert get_user() == user.refresh()
 
 
 def test_log_entry_is_created(creator, campaign):
