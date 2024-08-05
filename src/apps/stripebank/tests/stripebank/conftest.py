@@ -35,7 +35,7 @@ def order(course, factory):
 @pytest.fixture
 def load_stipe_webhook():
     def load_filename(webhook_filename: str):
-        with open(f"./src/apps/stripebank/tests/stripebank/.fixtures/{webhook_filename}", "r") as fp:
+        with open(f"apps/stripebank/tests/stripebank/.fixtures/{webhook_filename}", "r") as fp:
             return json.load(fp)
 
     return load_filename

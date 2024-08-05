@@ -119,7 +119,6 @@ markers = [
     "user_tags_rebuild: enable automatic user tags rebuilding where it supposed to happen in the production app (sloow)",
 ]
 python_files = "test*.py"
-pythonpath = ". src"
 
 [tool.ruff]
 line-length = 160
