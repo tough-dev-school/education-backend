@@ -41,4 +41,4 @@ class AnswerCrossCheckView(generics.ListAPIView):
     pagination_class = None
 
     def get_queryset(self) -> QuerySet[AnswerCrossCheck]:
-        return super().get_queryset().filter(checker=self.request.user, answer__question__hide_crosschecked_answers_from_students_without_checks=True)
+        return super().get_queryset().filter(checker=self.request.user)

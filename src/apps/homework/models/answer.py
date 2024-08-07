@@ -142,7 +142,7 @@ class Answer(TestUtilsMixin, TreeNode):
     def get_limited_comments_for_user_by_crosschecks(self, user: "User") -> "AnswerQuerySet":
         queryset = self.get_first_level_descendants().order_by("created")
 
-        if not self.is_root or not self.is_author_of_root_answer(user) or not self.question.hide_crosschecked_answers_from_students_without_checks:
+        if not self.is_root or not self.is_author_of_root_answer(user):
             return queryset
 
         students_should_check_my_answer = self.answercrosscheck_set.values_list("checker_id", flat=True)
