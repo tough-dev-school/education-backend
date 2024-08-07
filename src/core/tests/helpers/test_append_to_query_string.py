@@ -1,6 +1,6 @@
 import pytest
 
-from src.core.helpers import append_to_query_string
+from core.helpers import append_to_query_string
 
 
 @pytest.mark.parametrize(

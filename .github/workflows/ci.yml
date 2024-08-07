@@ -74,7 +74,7 @@ jobs:
         if: ${{ !contains(github.triggering_actor, '[bot]') }}
         with:
           name: Test results
-          path: "junit-*.xml"
+          path: "src/junit-*.xml"
           reporter: java-junit
 
       - name: upload code coverage to codeclimate

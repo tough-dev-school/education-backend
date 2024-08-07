@@ -9,7 +9,7 @@ pytestmark = [pytest.mark.django_db]
 def _credentials(settings):
     settings.DOLYAME_LOGIN = "root"
     settings.DOLYAME_PASSWORD = "l0ve"
-    settings.DOLYAME_CERTIFICATE_PATH = "tests/apps/tinkoff/.fixtures/testing.pem"
+    settings.DOLYAME_CERTIFICATE_PATH = "apps/tinkoff/tests/tinkoff/.fixtures/testing.pem"
 
 
 @pytest.fixture(autouse=True)

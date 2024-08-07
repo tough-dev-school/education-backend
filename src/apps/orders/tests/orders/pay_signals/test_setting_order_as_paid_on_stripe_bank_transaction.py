@@ -16,7 +16,7 @@ def order(factory):
 
 @pytest.fixture
 def webhook_checkout_completed(order):
-    with open("./tests/apps/stripebank/.fixtures/webhook_checkout_session_completed.json", "r") as fp:
+    with open("apps/stripebank/tests/stripebank/.fixtures/webhook_checkout_session_completed.json", "r") as fp:
         bank_data = json.load(fp)
         bank_data["data"]["object"]["client_reference_id"] = order.slug
 
