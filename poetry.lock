@@ -1191,13 +1191,13 @@ bcrypt = ["bcrypt"]
 
 [[package]]
 name = "django-anymail"
-version = "10.3"
-description = "Django email backends and webhooks for Amazon SES, Brevo (Sendinblue),     MailerSend, Mailgun, Mailjet, Mandrill, Postal, Postmark, Resend,     SendGrid, SparkPost and Unisender Go"
+version = "11.0.1"
+description = "Django email backends and webhooks for Amazon SES, Brevo,  MailerSend, Mailgun, Mailjet, Mandrill, Postal, Postmark, Resend,  SendGrid, SparkPost and Unisender Go  (EmailBackend, transactional email tracking and inbound email signals)"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "django_anymail-10.3-py3-none-any.whl", hash = "sha256:1e72f059e96930d3675d35fe4c61f82b138ae4a7fcb0337be39dcb4823f94a4f"},
-    {file = "django_anymail-10.3.tar.gz", hash = "sha256:35d8ec20b06000af3c1638492e32f416fd1a584f0a572cded03f1bc570169ed0"},
+    {file = "django_anymail-11.0.1-py3-none-any.whl", hash = "sha256:d8ebb641d304be873a5dcc3d5a6aa3ca1beb3a35a207d353cf24fd3c10ae57f2"},
+    {file = "django_anymail-11.0.1.tar.gz", hash = "sha256:eaa8a2166d173552607bb837ce3caaee827d1c68031e1245a5516e3b33baee71"},
 ]
 
 [package.dependencies]
@@ -1206,7 +1206,7 @@ requests = ">=2.4.3"
 urllib3 = ">=1.25.0"
 
 [package.extras]
-amazon-ses = ["boto3"]
+amazon-ses = ["boto3 (>=1.10.17)"]
 postal = ["cryptography"]
 resend = ["svix"]
 
@@ -3527,4 +3527,4 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "bd85dbd89a25de72647040e6d96c844ece15f8281dfe89ae9d08ccd5d1f7f108"
+content-hash = "c5e6834b406214a017660938c1e2f4a6da26463652d4d09c66605a8334e9b149"
