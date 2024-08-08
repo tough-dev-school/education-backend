@@ -2,24 +2,22 @@ import json
 
 import pytest
 
-from apps.stripebank.bank import StripeBank
+from apps.stripebank.bank import BaseStripeBank
 
 pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
 def stripe(order):
-    return StripeBank(order)
-
-
-@pytest.fixture(autouse=True)
-def _set_stripe_key(settings):
-    settings.STRIPE_API_KEY = "sk_test_100500"
+    bank = BaseStripeBank(order)
+    bank.api_key = "sk_test_100500"
+    bank.webhook_secret = "whsec_100500"
+    return bank
 
 
 @pytest.fixture(autouse=True)
 def _fix_stripe_course(mocker):
-    mocker.patch("apps.stripebank.bank.StripeBank.ue", 70)  # let it be forever :'(
+    mocker.patch("apps.stripebank.bank.BaseStripeBank.ue", 70)  # let it be forever :'(
 
 
 @pytest.fixture

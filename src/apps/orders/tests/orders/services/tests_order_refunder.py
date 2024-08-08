@@ -53,7 +53,12 @@ def mock_tinkoff_call(mocker):
 
 @pytest.fixture
 def mock_stripe_refund(mocker):
-    return mocker.patch("apps.stripebank.bank.StripeBank.refund")
+    return mocker.patch("apps.stripebank.bank.StripeBankUSD.refund")
+
+
+@pytest.fixture
+def mock_stripe_kz_refund(mocker):
+    return mocker.patch("apps.stripebank.bank.StripeBankKZT.refund")
 
 
 @pytest.fixture(autouse=True)
@@ -337,6 +342,16 @@ def test_partial_refund_stripe(paid_stripe_order, refund):
     assert paid_stripe_order.price == 499
 
 
+@pytest.mark.usefixtures("mock_stripe_kz_refund")
+def test_partial_refund_stripe_kz(paid_stripe_order, refund):
+    paid_stripe_order.update(bank_id="stripe_kz")
+
+    refund(paid_stripe_order, 500)
+
+    paid_stripe_order.refresh_from_db()
+    assert paid_stripe_order.price == 499
+
+
 @pytest.mark.usefixtures("mock_tinkoff_refund")
 def test_partial_refund_order_not_unshipped(paid_tinkoff_order, refund, spy_unshipper):
     refund(paid_tinkoff_order, 500)
@@ -467,9 +482,17 @@ def test_tinkoff_refund_payload(paid_tinkoff_order, refund, mock_tinkoff_call, m
     assert mock_tinkoff_call.call_args.kwargs["payload"]["Amount"] == 99900
 
 
-def test_stripe_refund_payload(paid_stripe_order, refund, mock_stripe_refund_create, mixer):
-    mixer.blend("stripebank.StripeNotification", order=paid_stripe_order, event_type="checkout.session.completed")
-    refund(paid_stripe_order, paid_stripe_order.price)
+@pytest.mark.parametrize(
+    ("stripe_bank", "expected_value"),
+    [
+        ("stripe", 1200),
+        ("stripe_kz", 555000),
+    ],
+)
+def test_stripe_refund_payload(paid_order, refund, mock_stripe_refund_create, mixer, stripe_bank, expected_value):
+    paid_order.update(bank_id=stripe_bank)
+    mixer.blend("stripebank.StripeNotification", order=paid_order, event_type="checkout.session.completed")
+    refund(paid_order, paid_order.price)
 
     mock_stripe_refund_create.assert_called_once()
-    assert mock_stripe_refund_create.call_args.kwargs["amount"] == 1200
+    assert mock_stripe_refund_create.call_args.kwargs["amount"] == expected_value

@@ -3,13 +3,14 @@ from typing import Type
 from apps.banking.base import Bank
 from apps.banking.exceptions import BankDoesNotExist
 from apps.banking.zero_price_bank import ZeroPriceBank
-from apps.stripebank.bank import StripeBank
+from apps.stripebank.bank import StripeBankKZT, StripeBankUSD
 from apps.tinkoff.bank import TinkoffBank
 from apps.tinkoff.dolyame import Dolyame
 
 BANKS: dict[str, Type[Bank]] = {
     "tinkoff_bank": TinkoffBank,
-    "stripe": StripeBank,
+    "stripe": StripeBankUSD,
+    "stripe_kz": StripeBankKZT,
     "dolyame": Dolyame,
     "zero_price": ZeroPriceBank,
 }

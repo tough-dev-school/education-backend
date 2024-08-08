@@ -37,7 +37,12 @@ def tinkoff_bank(mocker):
 
 @pytest.fixture(autouse=True)
 def stripe_bank(mocker):
-    return mocker.patch("apps.stripebank.bank.StripeBank.get_initial_payment_url", return_value="https://mocked.link")
+    return mocker.patch("apps.stripebank.bank.StripeBankUSD.get_initial_payment_url", return_value="https://mocked.link")
+
+
+@pytest.fixture(autouse=True)
+def stripe_kz_bank(mocker):
+    return mocker.patch("apps.stripebank.bank.StripeBankKZT.get_initial_payment_url", return_value="https://mocked.link")
 
 
 @pytest.fixture(autouse=True)
@@ -48,12 +53,14 @@ def dolyame_bank(mocker):
 @pytest.fixture(autouse=True)
 def _freeze_ue_rate(mocker):
     mocker.patch("apps.tinkoff.bank.TinkoffBank.ue", 11)
-    mocker.patch("apps.stripebank.bank.StripeBank.ue", 33)
+    mocker.patch("apps.stripebank.bank.StripeBankUSD.ue", 33)
+    mocker.patch("apps.stripebank.bank.StripeBankKZT.ue", 33)
     mocker.patch("apps.tinkoff.dolyame.Dolyame.ue", 44)
 
 
 @pytest.fixture(autouse=True)
 def _freeze_acquiring_percent(mocker):
     mocker.patch("apps.tinkoff.bank.TinkoffBank.acquiring_percent", "1.2")
-    mocker.patch("apps.stripebank.bank.StripeBank.acquiring_percent", "1.4")
+    mocker.patch("apps.stripebank.bank.StripeBankUSD.acquiring_percent", "1.4")
+    mocker.patch("apps.stripebank.bank.StripeBankKZT.acquiring_percent", "1.4")
     mocker.patch("apps.tinkoff.dolyame.Dolyame.acquiring_percent", "1.5")

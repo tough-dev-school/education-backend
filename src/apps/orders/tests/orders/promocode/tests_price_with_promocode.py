@@ -8,7 +8,12 @@ pytestmark = [
 
 @pytest.fixture(autouse=True)
 def _freeze_stripe_course(mocker):
-    mocker.patch("apps.stripebank.bank.StripeBank.ue", 70)  # let it be forever :'(
+    mocker.patch("apps.stripebank.bank.StripeBankUSD.ue", 70)  # let it be forever :'(
+
+
+@pytest.fixture(autouse=True)
+def _freeze_stripe_kz_course(mocker):
+    mocker.patch("apps.stripebank.bank.StripeBankKZT.ue", 1)
 
 
 @pytest.mark.parametrize(
@@ -35,6 +40,7 @@ def test(api, course, code):
         ("tinkoff_bank", 90450, "90 450", "RUB", "₽"),
         ("tinkoff_credit", 90450, "90 450", "RUB", "₽"),
         ("stripe", 1292, "1 292", "USD", "$"),
+        ("stripe_kz", 90450, "90 450", "KZT", "₸"),
     ],
 )
 def test_promocode_with_bank(api, course, bank, expected_price, expected_formatted_price, expected_currency, expected_currency_symbol):
