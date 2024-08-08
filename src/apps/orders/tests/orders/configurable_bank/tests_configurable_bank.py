@@ -35,7 +35,14 @@ def test_stripe_bank(call_purchase, tinkoff_bank, stripe_bank):
     stripe_bank.assert_called_once()
 
 
-@pytest.mark.parametrize("bank", ["stripe", "tinkoff_bank", "dolyame"])
+def test_stripe_kz_bank(call_purchase, tinkoff_bank, stripe_kz_bank):
+    call_purchase(desired_bank="stripe_kz")
+
+    tinkoff_bank.assert_not_called()
+    stripe_kz_bank.assert_called_once()
+
+
+@pytest.mark.parametrize("bank", ["stripe", "tinkoff_bank", "dolyame", "stripe_kz"])
 def test_desired_bank_is_saved(call_purchase, bank):
     call_purchase(desired_bank=bank)
 
@@ -49,6 +56,7 @@ def test_desired_bank_is_saved(call_purchase, bank):
     [
         ("tinkoff_bank", 11),
         ("stripe", 33),
+        ("stripe_kz", 33),
         ("dolyame", 44),
     ],
 )
@@ -65,6 +73,7 @@ def test_ue_rate_is_saved(call_purchase, bank, ue_rate):
     [
         ("tinkoff_bank", "1.2"),
         ("stripe", "1.4"),
+        ("stripe_kz", "1.4"),
         ("dolyame", "1.5"),
     ],
 )

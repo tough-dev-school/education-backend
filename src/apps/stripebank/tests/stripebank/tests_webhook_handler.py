@@ -3,12 +3,21 @@ from decimal import Decimal
 import pytest
 import stripe
 
+from apps.stripebank.bank import BaseStripeBank
 from apps.stripebank.models import StripeNotification
 from apps.stripebank.webhook_handler import StripeWebhookHandler
 
 pytestmark = [
     pytest.mark.django_db,
 ]
+
+
+@pytest.fixture
+def stripe_bank(order):
+    bank = BaseStripeBank(order)
+    bank.api_key = "sk_test_100500"
+    bank.webhook_secret = "whsec_100500"
+    return bank
 
 
 @pytest.fixture
@@ -39,8 +48,8 @@ def remove_all_safe_low_interested_event_type(mocker):
 
 
 @pytest.fixture
-def handler():
-    return lambda webhook_event: StripeWebhookHandler(webhook_event)()
+def handler(stripe_bank):
+    return lambda webhook_event: StripeWebhookHandler(webhook_event, stripe_bank)()
 
 
 def test_create_stripe_notification_on_checkout_session_completed(handler, webhook_checkout_session_completed, order, construct_event):
