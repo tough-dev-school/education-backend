@@ -1,13 +1,13 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import ClassVar
+from typing import ClassVar, Type
 
 import sentry_sdk
 import stripe
 
 from apps.orders.models import Order
-from apps.stripebank.bank import StripeBank
+from apps.stripebank.bank import BaseStripeBank
 from apps.stripebank.models import StripeNotification
 from core.services import BaseService
 
@@ -22,6 +22,7 @@ class StripeWebhookHandler(BaseService):
     """
 
     webhook_event: stripe.Event
+    bank: Type[BaseStripeBank]
 
     safe_low_interested_event_types: ClassVar[set[str]] = {
         "payment_intent.succeeded",
@@ -72,6 +73,5 @@ class StripeWebhookHandler(BaseService):
             raw=webhook_event,
         )
 
-    @staticmethod
-    def convert_amount(stripe_amount: int) -> Decimal:
-        return Decimal(Decimal(stripe_amount) / 100 * StripeBank.ue)
+    def convert_amount(self, stripe_amount: int) -> Decimal:
+        return Decimal(Decimal(stripe_amount) / 100 * self.bank.ue)
