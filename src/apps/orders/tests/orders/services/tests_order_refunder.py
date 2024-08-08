@@ -486,7 +486,7 @@ def test_tinkoff_refund_payload(paid_tinkoff_order, refund, mock_tinkoff_call, m
     ("stripe_bank", "expected_value"),
     [
         ("stripe", 1200),
-        ("stripe_kz", 99900),
+        ("stripe_kz", 555000),
     ],
 )
 def test_stripe_refund_payload(paid_order, refund, mock_stripe_refund_create, mixer, stripe_bank, expected_value):

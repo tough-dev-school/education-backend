@@ -72,7 +72,7 @@ class StripeBankUSD(BaseStripeBank):
 
 
 class StripeBankKZT(BaseStripeBank):
-    ue = 1
+    ue = 0.18
     currency = "KZT"
     currency_symbol = "₸"
     name = _("Stripe KZT")
