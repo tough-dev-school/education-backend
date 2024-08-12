@@ -2,7 +2,7 @@ import pytest
 
 from apps.banking.selector import get_bank_or_default
 from apps.banking.zero_price_bank import ZeroPriceBank
-from apps.stripebank.bank import StripeBank
+from apps.stripebank.bank import StripeBankKZT, StripeBankUSD
 from apps.tinkoff.bank import TinkoffBank
 
 
@@ -10,7 +10,8 @@ from apps.tinkoff.bank import TinkoffBank
     ("desired", "result"),
     [
         ("tinkoff_bank", TinkoffBank),
-        ("stripe", StripeBank),
+        ("stripe", StripeBankUSD),
+        ("stripe_kz", StripeBankKZT),
         ("zero_price", ZeroPriceBank),
         ("ev1l", TinkoffBank),
         ("", TinkoffBank),

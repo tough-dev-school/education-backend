@@ -3,12 +3,21 @@ from decimal import Decimal
 import pytest
 import stripe
 
+from apps.stripebank.bank import BaseStripeBank
 from apps.stripebank.models import StripeNotification
 from apps.stripebank.webhook_handler import StripeWebhookHandler
 
 pytestmark = [
     pytest.mark.django_db,
 ]
+
+
+@pytest.fixture
+def stripe_bank(order):
+    bank = BaseStripeBank(order)
+    bank.api_key = "sk_test_100500"
+    bank.webhook_secret = "whsec_100500"
+    return bank
 
 
 @pytest.fixture
@@ -39,8 +48,8 @@ def remove_all_safe_low_interested_event_type(mocker):
 
 
 @pytest.fixture
-def handler():
-    return lambda webhook_event: StripeWebhookHandler(webhook_event)()
+def handler(stripe_bank):
+    return lambda webhook_event: StripeWebhookHandler(webhook_event, stripe_bank)()
 
 
 def test_create_stripe_notification_on_checkout_session_completed(handler, webhook_checkout_session_completed, order, construct_event):
@@ -102,3 +111,12 @@ def test_create_notification_and_alert_fow_unknown_events(handler, webhook_payme
     assert last_notification.payment_intent == ""
     assert last_notification.stripe_id == "pi_3O4u2GHFzM1bXe8Q0Yiqnlpp"
     assert last_notification.raw == webhook_payment_intent_succeeded
+
+
+def test_does_not_create_notification_if_currency_does_not_match(handler, webhook_checkout_session_completed, construct_event):
+    event_checkout_session_completed = construct_event(webhook_checkout_session_completed)
+    event_checkout_session_completed.data.object["currency"] = "eur"
+
+    handler(event_checkout_session_completed)
+
+    assert not StripeNotification.objects.exists()

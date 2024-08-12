@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 class Bank(metaclass=ABCMeta):
     currency = "RUB"
     currency_symbol = "₽"
-    ue: int = 1  # ue stands for «условные единицы», this is some humour from 2000's
+    ue: Decimal = Decimal(1)  # ue stands for «условные единицы», this is some humour from 2000's
     acquiring_percent: Decimal = Decimal(0)  # we use it for analytics
     name: "StrPromise" = _("—")
 

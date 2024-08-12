@@ -9,19 +9,19 @@ from apps.banking.base import Bank
 from apps.stripebank.models import StripeNotification
 
 
-class StripeBank(Bank):
-    ue = 80  # ue stands for «условные единицы», this is some humour from 2000's
+class BaseStripeBank(Bank):
     currency = "USD"
-    currency_symbol = "$"
     acquiring_percent = Decimal(4)
     name = _("Stripe")
+    api_key: str = ""
+    webhook_secret: str = ""
 
     @property
     def is_partial_refund_available(self) -> bool:
         return True
 
     def get_initial_payment_url(self) -> str:
-        stripe.api_key = settings.STRIPE_API_KEY
+        stripe.api_key = self.api_key
 
         session = stripe.checkout.Session.create(
             line_items=self.get_items(),
@@ -35,7 +35,7 @@ class StripeBank(Bank):
         return session.url
 
     def refund(self, amount: Decimal | None = None) -> None:
-        stripe.api_key = settings.STRIPE_API_KEY
+        stripe.api_key = self.api_key
 
         latest_payment_notification = (
             StripeNotification.objects.filter(
@@ -60,3 +60,21 @@ class StripeBank(Bank):
                 "quantity": 1,
             },
         ]
+
+
+class StripeBankUSD(BaseStripeBank):
+    ue = Decimal(80)
+    currency = "USD"
+    currency_symbol = "$"
+    name = _("Stripe USD")
+    api_key = settings.STRIPE_USD_API_KEY
+    webhook_secret = settings.STRIPE_USD_WEBHOOK_SECRET
+
+
+class StripeBankKZT(BaseStripeBank):
+    ue = Decimal("0.18")
+    currency = "KZT"
+    currency_symbol = "₸"
+    name = _("Stripe KZT")
+    api_key = settings.STRIPE_KZT_API_KEY
+    webhook_secret = settings.STRIPE_KZT_WEBHOOK_SECRET

@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 import pytest
 
 pytestmark = [
@@ -8,7 +10,12 @@ pytestmark = [
 
 @pytest.fixture(autouse=True)
 def _freeze_stripe_course(mocker):
-    mocker.patch("apps.stripebank.bank.StripeBank.ue", 70)  # let it be forever :'(
+    mocker.patch("apps.stripebank.bank.StripeBankUSD.ue", Decimal(70))  # let it be forever :'(
+
+
+@pytest.fixture(autouse=True)
+def _freeze_stripe_kz_course(mocker):
+    mocker.patch("apps.stripebank.bank.StripeBankKZT.ue", Decimal("0.18"))
 
 
 @pytest.mark.parametrize(
@@ -35,6 +42,7 @@ def test(api, course, code):
         ("tinkoff_bank", 90450, "90 450", "RUB", "₽"),
         ("tinkoff_credit", 90450, "90 450", "RUB", "₽"),
         ("stripe", 1292, "1 292", "USD", "$"),
+        ("stripe_kz", 502500, "502 500", "KZT", "₸"),
     ],
 )
 def test_promocode_with_bank(api, course, bank, expected_price, expected_formatted_price, expected_currency, expected_currency_symbol):
