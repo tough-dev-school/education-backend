@@ -30,7 +30,7 @@
             "calculated_statement_descriptor": "Stripe",
             "captured": true,
             "created": 1697984998,
-            "currency": "eur",
+            "currency": "usd",
             "customer": null,
             "description": null,
             "destination": null,

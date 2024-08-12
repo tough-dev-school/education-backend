@@ -111,3 +111,12 @@ def test_create_notification_and_alert_fow_unknown_events(handler, webhook_payme
     assert last_notification.payment_intent == ""
     assert last_notification.stripe_id == "pi_3O4u2GHFzM1bXe8Q0Yiqnlpp"
     assert last_notification.raw == webhook_payment_intent_succeeded
+
+
+def test_does_not_create_notification_if_currency_does_not_match(handler, webhook_checkout_session_completed, construct_event):
+    event_checkout_session_completed = construct_event(webhook_checkout_session_completed)
+    event_checkout_session_completed.data.object["currency"] = "eur"
+
+    handler(event_checkout_session_completed)
+
+    assert not StripeNotification.objects.exists()

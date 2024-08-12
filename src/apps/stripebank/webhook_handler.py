@@ -36,6 +36,9 @@ class StripeWebhookHandler(BaseService):
         }
 
     def act(self) -> None:
+        if self.webhook_event.data.object["currency"] != self.bank.currency.lower():
+            return
+
         handler = self.handlers.get(self.webhook_event.type, self.default_handler)
         handler(self.webhook_event)
 
