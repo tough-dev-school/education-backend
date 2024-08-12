@@ -74,4 +74,4 @@ class StripeWebhookHandler(BaseService):
         )
 
     def convert_amount(self, stripe_amount: int) -> Decimal:
-        return Decimal(stripe_amount / 100 * self.bank.ue)
+        return Decimal(stripe_amount) / 100 * self.bank.ue
