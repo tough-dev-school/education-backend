@@ -32,7 +32,47 @@
 		    	<param name="Формат занятий">online</param>
 		    	<param name="Требуемая квалификация">Middle</param>
 		    	<param name="Получаемая квалификация">Lead</param>
-		    	<param name="Выдаётся сертификат">Нет</param>
+		    	<param name="Выдаётся сертификат">Да</param>
+		    	<param name="Помощь с трудоустройством">Нет</param>
+	    	</offer>
+	    	<offer id="teamlead20-2" available="true">
+			    <name>Стать Тимлидом</name>
+          <url>https://tough-dev.school/teamlead/?utm_source=habr-career</url>
+			    <price>24000</price>
+			    <oldprice>26000</oldprice>
+			    <currencyId>RUB</currencyId>
+			    <param name="Дата начала">2024-09-18</param>
+		    	<duration unit="week">5</duration>
+          <specialization>Тимлид</specialization>
+          <description><![CDATA[
+          <p>Курс о том, как быть (или стать) хорошим тимлидом. Полезен для опытных программистов и тех, кто недавно попал в руководство.</p>
+          <h3>Чему научитесь</h3>
+          <ul>
+            <li>Определять, чего от вас ждут коллеги и бизнес
+            <li>Выстраивать отношения и договариваться</li>
+            <li>Наводить порядок в команде</li>
+            <li>Нанимать людей</li>
+            <li>Успевать всё это, работая не по 10 часов в день</li>
+          </ul>
+          <h3>Кто сделал</h3>
+          <p>Этот курс сделали продакт Марьяна Онысько и CTO Фёдор Борщёв. Каждый принёс знания из собственного мира, и поучившись у обоих вы легко сможете стать посредником между бизнесом и разработкой у себя на работе. Обычно, вместе с ответственностью, это даёт больше свободы и денег.</p>
+          ]]></description>
+          <skills>
+            <skill id="1">Управление проектами</skill>
+            <skill id="2">Управление людьми</skill>
+            <skill id="3">Ведение переговоров</skill>
+            <skill id="4">Подбор специалистов</skill>
+            <skill id="5">Управление разработкой</skill>
+            <skill id="6">Работа в команде</skill>
+            <skill id="7">Планирование</skill>
+            <skill id="8">Управление продуктами</skill>
+            <skill id="9">Решение проблем</skill>
+          </skills>
+		    	<param name="Оплата в рассрочку" unit="неделя">6</param>
+		    	<param name="Формат занятий">online</param>
+		    	<param name="Требуемая квалификация">Junior</param>
+		    	<param name="Получаемая квалификация">Lead</param>
+		    	<param name="Выдаётся сертификат">Да</param>
 		    	<param name="Помощь с трудоустройством">Нет</param>
 	    	</offer>
     	</offers>
