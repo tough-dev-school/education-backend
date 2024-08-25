@@ -28,7 +28,7 @@
             <skill id="8">Системная аналитика</skill>
             <skill id="9">Архитектура предприятия</skill>
           </skills>
-		    	<param name="Оплата в рассрочку" unit="неделя">6</param>
+		    	<param name="Оплата в рассрочку" unit="месяц">2</param>
 		    	<param name="Формат занятий">online</param>
 		    	<param name="Требуемая квалификация">Middle</param>
 		    	<param name="Получаемая квалификация">Lead</param>
@@ -68,7 +68,7 @@
             <skill id="8">Управление продуктами</skill>
             <skill id="9">Решение проблем</skill>
           </skills>
-		    	<param name="Оплата в рассрочку" unit="неделя">6</param>
+		    	<param name="Оплата в рассрочку" unit="месяц">2</param>
 		    	<param name="Формат занятий">online</param>
 		    	<param name="Требуемая квалификация">Junior</param>
 		    	<param name="Получаемая квалификация">Lead</param>
