@@ -1,13 +1,21 @@
-from functools import lru_cache
 from typing import Mapping
+
+from django.core.cache import cache
 
 from apps.notion.models import NotionAsset
 from apps.notion.types import BlockData as NotionBlockData
 
 
-@lru_cache
 def get_asset_mapping() -> Mapping[str, str]:
-    return {asset.url: asset.get_absolute_url() for asset in NotionAsset.objects.all().iterator()}
+    cached = cache.get("notion-asset-mapping")
+    if cached is not None:
+        return cached
+
+    mapping = {asset.url: asset.get_absolute_url() for asset in NotionAsset.objects.all().iterator()}
+
+    cache.set(key="notion-asset-mapping", value=mapping, timeout=60)
+
+    return mapping
 
 
 def rewrite_fetched_assets(block_data: NotionBlockData) -> NotionBlockData:
