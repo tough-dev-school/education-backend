@@ -40,7 +40,7 @@ MaterialManager = models.Manager.from_queryset(MaterialQuerySet)
 class Material(TimestampedModel):
     objects = MaterialManager()
 
-    slug = models.UUIDField(default=uuid.uuid4, db_index=True, unique=True)
+    slug = models.UUIDField(_("Our page id"), default=uuid.uuid4, db_index=True, unique=True)
 
     title = models.CharField(_("Page title"), max_length=128, blank=True, help_text=_("Will be fetched automatically if empty"))
     course = models.ForeignKey("products.Course", on_delete=models.CASCADE)
@@ -64,3 +64,6 @@ class Material(TimestampedModel):
     def get_absolute_url(self) -> str:
         slug = uuid_to_id(str(self.slug))
         return urljoin(settings.FRONTEND_URL, f"materials/{slug}/")
+
+    def get_notion_url(self) -> str:
+        return f"https://notion.so/1-{self.page_id}"
