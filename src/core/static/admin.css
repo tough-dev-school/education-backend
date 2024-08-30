@@ -8,3 +8,13 @@
 .app-number-input {
   -moz-appearance: textfield;
 }
+
+.notion-logo {
+  max-width: 16px;
+  position: relative;
+  top: -2px;
+}
+
+.notion-lms-logo {
+  max-width: 16px;
+}

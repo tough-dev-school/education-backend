@@ -64,3 +64,6 @@ class Material(TimestampedModel):
     def get_absolute_url(self) -> str:
         slug = uuid_to_id(str(self.slug))
         return urljoin(settings.FRONTEND_URL, f"materials/{slug}/")
+
+    def get_notion_url(self) -> str:
+        return f"https://notion.so/1-{self.page_id}"
