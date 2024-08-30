@@ -43,7 +43,7 @@
 			    <currencyId>RUB</currencyId>
 			    <param name="Дата начала">2024-09-18</param>
 		    	<duration unit="week">5</duration>
-          <specialization>Тимлид</specialization>
+          <specialization>Технический директор</specialization>
           <description><![CDATA[
           <p>Курс о том, как быть (или стать) хорошим тимлидом. Полезен для опытных программистов и тех, кто недавно попал в руководство.</p>
           <h3>Чему научитесь</h3>
