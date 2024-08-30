@@ -5,7 +5,10 @@ import pytest
 from apps.notion.rewrite import rewrite_notion_so_assets
 from apps.notion.types import BlockValue
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [
+    pytest.mark.django_db,
+    pytest.mark.single_thread,
+]
 
 
 def rewrite(block) -> BlockValue:

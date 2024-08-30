@@ -1,13 +1,20 @@
-from functools import lru_cache
+from django.core.cache import cache
 
 from apps.notion.assets import get_asset_url
 from apps.notion.models import NotionAsset
 from apps.notion.types import BlockData as NotionBlockData
 
 
-@lru_cache
 def get_already_fetched_assets() -> list[str]:
-    return NotionAsset.objects.all().values_list("url", flat=True)  # type: ignore
+    cached = cache.get("notion-fetched-assets")
+    if cached is not None:
+        return cached
+
+    assets = NotionAsset.objects.all().values_list("url", flat=True)
+
+    cache.set(key="notion-fetched-assets", value=assets, timeout=60)
+
+    return assets  # type: ignore
 
 
 def rewrite_notion_so_assets(block_data: NotionBlockData) -> NotionBlockData:

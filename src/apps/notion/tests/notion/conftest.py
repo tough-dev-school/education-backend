@@ -3,7 +3,6 @@ import pytest
 from apps.notion.block import NotionBlock, NotionBlockList
 from apps.notion.client import NotionClient
 from apps.notion.page import NotionPage
-from apps.notion.rewrite import fetched_assets, notion_so_assets
 
 pytestmark = [
     pytest.mark.django_db,
@@ -18,17 +17,6 @@ def _cdn_dev_storage(settings):
         },
     }
     settings.AWS_S3_CUSTOM_DOMAIN = "cdn.tough-dev.school"
-
-
-@pytest.fixture(autouse=True)
-def _isolate_mapping_cache():
-    """Asset links mappings are LRU-cached, so we need to reset it before year test run"""
-    notion_so_assets.get_already_fetched_assets.cache_clear()
-    fetched_assets.get_asset_mapping.cache_clear()
-
-    yield
-    notion_so_assets.get_already_fetched_assets.cache_clear()
-    fetched_assets.get_asset_mapping.cache_clear()
 
 
 @pytest.fixture
