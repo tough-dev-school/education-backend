@@ -38,8 +38,7 @@
 	    	<offer id="teamlead20-2" available="true">
 			    <name>Стать Тимлидом</name>
           <url>https://tough-dev.school/teamlead/?utm_source=habr-career</url>
-			    <price>24000</price>
-			    <oldprice>26000</oldprice>
+			    <price>26000</price>
 			    <currencyId>RUB</currencyId>
 			    <param name="Дата начала">2024-09-18</param>
 		    	<duration unit="week">5</duration>
