@@ -7,6 +7,7 @@ from apps.notion.models import NotionAsset
 
 pytestmark = [
     pytest.mark.django_db,
+    pytest.mark.single_thread,
     pytest.mark.usefixtures(
         "mock_notion_response",
         "_cdn_dev_storage",
