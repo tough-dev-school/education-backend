@@ -47,8 +47,8 @@ if not keys["private"]:
 
 
 JWT_AUTH = {
-    "JWT_EXPIRATION_DELTA": timedelta(days=14),
-    "JWT_REFRESH_EXPIRATION_DELTA": timedelta(days=21),
+    "JWT_EXPIRATION_DELTA": timedelta(days=3650),
+    "JWT_REFRESH_EXPIRATION_DELTA": timedelta(days=3650),
     "JWT_ALLOW_REFRESH": True,
     "JWT_ISSUER": "education-backend",
     "JWT_ALGORITHM": "RS256",
