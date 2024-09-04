@@ -9,7 +9,7 @@ from httpx import HTTPError
 from apps.notion import helpers
 from apps.notion.client import NotionClient
 from apps.notion.exceptions import NotionError
-from apps.notion.models import Material, MaterialFile
+from apps.notion.models import Material
 from core.admin import ModelAdmin, admin
 
 
@@ -87,7 +87,3 @@ class NotionMaterialAdmin(ModelAdmin):
         return f"""<a target="_blank" href="{ notion_url }">
             <img class="notion-logo" src="/static/logo/notion.svg" />
             {obj.page_id}</a>"""
-
-
-@admin.register(MaterialFile)
-class MaterialFileAdmin(ModelAdmin): ...
