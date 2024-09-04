@@ -1,6 +1,6 @@
 from threading import current_thread, local
 
-from rest_framework.request import Request
+from core.types import Request
 
 _thread_locals = local()
 

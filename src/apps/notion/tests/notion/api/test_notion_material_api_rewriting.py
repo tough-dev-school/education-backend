@@ -3,7 +3,7 @@ from datetime import timedelta
 import pytest
 from django.utils import timezone
 
-from apps.notion.models import NotionAsset
+from apps.notion.models import NotionAsset, Video
 
 pytestmark = [
     pytest.mark.django_db,
@@ -48,6 +48,14 @@ def get_cached_material(api, disable_notion_cache, raw_notion_cache_entry, mock_
         return got
 
     return _get_cached_material
+
+
+@pytest.fixture
+def _rutube_video():
+    Video.objects.create(
+        youtube_id="dVo80vW4ekw",  # check 'page' fixture in notion/conftest
+        rutube_id="c30a209fe2e31c0d1513b746e168b1a3",
+    )
 
 
 def test_page_block_goes_first_during_upstream_api_call(api, material):
@@ -105,3 +113,36 @@ def test_fetched_asset_paths_are_rewritten_for_cached_material(get_cached_materi
     got = get_cached_material(material.page_id)
 
     assert got["block-3"]["value"]["format"]["page_cover"] == "https://cdn.tough-dev.school/assets/typicalmacuser-downloaded.jpg"
+
+
+def test_video_is_not_rewrited_by_default(api, material):
+    got = api.get(f"/api/v2/notion/materials/{material.page_id}/")
+
+    assert "youtube" in got["block-video"]["value"]["format"]["display_source"]
+
+
+@pytest.mark.usefixtures("_rutube_video")
+def test_video_is_not_rewritten_for_unknown_country(api, material):
+    got = api.get(f"/api/v2/notion/materials/{material.page_id}/")
+
+    assert "youtube" in got["block-video"]["value"]["format"]["display_source"]
+
+
+@pytest.mark.usefixtures("_rutube_video")
+@pytest.mark.parametrize(
+    "country, should_rewrite",
+    [
+        ("XX", False),
+        ("RU", True),
+        ("LV", False),
+    ],
+)
+def test_video_is_not_rewritten_for_russia(api, material, country, should_rewrite):
+    got = api.get(
+        f"/api/v2/notion/materials/{material.page_id}/",
+        headers={
+            "cf-ipcountry": country,
+        },
+    )
+
+    assert ("rutube" in got["block-video"]["value"]["format"]["display_source"]) is should_rewrite
