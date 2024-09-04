@@ -18,3 +18,13 @@
 .notion-lms-logo {
   max-width: 16px;
 }
+
+.notion-youtube-logo {
+  max-width: 16px;
+}
+
+.notion-rutube-logo {
+  max-width: 16px;
+  position: relative;
+  top: -3px;
+}

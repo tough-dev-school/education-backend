@@ -6,8 +6,8 @@ from core.models import TimestampedModel, models
 class Video(TimestampedModel):
     """Video mapping for multiple videohostings"""
 
-    youtube_id = models.CharField(max_length=32, unique=True, db_index=True)
-    rutube_id = models.CharField(max_length=32, blank=True, null=True, db_index=True)
+    youtube_id = models.CharField(max_length=256, unique=True, db_index=True, help_text=_("Paste it from the address bar"))
+    rutube_id = models.CharField(max_length=256, blank=True, null=True, db_index=True, help_text=_("Paste it from the address bar"))
 
     class Meta:
         verbose_name = _("Notion video")
@@ -20,7 +20,7 @@ class Video(TimestampedModel):
         return f"https://www.youtube.com/embed/{ self.youtube_id }?rel=0"
 
     def get_youtube_url(self) -> str:
-        return "https://youtu.be/{ self.youtube_id }"
+        return f"https://youtu.be/{ self.youtube_id }"
 
     def get_rutube_embed_src(self) -> str:
         return f"https://rutube.ru/play/embed/{self.rutube_id }/"
