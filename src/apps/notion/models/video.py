@@ -19,5 +19,11 @@ class Video(TimestampedModel):
     def get_youtube_embed_src(self) -> str:
         return f"https://www.youtube.com/embed/{ self.youtube_id }?rel=0"
 
+    def get_youtube_url(self) -> str:
+        return "https://youtu.be/{ self.youtube_id }"
+
     def get_rutube_embed_src(self) -> str:
         return f"https://rutube.ru/play/embed/{self.rutube_id }/"
+
+    def get_rutube_url(self) -> str:
+        return f"https://rutube.ru/video/{ self.rutube_id }/"

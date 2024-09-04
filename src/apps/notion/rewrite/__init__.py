@@ -2,6 +2,7 @@ from apps.notion.rewrite.fetched_assets import rewrite_fetched_assets
 from apps.notion.rewrite.links import rewrite_links
 from apps.notion.rewrite.notion_so_assets import rewrite_notion_so_assets
 from apps.notion.rewrite.tags import drop_extra_tags
+from apps.notion.rewrite.video import rewrite_video
 from apps.notion.types import BlockData
 
 
@@ -18,4 +19,5 @@ __all__ = [
     "rewrite_fetched_assets",
     "rewrite_links",
     "rewrite_notion_so_assets",
+    "rewrite_video",
 ]
