@@ -3,7 +3,7 @@ from datetime import timedelta
 import pytest
 from django.utils import timezone
 
-from apps.notion.models import NotionAsset
+from apps.notion.models import NotionAsset, Video
 
 pytestmark = [
     pytest.mark.django_db,
@@ -11,13 +11,19 @@ pytestmark = [
     pytest.mark.usefixtures(
         "mock_notion_response",
         "_cdn_dev_storage",
+        "disable_notion_cache",
     ),
 ]
 
 
-@pytest.fixture(autouse=True)
-def disable_notion_cache(mocker):
-    return mocker.patch("apps.notion.cache.should_bypass_cache", return_value=True)
+@pytest.fixture
+def fetched_asset() -> NotionAsset:
+    return NotionAsset.objects.create(
+        url="secure.notion-static.com/typicalmacuser.jpg",
+        file="assets/typicalmacuser-downloaded.jpg",
+        size=100,
+        md5_sum="D34DBEEF",
+    )
 
 
 @pytest.fixture
@@ -45,34 +51,11 @@ def get_cached_material(api, disable_notion_cache, raw_notion_cache_entry, mock_
 
 
 @pytest.fixture
-def fetched_asset() -> NotionAsset:
-    return NotionAsset.objects.create(
-        url="secure.notion-static.com/typicalmacuser.jpg",
-        file="assets/typicalmacuser-downloaded.jpg",
-        size=100,
-        md5_sum="D34DBEEF",
+def _rutube_video():
+    Video.objects.create(
+        youtube_id="dVo80vW4ekw",  # check 'page' fixture in notion/conftest
+        rutube_id="c30a209fe2e31c0d1513b746e168b1a3",
     )
-
-
-@pytest.mark.parametrize("material_id", ["0e5693d2-173a-4f77-ae81-06813b6e5329", "0e5693d2173a4f77ae8106813b6e5329"])
-def test_both_formats_work_with_id(api, material_id, mock_notion_response):
-    api.get(f"/api/v2/notion/materials/{material_id}/")
-
-    mock_notion_response.assert_called_once_with("0e5693d2173a4f77ae8106813b6e5329")
-
-
-@pytest.mark.parametrize("material_slug", ["4d5726e8-ee52-4448-b8f9-7be4c7f8e632", "4d5726e8ee524448b8f97be4c7f8e632"])
-def test_both_formats_work_with_slug(api, material_slug, mock_notion_response):
-    api.get(f"/api/v2/notion/materials/{material_slug}/")
-
-    mock_notion_response.assert_called_once_with("0e5693d2173a4f77ae8106813b6e5329")  # original material id
-
-
-def test_content_is_passed_from_notion_client(api, material):
-    got = api.get(f"/api/v2/notion/materials/{material.page_id}/")
-
-    assert got["block-1"]["value"]["parent_id"] == "100500"
-    assert got["block-2"]["value"]["parent_id"] == "100600"
 
 
 def test_page_block_goes_first_during_upstream_api_call(api, material):
@@ -132,15 +115,47 @@ def test_fetched_asset_paths_are_rewritten_for_cached_material(get_cached_materi
     assert got["block-3"]["value"]["format"]["page_cover"] == "https://cdn.tough-dev.school/assets/typicalmacuser-downloaded.jpg"
 
 
-def test_404_for_non_existant_materials(api, mock_notion_response):
-    api.get("/api/v2/notion/materials/nonexistant/", expected_status_code=404)
+def test_video_is_not_rewrited_by_default(api, material):
+    got = api.get(f"/api/v2/notion/materials/{material.page_id}/")
 
-    mock_notion_response.assert_not_called()
+    assert "youtube" in got["block-video"]["value"]["format"]["display_source"]
 
 
-def test_404_for_inactive_materials(api, mock_notion_response, material):
-    material.update(active=False)
+@pytest.mark.usefixtures("_rutube_video")
+def test_video_is_not_rewritten_for_unknown_country(api, material):
+    got = api.get(f"/api/v2/notion/materials/{material.page_id}/")
 
-    api.get(f"/api/v2/notion/materials/{material.page_id}/", expected_status_code=404)
+    assert "youtube" in got["block-video"]["value"]["format"]["display_source"]
 
-    mock_notion_response.assert_not_called()
+
+@pytest.mark.usefixtures("_rutube_video")
+@pytest.mark.parametrize(
+    "country, should_rewrite",
+    [
+        ("XX", False),
+        ("RU", True),
+        ("LV", False),
+    ],
+)
+def test_video_is_not_rewritten_for_russia(api, material, country, should_rewrite):
+    got = api.get(
+        f"/api/v2/notion/materials/{material.page_id}/",
+        headers={
+            "cf-ipcountry": country,
+            "frkn": "1",
+        },
+    )
+
+    assert ("rutube" in got["block-video"]["value"]["format"]["display_source"]) is should_rewrite
+
+
+@pytest.mark.usefixtures("_rutube_video")
+def test_rewrite_is_not_made_without_frkn_header(api, material):
+    """Remove this test after frontend update"""
+    got = api.get(
+        f"/api/v2/notion/materials/{material.page_id}/",
+        headers={
+            "cf-ipcountry": "RU",
+        },
+    )
+    assert "rutube" not in got["block-video"]["value"]["format"]["display_source"]

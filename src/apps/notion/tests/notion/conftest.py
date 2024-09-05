@@ -49,6 +49,7 @@ def fetch_page(mocker):
 
 @pytest.fixture
 def page() -> NotionPage:
+    """Uber page for all block manipulation testing"""
     return NotionPage(
         blocks=NotionBlockList(
             [
@@ -76,6 +77,20 @@ def page() -> NotionPage:
                                 "page_cover": "secure.notion-static.com/typicalmacuser.jpg",
                             },
                             "parent_table": "test-parent-table",
+                        }
+                    },
+                ),
+                NotionBlock(
+                    id="block-video",
+                    data={
+                        "value": {
+                            "type": "video",
+                            "format": {
+                                "link_provider": "YouTube",
+                                "display_source": "https://www.youtube.com/embed/dVo80vW4ekw?rel=0",
+                            },
+                            "properties": {"source": [["https://youtu.be/dVo80vW4ekw"]]},
+                            "parent_table": "block",
                         }
                     },
                 ),

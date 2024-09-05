@@ -41,6 +41,8 @@ class BlockFormat(TypedDict, total=False):
     page_icon: str
     page_cover: str
     page_cover_position: str
+    display_source: str
+    link_provider: str
 
 
 class BlockValue(TypedDict, total=False):

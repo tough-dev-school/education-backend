@@ -7,6 +7,11 @@ pytestmark = [
 ]
 
 
+@pytest.fixture
+def disable_notion_cache(mocker):
+    return mocker.patch("apps.notion.cache.should_bypass_cache", return_value=True)
+
+
 @pytest.fixture(autouse=True)
 def set_current_user(_set_current_user):
     return _set_current_user

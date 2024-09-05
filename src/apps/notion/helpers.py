@@ -1,5 +1,5 @@
 from os.path import basename
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 
 from apps.notion.types import BlockId
 
@@ -24,3 +24,31 @@ def id_to_uuid(id: BlockId) -> BlockId:
 
 def uuid_to_id(uuid: BlockId) -> BlockId:
     return uuid.replace("-", "")
+
+
+def get_youtube_video_id(url: str) -> str | None:
+    parsed = urlparse(url)
+    if parsed.netloc == "":  # assume non-urls are direct youtube ids
+        return url
+
+    if parsed.netloc not in ["youtu.be", "www.youtube.com"]:
+        return None
+
+    if parsed.query is not None:
+        query_string = parse_qs(parsed.query)
+        if "v" in query_string:
+            return query_string["v"][0]
+
+    return parsed.path.replace("/", "")
+
+
+def get_rutube_video_id(url: str) -> str | None:
+    parsed = urlparse(url)
+
+    if parsed.netloc == "":  # assume non-urls are direct rutube ids
+        return url
+
+    if "rutube" not in parsed.netloc:
+        return None
+
+    return parsed.path.split("/")[-2]
