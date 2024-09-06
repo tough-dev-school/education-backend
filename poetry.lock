@@ -1503,13 +1503,13 @@ test = ["mock", "pytest (>=3.0)", "pytest-cov", "pytest-django", "pytest-runner"
 
 [[package]]
 name = "drf-recaptcha"
-version = "3.1.0"
+version = "3.2.0"
 description = "Django rest framework recaptcha field serializer."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "drf_recaptcha-3.1.0-py3-none-any.whl", hash = "sha256:ea4aa82118522eb9b0069f663da7b21861207f287d948ff19e91645fe6bd2ce7"},
-    {file = "drf_recaptcha-3.1.0.tar.gz", hash = "sha256:c5b1896baa9627003a787913aea101ee465adb3a37a81a382976ec7b7fbfa937"},
+    {file = "drf_recaptcha-3.2.0-py3-none-any.whl", hash = "sha256:30e9d1612ef447d61a7465850b63512c7032abf0decfb7680f9acdb3753315a1"},
+    {file = "drf_recaptcha-3.2.0.tar.gz", hash = "sha256:856eeba20a48d05188a0882382a1c65d9f8c1e40305d8a2ac62760380041a049"},
 ]
 
 [package.dependencies]
