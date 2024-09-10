@@ -160,8 +160,8 @@ class NewAnswerNotifier(BaseService):
         ]
 
     def get_users_to_notify(self) -> QuerySet[User]:
-        """Get all users that have ever written an answer to the root of the disqussion"""
-        authors = self.answer.get_root_answer().descendants(include_self=True).values_list("author", flat=True)
+        """Get authors of ancestor answers, excluding current answer author"""
+        authors = self.answer.ancestors().values_list("author", flat=True)
 
         authors = list(authors)  # have to execute this query cuz django-tree-queries fails to compile it
 
