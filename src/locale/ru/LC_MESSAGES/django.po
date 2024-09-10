@@ -350,6 +350,10 @@ msgstr "Youtube"
 msgid "RuTube"
 msgstr "Rutube"
 
+#: apps/notion/admin/video.py:37
+msgid "This video is already in the database"
+msgstr "Это видео уже добавлено"
+
 #: apps/notion/models/asset.py:11
 msgid "Image size in bytes"
 msgstr ""

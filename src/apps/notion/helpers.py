@@ -28,8 +28,6 @@ def uuid_to_id(uuid: BlockId) -> BlockId:
 
 def get_youtube_video_id(url: str) -> str | None:
     parsed = urlparse(url)
-    if parsed.netloc == "":  # assume non-urls are direct youtube ids
-        return url
 
     if parsed.netloc not in ["youtu.be", "www.youtube.com"]:
         return None
@@ -45,10 +43,16 @@ def get_youtube_video_id(url: str) -> str | None:
 def get_rutube_video_id(url: str) -> str | None:
     parsed = urlparse(url)
 
-    if parsed.netloc == "":  # assume non-urls are direct rutube ids
-        return url
-
     if "rutube" not in parsed.netloc:
         return None
 
     return parsed.path.split("/")[-2]
+
+
+def get_rutube_access_key(url: str) -> str | None:
+    parsed = urlparse(url)
+
+    if "rutube" not in parsed.netloc or not parsed.query:
+        return None
+
+    return parsed.query.split("=")[-1]
