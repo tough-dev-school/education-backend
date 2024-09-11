@@ -55,4 +55,8 @@ def get_rutube_access_key(url: str) -> str | None:
     if "rutube" not in parsed.netloc or not parsed.query:
         return None
 
-    return parsed.query.split("=")[-1]
+    query_string = parse_qs(parsed.query)
+    if "p" in query_string:
+        return query_string["p"][0]
+
+    return None
