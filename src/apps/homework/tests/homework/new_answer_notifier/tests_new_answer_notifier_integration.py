@@ -62,7 +62,7 @@ def test_not_notifying_commenter(reply, answer, commenter, get_notified_users):
     assert commenter.email not in get_notified_users()
 
 
-def test_notifying_another_commenter(reply, answer, another_user, commenter, get_notified_users):
+def test_not_notifying_another_commenter(reply, answer, another_user, commenter, get_notified_users):
     reply(
         answer,
         {
@@ -79,7 +79,7 @@ def test_notifying_another_commenter(reply, answer, another_user, commenter, get
         as_user=another_user,
     )
 
-    assert set(get_notified_users()) == {answer.author.email, answer.author.email, commenter.email}
+    assert set(get_notified_users()) == {answer.author.email}
 
 
 def test_disabling_feature_disables_sending(reply, answer, settings, get_notified_users):

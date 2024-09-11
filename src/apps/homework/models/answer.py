@@ -114,9 +114,9 @@ class Answer(TestUtilsMixin, TreeNode):
         return url
 
     def get_root_answer(self) -> "Answer":
-        ancesorts = self.ancestors()
-        if ancesorts.count():
-            return ancesorts[0]
+        ancestors = self.ancestors()
+        if ancestors.count():
+            return ancestors[0]
 
         return self
 
