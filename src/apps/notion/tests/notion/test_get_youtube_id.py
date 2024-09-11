@@ -7,7 +7,7 @@ from apps.notion.helpers import get_youtube_video_id
     "input, expected",
     [
         ("https://youtu.be/1aSDLtmircA", "1aSDLtmircA"),
-        ("1aSDLtmircA", "1aSDLtmircA"),
+        ("1aSDLtmircA", None),
         ("https://youtu.be/watch?v=1aSDLtmircA", "1aSDLtmircA"),
         ("https://youtu.be/Vz-dbHfe5d4?si=gTJccaXi7B7BoqOF", "Vz-dbHfe5d4"),
         ("https://www.youtube.com/watch?v=FmIzx00xDmz&list=PLZuAsus9sSrpdana5Mw-jSkNLNSqgfw3x&index=10&ab_channel=100500", "FmIzx00xDmz"),
