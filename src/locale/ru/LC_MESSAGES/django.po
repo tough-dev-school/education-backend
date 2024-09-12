@@ -423,11 +423,15 @@ msgstr "Файлы"
 msgid "Paste it from the address bar"
 msgstr "Скопируйте адрес из строки браузера"
 
-#: apps/notion/models/video.py:13
+#: apps/notion/models/video.py:9
+msgid "Title"
+msgstr "Название"
+
+#: apps/notion/models/video.py:15
 msgid "Notion video"
 msgstr "Видео"
 
-#: apps/notion/models/video.py:14
+#: apps/notion/models/video.py:16
 msgid "Notion videos"
 msgstr "Видео"
 

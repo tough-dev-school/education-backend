@@ -6,6 +6,7 @@ from core.models import TimestampedModel, models
 class Video(TimestampedModel):
     """Video mapping for multiple videohostings"""
 
+    title = models.CharField(_("Title"), max_length=256, blank=True, null=True)
     youtube_id = models.CharField(max_length=256, unique=True, db_index=True)
     rutube_id = models.CharField(max_length=256, blank=True, null=True, db_index=True)
     rutube_access_key = models.CharField(max_length=256, blank=True, null=True)
