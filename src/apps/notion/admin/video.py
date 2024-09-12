@@ -10,6 +10,7 @@ from core.admin import ModelAdmin, admin
 
 
 class NotionVideoForm(forms.ModelForm):
+    title = forms.CharField(label=_("Title"), widget=forms.Textarea(), required=False)
     youtube = forms.CharField(label=_("Youtube"), required=True, help_text=_("Paste it from the address bar"))
     rutube = forms.CharField(label=_("RuTube"), required=False, help_text=_("Paste it from the address bar"))
 
@@ -19,7 +20,7 @@ class NotionVideoForm(forms.ModelForm):
 
     class Meta:
         model = Video
-        fields = ("youtube_id", "rutube_id", "rutube_access_key", "youtube", "rutube")
+        fields = ("title", "youtube_id", "rutube_id", "rutube_access_key", "youtube", "rutube")
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
@@ -56,6 +57,7 @@ class NotionVideoAdmin(ModelAdmin):
 
     list_display = [
         "id",
+        "title",
         "youtube",
         "rutube",
     ]
