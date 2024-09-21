@@ -32,19 +32,6 @@ def test_response(api, factory):
     assert response["image"].endswith(".gif"), "Contains given extension"
 
 
-def test_wrong_extension(api, factory):
-    response = api.post(
-        "/api/v2/homework/answers/image/",
-        {
-            "image": factory.image(name="ev1l.exe"),
-        },
-        format="multipart",
-        expected_status_code=400,
-    )
-
-    assert "exe" in response["image"][0]
-
-
 def test_no_anon(anon, factory):
     anon.post(
         "/api/v2/homework/answers/image/",

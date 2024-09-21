@@ -130,6 +130,7 @@ class AnswerCommentTreeSerializer(AnswerTreeSerializer):
 
 class AnswerImageSerializer(serializers.ModelSerializer):
     author = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    image = serializers.FileField()
 
     class Meta:
         model = AnswerImage
