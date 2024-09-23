@@ -1557,17 +1557,14 @@ Django = ">=2.2"
 
 [[package]]
 name = "emoji"
-version = "2.13.0"
+version = "2.13.2"
 description = "Emoji for Python"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "emoji-2.13.0-py3-none-any.whl", hash = "sha256:6c8027f02c448731fd5f13e38521e14594e48e9c5d2c3862f95d086d8aa84a7c"},
-    {file = "emoji-2.13.0.tar.gz", hash = "sha256:e32e46a1b4445dffbc37cc82ea2d0dacb9323b857f14297eba7decaadfb4890e"},
+    {file = "emoji-2.13.2-py3-none-any.whl", hash = "sha256:ef6f2ee63b245e934c763b1a9a0637713955aa3d9e322432e036bb60559de4d6"},
+    {file = "emoji-2.13.2.tar.gz", hash = "sha256:f95d10d96c5f21299ed2c4b32511611ba890b8c07f5f2bf5b04d5d3eee91fd19"},
 ]
-
-[package.dependencies]
-typing-extensions = ">=4.7.0"
 
 [package.extras]
 dev = ["coverage", "pytest (>=7.4.4)"]
