@@ -92,6 +92,9 @@ class Answer(TestUtilsMixin, TreeNode):
         ]
 
     def __str__(self) -> str:
+        if self.text.startswith("![]"):
+            return "Картинка"
+
         text = remove_html(markdownify(self.text))
         try:
             first_word = text.split()[0]
