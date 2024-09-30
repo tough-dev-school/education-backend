@@ -43,6 +43,12 @@ def test_html(mixer):
     assert str(answer) == "Банзай!"
 
 
+def test_image(mixer):
+    answer = mixer.blend("homework.Answer", text="![](https://cdn.tough-dev.school/typicalmacuser.jpg)")
+
+    assert str(answer) == "Картинка"
+
+
 def test_zero_length(mixer):
     answer = mixer.blend("homework.Answer", text="")
 
