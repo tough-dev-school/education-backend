@@ -21,11 +21,6 @@ pytestmark = [
 
 
 @pytest.fixture(autouse=True)
-def _set_locale(settings):
-    settings.LANGUAGE_CODE = "en"
-
-
-@pytest.fixture(autouse=True)
 def _adjust_settings(settings):
     settings.BANKS_REFUNDS_ENABLED = True
     settings.ABSOLUTE_HOST = "http://absolute-url.url"
