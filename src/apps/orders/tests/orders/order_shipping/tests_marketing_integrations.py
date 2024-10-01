@@ -42,7 +42,7 @@ def test_amocrm_is_updated(order, update_amocrm_order, update_amocrm_user):
     update_amocrm_user.assert_called_once()
 
 
-@pytest.mark.user_tags_rebuild()
+@pytest.mark.user_tags_rebuild
 def test_tags_are_rebuilt(order):
     assert "any-purchase" not in order.user.tags
 
@@ -52,14 +52,14 @@ def test_tags_are_rebuilt(order):
     assert "any-purchase" in order.user.tags
 
 
-@pytest.mark.dashamail()
+@pytest.mark.dashamail
 def test_dashamail_is_updated(order, update_dashamail):
     order.set_paid()
 
     update_dashamail.assert_called_once()
 
 
-@pytest.mark.dashamail()
+@pytest.mark.dashamail
 def test_dashamail_directm_is_updated(order, update_dashamail_directcrm):
     order.set_paid()
 

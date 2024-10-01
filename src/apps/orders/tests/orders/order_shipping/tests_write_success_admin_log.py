@@ -14,7 +14,7 @@ def order(factory):
     return factory.order()
 
 
-@pytest.mark.freeze_time()
+@pytest.mark.freeze_time
 @pytest.mark.usefixtures("_set_current_user")
 def test_paid_log_created(order, user):
     order.set_paid()
