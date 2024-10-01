@@ -9,7 +9,7 @@ class AdminSite(admin.AdminSite):
         super().__init__(name=name)
         self._registry.update(admin.site._registry)
 
-    def get_app_list(self, request: HttpRequest, app_label: str | None = None) -> list[str]:
+    def get_app_list(self, request: HttpRequest, app_label: str | None = None) -> list[dict]:
         app_list = super().get_app_list(request, app_label)
         app_list.sort(key=self._get_app_order_index)
         return app_list
