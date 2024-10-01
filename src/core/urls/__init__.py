@@ -2,8 +2,8 @@ import debug_toolbar  # type: ignore
 from django.conf.urls import include
 from django.urls import path
 
-from core.views import HomePageView
 from core.admin.admin_site import admin_site
+from core.views import HomePageView
 
 api = [
     path("v2/", include("core.urls.v2")),
