@@ -102,7 +102,7 @@ class Answer(TestUtilsMixin, TreeNode):
             first_word = ""
         resource = urlparse(first_word).netloc
         if resource:
-            return f'Ссылка на {resource.split(".")[-2]}'
+            return f"Ссылка на {resource}"
 
         return textwrap.shorten(text, width=40)
 
