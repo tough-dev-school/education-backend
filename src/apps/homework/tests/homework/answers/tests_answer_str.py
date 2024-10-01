@@ -27,8 +27,9 @@ def test_looooooong_words(mixer):
 @pytest.mark.parametrize(
     ("long_word", "expected_string"),
     [
-        ("https://miro.com/app/board/asdasdzxcasd123=/?share_link_id=604444977722", "Ссылка на miro"),
-        ("1. http://pivo.com:8000/app/board/asdasdzxcasd123=/?share_link_id=604444977722\nNice work bro", "Ссылка на pivo"),
+        ("https://miro.com/app/board/asdasdzxcasd123=/?share_link_id=604444977722", "Ссылка на miro.com"),
+        ("1. http://pivo.com/app/board/asdasdzxcasd123=/?share_link_id=604444977722\nNice work bro", "Ссылка на pivo.com"),
+        ("https://drive.google.com/file/d/FhyDbwTAEbgSYQdv4vmceAkbsn7QKDFH/view?usp=sharing", "Ссылка на drive.google.com"),
     ],
 )
 def test_starts_with_link(mixer, long_word, expected_string):
