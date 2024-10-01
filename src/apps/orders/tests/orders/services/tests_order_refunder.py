@@ -276,7 +276,7 @@ def test_update_user_tags(paid_order, mock_rebuild_tags, refund):
     mock_rebuild_tags.assert_called_once_with(student_id=paid_order.user.id)
 
 
-@pytest.mark.dashamail()
+@pytest.mark.dashamail
 def test_update_dashamail(paid_order, refund, mocker):
     update_subscription = mocker.patch("apps.dashamail.tasks.DashamailSubscriber.subscribe")
 
@@ -292,8 +292,8 @@ def test_fail_if_bank_is_set_but_unknown(paid_order, refund):
         refund(paid_order, paid_order.price)
 
 
-@pytest.mark.auditlog()
-@pytest.mark.freeze_time()
+@pytest.mark.auditlog
+@pytest.mark.freeze_time
 def test_success_admin_log_created(paid_order, refund, user):
     refund(paid_order, paid_order.price)
 
@@ -369,8 +369,8 @@ def test_partial_refund_order_unshipped_when_total_refund_eq_price(paid_tinkoff_
     spy_unshipper.assert_called_once()
 
 
-@pytest.mark.auditlog()
-@pytest.mark.freeze_time()
+@pytest.mark.auditlog
+@pytest.mark.freeze_time
 @pytest.mark.usefixtures("mock_tinkoff_refund")
 def test_partial_refund_success_admin_log_created(paid_tinkoff_order, refund, user):
     refund(paid_tinkoff_order, 500)
