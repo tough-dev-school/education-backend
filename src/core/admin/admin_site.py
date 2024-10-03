@@ -1,5 +1,3 @@
-from typing import Any
-
 from django.contrib import admin
 from django.http.request import HttpRequest
 
@@ -14,7 +12,8 @@ class AdminSite(admin.AdminSite):
         app_list.sort(key=self._get_app_order_index)
         return app_list
 
-    def _get_app_order_index(self, element: Any) -> int:
+    @staticmethod
+    def _get_app_order_index(element: dict) -> int:
         app_order = ["orders", "notion", "chains", "products", "otherapp"]
 
         if element["app_label"] in app_order:
