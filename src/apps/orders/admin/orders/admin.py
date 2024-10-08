@@ -1,5 +1,4 @@
 from django.db.models import QuerySet
-from django.forms import Media
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 from rest_framework.request import Request
@@ -57,23 +56,20 @@ class OrderAdmin(ModelAdmin):
         "paid",
         "shipped",
     ]
+    raw_id_fields = ["user"]
 
     fieldsets = [
         (
             None,
             {
-                "fields": ["user", "course", "price", "email", "author", "login_as", "paid", "shipped"],
+                "fields": ["user", "course", "price", "email", "author", "login_as", "paid", "shipped", "bank_id"],
             },
         ),
     ]
 
-    @property
-    def media(self) -> Media:
-        media = super().media
-
-        media._css_lists.append({"all": ["admin/order_list.css"]})  # type: ignore
-
-        return media
+    class Media:
+        css = {"all": ["admin/order_list.css"]}
+        js = ["admin/js/vendor/jquery/jquery.js", "admin/check_partial_refunds.js"]
 
     def get_queryset(self, request: Request) -> QuerySet:  # type: ignore
         return (
@@ -123,6 +119,6 @@ class OrderAdmin(ModelAdmin):
         return request.user.has_perm("orders.unpay_order")
 
     def get_inlines(self, request: Request, obj: "Order | None") -> list:  # type: ignore
-        if obj and obj.paid and (obj.price != 0 or obj.refunds.exists()):
+        if obj and obj.paid:
             return [RefundInline]
         return []
