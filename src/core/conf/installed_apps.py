@@ -37,6 +37,6 @@ INSTALLED_APPS = [
     "apps.users",
 
     "core",
-    "core.admin.config.AdminConfig"
+    "core.admin.config.CustomAdminConfig"
 ]
 # fmt: on
