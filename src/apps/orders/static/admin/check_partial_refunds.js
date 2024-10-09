@@ -1,16 +1,15 @@
 (function($) {
     $(document).ready(() => {
-        var noPartialRefundAvailable = ['dolyame', 'zero_price'];
+        var partialRefundAvailable = ['stripe', 'stripe_kz', 'tinkoff_bank'];
         var bankId = $('#id_bank_id').val();
         var refundsGroup = $('#refunds-group');
 
-        if (noPartialRefundAvailable.includes(bankId)) {
+        if (!partialRefundAvailable.includes(bankId)) {
           setTimeout(() => {
-            django.jQuery('.add-row').hide();
-            var warningText = '<p style="color: darkslategray;">Частичный возврат можно делать только для заказов оплаченных через Тинькофф, Страйп или B2B</p>';
+            refundsGroup.find('.add-row').hide();
+            var warningText = '<p style="color: darkslategray;">Частичный возврат можно делать только для заказов оплаченных через Тинькофф или Страйп</p>';
             refundsGroup.before(warningText);
           }, 1);
-
     }
     });
 })(django.jQuery);
