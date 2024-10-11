@@ -1,6 +1,5 @@
 # fmt: off
 INSTALLED_APPS = [
-    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.messages",
@@ -38,5 +37,6 @@ INSTALLED_APPS = [
     "apps.users",
 
     "core",
+    "core.admin.config.CustomAdminConfig"
 ]
 # fmt: on
