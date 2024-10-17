@@ -3182,13 +3182,13 @@ files = [
 
 [[package]]
 name = "stripe"
-version = "10.12.0"
+version = "11.1.0"
 description = "Python bindings for the Stripe API"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "stripe-10.12.0-py2.py3-none-any.whl", hash = "sha256:0c79c1f3a844533c8d30cc283b43afb622aaa402539fca19167a9004fea3471c"},
-    {file = "stripe-10.12.0.tar.gz", hash = "sha256:5abec44548d3814bc1e070aa1852bcb3fc5cc029e947c0f733156eb1f8c87030"},
+    {file = "stripe-11.1.0-py2.py3-none-any.whl", hash = "sha256:2cd09ca015dc5ce9d80cf5bbe81cd6a4d528997ddedadd53844e183f36211ace"},
+    {file = "stripe-11.1.0.tar.gz", hash = "sha256:1fac660dcc3014268cafc94a45ebeac66f1a752365f60019d2263e0c1e0f965b"},
 ]
 
 [package.dependencies]
@@ -3529,4 +3529,4 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "6dd593782af636cc795e38f950223a680a62df3037161185d035487c358f04d7"
+content-hash = "0edd0285f26e6ae4f5947f54dee7b7a7a81785066527ed34e28404bc1982b5bc"
