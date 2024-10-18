@@ -2498,13 +2498,13 @@ testing = ["filelock"]
 
 [[package]]
 name = "python-benedict"
-version = "0.33.2"
+version = "0.34.0"
 description = "python-benedict is a dict subclass with keylist/keypath/keyattr support, normalized I/O operations (base64, csv, ini, json, pickle, plist, query-string, toml, xls, xml, yaml) and many utilities... for humans, obviously."
 optional = false
 python-versions = "*"
 files = [
-    {file = "python-benedict-0.33.2.tar.gz", hash = "sha256:662de43bffb4e127da2056447f8ddd7f6f5c89b72dd66d289cf9abd1cc2720c8"},
-    {file = "python_benedict-0.33.2-py3-none-any.whl", hash = "sha256:50a69b601b34d4ad7b67fe94e3266ec05046bc547a4132fe43fd8fbd41aeefaa"},
+    {file = "python_benedict-0.34.0-py3-none-any.whl", hash = "sha256:acdcd993ecf56640a3bcd935086e1c19482271950933995511d1fd16a5954ece"},
+    {file = "python_benedict-0.34.0.tar.gz", hash = "sha256:d26a59abf418400dea39785d1336f5958fd7f00a732d5cc4e0e233a94e0b2c70"},
 ]
 
 [package.dependencies]
@@ -3529,4 +3529,4 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "6dd593782af636cc795e38f950223a680a62df3037161185d035487c358f04d7"
+content-hash = "9e3160aebf86f73f3dcf6eb397ba2cc1f40f07b96917dc925fb3e10a3e20d3c0"
