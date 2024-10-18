@@ -1503,19 +1503,19 @@ test = ["mock", "pytest (>=3.0)", "pytest-cov", "pytest-django", "pytest-runner"
 
 [[package]]
 name = "drf-recaptcha"
-version = "3.2.0"
-description = "Django rest framework recaptcha field serializer."
+version = "4.0.2"
+description = "Django rest framework recaptcha field serializer"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.10"
 files = [
-    {file = "drf_recaptcha-3.2.0-py3-none-any.whl", hash = "sha256:30e9d1612ef447d61a7465850b63512c7032abf0decfb7680f9acdb3753315a1"},
-    {file = "drf_recaptcha-3.2.0.tar.gz", hash = "sha256:856eeba20a48d05188a0882382a1c65d9f8c1e40305d8a2ac62760380041a049"},
+    {file = "drf_recaptcha-4.0.2-py3-none-any.whl", hash = "sha256:72f2f39bca4a1adb897c696381a098b3e5e5e5d111a7ced98aa15a75e37c1df7"},
+    {file = "drf_recaptcha-4.0.2.tar.gz", hash = "sha256:68fb90860f53374b4732a22b6980d7ac1cbb006d444d527d25f39d95392be99e"},
 ]
 
 [package.dependencies]
-django = ">=3.2"
-django-ipware = ">=2.1"
-djangorestframework = ">=3.11"
+django = ">=4.2"
+django-ipware = ">=5.0"
+djangorestframework = ">=3.14"
 
 [[package]]
 name = "drf-spectacular"
@@ -3529,4 +3529,4 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "9e3160aebf86f73f3dcf6eb397ba2cc1f40f07b96917dc925fb3e10a3e20d3c0"
+content-hash = "dc257c0f10b319cc3c2833d36e8f06a71c0eee77206fcbda1790dcdf21b72c86"
