@@ -38,7 +38,7 @@ drf-recaptcha = "^3.0.0"
 drf-spectacular = {extras = ["sidecar"], version = "^0.27.0"}
 emoji = "^2.8.0"
 httpx = {extras = ["http2"], version = "^0.27.0"}
-pillow = "^10.1.0"
+pillow = "^11.0.0"
 psycopg2-binary = "^2.9.7"
 python = "~3.11"
 python-benedict = "^0.34.0"
