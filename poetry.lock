@@ -1207,13 +1207,13 @@ resend = ["svix"]
 
 [[package]]
 name = "django-axes"
-version = "6.5.2"
+version = "7.0.0"
 description = "Keep track of failed login attempts in Django-powered sites."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "django_axes-6.5.2-py3-none-any.whl", hash = "sha256:fab92b98032fff55d7d2e0fdfade2be189949b6590b9e0c90e6fd213dd70bb67"},
-    {file = "django_axes-6.5.2.tar.gz", hash = "sha256:c2c007d61a3de018ef97649350dc15e5663cd9def1a05de8eeb0fe6adc1ed2ab"},
+    {file = "django_axes-7.0.0-py3-none-any.whl", hash = "sha256:478955a3cc766ba0b79446bd2c35c4d1c994b81cdd21e80c026bf3cd0927792f"},
+    {file = "django_axes-7.0.0.tar.gz", hash = "sha256:fb0819dff6ee71d9e532a32ce168451255e37010f2e60ee62e1da4d6599126da"},
 ]
 
 [package.dependencies]
@@ -3529,4 +3529,4 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "9e3160aebf86f73f3dcf6eb397ba2cc1f40f07b96917dc925fb3e10a3e20d3c0"
+content-hash = "c73577777cc22544b2948d13e3e2b95bf96fbae7c7db37912868e1ab247c8d18"
