@@ -3509,13 +3509,13 @@ files = [
 
 [[package]]
 name = "whitenoise"
-version = "6.8.0"
+version = "6.8.1"
 description = "Radically simplified static file serving for WSGI applications"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "whitenoise-6.8.0-py3-none-any.whl", hash = "sha256:58c4663bd050decb7fe06781ec26984e80895ee7178d3ee5d53e31086596b11f"},
-    {file = "whitenoise-6.8.0.tar.gz", hash = "sha256:591aebe08d78dfc79d69517381fbce1625ee69fd0fcb795fe745bc51c4b7ae56"},
+    {file = "whitenoise-6.8.1-py3-none-any.whl", hash = "sha256:196ba04ca0a80f4a3f99f88381864f218a28b5fb5b44d29feea484d501fa0ba3"},
+    {file = "whitenoise-6.8.1.tar.gz", hash = "sha256:11042f39f1dcfbb3814726b9364703af6901706582d988e96494cfefdc3a89e2"},
 ]
 
 [package.extras]
