@@ -12,6 +12,7 @@ urlpatterns = [
     path("studies/", include("apps.studying.urls")),
     path("users/", include("apps.users.urls")),
     path("", include("apps.products.urls")),
+    path("healthchecks/err", lambda *args: 1 / 0),  # type: ignore
     path("healthchecks/", include("django_healthchecks.urls")),
     path(
         "docs/schema/",

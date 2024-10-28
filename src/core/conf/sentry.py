@@ -29,7 +29,7 @@ if not env("DEBUG") and SENTRY_DSN:
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration(), HttpxIntegration()],
-        traces_sample_rate=0.8,
+        traces_sample_rate=0.1,
         send_default_pii=True,
         before_send_transaction=strip_transactions,
     )
