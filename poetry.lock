@@ -1235,13 +1235,13 @@ files = [
 
 [[package]]
 name = "django-cachalot"
-version = "2.6.3"
+version = "2.7.0"
 description = "Caches your Django ORM queries and automatically invalidates them."
 optional = false
 python-versions = "*"
 files = [
-    {file = "django_cachalot-2.6.3-py3-none-any.whl", hash = "sha256:a37d38e29e35c93945cd372888a21ab82115d6b0c334a6f8bc43a450abfdf0b5"},
-    {file = "django_cachalot-2.6.3.tar.gz", hash = "sha256:d1235111236ef2bfcc32337774eb620694bba8d49dd10a652d96aa8a1991a3be"},
+    {file = "django_cachalot-2.7.0-py3-none-any.whl", hash = "sha256:a96fa16a25dc07110770d0bde0b01b444c065c7693d4c162c75da9e447f1750c"},
+    {file = "django_cachalot-2.7.0.tar.gz", hash = "sha256:834b95d5cffdc8953018a33a4e16ef63c8cfe2226a4dc36573e8bf3d62130175"},
 ]
 
 [package.dependencies]
