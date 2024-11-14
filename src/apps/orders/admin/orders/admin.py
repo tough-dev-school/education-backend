@@ -56,7 +56,6 @@ class OrderAdmin(ModelAdmin):
         "paid",
         "shipped",
     ]
-    raw_id_fields = ["user"]
 
     fieldsets = [
         (
