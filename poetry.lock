@@ -3204,13 +3204,13 @@ files = [
 
 [[package]]
 name = "toml-sort"
-version = "0.24.1"
+version = "0.24.2"
 description = "Toml sorting library"
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "toml_sort-0.24.1-py3-none-any.whl", hash = "sha256:6689ade9c68aa3c54f6e8639b8a06c2f527b7229d32f461f69d90319e082c855"},
-    {file = "toml_sort-0.24.1.tar.gz", hash = "sha256:261c444706d8337667cbe192f5391e390743a9226d1711219b5171c5f8747f26"},
+    {file = "toml_sort-0.24.2-py3-none-any.whl", hash = "sha256:d81d299789a1fd9dd306a4021951eab5fc0c5486599e277fcf8142c7735f3308"},
+    {file = "toml_sort-0.24.2.tar.gz", hash = "sha256:20cb7c5e9de9c871990f1594f028aaf8bd0f78d7ce37995a22289dc157a45b79"},
 ]
 
 [package.dependencies]
