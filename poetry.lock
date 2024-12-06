@@ -1152,12 +1152,12 @@ files = [
 
 [[package]]
 name = "dj-rest-auth"
-version = "6.0.0"
+version = "7.0.0"
 description = "Authentication and Registration in Django Rest Framework"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "dj-rest-auth-6.0.0.tar.gz", hash = "sha256:760b45f3a07cd6182e6a20fe07d0c55230c5f950167df724d7914d0dd8c50133"},
+    {file = "dj-rest-auth-7.0.0.tar.gz", hash = "sha256:08dbc03a35223872da9f59bc2d7a71bec2e721aa69f7cdc84c7a329aeae1f86e"},
 ]
 
 [package.dependencies]
@@ -3529,4 +3529,4 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "af55e77ecbd6c6a72c6c509b565cb2a8c35e05e05b106cfb35a417dbe62ea78c"
+content-hash = "34f5151cb233abce75f574c3b8862c0dbaeb29a1cbbc6bb74668bbfc45c2ebf5"
