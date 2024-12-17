@@ -16,7 +16,7 @@ from apps.orders.services.order_refunder import OrderRefunderException
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures("_set_current_user", "send_mail"),
+    pytest.mark.usefixtures("_set_current_user", "send_mail", "_allow_proxyless_stripe_requests"),
 ]
 
 

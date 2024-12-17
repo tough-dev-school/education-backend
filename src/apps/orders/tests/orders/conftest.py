@@ -16,3 +16,8 @@ def course(factory):
         name_genitive="Кройки и шитья",
         price=100500,
     )
+
+
+@pytest.fixture
+def _allow_proxyless_stripe_requests(settings):
+    settings.DEBUG = True

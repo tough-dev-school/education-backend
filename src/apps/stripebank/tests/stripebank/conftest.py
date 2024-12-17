@@ -45,6 +45,11 @@ def _disable_signature_verification(mocker):
 
 
 @pytest.fixture
+def _allow_proxyless_stripe_requests(settings):
+    settings.DEBUG = True
+
+
+@pytest.fixture
 def webhook_checkout_session_completed(load_stipe_webhook, order):
     webhook_data = load_stipe_webhook("webhook_checkout_session_completed.json")
     webhook_data["data"]["object"]["client_reference_id"] = order.slug

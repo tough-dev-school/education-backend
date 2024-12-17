@@ -1,12 +1,13 @@
 import pytest
 import stripe
+from django.test import override_settings
 
 from apps.stripebank.models import StripeNotification
 from apps.stripebank.webhook_handler import StripeWebhookHandler
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures("_disable_signature_verification"),
+    pytest.mark.usefixtures("_disable_signature_verification", "_allow_proxyless_stripe_requests"),
 ]
 
 

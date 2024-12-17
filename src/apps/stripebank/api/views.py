@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 
 from apps.stripebank.bank import BaseStripeBank, StripeBankKZT, StripeBankUSD
 from apps.stripebank.webhook_handler import StripeWebhookHandler
+from core.contextmanagers import modify_env
 from core.exceptions import AppServiceException
 
 
@@ -27,12 +28,13 @@ class BaseStripeWebhookView(APIView):
 
     def validate_webhook(self, request: Request) -> stripe.Event:
         try:
-            return stripe.Webhook.construct_event(
-                payload=request.body,
-                sig_header=request.headers.get("STRIPE_SIGNATURE", ""),
-                secret=self.bank.webhook_secret,
-                api_key=self.bank.api_key,
-            )
+            with modify_env(**self.bank.get_proxy_settings()):
+                return stripe.Webhook.construct_event(
+                    payload=request.body,
+                    sig_header=request.headers.get("STRIPE_SIGNATURE", ""),
+                    secret=self.bank.webhook_secret,
+                    api_key=self.bank.api_key,
+                )
 
         except stripe.error.StripeError:
             raise AppServiceException("Not a valid webhook request")
