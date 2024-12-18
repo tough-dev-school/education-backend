@@ -6,7 +6,9 @@ from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 from apps.banking.base import Bank
+from apps.stripebank.exceptions import StripeProxyRequiredException
 from apps.stripebank.models import StripeNotification
+from core.contextmanagers import modify_env
 
 
 class BaseStripeBank(Bank):
@@ -16,6 +18,20 @@ class BaseStripeBank(Bank):
     api_key: str = ""
     webhook_secret: str = ""
 
+    @staticmethod
+    def get_proxy() -> str:
+        if not settings.DEBUG and not settings.STRIPE_PROXY:
+            raise StripeProxyRequiredException("STRIPE_PROXY is required to send prod requests")
+        return settings.STRIPE_PROXY
+
+    @classmethod
+    def get_proxy_settings(cls) -> dict:
+        proxy = cls.get_proxy()
+        return {
+            "HTTP_PROXY": proxy,
+            "HTTPS_PROXY": proxy,
+        }
+
     @property
     def is_partial_refund_available(self) -> bool:
         return True
@@ -23,14 +39,15 @@ class BaseStripeBank(Bank):
     def get_initial_payment_url(self) -> str:
         stripe.api_key = self.api_key
 
-        session = stripe.checkout.Session.create(
-            line_items=self.get_items(),
-            mode="payment",
-            success_url=self.success_url,
-            cancel_url=self.fail_url,
-            customer_email=self.user.email,
-            client_reference_id=self.order.slug,
-        )
+        with modify_env(**self.get_proxy_settings()):
+            session = stripe.checkout.Session.create(
+                line_items=self.get_items(),
+                mode="payment",
+                success_url=self.success_url,
+                cancel_url=self.fail_url,
+                customer_email=self.user.email,
+                client_reference_id=self.order.slug,
+            )
 
         return session.url
 
@@ -45,7 +62,9 @@ class BaseStripeBank(Bank):
         )[0]
 
         refund_amount_data = {"amount": self.get_formatted_amount(amount)} if amount else {}
-        stripe.Refund.create(payment_intent=latest_payment_notification.payment_intent, **refund_amount_data)  # type: ignore
+
+        with modify_env(**self.get_proxy_settings()):
+            stripe.Refund.create(payment_intent=latest_payment_notification.payment_intent, **refund_amount_data)  # type: ignore
 
     def get_items(self) -> list[dict[str, Any]]:
         return [
