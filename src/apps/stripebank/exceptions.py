@@ -1,0 +1,2 @@
+class StripeProxyRequiredException(Exception):
+    pass

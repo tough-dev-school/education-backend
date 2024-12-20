@@ -6,6 +6,7 @@ import pytest
 pytestmark = [
     pytest.mark.django_db,
     pytest.mark.freeze_time("2032-12-01 15:30Z"),
+    pytest.mark.usefixtures("_allow_proxyless_stripe_requests"),
 ]
 
 
