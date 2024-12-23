@@ -108,6 +108,9 @@ class DiplomaTemplate(TimestampedModel):
             models.Index(fields=["course", "language", "homework_accepted"]),
         ]
 
+    def __str__(self) -> str:
+        return self.slug
+
 
 class DiplomaStudyProxy(Study):
     """Used in the admin to upload diplomas manually."""
