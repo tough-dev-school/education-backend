@@ -1,6 +1,7 @@
 import time
 from contextlib import nullcontext as does_not_raise
 from datetime import datetime
+from decimal import Decimal
 
 import pytest
 from django.contrib.admin.models import CHANGE, LogEntry
@@ -26,7 +27,7 @@ def _set_locale(settings):
 
 
 @pytest.fixture(autouse=True)
-def _adjust_settings(settings):
+def _adjust_settings(settings, mocker):
     settings.BANKS_REFUNDS_ENABLED = True
     settings.ABSOLUTE_HOST = "http://absolute-url.url"
 
@@ -34,6 +35,8 @@ def _adjust_settings(settings):
         "first_refunds_watcher@mail.com",
         "second_refunds_watcher@mail.com",
     ]
+    mocker.patch("apps.stripebank.bank.StripeBankUSD.ue", Decimal(80))
+    mocker.patch("apps.stripebank.bank.StripeBankKZT.ue", Decimal("0.18"))
 
 
 @pytest.fixture
@@ -63,6 +66,7 @@ def mock_stripe_refund(mocker):
 
 @pytest.fixture
 def mock_stripe_kz_refund(mocker):
+    mocker.patch("apps.stripebank.bank.StripeBankUSD.ue", 70)
     return mocker.patch("apps.stripebank.bank.StripeBankKZT.refund")
 
 
