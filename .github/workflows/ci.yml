@@ -9,7 +9,7 @@ on:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -29,7 +29,7 @@ jobs:
 
   test:
     needs: lint
-    runs-on: ${{ contains(github.triggering_actor, '[bot]') && 'ubuntu-latest' || 'ubuntu-8x' }}
+    runs-on: ${{ contains(github.triggering_actor, '[bot]') && 'ubuntu-22.04' || 'ubuntu-8x' }}
     services:
       postgres:
         image: postgres:13.9-alpine
@@ -87,7 +87,7 @@ jobs:
 
   build-docker-image:
     needs: test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -164,7 +164,7 @@ jobs:
   deploy:
     needs: build-docker-image
     if: github.ref == 'refs/heads/master' && github.repository_owner == 'tough-dev-school'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: checkout
         uses: actions/checkout@v4
