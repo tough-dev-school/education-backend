@@ -63,7 +63,7 @@ class BaseStripeBank(Bank):
 
 
 class StripeBankUSD(BaseStripeBank):
-    ue = Decimal(80)
+    ue = Decimal(90)
     currency = "USD"
     currency_symbol = "$"
     name = _("Stripe USD")
