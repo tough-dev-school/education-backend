@@ -53,7 +53,7 @@ class Order(TimestampedModel):
     shipped = models.DateTimeField(_("Date when order was shipped"), null=True, blank=True)
 
     bank_id = models.CharField(_("User-requested bank string"), choices=BANK_CHOICES, blank=True, max_length=32)
-    ue_rate = models.IntegerField(_("Purchase-time UE rate"))
+    ue_rate = models.DecimalField(_("Purchase-time UE rate"), decimal_places=2, max_digits=6)
     acquiring_percent = models.DecimalField(default=0, max_digits=4, decimal_places=2)
 
     course = ItemField(to="products.Course", verbose_name=_("Course"), null=True, blank=True, on_delete=models.PROTECT)

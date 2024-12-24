@@ -967,6 +967,35 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
+#: apps/banking/models.py:10
+msgid "RUB"
+msgstr "Рубль"
+
+#: apps/banking/models.py:11
+msgid "USD"
+msgstr "Доллар"
+
+#: apps/banking/models.py:12
+msgid "KZT"
+msgstr "Тенге"
+
+#: apps/banking/models.py:13
+msgid "KIS (for zero-price orders)"
+msgstr "KIS (для бесплатных заказов)"
+
+
+#: apps/banking/models.py:15
+msgid "Rate"
+msgstr "Курс"
+
+#: apps/banking/models.py:18
+msgid "Currency"
+msgstr "Курс валюты"
+
+#: apps/banking/models.py:19
+msgid "Currencies"
+msgstr "Курсы валют"
+
 #, python-brace-format
 #~ msgid ""
 #~ "Orders {non_refunded_orders_as_message} have not been refunded. Up to 5 "

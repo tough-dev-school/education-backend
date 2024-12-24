@@ -22,8 +22,9 @@ from apps.banking import price_calculator
     ],
 )
 def test(price, ue, expected):
-    class MockBank: ...
-
-    MockBank.ue = ue
+    class MockBank:
+        @classmethod
+        def get_ue(cls):
+            return ue
 
     assert price_calculator.to_bank(MockBank, price) == Decimal(expected)

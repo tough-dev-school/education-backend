@@ -63,7 +63,6 @@ class BaseStripeBank(Bank):
 
 
 class StripeBankUSD(BaseStripeBank):
-    ue = Decimal(90)
     currency = "USD"
     currency_symbol = "$"
     name = _("Stripe USD")
@@ -72,7 +71,6 @@ class StripeBankUSD(BaseStripeBank):
 
 
 class StripeBankKZT(BaseStripeBank):
-    ue = Decimal("0.18")
     currency = "KZT"
     currency_symbol = "₸"
     name = _("Stripe KZT")

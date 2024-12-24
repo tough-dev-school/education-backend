@@ -13,12 +13,12 @@ def write_admin_log(
     model: str,
     object_id: int,
     user_id: int,
-) -> None:
+) -> LogEntry:
     content_type_id = ContentType.objects.get(app_label=app, model=model.lower()).id
 
     obj = apps.get_model(app, model).objects.get(id=object_id)
 
-    LogEntry.objects.log_action(
+    return LogEntry.objects.log_action(
         action_flag=action_flag,
         change_message=change_message,
         content_type_id=content_type_id,
