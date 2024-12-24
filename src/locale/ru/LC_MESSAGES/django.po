@@ -967,19 +967,32 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: apps/banking/models.py:7
-msgid "Currency name in ISO 4217 format. E.g. USD"
-msgstr "Код валюты по ISO 4217. Например, USD"
+#: apps/banking/models.py:10
+msgid "RUB"
+msgstr "Рубль"
 
-#: apps/banking/models.py:8
+#: apps/banking/models.py:11
+msgid "USD"
+msgstr "Доллар"
+
+#: apps/banking/models.py:12
+msgid "KZT"
+msgstr "Тенге"
+
+#: apps/banking/models.py:13
+msgid "KIS (for zero-price orders)"
+msgstr "KIS (для бесплатных заказов)"
+
+
+#: apps/banking/models.py:15
 msgid "Rate"
 msgstr "Курс"
 
-#: apps/banking/models.py:11
+#: apps/banking/models.py:18
 msgid "Currency"
 msgstr "Курс валюты"
 
-#: apps/banking/models.py:12
+#: apps/banking/models.py:19
 msgid "Currencies"
 msgstr "Курсы валют"
 
