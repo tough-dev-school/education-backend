@@ -967,6 +967,22 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
+#: apps/banking/models.py:7
+msgid "Currency name in ISO 4217 format. E.g. USD"
+msgstr "Код валюты по ISO 4217. Например, USD"
+
+#: apps/banking/models.py:8
+msgid "Rate"
+msgstr "Курс"
+
+#: apps/banking/models.py:11
+msgid "Currency"
+msgstr "Курс валюты"
+
+#: apps/banking/models.py:12
+msgid "Currencies"
+msgstr "Курсы валют"
+
 #, python-brace-format
 #~ msgid ""
 #~ "Orders {non_refunded_orders_as_message} have not been refunded. Up to 5 "
