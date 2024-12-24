@@ -7,7 +7,7 @@ on:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -20,7 +20,7 @@ jobs:
 
   test:
     needs: lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     services:
       postgres:
         image: postgres:13.9-alpine
@@ -58,7 +58,7 @@ jobs:
 
   build-docker-image:
     needs: test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: checkout
         uses: actions/checkout@v4
