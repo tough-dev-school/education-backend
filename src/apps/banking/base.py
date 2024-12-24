@@ -7,6 +7,9 @@ from urllib.parse import urljoin
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
+from apps.banking.exceptions import CurrencyRateDoesNotExist
+from apps.banking.models import CurrencyRate
+
 if TYPE_CHECKING:
     from django_stubs_ext import StrPromise
 
@@ -17,7 +20,6 @@ if TYPE_CHECKING:
 class Bank(metaclass=ABCMeta):
     currency = "RUB"
     currency_symbol = "₽"
-    ue: Decimal = Decimal(1)  # ue stands for «условные единицы», this is some humour from 2000's
     acquiring_percent: Decimal = Decimal(0)  # we use it for analytics
     name: "StrPromise" = _("—")
 
@@ -66,6 +68,13 @@ class Bank(metaclass=ABCMeta):
     @property
     def is_partial_refund_available(self) -> bool:
         return False
+
+    @classmethod
+    def get_ue(cls) -> Decimal:
+        try:
+            return CurrencyRate.objects.get(name=cls.currency).rate
+        except CurrencyRate.DoesNotExist:
+            raise CurrencyRateDoesNotExist(f"Currency {cls.currency} is not supported")
 
     def get_formatted_amount(self, amount: Decimal) -> int:
         from apps.banking import price_calculator

@@ -10,12 +10,12 @@ pytestmark = [
 
 @pytest.fixture(autouse=True)
 def _freeze_stripe_course(mocker):
-    mocker.patch("apps.stripebank.bank.StripeBankUSD.ue", Decimal(70))  # let it be forever :'(
+    mocker.patch("apps.stripebank.bank.StripeBankUSD.get_ue", return_value=Decimal(70))  # let it be forever :'(
 
 
 @pytest.fixture(autouse=True)
 def _freeze_stripe_kz_course(mocker):
-    mocker.patch("apps.stripebank.bank.StripeBankKZT.ue", Decimal("0.18"))
+    mocker.patch("apps.stripebank.bank.StripeBankKZT.get_ue", return_value=Decimal("0.18"))
 
 
 @pytest.mark.parametrize(
