@@ -15,13 +15,3 @@ def default_user_data():
         "name": "Забой Шахтёров",
         "email": "zaboy@gmail.com",
     }
-
-
-@pytest.fixture(autouse=True)
-def rub(factory):
-    return factory.currency_rate(name="RUB", rate=1)
-
-
-@pytest.fixture(autouse=True)
-def kis(factory):
-    return factory.currency_rate(name="KIS", rate=1)

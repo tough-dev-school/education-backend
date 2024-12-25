@@ -25,8 +25,3 @@ def order(factory, user, course):
 @pytest.fixture
 def retrieve_request_json(respx_mock: MockRouter):
     return lambda: json.loads(respx_mock.calls.last.request.content)
-
-
-@pytest.fixture(autouse=True)
-def rub(factory):
-    return factory.currency_rate(name="RUB", rate=1)
