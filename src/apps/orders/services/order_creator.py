@@ -67,7 +67,7 @@ class OrderCreator(BaseService):
             price=self.price,  # type: ignore
             promocode=self.promocode,
             bank_id=self.desired_bank,
-            ue_rate=self.bank.get_ue(),
+            ue_rate=self.bank.get_currency_rate(),
             acquiring_percent=self.bank.acquiring_percent,
             analytics=self._parse_analytics(self.analytics),
         )

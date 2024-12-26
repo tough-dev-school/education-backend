@@ -60,7 +60,7 @@ def test_desired_bank_is_saved(call_purchase, bank):
         ("dolyame", 44),
     ],
 )
-def test_ue_rate_is_saved(call_purchase, bank, ue_rate):
+def test_currency_rate_rate_is_saved(call_purchase, bank, ue_rate):
     call_purchase(desired_bank=bank)
 
     order = Order.objects.last()

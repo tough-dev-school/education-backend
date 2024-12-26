@@ -17,7 +17,7 @@ def stripe(order):
 
 @pytest.fixture(autouse=True)
 def _fix_stripe_course(mocker):
-    mocker.patch("apps.stripebank.bank.BaseStripeBank.get_ue", return_value=70)  # let it be forever :'(
+    mocker.patch("apps.stripebank.bank.BaseStripeBank.get_currency_rate", return_value=70)  # let it be forever :'(
 
 
 @pytest.fixture

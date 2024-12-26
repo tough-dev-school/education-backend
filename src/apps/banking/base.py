@@ -70,7 +70,7 @@ class Bank(metaclass=ABCMeta):
         return False
 
     @classmethod
-    def get_ue(cls) -> Decimal:
+    def get_currency_rate(cls) -> Decimal:
         try:
             return CurrencyRate.objects.get(name=cls.currency).rate
         except CurrencyRate.DoesNotExist:
