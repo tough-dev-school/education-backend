@@ -6,7 +6,7 @@ from apps.banking import price_calculator
 
 
 @pytest.mark.parametrize(
-    ("price", "ue", "expected"),
+    ("price", "currency_rate", "expected"),
     [
         (100, 1, 100),
         (100.50, 1, 100.50),
@@ -21,9 +21,10 @@ from apps.banking import price_calculator
         (100500.5, Decimal("0.17"), "591179.41"),
     ],
 )
-def test(price, ue, expected):
-    class MockBank: ...
-
-    MockBank.ue = ue
+def test(price, currency_rate, expected):
+    class MockBank:
+        @classmethod
+        def get_currency_rate(cls):
+            return currency_rate
 
     assert price_calculator.to_bank(MockBank, price) == Decimal(expected)

@@ -3,6 +3,10 @@ import pytest
 from apps.tinkoff.exceptions import TinkoffPaymentNotificationInvalidToken, TinkoffPaymentNotificationNoTokenPassed
 from apps.tinkoff.token_validator import TinkoffNotificationsTokenValidator
 
+pytestmark = [
+    pytest.mark.django_db,
+]
+
 
 @pytest.mark.parametrize(
     "payload",

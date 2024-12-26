@@ -35,8 +35,8 @@ def _adjust_settings(settings, mocker):
         "first_refunds_watcher@mail.com",
         "second_refunds_watcher@mail.com",
     ]
-    mocker.patch("apps.stripebank.bank.StripeBankUSD.ue", Decimal(80))
-    mocker.patch("apps.stripebank.bank.StripeBankKZT.ue", Decimal("0.18"))
+    mocker.patch("apps.stripebank.bank.StripeBankUSD.get_currency_rate", return_value=Decimal(80))
+    mocker.patch("apps.stripebank.bank.StripeBankKZT.get_currency_rate", return_value=Decimal("0.18"))
 
 
 @pytest.fixture
@@ -66,7 +66,6 @@ def mock_stripe_refund(mocker):
 
 @pytest.fixture
 def mock_stripe_kz_refund(mocker):
-    mocker.patch("apps.stripebank.bank.StripeBankUSD.ue", 70)
     return mocker.patch("apps.stripebank.bank.StripeBankKZT.refund")
 
 
