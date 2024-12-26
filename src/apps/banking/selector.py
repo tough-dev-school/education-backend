@@ -1,6 +1,4 @@
-from typing import Type
-
-from django_stubs_ext import StrPromise
+from typing import TYPE_CHECKING, Type
 
 from apps.banking.base import Bank
 from apps.banking.exceptions import BankDoesNotExist
@@ -8,6 +6,10 @@ from apps.banking.zero_price_bank import ZeroPriceBank
 from apps.stripebank.bank import StripeBankKZT, StripeBankUSD
 from apps.tinkoff.bank import TinkoffBank
 from apps.tinkoff.dolyame import Dolyame
+
+if TYPE_CHECKING:
+    from django_stubs_ext import StrPromise
+
 
 BANKS: list[Type[Bank]] = [
     TinkoffBank,
@@ -19,7 +21,7 @@ BANKS: list[Type[Bank]] = [
 
 BANKS_MAPPING: dict[str, Type[Bank]] = {bank.bank_id: bank for bank in BANKS}
 BANK_KEYS = sorted(BANKS_MAPPING.keys())
-BANK_CHOICES: list[tuple[str, StrPromise]] = [(key, BANKS_MAPPING[key].name) for key in BANK_KEYS]
+BANK_CHOICES: list[tuple[str, "StrPromise"]] = [(key, BANKS_MAPPING[key].name) for key in BANK_KEYS]
 
 DEFAULT_BANK = TinkoffBank
 
