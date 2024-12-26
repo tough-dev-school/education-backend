@@ -1,6 +1,6 @@
 import pytest
 
-from apps.banking.selector import BANK_KEYS, BANKS
+from apps.banking.selector import BANK_KEYS, BANKS_MAPPING
 from apps.orders.services import OrderPaidSetter
 
 pytestmark = [pytest.mark.django_db]
@@ -72,7 +72,7 @@ def test_notification_message_include_payment_method(order, bank_id):
 
     message = OrderPaidSetter._get_happiness_message_text(order)
 
-    assert message == f"💰+1500 ₽, {BANKS[bank_id].name}\nЗапись курсов катанья и мытья - testgroup\nKamaz Otkhodov"
+    assert message == f"💰+1500 ₽, {BANKS_MAPPING[bank_id].name}\nЗапись курсов катанья и мытья - testgroup\nKamaz Otkhodov"
 
 
 def test_include_promocode_if_set(order, mixer):

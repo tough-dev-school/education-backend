@@ -10,7 +10,7 @@ from django.utils import timezone
 from freezegun import freeze_time
 
 from apps.banking.exceptions import BankDoesNotExist
-from apps.banking.selector import BANKS
+from apps.banking.selector import BANKS_MAPPING
 from apps.orders.models import Refund
 from apps.orders.services import OrderRefunder, OrderUnshipper
 from apps.orders.services.order_refunder import OrderRefunderException
@@ -250,7 +250,7 @@ def test_refund_notification_email_context_and_template_correct(refund, paid_ord
             order_id=paid_order.id,
             refunded_item="Кройка и шитьё",
             refund_author="Авраам Соломонович Пейзенгольц",
-            payment_method_name=BANKS["dolyame"].name,
+            payment_method_name=BANKS_MAPPING["dolyame"].name,
             price="0",
             amount="999",
             order_admin_site_url=f"http://absolute-url.url/admin/orders/order/{paid_order.id}/change/",
@@ -405,7 +405,7 @@ def test_partial_refund_notification_email_context_and_template_correct(refund, 
             order_id=paid_tinkoff_order.id,
             refunded_item="Кройка и шитьё",
             refund_author="Авраам Соломонович Пейзенгольц",
-            payment_method_name=BANKS["tinkoff_bank"].name,
+            payment_method_name=BANKS_MAPPING["tinkoff_bank"].name,
             price="499",
             amount="500",
             order_admin_site_url=f"http://absolute-url.url/admin/orders/order/{paid_tinkoff_order.id}/change/",

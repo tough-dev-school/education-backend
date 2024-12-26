@@ -18,3 +18,19 @@ class CurrencyRate(DefaultModel):
     class Meta:
         verbose_name = _("Currency")
         verbose_name_plural = _("Currencies")
+
+
+class Acquiring(DefaultModel):
+    class Bank(TextChoices):
+        TINKOFF = ("tinkoff_bank", _("Tinkoff"))
+        STRIPE_USD = ("stripe", _("Stripe USD"))
+        STRIPE_KZT = ("stripe_kz", _("Stripe KZT"))
+        DOLYAME = ("dolyame", _("Dolyame"))
+        ZERO_PRICE = "zero_price", _("Zero Price")
+
+    bank = models.CharField(max_length=255, choices=Bank.choices, db_index=True, unique=True)
+    percent = models.DecimalField(max_digits=5, decimal_places=2)
+
+    class Meta:
+        verbose_name = _("Acquiring percent")
+        verbose_name_plural = _("Acquiring percents")

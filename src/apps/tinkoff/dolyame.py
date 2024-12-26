@@ -18,7 +18,6 @@ class Dolyame(Bank):
     There is no 'commit' method: it's not required cause 'autocommit' is enabled on the bank side.
     """
 
-    acquiring_percent = Decimal("6.9")
     base_url = "https://partner.dolyame.ru/v1/"
     name = _("Dolyame")
     bank_id = "dolyame"

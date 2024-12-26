@@ -996,6 +996,14 @@ msgstr "Курс валюты"
 msgid "Currencies"
 msgstr "Курсы валют"
 
+#: apps/banking/models.py:34
+msgid "Acquiring percent"
+msgstr "Процент за эквайринг"
+
+#: apps/banking/models.py:35
+msgid "Acquiring percents"
+msgstr "Проценты за эквайринг"
+
 #, python-brace-format
 #~ msgid ""
 #~ "Orders {non_refunded_orders_as_message} have not been refunded. Up to 5 "

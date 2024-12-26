@@ -8,3 +8,7 @@ class BankDoesNotExist(BankException):
 
 class CurrencyRateDoesNotExist(BankException):
     """Currency rate with given name does not exist."""
+
+
+class AcquiringDoesNotExist(BankException):
+    """Acquiring percent for given bank does not exist."""

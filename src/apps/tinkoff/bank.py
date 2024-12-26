@@ -13,8 +13,8 @@ from apps.tinkoff.exceptions import TinkoffRequestException
 
 
 class TinkoffBank(Bank):
-    acquiring_percent = Decimal("2.49")
     name = _("Tinkoff")
+    bank_id = "tinkoff_bank"
 
     @property
     def is_partial_refund_available(self) -> bool:
