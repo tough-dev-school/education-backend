@@ -1,4 +1,3 @@
-from decimal import Decimal
 from typing import TYPE_CHECKING
 
 from django.utils.translation import gettext_lazy as _
@@ -15,8 +14,8 @@ class ZeroPriceBank(Bank):
 
     currency = "KIS"
     currency_symbol = "💋"
-    acquiring_percent = Decimal(0)
     name = _("Zero Price")
+    bank_id = "zero_price"
 
     def __init__(
         self,

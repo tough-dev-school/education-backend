@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytest
 
-from apps.banking.selector import BANK_KEYS, BANKS
+from apps.banking.selector import BANK_KEYS, BANKS_MAPPING
 from apps.orders import human_readable
 
 pytestmark = [
@@ -57,7 +57,7 @@ def test_get_readable_payment_method_name_if_payed_with_bank(bank_id, set_order_
 
     got = human_readable.get_order_payment_method_name(order)
 
-    assert got == BANKS[bank_id].name
+    assert got == BANKS_MAPPING[bank_id].name
 
 
 def test_get_readable_payment_method_name_if_paid_b2b(b2b_order):
