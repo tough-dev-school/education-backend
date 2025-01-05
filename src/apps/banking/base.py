@@ -7,8 +7,8 @@ from urllib.parse import urljoin
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
-from apps.banking.exceptions import CurrencyRateDoesNotExist
-from apps.banking.models import CurrencyRate
+from apps.banking.exceptions import AcquiringDoesNotExist, CurrencyRateDoesNotExist
+from apps.banking.models import Acquiring, CurrencyRate
 
 if TYPE_CHECKING:
     from django_stubs_ext import StrPromise
@@ -20,8 +20,8 @@ if TYPE_CHECKING:
 class Bank(metaclass=ABCMeta):
     currency = "RUB"
     currency_symbol = "₽"
-    acquiring_percent: Decimal = Decimal(0)  # we use it for analytics
     name: "StrPromise" = _("—")
+    bank_id: str = "—"
 
     def __init__(
         self,
@@ -75,6 +75,13 @@ class Bank(metaclass=ABCMeta):
             return CurrencyRate.objects.get(name=cls.currency).rate
         except CurrencyRate.DoesNotExist:
             raise CurrencyRateDoesNotExist(f"Currency {cls.currency} is not supported")
+
+    @classmethod
+    def get_acquiring_percent(cls) -> Decimal:  # we use it for analytics
+        try:
+            return Acquiring.objects.get(bank=cls.bank_id).percent
+        except Acquiring.DoesNotExist:
+            raise AcquiringDoesNotExist(f"Acquiring percent for {cls.name} is not supported")
 
     def get_formatted_amount(self, amount: Decimal) -> int:
         from apps.banking import price_calculator

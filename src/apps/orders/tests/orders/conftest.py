@@ -21,20 +21,17 @@ def course(factory):
 
 
 @pytest.fixture(autouse=True)
-def rub(factory):
-    return factory.currency_rate(name="RUB", rate=1)
+def _create_currency_rates(factory):
+    factory.currency_rate(name="RUB", rate=1)
+    factory.currency_rate(name="USD", rate=70)
+    factory.currency_rate(name="KZT", rate=Decimal("0.18"))
+    factory.currency_rate(name="KIS", rate=1)
 
 
 @pytest.fixture(autouse=True)
-def usd(factory):
-    return factory.currency_rate(name="USD", rate=70)
-
-
-@pytest.fixture(autouse=True)
-def kzt(factory):
-    return factory.currency_rate(name="KZT", rate=Decimal(0.18))
-
-
-@pytest.fixture(autouse=True)
-def kis(factory):
-    return factory.currency_rate(name="KIS", rate=1)
+def _create_acquiring_percents(factory):
+    factory.acquiring(bank="tinkoff_bank", percent=Decimal("2.79"))
+    factory.acquiring(bank="stripe", percent=Decimal(4))
+    factory.acquiring(bank="stripe_kz", percent=Decimal(4))
+    factory.acquiring(bank="dolyame", percent=Decimal("6.9"))
+    factory.acquiring(bank="zero_price", percent=Decimal(0))
