@@ -15,12 +15,12 @@ from core.celery import celery
 
 __all__ = [
     "amocrm_enabled",
-    "push_user",
-    "push_order",
-    "return_order",
-    "push_product_groups",
-    "push_course",
     "push_all_products_and_product_groups",
+    "push_course",
+    "push_order",
+    "push_product_groups",
+    "push_user",
+    "return_order",
 ]
 
 

@@ -49,6 +49,6 @@ class MessageEditForm(forms.ModelForm):
 
 
 __all__ = [
-    "MessageEditForm",
     "MessageAddForm",
+    "MessageEditForm",
 ]

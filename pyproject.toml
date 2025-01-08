@@ -129,8 +129,6 @@ ignore = [
     "A001",  # variable `{}` is shadowing a Python builtin
     "A002",  # argument `{}` is shadowing a Python builtin
     "A003",  # class attribute `{}` is shadowing a Python builtin
-    "ANN101",  # missing type annotation for `self` in method
-    "ANN102",  # missing type annotation for `cls` in classmethod
     "ANN401",  # dynamically typed expressions (typing.Any) are disallowed in `{}`
     "ARG002",  # unused method argument: `{}`
     "ARG005",  # unused lambda argument: `{}`
@@ -219,9 +217,9 @@ ignore = [
     "SIM108",  # use ternary operator `{}` instead of `if`-`else`-block
     "SIM300",  # yoda conditions are discouraged, use `{}` instead
     "SLF001",  # private member accessed: `{}`
-    "TCH001",  # move application import `{}` into a type-checking block
-    "TCH002",  # move third-party import `{}` into a type-checking block
-    "TCH003",  # move standart library import `{}` into a type-checking block
+    "TC001",  # move application import `{}` into a type-checking block
+    "TC002",  # move third-party import `{}` into a type-checking block
+    "TC003",  # move standart library import `{}` into a type-checking block
     "TRY003",  # avoid specifying long messages outside the exception class
     "TRY300",  # consider moving this statement to an `else` block
     "UP006",  # use `{}` instead of `{}` for type annotation

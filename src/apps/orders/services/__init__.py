@@ -8,12 +8,12 @@ from apps.orders.services.order_shipper import OrderShipper
 from apps.orders.services.order_unshipper import OrderUnshipper
 
 __all__ = [
-    "OrderCreator",
     "OrderCourseChanger",
+    "OrderCreator",
     "OrderDiplomaGenerator",
     "OrderEmailChanger",
     "OrderPaidSetter",
+    "OrderRefunder",
     "OrderShipper",
     "OrderUnshipper",
-    "OrderRefunder",
 ]

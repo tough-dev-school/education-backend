@@ -22,7 +22,7 @@ def order(
     **kwargs: dict[str, Any],
 ) -> Order:
     user = user if user else self.mixer.blend("users.User")
-    price = price if price is not None else Decimal("%d.%d" % (random.randint(1, 100500), random.randint(0, 99)))
+    price = price if price is not None else Decimal(f"{random.randint(100_000, 100500099)/100}")
     course = item if item else self.course(price=price)
 
     order = self.mixer.blend(

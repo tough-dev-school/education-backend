@@ -12,7 +12,7 @@ __all__ = [
     "Bundle",
     "Course",
     "Group",
-    "Record",
     "Product",
     "ProductType",
+    "Record",
 ]
