@@ -14,6 +14,6 @@ class HTTPError(NotionError): ...
 
 __all__ = [
     "HTTPError",
-    "NotionError",
     "NotSharedForWeb",
+    "NotionError",
 ]

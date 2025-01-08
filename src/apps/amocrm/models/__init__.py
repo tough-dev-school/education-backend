@@ -1,9 +1,9 @@
 __all__ = [
-    "AmoCRMUser",
     "AmoCRMCourse",
     "AmoCRMOrderLead",
     "AmoCRMOrderTransaction",
     "AmoCRMProductGroup",
+    "AmoCRMUser",
 ]
 
 from apps.amocrm.models.amocrm_course import AmoCRMCourse

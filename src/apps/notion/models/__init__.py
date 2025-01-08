@@ -5,9 +5,9 @@ from apps.notion.models.material_file import MaterialFile
 from apps.notion.models.video import Video
 
 __all__ = [
-    "NotionAsset",
-    "NotionCacheEntry",
     "Material",
     "MaterialFile",
+    "NotionAsset",
+    "NotionCacheEntry",
     "Video",
 ]

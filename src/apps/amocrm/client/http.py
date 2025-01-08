@@ -103,8 +103,8 @@ def patch(url: str, data: dict | list, expected_status_codes: list[int] | None =
 
 
 __all__ = [
-    "get",
-    "post",
     "delete",
+    "get",
     "patch",
+    "post",
 ]
