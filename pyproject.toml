@@ -129,6 +129,7 @@ ignore = [
     "A001",  # variable `{}` is shadowing a Python builtin
     "A002",  # argument `{}` is shadowing a Python builtin
     "A003",  # class attribute `{}` is shadowing a Python builtin
+    "A005",  # Module `{}` shadows a Python standard-library module
     "ANN401",  # dynamically typed expressions (typing.Any) are disallowed in `{}`
     "ARG002",  # unused method argument: `{}`
     "ARG005",  # unused lambda argument: `{}`

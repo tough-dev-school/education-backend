@@ -64,9 +64,9 @@ def test_root_answer(notification, answer, another_answer):
 
     context = notification(answer=answer, user=answer.author).get_context()
 
-    assert (
-        context["discussion_url"] == "https://frontend/lms/homework/answers/16a973e4-40f1-4887-a502-beeb5677ab42/#f593d1a9-120c-4c92-bed0-9f037537d4f4"
-    ), "Should be the link to the first answer with anchor to the current"
+    assert context["discussion_url"] == "https://frontend/lms/homework/answers/16a973e4-40f1-4887-a502-beeb5677ab42/#f593d1a9-120c-4c92-bed0-9f037537d4f4", (
+        "Should be the link to the first answer with anchor to the current"
+    )
 
 
 def test_markdown_to_html(notification, answer):

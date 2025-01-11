@@ -65,7 +65,7 @@ class NotionVideoAdmin(ModelAdmin):
     @admin.display(description=_("Youtube"))
     @mark_safe
     def youtube(self, obj: Video) -> str:
-        return f"""<a target="_blank" href="{ obj.get_youtube_url() }">
+        return f"""<a target="_blank" href="{obj.get_youtube_url()}">
             <img class="notion-youtube-logo" src="/static/logo/youtube.png" />
             {obj.youtube_id}</a>"""
 
@@ -73,7 +73,7 @@ class NotionVideoAdmin(ModelAdmin):
     @mark_safe
     def rutube(self, obj: Video) -> str:
         if obj.rutube_id is not None:
-            return f"""<a target="_blank" href="{ obj.get_rutube_url() }">
+            return f"""<a target="_blank" href="{obj.get_rutube_url()}">
                 <img class="notion-rutube-logo" src="/static/logo/rutube.png" />
                 {obj.rutube_id}</a>"""
 

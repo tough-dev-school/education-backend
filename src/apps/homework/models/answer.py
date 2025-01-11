@@ -56,7 +56,7 @@ class AnswerQuerySet(TreeQuerySet):
         roots_of_accessed_answers = [str(answer.tree_path[0]) for answer in accessed_answers.iterator()]
 
         if len(roots_of_accessed_answers) > 0:
-            return self.with_tree_fields().extra(where=[f'tree_path[1] in ({",".join(roots_of_accessed_answers)})'])  # NOQA: S610
+            return self.with_tree_fields().extra(where=[f"tree_path[1] in ({','.join(roots_of_accessed_answers)})"])  # NOQA: S610
         else:
             return self.none()
 

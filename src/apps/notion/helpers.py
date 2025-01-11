@@ -8,8 +8,7 @@ def page_url_to_id(page_url: str) -> BlockId:
     """Get page id from apps.notion.so URL"""
     url_path = urlparse(page_url).path
 
-    if url_path.endswith("/"):
-        url_path = url_path[:-1]
+    url_path = url_path.removesuffix("/")
 
     page_id = basename(url_path)
 

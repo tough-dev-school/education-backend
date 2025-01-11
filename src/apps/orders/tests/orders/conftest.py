@@ -32,7 +32,7 @@ def usd(factory):
 
 @pytest.fixture(autouse=True)
 def kzt(factory):
-    return factory.currency_rate(name="KZT", rate=Decimal(0.18))
+    return factory.currency_rate(name="KZT", rate=Decimal("0.18"))
 
 
 @pytest.fixture(autouse=True)

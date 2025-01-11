@@ -76,7 +76,7 @@ class NotionMaterialAdmin(ModelAdmin):
         slug = helpers.uuid_to_id(str(obj.slug))
         lms_url = obj.get_absolute_url()
 
-        return f"""<a target="_blank" href="{ lms_url }">
+        return f"""<a target="_blank" href="{lms_url}">
             <img class="notion-lms-logo" src="/static/logo/tds.png" />
             {slug}</a>"""
 
@@ -84,6 +84,6 @@ class NotionMaterialAdmin(ModelAdmin):
     @mark_safe
     def notion_page(self, obj: Material) -> str:
         notion_url = obj.get_notion_url()
-        return f"""<a target="_blank" href="{ notion_url }">
+        return f"""<a target="_blank" href="{notion_url}">
             <img class="notion-logo" src="/static/logo/notion.svg" />
             {obj.page_id}</a>"""
