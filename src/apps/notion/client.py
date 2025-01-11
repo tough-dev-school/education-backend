@@ -85,7 +85,7 @@ class NotionClient:
         )
 
         if response.status_code != 200:
-            raise HTTPError(f"{ response.http_version } error {response.status_code} fetching notion resouce {resource}: {response.text}")
+            raise HTTPError(f"{response.http_version} error {response.status_code} fetching notion resouce {resource}: {response.text}")
 
         notion_response = response.json()
 
@@ -110,6 +110,6 @@ class NotionClient:
         )
 
         if response.status_code != 200:
-            raise HTTPError(f"{ response.http_version } error {response.status_code} fetching asset {url}: {response.text}")
+            raise HTTPError(f"{response.http_version} error {response.status_code} fetching asset {url}: {response.text}")
 
         return response.content
