@@ -60,7 +60,7 @@ def save_asset(url: str, original_url: str) -> None:
 
 
 def is_notion_url(url: str) -> bool:
-    return any(notion_url in url for notion_url in NOTION_URLS)
+    return any(notion_url in url for notion_url in NOTION_URLS) or url.startswith("attachment")
 
 
 __all__ = [
