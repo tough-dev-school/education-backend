@@ -23,12 +23,12 @@ from apps.notion.block import NotionBlock
                     "type": "page",
                     "format": {
                         "page_cover": "secure.notion-static.com/typicalmacuser.jpg",
-                        "page_icon": "secure.notion-static.com/typicalmacuser_icon.jpg",
+                        "page_icon": "attachment:4c89fbde-da4c-40a0-9ce8-815b2904b722:typicalmacuser.jpg",
                     },
                 }
             },
             [
-                "secure.notion-static.com/typicalmacuser_icon.jpg",
+                "attachment:4c89fbde-da4c-40a0-9ce8-815b2904b722:typicalmacuser.jpg",
                 "secure.notion-static.com/typicalmacuser.jpg",
             ],
         ),
