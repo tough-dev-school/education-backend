@@ -24,7 +24,7 @@ django-behaviors = "^0.5.1"
 django-cachalot = "^2.6.1"
 django-cors-headers = "^4.2.0"
 django-debug-toolbar = "^4.2.0"
-django-environ = "^0.11.2"
+django-environ = "^0.12.0"
 django-filter = "^23.2"
 django-healthchecks = "^1.5.0"
 django-ipware = "^7.0.0"
@@ -72,7 +72,7 @@ pytest-xdist = "^3.3.1"
 requests-mock = "^1.11.0"
 respx = "^0.22.0"
 rope = "^1.10.0"
-ruff = "^0.7.0"
+ruff = "^0.9.0"
 toml-sort = "^0.24.0"
 types-babel = "^2.11.0.15"
 types-bleach = "^6.0.0.4"
@@ -129,8 +129,7 @@ ignore = [
     "A001",  # variable `{}` is shadowing a Python builtin
     "A002",  # argument `{}` is shadowing a Python builtin
     "A003",  # class attribute `{}` is shadowing a Python builtin
-    "ANN101",  # missing type annotation for `self` in method
-    "ANN102",  # missing type annotation for `cls` in classmethod
+    "A005",  # Module `{}` shadows a Python standard-library module
     "ANN401",  # dynamically typed expressions (typing.Any) are disallowed in `{}`
     "ARG002",  # unused method argument: `{}`
     "ARG005",  # unused lambda argument: `{}`
@@ -219,9 +218,9 @@ ignore = [
     "SIM108",  # use ternary operator `{}` instead of `if`-`else`-block
     "SIM300",  # yoda conditions are discouraged, use `{}` instead
     "SLF001",  # private member accessed: `{}`
-    "TCH001",  # move application import `{}` into a type-checking block
-    "TCH002",  # move third-party import `{}` into a type-checking block
-    "TCH003",  # move standart library import `{}` into a type-checking block
+    "TC001",  # move application import `{}` into a type-checking block
+    "TC002",  # move third-party import `{}` into a type-checking block
+    "TC003",  # move standart library import `{}` into a type-checking block
     "TRY003",  # avoid specifying long messages outside the exception class
     "TRY300",  # consider moving this statement to an `else` block
     "UP006",  # use `{}` instead of `{}` for type annotation

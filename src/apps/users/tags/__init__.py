@@ -1,8 +1,8 @@
 __all__ = [
     "AnyPurchaseTag",
-    "StartedTag",
-    "PurchasedTag",
     "B2BTag",
+    "PurchasedTag",
+    "StartedTag",
 ]
 
 from apps.users.tags.any_purchase_tag import AnyPurchaseTag

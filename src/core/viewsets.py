@@ -12,8 +12,8 @@ from core.validators import Validator
 
 __all__ = [
     "AppViewSet",
-    "ReadOnlyAppViewSet",
     "CreateDeleteAppViewSet",
+    "ReadOnlyAppViewSet",
 ]
 
 

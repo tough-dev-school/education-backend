@@ -60,9 +60,9 @@ def product_field_id(field_code: PRODUCTS_FIELDS_CODES) -> int:
 
 
 __all__ = [
-    "b2c_pipeline_status_id",
     "b2c_pipeline_id",
+    "b2c_pipeline_status_id",
     "contact_field_id",
-    "products_catalog_id",
     "product_field_id",
+    "products_catalog_id",
 ]

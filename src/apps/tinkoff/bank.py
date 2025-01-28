@@ -70,7 +70,7 @@ class TinkoffBank(Bank):
         parsed = response.json()
 
         if not parsed["Success"]:
-            raise TinkoffRequestException(f'Non-success request for {method}: {parsed["ErrorCode"]}, {parsed["Message"]} ({parsed["Details"]}')
+            raise TinkoffRequestException(f"Non-success request for {method}: {parsed['ErrorCode']}, {parsed['Message']} ({parsed['Details']}")
 
         return parsed
 

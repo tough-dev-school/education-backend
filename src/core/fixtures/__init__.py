@@ -6,16 +6,16 @@ from core.fixtures.send_mail import send_mail
 from core.fixtures.timezone import kamchatka_timezone
 
 __all__ = [
+    "_pause_auditlog",
+    "_pause_dashamail",
+    "_pause_tags",
+    "_set_current_user",
     "anon",
     "api",
     "as_",
     "as_user",
     "factory",
+    "kamchatka_timezone",
     "mixer",
     "send_mail",
-    "kamchatka_timezone",
-    "_pause_auditlog",
-    "_pause_dashamail",
-    "_pause_tags",
-    "_set_current_user",
 ]

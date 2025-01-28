@@ -19,17 +19,17 @@ class Video(TimestampedModel):
         return self.youtube_id
 
     def get_youtube_embed_src(self) -> str:
-        return f"https://www.youtube.com/embed/{ self.youtube_id }?rel=0"
+        return f"https://www.youtube.com/embed/{self.youtube_id}?rel=0"
 
     def get_youtube_url(self) -> str:
-        return f"https://youtu.be/{ self.youtube_id }"
+        return f"https://youtu.be/{self.youtube_id}"
 
     def get_rutube_embed_src(self) -> str:
         if self.rutube_access_key:
-            return f"https://rutube.ru/play/embed/{self.rutube_id }/?p={ self.rutube_access_key }"
-        return f"https://rutube.ru/play/embed/{self.rutube_id }/"
+            return f"https://rutube.ru/play/embed/{self.rutube_id}/?p={self.rutube_access_key}"
+        return f"https://rutube.ru/play/embed/{self.rutube_id}/"
 
     def get_rutube_url(self) -> str:
         if self.rutube_access_key:
-            return f"https://rutube.ru/video/{ self.rutube_id }/?p={ self.rutube_access_key }"
-        return f"https://rutube.ru/video/{ self.rutube_id }/"
+            return f"https://rutube.ru/video/{self.rutube_id}/?p={self.rutube_access_key}"
+        return f"https://rutube.ru/video/{self.rutube_id}/"

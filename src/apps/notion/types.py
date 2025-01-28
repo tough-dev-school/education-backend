@@ -70,9 +70,9 @@ class BlockProperties(TypedDict, total=False):
 
 
 __all__ = [
-    "BlockId",
     "BlockData",
     "BlockFormat",
+    "BlockId",
     "BlockProperties",
     "BlockType",
     "TextProperty",
