@@ -17,7 +17,23 @@ def test(anon, diploma):
     assert len(got["other_languages"]) == 0
     assert got["slug"] == diploma.slug
     assert got["student"]["uuid"] == str(diploma.study.student.uuid)
-    assert got["course"]["name"] == diploma.study.course.name
+    assert got["course"]["name"] == "Выход из зоны комфорта"
+    assert got["course"]["name_international"] == "Comfort zone exit"
+
+
+def test_student_name(anon, diploma):
+    diploma.study.student.first_name = "Авраам"
+    diploma.study.student.last_name = "Линкольн"
+    diploma.study.student.first_name_en = "Abraham"
+    diploma.study.student.last_name_en = "Lincoln"
+    diploma.study.student.save()
+
+    got = anon.get(f"/api/v2/diplomas/{diploma.slug}/")
+
+    assert got["student"]["first_name"] == "Авраам"
+    assert got["student"]["last_name"] == "Линкольн"
+    assert got["student"]["first_name_en"] == "Abraham"
+    assert got["student"]["last_name_en"] == "Lincoln"
 
 
 def test_other_languages(anon, diploma, diploma_with_another_lang):

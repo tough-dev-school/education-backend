@@ -30,5 +30,7 @@ class UserSafeSerializer(serializers.ModelSerializer):
             "uuid",
             "first_name",
             "last_name",
+            "first_name_en",
+            "last_name_en",
             "avatar",
         ]
