@@ -20,6 +20,21 @@ def test(anon, diploma):
     assert got["course"]["name"] == diploma.study.course.name
 
 
+def test_student_name(anon, diploma):
+    diploma.study.student.first_name = "Авраам"
+    diploma.study.student.last_name = "Линкольн"
+    diploma.study.student.first_name_en = "Abraham"
+    diploma.study.student.last_name_en = "Lincoln"
+    diploma.study.student.save()
+
+    got = anon.get(f"/api/v2/diplomas/{diploma.slug}/")
+
+    assert got["student"]["first_name"] == "Авраам"
+    assert got["student"]["last_name"] == "Линкольн"
+    assert got["student"]["first_name_en"] == "Abraham"
+    assert got["student"]["last_name_en"] == "Lincoln"
+
+
 def test_other_languages(anon, diploma, diploma_with_another_lang):
     got = anon.get(f"/api/v2/diplomas/{diploma.slug}/")
 
