@@ -9,6 +9,7 @@ class CourseSimpleSerializer(serializers.ModelSerializer):
         model = Course
         fields = [
             "name",
+            "name_international",
         ]
 
 

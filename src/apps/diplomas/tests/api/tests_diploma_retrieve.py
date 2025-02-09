@@ -17,7 +17,8 @@ def test(anon, diploma):
     assert len(got["other_languages"]) == 0
     assert got["slug"] == diploma.slug
     assert got["student"]["uuid"] == str(diploma.study.student.uuid)
-    assert got["course"]["name"] == diploma.study.course.name
+    assert got["course"]["name"] == "Выход из зоны комфорта"
+    assert got["course"]["name_international"] == "Comfort zone exit"
 
 
 def test_student_name(anon, diploma):

@@ -14,5 +14,10 @@ def api(api):
 
 
 @pytest.fixture
-def diploma(factory):
-    return factory.diploma(language=Languages.EN)
+def course(factory):
+    return factory.course(name="Выход из зоны комфорта", name_international="Comfort zone exit")
+
+
+@pytest.fixture
+def diploma(factory, course):
+    return factory.diploma(language=Languages.EN, course=course)
