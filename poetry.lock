@@ -1210,13 +1210,13 @@ resend = ["svix"]
 
 [[package]]
 name = "django-axes"
-version = "7.0.1"
+version = "7.0.2"
 description = "Keep track of failed login attempts in Django-powered sites."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "django_axes-7.0.1-py3-none-any.whl", hash = "sha256:31832eff26735fd1c600b30d987eb848fea175e59b256da43f36fe205a474961"},
-    {file = "django_axes-7.0.1.tar.gz", hash = "sha256:16121bbb7bacf1ed83f23a4800ac168707ffce014407df1049aa4f2ea28d3d52"},
+    {file = "django_axes-7.0.2-py3-none-any.whl", hash = "sha256:893dacce259d39e8cbcff655c61a008b3b827797c2f733f64fd9baf6bc7256e9"},
+    {file = "django_axes-7.0.2.tar.gz", hash = "sha256:a96bd6cdca9fbcbd250cf5ce1d92bfc72f2ce64b928804d9802d30a090406c59"},
 ]
 
 [package.dependencies]
