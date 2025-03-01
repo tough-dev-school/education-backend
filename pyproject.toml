@@ -34,7 +34,7 @@ django-storages = "^1.14"
 django-tree-queries = "^0.19.0"
 djangorestframework = "^3.14.0"
 drf-jwt = "^1.19.2"
-drf-recaptcha = "^3.0.0"
+drf-recaptcha = "^4.0.0"
 drf-spectacular = {extras = ["sidecar"], version = "^0.28.0"}
 emoji = "^2.8.0"
 httpx = {extras = ["http2"], version = "^0.27.0"}
