@@ -22,6 +22,7 @@ COPY poetry.lock pyproject.toml /
 
 # Version is taken from poetry.lock, assuming it is generated with up-to-date version of poetry
 RUN pip install --no-cache-dir poetry==$(cat poetry.lock |head -n1|awk -v FS='(Poetry |and)' '{print $2}')
+RUN poetry self add poetry-plugin-export
 RUN poetry export --format=requirements.txt > requirements.txt
 
 
