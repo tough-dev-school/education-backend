@@ -2,11 +2,15 @@
 build-backend = "poetry.core.masonry.api"
 requires = ["poetry-core"]
 
-[tool.poetry]
-authors = ["Fedor Borshev <fedor@borshev.com>"]
+[project]
+authors = [
+    {email = "fedor@borshev.com>", name = "Fedor Borshev"},
+]
 description = ""
+dynamic = ["dependencies"]
 name = "education-backend"
 readme = "README.md"
+requires-python = "~=3.11"
 version = "2023.10.20"
 
 [tool.poetry.dependencies]
@@ -40,7 +44,6 @@ emoji = "^2.8.0"
 httpx = {extras = ["http2"], version = "^0.27.0"}
 pillow = "^11.0.0"
 psycopg2-binary = "^2.9.7"
-python = "~3.11"
 python-benedict = "^0.34.0"
 redis = "^5.0.0"
 retry = "^0.9.2"
@@ -83,6 +86,9 @@ types-requests = "^2.31.0.2"
 types-retry = "^0.9.9.4"
 types-simplejson = "^3.19.0.2"
 types-stripe = "^3.5.2.14"
+
+[tool.poetry.requires-plugins]
+poetry-plugin-export = "^1.9.0"
 
 [tool.pymarkdown.plugins.md013]
 enabled = false
