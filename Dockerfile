@@ -49,7 +49,7 @@ RUN apt-get update \
 COPY --from=uwsgi-compile /uwsgi /usr/local/bin/
 RUN pip install --no-cache-dir --upgrade pip
 COPY --from=deps-compile /requirements.txt /
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --root-user-action -r requirements.txt
 
 WORKDIR /src
 COPY src /src
