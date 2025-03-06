@@ -29,8 +29,8 @@ class Deal(TimestampedModel):
 
 
 class Student(TimestampedModel):
-    user = models.OneToOneField("users.User", on_delete=models.PROTECT)
-    deal = models.ForeignKey(Deal, on_delete=models.CASCADE)
+    user = models.ForeignKey("users.User", on_delete=models.PROTECT)
+    deal = models.ForeignKey(Deal, related_name="students", on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Student")
