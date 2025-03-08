@@ -3,13 +3,8 @@ from typing import Any
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from apps.b2b.models import Customer, Deal, Student
+from apps.b2b.models import Deal
 from apps.b2b.services import BulkStudentCreator, DealCreator
-from core.admin import ModelAdmin, admin
-
-
-@admin.register(Customer)
-class CustomerAdmin(ModelAdmin): ...
 
 
 class DealCreateForm(forms.ModelForm):
@@ -56,51 +51,3 @@ class DealChangeForm(forms.ModelForm):
             BulkStudentCreator(user_input=student_list, deal=deal)()
 
         return deal
-
-
-class StudentInline(admin.TabularInline):
-    model = Student
-    extra = 0
-    fields = [
-        "name",
-        "email",
-    ]
-    readonly_fields = [
-        "name",
-        "email",
-    ]
-
-    def name(self, obj: Student) -> str:
-        return obj.user.get_full_name()
-
-    def email(self, obj: Student) -> str:
-        return obj.user.email
-
-    def has_add_permission(self, request: Any, obj: Any = None) -> bool:
-        return False
-
-    def has_change_permission(self, request: Any, obj: Any = None) -> bool:
-        return False
-
-    class Media:
-        css = {
-            "all": ("admin/css/condensed_students.css",),
-        }
-
-
-@admin.register(Deal)
-class DealAdmin(ModelAdmin):
-    fields = [
-        "author",
-        "customer",
-        "course",
-        "price",
-        "comment",
-        "students",
-    ]
-    add_form = DealCreateForm
-    form = DealChangeForm
-    readonly_fields = [
-        "author",
-    ]
-    inlines = [StudentInline]
