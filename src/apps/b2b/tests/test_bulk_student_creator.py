@@ -68,7 +68,7 @@ def test_student_can_participate_in_multiple_deals(creator, deal, another_deal):
 
     assert deal.students.count() == 2
     assert another_deal.students.count() == 2
-    assert deal.students.values_list("user", flat=True) == another_deal.students.values_list("user", flat=True), "same students participate in both deals"
+    assert set(deal.students.values_list("user", flat=True)) == set(another_deal.students.values_list("user", flat=True)), "same students participate in both deals"
 
 
 def test_service_outputs_email_count(creator):
