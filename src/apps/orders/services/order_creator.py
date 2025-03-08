@@ -10,6 +10,7 @@ from django.urls import reverse
 from django.utils.functional import cached_property
 
 from apps.amocrm.tasks import amocrm_enabled, push_order, push_user
+from apps.b2b.models import Deal
 from apps.banking.base import Bank
 from apps.banking.selector import get_bank_or_default
 from apps.dashamail import tasks as dashamail
@@ -37,6 +38,7 @@ class OrderCreator(BaseService):
     promocode: str | None = None
     desired_bank: str | None = None
     analytics: str | None = None
+    deal: Deal | None = None
 
     subscribe: bool = False
     push_to_amocrm: bool = True
@@ -76,6 +78,7 @@ class OrderCreator(BaseService):
             author=self.get_author(),
             price=self.price,  # type: ignore
             promocode=self.promocode,
+            deal=self.deal,
             bank_id=self.desired_bank,
             ue_rate=self.bank.get_currency_rate(),
             acquiring_percent=self.bank.acquiring_percent,
