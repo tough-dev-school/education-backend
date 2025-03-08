@@ -13,11 +13,11 @@ pytestmark = [
 def test_deal_is_created(customer, course):
     deal = DealCreator(
         customer=customer,
-        product=course,
+        course=course,
         price=Decimal("100.50"),
     )()
 
     assert deal.customer == customer
-    assert deal.product == course
+    assert deal.course == course
     assert str(deal.price) == "100.50"
     assert deal.author is not None, "Author is assigned during creation"

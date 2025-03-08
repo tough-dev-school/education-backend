@@ -10,7 +10,7 @@ from core.services import BaseService
 @dataclass
 class DealCreator(BaseService):
     customer: Customer
-    product: Course
+    course: Course
     price: Decimal
     comment: str | None = ""
 
@@ -24,7 +24,7 @@ class DealCreator(BaseService):
 
         return Deal.objects.create(
             customer=self.customer,
-            product=self.product,
+            course=self.course,
             author=author,
             price=self.price,
             comment=self.comment or "",

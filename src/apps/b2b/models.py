@@ -13,7 +13,7 @@ class Customer(TimestampedModel):
 
 class Deal(TimestampedModel):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    product = models.ForeignKey("products.Course", on_delete=models.PROTECT)
+    course = models.ForeignKey("products.Course", on_delete=models.PROTECT)
     author = models.ForeignKey("users.User", related_name="created_deals", verbose_name=_("Deal author"), on_delete=models.PROTECT, editable=False)
     comment = models.TextField(_("Comment"), blank=True)
     completed = models.DateTimeField(_("Date when the deal got completed"), null=True, blank=True)

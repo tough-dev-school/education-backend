@@ -23,7 +23,7 @@ class DealCreateForm(forms.ModelForm):
     def save(self, commit: bool = False) -> Deal:
         deal = DealCreator(
             customer=self.cleaned_data["customer"],
-            product=self.cleaned_data["product"],
+            course=self.cleaned_data["course"],
             price=self.cleaned_data["price"],
         )()
 
@@ -93,7 +93,7 @@ class DealAdmin(ModelAdmin):
     fields = [
         "author",
         "customer",
-        "product",
+        "course",
         "price",
         "comment",
         "students",
