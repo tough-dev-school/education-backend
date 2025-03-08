@@ -33,6 +33,7 @@ class OrderCreator(BaseService):
     user: User
     item: Shippable
     price: Decimal | None = None
+    author: User | None = None
     promocode: str | None = None
     desired_bank: str | None = None
     analytics: str | None = None
@@ -44,6 +45,15 @@ class OrderCreator(BaseService):
         self.price = self.price if self.price is not None else self.item.get_price(promocode=self.promocode)
         self.promocode = self._get_promocode(self.promocode)
         self.desired_bank = self.desired_bank if self.desired_bank is not None else ""
+
+    def get_author(self) -> User:
+        """Author (seller) of the order.
+        1. Particular author, e.g. when creating order from the b2b deal
+        2. Current user, e.g. when creating order from the admin interface
+        3. Student himself, self-ordering from the website
+        """
+
+        return next(author for author in [self.author, get_current_user(), self.user] if author is not None)
 
     def act(self) -> Order:
         order = self.create()
@@ -63,7 +73,7 @@ class OrderCreator(BaseService):
     def create(self) -> Order:
         return Order.objects.create(
             user=self.user,
-            author=get_current_user() or self.user,
+            author=self.get_author(),
             price=self.price,  # type: ignore
             promocode=self.promocode,
             bank_id=self.desired_bank,
