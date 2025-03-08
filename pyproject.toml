@@ -121,6 +121,7 @@ markers = [
     "auditlog: enable admin logging",
     "dashamail: enable automatic dashamail subscription (may have to patch some code to avoid actual internet connection",
     "freeze_time: freezing time marker (pytest-freezegun does not register it)",
+    "no_default_currency_rate: disable default currency rate setting",
     "single_thread: marked tests should be ran only in single thread",
     "slow: tests with inentional slow run",
     "user_tags_rebuild: enable automatic user tags rebuilding where it supposed to happen in the production app (sloow)",
