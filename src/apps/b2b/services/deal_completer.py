@@ -14,13 +14,22 @@ class DealCompleter(BaseService):
     """Creates orders for the given deal"""
 
     deal: Deal
+    ship_only: bool | None = False
 
     def act(self) -> None:
         if self.deal.completed is not None:
             return
 
-        self.create_orders(self.deal)
-        self.assign_existing_orders(self.deal)
+        orders: list[Order] = []
+
+        orders += self.create_orders(self.deal)
+        orders += self.assign_existing_orders(self.deal)
+
+        if not self.ship_only:
+            self.pay_and_ship(orders)  # this will pay and ship them
+        else:
+            self.ship_without_payment(orders)  # this will only ship
+
         self.mark_deal_as_complete()
 
     def get_single_order_price(self) -> Decimal:
@@ -63,3 +72,13 @@ class DealCompleter(BaseService):
             orders.append(order)
 
         return orders
+
+    @staticmethod
+    def pay_and_ship(orders: list[Order]) -> None:
+        for order in orders:
+            order.set_paid(silent=True)
+
+    @staticmethod
+    def ship_without_payment(orders: list[Order]) -> None:
+        for order in orders:
+            order.ship_without_payment()

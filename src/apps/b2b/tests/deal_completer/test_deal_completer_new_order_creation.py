@@ -26,6 +26,13 @@ def test_order_data_for_created_orders(completer, factory):
     assert order.bank_id == "b2b"
 
 
+def test_created_orders_are_paid(completer, factory):
+    completer(deal=factory.deal(student_count=1))()
+    order = Order.objects.first()
+
+    assert order.paid is not None
+
+
 @pytest.mark.parametrize(
     ("student_count", "single_order_price"),
     [

@@ -23,5 +23,6 @@ class DealAdmin(ModelAdmin):
     inlines = [StudentInline]
     actions = [
         actions.complete,
+        actions.ship_without_payment,
         actions.cancel,
     ]
