@@ -5,6 +5,7 @@ from django.core.cache import cache
 pytest_plugins = [
     "apps.diplomas.factory",
     "apps.orders.factory",
+    "apps.b2b.factory",
     "apps.products.factory",
     "apps.banking.factory",
     "core.factory",

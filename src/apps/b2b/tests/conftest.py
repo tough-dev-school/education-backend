@@ -17,10 +17,10 @@ def course(factory):
 
 
 @pytest.fixture
-def deal(mixer, customer, course):
-    return mixer.blend("b2b.Deal", customer=customer, course=course)
+def deal(factory, customer, course):
+    return factory.deal(customer=customer, course=course)
 
 
 @pytest.fixture
-def another_deal(mixer, customer, course):
-    return mixer.blend("b2b.Deal", customer=customer, course=course)
+def another_deal(factory, customer, course):
+    return factory.deal(customer=customer, course=course)
