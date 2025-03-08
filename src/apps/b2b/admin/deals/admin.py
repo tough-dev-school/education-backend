@@ -1,3 +1,4 @@
+from apps.b2b.admin.deals import actions
 from apps.b2b.admin.deals.forms import DealChangeForm, DealCreateForm
 from apps.b2b.admin.students import StudentInline
 from apps.b2b.models import Deal
@@ -20,3 +21,7 @@ class DealAdmin(ModelAdmin):
         "author",
     ]
     inlines = [StudentInline]
+    actions = [
+        actions.complete,
+        actions.cancel,
+    ]
