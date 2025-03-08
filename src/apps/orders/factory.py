@@ -22,7 +22,7 @@ def order(
     **kwargs: dict[str, Any],
 ) -> Order:
     user = user if user else self.mixer.blend("users.User")
-    price = price if price else self.price()
+    price = price if price is not None else self.price()
     course = item if item else self.course(price=price)
 
     order = self.mixer.blend(
