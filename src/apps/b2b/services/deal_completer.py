@@ -1,12 +1,15 @@
 from dataclasses import dataclass
 from decimal import Decimal
 
+from django.conf import settings
 from django.utils import timezone
 
 from apps.b2b.models import Deal
 from apps.orders.models import Order
 from apps.orders.services import OrderCreator
+from core.pricing import format_price
 from core.services import BaseService
+from core.tasks import send_telegram_message
 
 
 @dataclass
@@ -31,6 +34,7 @@ class DealCompleter(BaseService):
             self.ship_without_payment(orders)  # this will only ship
 
         self.mark_deal_as_complete()
+        self.send_happiness_message()
 
     def get_single_order_price(self) -> Decimal:
         return Decimal(self.deal.price / self.deal.students.count())
@@ -82,3 +86,12 @@ class DealCompleter(BaseService):
     def ship_without_payment(orders: list[Order]) -> None:
         for order in orders:
             order.ship_without_payment()
+
+    def send_happiness_message(self) -> None:
+        if not settings.HAPPINESS_MESSAGES_CHAT_ID:
+            return
+
+        send_telegram_message.delay(
+            chat_id=settings.HAPPINESS_MESSAGES_CHAT_ID,
+            text=f"💰+{format_price(self.deal.price)} ₽, {self.deal.customer}, продавец {self.deal.author}",
+        )
