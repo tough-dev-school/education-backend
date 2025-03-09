@@ -9,7 +9,11 @@ from apps.b2b.services import BulkStudentCreator, DealCreator
 
 class DealCreateForm(forms.ModelForm):
     author = forms.CharField(required=False, widget=forms.HiddenInput)
-    students = forms.CharField(required=False, widget=forms.Textarea)
+    students = forms.CharField(
+        label=_("Students"),
+        required=False,
+        widget=forms.Textarea,
+    )
 
     class Meta:
         model = Deal
