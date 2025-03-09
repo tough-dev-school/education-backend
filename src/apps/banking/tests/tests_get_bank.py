@@ -1,5 +1,6 @@
 import pytest
 
+from apps.banking.b2b import B2BBank
 from apps.banking.exceptions import BankDoesNotExist
 from apps.banking.selector import get_bank
 from apps.banking.zero_price_bank import ZeroPriceBank
@@ -14,6 +15,7 @@ from apps.tinkoff.bank import TinkoffBank
         ("stripe", StripeBankUSD),
         ("stripe_kz", StripeBankKZT),
         ("zero_price", ZeroPriceBank),
+        ("b2b", B2BBank),
         ("", None),
     ],
 )

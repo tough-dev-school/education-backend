@@ -1,0 +1,9 @@
+.dynamic-students {
+  .original p {
+    display: none;
+  }
+  td {
+    padding-top: .2em !important;
+    padding-bottom: .2em !important;
+  }
+}
