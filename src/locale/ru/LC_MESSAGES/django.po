@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-06 22:21+0300\n"
+"POT-Creation-Date: 2025-03-09 22:01+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -23,15 +23,96 @@ msgstr ""
 msgid "Too many failed login attempts"
 msgstr ""
 
-#: apps/b2b/admin.py:41
+#: apps/b2b/admin/customers.py:35 apps/b2b/models.py:25
+msgid "Deals"
+msgstr "Сделки"
+
+#: apps/b2b/admin/customers.py:38
+msgid "No deals yet"
+msgstr ""
+
+#: apps/b2b/admin/customers.py:41
+#, fuzzy, python-format
+#| msgid "%(deals) in progress"
+msgid "%(deals) in progress"
+msgstr "%(deals) в работе"
+
+#: apps/b2b/admin/customers.py:44
+#, fuzzy, python-format
+#| msgid "%(deals) completed"
+msgid "%(deals) completed"
+msgstr "%(deals) завершеных"
+
+#: apps/b2b/admin/customers.py:47
+#, fuzzy, python-format
+#| msgid "%(deals) canceled"
+msgid "%(deals) canceled"
+msgstr "%(deals) отмененных"
+
+#: apps/b2b/admin/customers.py:49
+#, fuzzy, python-format
+#| msgid "%(completed) completed, %(canceled) canceled"
+msgid "%(completed) completed, %(canceled) canceled"
+msgstr "%(completed) завершенных, %(canceled) отмененных"
+
+#: apps/b2b/admin/deals/actions.py:12
+msgid "Complete the deal"
+msgstr "Завершить и допустить до уроков"
+
+#: apps/b2b/admin/deals/actions.py:23
+msgid "Ship without payment"
+msgstr "Допустить до уроков без оплаты"
+
+#: apps/b2b/admin/deals/actions.py:34
+msgid "Cancel the deal"
+msgstr "Отменить"
+
+#: apps/b2b/admin/deals/admin.py:45
+msgid "Status"
+msgstr "Статус"
+
+#: apps/b2b/admin/deals/admin.py:48
+msgctxt "deals"
+msgid "canceled"
+msgstr "Отменена"
+
+#: apps/b2b/admin/deals/admin.py:51
+msgctxt "deals"
+msgid "complete"
+msgstr "Завершена"
+
+#: apps/b2b/admin/deals/admin.py:53
+msgctxt "deals"
+msgid "in_progress"
+msgstr "В работе"
+
+#: apps/b2b/admin/deals/admin.py:55 apps/b2b/models.py:21
+#: apps/orders/admin/orders/admin.py:84 apps/orders/models/order.py:45
+#: apps/products/admin/course.py:33
+msgid "Price"
+msgstr "Цена"
+
+#: apps/b2b/admin/deals/forms.py:36
 msgid "Bulk students add"
 msgstr "Добавить студентов"
 
-#: apps/b2b/admin.py:42
+#: apps/b2b/admin/deals/forms.py:37
 msgid "For complete deals new students will create new orders"
-msgstr "Если сделка завершена — создатутся новые заказы с нулевой ценой"
+msgstr "(ПОКА НЕ РАБОТАЕТ) Если сделка завершена — создатутся новые заказы с нулевой ценой"
 
-#: apps/b2b/models.py:10
+#: apps/b2b/admin/students.py:26
+#, fuzzy
+#| msgid "Username"
+msgid "name"
+msgstr "Логин"
+
+#: apps/b2b/admin/students.py:30
+#, fuzzy
+#| msgid "Email"
+msgid "email"
+msgstr "Почта"
+
+#: apps/b2b/models.py:10 apps/b2b/models.py:15
 msgid "Customer"
 msgstr "Клиент"
 
@@ -55,18 +136,9 @@ msgstr "Завершена"
 msgid "Date when the deal got canceled"
 msgstr "Отменена"
 
-#: apps/b2b/models.py:21 apps/orders/admin/orders/admin.py:84
-#: apps/orders/models/order.py:45 apps/products/admin/course.py:33
-msgid "Price"
-msgstr "Цена"
-
 #: apps/b2b/models.py:24 apps/orders/models/order.py:47
 msgid "Deal"
 msgstr "Сделка"
-
-#: apps/b2b/models.py:25
-msgid "Deals"
-msgstr "Сделки"
 
 #: apps/b2b/models.py:36 apps/diplomas/admin/diploma.py:51
 #: apps/studying/models.py:8 apps/users/models.py:107
@@ -76,6 +148,10 @@ msgstr "Студент"
 #: apps/b2b/models.py:37 apps/users/models.py:108
 msgid "Students"
 msgstr "Студенты"
+
+#: apps/banking/b2b.py:8
+msgid "B2B Bank"
+msgstr "B2B"
 
 #: apps/banking/base.py:24
 msgid "—"
@@ -366,7 +442,7 @@ msgstr "Дефолтный"
 
 #: apps/mailing/models/configuration.py:12
 msgid "Postmark"
-msgstr ""
+msgstr "Постмарк"
 
 #: apps/mailing/models/configuration.py:16
 msgid "Email sender"
@@ -1055,9 +1131,6 @@ msgstr "Нет"
 
 #~ msgid "Tinkoff Credit"
 #~ msgstr "Т.Кредит"
-
-#~ msgid "Username"
-#~ msgstr "Логин"
 
 #~ msgid "Slug"
 #~ msgstr "Слаг"

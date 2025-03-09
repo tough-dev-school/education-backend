@@ -2,6 +2,7 @@ from typing import Any
 
 from django.db.models import QuerySet
 from django.http import HttpRequest
+from django.utils.translation import gettext_lazy as _
 
 from apps.b2b.models import Student
 from core.admin import admin
@@ -22,9 +23,11 @@ class StudentInline(admin.TabularInline):
     def get_queryset(self, request: HttpRequest) -> QuerySet[Student]:
         return super().get_queryset(request).select_related("user", "deal")
 
+    @admin.display(description=_("name"))
     def name(self, obj: Student) -> str:
         return obj.user.get_full_name()
 
+    @admin.display(description=_("email"))
     def email(self, obj: Student) -> str:
         return obj.user.email
 
