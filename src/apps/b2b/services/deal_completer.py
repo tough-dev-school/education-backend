@@ -6,8 +6,8 @@ from django.contrib.admin.models import CHANGE
 from django.utils import timezone
 
 from apps.b2b.models import Deal
+from apps.b2b.utils import assign_existing_orders, create_orders
 from apps.orders.models import Order
-from apps.orders.services import OrderCreator
 from core.current_user import get_current_user
 from core.pricing import format_price
 from core.services import BaseService
@@ -27,8 +27,8 @@ class DealCompleter(BaseService):
 
         orders: list[Order] = []
 
-        orders += self.create_orders(self.deal)
-        orders += self.assign_existing_orders(self.deal)
+        orders += create_orders(deal=self.deal, single_order_price=self.get_single_order_price())
+        orders += assign_existing_orders(deal=self.deal)
 
         if not self.ship_only:
             self.pay_and_ship(orders)  # this will pay and ship them
@@ -41,7 +41,10 @@ class DealCompleter(BaseService):
             self.write_auditlog()
 
     def get_single_order_price(self) -> Decimal:
-        return Decimal(self.deal.price / self.deal.students.count())
+        try:
+            return Decimal(self.deal.price / self.deal.students.count())
+        except ArithmeticError:
+            return Decimal(0)
 
     def mark_deal_as_complete(self) -> None:
         self.deal.completed = timezone.now()
@@ -50,40 +53,6 @@ class DealCompleter(BaseService):
     def mark_deal_as_shipped_without_payment(self) -> None:
         self.deal.shipped_without_payment = timezone.now()
         self.deal.save()
-
-    def create_orders(self, deal: Deal) -> list[Order]:
-        orders = []
-        for student in deal.students.all():
-            if not Order.objects.filter(user_id=student.user_id, course_id=deal.course_id).exists():
-                order = OrderCreator(
-                    item=deal.course,
-                    price=self.get_single_order_price(),
-                    user=student.user,
-                    author=deal.author,
-                    desired_bank="b2b",
-                    deal=deal,
-                )()
-                orders.append(order)
-
-        return orders
-
-    def assign_existing_orders(self, deal: Deal) -> list[Order]:
-        orders = []
-        for student in deal.students.all():
-            order: Order
-
-            try:
-                order = Order.objects.get(user_id=student.user_id, course_id=deal.course_id, paid__isnull=True)
-            except Order.DoesNotExist:
-                continue
-
-            order.deal = deal
-            order.author = deal.author
-            order.save()
-
-            orders.append(order)
-
-        return orders
 
     @staticmethod
     def pay_and_ship(orders: list[Order]) -> None:

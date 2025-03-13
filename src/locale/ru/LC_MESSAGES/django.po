@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-13 12:41+0300\n"
+"POT-Creation-Date: 2025-03-13 15:08+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -36,8 +36,6 @@ msgid "Cancel the deal"
 msgstr "Отменить"
 
 #: apps/b2b/admin/deals/admin.py:51
-#| msgctxt "orders"
-#| msgid "Orders"
 msgctxt "deals"
 msgid "Orders"
 msgstr "Заказы"
@@ -64,18 +62,14 @@ msgstr "Добавить студентов"
 #: apps/b2b/admin/deals/forms.py:41
 msgid "For complete deals new students will create new orders"
 msgstr ""
-"(ПОКА НЕ РАБОТАЕТ) Если сделка завершена — создатутся новые заказы с нулевой "
-"ценой"
+"Если сделка завершена — создатутся новые заказы с нулевой "
+"ценой. Не забудьте пометить их как выполненные"
 
 #: apps/b2b/admin/students.py:26
-#, fuzzy
-#| msgid "Username"
 msgid "name"
-msgstr "Логин"
+msgstr "Имя"
 
 #: apps/b2b/admin/students.py:30
-#, fuzzy
-#| msgid "Email"
 msgid "email"
 msgstr "Почта"
 
@@ -111,10 +105,8 @@ msgid "Date when the deal got canceled"
 msgstr "Отменена"
 
 #: apps/b2b/models.py:27
-#, fuzzy
-#| msgid "Date when the deal got completed"
 msgid "Date when the deal got shipped without payment"
-msgstr "Допущены до уроков без оплаты"
+msgstr "Дата, когда студентов допустили до уроков без оплаты"
 
 #: apps/b2b/models.py:31 apps/orders/models/order.py:47
 msgid "Deal"
@@ -125,28 +117,21 @@ msgid "Deals"
 msgstr "Сделки"
 
 #: apps/b2b/models.py:40
-#| msgctxt "deals"
-#| msgid "canceled"
 msgctxt "deals"
 msgid "Canceled"
 msgstr "Отменена"
 
 #: apps/b2b/models.py:43
-#| msgctxt "deals"
-#| msgid "complete"
 msgctxt "deals"
 msgid "Complete"
 msgstr "Завершена"
 
 #: apps/b2b/models.py:46
-#| msgid "Shipped without payment"
 msgctxt "deals"
 msgid "Shipped without payment"
 msgstr "Ждём денег"
 
 #: apps/b2b/models.py:48
-#| msgctxt "deals"
-#| msgid "in_progress"
 msgctxt "deals"
 msgid "In progress"
 msgstr "В работе"

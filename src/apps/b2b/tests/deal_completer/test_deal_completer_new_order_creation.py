@@ -59,3 +59,8 @@ def test_price_calculation(completer, factory, student_count, single_order_price
     order = Order.objects.first()
 
     assert str(order.price) == single_order_price
+
+
+def test_zero_price(completer, factory):
+    deal = factory.deal(student_count=0, price=Decimal(0))
+    assert completer(deal=deal).get_single_order_price() == 0

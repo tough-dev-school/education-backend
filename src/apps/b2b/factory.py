@@ -20,7 +20,7 @@ def deal(
     customer = self.mixer.blend("b2b.Customer") if customer is None else customer
     author = self.mixer.blend("users.User") if author is None else author
     course = self.course() if course is None else course
-    price = price if price is not None else self.price()
+    price = price if price is not None else Decimal(self.price())
 
     deal = Deal.objects.create(
         customer=customer,
