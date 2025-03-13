@@ -25,7 +25,7 @@ class Deal(TimestampedModel):
         verbose_name_plural = _("Deals")
 
     def __str__(self) -> str:
-        return f"{self.customer.name} {self.price}"
+        return self.customer.name
 
 
 class Student(TimestampedModel):

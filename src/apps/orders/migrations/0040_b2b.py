@@ -14,7 +14,9 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="order",
             name="deal",
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to="b2b.deal", verbose_name="Deal"),
+            field=models.ForeignKey(
+                blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to="b2b.deal", verbose_name="Deal", related_name="orders"
+            ),
         ),
         migrations.AlterField(
             model_name="order",

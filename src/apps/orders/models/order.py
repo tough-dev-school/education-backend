@@ -44,7 +44,7 @@ class Order(TimestampedModel):
     user = models.ForeignKey("users.Student", verbose_name=_("User"), on_delete=models.PROTECT)
     price = models.DecimalField(_("Price"), max_digits=9, decimal_places=2)
     promocode = models.ForeignKey("orders.PromoCode", verbose_name=_("Promo Code"), blank=True, null=True, on_delete=models.PROTECT)
-    deal = models.ForeignKey("b2b.Deal", verbose_name=_("Deal"), blank=True, null=True, on_delete=models.PROTECT)
+    deal = models.ForeignKey("b2b.Deal", related_name="orders", verbose_name=_("Deal"), blank=True, null=True, on_delete=models.PROTECT)
 
     paid = models.DateTimeField(
         _("Date when order got paid"),

@@ -1,6 +1,8 @@
 from typing import TYPE_CHECKING
 
 from django.http import HttpRequest
+from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
@@ -19,6 +21,7 @@ class DealAdmin(ModelAdmin):
     list_display = [
         "customer",
         "price_formatted",
+        "orders",
         "status",
         "author",
     ]
@@ -29,11 +32,13 @@ class DealAdmin(ModelAdmin):
         "price",
         "comment",
         "students",
+        "orders",
     ]
     add_form = DealCreateForm
     form = DealChangeForm
     readonly_fields = [
         "author",
+        "orders",
     ]
     inlines = [StudentInline]
     actions = [
@@ -51,6 +56,18 @@ class DealAdmin(ModelAdmin):
             return pgettext_lazy("deals", "complete")
 
         return pgettext_lazy("deals", "in_progress")
+
+    @mark_safe
+    @admin.display(description=pgettext_lazy("deals", "Orders"))
+    def orders(self, obj: Deal) -> str:
+        url = reverse("admin:orders_order_changelist") + f"?deal__id__exact={obj.pk}"
+
+        orders_count = obj.orders.count()
+
+        if orders_count == 0:
+            return "—"
+
+        return f"<a target='_blank' href='{url}'>{orders_count}</a>"
 
     @admin.display(description=_("Price"), ordering="price")
     def price_formatted(self, obj: Deal) -> str:
