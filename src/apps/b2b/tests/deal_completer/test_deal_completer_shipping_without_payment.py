@@ -1,4 +1,6 @@
 import pytest
+from django.contrib.admin.models import CHANGE, LogEntry
+from django.contrib.contenttypes.models import ContentType
 
 from apps.orders.models import Order
 
@@ -41,3 +43,37 @@ def test_shipped_and_not_paid_orders_are_getting_paid_when_completer_is_called_f
     assert Order.objects.count() == 1, "No new orders created"
     assert order.paid is not None
     assert order.shipped is not None
+
+
+@pytest.mark.auditlog
+@pytest.mark.usefixtures("_set_current_user")
+def test_auditlog_for_shipment(completer, deal, user):
+    completer(deal=deal, ship_only=True)()
+
+    log = LogEntry.objects.filter(
+        content_type=ContentType.objects.get_for_model(deal).id,
+    ).last()
+    assert log.action_flag == CHANGE
+    assert log.change_message == "Deal shipped without payment"
+    assert log.user == user
+    assert log.object_id == str(deal.id)
+    assert log.object_repr == str(deal)
+
+
+@pytest.mark.auditlog
+@pytest.mark.usefixtures("_set_current_user")
+def test_auditlog_for_shipment_and_payments(completer, deal):
+    completer(deal=deal, ship_only=True)()
+    completer(deal=deal)()
+
+    logs = list(
+        LogEntry.objects.filter(
+            content_type=ContentType.objects.get_for_model(deal).id,
+        )
+        .order_by("-action_time")
+        .all()
+    )
+
+    assert len(logs) == 2, "Two log entries created, first for shipment and second for payment"
+    assert logs[0].change_message == "Deal shipped without payment"
+    assert logs[1].change_message == "Deal completed"

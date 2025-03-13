@@ -9,6 +9,7 @@ def _pause_auditlog(mocker, request):
         mocker.patch("apps.orders.services.order_paid_setter.OrderPaidSetter.write_auditlog")
         mocker.patch("apps.orders.services.order_shipper.OrderShipper.write_auditlog")
         mocker.patch("apps.orders.services.order_refunder.OrderRefunder.write_auditlog")
+        mocker.patch("apps.b2b.services.deal_completer.DealCompleter.write_auditlog")
 
 
 @pytest.fixture(autouse=True)
