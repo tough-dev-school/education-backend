@@ -3,7 +3,7 @@ from django.utils import timezone
 
 from apps.b2b.services import DealCompleter
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [pytest.mark.django_db, pytest.mark.usefixtures("_en")]
 
 
 def test_in_progress_by_default(deal):
