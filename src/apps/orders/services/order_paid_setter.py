@@ -31,7 +31,7 @@ class OrderPaidSetter(BaseService):
         self.mark_order_as_paid()
         self.ship()
 
-        self.write_success_admin_log()
+        self.write_auditlog()
         self.send_happiness_message()
 
         self.rebuild_user_tags()
@@ -82,7 +82,7 @@ class OrderPaidSetter(BaseService):
             text=self._get_happiness_message_text(self.order),
         )
 
-    def write_success_admin_log(self) -> None:
+    def write_auditlog(self) -> None:
         user = get_current_user() or self.order.user  # order may be paid anonymously, we assume customer made it
 
         write_admin_log.delay(

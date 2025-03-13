@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-04 21:20+0300\n"
+"POT-Creation-Date: 2025-03-13 15:08+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -23,9 +23,159 @@ msgstr ""
 msgid "Too many failed login attempts"
 msgstr ""
 
-#: apps/banking/base.py:22
+#: apps/b2b/admin/deals/actions.py:12
+msgid "Complete the deal"
+msgstr "Завершить и допустить до уроков"
+
+#: apps/b2b/admin/deals/actions.py:23
+msgid "Ship without payment"
+msgstr "Допустить до уроков без оплаты"
+
+#: apps/b2b/admin/deals/actions.py:34
+msgid "Cancel the deal"
+msgstr "Отменить"
+
+#: apps/b2b/admin/deals/admin.py:51
+msgctxt "deals"
+msgid "Orders"
+msgstr "Заказы"
+
+#: apps/b2b/admin/deals/admin.py:62
+msgid "Status"
+msgstr "Статус"
+
+#: apps/b2b/admin/deals/admin.py:66 apps/b2b/models.py:28
+#: apps/orders/admin/orders/admin.py:85 apps/orders/models/order.py:45
+#: apps/products/admin/course.py:33
+msgid "Price"
+msgstr "Цена"
+
+#: apps/b2b/admin/deals/forms.py:13 apps/b2b/models.py:57
+#: apps/users/models.py:108
+msgid "Students"
+msgstr "Студенты"
+
+#: apps/b2b/admin/deals/forms.py:40
+msgid "Bulk students add"
+msgstr "Добавить студентов"
+
+#: apps/b2b/admin/deals/forms.py:41
+msgid "For complete deals new students will create new orders"
+msgstr ""
+"Если сделка завершена — создатутся новые заказы с нулевой "
+"ценой. Не забудьте пометить их как выполненные"
+
+#: apps/b2b/admin/students.py:26
+msgid "name"
+msgstr "Имя"
+
+#: apps/b2b/admin/students.py:30
+msgid "email"
+msgstr "Почта"
+
+#: apps/b2b/models.py:13
+#, fuzzy
+#| msgid "Customer"
+msgctxt "deals"
+msgid "Customer name"
+msgstr "Название"
+
+#: apps/b2b/models.py:16 apps/b2b/models.py:21
+msgid "Customer"
+msgstr "Клиент"
+
+#: apps/b2b/models.py:17
+msgid "Customers"
+msgstr "Клиенты"
+
+#: apps/b2b/models.py:23
+msgid "Deal author"
+msgstr "Продавец"
+
+#: apps/b2b/models.py:24
+msgid "Comment"
+msgstr "Комментарий"
+
+#: apps/b2b/models.py:25
+msgid "Date when the deal got completed"
+msgstr "Завершена"
+
+#: apps/b2b/models.py:26
+msgid "Date when the deal got canceled"
+msgstr "Отменена"
+
+#: apps/b2b/models.py:27
+msgid "Date when the deal got shipped without payment"
+msgstr "Дата, когда студентов допустили до уроков без оплаты"
+
+#: apps/b2b/models.py:31 apps/orders/models/order.py:47
+msgid "Deal"
+msgstr "Сделка"
+
+#: apps/b2b/models.py:32
+msgid "Deals"
+msgstr "Сделки"
+
+#: apps/b2b/models.py:40
+msgctxt "deals"
+msgid "Canceled"
+msgstr "Отменена"
+
+#: apps/b2b/models.py:43
+msgctxt "deals"
+msgid "Complete"
+msgstr "Завершена"
+
+#: apps/b2b/models.py:46
+msgctxt "deals"
+msgid "Shipped without payment"
+msgstr "Ждём денег"
+
+#: apps/b2b/models.py:48
+msgctxt "deals"
+msgid "In progress"
+msgstr "В работе"
+
+#: apps/b2b/models.py:56 apps/diplomas/admin/diploma.py:51
+#: apps/studying/models.py:8 apps/users/models.py:107
+msgid "Student"
+msgstr "Студент"
+
+#: apps/banking/b2b.py:8
+msgid "B2B Bank"
+msgstr "B2B"
+
+#: apps/banking/base.py:24
 msgid "—"
 msgstr ""
+
+#: apps/banking/models.py:10
+msgid "RUB"
+msgstr "Рубль"
+
+#: apps/banking/models.py:11
+msgid "USD"
+msgstr "Доллар"
+
+#: apps/banking/models.py:12
+msgid "KZT"
+msgstr "Тенге"
+
+#: apps/banking/models.py:13
+msgid "KIS (for zero-price orders)"
+msgstr "KIS (для бесплатных заказов)"
+
+#: apps/banking/models.py:16
+msgid "Rate"
+msgstr "Курс"
+
+#: apps/banking/models.py:19
+msgid "Currency"
+msgstr "Курс валюты"
+
+#: apps/banking/models.py:20
+msgid "Currencies"
+msgstr "Курсы валют"
 
 #: apps/banking/zero_price_bank.py:19
 msgid "Zero Price"
@@ -50,14 +200,14 @@ msgstr "В списке только не запущенные и не заар�
 
 #: apps/chains/admin/message.py:48 apps/chains/models/chain.py:33
 #: apps/diplomas/admin/diploma.py:55 apps/homework/admin/answer/admin.py:56
-#: apps/homework/admin/answer/admin.py:100 apps/orders/models/order.py:59
+#: apps/homework/admin/answer/admin.py:100 apps/orders/models/order.py:60
 #: apps/products/models/course.py:74 apps/studying/models.py:9
 msgid "Course"
 msgstr "Курс"
 
 #: apps/chains/models/chain.py:32 apps/chains/models/message.py:32
 #: apps/homework/models/question.py:14 apps/magnets/models.py:20
-#: apps/products/admin/course.py:17
+#: apps/products/admin/course.py:16
 msgid "Name"
 msgstr "Название"
 
@@ -101,16 +251,11 @@ msgstr "Письмо"
 msgid "Email chain messages"
 msgstr "Письма"
 
-#: apps/diplomas/admin/diploma.py:51 apps/studying/models.py:8
-#: apps/users/models.py:107
-msgid "Student"
-msgstr "Студент"
-
 #: apps/diplomas/admin/diploma.py:59 apps/homework/models/question.py:19
 msgid "Homework"
 msgstr "Домашка"
 
-#: apps/diplomas/admin/diploma.py:63 apps/orders/admin/orders/admin.py:93
+#: apps/diplomas/admin/diploma.py:63 apps/orders/admin/orders/admin.py:89
 msgid "Date"
 msgstr "Дата"
 
@@ -178,11 +323,11 @@ msgstr "Шаблон диплома"
 msgid "Diploma templates"
 msgstr "Шаблоны дипломов"
 
-#: apps/diplomas/models.py:117
+#: apps/diplomas/models.py:120
 msgid "Manual upload"
 msgstr "Ручная загрузка"
 
-#: apps/diplomas/models.py:118
+#: apps/diplomas/models.py:121
 msgid "Manual uploads"
 msgstr "Ручные загрузки"
 
@@ -251,15 +396,6 @@ msgstr "Реакции"
 msgid "Invalid emoji symbol"
 msgstr "Неверный символ emoji"
 
-#: apps/homework/services/reaction_creator.py:55
-#, python-brace-format
-msgid ""
-"Only {Reaction.MAX_REACTIONS_FROM_ONE_AUTHOR} reactions per answer are "
-"allowed from one author."
-msgstr ""
-"Только {Reaction.MAX_REACTIONS_FROM_ONE_AUTHOR} реакций на ответ разрешено "
-"для одного пользователя."
-
 #: apps/magnets/admin.py:31
 msgid "Lead count"
 msgstr "Количество лидов"
@@ -298,7 +434,7 @@ msgstr "Дефолтный"
 
 #: apps/mailing/models/configuration.py:12
 msgid "Postmark"
-msgstr ""
+msgstr "Постмарк"
 
 #: apps/mailing/models/configuration.py:16
 msgid "Email sender"
@@ -342,15 +478,23 @@ msgstr ""
 msgid "Notion"
 msgstr "ID страницы в ноушене"
 
-#: apps/notion/admin/video.py:33
+#: apps/notion/admin/video.py:13 apps/notion/models/video.py:9
+msgid "Title"
+msgstr "Название"
+
+#: apps/notion/admin/video.py:14 apps/notion/admin/video.py:65
 msgid "Youtube"
 msgstr "Youtube"
 
-#: apps/notion/admin/video.py:37
+#: apps/notion/admin/video.py:14 apps/notion/admin/video.py:15
+msgid "Paste it from the address bar"
+msgstr "Скопируйте адрес из строки браузера"
+
+#: apps/notion/admin/video.py:15 apps/notion/admin/video.py:72
 msgid "RuTube"
 msgstr "Rutube"
 
-#: apps/notion/admin/video.py:37
+#: apps/notion/admin/video.py:39
 msgid "This video is already in the database"
 msgstr "Это видео уже добавлено"
 
@@ -419,14 +563,6 @@ msgstr "Файл"
 msgid "Material files"
 msgstr "Файлы"
 
-#: apps/notion/models/video.py:9 apps/notion/models/video.py:10
-msgid "Paste it from the address bar"
-msgstr "Скопируйте адрес из строки браузера"
-
-#: apps/notion/models/video.py:9
-msgid "Title"
-msgstr "Название"
-
 #: apps/notion/models/video.py:15
 msgid "Notion video"
 msgstr "Видео"
@@ -442,16 +578,6 @@ msgstr "Пометить оплаченным"
 #: apps/orders/admin/orders/actions.py:29 apps/orders/models/refund.py:31
 msgid "Refund"
 msgstr "Сделать полный возврат"
-
-#: apps/orders/admin/orders/actions.py:44
-#, python-brace-format
-msgid "Orders {refunded_orders_as_message} refunded."
-msgstr "Заказы {refunded_orders_as_message} возвращены."
-
-#: apps/orders/admin/orders/actions.py:50
-#, python-brace-format
-msgid "Some orders have not been refunded: {error_messages}"
-msgstr ""
 
 #: apps/orders/admin/orders/actions.py:55
 msgid "Ship without payments"
@@ -474,24 +600,19 @@ msgstr "Засчитать домашку"
 msgid "Disaccept homework"
 msgstr "Не засчитать домашку"
 
-#: apps/orders/admin/orders/admin.py:89 apps/orders/models/order.py:45
-#: apps/products/admin/course.py:34
-msgid "Price"
-msgstr "Цена"
-
-#: apps/orders/admin/orders/admin.py:97 apps/orders/models/order.py:44
+#: apps/orders/admin/orders/admin.py:93 apps/orders/models/order.py:44
 msgid "User"
 msgstr "Юзер"
 
-#: apps/orders/admin/orders/admin.py:101
+#: apps/orders/admin/orders/admin.py:97
 msgid "Item"
 msgstr "Товар"
 
-#: apps/orders/admin/orders/admin.py:105
+#: apps/orders/admin/orders/admin.py:101
 msgid "Payment"
 msgstr "Оплата"
 
-#: apps/orders/admin/orders/admin.py:109
+#: apps/orders/admin/orders/admin.py:105
 msgid "Login as customer"
 msgstr "Зайти от имени студента"
 
@@ -557,45 +678,45 @@ msgstr "Продавец"
 msgid "Promo Code"
 msgstr "Промо-код"
 
-#: apps/orders/models/order.py:49
+#: apps/orders/models/order.py:50
 msgid "Date when order got paid"
 msgstr "Когда оплачен"
 
-#: apps/orders/models/order.py:53
+#: apps/orders/models/order.py:54
 msgid "Date when order was shipped"
 msgstr "Дата выполнения"
 
-#: apps/orders/models/order.py:55
+#: apps/orders/models/order.py:56
 msgid "User-requested bank string"
 msgstr "Банк"
 
-#: apps/orders/models/order.py:56
+#: apps/orders/models/order.py:57
 msgid "Purchase-time UE rate"
 msgstr "Курс у.е. на момент покупки"
 
-#: apps/orders/models/order.py:60 apps/products/models/record.py:18
+#: apps/orders/models/order.py:61 apps/products/models/record.py:18
 msgid "Record"
 msgstr "Запись"
 
-#: apps/orders/models/order.py:61 apps/products/models/bundle.py:20
+#: apps/orders/models/order.py:62 apps/products/models/bundle.py:20
 msgid "Bundle"
 msgstr "Набор"
 
-#: apps/orders/models/order.py:70
+#: apps/orders/models/order.py:71
 msgctxt "orders"
 msgid "Order"
 msgstr "Заказ"
 
-#: apps/orders/models/order.py:71
+#: apps/orders/models/order.py:72
 msgctxt "orders"
 msgid "Orders"
 msgstr "Заказы"
 
-#: apps/orders/models/order.py:74
+#: apps/orders/models/order.py:75
 msgid "May mark orders as paid"
 msgstr "Отмечать заказы оплаченными"
 
-#: apps/orders/models/order.py:75
+#: apps/orders/models/order.py:76
 msgid "May mark orders as unpaid"
 msgstr "Возвращать заказы"
 
@@ -692,11 +813,11 @@ msgstr ""
 msgid "Amount to refund should be more or equal 0"
 msgstr ""
 
-#: apps/products/admin/course.py:43
+#: apps/products/admin/course.py:42
 msgid "Email messages"
 msgstr "Письма"
 
-#: apps/products/admin/course.py:52
+#: apps/products/admin/course.py:51
 msgid "Order confirmation"
 msgstr "Подтверждение покупки (для бесплатных курсов)"
 
@@ -821,13 +942,13 @@ msgstr "Записи"
 msgid "Stripe"
 msgstr "Страйп"
 
-#: apps/stripebank/bank.py:69
+#: apps/stripebank/bank.py:68
 #, fuzzy
 #| msgid "Stripe"
 msgid "Stripe USD"
 msgstr "Страйп"
 
-#: apps/stripebank/bank.py:78
+#: apps/stripebank/bank.py:76
 #, fuzzy
 #| msgid "Stripe"
 msgid "Stripe KZT"
@@ -955,10 +1076,6 @@ msgstr "пользователь"
 msgid "users"
 msgstr "пользователи"
 
-#: apps/users/models.py:108
-msgid "Students"
-msgstr "Студенты"
-
 #: core/admin/filters.py:25
 msgid "Yes"
 msgstr "Да"
@@ -967,34 +1084,37 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: apps/banking/models.py:10
-msgid "RUB"
-msgstr "Рубль"
+#, fuzzy, python-format
+#~| msgid "%(deals) in progress"
+#~ msgid "%(deals) in progress"
+#~ msgstr "%(deals) в работе"
 
-#: apps/banking/models.py:11
-msgid "USD"
-msgstr "Доллар"
+#, fuzzy, python-format
+#~| msgid "%(deals) completed"
+#~ msgid "%(deals) completed"
+#~ msgstr "%(deals) завершеных"
 
-#: apps/banking/models.py:12
-msgid "KZT"
-msgstr "Тенге"
+#, fuzzy, python-format
+#~| msgid "%(deals) canceled"
+#~ msgid "%(deals) canceled"
+#~ msgstr "%(deals) отмененных"
 
-#: apps/banking/models.py:13
-msgid "KIS (for zero-price orders)"
-msgstr "KIS (для бесплатных заказов)"
+#, fuzzy, python-format
+#~| msgid "%(completed) completed, %(canceled) canceled"
+#~ msgid "%(completed) completed, %(canceled) canceled"
+#~ msgstr "%(completed) завершенных, %(canceled) отмененных"
 
+#, python-brace-format
+#~ msgid ""
+#~ "Only {Reaction.MAX_REACTIONS_FROM_ONE_AUTHOR} reactions per answer are "
+#~ "allowed from one author."
+#~ msgstr ""
+#~ "Только {Reaction.MAX_REACTIONS_FROM_ONE_AUTHOR} реакций на ответ "
+#~ "разрешено для одного пользователя."
 
-#: apps/banking/models.py:15
-msgid "Rate"
-msgstr "Курс"
-
-#: apps/banking/models.py:18
-msgid "Currency"
-msgstr "Курс валюты"
-
-#: apps/banking/models.py:19
-msgid "Currencies"
-msgstr "Курсы валют"
+#, python-brace-format
+#~ msgid "Orders {refunded_orders_as_message} refunded."
+#~ msgstr "Заказы {refunded_orders_as_message} возвращены."
 
 #, python-brace-format
 #~ msgid ""
@@ -1023,9 +1143,6 @@ msgstr "Курсы валют"
 
 #~ msgid "Tinkoff Credit"
 #~ msgstr "Т.Кредит"
-
-#~ msgid "Username"
-#~ msgstr "Логин"
 
 #~ msgid "Slug"
 #~ msgstr "Слаг"
@@ -1058,9 +1175,6 @@ msgstr "Курсы валют"
 #~ msgstr ""
 #~ "Если задать — для подарочных заказов будем использовать этот шаблон, а не "
 #~ "предыдущий"
-
-#~ msgid "Comment"
-#~ msgstr "Комментарий"
 
 #~ msgid "id"
 #~ msgstr "Ид"

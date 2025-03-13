@@ -1,6 +1,7 @@
 import re
 from collections.abc import Mapping, Sequence
 from datetime import datetime
+from decimal import Decimal
 from typing import Any, Protocol, Type
 
 from django.contrib.humanize.templatetags.humanize import naturalday
@@ -13,6 +14,7 @@ from django.utils.html import format_html
 from prettyjson import PrettyJSONWidget
 
 from core.admin.widgets import AppNumberInput
+from core.pricing import format_price
 
 
 class DjangoModelAdminProtocol(Protocol):
@@ -21,6 +23,9 @@ class DjangoModelAdminProtocol(Protocol):
 
     @property
     def add_fieldsets(self) -> Sequence[tuple[str | None, Any]]: ...
+
+    @property
+    def actions(self) -> Sequence[str]: ...
 
 
 class AppAdminMixin:
@@ -62,6 +67,14 @@ class AppAdminMixin:
 
         return super().get_fieldsets(request, obj)  # type: ignore
 
+    def get_actions(self: DjangoModelAdminProtocol, request: HttpRequest) -> dict[str, Any]:
+        """Remove mass deletion if not defined in actions"""
+        actions = super().get_actions(request)  # type: ignore
+        if "delete_selected" in actions and "delete_selected" not in self.actions:
+            del actions["delete_selected"]
+
+        return actions
+
     def _link(self, href: str, text: str) -> str:
         return format_html(f'<a href="{href}">{text}</a>')
 
@@ -85,3 +98,6 @@ class AppAdminMixin:
             href="tel:" + re.sub(r"[^\d\+]+", "", phone),
             text=phone,
         )
+
+    def _price(self, price: Decimal | None) -> str:
+        return format_price(price)
