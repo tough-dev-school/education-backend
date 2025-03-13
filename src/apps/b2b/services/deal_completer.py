@@ -30,17 +30,21 @@ class DealCompleter(BaseService):
 
         if not self.ship_only:
             self.pay_and_ship(orders)  # this will pay and ship them
+            self.send_happiness_message()
+            self.mark_deal_as_complete()
         else:
             self.ship_without_payment(orders)  # this will only ship
-
-        self.mark_deal_as_complete()
-        self.send_happiness_message()
+            self.mark_deal_as_shipped_without_payment()
 
     def get_single_order_price(self) -> Decimal:
         return Decimal(self.deal.price / self.deal.students.count())
 
     def mark_deal_as_complete(self) -> None:
         self.deal.completed = timezone.now()
+        self.deal.save()
+
+    def mark_deal_as_shipped_without_payment(self) -> None:
+        self.deal.shipped_without_payment = timezone.now()
         self.deal.save()
 
     def create_orders(self, deal: Deal) -> list[Order]:

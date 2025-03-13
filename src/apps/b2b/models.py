@@ -18,6 +18,7 @@ class Deal(TimestampedModel):
     comment = models.TextField(_("Comment"), blank=True)
     completed = models.DateTimeField(_("Date when the deal got completed"), null=True, blank=True)
     canceled = models.DateTimeField(_("Date when the deal got canceled"), null=True, blank=True)
+    shipped_without_payment = models.DateTimeField(_("Date when the deal got shipped without payment"), null=True, blank=True)
     price = models.DecimalField(_("Price"), max_digits=9, decimal_places=2)
 
     class Meta:

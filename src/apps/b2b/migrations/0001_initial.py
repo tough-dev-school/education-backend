@@ -39,6 +39,7 @@ class Migration(migrations.Migration):
                 ("comment", models.TextField(blank=True, verbose_name="Comment")),
                 ("completed", models.DateTimeField(blank=True, null=True, verbose_name="Date when the deal got completed")),
                 ("canceled", models.DateTimeField(blank=True, null=True, verbose_name="Date when the deal got canceled")),
+                ("shipped_without_payment", models.DateTimeField(blank=True, null=True, verbose_name="Date when the deal got shipped without payment")),
                 ("price", models.DecimalField(decimal_places=2, max_digits=9, verbose_name="Price")),
                 (
                     "author",

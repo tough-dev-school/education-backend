@@ -26,6 +26,16 @@ def test_order_data_for_created_orders(completer, factory):
     assert order.bank_id == "b2b"
 
 
+def test_orders_are_paid_and_shipped(completer, factory):
+    deal = factory.deal(student_count=1)
+
+    completer(deal=deal)()
+    order = Order.objects.first()
+
+    assert order.paid is not None
+    assert order.shipped is not None
+
+
 def test_created_orders_are_paid(completer, factory):
     completer(deal=factory.deal(student_count=1))()
     order = Order.objects.first()
