@@ -3,7 +3,10 @@ import pytest
 from apps.banking.base import Bank
 from apps.banking.exceptions import CurrencyRateDoesNotExist
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [
+    pytest.mark.django_db,
+    pytest.mark.no_default_currency_rate,
+]
 
 
 @pytest.fixture

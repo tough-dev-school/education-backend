@@ -103,7 +103,7 @@ def not_paid_order(course, factory, user):
         bank_id="dolyame",  # any bank should be suitable here
     )
 
-    order.ship()
+    order.update(shipped=datetime.fromisoformat("2022-12-10 09:22Z"))  # set manualy to skip side effects
     return order
 
 

@@ -6,12 +6,12 @@ from apps.orders.models import Order, Refund
 from apps.products.models import Product
 from apps.users.models import User
 from core.helpers import random_string
-from core.test.factory import register
+from core.test.factory import FixtureFactory, register
 
 
 @register
 def order(
-    self: Any,
+    self: FixtureFactory,
     slug: str | None = None,
     is_paid: bool = False,
     item: Product | None = None,
@@ -22,7 +22,7 @@ def order(
     **kwargs: dict[str, Any],
 ) -> Order:
     user = user if user else self.mixer.blend("users.User")
-    price = price if price is not None else Decimal(f"{random.randint(100_000, 100500099) / 100}")
+    price = price if price is not None else self.price()
     course = item if item else self.course(price=price)
 
     order = self.mixer.blend(
@@ -43,5 +43,10 @@ def order(
 
 
 @register
-def refund(self: Any, **kwargs: dict[str, Any]) -> Refund:
+def refund(self: FixtureFactory, **kwargs: dict[str, Any]) -> Refund:
     return self.mixer.blend("orders.Refund", **kwargs)
+
+
+@register
+def price(self: FixtureFactory) -> Decimal:  # NOQA: ARG001
+    return Decimal(f"{random.randint(100_000, 100500099) / 100}")

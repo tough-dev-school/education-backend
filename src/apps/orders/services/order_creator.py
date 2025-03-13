@@ -10,6 +10,7 @@ from django.urls import reverse
 from django.utils.functional import cached_property
 
 from apps.amocrm.tasks import amocrm_enabled, push_order, push_user
+from apps.b2b.models import Deal
 from apps.banking.base import Bank
 from apps.banking.selector import get_bank_or_default
 from apps.dashamail import tasks as dashamail
@@ -33,9 +34,11 @@ class OrderCreator(BaseService):
     user: User
     item: Shippable
     price: Decimal | None = None
+    author: User | None = None
     promocode: str | None = None
     desired_bank: str | None = None
     analytics: str | None = None
+    deal: Deal | None = None
 
     subscribe: bool = False
     push_to_amocrm: bool = True
@@ -44,6 +47,15 @@ class OrderCreator(BaseService):
         self.price = self.price if self.price is not None else self.item.get_price(promocode=self.promocode)
         self.promocode = self._get_promocode(self.promocode)
         self.desired_bank = self.desired_bank if self.desired_bank is not None else ""
+
+    def get_author(self) -> User:
+        """Author (seller) of the order.
+        1. Particular author, e.g. when creating order from the b2b deal
+        2. Current user, e.g. when creating order from the admin interface
+        3. Student himself, self-ordering from the website
+        """
+
+        return next(author for author in [self.author, get_current_user(), self.user] if author is not None)
 
     def act(self) -> Order:
         order = self.create()
@@ -63,9 +75,10 @@ class OrderCreator(BaseService):
     def create(self) -> Order:
         return Order.objects.create(
             user=self.user,
-            author=get_current_user() or self.user,
+            author=self.get_author(),
             price=self.price,  # type: ignore
             promocode=self.promocode,
+            deal=self.deal,
             bank_id=self.desired_bank,
             ue_rate=self.bank.get_currency_rate(),
             acquiring_percent=self.bank.acquiring_percent,
