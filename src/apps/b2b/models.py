@@ -1,10 +1,16 @@
+from typing import TYPE_CHECKING
+
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation import pgettext_lazy
 
 from core.models import TimestampedModel, models
 
+if TYPE_CHECKING:
+    from django_stubs_ext import StrPromise
+
 
 class Customer(TimestampedModel):
-    name = models.CharField(max_length=255)
+    name = models.CharField(verbose_name=pgettext_lazy("deals", "Customer name"), max_length=255)
 
     class Meta:
         verbose_name = _("Customer")
@@ -27,6 +33,19 @@ class Deal(TimestampedModel):
 
     def __str__(self) -> str:
         return self.customer.name
+
+    def get_status_representation(self) -> "StrPromise":
+        """Text representation of date-based DB fields"""
+        if self.canceled is not None:
+            return pgettext_lazy("deals", "Canceled")
+
+        if self.completed is not None:
+            return pgettext_lazy("deals", "Complete")
+
+        if self.shipped_without_payment is not None:
+            return pgettext_lazy("deals", "Shipped without payment")
+
+        return pgettext_lazy("deals", "In progress")
 
 
 class Student(TimestampedModel):

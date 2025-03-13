@@ -47,16 +47,6 @@ class DealAdmin(ModelAdmin):
         actions.cancel,
     ]
 
-    @admin.display(description=_("Status"))
-    def status(self, obj: Deal) -> "StrPromise":
-        if obj.canceled is not None:
-            return pgettext_lazy("deals", "canceled")
-
-        if obj.completed is not None:
-            return pgettext_lazy("deals", "complete")
-
-        return pgettext_lazy("deals", "in_progress")
-
     @mark_safe
     @admin.display(description=pgettext_lazy("deals", "Orders"))
     def orders(self, obj: Deal) -> str:
@@ -68,6 +58,10 @@ class DealAdmin(ModelAdmin):
             return "—"
 
         return f"<a target='_blank' href='{url}'>{orders_count}</a>"
+
+    @admin.display(description=_("Status"))
+    def status(self, obj: Deal) -> "StrPromise":
+        return obj.get_status_representation()
 
     @admin.display(description=_("Price"), ordering="price")
     def price_formatted(self, obj: Deal) -> str:

@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
                 ("created", models.DateTimeField(auto_now_add=True, db_index=True)),
                 ("modified", models.DateTimeField(blank=True, db_index=True, null=True)),
-                ("name", models.CharField(max_length=255)),
+                ("name", models.CharField(max_length=255, verbose_name="Customer name")),
             ],
             options={
                 "verbose_name": "Customer",

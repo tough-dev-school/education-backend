@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-09 22:01+0300\n"
+"POT-Creation-Date: 2025-03-13 12:41+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -23,38 +23,6 @@ msgstr ""
 msgid "Too many failed login attempts"
 msgstr ""
 
-#: apps/b2b/admin/customers.py:35 apps/b2b/models.py:25
-msgid "Deals"
-msgstr "Сделки"
-
-#: apps/b2b/admin/customers.py:38
-msgid "No deals yet"
-msgstr ""
-
-#: apps/b2b/admin/customers.py:41
-#, fuzzy, python-format
-#| msgid "%(deals) in progress"
-msgid "%(deals) in progress"
-msgstr "%(deals) в работе"
-
-#: apps/b2b/admin/customers.py:44
-#, fuzzy, python-format
-#| msgid "%(deals) completed"
-msgid "%(deals) completed"
-msgstr "%(deals) завершеных"
-
-#: apps/b2b/admin/customers.py:47
-#, fuzzy, python-format
-#| msgid "%(deals) canceled"
-msgid "%(deals) canceled"
-msgstr "%(deals) отмененных"
-
-#: apps/b2b/admin/customers.py:49
-#, fuzzy, python-format
-#| msgid "%(completed) completed, %(canceled) canceled"
-msgid "%(completed) completed, %(canceled) canceled"
-msgstr "%(completed) завершенных, %(canceled) отмененных"
-
 #: apps/b2b/admin/deals/actions.py:12
 msgid "Complete the deal"
 msgstr "Завершить и допустить до уроков"
@@ -67,38 +35,37 @@ msgstr "Допустить до уроков без оплаты"
 msgid "Cancel the deal"
 msgstr "Отменить"
 
-#: apps/b2b/admin/deals/admin.py:45
+#: apps/b2b/admin/deals/admin.py:51
+#| msgctxt "orders"
+#| msgid "Orders"
+msgctxt "deals"
+msgid "Orders"
+msgstr "Заказы"
+
+#: apps/b2b/admin/deals/admin.py:62
 msgid "Status"
 msgstr "Статус"
 
-#: apps/b2b/admin/deals/admin.py:48
-msgctxt "deals"
-msgid "canceled"
-msgstr "Отменена"
-
-#: apps/b2b/admin/deals/admin.py:51
-msgctxt "deals"
-msgid "complete"
-msgstr "Завершена"
-
-#: apps/b2b/admin/deals/admin.py:53
-msgctxt "deals"
-msgid "in_progress"
-msgstr "В работе"
-
-#: apps/b2b/admin/deals/admin.py:55 apps/b2b/models.py:21
-#: apps/orders/admin/orders/admin.py:84 apps/orders/models/order.py:45
+#: apps/b2b/admin/deals/admin.py:66 apps/b2b/models.py:28
+#: apps/orders/admin/orders/admin.py:85 apps/orders/models/order.py:45
 #: apps/products/admin/course.py:33
 msgid "Price"
 msgstr "Цена"
 
-#: apps/b2b/admin/deals/forms.py:36
+#: apps/b2b/admin/deals/forms.py:13 apps/b2b/models.py:57
+#: apps/users/models.py:108
+msgid "Students"
+msgstr "Студенты"
+
+#: apps/b2b/admin/deals/forms.py:40
 msgid "Bulk students add"
 msgstr "Добавить студентов"
 
-#: apps/b2b/admin/deals/forms.py:37
+#: apps/b2b/admin/deals/forms.py:41
 msgid "For complete deals new students will create new orders"
-msgstr "(ПОКА НЕ РАБОТАЕТ) Если сделка завершена — создатутся новые заказы с нулевой ценой"
+msgstr ""
+"(ПОКА НЕ РАБОТАЕТ) Если сделка завершена — создатутся новые заказы с нулевой "
+"ценой"
 
 #: apps/b2b/admin/students.py:26
 #, fuzzy
@@ -112,42 +79,82 @@ msgstr "Логин"
 msgid "email"
 msgstr "Почта"
 
-#: apps/b2b/models.py:10 apps/b2b/models.py:15
+#: apps/b2b/models.py:13
+#, fuzzy
+#| msgid "Customer"
+msgctxt "deals"
+msgid "Customer name"
+msgstr "Название"
+
+#: apps/b2b/models.py:16 apps/b2b/models.py:21
 msgid "Customer"
 msgstr "Клиент"
 
-#: apps/b2b/models.py:11
+#: apps/b2b/models.py:17
 msgid "Customers"
 msgstr "Клиенты"
 
-#: apps/b2b/models.py:17
+#: apps/b2b/models.py:23
 msgid "Deal author"
 msgstr "Продавец"
 
-#: apps/b2b/models.py:18
+#: apps/b2b/models.py:24
 msgid "Comment"
 msgstr "Комментарий"
 
-#: apps/b2b/models.py:19
+#: apps/b2b/models.py:25
 msgid "Date when the deal got completed"
 msgstr "Завершена"
 
-#: apps/b2b/models.py:20
+#: apps/b2b/models.py:26
 msgid "Date when the deal got canceled"
 msgstr "Отменена"
 
-#: apps/b2b/models.py:24 apps/orders/models/order.py:47
+#: apps/b2b/models.py:27
+#, fuzzy
+#| msgid "Date when the deal got completed"
+msgid "Date when the deal got shipped without payment"
+msgstr "Допущены до уроков без оплаты"
+
+#: apps/b2b/models.py:31 apps/orders/models/order.py:47
 msgid "Deal"
 msgstr "Сделка"
 
-#: apps/b2b/models.py:36 apps/diplomas/admin/diploma.py:51
+#: apps/b2b/models.py:32
+msgid "Deals"
+msgstr "Сделки"
+
+#: apps/b2b/models.py:40
+#| msgctxt "deals"
+#| msgid "canceled"
+msgctxt "deals"
+msgid "Canceled"
+msgstr "Отменена"
+
+#: apps/b2b/models.py:43
+#| msgctxt "deals"
+#| msgid "complete"
+msgctxt "deals"
+msgid "Complete"
+msgstr "Завершена"
+
+#: apps/b2b/models.py:46
+#| msgid "Shipped without payment"
+msgctxt "deals"
+msgid "Shipped without payment"
+msgstr "Ждём денег"
+
+#: apps/b2b/models.py:48
+#| msgctxt "deals"
+#| msgid "in_progress"
+msgctxt "deals"
+msgid "In progress"
+msgstr "В работе"
+
+#: apps/b2b/models.py:56 apps/diplomas/admin/diploma.py:51
 #: apps/studying/models.py:8 apps/users/models.py:107
 msgid "Student"
 msgstr "Студент"
-
-#: apps/b2b/models.py:37 apps/users/models.py:108
-msgid "Students"
-msgstr "Студенты"
 
 #: apps/banking/b2b.py:8
 msgid "B2B Bank"
@@ -263,7 +270,7 @@ msgstr "Письма"
 msgid "Homework"
 msgstr "Домашка"
 
-#: apps/diplomas/admin/diploma.py:63 apps/orders/admin/orders/admin.py:88
+#: apps/diplomas/admin/diploma.py:63 apps/orders/admin/orders/admin.py:89
 msgid "Date"
 msgstr "Дата"
 
@@ -608,19 +615,19 @@ msgstr "Засчитать домашку"
 msgid "Disaccept homework"
 msgstr "Не засчитать домашку"
 
-#: apps/orders/admin/orders/admin.py:92 apps/orders/models/order.py:44
+#: apps/orders/admin/orders/admin.py:93 apps/orders/models/order.py:44
 msgid "User"
 msgstr "Юзер"
 
-#: apps/orders/admin/orders/admin.py:96
+#: apps/orders/admin/orders/admin.py:97
 msgid "Item"
 msgstr "Товар"
 
-#: apps/orders/admin/orders/admin.py:100
+#: apps/orders/admin/orders/admin.py:101
 msgid "Payment"
 msgstr "Оплата"
 
-#: apps/orders/admin/orders/admin.py:104
+#: apps/orders/admin/orders/admin.py:105
 msgid "Login as customer"
 msgstr "Зайти от имени студента"
 
@@ -1091,6 +1098,26 @@ msgstr "Да"
 #: core/admin/filters.py:26
 msgid "No"
 msgstr "Нет"
+
+#, fuzzy, python-format
+#~| msgid "%(deals) in progress"
+#~ msgid "%(deals) in progress"
+#~ msgstr "%(deals) в работе"
+
+#, fuzzy, python-format
+#~| msgid "%(deals) completed"
+#~ msgid "%(deals) completed"
+#~ msgstr "%(deals) завершеных"
+
+#, fuzzy, python-format
+#~| msgid "%(deals) canceled"
+#~ msgid "%(deals) canceled"
+#~ msgstr "%(deals) отмененных"
+
+#, fuzzy, python-format
+#~| msgid "%(completed) completed, %(canceled) canceled"
+#~ msgid "%(completed) completed, %(canceled) canceled"
+#~ msgstr "%(completed) завершенных, %(canceled) отмененных"
 
 #, python-brace-format
 #~ msgid ""
