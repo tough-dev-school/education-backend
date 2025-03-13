@@ -6,8 +6,11 @@ def _pause_auditlog(mocker, request):
     if request.node.get_closest_marker("auditlog") is None:
         mocker.patch("core.tasks.write_admin_log.write_admin_log.delay")
 
-        mocker.patch("apps.orders.services.order_paid_setter.OrderPaidSetter.write_success_admin_log")
-        mocker.patch("apps.orders.services.order_refunder.OrderRefunder.write_success_admin_log")
+        mocker.patch("apps.orders.services.order_paid_setter.OrderPaidSetter.write_auditlog")
+        mocker.patch("apps.orders.services.order_shipper.OrderShipper.write_auditlog")
+        mocker.patch("apps.orders.services.order_refunder.OrderRefunder.write_auditlog")
+        mocker.patch("apps.b2b.services.deal_completer.DealCompleter.write_auditlog")
+        mocker.patch("apps.b2b.services.bulk_student_creator.BulkStudentCreator.write_auditlog_for_student_creation")
 
 
 @pytest.fixture(autouse=True)

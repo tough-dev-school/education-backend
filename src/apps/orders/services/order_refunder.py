@@ -67,7 +67,7 @@ class OrderRefunder(BaseService):
         if not self.order.paid or self.order.price == 0:
             OrderUnshipper(order=self.order)()
 
-        self.write_success_admin_log()
+        self.write_auditlog()
         self.notify_dangerous_operation_happened()
 
         self.update_user_tags()
@@ -113,7 +113,7 @@ class OrderRefunder(BaseService):
         if self.amount and self.bank and settings.BANKS_REFUNDS_ENABLED:
             self.bank.refund(self.amount)
 
-    def write_success_admin_log(self) -> None:
+    def write_auditlog(self) -> None:
         write_admin_log.delay(
             action_flag=CHANGE,
             app="orders",

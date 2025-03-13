@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     "apps.a12n",
     "apps.amocrm",
     "apps.banking",
+    "apps.b2b",
     "apps.chains",
     "apps.dashamail",
     "apps.diplomas",
