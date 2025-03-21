@@ -6,6 +6,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.staticfiles",
 
+    "adminsortable2",
     "anymail",
     "axes",
     "corsheaders",
@@ -27,6 +28,7 @@ INSTALLED_APPS = [
     "apps.dashamail",
     "apps.diplomas",
     "apps.homework",
+    "apps.lessons",
     "apps.magnets",
     "apps.mailing",
     "apps.notion",
