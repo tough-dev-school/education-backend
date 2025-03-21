@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from apps.notion.api.serializers import NotionPageSerializer
 from apps.notion.api.throttling import NotionThrottle
 from apps.notion.cache import get_cached_page
-from apps.notion.helpers import uuid_to_id
+from apps.notion.id import uuid_to_id
 from apps.notion.models import Material
 from core.views import AuthenticatedAPIView
 

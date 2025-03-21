@@ -1,6 +1,6 @@
 import pytest
 
-from apps.notion.helpers import get_youtube_video_id
+from apps.notion.video import get_youtube_video_id
 
 
 @pytest.mark.parametrize(

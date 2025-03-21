@@ -4,8 +4,8 @@ from django import forms
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
-from apps.notion import helpers
 from apps.notion.models import Video
+from apps.notion.video import get_rutube_access_key, get_rutube_video_id, get_youtube_video_id
 from core.admin import ModelAdmin, admin
 
 
@@ -31,7 +31,7 @@ class NotionVideoForm(forms.ModelForm):
 
     @no_type_check
     def get_youtube_id(self) -> str:
-        youtube_id = helpers.get_youtube_video_id(self.cleaned_data.get("youtube")) or ""
+        youtube_id = get_youtube_video_id(self.cleaned_data.get("youtube")) or ""
 
         if youtube_id:
             videos_with_same_youtube_id = Video.objects.exclude(id=self.instance.id).filter(youtube_id=youtube_id)
@@ -45,8 +45,8 @@ class NotionVideoForm(forms.ModelForm):
         cleaned_data = super().clean()
 
         cleaned_data["youtube_id"] = self.get_youtube_id()
-        cleaned_data["rutube_id"] = helpers.get_rutube_video_id(cleaned_data.get("rutube") or "")
-        cleaned_data["rutube_access_key"] = helpers.get_rutube_access_key(cleaned_data.get("rutube") or "")
+        cleaned_data["rutube_id"] = get_rutube_video_id(cleaned_data.get("rutube") or "")
+        cleaned_data["rutube_access_key"] = get_rutube_access_key(cleaned_data.get("rutube") or "")
 
         return cleaned_data
 

@@ -1,6 +1,6 @@
 import pytest
 
-from apps.notion.helpers import id_to_uuid
+from apps.notion.id import id_to_uuid
 
 
 @pytest.mark.parametrize(
