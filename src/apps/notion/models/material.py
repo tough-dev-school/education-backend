@@ -9,7 +9,7 @@ from django.core.exceptions import ValidationError
 from django.db.models import Q, QuerySet, UniqueConstraint
 from django.utils.translation import gettext_lazy as _
 
-from apps.notion.helpers import uuid_to_id
+from apps.notion.id import uuid_to_id
 from apps.users.models import User
 from core.models import TimestampedModel, models
 

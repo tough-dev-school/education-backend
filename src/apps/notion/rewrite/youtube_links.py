@@ -1,6 +1,6 @@
-from apps.notion.helpers import get_youtube_video_id
 from apps.notion.rewrite.video import get_video_mapping
 from apps.notion.types import BlockData, TextProperty
+from apps.notion.video import get_youtube_video_id
 
 
 def rewrite_youtube_links(notion_block_data: BlockData) -> BlockData:

@@ -6,9 +6,9 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from httpx import HTTPError
 
-from apps.notion import helpers
 from apps.notion.client import NotionClient
 from apps.notion.exceptions import NotionError
+from apps.notion.id import page_url_to_id, uuid_to_id
 from apps.notion.models import Material
 from core.admin import ModelAdmin, admin
 
@@ -19,14 +19,14 @@ class NotionMaterialForm(forms.ModelForm):
         fields = "__all__"
 
     def clean_page_id(self) -> str:
-        return helpers.page_url_to_id(self.cleaned_data["page_id"])
+        return page_url_to_id(self.cleaned_data["page_id"])
 
     def clean_title(self) -> str:
         """Fetch page title from apps.notion"""
         if len(self.cleaned_data["title"]) == 0 and "https://" in self.data["page_id"]:
             notion = NotionClient()
             try:
-                page = notion.fetch_page(helpers.page_url_to_id(self.data["page_id"]))
+                page = notion.fetch_page(page_url_to_id(self.data["page_id"]))
             except (HTTPError, NotionError):
                 return ""
 
@@ -65,7 +65,7 @@ class NotionMaterialAdmin(ModelAdmin):
     def get_search_results(self, request: HttpRequest, queryset: QuerySet, search_term: str) -> tuple[QuerySet, bool]:
         """Allow searching both by long and short ids"""
         if len(search_term) == 36:
-            search_term = helpers.uuid_to_id(search_term)
+            search_term = uuid_to_id(search_term)
 
         queryset.annotate(slug_without_dashes=Replace("slug", Value("-"), Value("")))
         return super().get_search_results(request, queryset, search_term)
@@ -73,7 +73,7 @@ class NotionMaterialAdmin(ModelAdmin):
     @admin.display(description=_("LMS"))
     @mark_safe
     def our_page(self, obj: Material) -> str:
-        slug = helpers.uuid_to_id(str(obj.slug))
+        slug = uuid_to_id(str(obj.slug))
         lms_url = obj.get_absolute_url()
 
         return f"""<a target="_blank" href="{lms_url}">

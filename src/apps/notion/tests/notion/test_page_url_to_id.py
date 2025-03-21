@@ -1,6 +1,6 @@
 import pytest
 
-from apps.notion.helpers import page_url_to_id
+from apps.notion.id import page_url_to_id
 
 
 @pytest.mark.parametrize(
