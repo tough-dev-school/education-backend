@@ -13,27 +13,27 @@ TIMEOUT = 60 * 60 * 24 * 365 * 5  # 5 years
 
 
 class NotionCache:
-    def set(self, cache_key: str, content: NotionPage | Callable[[], NotionPage]) -> NotionPage:
+    def set(self, page_id: str, content: NotionPage | Callable[[], NotionPage]) -> NotionPage:
         expires_datetime = self.get_expires_time()
         content = self.get_content_as_notion_page(content)
         content_to_save = content.to_json()
-        NotionCacheEntry.objects.update_or_create(cache_key=cache_key, defaults=dict(content=content_to_save, expires=expires_datetime))
+        NotionCacheEntry.objects.update_or_create(page_id=page_id, defaults=dict(content=content_to_save, expires=expires_datetime))
         return content
 
-    def get(self, cache_key: str) -> NotionPage | None:
-        cache_entry = self._get(cache_key)
+    def get(self, page_id: str) -> NotionPage | None:
+        cache_entry = self._get(page_id)
         if cache_entry:
             return NotionPage.from_json(cache_entry.content)
 
-    def get_or_set(self, cache_key: str, content: NotionPage | Callable[[], NotionPage]) -> NotionPage:
-        cache_entry = self._get(cache_key)
+    def get_or_set(self, page_id: str, content: NotionPage | Callable[[], NotionPage]) -> NotionPage:
+        cache_entry = self._get(page_id)
         if cache_entry:
             return NotionPage.from_json(cache_entry.content)
-        return self.set(cache_key, content)
+        return self.set(page_id, content)
 
     @staticmethod
-    def _get(cache_key: str) -> NotionCacheEntry | None:
-        return NotionCacheEntry.objects.not_expired().filter(cache_key=cache_key).first()
+    def _get(page_id: str) -> NotionCacheEntry | None:
+        return NotionCacheEntry.objects.not_expired().filter(page_id=page_id).first()
 
     @staticmethod
     def get_content_as_notion_page(content: NotionPage | Callable[[], NotionPage]) -> NotionPage:

@@ -22,6 +22,6 @@ class Command(BaseCommand):
                     self.stdout.write(f"\tGot {link}")
                     link_count += 1
 
-            self.stdout.write(f"Processed cache entry: {entry.cache_key}")
+            self.stdout.write(f"Processed cache entry: {entry.page_id}")
 
         self.stdout.write(self.style.SUCCESS(f"Successfully processed {link_count} links in {count} cache entries"))

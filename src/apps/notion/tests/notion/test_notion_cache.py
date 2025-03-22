@@ -17,7 +17,7 @@ pytestmark = [
 def cache_entry(not_expired_datetime, page, mixer):
     return mixer.blend(
         "notion.NotionCacheEntry",
-        cache_key="some_key",
+        page_id="some_key",
         content=page.to_json(),
         expires=not_expired_datetime,
     )
@@ -95,13 +95,13 @@ def test_set_callable(cache, page_from_callable, page):
 
 
 def test_get(cache, page, cache_entry):
-    got = cache.get(cache_entry.cache_key)
+    got = cache.get(cache_entry.page_id)
 
     assert got == page
 
 
 def test_get_nothing_if_cache_expired(cache, expired_cache_entry):
-    got = cache.get(expired_cache_entry.cache_key)
+    got = cache.get(expired_cache_entry.page_id)
 
     assert not got
 
@@ -115,7 +115,7 @@ def test_set_and_get(cache, page):
 
 
 def test_get_or_set_get_if_exists_and_not_expired(cache, page, cache_entry, page_from_callable):
-    got = cache.get_or_set(cache_entry.cache_key, content=page_from_callable)
+    got = cache.get_or_set(cache_entry.page_id, content=page_from_callable)
 
     page_from_callable.assert_not_called()
     assert got == page
@@ -123,9 +123,9 @@ def test_get_or_set_get_if_exists_and_not_expired(cache, page, cache_entry, page
 
 
 def test_get_or_set_set_if_expired(cache, another_page, expired_cache_entry):
-    got = cache.get_or_set(expired_cache_entry.cache_key, content=another_page)
+    got = cache.get_or_set(expired_cache_entry.page_id, content=another_page)
 
-    new_cache_entry = NotionCacheEntry.objects.get(cache_key=expired_cache_entry.cache_key)
+    new_cache_entry = NotionCacheEntry.objects.get(page_id=expired_cache_entry.page_id)
     assert got == another_page
     assert got == NotionPage.from_json(new_cache_entry.content)
 
@@ -133,7 +133,7 @@ def test_get_or_set_set_if_expired(cache, another_page, expired_cache_entry):
 def test_get_or_set_set_if_doesnt_exist(cache, another_page):
     got = cache.get_or_set("some random cache key", content=another_page)
 
-    new_cache_entry = NotionCacheEntry.objects.get(cache_key="some random cache key")
+    new_cache_entry = NotionCacheEntry.objects.get(page_id="some random cache key")
     assert got == another_page
     assert got == NotionPage.from_json(new_cache_entry.content)
 
@@ -143,7 +143,7 @@ def test_get_or_set_set_if_doesnt_exist(cache, another_page):
 def test_user_always_gets_page_from_existing_cache(settings, cache_entry, env_value, cache_set, fetch_page):
     settings.NOTION_CACHE_ONLY = bool(env_value)
 
-    get_cached_page(cache_entry.cache_key)
+    get_cached_page(cache_entry.page_id)
 
     cache_set.assert_not_called()
     fetch_page.assert_not_called()
@@ -153,7 +153,7 @@ def test_user_always_gets_page_from_existing_cache(settings, cache_entry, env_va
 def test_staff_user_get_page_from_cache_if_cache_only_mode_is_enabled(settings, cache_entry, cache_set, fetch_page):
     settings.NOTION_CACHE_ONLY = bool("On")
 
-    get_cached_page(cache_entry.cache_key)
+    get_cached_page(cache_entry.page_id)
 
     cache_set.assert_not_called()
     fetch_page.assert_not_called()
@@ -163,9 +163,9 @@ def test_staff_user_get_page_from_cache_if_cache_only_mode_is_enabled(settings, 
 def test_staff_user_get_page_from_notion_if_cache_only_mode_is_disabled(settings, cache_entry, cache_set, fetch_page):
     settings.NOTION_CACHE_ONLY = bool("")
 
-    got = get_cached_page(cache_entry.cache_key)
+    got = get_cached_page(cache_entry.page_id)
 
     page = fetch_page.return_value
     assert got == page
-    cache_set.assert_called_once_with(cache_entry.cache_key, page)
-    fetch_page.assert_called_once_with(cache_entry.cache_key)
+    cache_set.assert_called_once_with(cache_entry.page_id, page)
+    fetch_page.assert_called_once_with(cache_entry.page_id)
