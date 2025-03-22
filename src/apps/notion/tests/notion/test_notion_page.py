@@ -47,7 +47,7 @@ def set_response(respx_mock: MockRouter):
 
 @pytest.fixture
 def get_page(notion):
-    return lambda: notion.fetch_page("0cb348b3a2d24c05bc944e2302fa553")
+    return lambda: notion.fetch_page_root("0cb348b3a2d24c05bc944e2302fa553")
 
 
 @pytest.fixture

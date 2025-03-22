@@ -48,7 +48,7 @@ cache = NotionCache()
 
 
 def fetch_page(page_id: str) -> Callable[[], NotionPage]:
-    return lambda: NotionClient().fetch_page_recursively(page_id)
+    return lambda: NotionClient().fetch_page(page_id)
 
 
 def should_bypass_cache() -> bool:

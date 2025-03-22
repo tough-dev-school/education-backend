@@ -44,7 +44,7 @@ def fetch_blocks(mocker):
 
 @pytest.fixture
 def fetch_page(mocker):
-    return mocker.patch("apps.notion.client.NotionClient.fetch_page")
+    return mocker.patch("apps.notion.client.NotionClient.fetch_page_root")
 
 
 @pytest.fixture

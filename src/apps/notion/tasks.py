@@ -19,7 +19,7 @@ def update_cache(page_id: str) -> None:
     from apps.notion.cache import cache
     from apps.notion.client import NotionClient
 
-    page = NotionClient().fetch_page_recursively(page_id)
+    page = NotionClient().fetch_page(page_id)
     cache.set(page_id, page)
 
 

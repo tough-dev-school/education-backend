@@ -20,11 +20,17 @@ class NotionClient:
     def __init__(self) -> None:
         self.attempted_blocks: list[BlockId] = list()
 
-    def fetch_page_recursively(self, page_id: str) -> NotionPage:
+    def fetch_page(self, page_id: str) -> NotionPage:
         """Fetch page with all underliying non-page blocks"""
         self.attempted_blocks = list()
-        page = self.fetch_page(page_id)
 
+        page = self.fetch_page_root(page_id)
+        self.fetch_page_blocks(page)
+        page.after_fetch()  # call actions that should happen after page fetch
+
+        return page
+
+    def fetch_page_blocks(self, page: NotionPage) -> None:
         while True:
             page_blocks = page.blocks.get_underlying_block_ids()
 
@@ -36,11 +42,8 @@ class NotionClient:
             self.attempted_blocks += new_blocks_to_fetch  # save blocks that we already have tried to fetch, to make sure we will not request them again even if notion does not return them
             page.blocks += self.fetch_blocks(new_blocks_to_fetch)
 
-        page.save_assets()
-        return page
-
-    def fetch_page(self, page_id: str) -> NotionPage:
-        """Fetch notion page"""
+    def fetch_page_root(self, page_id: str) -> NotionPage:
+        """Fetch root page data, without underlying blocks"""
         response = self.fetch(
             resource="loadPageChunk",
             request_body={

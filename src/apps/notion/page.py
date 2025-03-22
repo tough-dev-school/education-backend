@@ -35,6 +35,10 @@ class NotionPage:
             with contextlib.suppress(KeyError, IndexError):
                 return self.blocks.first_page_block.data["value"]["properties"]["title"][0][0]
 
+    def after_fetch(self) -> None:
+        """Called after page fetching or updating"""
+        self.save_assets()
+
     def save_assets(self) -> None:
         """Save assets from all underlying blocks"""
         for block in self.blocks:
