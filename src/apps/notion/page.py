@@ -1,6 +1,7 @@
 import contextlib
 from dataclasses import dataclass
 
+from apps.notion import tasks
 from apps.notion.block import NotionBlock, NotionBlockList
 from apps.notion.exceptions import NotionResponseError, NotSharedForWeb
 from apps.notion.types import BlockId
@@ -43,8 +44,21 @@ class NotionPage:
     def after_fetch(self) -> None:
         """Called after page fetching or updating"""
         self.save_assets()
+        self.save_relations()
 
     def save_assets(self) -> None:
         """Save assets from all underlying blocks"""
         for block in self.blocks:
             block.save_assets()
+
+    def save_relations(self) -> None:
+        """Save page outgoing links.
+
+        Uses celery task to stay isolated from the ORM
+        """
+        links = list()
+        for block in self.blocks:
+            links += block.get_outgoing_links()
+
+        if len(links):
+            tasks.save_page_relations.delay(page_id=self.id, links=links)

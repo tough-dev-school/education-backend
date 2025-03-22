@@ -12,10 +12,10 @@ def get_links(node: TextProperty) -> list[BlockId]:
             if len(child) >= 1 and child[0] == "a" and isinstance(child[1], str) and child[1].startswith("/"):  # it is a link, and the link is internal
                 link = child[1]
 
-                if '#' in link:
+                if "#" in link:
                     link = link.split("#")[0]  # remove anchors
 
-                if '?' in link:
+                if "?" in link:
                     link = link.split("?")[0]  # remove GET params
 
                 link = link.replace("/", "")  # remove first slash

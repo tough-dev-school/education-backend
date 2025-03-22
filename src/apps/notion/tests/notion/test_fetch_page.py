@@ -1,7 +1,7 @@
 import pytest
 
 from apps.notion.block import NotionBlock, NotionBlockList
-from apps.notion.models import NotionAsset
+from apps.notion.models import NotionAsset, PageLink
 from apps.notion.page import NotionPage
 
 pytestmark = [
@@ -93,3 +93,33 @@ def test_assets_are_fetched(notion, page, fetch_page, fetch_blocks):
     fetched_asset = NotionAsset.objects.get(url="https://secure.notion-static.com/typicalmacuser.jpg")
 
     assert fetched_asset.file.read() == b"typical"
+
+
+def test_outgoing_relations_are_saved(notion, page, fetch_page, fetch_blocks):
+    fetch_page.return_value = page
+    fetch_blocks.side_effect = [
+        NotionBlockList(
+            [
+                NotionBlock(
+                    id="block2",
+                    data={
+                        "value": {
+                            "id": "block2",
+                            "type": "text",
+                            "properties": {
+                                "title": [
+                                    ["← Урок 1", [["a", "/c1a07d6928b87fc4a2e1b3fba4c8d1fe"]]],
+                                ]
+                            },
+                        }
+                    },
+                )
+            ]
+        ),
+    ]
+
+    notion.fetch_page(page_id=page.id)
+
+    saved_relation = PageLink.objects.get(source=page.id)
+
+    assert saved_relation.destination == "c1a07d6928b87fc4a2e1b3fba4c8d1fe"

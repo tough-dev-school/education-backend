@@ -13,14 +13,10 @@ class Command(BaseCommand):
         count = 0
         link_count = 0
         for entry in NotionCacheEntry.objects.iterator():
-            page = NotionPage.from_json(entry.content)
+            page = NotionPage.from_json(data=entry.content, kwargs={"id": entry.page_id})
             count += 1
 
-            for block in page.blocks:
-                links = block.get_outgoing_links()
-                for link in links:
-                    self.stdout.write(f"\tGot {link}")
-                    link_count += 1
+            page.save_relations()
 
             self.stdout.write(f"Processed cache entry: {entry.page_id}")
 
