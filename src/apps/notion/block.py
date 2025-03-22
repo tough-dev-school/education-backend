@@ -5,6 +5,7 @@ from typing import Generator
 
 from apps.notion import tasks
 from apps.notion.assets import get_asset_url, is_notion_url
+from apps.notion.links import get_links
 from apps.notion.rewrite import apply_our_adjustments
 from apps.notion.types import BlockData, BlockFormat, BlockId, BlockProperties, BlockType
 
@@ -79,6 +80,13 @@ class NotionBlock:
                     "url": get_asset_url(asset, self.data),
                 },
             )
+
+    def get_outgoing_links(self) -> list[BlockId]:
+        try:
+            links = get_links(self.data["value"]["properties"]["title"])
+        except KeyError:  # block has no properties
+            return []
+        return list(dict.fromkeys(links))  # only unique links
 
 
 class NotionBlockList(UserList[NotionBlock]):
