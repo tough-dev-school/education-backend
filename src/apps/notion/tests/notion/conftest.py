@@ -51,6 +51,7 @@ def fetch_page(mocker):
 def page() -> NotionPage:
     """Uber page for all block manipulation testing"""
     return NotionPage(
+        id="test-page-id",
         blocks=NotionBlockList(
             [
                 NotionBlock(
@@ -95,7 +96,7 @@ def page() -> NotionPage:
                     },
                 ),
             ]
-        )
+        ),
     )
 
 

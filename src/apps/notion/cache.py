@@ -23,12 +23,12 @@ class NotionCache:
     def get(self, page_id: str) -> NotionPage | None:
         cache_entry = self._get(page_id)
         if cache_entry:
-            return NotionPage.from_json(cache_entry.content)
+            return NotionPage.from_json(data=cache_entry.content, kwargs={"id": cache_entry.page_id})
 
     def get_or_set(self, page_id: str, content: NotionPage | Callable[[], NotionPage]) -> NotionPage:
         cache_entry = self._get(page_id)
         if cache_entry:
-            return NotionPage.from_json(cache_entry.content)
+            return NotionPage.from_json(data=cache_entry.content, kwargs={"id": cache_entry.page_id})
         return self.set(page_id, content)
 
     @staticmethod

@@ -12,6 +12,7 @@ pytestmark = [
 @pytest.fixture
 def page() -> NotionPage:
     return NotionPage(
+        id="test-page-id",
         blocks=NotionBlockList(
             [
                 NotionBlock(

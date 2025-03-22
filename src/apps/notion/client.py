@@ -55,7 +55,7 @@ class NotionClient:
             },
         )
 
-        return NotionPage.from_api_response(response)
+        return NotionPage.from_api_response(response=response, kwargs={"id": page_id})
 
     def fetch_blocks(self, blocks: Iterable[BlockId]) -> "NotionBlockList":
         """Fetch a list of notion blocks"""

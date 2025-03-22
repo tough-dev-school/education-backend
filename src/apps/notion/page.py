@@ -3,30 +3,35 @@ from dataclasses import dataclass
 
 from apps.notion.block import NotionBlock, NotionBlockList
 from apps.notion.exceptions import NotionResponseError, NotSharedForWeb
+from apps.notion.types import BlockId
 
 
 @dataclass
 class NotionPage:
+    id: BlockId
     blocks: NotionBlockList
 
     def to_json(self) -> dict:
         return {"blocks": [block.to_json() for block in self.blocks]}
 
     @classmethod
-    def from_json(cls, data: dict) -> "NotionPage":
+    def from_json(cls, data: dict, kwargs: dict[str, str | BlockId] | None = None) -> "NotionPage":
+        kwargs = kwargs if kwargs is not None else dict()
         blocks = NotionBlockList([NotionBlock.from_json(block_dict) for block_dict in data["blocks"]])
-        return cls(blocks=blocks)
+        return cls(blocks=blocks, **kwargs)
 
     @classmethod
-    def from_api_response(cls, api_response: dict) -> "NotionPage":
-        if "errorId" in api_response:
-            raise NotionResponseError(f"Notion response error. {api_response['name']}: {api_response['message']}")
+    def from_api_response(cls, response: dict, kwargs: dict[str, str | BlockId] | None = None) -> "NotionPage":
+        kwargs = kwargs if kwargs is not None else dict()
+        if "errorId" in response:
+            raise NotionResponseError(f"Notion response error. {response['name']}: {response['message']}")
 
-        if "block" not in api_response["recordMap"]:
+        if "block" not in response["recordMap"]:
             raise NotSharedForWeb()
 
         return cls(
-            blocks=NotionBlockList.from_api_response(api_response["recordMap"]["block"]),
+            blocks=NotionBlockList.from_api_response(response["recordMap"]["block"]),
+            **kwargs,
         )
 
     @property

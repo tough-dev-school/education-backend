@@ -17,7 +17,7 @@ pytestmark = [
 def cache_entry(not_expired_datetime, page, mixer):
     return mixer.blend(
         "notion.NotionCacheEntry",
-        page_id="some_key",
+        page_id=page.id,
         content=page.to_json(),
         expires=not_expired_datetime,
     )
@@ -51,11 +51,12 @@ def cache():
 @pytest.fixture
 def another_page() -> NotionPage:
     return NotionPage(
+        id="another-test-id",
         blocks=NotionBlockList(
             [
                 NotionBlock(id="block-2", data={"role": "reader-6"}),
             ]
-        )
+        ),
     )
 
 
@@ -70,13 +71,8 @@ def not_expired_datetime():
 
 
 @pytest.fixture
-def expired_datetime():
-    return timezone.now()
-
-
-@pytest.fixture
-def expired_cache_entry(cache_entry, expired_datetime):
-    return cache_entry.update(expires=expired_datetime)
+def expired_cache_entry(cache_entry):
+    return cache_entry.update(expires=timezone.now() - timedelta(seconds=1))
 
 
 def test_set(cache, page):
@@ -107,9 +103,9 @@ def test_get_nothing_if_cache_expired(cache, expired_cache_entry):
 
 
 def test_set_and_get(cache, page):
-    cache.set("some_key", page)
+    cache.set(page.id, page)
 
-    got = cache.get("some_key")
+    got = cache.get(page.id)
 
     assert got == page
 
@@ -118,6 +114,7 @@ def test_get_or_set_get_if_exists_and_not_expired(cache, page, cache_entry, page
     got = cache.get_or_set(cache_entry.page_id, content=page_from_callable)
 
     page_from_callable.assert_not_called()
+
     assert got == page
     assert got != page_from_callable
 
@@ -125,17 +122,19 @@ def test_get_or_set_get_if_exists_and_not_expired(cache, page, cache_entry, page
 def test_get_or_set_set_if_expired(cache, another_page, expired_cache_entry):
     got = cache.get_or_set(expired_cache_entry.page_id, content=another_page)
 
-    new_cache_entry = NotionCacheEntry.objects.get(page_id=expired_cache_entry.page_id)
+    newly_created_cache_entry = NotionCacheEntry.objects.get(page_id=expired_cache_entry.page_id)
+
     assert got == another_page
-    assert got == NotionPage.from_json(new_cache_entry.content)
+    assert got == NotionPage.from_json(newly_created_cache_entry.content, kwargs={"id": another_page.id})
 
 
 def test_get_or_set_set_if_doesnt_exist(cache, another_page):
-    got = cache.get_or_set("some random cache key", content=another_page)
+    got = cache.get_or_set(another_page.id, content=another_page)
 
-    new_cache_entry = NotionCacheEntry.objects.get(page_id="some random cache key")
+    newly_created_cache_entry = NotionCacheEntry.objects.get(page_id=another_page.id)
+
     assert got == another_page
-    assert got == NotionPage.from_json(new_cache_entry.content)
+    assert got == NotionPage.from_json(newly_created_cache_entry.content, kwargs={"id": another_page.id})
 
 
 @pytest.mark.parametrize("env_value", ["On", ""])

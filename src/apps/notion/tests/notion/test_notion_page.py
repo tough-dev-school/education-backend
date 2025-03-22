@@ -47,7 +47,7 @@ def set_response(respx_mock: MockRouter):
 
 @pytest.fixture
 def get_page(notion):
-    return lambda: notion.fetch_page_root("0cb348b3a2d24c05bc944e2302fa553")
+    return lambda: notion.fetch_page_root("5d8a9b2e3c71f4b6a0d1e2f3c48759a6")
 
 
 @pytest.fixture
@@ -90,6 +90,14 @@ def test_page_title(set_response, ok, get_page):
     page = get_page()
 
     assert page.title == "Неделя 1 из 4"
+
+
+def test_page_id(set_response, ok, get_page):
+    set_response(ok)
+
+    page = get_page()
+
+    assert page.id == "5d8a9b2e3c71f4b6a0d1e2f3c48759a6"
 
 
 def test_abscense_of_the_page_block_does_not_break_page_title(set_response, ok, get_page):
