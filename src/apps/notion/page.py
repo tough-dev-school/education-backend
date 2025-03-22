@@ -4,25 +4,25 @@ from dataclasses import dataclass
 from apps.notion import tasks
 from apps.notion.block import NotionBlock, NotionBlockList
 from apps.notion.exceptions import NotionResponseError, NotSharedForWeb
-from apps.notion.types import BlockId
+from apps.notion.types import NotionId
 
 
 @dataclass
 class NotionPage:
-    id: BlockId
+    id: NotionId
     blocks: NotionBlockList
 
     def to_json(self) -> dict:
         return {"blocks": [block.to_json() for block in self.blocks]}
 
     @classmethod
-    def from_json(cls, data: dict, kwargs: dict[str, str | BlockId] | None = None) -> "NotionPage":
+    def from_json(cls, data: dict, kwargs: dict[str, str | NotionId] | None = None) -> "NotionPage":
         kwargs = kwargs if kwargs is not None else dict()
         blocks = NotionBlockList([NotionBlock.from_json(block_dict) for block_dict in data["blocks"]])
         return cls(blocks=blocks, **kwargs)
 
     @classmethod
-    def from_api_response(cls, response: dict, kwargs: dict[str, str | BlockId] | None = None) -> "NotionPage":
+    def from_api_response(cls, response: dict, kwargs: dict[str, str | NotionId] | None = None) -> "NotionPage":
         kwargs = kwargs if kwargs is not None else dict()
         if "errorId" in response:
             raise NotionResponseError(f"Notion response error. {response['name']}: {response['message']}")

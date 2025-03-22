@@ -7,12 +7,12 @@ from apps.notion import tasks
 from apps.notion.assets import get_asset_url, is_notion_url
 from apps.notion.links import get_links
 from apps.notion.rewrite import apply_our_adjustments
-from apps.notion.types import BlockData, BlockFormat, BlockId, BlockProperties, BlockType
+from apps.notion.types import BlockData, BlockFormat, BlockProperties, BlockType, NotionId
 
 
 @dataclass
 class NotionBlock:
-    id: BlockId
+    id: NotionId
     data: BlockData
 
     def to_json(self) -> dict:
@@ -28,7 +28,7 @@ class NotionBlock:
             return self.data["value"]["type"]
 
     @property
-    def content(self) -> list[BlockId]:
+    def content(self) -> list[NotionId]:
         try:
             return self.data["value"]["content"]
         except KeyError:
@@ -81,7 +81,7 @@ class NotionBlock:
                 },
             )
 
-    def get_outgoing_links(self) -> list[BlockId]:
+    def get_outgoing_links(self) -> list[NotionId]:
         try:
             links = get_links(self.data["value"]["properties"]["title"])
         except KeyError:  # block has no properties
@@ -115,8 +115,8 @@ class NotionBlockList(UserList[NotionBlock]):
 
         return instance
 
-    def get_underlying_block_ids(self) -> set[BlockId]:
-        block_ids: set[BlockId] = set(self.first_page_block.content) if self.first_page_block else set()
+    def get_underlying_block_ids(self) -> set[NotionId]:
+        block_ids: set[NotionId] = set(self.first_page_block.content) if self.first_page_block else set()
 
         for block in self.blocks_with_underliying_blocks():
             for block_id in block.content:
@@ -125,14 +125,14 @@ class NotionBlockList(UserList[NotionBlock]):
 
         return block_ids
 
-    def get_block(self, block_id: BlockId) -> NotionBlock:
+    def get_block(self, block_id: NotionId) -> NotionBlock:
         for block in self.data:
             if block.id == block_id:
                 return block
 
         raise KeyError("Block with id %s not found", block_id)
 
-    def have_block_with_id(self, block_id: BlockId) -> bool:
+    def have_block_with_id(self, block_id: NotionId) -> bool:
         try:
             return self.get_block(block_id) is not None
         except KeyError:

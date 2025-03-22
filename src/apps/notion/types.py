@@ -2,7 +2,7 @@
 
 from typing import Literal, TypedDict
 
-BlockId = str
+NotionId = str
 BlockType = Literal[
     "alias",
     "bookmark",
@@ -46,10 +46,10 @@ class BlockFormat(TypedDict, total=False):
 
 
 class BlockValue(TypedDict, total=False):
-    id: BlockId
+    id: NotionId
     type: BlockType
     format: BlockFormat
-    content: list[BlockId]
+    content: list[NotionId]
     last_edited_time: int
     parent_id: str
     parent_table: str
@@ -72,8 +72,8 @@ class BlockProperties(TypedDict, total=False):
 __all__ = [
     "BlockData",
     "BlockFormat",
-    "BlockId",
     "BlockProperties",
     "BlockType",
+    "NotionId",
     "TextProperty",
 ]

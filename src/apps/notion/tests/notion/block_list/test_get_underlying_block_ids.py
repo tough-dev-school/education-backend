@@ -34,7 +34,7 @@ def test_non_first_blocks_with_page_type_are_ignored(block_with_content, page_bl
 
 
 def test_no_recursion_on_existing_blocks(block_with_content, another_block_with_content):
-    """Make sure the list does not return BlockIds that are already in the list"""
+    """Make sure the list does not return NotionId that are already in the list"""
     another_block_with_content.data["value"]["content"] = ["with_content"]
 
     block_list = NotionBlockList([block_with_content, another_block_with_content])

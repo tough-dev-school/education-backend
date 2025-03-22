@@ -8,7 +8,7 @@ from sentry_sdk import add_breadcrumb
 from apps.notion.exceptions import HTTPError
 from apps.notion.id import id_to_uuid
 from apps.notion.page import NotionPage
-from apps.notion.types import BlockId
+from apps.notion.types import NotionId
 
 if TYPE_CHECKING:
     from apps.notion.block import NotionBlockList
@@ -18,7 +18,7 @@ class NotionClient:
     """Client for private notion.so API, inspired by https://github.com/splitbee/notion-api-worker"""
 
     def __init__(self) -> None:
-        self.attempted_blocks: list[BlockId] = list()
+        self.attempted_blocks: list[NotionId] = list()
 
     def fetch_page(self, page_id: str) -> NotionPage:
         """Fetch page with all underliying non-page blocks"""
@@ -57,7 +57,7 @@ class NotionClient:
 
         return NotionPage.from_api_response(response=response, kwargs={"id": page_id})
 
-    def fetch_blocks(self, blocks: Iterable[BlockId]) -> "NotionBlockList":
+    def fetch_blocks(self, blocks: Iterable[NotionId]) -> "NotionBlockList":
         """Fetch a list of notion blocks"""
         from apps.notion.block import NotionBlockList
 

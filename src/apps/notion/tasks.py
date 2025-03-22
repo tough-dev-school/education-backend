@@ -7,7 +7,7 @@ from apps.notion.exceptions import NotionError
 from core.celery import celery
 
 if TYPE_CHECKING:
-    from apps.notion.types import BlockId
+    from apps.notion.types import NotionId
 
 
 @celery.task(
@@ -54,5 +54,5 @@ def save_asset(url: str, original_url: str) -> None:
 @celery.task(
     name="notion.save_page_relations",
 )
-def save_page_relations(page_id: "BlockId", links: list["BlockId"]) -> None:
+def save_page_relations(page_id: "NotionId", links: list["NotionId"]) -> None:
     apps.get_model("notion.PageLink").update_page_links(page_id, links)
