@@ -33,10 +33,19 @@ def test_empty_text_block(blockdata):
 
 
 def test_link_inside_the_text(blockdata):
-    blockdata["value"]["properties"]["title"] = [[[["h", "default"]]], ["| "], ["Урок 3 →", [["a", "/17705e42624c811f9ddsd8c32em54f0a?pvs=25"]]]]
+    blockdata["value"]["properties"]["title"] = [[[["h", "default"]]], ["| "], ["Урок 3 →", [["a", "/17705e42624c811f9ddsd8c32em54f0a"]]]]
 
     assert block(data=blockdata).get_outgoing_links() == ["17705e42624c811f9ddsd8c32em54f0a"]
 
+
+@pytest.mark.parametrize("raw, expected", [
+    ("/1b2a8e5f6c9d3b74e2f0a1c5d8e693f7#f8b7c6a1d5e0f2a3b4c9e1d7a5b6c382", "1b2a8e5f6c9d3b74e2f0a1c5d8e693f7"),
+    ("/1b2a8e5f6c9d3b74e2f0a1c5d8e693f7?test=X", "1b2a8e5f6c9d3b74e2f0a1c5d8e693f7"),
+    ("/1b2a8e5f6c9d3b74e2f0a1c5d8e693f7?test=X#combo", "1b2a8e5f6c9d3b74e2f0a1c5d8e693f7"),
+])
+def test_stripping(blockdata, raw, expected):
+    blockdata["value"]["properties"]["title"] = [[[["h", "default"]]], ["| "], ["Урок 3 →", [["a", raw]]]]
+    assert block(data=blockdata).get_outgoing_links() == [expected]
 
 def test_two_links_inside_the_text(blockdata):
     blockdata["value"]["properties"]["title"] = [
