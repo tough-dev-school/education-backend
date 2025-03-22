@@ -63,7 +63,7 @@ def should_bypass_cache() -> bool:
     return False
 
 
-def get_cached_page(page_id: NotionId) -> NotionPage:
+def get_cached_page_or_fetch(page_id: NotionId) -> NotionPage:
     if should_bypass_cache():
         page = fetch_page(page_id)()
         cache.set(page_id, page)
@@ -73,5 +73,5 @@ def get_cached_page(page_id: NotionId) -> NotionPage:
 
 
 __all__ = [
-    "get_cached_page",
+    "get_cached_page_or_fetch",
 ]

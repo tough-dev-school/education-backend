@@ -9,6 +9,14 @@ from apps.notion.types import NotionId
 
 @dataclass
 class NotionPage:
+    """Has two entrypoints:
+        1. NotionPage.from_api_response()
+        2. NotionPage.from_json()
+    The former bypasses some notion API quircks, the latter is intended to build page objects from cache, stored with .to_json() method
+
+    NotionPage and NotionBlock stay isolated from django ORM. The only possible interacation is allowed via celery tasks.
+    """
+
     id: NotionId
     blocks: NotionBlockList
 
@@ -42,12 +50,12 @@ class NotionPage:
                 return self.blocks.first_page_block.data["value"]["properties"]["title"][0][0]
 
     def after_fetch(self) -> None:
-        """Called after page fetching or updating"""
+        """Called externaly after page fetching or updating"""
         self.save_assets()
         self.save_relations()
 
     def save_assets(self) -> None:
-        """Save assets from all underlying blocks"""
+        """Save images and files from all underlying blocks"""
         for block in self.blocks:
             block.save_assets()
 

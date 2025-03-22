@@ -4,7 +4,7 @@ import pytest
 from django.utils import timezone
 
 from apps.notion.block import NotionBlock, NotionBlockList
-from apps.notion.cache import TIMEOUT, NotionCache, get_cached_page
+from apps.notion.cache import TIMEOUT, NotionCache, get_cached_page_or_fetch
 from apps.notion.models import NotionCacheEntry
 from apps.notion.page import NotionPage
 
@@ -142,7 +142,7 @@ def test_get_or_set_set_if_doesnt_exist(cache, another_page):
 def test_user_always_gets_page_from_existing_cache(settings, cache_entry, env_value, cache_set, fetch_page):
     settings.NOTION_CACHE_ONLY = bool(env_value)
 
-    get_cached_page(cache_entry.page_id)
+    get_cached_page_or_fetch(cache_entry.page_id)
 
     cache_set.assert_not_called()
     fetch_page.assert_not_called()
@@ -152,7 +152,7 @@ def test_user_always_gets_page_from_existing_cache(settings, cache_entry, env_va
 def test_staff_user_get_page_from_cache_if_cache_only_mode_is_enabled(settings, cache_entry, cache_set, fetch_page):
     settings.NOTION_CACHE_ONLY = bool("On")
 
-    get_cached_page(cache_entry.page_id)
+    get_cached_page_or_fetch(cache_entry.page_id)
 
     cache_set.assert_not_called()
     fetch_page.assert_not_called()
@@ -162,7 +162,7 @@ def test_staff_user_get_page_from_cache_if_cache_only_mode_is_enabled(settings, 
 def test_staff_user_get_page_from_notion_if_cache_only_mode_is_disabled(settings, cache_entry, cache_set, fetch_page):
     settings.NOTION_CACHE_ONLY = bool("")
 
-    got = get_cached_page(cache_entry.page_id)
+    got = get_cached_page_or_fetch(cache_entry.page_id)
 
     page = fetch_page.return_value
     assert got == page

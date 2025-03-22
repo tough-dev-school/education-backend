@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from apps.notion.api.serializers import NotionPageSerializer
 from apps.notion.api.throttling import NotionThrottle
-from apps.notion.cache import get_cached_page
+from apps.notion.cache import get_cached_page_or_fetch
 from apps.notion.id import uuid_to_id
 from apps.notion.models import Material
 from core.views import AuthenticatedAPIView
@@ -22,7 +22,7 @@ class NotionMaterialView(AuthenticatedAPIView):
         if material is None:
             raise NotFound()
 
-        page = get_cached_page(material.page_id)
+        page = get_cached_page_or_fetch(material.page_id)
 
         return Response(
             data=NotionPageSerializer(page).data,

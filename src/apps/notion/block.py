@@ -51,6 +51,7 @@ class NotionBlock:
         return result
 
     def get_data(self) -> BlockData:
+        """Apply all our rewrites, e.g. replace notion page ids with ours, replace youtube links with rutube for russians etc."""
         return apply_our_adjustments(self.data)
 
     def get_assets_to_save(self) -> list[str]:  # NOQA: CCR001
