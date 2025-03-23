@@ -103,6 +103,7 @@ def test_recursive_relation(api, mixer, another_course):
             expected_status_code=200,
         )
 
+
 @pytest.mark.usefixtures("unpaid_order")
 def test_ok_for_superuser(api):
     api.user.update(is_superuser=True)
