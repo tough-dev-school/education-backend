@@ -3,7 +3,7 @@ from typing import Mapping
 
 from apps.notion.id import uuid_to_id
 from apps.notion.models import Material
-from apps.notion.types import BlockData, BlockId, TextProperty
+from apps.notion.types import BlockData, NotionId, TextProperty
 
 
 def rewrite_links(notion_block_data: BlockData) -> BlockData:
@@ -18,7 +18,7 @@ def rewrite_links(notion_block_data: BlockData) -> BlockData:
 
 
 @lru_cache
-def get_link_rewrite_mapping() -> Mapping[BlockId, BlockId]:
+def get_link_rewrite_mapping() -> Mapping[NotionId, NotionId]:
     """Returns a mapping Notion Material -> our slug"""
     mapping = Material.objects.all().values_list("page_id", "slug")
 

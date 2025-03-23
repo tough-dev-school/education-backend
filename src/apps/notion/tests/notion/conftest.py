@@ -44,13 +44,14 @@ def fetch_blocks(mocker):
 
 @pytest.fixture
 def fetch_page(mocker):
-    return mocker.patch("apps.notion.client.NotionClient.fetch_page")
+    return mocker.patch("apps.notion.client.NotionClient.fetch_page_root")
 
 
 @pytest.fixture
 def page() -> NotionPage:
     """Uber page for all block manipulation testing"""
     return NotionPage(
+        id="test-page-id",
         blocks=NotionBlockList(
             [
                 NotionBlock(
@@ -95,7 +96,7 @@ def page() -> NotionPage:
                     },
                 ),
             ]
-        )
+        ),
     )
 
 

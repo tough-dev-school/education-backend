@@ -1,8 +1,13 @@
+from typing import TYPE_CHECKING
+
 import httpx
 from django.apps import apps
 
 from apps.notion.exceptions import NotionError
 from core.celery import celery
+
+if TYPE_CHECKING:
+    from apps.notion.types import NotionId
 
 
 @celery.task(
@@ -19,7 +24,7 @@ def update_cache(page_id: str) -> None:
     from apps.notion.cache import cache
     from apps.notion.client import NotionClient
 
-    page = NotionClient().fetch_page_recursively(page_id)
+    page = NotionClient().fetch_page(page_id)
     cache.set(page_id, page)
 
 
@@ -44,3 +49,10 @@ def save_asset(url: str, original_url: str) -> None:
     from apps.notion.assets import save_asset as _save_asset
 
     _save_asset(url=url, original_url=original_url)
+
+
+@celery.task(
+    name="notion.save_page_relations",
+)
+def save_page_relations(page_id: "NotionId", links: list["NotionId"]) -> None:
+    apps.get_model("notion.PageLink").update_page_links(page_id, links)

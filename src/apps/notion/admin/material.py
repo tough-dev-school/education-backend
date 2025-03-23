@@ -26,7 +26,7 @@ class NotionMaterialForm(forms.ModelForm):
         if len(self.cleaned_data["title"]) == 0 and "https://" in self.data["page_id"]:
             notion = NotionClient()
             try:
-                page = notion.fetch_page(page_url_to_id(self.data["page_id"]))
+                page = notion.fetch_page_root(page_url_to_id(self.data["page_id"]))
             except (HTTPError, NotionError):
                 return ""
 
