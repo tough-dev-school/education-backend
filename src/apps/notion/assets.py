@@ -4,6 +4,7 @@ from urllib.parse import quote
 
 from django.core.files.base import ContentFile
 
+from apps.notion import http
 from apps.notion.models import NotionAsset
 from apps.notion.types import BlockData as NotionBlockData
 from core.helpers import append_to_query_string
@@ -38,9 +39,8 @@ def get_asset_url(asset: str, block_data: NotionBlockData) -> str:
 
 def save_asset(url: str, original_url: str) -> None:
     """Saves asset with `url` as NotionAsset with `original_url` as a key"""
-    from apps.notion.client import NotionClient
 
-    fetched = NotionClient.fetch_asset(url)
+    fetched = http.fetch_asset(url)
     hashsum = md5(fetched).hexdigest()
 
     asset, created = NotionAsset.objects.get_or_create(

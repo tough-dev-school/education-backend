@@ -14,6 +14,11 @@ TIMEOUT = 60 * 60 * 24 * 365 * 5  # 5 years
 
 
 class NotionCache:
+    """Database notion cache. We call it cache for the API, actualy we store all notion pages in the DB to own our data
+
+    Notion page_id is used as the cache key
+    """
+
     def set(self, page_id: NotionId, content: NotionPage | Callable[[], NotionPage]) -> NotionPage:
         expires_datetime = self.get_expires_time()
         content = self.get_content_as_notion_page(content)

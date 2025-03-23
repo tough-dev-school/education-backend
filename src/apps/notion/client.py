@@ -1,17 +1,13 @@
 from collections.abc import Iterable
 from typing import TYPE_CHECKING
 
-import httpx
-from django.conf import settings
-from sentry_sdk import add_breadcrumb
-
-from apps.notion.exceptions import HTTPError
+from apps.notion import http
 from apps.notion.id import id_to_uuid
-from apps.notion.page import NotionPage
-from apps.notion.types import NotionId
 
 if TYPE_CHECKING:
     from apps.notion.block import NotionBlockList
+    from apps.notion.page import NotionPage
+    from apps.notion.types import NotionId
 
 
 class NotionClient:
@@ -20,7 +16,7 @@ class NotionClient:
     def __init__(self) -> None:
         self.attempted_blocks: list[NotionId] = list()
 
-    def fetch_page(self, page_id: str) -> NotionPage:
+    def fetch_page(self, page_id: str) -> "NotionPage":
         """Fetch page with all underliying non-page blocks"""
         self.attempted_blocks = list()
 
@@ -30,7 +26,7 @@ class NotionClient:
 
         return page
 
-    def fetch_page_blocks(self, page: NotionPage) -> None:
+    def fetch_page_blocks(self, page: "NotionPage") -> None:
         while True:
             page_blocks = page.blocks.get_underlying_block_ids()
 
@@ -42,9 +38,11 @@ class NotionClient:
             self.attempted_blocks += new_blocks_to_fetch  # save blocks that we already have tried to fetch, to make sure we will not request them again even if notion does not return them
             page.blocks += self.fetch_blocks(new_blocks_to_fetch)
 
-    def fetch_page_root(self, page_id: str) -> NotionPage:
+    def fetch_page_root(self, page_id: "NotionId") -> "NotionPage":
         """Fetch root page data, without underlying blocks"""
-        response = self.fetch(
+        from apps.notion.page import NotionPage
+
+        response = http.fetch(
             resource="loadPageChunk",
             request_body={
                 "page": {"id": id_to_uuid(page_id)},
@@ -57,11 +55,11 @@ class NotionClient:
 
         return NotionPage.from_api_response(response=response, kwargs={"id": page_id})
 
-    def fetch_blocks(self, blocks: Iterable[NotionId]) -> "NotionBlockList":
+    def fetch_blocks(self, blocks: Iterable["NotionId"]) -> "NotionBlockList":
         """Fetch a list of notion blocks"""
         from apps.notion.block import NotionBlockList
 
-        response = self.fetch(
+        response = http.fetch(
             resource="syncRecordValues",
             request_body={
                 "requests": [{"id": block, "table": "block", "version": -1} for block in blocks],
@@ -69,50 +67,3 @@ class NotionClient:
         )
 
         return NotionBlockList.from_api_response(response["recordMap"]["block"])
-
-    @staticmethod
-    def fetch(resource: str, request_body: dict) -> dict:
-        """Query notion through our middleware"""
-        add_breadcrumb(category="http", message=f"Sending notion request for {resource}", level="debug", data=request_body)
-
-        client = httpx.Client(
-            http2=True,
-        )
-        response = client.post(
-            url=f"{settings.NOTION_MIDDLEWARE_URL}/v1/notion/{resource}/",
-            headers={
-                "content-type": "application/json",
-            },
-            json=request_body,
-            timeout=settings.NOTION_MIDDLEWARE_TIMEOUT,
-        )
-
-        if response.status_code != 200:
-            raise HTTPError(f"{response.http_version} error {response.status_code} fetching notion resouce {resource}: {response.text}")
-
-        notion_response = response.json()
-
-        add_breadcrumb(category="http", message=f"Got notion response for {resource}", level="debug", data=notion_response)
-
-        return notion_response
-
-    @staticmethod
-    def fetch_asset(url: str) -> bytes:
-        """Fetch asset through our middleware"""
-        add_breadcrumb(category="http", message="Fetching notion asset", level="debug", data={url: url})
-
-        client = httpx.Client(
-            http2=True,
-        )
-        response = client.post(
-            url=f"{settings.NOTION_MIDDLEWARE_URL}/v1/asset/",
-            json={
-                "url": url,
-            },
-            timeout=settings.NOTION_MIDDLEWARE_ASSET_FETCHING_TIMEOUT,
-        )
-
-        if response.status_code != 200:
-            raise HTTPError(f"{response.http_version} error {response.status_code} fetching asset {url}: {response.text}")
-
-        return response.content
