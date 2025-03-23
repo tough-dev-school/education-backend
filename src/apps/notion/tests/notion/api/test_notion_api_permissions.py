@@ -84,6 +84,25 @@ def test_third_level_of_relation(api, mixer, another_course):
     )
 
 
+def test_recursive_relation(api, mixer, another_course):
+    """Create materials that link each other and check if all of them are accessible"""
+    first_level = mixer.blend("notion.Material", course=another_course)
+    second_level = mixer.blend("notion.Material", course=another_course)
+
+    mixer.blend("notion.PageLink", source="0e5693d2173a4f77ae8106813b6e5329", destination=first_level.page_id)
+    mixer.blend("notion.PageLink", source=first_level.page_id, destination="0e5693d2173a4f77ae8106813b6e5329")
+
+    mixer.blend("notion.PageLink", source=first_level.page_id, destination=second_level.page_id)
+    mixer.blend("notion.PageLink", source=second_level.page_id, destination=first_level.page_id)
+
+    mixer.blend("notion.PageLink", source=second_level.page_id, destination="0e5693d2173a4f77ae8106813b6e5329")  # back to the top level
+
+    for slug in ["0e5693d2173a4f77ae8106813b6e5329", first_level.slug, second_level.slug]:
+        api.get(
+            path=f"/api/v2/notion/materials/{slug}/",
+            expected_status_code=200,
+        )
+
 @pytest.mark.usefixtures("unpaid_order")
 def test_ok_for_superuser(api):
     api.user.update(is_superuser=True)
