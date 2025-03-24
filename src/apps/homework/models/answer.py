@@ -78,6 +78,7 @@ class Answer(TestUtilsMixin, TreeNode):
 
     slug = models.UUIDField(db_index=True, unique=True, default=uuid.uuid4)
     question = models.ForeignKey("homework.Question", on_delete=models.CASCADE, related_name="+")
+    study = models.ForeignKey("studying.Study", null=True, on_delete=models.CASCADE, related_name="+")
     author = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="+")
     do_not_crosscheck = models.BooleanField(_("Exclude from cross-checking"), default=False)
 

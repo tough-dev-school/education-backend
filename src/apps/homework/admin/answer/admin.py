@@ -26,13 +26,11 @@ class AnswerAdmin(ModelAdmin):
     ]
     fields = [
         "created",
-        "author",
         "parent",
         "text",
     ]
     readonly_fields = [
         "created",
-        "author",
         "text",
     ]
     raw_id_fields = [
@@ -44,9 +42,9 @@ class AnswerAdmin(ModelAdmin):
     ]
 
     search_fields = [
-        "author__first_name",
-        "author__last_name",
-        "author__email",
+        # "author__first_name",
+        # "author__last_name",
+        # "author__email",
         "text",
     ]
 
