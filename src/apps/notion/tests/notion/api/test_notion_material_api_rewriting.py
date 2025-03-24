@@ -30,7 +30,7 @@ def fetched_asset() -> NotionAsset:
 def raw_notion_cache_entry(page, material, mixer):
     return mixer.blend(
         "notion.NotionCacheEntry",
-        cache_key=material.page_id,
+        page_id=material.page_id,
         content=page.to_json(),
         expires=timezone.now() + timedelta(seconds=10000),
     )

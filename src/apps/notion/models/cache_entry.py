@@ -16,9 +16,9 @@ NotionCacheEntryManager = models.Manager.from_queryset(NotionCacheEntryQuerySet)
 class NotionCacheEntry(TimestampedModel):
     objects = NotionCacheEntryManager()
 
-    cache_key = models.CharField(max_length=255, unique=True, db_index=True)
+    page_id = models.CharField(max_length=255, unique=True, db_index=True)
     content = models.JSONField()
     expires = models.DateTimeField(db_index=True)
 
     def __str__(self) -> str:
-        return self.cache_key
+        return self.page_id
