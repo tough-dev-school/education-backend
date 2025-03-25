@@ -1,5 +1,6 @@
 import random
 import string
+import uuid
 from urllib.parse import parse_qsl, urlparse, urlunparse
 
 
@@ -19,3 +20,15 @@ def append_to_query_string(url: str, **kwargs: str) -> str:
     parsed[4] = "&".join(f"{p}={v}" for p, v in query.items())
 
     return urlunparse(parsed)
+
+
+def is_valid_uuid(value: str | None) -> bool:
+    if value is None:
+        return False
+
+    try:
+        uuid.UUID(hex=value, version=4)
+    except (AttributeError, ValueError):
+        return False
+
+    return True
