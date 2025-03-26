@@ -19,6 +19,7 @@
 - Error handling: Use typed exceptions with descriptive messages
 - Tests: Use pytest fixtures, keep tests atomic and isolated
 - Documentation: Use docstrings for public methods, especially for complex functionality
+- We do not need `__init__.py` in the management command or test folders
 
 ## Django Patterns
 - Use Django ORM features (managers, querysets) over raw SQL
