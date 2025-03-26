@@ -12,14 +12,14 @@ pytestmark = [
 
 @pytest.fixture
 def _no_purchase(purchase):
-    purchase.update(paid=None)
+    purchase.unship()
 
 
 def get_answer():
     return Answer.objects.last()
 
 
-def test_creation(api, question, another_answer):
+def test_creation(api, question, another_answer, purchase):
     api.post(
         "/api/v2/homework/answers/",
         {
@@ -34,6 +34,7 @@ def test_creation(api, question, another_answer):
     assert created.question == question
     assert created.parent == another_answer
     assert created.author == api.user
+    assert created.study == purchase.study
     assert created.text == "Горите в аду!"
 
 
@@ -149,6 +150,11 @@ def test_ok_for_users_with_permission(api, question):
         expected_status_code=201,
     )
 
+    created = get_answer()
+
+    assert created.author == api.user
+    assert created.study is None
+
 
 @pytest.mark.usefixtures("_no_purchase")
 def test_ok_for_superusers(api, question):
@@ -162,6 +168,11 @@ def test_ok_for_superusers(api, question):
         },
         expected_status_code=201,
     )
+
+    created = get_answer()
+
+    assert created.author == api.user
+    assert created.study is None
 
 
 @pytest.mark.xfail(strict=True, reason="Мы не проверяем право доступа к вопросу при создании ответа. Считаем это неважным, см #1370")

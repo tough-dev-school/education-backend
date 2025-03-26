@@ -7,6 +7,7 @@ from django.utils.functional import cached_property
 from rest_framework.exceptions import NotAuthenticated
 
 from apps.homework.models import Answer, Question
+from apps.studying.models import Study
 from apps.users.models import User
 from core.current_user import get_current_user
 from core.helpers import is_valid_uuid
@@ -30,9 +31,10 @@ class AnswerCreator(BaseService):
 
     def create(self) -> Answer:
         return Answer.objects.create(
-            parent=self._get_parent(),
-            question=self._get_question(),
+            parent=self.parent,
+            question=self.question,
             author=self.author,
+            study=self.study,
             text=self.text,
         )
 
@@ -44,15 +46,25 @@ class AnswerCreator(BaseService):
 
         return user
 
-    def _get_parent(self) -> Answer | None:
+    @cached_property
+    def parent(self) -> Answer | None:
         if not is_valid_uuid(self.parent_slug):
             return None
 
         with contextlib.suppress(Answer.DoesNotExist):
             return Answer.objects.get(slug=self.parent_slug)
 
-    def _get_question(self) -> Question:
+    @cached_property
+    def question(self) -> Question:
         return Question.objects.get(slug=self.question_slug)
+
+    @cached_property
+    def study(self) -> Study | None:
+        """Find the study record of a student to the given course.
+        No record means its is the answer from expert or one of us"""
+        for course_id in self.question.courses.values_list("id", flat=True):
+            with contextlib.suppress(Study.DoesNotExist):
+                return Study.objects.get(course_id=course_id, student=self.author)
 
     def is_answer_to_crosscheck(self, instance: Answer) -> bool:
         if instance.parent is None:
