@@ -9,6 +9,7 @@ from apps.notion.types import BlockValue
 pytestmark = [
     pytest.mark.django_db,
     pytest.mark.usefixtures("_cdn_dev_storage"),
+    pytest.mark.single_thread,
 ]
 
 
