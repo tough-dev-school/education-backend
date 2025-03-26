@@ -10,8 +10,6 @@ from tree_queries.models import TreeNode
 from tree_queries.query import TreeQuerySet
 
 from apps.homework.models.reaction import Reaction
-from apps.orders.models import Order
-from apps.products.models import Course
 from apps.users.models import User
 from core.markdown import markdownify, remove_html
 from core.models import TestUtilsMixin, models
@@ -123,14 +121,6 @@ class Answer(TestUtilsMixin, TreeNode):
             return ancestors[0]
 
         return self
-
-    def get_purchased_course(self) -> Course | None:
-        latest_purchase = Order.objects.paid().filter(user=self.author, course__in=self.question.courses.all()).order_by("-paid").first()
-
-        if latest_purchase:
-            return latest_purchase.course
-
-        return None
 
     def get_first_level_descendants(self) -> "AnswerQuerySet":
         return self.descendants().filter(parent=self.id)
