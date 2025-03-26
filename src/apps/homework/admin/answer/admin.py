@@ -51,15 +51,15 @@ class AnswerAdmin(ModelAdmin):
     ]
 
     def get_queryset(self, request: Request) -> QuerySet:  # type: ignore
-        return super().get_queryset(request).with_crosscheck_count().select_related("author", "question")  # type: ignore
+        return super().get_queryset(request).with_crosscheck_count().select_related("author", "question", "study", "study__course", "study__course__group")  # type: ignore
 
     @admin.display(description=_("Course"))
     def course(self, obj: Answer) -> str:
-        course = obj.get_purchased_course()
-        if course is None:
-            return "—"
+        if obj.study is not None:
+            return str(obj.study.course)
 
-        return str(course)
+        else:
+            return "—"
 
     @admin.display(description=_("Crosschecking people"), ordering="crosscheck_count")
     def crosscheck_count(self, obj: Answer) -> str:
@@ -95,15 +95,20 @@ class AnswerCrossCheckAdmin(ModelAdmin):
     )
 
     def get_queryset(self, request: Request) -> QuerySet:  # type: ignore
-        return super().get_queryset(request).select_related("answer", "answer__question", "answer__author")
+        return (
+            super()
+            .get_queryset(request)
+            .select_related(
+                "answer", "answer__question", "answer__question", "answer__author", "answer__study", "answer__study__course", "answer__study__course__group"
+            )
+        )
 
     @admin.display(description=_("Course"))
     def course(self, obj: AnswerCrossCheck) -> str:
-        course = obj.answer.get_purchased_course()
-        if course is None:
-            return "—"
+        if obj.answer.study is not None:
+            return str(obj.answer.study.course)
 
-        return str(course)
+        return "—"
 
     @admin.display(description=_("Question"), ordering="answer__question")
     def question(self, obj: AnswerCrossCheck) -> str:
