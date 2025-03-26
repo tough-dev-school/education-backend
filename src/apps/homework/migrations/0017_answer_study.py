@@ -17,7 +17,7 @@ def migrate_authors_to_study(apps, schema_editor):  # NOQA: ARG001
             with contextlib.suppress(Study.DoesNotExist):
                 return Study.objects.get(course=course, student=answer.author)
 
-    for answer in Answer.objects.all():
+    for answer in Answer.objects.iterator():
         study = find_study(answer)
         if study is not None:
             answer.study = study
