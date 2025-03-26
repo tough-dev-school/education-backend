@@ -36,7 +36,6 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     queryset = Answer.objects.for_viewset()
     serializer_class = AnswerDetailedSerializer
     serializer_action_classes = {
-        "create": AnswerCreateSerializer,
         "partial_update": AnswerCreateSerializer,
     }
 
@@ -51,11 +50,13 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     filterset_class = AnswerFilterSet
 
     def create(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        answer = AnswerCreator(data=serializer.validated_data.copy(), user=self.request.user)()  # type: ignore
-        answer = self.get_queryset().get(pk=answer.pk)
+        answer = AnswerCreator(
+            question_slug=request.data["question"],
+            parent_slug=request.data.get("parent"),
+            text=request.data["text"],
+        )()
 
+        answer = self.get_queryset().get(pk=answer.pk)  # augment answer with methods from .for_viewset() to display it properly
         Serializer = self.get_serializer_class(action="retrieve")
         return Response(Serializer(answer).data, status=201)
 
