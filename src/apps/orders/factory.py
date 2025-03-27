@@ -49,4 +49,4 @@ def refund(self: FixtureFactory, **kwargs: dict[str, Any]) -> Refund:
 
 @register
 def price(self: FixtureFactory) -> Decimal:  # NOQA: ARG001
-    return Decimal(f"{random.randint(100_000, 100500099) / 100}")
+    return Decimal(str(random.randint(100_000, 100500)))
