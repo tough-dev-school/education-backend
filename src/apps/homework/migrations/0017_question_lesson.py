@@ -5,21 +5,21 @@ import django.utils.timezone
 from django.db import migrations, models
 
 
-def make_a_copy_of_each_question_with_more_then_1_course(apps, schema_editor):
-    lesson = apps.get_model('lessons.Lesson')
-    for question in apps.get_model('homework.Question').all():
-        courses = question.courses.order_by('created')
+def make_a_copy_of_each_question_with_more_then_1_course(apps, schema_editor):  # NOQA: ARG001
+    apps.get_model("lessons.Lesson")
+    for question in apps.get_model("homework.Question").all():
+        courses = question.courses.order_by("created")
         if courses.count() <= 1:
             continue
 
-        for course in courses[1:]:
+        for _course in courses[1:]:
             ...
 
 
 class Migration(migrations.Migration):
     dependencies = [
         ("lessons", "0001_initial"),
-        ("homework", "0016_QuestionDropHideCrossCheckFlag"),
+        ("homework", "0017_answer_study"),
     ]
 
     operations = [

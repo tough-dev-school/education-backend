@@ -101,7 +101,7 @@ class AnswerTreeSerializer(AnswerDetailedSerializer):
             context=self.context,
         )
 
-        return cast(list[dict], serializer.data)
+        return cast("list[dict]", serializer.data)
 
 
 class AnswerCreateSerializer(serializers.ModelSerializer):

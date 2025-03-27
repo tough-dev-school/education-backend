@@ -2,7 +2,7 @@ from apps.amocrm import types
 from apps.amocrm.client import http
 
 
-class AmoCRMCatalogsDTO:  # NOQA: PIE798
+class AmoCRMCatalogsDTO:
     @staticmethod
     def get() -> list[types.Catalog]:
         """

@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Optional  # NOQA: I251
+from typing import TYPE_CHECKING, Optional
 
 from django.apps import apps
 

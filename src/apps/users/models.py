@@ -68,7 +68,7 @@ class User(TestUtilsMixin, AbstractUser):
 
     @cached_property
     def diploma_languages(self) -> set[Language]:
-        language_values = [cast(Language, language) for language in Languages.values]
+        language_values = [cast("Language", language) for language in Languages.values]
         return {language for language in language_values if self.get_printable_name(language) is not None}
 
     def get_printable_name(self, language: Language) -> str | None:

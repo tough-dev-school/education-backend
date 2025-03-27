@@ -7,20 +7,19 @@ from apps.homework.models import Answer
 pytestmark = [
     pytest.mark.django_db,
     pytest.mark.usefixtures("purchase"),
-    pytest.mark.freeze_time("2032-01-01 12:30Z"),
 ]
 
 
 @pytest.fixture
 def _no_purchase(purchase):
-    purchase.update(paid=None)
+    purchase.unship()
 
 
 def get_answer():
     return Answer.objects.last()
 
 
-def test_creation(api, question, another_answer):
+def test_creation(api, question, another_answer, purchase):
     api.post(
         "/api/v2/homework/answers/",
         {
@@ -35,6 +34,7 @@ def test_creation(api, question, another_answer):
     assert created.question == question
     assert created.parent == another_answer
     assert created.author == api.user
+    assert created.study == purchase.study
     assert created.text == "Горите в аду!"
 
 
@@ -77,13 +77,29 @@ def test_without_parent(api, question):
     created = get_answer()
 
     assert created.parent is None
+    assert created.question == question
 
 
-def test_empty_parent(api, question):
+def test_nonexistant_parent(api, question):
     api.post(
         "/api/v2/homework/answers/",
         {
-            "parent": None,
+            "parent": "41c24524-3d44-4cb8-ace3-c4cded405b24",  # не существует, инфа сотка
+            "question": question.slug,
+            "text": "Даже в гикбрейнс лучше!",
+        },
+    )
+    created = get_answer()
+
+    assert created.parent is None
+
+
+@pytest.mark.parametrize("empty_parent", ["", None])
+def test_empty_parent(api, question, empty_parent):
+    api.post(
+        "/api/v2/homework/answers/",
+        {
+            "parent": empty_parent,
             "question": question.slug,
             "text": "Верните деньги!",
         },
@@ -134,6 +150,11 @@ def test_ok_for_users_with_permission(api, question):
         expected_status_code=201,
     )
 
+    created = get_answer()
+
+    assert created.author == api.user
+    assert created.study is None
+
 
 @pytest.mark.usefixtures("_no_purchase")
 def test_ok_for_superusers(api, question):
@@ -147,6 +168,11 @@ def test_ok_for_superusers(api, question):
         },
         expected_status_code=201,
     )
+
+    created = get_answer()
+
+    assert created.author == api.user
+    assert created.study is None
 
 
 @pytest.mark.xfail(strict=True, reason="Мы не проверяем право доступа к вопросу при создании ответа. Считаем это неважным, см #1370")
@@ -167,6 +193,7 @@ def test_403_if_user_has_not_purchase_record_at_all(api, question, purchase):
     assert created is None
 
 
+@pytest.mark.freeze_time("2032-01-01 12:30Z")
 def test_marks_crosscheck_as_checked(api, question, another_answer, mixer):
     crosscheck = mixer.blend("homework.AnswerCrossCheck", answer=another_answer, checker=api.user)
 

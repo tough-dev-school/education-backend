@@ -62,7 +62,7 @@ class DiplomaRegenerator(BaseService):
             language__in=self.student.diploma_languages,
         ).values_list("language", flat=True)
 
-        return [cast(Language, language) for language in study_diploma_languages]
+        return [cast("Language", language) for language in study_diploma_languages]
 
     def notify(self) -> None:
         send_mail.delay(
