@@ -5,7 +5,7 @@ from apps.notion.models import Material as NotionMaterial
 
 
 class NotionMaterialSerializer(serializers.ModelSerializer):
-    id = serializers.CharField(source="slug")
+    id = serializers.CharField(source="get_short_slug")
 
     class Meta:
         model = NotionMaterial
