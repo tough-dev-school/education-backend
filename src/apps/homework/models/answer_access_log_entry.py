@@ -1,5 +1,5 @@
 import contextlib
-from typing import TYPE_CHECKING, Optional  # NOQA: I251
+from typing import TYPE_CHECKING, Optional
 
 from django.db.models import Index, QuerySet, UniqueConstraint
 

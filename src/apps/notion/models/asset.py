@@ -7,7 +7,7 @@ from core.models import TimestampedModel, models
 
 class NotionAsset(TimestampedModel):
     url = models.URLField(max_length=1024, unique=True, db_index=True)
-    file = models.FileField(upload_to=RandomFileName("assets"), unique=True)  # NOQA: VNE002
+    file = models.FileField(upload_to=RandomFileName("assets"), unique=True)
     size = models.IntegerField(_("Image size in bytes"))
     md5_sum = models.CharField(max_length=32)
 
