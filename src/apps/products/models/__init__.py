@@ -1,4 +1,4 @@
-from typing import Type  # NOQA: I251
+from typing import Type
 
 from apps.products.models.bundle import Bundle
 from apps.products.models.course import Course

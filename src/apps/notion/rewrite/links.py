@@ -25,7 +25,7 @@ def get_link_rewrite_mapping() -> Mapping[NotionId, NotionId]:
     return {page_id: uuid_to_id(str(slug)) for page_id, slug in mapping}
 
 
-def rewrite_prop(prop: TextProperty) -> TextProperty:  # NOQA: CCR001
+def rewrite_prop(prop: TextProperty) -> TextProperty:
     """Drill down notion property data, searching for a link to the internal material.
     If the link is found -- rewrite its id to our material slug
     """

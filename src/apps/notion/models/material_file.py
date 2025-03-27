@@ -4,7 +4,7 @@ from core.models import TimestampedModel, models
 
 
 class MaterialFile(TimestampedModel):
-    file = models.FileField(upload_to="materials", unique=True)  # NOQA: VNE002
+    file = models.FileField(upload_to="materials", unique=True)
 
     class Meta:
         verbose_name = _("Material file")

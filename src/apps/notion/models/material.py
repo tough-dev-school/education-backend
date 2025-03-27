@@ -1,7 +1,7 @@
 # ruff: noqa: S608, S611
 import contextlib
 import uuid
-from typing import Optional  # NOQA: I251
+from typing import Optional
 from urllib.parse import urljoin
 
 from django.apps import apps

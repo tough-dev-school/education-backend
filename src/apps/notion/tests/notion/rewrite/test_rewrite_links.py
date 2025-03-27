@@ -83,7 +83,7 @@ def test_recursivity(block):
             [
                 [
                     "stuff",
-                    [  # NOQA: JS101
+                    [
                         [
                             "a",
                             "/their-material-id",
@@ -91,8 +91,8 @@ def test_recursivity(block):
                     ],
                 ]
             ]
-        ],  # NOQA: JS102
-    ]  # NOQA: JS102
+        ],
+    ]
 
     result = rewrite_links(block)["value"]["properties"]["title"]
 
@@ -102,7 +102,7 @@ def test_recursivity(block):
             [
                 [
                     "stuff",
-                    [  # NOQA: JS101
+                    [
                         [
                             "a",
                             "/a4a1c6f6d2ea441ebf1fdd8b5b99445a",
@@ -110,8 +110,8 @@ def test_recursivity(block):
                     ],
                 ]
             ]
-        ],  # NOQA: JS102
-    ]  # NOQA: JS102
+        ],
+    ]
 
 
 @pytest.mark.parametrize("link", ["https://text.com", "https://text.com?good=to-go"])

@@ -54,7 +54,7 @@ class NotionBlock:
         """Apply all our rewrites, e.g. replace notion page ids with ours, replace youtube links with rutube for russians etc."""
         return apply_our_adjustments(self.data)
 
-    def get_assets_to_save(self) -> list[str]:  # NOQA: CCR001
+    def get_assets_to_save(self) -> list[str]:
         """Returns a list of asset urls as defined in notion response
         Returnes only assets to fetch
 
