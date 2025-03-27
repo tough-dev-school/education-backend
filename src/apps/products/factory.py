@@ -6,9 +6,11 @@ from core.test.factory import FixtureFactory, register
 
 
 @register
-def course(self: FixtureFactory, slug: str | None = None, group: Group | None = None, price: Decimal | None = None, **kwargs: dict) -> Course:
-    return self.mixer.blend(
-        "products.Course",
+def course(
+    self: FixtureFactory, name: str | None = None, slug: str | None = None, group: Group | None = None, price: Decimal | None = None, **kwargs: dict
+) -> Course:
+    return Course.objects.create(
+        name=name if name else self.faker.catch_phrase(),
         slug=slug if slug is not None else random_string(49),
         group=group if group is not None else self.group(),
         price=price if price is not None else self.price(),
