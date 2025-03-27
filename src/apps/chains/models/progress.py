@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Optional  # NOQA: I251
+from typing import TYPE_CHECKING, Optional
 
 from apps.studying.models import Study
 from core.models import TimestampedModel, models

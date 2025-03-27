@@ -2,7 +2,7 @@ from apps.amocrm import types
 from apps.amocrm.client import http
 
 
-class AmoCRMPipelinesDTO:  # NOQA: PIE798
+class AmoCRMPipelinesDTO:
     @classmethod
     def get(cls) -> list[types.Pipeline]:
         """
