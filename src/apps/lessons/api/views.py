@@ -4,9 +4,10 @@ from rest_framework.permissions import IsAuthenticated
 from apps.lessons.api.filters import LessonFilterSet
 from apps.lessons.api.serializers import LessonSerializer
 from apps.lessons.models import Lesson, LessonQuerySet
+from core.api.mixins import DisablePaginationWithQueryParamMixin
 
 
-class LessonListView(ListAPIView):
+class LessonListView(DisablePaginationWithQueryParamMixin, ListAPIView):
     """List all lessons for a specific course."""
 
     serializer_class = LessonSerializer

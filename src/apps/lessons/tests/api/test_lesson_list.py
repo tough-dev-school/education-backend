@@ -37,8 +37,8 @@ def test_ok(api, course, lesson):
     got = api.get(f"/api/v2/lessons/?course={course.slug}")
 
     assert len(got["results"]) == 1
-    assert got["results"][0]["name"] == lesson.name
     assert got["results"][0]["id"] == lesson.id
+    assert got["results"][0]["name"] == lesson.name
 
 
 @pytest.mark.usefixtures("_no_purchase")
@@ -70,3 +70,17 @@ def test_hidden_lessons_not_shown(api, course, lesson):
     got = api.get(f"/api/v2/lessons/?course={course.slug}")
 
     assert len(got["results"]) == 0
+
+
+@pytest.mark.parametrize(
+    "disable_pagination_value",
+    [
+        "True",
+        "true",
+        "1",
+    ],
+)
+def test_pagination_could_be_disable_with_query_param(api, course, lesson, disable_pagination_value):
+    got = api.get(f"/api/v2/lessons/?course={course.slug}&disable_pagination={disable_pagination_value}")
+
+    assert got[0]["id"] == lesson.id
