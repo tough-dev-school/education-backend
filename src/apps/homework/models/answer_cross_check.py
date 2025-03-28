@@ -29,11 +29,13 @@ class AnswerCrossCheck(TimestampedModel):
         _("Date when crosscheck got checked"),
         null=True,
         blank=True,
+        db_index=True,
     )
 
     class Meta:
         indexes = [
             Index(fields=["answer", "checker"]),
+            Index(fields=["answer", "checker", "checked"]),
         ]
 
         constraints = [
