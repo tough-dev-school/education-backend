@@ -19,7 +19,9 @@ class LessonQuerySet(QuerySet):
         if user.is_anonymous:
             return self.none()
 
-        return self.for_user(user).with_is_sent(user).with_crosscheck_stats(user).filter(hidden=False).order_by("position")
+        return (
+            self.for_user(user).with_is_sent(user).with_crosscheck_stats(user).filter(hidden=False).select_related("question", "material").order_by("position")
+        )
 
     def for_user(self, user: User) -> "LessonQuerySet":
         purchased_courses = apps.get_model("studying.Study").objects.filter(student=user).values_list("course_id", flat=True)

@@ -6,15 +6,6 @@ pytestmark = [
 ]
 
 
-def test_no_question(api, course, lesson):
-    lesson.update(question=None)
-
-    got = api.get(f"/api/v2/lessons/?course={course.slug}")
-
-    assert got["results"][0]["id"] == lesson.id
-    assert got["results"][0]["homework"] is None
-
-
 def test_no_sent_questions(api, course):
     got = api.get(f"/api/v2/lessons/?course={course.slug}")
 

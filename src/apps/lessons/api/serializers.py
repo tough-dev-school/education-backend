@@ -1,6 +1,7 @@
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
+from apps.homework.api.serializers import QuestionSerializer
 from apps.homework.models import Question
 from apps.lessons.models import Lesson
 from apps.notion.models import Material as NotionMaterial
@@ -33,6 +34,7 @@ class CrosscheckStatsSerializer(serializers.Serializer):  # for docs only
 class HomeworkStatsSerializer(serializers.Serializer):  # for docs only
     is_sent = serializers.BooleanField()
     crosschecks = CrosscheckStatsSerializer(required=False)
+    question = QuestionSerializer()
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -50,9 +52,10 @@ class LessonSerializer(serializers.ModelSerializer):
 
     @extend_schema_field(field=HomeworkStatsSerializer)
     def get_homework(self, obj: Lesson) -> dict | None:
-        if obj.question_id is not None:
+        if obj.question is not None:
             return {
                 "is_sent": obj.is_sent,
+                "question": QuestionSerializer(obj.question).data,
                 "crosschecks": {
                     "total": obj.crosschecks_total,
                     "checked": obj.crosschecks_checked,

@@ -40,6 +40,7 @@ class QuestionSerializer(serializers.ModelSerializer):
             "slug",
             "name",
             "text",
+            "deadline",
         ]
 
 
