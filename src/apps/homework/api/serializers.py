@@ -161,4 +161,4 @@ class AnswerCrossCheckSerializer(serializers.ModelSerializer):
         )
 
     def get_is_checked(self, obj: "AnswerCrossCheck") -> bool:
-        return obj.checked_at is not None
+        return obj.checked is not None

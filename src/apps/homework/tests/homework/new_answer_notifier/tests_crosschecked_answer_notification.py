@@ -94,7 +94,7 @@ def test_cannot_be_sent_if_answer_is_a_comment_to_child_answer(notification, ans
 
 
 def test_cannot_be_sent_if_theres_no_non_completed_crosscheck(notification, answer, child_answer, crosscheck):
-    crosscheck.checked_at = "2021-01-01 00:00:00Z"
+    crosscheck.checked = "2021-01-01 00:00:00Z"
     crosscheck.save()
 
     assert notification(answer=child_answer, user=answer.author).should_send() is False

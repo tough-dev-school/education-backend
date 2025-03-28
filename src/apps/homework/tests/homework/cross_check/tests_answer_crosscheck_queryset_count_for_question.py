@@ -37,7 +37,7 @@ def test_without_checked(question):
 
 @pytest.mark.usefixtures("ya_crosscheck")
 def test_with_checked(crosscheck, question):
-    crosscheck.checked_at = "2022-01-01 00:00:00Z"
+    crosscheck.checked = "2022-01-01 00:00:00Z"
     crosscheck.save()
 
     got = AnswerCrossCheck.objects.count_for_question(question)
