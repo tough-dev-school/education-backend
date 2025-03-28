@@ -27,6 +27,8 @@ class LessonQuerySet(QuerySet):
 
 
 class Lesson(TimestampedModel):
+    objects = LessonQuerySet.as_manager()
+
     name = models.CharField(max_length=255)
     course = models.ForeignKey("products.Course", on_delete=models.CASCADE, related_name="lessons")
     position = models.PositiveIntegerField(default=0, blank=False, null=False, db_index=True)
@@ -34,7 +36,6 @@ class Lesson(TimestampedModel):
     question = models.ForeignKey("homework.Question", blank=True, null=True, related_name="+", on_delete=models.PROTECT)
     hidden = models.BooleanField(_("Hidden"), help_text=_("Users can't find such materials in the listing"), default=True)
 
-    objects = LessonQuerySet.as_manager()
 
     class Meta:
         ordering = ["position"]
