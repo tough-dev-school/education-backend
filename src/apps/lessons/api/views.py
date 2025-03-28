@@ -8,7 +8,7 @@ from core.api.mixins import DisablePaginationWithQueryParamMixin
 
 
 class LessonListView(DisablePaginationWithQueryParamMixin, ListAPIView):
-    """List all lessons for a specific course."""
+    """List lessons, accessible to user. Better use it filtering by course"""
 
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated]
