@@ -9,7 +9,7 @@
 - Run tests matching pattern: `cd src && poetry run python -m pytest -k "pattern" -v`
 - Run server: `make server`
 - Run worker: `make worker`
-- Run django manage command `cd src && poetry run python manage.py`
+- Run django manage command: `cd src && poetry run python manage.py`
 
 ## Code Style
 - Type checking: Use mypy annotations for all non-test code
