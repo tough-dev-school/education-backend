@@ -45,6 +45,11 @@ class TimestampedModel(DefaultModel, Timestamped):
         abstract = True
 
 
+class SubqueryCount(models.Subquery):
+    template = "(SELECT count(id) FROM (%(subquery)s) _count)"
+    output_field = models.IntegerField()
+
+
 def only_one_or_zero_is_set(*fields: str) -> models.Q:
     """Generate a query for CheckConstraint that allows to set only one (or none of) given fields"""
     constraints = []

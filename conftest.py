@@ -13,6 +13,7 @@ pytest_plugins = [
 
     "apps.products.fixtures",
     "apps.users.fixtures",
+    "apps.lessons.factory",
     "core.fixtures",
 ]
 # fmt: on

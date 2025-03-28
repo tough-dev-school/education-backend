@@ -207,7 +207,7 @@ def test_marks_crosscheck_as_checked(api, question, another_answer, mixer):
     )
 
     crosscheck.refresh_from_db()
-    assert crosscheck.checked_at == datetime(2032, 1, 1, 12, 30, tzinfo=timezone.utc)
+    assert crosscheck.checked == datetime(2032, 1, 1, 12, 30, tzinfo=timezone.utc)
 
 
 def test_doesnt_marks_crosscheck_as_checked_for_another_answer(api, question, another_answer, mixer):
@@ -223,7 +223,7 @@ def test_doesnt_marks_crosscheck_as_checked_for_another_answer(api, question, an
     )
 
     crosscheck.refresh_from_db()
-    assert crosscheck.checked_at is None
+    assert crosscheck.checked is None
 
 
 def test_doesnt_marks_crosscheck_as_checked_for_another_checker(api, question, another_answer, ya_user, mixer):
@@ -239,4 +239,4 @@ def test_doesnt_marks_crosscheck_as_checked_for_another_checker(api, question, a
     )
 
     crosscheck.refresh_from_db()
-    assert crosscheck.checked_at is None
+    assert crosscheck.checked is None

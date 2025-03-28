@@ -34,17 +34,17 @@ def answers(mixer, question, users) -> "List[Answer]":
 @pytest.fixture(autouse=True)
 def crosschecks(mixer, answers, users) -> "List[AnswerCrossCheck]":
     return [
-        mixer.blend("homework.AnswerCrossCheck", answer=answers[1], checker=users[0], checked_at=None),
-        mixer.blend("homework.AnswerCrossCheck", answer=answers[2], checker=users[0], checked_at=None),
-        mixer.blend("homework.AnswerCrossCheck", answer=answers[0], checker=users[1], checked_at=None),
-        mixer.blend("homework.AnswerCrossCheck", answer=answers[3], checker=users[1], checked_at=None),
+        mixer.blend("homework.AnswerCrossCheck", answer=answers[1], checker=users[0], checked=None),
+        mixer.blend("homework.AnswerCrossCheck", answer=answers[2], checker=users[0], checked=None),
+        mixer.blend("homework.AnswerCrossCheck", answer=answers[0], checker=users[1], checked=None),
+        mixer.blend("homework.AnswerCrossCheck", answer=answers[3], checker=users[1], checked=None),
     ]
 
 
 @pytest.fixture
 def check_crosscheck(mixer) -> Callable:
     def check(crosscheck: "AnswerCrossCheck") -> Answer:
-        crosscheck.checked_at = datetime(2032, 12, 1, 15, 30, tzinfo=timezone.utc)
+        crosscheck.checked = datetime(2032, 12, 1, 15, 30, tzinfo=timezone.utc)
         crosscheck.save()
         return mixer.blend("homework.Answer", question=crosscheck.answer.question, parent=crosscheck.answer, author=crosscheck.checker)
 

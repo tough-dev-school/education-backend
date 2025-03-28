@@ -90,3 +90,6 @@ class Material(TimestampedModel):
 
     def get_notion_url(self) -> str:
         return f"https://notion.so/1-{self.page_id}"
+
+    def get_short_slug(self) -> str:
+        return uuid_to_id(str(self.slug))

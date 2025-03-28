@@ -37,9 +37,9 @@ def test_base_response(api, question, crosscheck):
     assert got["answer"]["author"]["avatar"] is None
 
 
-@pytest.mark.parametrize(("checked_at", "is_checked"), [(None, False), (datetime(2032, 1, 1, tzinfo=timezone.utc), True)])
-def test_is_checked(api, question, crosscheck, checked_at, is_checked):
-    crosscheck.checked_at = checked_at
+@pytest.mark.parametrize(("checked", "is_checked"), [(None, False), (datetime(2032, 1, 1, tzinfo=timezone.utc), True)])
+def test_is_checked(api, question, crosscheck, checked, is_checked):
+    crosscheck.checked = checked
     crosscheck.save()
 
     got = api.get(f"/api/v2/homework/crosschecks/?question={question.slug}")[0]

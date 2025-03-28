@@ -1,0 +1,33 @@
+import pytest
+
+pytestmark = [pytest.mark.django_db]
+
+
+def test_no_question(api, course, lesson):
+    lesson.update(question=None)
+
+    got = api.get(f"/api/v2/lessons/?course={course.slug}")
+
+    assert got["results"][0]["id"] == lesson.id
+    assert got["results"][0]["homework"] is None
+
+
+def test_question(api, course, question):
+    got = api.get(f"/api/v2/lessons/?course={course.slug}")["results"][0]["homework"]["question"]
+
+    assert got["name"] == question.name
+    assert "<em>" in got["text"], "text is rendered"
+
+
+def test_query_count(api, course, lesson, factory, mixer, django_assert_num_queries):
+    lesson.delete()
+    for _ in range(10):
+        factory.lesson(
+            course=course,
+            material=mixer.blend("notion.Material"),
+            question=mixer.blend("homework.Question"),
+        )
+
+    with django_assert_num_queries(3):
+        got = api.get(f"/api/v2/lessons/?course={course.slug}")
+        assert len(got["results"]) == 10

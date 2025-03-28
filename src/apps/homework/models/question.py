@@ -15,6 +15,8 @@ class Question(TimestampedModel):
 
     text = models.TextField()
 
+    deadline = models.DateTimeField(_("Deadline"), null=True, blank=True)
+
     class Meta:
         verbose_name = _("Homework")
         verbose_name_plural = _("Homeworks")

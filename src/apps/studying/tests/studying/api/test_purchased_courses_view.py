@@ -6,8 +6,7 @@ pytestmark = [pytest.mark.django_db]
 def test_list(api, course):
     got = api.get("/api/v2/studies/purchased/")["results"]
 
-    assert got[0]["id"] == course.id
-    assert got[0]["slug"] == "ichteology"
+    assert got[0]["id"] == course.slug
     assert got[0]["name"] == "Ихтеология для 5 класса"
     assert got[0]["home_page_slug"] is None
     assert ".gif" in got[0]["cover"]
@@ -45,7 +44,7 @@ def test_pagination_could_be_disable_with_query_param(api, course, disable_pagin
     got = api.get(f"/api/v2/studies/purchased/?disable_pagination={disable_pagination_value}")
 
     assert len(got) == 1
-    assert got[0]["id"] == course.id
+    assert got[0]["id"] == course.slug
 
 
 @pytest.mark.parametrize(

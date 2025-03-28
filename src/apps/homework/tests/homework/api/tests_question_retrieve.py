@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 import pytest
 
 pytestmark = [
@@ -11,6 +13,15 @@ def test_ok(api, question):
 
     assert got["slug"] == str(question.slug)
     assert got["name"] == question.name
+
+
+@pytest.mark.usefixtures("kamchatka_timezone")
+def test_question_deadline(api, question):
+    question.update(deadline=datetime(2032, 12, 24, 15, 13, tzinfo=timezone.utc))
+
+    got = api.get(f"/api/v2/homework/questions/{question.slug}/")
+
+    assert got["deadline"] == "2032-12-25T03:13:00+12:00"
 
 
 def test_markdown(api, question):

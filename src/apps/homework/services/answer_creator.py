@@ -73,4 +73,4 @@ class AnswerCreator(BaseService):
         return instance.parent.answercrosscheck_set.filter(checker=self.author).exists()
 
     def complete_crosscheck(self, instance: Answer) -> None:
-        instance.parent.answercrosscheck_set.filter(checker=self.author).update(checked_at=timezone.now())
+        instance.parent.answercrosscheck_set.filter(checker=self.author).update(checked=timezone.now())
