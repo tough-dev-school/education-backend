@@ -15,4 +15,4 @@ class LessonListView(DisablePaginationWithQueryParamMixin, ListAPIView):
     filterset_class = LessonFilterSet
 
     def get_queryset(self) -> LessonQuerySet:
-        return Lesson.objects.for_user(self.request.user).for_viewset()
+        return Lesson.objects.for_viewset(self.request.user)

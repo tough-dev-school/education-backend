@@ -1,9 +1,8 @@
 from rest_framework import serializers
 
-from apps.homework.models import Answer, Question
+from apps.homework.models import Question
 from apps.lessons.models import Lesson
 from apps.notion.models import Material as NotionMaterial
-from core.current_user import get_current_user
 
 
 class NotionMaterialSerializer(serializers.ModelSerializer):
@@ -18,25 +17,16 @@ class NotionMaterialSerializer(serializers.ModelSerializer):
 
 
 class HomeworkSerializer(serializers.ModelSerializer):
-    is_sent = serializers.SerializerMethodField()
-
     class Meta:
         model = Question
         fields = [
             "is_sent",
         ]
 
-    def get_is_sent(self, obj: Question) -> bool:
-        user = get_current_user()
-        if user is None:
-            return False
-
-        return Answer.objects.root_only().filter(author=user, question=obj).exists()
-
 
 class LessonSerializer(serializers.ModelSerializer):
     material = NotionMaterialSerializer()
-    homework = HomeworkSerializer(source="question")
+    homework = serializers.SerializerMethodField()
 
     class Meta:
         model = Lesson
@@ -46,3 +36,13 @@ class LessonSerializer(serializers.ModelSerializer):
             "material",
             "homework",
         ]
+
+    def get_homework(self, obj: Lesson) -> dict | None:
+        if obj.question_id is not None:
+            return {
+                "is_sent": obj.is_sent,
+                "crosschecks": {
+                    "total": obj.crosschecks_total,
+                    "checked": obj.crosschecks_checked,
+                },
+            }
