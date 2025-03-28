@@ -39,7 +39,8 @@ def test_base_response(api, question, crosscheck):
 
 @pytest.mark.parametrize(("checked", "is_checked"), [(None, False), (datetime(2032, 1, 1, tzinfo=timezone.utc), True)])
 def test_is_checked(api, question, crosscheck, checked, is_checked):
-    crosscheck.update(checked=checked)
+    crosscheck.checked = checked
+    crosscheck.save()
 
     got = api.get(f"/api/v2/homework/crosschecks/?question={question.slug}")[0]
 
@@ -47,7 +48,8 @@ def test_is_checked(api, question, crosscheck, checked, is_checked):
 
 
 def test_exclude_cross_check_from_another_checker(api, question, crosscheck, ya_user):
-    crosscheck.update(checked=checked)
+    crosscheck.checker = ya_user
+    crosscheck.save()
 
     got = api.get(f"/api/v2/homework/crosschecks/?question={question.slug}")
 
