@@ -40,13 +40,15 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name="Course",
+            name="LessonCourse",
             fields=[],
             options={
                 "ordering": ["-created"],
                 "proxy": True,
                 "indexes": [],
                 "constraints": [],
+                "verbose_name": "Course",
+                "verbose_name_plural": "Courses",
             },
             bases=("products.course",),
         ),
@@ -59,7 +61,7 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=255)),
                 ("position", models.PositiveIntegerField(db_index=True, default=0)),
                 ("hidden", models.BooleanField(default=True, help_text="Users can't find such materials in the listing", verbose_name="Hidden")),
-                ("course", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name="lessons", to="products.course")),
+                ("course", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name="lessons", to="lessons.LessonCourse")),
                 ("material", models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name="+", to="notion.material")),
             ],
             options={

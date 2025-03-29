@@ -3,15 +3,8 @@ from django.contrib.auth.models import AnonymousUser
 from django.db.models import Exists, Index, OuterRef, QuerySet
 from django.utils.translation import gettext_lazy as _
 
-from apps.products.models import Course as _Course
 from apps.users.models import User
 from core.models import SubqueryCount, TimestampedModel, models
-
-
-class Course(_Course):
-    class Meta:
-        proxy = True
-        ordering = ["-created"]
 
 
 class LessonQuerySet(QuerySet):
@@ -62,7 +55,7 @@ class Lesson(TimestampedModel):
     objects = LessonQuerySet.as_manager()
 
     name = models.CharField(max_length=255)
-    course = models.ForeignKey("products.Course", on_delete=models.CASCADE, related_name="lessons")
+    course = models.ForeignKey("lessons.LessonCourse", on_delete=models.CASCADE, related_name="lessons")
     position = models.PositiveIntegerField(default=0, blank=False, null=False, db_index=True)
     material = models.ForeignKey("notion.Material", blank=True, null=True, related_name="+", on_delete=models.PROTECT)
     question = models.ForeignKey("homework.Question", blank=True, null=True, related_name="+", on_delete=models.PROTECT)
