@@ -17,6 +17,7 @@ def create_lesson_for_each_homework_question(apps, schema_editor):  # noqa: ARG0
                 name=question.name,
                 course=course,
                 question=question,
+                hidden=False,
             )
 
 
