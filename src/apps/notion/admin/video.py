@@ -6,10 +6,10 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.notion.models import Video
 from apps.notion.video import get_rutube_access_key, get_rutube_video_id, get_youtube_video_id
-from core.admin import ModelAdmin, admin
+from core.admin import ModelAdmin, ModelForm, admin
 
 
-class NotionVideoForm(forms.ModelForm):
+class NotionVideoForm(ModelForm):
     title = forms.CharField(label=_("Title"), widget=forms.Textarea(), required=False)
     youtube = forms.CharField(label=_("Youtube"), required=True, help_text=_("Paste it from the address bar"))
     rutube = forms.CharField(label=_("RuTube"), required=False, help_text=_("Paste it from the address bar"))

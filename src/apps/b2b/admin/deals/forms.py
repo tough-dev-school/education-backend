@@ -5,9 +5,10 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.b2b.models import Deal
 from apps.b2b.services import BulkStudentCreator, DealCreator
+from core.admin import ModelForm
 
 
-class DealCreateForm(forms.ModelForm):
+class DealCreateForm(ModelForm):
     author = forms.CharField(required=False, widget=forms.HiddenInput)
     students = forms.CharField(
         label=_("Students"),

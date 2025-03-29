@@ -5,10 +5,10 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.users.models import Student, User
 from apps.users.services import UserCreator
-from core.admin import ModelAdmin, admin
+from core.admin import ModelAdmin, ModelForm, admin
 
 
-class PasswordLessUserCreationForm(forms.ModelForm):
+class PasswordLessUserCreationForm(ModelForm):
     email = forms.CharField(label=_("Email"))
     first_name = forms.CharField(label=_("first name"), required=False)
     last_name = forms.CharField(label=_("last name"), required=False)

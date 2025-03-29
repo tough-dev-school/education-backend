@@ -2,6 +2,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from apps.chains.models import Chain, Message
+from core.admin import ModelForm
 
 
 class ChainChoiceField(forms.ModelChoiceField):
@@ -9,7 +10,7 @@ class ChainChoiceField(forms.ModelChoiceField):
         return f"{obj.course}, {obj}"
 
 
-class MessageAddForm(forms.ModelForm):
+class MessageAddForm(ModelForm):
     parent = forms.ModelChoiceField(
         queryset=Message.objects.may_be_parent(),
         required=False,
@@ -33,7 +34,7 @@ class MessageAddForm(forms.ModelForm):
         )
 
 
-class MessageEditForm(forms.ModelForm):
+class MessageEditForm(ModelForm):
     chain = ChainChoiceField(queryset=Chain.objects.all())
 
     class Meta:
