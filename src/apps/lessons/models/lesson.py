@@ -2,6 +2,7 @@ from django.apps import apps
 from django.contrib.auth.models import AnonymousUser
 from django.db.models import Exists, Index, OuterRef, QuerySet
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation import pgettext_lazy
 
 from apps.users.models import User
 from core.models import SubqueryCount, TimestampedModel, models
@@ -57,8 +58,10 @@ class Lesson(TimestampedModel):
     name = models.CharField(max_length=255)
     course = models.ForeignKey("lessons.LessonCourse", on_delete=models.CASCADE, related_name="lessons")
     position = models.PositiveIntegerField(default=0, blank=False, null=False, db_index=True)
-    material = models.ForeignKey("notion.Material", blank=True, null=True, related_name="+", on_delete=models.PROTECT)
-    question = models.ForeignKey("homework.Question", blank=True, null=True, related_name="+", on_delete=models.PROTECT)
+    material = models.ForeignKey(
+        "notion.Material", blank=True, null=True, related_name="+", on_delete=models.PROTECT, verbose_name=pgettext_lazy("lessons", "Material")
+    )
+    question = models.ForeignKey(to="homework.Question", blank=True, null=True, related_name="+", on_delete=models.PROTECT, verbose_name=_("Question"))
     hidden = models.BooleanField(_("Hidden"), help_text=_("Users can't find such materials in the listing"), default=True)
 
     class Meta:

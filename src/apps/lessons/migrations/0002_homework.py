@@ -47,7 +47,9 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="lesson",
             name="question",
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name="+", to="homework.question"),
+            field=models.ForeignKey(
+                blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name="+", to="homework.question", verbose_name="Question"
+            ),
         ),
         migrations.RunPython(create_lesson_for_each_homework_question),
         migrations.RunPython(fix_homework_lessons_position),

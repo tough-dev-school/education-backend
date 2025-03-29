@@ -62,7 +62,12 @@ class Migration(migrations.Migration):
                 ("position", models.PositiveIntegerField(db_index=True, default=0)),
                 ("hidden", models.BooleanField(default=True, help_text="Users can't find such materials in the listing", verbose_name="Hidden")),
                 ("course", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name="lessons", to="lessons.LessonCourse")),
-                ("material", models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name="+", to="notion.material")),
+                (
+                    "material",
+                    models.ForeignKey(
+                        blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name="+", to="notion.material", verbose_name="Material"
+                    ),
+                ),
             ],
             options={
                 "ordering": ["position"],
