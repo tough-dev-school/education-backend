@@ -63,13 +63,3 @@ class LessonForUserSerializer(serializers.ModelSerializer):
                     "checked": lesson.crosschecks_checked,
                 },
             }
-
-
-class LessonSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Lesson
-        fields = [
-            "id",
-            "material",
-            "question",
-        ]

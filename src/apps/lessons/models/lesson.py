@@ -33,18 +33,12 @@ class LessonQuerySet(QuerySet):
     def with_crosscheck_stats(self, user: User) -> "LessonQuerySet":
         AnswerCrossCheck = apps.get_model("homework.AnswerCrossCheck")
 
-        # Total crosschecks for the question and user
         total = AnswerCrossCheck.objects.filter(
             answer__question=OuterRef("question"),
             checker=user,
         )
 
-        # Checked crosschecks for the question and user
-        checked = AnswerCrossCheck.objects.filter(
-            answer__question=OuterRef("question"),
-            checker=user,
-            checked__isnull=False,
-        )
+        checked = total.filter(checked__isnull=False)
 
         return self.annotate(
             crosschecks_total=SubqueryCount(total),
