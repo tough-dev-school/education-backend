@@ -4,7 +4,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from apps.lessons.api.filters import LessonFilterSet
-from apps.lessons.api.serializers import LessonSerializer
+from apps.lessons.api.serializers import LessonForUserSerializer
 from apps.lessons.models import Lesson
 from core.api.mixins import DisablePaginationWithQueryParamMixin
 
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 class LessonListView(DisablePaginationWithQueryParamMixin, ListAPIView):
     """List lessons, accessible to user. Better use it filtering by course"""
 
-    serializer_class = LessonSerializer
+    serializer_class = LessonForUserSerializer
     permission_classes = [IsAuthenticated]
     filterset_class = LessonFilterSet
 

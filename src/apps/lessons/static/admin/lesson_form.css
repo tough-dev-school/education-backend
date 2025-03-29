@@ -1,0 +1,12 @@
+.field-material_id,
+.field-material_title {
+  display: none;
+}
+
+p.material_link {
+  margin-left: 1em;
+}
+
+.field-material input {
+  width: 250px;
+}

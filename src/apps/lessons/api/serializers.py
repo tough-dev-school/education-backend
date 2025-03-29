@@ -37,7 +37,9 @@ class HomeworkStatsSerializer(serializers.Serializer):  # for docs only
     question = QuestionSerializer()
 
 
-class LessonSerializer(serializers.ModelSerializer):
+class LessonForUserSerializer(serializers.ModelSerializer):
+    """Serialize lesson for the user, lesson should be annotated with crosschecks stats"""
+
     material = NotionMaterialSerializer(required=False)
     homework = serializers.SerializerMethodField()
 
@@ -51,13 +53,23 @@ class LessonSerializer(serializers.ModelSerializer):
         ]
 
     @extend_schema_field(field=HomeworkStatsSerializer)
-    def get_homework(self, obj: Lesson) -> dict | None:
-        if obj.question is not None:
+    def get_homework(self, lesson: Lesson) -> dict | None:
+        if lesson.question is not None:
             return {
-                "is_sent": obj.is_sent,
-                "question": QuestionSerializer(obj.question).data,
+                "is_sent": lesson.is_sent,
+                "question": QuestionSerializer(lesson.question).data,
                 "crosschecks": {
-                    "total": obj.crosschecks_total,
-                    "checked": obj.crosschecks_checked,
+                    "total": lesson.crosschecks_total,
+                    "checked": lesson.crosschecks_checked,
                 },
             }
+
+
+class LessonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lesson
+        fields = [
+            "id",
+            "material",
+            "question",
+        ]

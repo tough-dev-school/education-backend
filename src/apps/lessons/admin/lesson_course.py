@@ -81,5 +81,5 @@ class LessonCourseAdmin(SortableAdminBase, ModelAdmin):
 
     class Media:
         css = {
-            "all": ("admin/css/condensed_lessons.css",),
+            "all": ("admin/condensed_lessons.css",),
         }
