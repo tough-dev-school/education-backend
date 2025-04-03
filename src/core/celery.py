@@ -41,3 +41,7 @@ celery.conf.update(
 
 
 celery.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+
+__all__ = [
+    "celery",
+]
