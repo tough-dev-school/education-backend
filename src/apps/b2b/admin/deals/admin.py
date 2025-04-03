@@ -46,6 +46,9 @@ class DealAdmin(ModelAdmin):
         actions.ship_without_payment,
         actions.cancel,
     ]
+    foreignkey_queryset_overrides = {
+        "b2b.Deal.course": lambda apps: apps.get_model("products.Course").objects.for_admin(),
+    }
 
     @mark_safe
     @admin.display(description=pgettext_lazy("deals", "Orders"))

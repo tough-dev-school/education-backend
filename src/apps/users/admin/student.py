@@ -3,6 +3,7 @@ from typing import Any
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
+from apps.products.admin.filters import CourseFilter
 from apps.users.models import Student, User
 from apps.users.services import UserCreator
 from core.admin import ModelAdmin, admin
@@ -61,6 +62,6 @@ class StudentAdmin(ModelAdmin):
         "is_superuser",
         "is_active",
         "groups",
-        "order__study__course",
+        CourseFilter,
     )
     list_editable = ("gender",)

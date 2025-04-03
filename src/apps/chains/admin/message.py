@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.chains.admin.forms import MessageAddForm, MessageEditForm
 from apps.chains.models import Message
+from apps.products.admin.filters import CourseFilter
 from core.admin import ModelAdmin, admin
 
 
@@ -35,7 +36,7 @@ class MessageAdmin(ModelAdmin):
     ]
 
     list_filter = [
-        ("chain__course", RelatedOnlyFieldListFilter),
+        CourseFilter,
         ("chain", RelatedOnlyFieldListFilter),
     ]
 

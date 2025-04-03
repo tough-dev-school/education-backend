@@ -9,6 +9,7 @@ from apps.orders.admin.orders.filters import OrderStatusFilter
 from apps.orders.admin.orders.forms import OrderAddForm, OrderChangeForm
 from apps.orders.admin.refunds.admin import RefundInline
 from apps.orders.models import Order
+from apps.products.admin.filters import CourseFilter
 from apps.users.models import Student
 from core.admin import ModelAdmin, admin
 from core.pricing import format_price
@@ -32,7 +33,7 @@ class OrderAdmin(ModelAdmin):
 
     list_filter = [
         OrderStatusFilter,
-        "course",
+        CourseFilter,
     ]
     search_fields = [
         "course__name",
@@ -66,6 +67,10 @@ class OrderAdmin(ModelAdmin):
             },
         ),
     ]
+
+    foreignkey_queryset_overrides = {
+        "orders.Order.course": lambda apps: apps.get_model("products.Course").objects.for_admin(),
+    }
 
     class Media:
         css = {"all": ["admin/order_list.css"]}

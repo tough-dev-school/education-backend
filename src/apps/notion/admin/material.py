@@ -10,6 +10,7 @@ from apps.notion.client import NotionClient
 from apps.notion.exceptions import NotionError
 from apps.notion.id import page_url_to_id, uuid_to_id
 from apps.notion.models import Material
+from apps.products.admin.filters import CourseFilter
 from core.admin import ModelAdmin, admin
 
 
@@ -58,7 +59,7 @@ class NotionMaterialAdmin(ModelAdmin):
         "slug_without_dashes",
     ]
 
-    list_filter = ("course",)
+    list_filter = (CourseFilter,)
     form = NotionMaterialForm
     save_as = True
 

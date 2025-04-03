@@ -9,6 +9,7 @@
 - Run tests matching pattern: `cd src && poetry run python -m pytest -k "pattern" -v`
 - Run server: `make server`
 - Run worker: `make worker`
+- Do not run tests until i ask explicitly
 
 ## Code Style
 - Type checking: Use mypy annotations for all non-test code

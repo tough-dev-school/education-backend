@@ -1,13 +1,13 @@
 import re
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Protocol, Type
+from typing import TYPE_CHECKING, Any, Protocol, Type
 
+from django.apps import apps
 from django.contrib.humanize.templatetags.humanize import naturalday
 from django.db import models
-from django.db.models import Field
-from django.http import HttpRequest
+from django.db.models import Field, QuerySet
 from django.template.defaultfilters import capfirst, time
 from django.utils import timezone
 from django.utils.html import format_html
@@ -15,6 +15,12 @@ from prettyjson import PrettyJSONWidget
 
 from core.admin.widgets import AppNumberInput
 from core.pricing import format_price
+
+if TYPE_CHECKING:
+    from django.apps.registry import Apps
+    from django.db.models.fields.related import ForeignKey
+    from django.forms.models import ModelChoiceField
+    from django.http import HttpRequest
 
 
 class DjangoModelAdminProtocol(Protocol):
@@ -34,6 +40,7 @@ class AppAdminMixin:
         models.IntegerField: {"widget": AppNumberInput},
         models.JSONField: {"widget": PrettyJSONWidget(attrs={"initial": "parsed"})},
     }
+    foreignkey_queryset_overrides: Mapping[str, Callable[["Apps"], QuerySet]] = {}
     global_exclude = (
         "created",
         "modified",
@@ -44,7 +51,14 @@ class AppAdminMixin:
             "all": ["admin.css", "prettyjson.css"],
         }
 
-    def get_exclude(self, request: Any, obj: Any | None = None) -> tuple[str]:
+    def formfield_for_foreignkey(self, db_field: "ForeignKey", request: "HttpRequest", **kwargs: Any) -> "ModelChoiceField":
+        if "add" in request.path and request.method == "GET":
+            if hasattr(self, "foreignkey_queryset_overrides") and str(db_field) in self.foreignkey_queryset_overrides:
+                kwargs["queryset"] = self.foreignkey_queryset_overrides[str(db_field)](apps)
+
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)  # type: ignore
+
+    def get_exclude(self, request: "HttpRequest", obj: Any | None = None) -> tuple[str]:
         """Exclude globaly excluded items"""
         return (
             *(super().get_exclude(request, obj) or []),  # type: ignore
@@ -60,14 +74,14 @@ class AppAdminMixin:
 
         return super().get_form(request, obj, **defaults)  # type: ignore
 
-    def get_fieldsets(self: DjangoModelAdminProtocol, request: HttpRequest, obj: Type[models.Model] | None = None) -> Any:
+    def get_fieldsets(self: DjangoModelAdminProtocol, request: "HttpRequest", obj: Type[models.Model] | None = None) -> Any:
         """Use special fieldset during object creation"""
         if not obj and hasattr(self, "add_fieldsets") and self.add_fieldsets is not None:
             return self.add_fieldsets
 
         return super().get_fieldsets(request, obj)  # type: ignore
 
-    def get_actions(self: DjangoModelAdminProtocol, request: HttpRequest) -> dict[str, Any]:
+    def get_actions(self: DjangoModelAdminProtocol, request: "HttpRequest") -> dict[str, Any]:
         """Remove mass deletion if not defined in actions"""
         actions = super().get_actions(request)  # type: ignore
         if "delete_selected" in actions and "delete_selected" not in self.actions:
