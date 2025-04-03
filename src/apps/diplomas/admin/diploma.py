@@ -7,6 +7,7 @@ from rest_framework.request import Request
 
 from apps.diplomas.models import Diploma
 from apps.orders import tasks
+from apps.products.admin.filters import CourseFilter
 from apps.products.models import Course
 from apps.users.models import User
 from core.admin import ModelAdmin, admin
@@ -31,7 +32,7 @@ class DiplomaAdmin(ModelAdmin):
     ]
     list_filter = [
         "language",
-        "study__course",
+        CourseFilter,
     ]
 
     search_fields = [

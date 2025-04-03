@@ -4,6 +4,7 @@ from rest_framework.request import Request
 
 from apps.chains.models import Chain
 from apps.chains.models.chain import ChainQuerySet
+from apps.products.admin.filters import CourseFilter
 from core.admin import ModelAdmin, admin
 from core.admin.filters import DefaultFalseBooleanFilter
 
@@ -46,6 +47,7 @@ class ChainAdmin(ModelAdmin):
 
     list_filter = [
         ChainArchivedFilter,
+        CourseFilter,
     ]
     foreignkey_queryset_overrides = {
         "chains.Chain.course": lambda apps: apps.get_model("products.Course").objects.for_admin(),
