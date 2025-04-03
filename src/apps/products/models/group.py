@@ -9,6 +9,8 @@ class Group(TimestampedModel):
 
     dashamail_list_id = models.IntegerField(null=True)
 
+    evergreen = models.BooleanField(_("Evergreen"), default=False)
+
     class Meta:
         verbose_name = _("Analytical group")
         verbose_name_plural = _("Analytical groups")

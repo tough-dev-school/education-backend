@@ -1,6 +1,9 @@
+from datetime import timedelta
+
 from django.apps import apps
 from django.core.exceptions import ValidationError
-from django.db.models import OuterRef, QuerySet, Subquery
+from django.db.models import OuterRef, Q, QuerySet, Subquery
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from apps.mailing.tasks import send_mail
@@ -34,6 +37,9 @@ class CourseQuerySet(QuerySet):
         return self.annotate(
             home_page_slug=Subquery(materials[:1]),
         )
+
+    def for_admin(self) -> QuerySet["Course"]:
+        return self.select_related("group").filter(Q(group__created__gte=timezone.now() - timedelta(days=365)) | Q(group__evergreen=True))
 
 
 CourseManager = models.Manager.from_queryset(CourseQuerySet)

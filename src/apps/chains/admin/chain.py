@@ -47,6 +47,9 @@ class ChainAdmin(ModelAdmin):
     list_filter = [
         ChainArchivedFilter,
     ]
+    foreignkey_queryset_overrides = {
+        "chains.Chain.course": lambda apps: apps.get_model("products.Course").objects.for_admin(),
+    }
 
 
 __all__ = [

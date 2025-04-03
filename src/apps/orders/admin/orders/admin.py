@@ -67,6 +67,10 @@ class OrderAdmin(ModelAdmin):
         ),
     ]
 
+    foreignkey_queryset_overrides = {
+        "orders.Order.course": lambda apps: apps.get_model("products.Course").objects.for_admin(),
+    }
+
     class Media:
         css = {"all": ["admin/order_list.css"]}
         js = ["admin/js/vendor/jquery/jquery.js", "admin/check_partial_refunds.js"]
