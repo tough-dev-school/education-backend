@@ -1,13 +1,11 @@
-from adminsortable2.admin import SortableAdminBase, SortableTabularInline
-from django.db.models import QuerySet
-from django.http import HttpRequest
+from adminsortable2.admin import SortableTabularInline
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
-from apps.lms.models import Course, Lesson
-from core.admin import ModelAdmin, admin
+from apps.lms.models import Lesson
+from core.admin import admin
 
 
 class LessonInline(SortableTabularInline):
@@ -48,38 +46,3 @@ class LessonInline(SortableTabularInline):
             return f"<a href='{material_url}'>смотреть</a>"
         else:
             return "—"
-
-
-@admin.register(Course)
-class CourseAdmin(SortableAdminBase, ModelAdmin):
-    fields = [
-        "name",
-    ]
-    readonly_fields = [
-        "name",
-        "lesson_count",
-    ]
-    list_display = [
-        "name",
-        "lesson_count",
-    ]
-    list_filter = [
-        "group",
-    ]
-
-    inlines = [LessonInline]
-
-    def get_queryset(self, request: HttpRequest) -> QuerySet:
-        return super().get_queryset(request).for_admin()  # type: ignore
-
-    @admin.display(description=("Lesson count"), ordering="lesson_count")
-    def lesson_count(self, obj: Course) -> str:
-        if not obj.lesson_count:
-            return "—"
-
-        return str(obj.lesson_count)
-
-    class Media:
-        css = {
-            "all": ("admin/condensed_lessons.css",),
-        }

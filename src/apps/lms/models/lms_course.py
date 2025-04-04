@@ -8,13 +8,13 @@ from core.models import SubqueryCount
 
 class CourseQuerySet(QuerySet):
     def for_admin(self) -> "CourseQuerySet":
-        Lesson = apps.get_model("lms.Lesson")
-        course_lessons = Lesson.objects.filter(
+        Module = apps.get_model("lms.Module")
+        modules = Module.objects.filter(
             course=OuterRef("pk"),
             hidden=False,
         )
         return self.annotate(
-            lesson_count=SubqueryCount(course_lessons),
+            module_count=SubqueryCount(modules),
         )
 
 
