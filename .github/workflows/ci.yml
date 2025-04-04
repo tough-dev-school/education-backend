@@ -191,7 +191,10 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: circle
           key: ${{ secrets.DEPLOY_KEY }}
-          script: docker service update app_backend --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:${{ github.sha }} --with-registry-auth
+          script: |
+            docker service update app_backend --replicas 1
+            docker service update app_backend --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:${{ github.sha }} --with-registry-auth
+            docker service update app_backend --replicas 2
 
       - name: Update celery worker image
         uses: appleboy/ssh-action@v1.0.3
