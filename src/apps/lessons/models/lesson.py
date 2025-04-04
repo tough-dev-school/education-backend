@@ -50,7 +50,7 @@ class Lesson(TimestampedModel):
     objects = LessonQuerySet.as_manager()
 
     name = models.CharField(max_length=255)
-    course = models.ForeignKey("lessons.LessonCourse", on_delete=models.CASCADE, related_name="lessons")
+    module = models.ForeignKey("lessons.Module", on_delete=models.CASCADE, verbose_name=_("Module"))
     position = models.PositiveIntegerField(default=0, blank=False, null=False, db_index=True)
     material = models.ForeignKey(
         "notion.Material", blank=True, null=True, related_name="+", on_delete=models.PROTECT, verbose_name=pgettext_lazy("lessons", "Material")
@@ -61,5 +61,5 @@ class Lesson(TimestampedModel):
     class Meta:
         ordering = ["position"]
         indexes = [
-            Index(fields=["course", "position"]),
+            Index(fields=["module", "position"]),
         ]
