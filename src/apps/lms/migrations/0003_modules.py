@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
                 ("created", models.DateTimeField(auto_now_add=True, db_index=True)),
                 ("modified", models.DateTimeField(blank=True, db_index=True, null=True)),
                 ("name", models.CharField(max_length=255)),
-                ("course", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name="modules", to="lms.lessoncourse")),
+                ("course", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name="modules", to="lms.Course")),
                 ("hidden", models.BooleanField(default=True, help_text="Users can't find such materials in the listing", verbose_name="Hidden")),
                 ("position", models.PositiveIntegerField(db_index=True, default=0)),
             ],

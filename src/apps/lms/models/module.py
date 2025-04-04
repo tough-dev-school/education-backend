@@ -23,7 +23,7 @@ class Module(TimestampedModel):
     objects = ModuleQuerySet.as_manager()
 
     name = models.CharField(max_length=255)
-    course = models.ForeignKey("lms.LessonCourse", on_delete=models.CASCADE, related_name="modules")
+    course = models.ForeignKey("lms.Course", on_delete=models.CASCADE, related_name="modules")
     hidden = models.BooleanField(_("Hidden"), help_text=_("Users can't find such materials in the listing"), default=True)
     position = models.PositiveIntegerField(default=0, blank=False, null=False, db_index=True)
 

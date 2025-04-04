@@ -6,7 +6,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
-from apps.lms.models import Lesson, LessonCourse
+from apps.lms.models import Course, Lesson
 from core.admin import ModelAdmin, admin
 
 
@@ -50,8 +50,8 @@ class LessonInline(SortableTabularInline):
             return "—"
 
 
-@admin.register(LessonCourse)
-class LessonCourseAdmin(SortableAdminBase, ModelAdmin):
+@admin.register(Course)
+class CourseAdmin(SortableAdminBase, ModelAdmin):
     fields = [
         "name",
     ]
@@ -73,7 +73,7 @@ class LessonCourseAdmin(SortableAdminBase, ModelAdmin):
         return super().get_queryset(request).for_admin()  # type: ignore
 
     @admin.display(description=("Lesson count"), ordering="lesson_count")
-    def lesson_count(self, obj: LessonCourse) -> str:
+    def lesson_count(self, obj: Course) -> str:
         if not obj.lesson_count:
             return "—"
 
