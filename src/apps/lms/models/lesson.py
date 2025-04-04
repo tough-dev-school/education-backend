@@ -49,13 +49,15 @@ class LessonQuerySet(QuerySet):
 class Lesson(TimestampedModel):
     objects = LessonQuerySet.as_manager()
 
-    name = models.CharField(max_length=255)
+    name = models.CharField(_("Name"), max_length=255)
     module = models.ForeignKey("lms.Module", on_delete=models.CASCADE, verbose_name=_("Module"))
     position = models.PositiveIntegerField(default=0, blank=False, null=False, db_index=True)
     material = models.ForeignKey(
         "notion.Material", blank=True, null=True, related_name="+", on_delete=models.PROTECT, verbose_name=pgettext_lazy("lessons", "Material")
     )
-    question = models.ForeignKey(to="homework.Question", blank=True, null=True, related_name="+", on_delete=models.PROTECT, verbose_name=_("Question"))
+    question = models.ForeignKey(
+        to="homework.Question", blank=True, null=True, related_name="+", on_delete=models.PROTECT, verbose_name=pgettext_lazy("lms", "Question")
+    )
     hidden = models.BooleanField(_("Hidden"), help_text=_("Users can't find such materials in the listing"), default=True)
 
     class Meta:
@@ -63,3 +65,5 @@ class Lesson(TimestampedModel):
         indexes = [
             Index(fields=["module", "position"]),
         ]
+        verbose_name = pgettext_lazy("lms", "Lesson")
+        verbose_name_plural = pgettext_lazy("lms", "Lessons")

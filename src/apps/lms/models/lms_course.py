@@ -31,8 +31,8 @@ class Course(_Course):
     class Meta:
         proxy = True
         ordering = ["-created"]
-        verbose_name = pgettext_lazy(message="Course", context="lms")
-        verbose_name_plural = pgettext_lazy(message="Courses", context="lms")
+        verbose_name = pgettext_lazy("lms", "Course")
+        verbose_name_plural = pgettext_lazy("lms", "Courses")
 
 
 __all__ = [

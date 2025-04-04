@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
                 ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
                 ("created", models.DateTimeField(auto_now_add=True, db_index=True)),
                 ("modified", models.DateTimeField(blank=True, db_index=True, null=True)),
-                ("name", models.CharField(max_length=255)),
+                ("name", models.CharField(max_length=255, verbose_name="Name")),
                 ("position", models.PositiveIntegerField(db_index=True, default=0)),
                 ("hidden", models.BooleanField(default=True, help_text="Users can't find such materials in the listing", verbose_name="Hidden")),
                 ("course", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name="lessons", to="lms.Course")),
@@ -71,6 +71,8 @@ class Migration(migrations.Migration):
             ],
             options={
                 "ordering": ["position"],
+                "verbose_name": "Lesson",
+                "verbose_name_plural": "Lessons",
             },
             bases=(core.models.TestUtilsMixin, models.Model),
         ),
