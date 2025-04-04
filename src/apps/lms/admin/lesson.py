@@ -2,7 +2,7 @@ from django import forms
 from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
-from apps.lessons.models import Lesson
+from apps.lms.models import Lesson
 from apps.notion.id import page_url_to_id, uuid_to_id
 from apps.notion.models import Material
 from core.admin import ModelAdmin, ModelForm, admin

@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 from apps.homework.api.serializers import QuestionSerializer
 from apps.homework.models import Question
-from apps.lessons.models import Lesson
+from apps.lms.models import Lesson, Module
 from apps.notion.models import Material as NotionMaterial
 
 
@@ -63,3 +63,13 @@ class LessonForUserSerializer(serializers.ModelSerializer):
                     "checked": lesson.crosschecks_checked,
                 },
             }
+
+
+class ModuleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Module
+        fields = [
+            "id",
+            "name",
+            "lessons_count",
+        ]

@@ -8,7 +8,7 @@ from core.models import SubqueryCount
 
 class LessonCourseQuerySet(QuerySet):
     def for_admin(self) -> "LessonCourseQuerySet":
-        Lesson = apps.get_model("lessons.Lesson")
+        Lesson = apps.get_model("lms.Lesson")
         course_lessons = Lesson.objects.filter(
             course=OuterRef("pk"),
             hidden=False,
@@ -26,5 +26,5 @@ class LessonCourse(Course):
     class Meta:
         proxy = True
         ordering = ["-created"]
-        verbose_name = pgettext_lazy(message="Course", context="lessons")
-        verbose_name_plural = pgettext_lazy(message="Courses", context="lessons")
+        verbose_name = pgettext_lazy(message="Course", context="lms")
+        verbose_name_plural = pgettext_lazy(message="Courses", context="lms")

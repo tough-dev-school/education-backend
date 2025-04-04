@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     "apps.dashamail",
     "apps.diplomas",
     "apps.homework",
-    "apps.lessons",
+    "apps.lms",
     "apps.magnets",
     "apps.mailing",
     "apps.notion",

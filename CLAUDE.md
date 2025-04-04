@@ -10,7 +10,7 @@
 - Run server: `make server`
 - Run worker: `make worker`
 - Run django manage command: `cd src && poetry run python manage.py`
-- Do not run tests until i ask explicitly
+- Do not run tests or make commits until i ask explicitly
 
 
 ## Code Style

@@ -3,13 +3,13 @@ from typing import TYPE_CHECKING
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 
-from apps.lessons.api.filters import LessonFilterSet
-from apps.lessons.api.serializers import LessonForUserSerializer
-from apps.lessons.models import Lesson
+from apps.lms.api.filters import LessonFilterSet, ModuleFilterSet
+from apps.lms.api.serializers import LessonForUserSerializer, ModuleSerializer
+from apps.lms.models import Lesson
 from core.api.mixins import DisablePaginationWithQueryParamMixin
 
 if TYPE_CHECKING:
-    from apps.lessons.models.lesson import LessonQuerySet
+    from apps.lms.models.lesson import LessonQuerySet
 
 
 class LessonListView(DisablePaginationWithQueryParamMixin, ListAPIView):
@@ -21,3 +21,9 @@ class LessonListView(DisablePaginationWithQueryParamMixin, ListAPIView):
 
     def get_queryset(self) -> "LessonQuerySet":
         return Lesson.objects.for_viewset(self.request.user)
+
+
+class ModuleListView(DisablePaginationWithQueryParamMixin, ListAPIView):
+    serializer_class = ModuleSerializer
+    permission_classes = [IsAuthenticated]
+    filterset_class = ModuleFilterSet

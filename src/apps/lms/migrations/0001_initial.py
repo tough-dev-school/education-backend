@@ -10,7 +10,7 @@ import core.models
 @no_type_check
 def create_lesson_for_each_course_with_materials(apps, schema_editor) -> None:  # noqa: ARG001
     Material = apps.get_model("notion.Material")
-    Lesson = apps.get_model("lessons.Lesson")
+    Lesson = apps.get_model("lms.Lesson")
     Course = apps.get_model("products.Course")
 
     for course in Course.objects.all().iterator():
@@ -61,7 +61,7 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=255)),
                 ("position", models.PositiveIntegerField(db_index=True, default=0)),
                 ("hidden", models.BooleanField(default=True, help_text="Users can't find such materials in the listing", verbose_name="Hidden")),
-                ("course", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name="lessons", to="lessons.LessonCourse")),
+                ("course", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name="lessons", to="lms.LessonCourse")),
                 (
                     "material",
                     models.ForeignKey(
@@ -71,7 +71,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 "ordering": ["position"],
-                "indexes": [models.Index(fields=["course", "position"], name="lessons_les_course__6bd811_idx")],
             },
             bases=(core.models.TestUtilsMixin, models.Model),
         ),

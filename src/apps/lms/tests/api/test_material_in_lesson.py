@@ -9,7 +9,7 @@ def material(mixer):
 
 
 def test_no_material(api, module, lesson):
-    got = api.get(f"/api/v2/lessons/?module={module.pk}")
+    got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")
 
     assert got["results"][0]["id"] == lesson.id
     assert got["results"][0]["material"] is None
@@ -18,7 +18,7 @@ def test_no_material(api, module, lesson):
 def test_attachmed_material(api, module, lesson, material):
     lesson.update(material=material)
 
-    got = api.get(f"/api/v2/lessons/?module={module.pk}")
+    got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")
 
     assert got["results"][0]["id"] == lesson.id
     assert got["results"][0]["material"]["id"] == str(material.slug).replace("-", "")

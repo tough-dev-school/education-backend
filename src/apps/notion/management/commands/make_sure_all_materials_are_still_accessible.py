@@ -3,7 +3,7 @@ from typing import Any
 
 from django.core.management.base import BaseCommand
 
-from apps.lessons.models import Lesson
+from apps.lms.models import Lesson
 from apps.notion.models import Material, PageLink
 from apps.notion.types import NotionId
 
@@ -22,7 +22,7 @@ def get_parent_ids(material: Material, tree: list[NotionId] | None = None) -> li
 
 
 class Command(BaseCommand):
-    help_text = "One-off command to check of all materials are still acessible after the lessons app initial migration"
+    help_text = "One-off command to check of all materials are still acessible after the lms app initial migration"
 
     def handle(self, *args: Any, **options: dict[str, Any]) -> None:
         linked_count = 0

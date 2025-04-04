@@ -6,7 +6,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
-from apps.lessons.models import Lesson, LessonCourse
+from apps.lms.models import Lesson, LessonCourse
 from core.admin import ModelAdmin, admin
 
 
@@ -28,7 +28,7 @@ class LessonInline(SortableTabularInline):
     @mark_safe
     @admin.display(description=_("Name"))
     def _name(self, lesson: Lesson) -> str:
-        lesson_url = reverse("admin:lessons_lesson_change", args=[lesson.id])
+        lesson_url = reverse("admin:lms_lesson_change", args=[lesson.id])
         return f"<a href='{lesson_url}'>{lesson.name}</a>"
 
     @mark_safe

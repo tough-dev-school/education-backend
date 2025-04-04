@@ -10,8 +10,8 @@ import core.models
 
 @no_type_check
 def migrate_lessons_to_modules(apps, schema_editor):  # NOQA: ARG001
-    Lesson = apps.get_model("lessons.Lesson")
-    Module = apps.get_model("lessons.Module")
+    Lesson = apps.get_model("lms.Lesson")
+    Module = apps.get_model("lms.Module")
 
     for lesson in Lesson.objects.all():
         module = Module.objects.create(
@@ -26,7 +26,7 @@ def migrate_lessons_to_modules(apps, schema_editor):  # NOQA: ARG001
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("lessons", "0002_homework"),
+        ("lms", "0002_homework"),
     ]
 
     operations = [
@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
                 ("created", models.DateTimeField(auto_now_add=True, db_index=True)),
                 ("modified", models.DateTimeField(blank=True, db_index=True, null=True)),
                 ("name", models.CharField(max_length=255)),
-                ("course", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name="modules", to="lessons.lessoncourse")),
+                ("course", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name="modules", to="lms.lessoncourse")),
                 ("hidden", models.BooleanField(default=True, help_text="Users can't find such materials in the listing", verbose_name="Hidden")),
                 ("position", models.PositiveIntegerField(db_index=True, default=0)),
             ],
@@ -49,19 +49,15 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="lesson",
             name="module",
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to="lessons.module", verbose_name="Module"),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to="lms.module", verbose_name="Module"),
             preserve_default=False,
         ),
         migrations.RunPython(migrate_lessons_to_modules),
         migrations.AlterField(
             model_name="lesson",
             name="module",
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="lessons.module", verbose_name="Module"),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="lms.module", verbose_name="Module"),
             preserve_default=False,
-        ),
-        migrations.RemoveIndex(
-            model_name="lesson",
-            name="lessons_les_course__6bd811_idx",
         ),
         migrations.RemoveField(
             model_name="lesson",
@@ -69,10 +65,10 @@ class Migration(migrations.Migration):
         ),
         migrations.AddIndex(
             model_name="lesson",
-            index=models.Index(fields=["module", "position"], name="lessons_les_module__7e7bac_idx"),
+            index=models.Index(fields=["module", "position"], name="lms_lesson_module__5949f2_idx"),
         ),
         migrations.AddIndex(
             model_name="module",
-            index=models.Index(fields=["course", "position"], name="lessons_mod_course__887acb_idx"),
+            index=models.Index(fields=["course", "position"], name="lms_module_course__863f0c_idx"),
         ),
     ]

@@ -8,7 +8,7 @@ from django.db import migrations, models
 
 @no_type_check
 def create_lesson_for_each_homework_question(apps, schema_editor):  # noqa: ARG001
-    Lesson = apps.get_model("lessons.Lesson")
+    Lesson = apps.get_model("lms.Lesson")
     Question = apps.get_model("homework.Question")
 
     for question in Question.objects.all():
@@ -39,7 +39,7 @@ def fix_homework_lessons_position(apps, schema_editor):  # noqa: ARG001
 class Migration(migrations.Migration):
     dependencies = [
         ("homework", "0018_answer_relations_fix"),
-        ("lessons", "0001_initial"),
+        ("lms", "0001_initial"),
     ]
 
     operations = [

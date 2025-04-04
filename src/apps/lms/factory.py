@@ -1,4 +1,4 @@
-from apps.lessons.models import Lesson, Module
+from apps.lms.models import Lesson, Module
 from apps.products.models import Course
 from core.test.factory import FixtureFactory, register
 
