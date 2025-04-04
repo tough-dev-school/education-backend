@@ -5,9 +5,10 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.orders.models import Order
 from apps.orders.services import OrderCourseChanger, OrderCreator, OrderEmailChanger
+from core.admin import ModelForm
 
 
-class OrderChangeForm(forms.ModelForm):
+class OrderChangeForm(ModelForm):
     email = forms.CharField(label=_("Email"), help_text=_("User receives new welcome letter"))
 
     class Meta:
@@ -17,19 +18,7 @@ class OrderChangeForm(forms.ModelForm):
             "course": _("User receives new welcome letter"),
         }
 
-    def __init__(self, *args: Any, **kwargs: dict[str, Any]) -> None:
-        order = kwargs["instance"]
-        initial = kwargs.get("initial") or dict()
-
-        if order is not None:
-            initial.update(self.get_custom_initial_data(order))  # type: ignore
-
-        kwargs["initial"] = initial
-
-        super().__init__(*args, **kwargs)  # type: ignore
-
-    @staticmethod
-    def get_custom_initial_data(order: Order) -> dict:
+    def get_custom_initial_data(self, order: Order) -> dict[str, str]:  # type: ignore
         return {
             "email": order.user.email,
         }

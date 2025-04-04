@@ -132,7 +132,7 @@ class CrossCheckedAnswerNotification(BaseAnswerNotification):
 
     @cached_property
     def crosschecks(self) -> "AnswerCrossCheckQuerySet":
-        return self.user.answercrosscheck_set.filter(answer__question=self.answer.question, checked_at__isnull=True)
+        return self.user.answercrosscheck_set.filter(answer__question=self.answer.question, checked__isnull=True)
 
 
 @dataclass

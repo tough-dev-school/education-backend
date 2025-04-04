@@ -16,6 +16,7 @@ class QuestionAdmin(ModelAdmin):
     fields = [
         "courses",
         "name",
+        "deadline",
         "text",
     ]
     actions = [

@@ -9,7 +9,9 @@
 - Run tests matching pattern: `cd src && poetry run python -m pytest -k "pattern" -v`
 - Run server: `make server`
 - Run worker: `make worker`
-- Do not run tests until i ask explicitly
+- Run django manage command: `cd src && poetry run python manage.py`
+- Do not run tests or make commits until i ask explicitly
+
 
 ## Code Style
 - Type checking: Use mypy annotations for all non-test code
@@ -21,6 +23,7 @@
 - Tests: Use pytest fixtures, keep tests atomic and isolated
 - Documentation: Use docstrings for public methods, especially for complex functionality
 - We do not need `__init__.py` in the management command or test folders
+
 
 ## Django Patterns
 - Use Django ORM features (managers, querysets) over raw SQL

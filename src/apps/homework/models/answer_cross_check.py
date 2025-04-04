@@ -15,7 +15,7 @@ class AnswerCrossCheckQuerySet(models.QuerySet):
 
     def count_for_question(self, question: "Question") -> dict[str, int]:
         return self.filter(answer__question=question).aggregate(
-            checked=Count("pk", filter=Q(checked_at__isnull=False)),
+            checked=Count("pk", filter=Q(checked__isnull=False)),
             total=Count("pk"),
         )
 
@@ -25,15 +25,17 @@ class AnswerCrossCheck(TimestampedModel):
 
     answer = models.ForeignKey("homework.Answer", on_delete=models.CASCADE)
     checker = models.ForeignKey("users.User", on_delete=models.CASCADE)
-    checked_at = models.DateTimeField(
+    checked = models.DateTimeField(
         _("Date when crosscheck got checked"),
         null=True,
         blank=True,
+        db_index=True,
     )
 
     class Meta:
         indexes = [
             Index(fields=["answer", "checker"]),
+            Index(fields=["answer", "checker", "checked"]),
         ]
 
         constraints = [

@@ -7,6 +7,7 @@ urlpatterns = [
     path("diplomas/", include("apps.diplomas.urls")),
     path("homework/", include("apps.homework.urls")),
     path("leads/", include("apps.magnets.urls")),
+    path("lms/", include("apps.lms.urls")),
     path("notion/", include("apps.notion.urls")),
     path("orders/", include("apps.orders.urls")),
     path("studies/", include("apps.studying.urls")),

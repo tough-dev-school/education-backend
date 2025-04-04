@@ -77,7 +77,7 @@ class AnswerCrossCheckAdmin(ModelAdmin):
     fields = (
         "course",
         "question",
-        "checked_at",
+        "checked",
         "author",
         "view",
     )
@@ -85,7 +85,7 @@ class AnswerCrossCheckAdmin(ModelAdmin):
     readonly_fields = (
         "question",
         "course",
-        "checked_at",
+        "checked",
         "author",
         "view",
     )

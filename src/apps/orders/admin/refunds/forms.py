@@ -1,10 +1,9 @@
-from django import forms
-
 from apps.orders.models.refund import Refund
 from apps.orders.services import OrderRefunder
+from core.admin import ModelForm
 
 
-class RefundAddForm(forms.ModelForm):
+class RefundAddForm(ModelForm):
     class Meta:
         model = Refund
         fields = "__all__"

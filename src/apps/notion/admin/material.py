@@ -1,4 +1,3 @@
-from django import forms
 from django.db.models import QuerySet, Value
 from django.db.models.functions import Replace
 from django.http.request import HttpRequest
@@ -11,10 +10,10 @@ from apps.notion.exceptions import NotionError
 from apps.notion.id import page_url_to_id, uuid_to_id
 from apps.notion.models import Material
 from apps.products.admin.filters import CourseFilter
-from core.admin import ModelAdmin, admin
+from core.admin import ModelAdmin, ModelForm, admin
 
 
-class NotionMaterialForm(forms.ModelForm):
+class NotionMaterialForm(ModelForm):
     class Meta:
         model = Material
         fields = "__all__"

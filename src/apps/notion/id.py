@@ -1,5 +1,6 @@
 from os.path import basename
 from urllib.parse import urlparse
+from uuid import UUID
 
 from apps.notion.types import NotionId
 
@@ -21,5 +22,5 @@ def id_to_uuid(id: NotionId) -> NotionId:
     return f"{normalized[0:8]}-{normalized[8:12]}-{normalized[12:16]}-{normalized[16:20]}-{normalized[20:]}"
 
 
-def uuid_to_id(uuid: NotionId) -> NotionId:
-    return uuid.replace("-", "")
+def uuid_to_id(uuid: NotionId | UUID) -> NotionId:
+    return str(uuid).replace("-", "")
