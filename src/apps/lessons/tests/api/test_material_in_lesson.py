@@ -8,17 +8,17 @@ def material(mixer):
     return mixer.blend("notion.Material", title="Урок 3")
 
 
-def test_no_material(api, course, lesson):
-    got = api.get(f"/api/v2/lessons/?course={course.slug}")
+def test_no_material(api, module, lesson):
+    got = api.get(f"/api/v2/lessons/?module={module.pk}")
 
     assert got["results"][0]["id"] == lesson.id
     assert got["results"][0]["material"] is None
 
 
-def test_attachmed_material(api, course, lesson, material):
+def test_attachmed_material(api, module, lesson, material):
     lesson.update(material=material)
 
-    got = api.get(f"/api/v2/lessons/?course={course.slug}")
+    got = api.get(f"/api/v2/lessons/?module={module.pk}")
 
     assert got["results"][0]["id"] == lesson.id
     assert got["results"][0]["material"]["id"] == str(material.slug).replace("-", "")

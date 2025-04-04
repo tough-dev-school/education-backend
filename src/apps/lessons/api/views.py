@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 class LessonListView(DisablePaginationWithQueryParamMixin, ListAPIView):
-    """List lessons, accessible to user. Better use it filtering by course"""
+    """List lessons, accessible to user. Better use it filtering by module"""
 
     serializer_class = LessonForUserSerializer
     permission_classes = [IsAuthenticated]

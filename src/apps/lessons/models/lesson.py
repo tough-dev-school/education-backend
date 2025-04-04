@@ -19,7 +19,7 @@ class LessonQuerySet(QuerySet):
 
     def for_user(self, user: User) -> "LessonQuerySet":
         purchased_courses = apps.get_model("studying.Study").objects.filter(student=user).values_list("course_id", flat=True)
-        return self.filter(course__in=purchased_courses)
+        return self.filter(module__course__in=purchased_courses)
 
     def with_is_sent(self, user: User) -> "LessonQuerySet":
         Answer = apps.get_model("homework.Answer")
