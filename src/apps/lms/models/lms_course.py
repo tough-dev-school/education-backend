@@ -3,7 +3,7 @@ from django.db.models import OuterRef, QuerySet
 from django.utils.translation import pgettext_lazy
 
 from apps.products.models import Course as _Course
-from core.models import SubqueryCount
+from core.models import SubqueryCount, models
 
 
 class CourseQuerySet(QuerySet):
@@ -18,10 +18,15 @@ class CourseQuerySet(QuerySet):
         )
 
 
+class CourseManager(models.Manager.from_queryset(CourseQuerySet)):  # type: ignore
+    def get_queryset(self) -> CourseQuerySet:
+        return super().get_queryset().select_related("group")
+
+
 class Course(_Course):
     """Proxy model for admin matters"""
 
-    objects = CourseQuerySet.as_manager()  # type: ignore
+    objects = CourseManager()  # type: ignore
 
     class Meta:
         proxy = True

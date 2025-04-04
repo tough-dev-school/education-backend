@@ -17,4 +17,4 @@ class PurchasedCoursesView(DisablePaginationWithQueryParamMixin, ListAPIView):
     def get_queryset(self) -> QuerySet[Course]:
         studies = Study.objects.filter(student=self.request.user)
 
-        return Course.objects.for_lms().filter(id__in=studies.values("course"))  # type: ignore
+        return Course.objects.for_lms().filter(id__in=studies.values("course"))

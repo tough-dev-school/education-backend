@@ -73,3 +73,8 @@ class LessonAdmin(ModelAdmin):
 
     def has_add_permission(self, request: HttpRequest) -> bool:
         return False
+
+
+__all__ = [
+    "LessonAdmin",
+]

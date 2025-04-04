@@ -39,5 +39,5 @@ class CourseAdmin(SortableAdminBase, ModelAdmin):
 
     class Media:
         css = {
-            "all": ("admin/condensed_lessons.css",),
+            "all": ("admin/condensed_lms_sortables.css",),
         }

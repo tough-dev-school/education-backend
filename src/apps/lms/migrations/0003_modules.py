@@ -43,6 +43,8 @@ class Migration(migrations.Migration):
             ],
             options={
                 "ordering": ["position"],
+                "verbose_name": "Module",
+                "verbose_name_plural": "Modules",
             },
             bases=(core.models.TestUtilsMixin, models.Model),
         ),
