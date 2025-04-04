@@ -194,7 +194,7 @@ jobs:
           script: |
             docker service update app_backend --replicas 1
             docker service update app_backend --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-web:${{ github.sha }} --with-registry-auth
-            docker service update app_backend --replicas 2
+            docker service update app_backend --replicas 2 -d
 
       - name: Update celery worker image
         uses: appleboy/ssh-action@v1.0.3
