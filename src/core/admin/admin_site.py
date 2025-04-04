@@ -10,7 +10,7 @@ class AdminSite(admin.AdminSite):
 
     @staticmethod
     def _get_app_order_index(element: dict) -> int:
-        app_order = ["orders", "notion", "chains", "products", "otherapp"]
+        app_order = ["orders", "notion", "lms", "chains", "products", "b2b", "otherapp"]
 
         if element["app_label"] in app_order:
             return app_order.index(element["app_label"])

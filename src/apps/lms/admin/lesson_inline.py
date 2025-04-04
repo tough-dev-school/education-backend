@@ -11,30 +11,34 @@ from core.admin import admin
 class LessonInline(SortableTabularInline):
     model = Lesson
     fields = [
-        "_name",
+        "name",
+        "_edit",
         "_material",
         "_question",
         "hidden",
     ]
     readonly_fields = [
-        "_name",
+        "_edit",
         "_material",
         "_question",
     ]
     extra = 0
 
     @mark_safe
-    @admin.display(description=_("Name"))
-    def _name(self, lesson: Lesson) -> str:
+    @admin.display(description=_("Change"))
+    def _edit(self, lesson: Lesson) -> str:
+        if lesson.id is None:
+            return "—"  # type: ignore
+
         lesson_url = reverse("admin:lms_lesson_change", args=[lesson.id])
-        return f"<a href='{lesson_url}'>{lesson.name}</a>"
+        return f"<a href='{lesson_url}'>Изменить</a>"
 
     @mark_safe
     @admin.display(description=_("Homework"))
     def _question(self, lesson: Lesson) -> str:
         if lesson.question is not None:
             question_url = reverse("admin:homework_question_change", args=[lesson.question_id])
-            return f"<a href='{question_url}'>смотреть</a>"
+            return f"<a href='{question_url}'>Смотреть</a>"
         else:
             return "—"
 
@@ -43,6 +47,6 @@ class LessonInline(SortableTabularInline):
     def _material(self, lesson: Lesson) -> str:
         if lesson.material_id is not None:
             material_url = reverse("admin:notion_material_change", args=[lesson.material_id])
-            return f"<a href='{material_url}'>смотреть</a>"
+            return f"<a href='{material_url}'>Смотреть</a>"
         else:
             return "—"

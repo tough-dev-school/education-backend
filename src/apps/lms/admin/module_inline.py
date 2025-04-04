@@ -10,16 +10,20 @@ from core.admin import admin
 class ModuleInline(SortableTabularInline):
     model = Module
     fields = [
-        "_name",
+        "name",
+        "_edit",
         "hidden",
     ]
     readonly_fields = [
-        "_name",
+        "_edit",
     ]
     extra = 0
 
     @mark_safe
     @admin.display(description=_("Name"))
-    def _name(self, lesson: Module) -> str:
+    def _edit(self, lesson: Module) -> str:
+        if lesson.id is None:
+            return "—"  # type: ignore
+
         lesson_url = reverse("admin:lms_module_change", args=[lesson.id])
-        return f"<a href='{lesson_url}'>{lesson.name}</a>"
+        return f"<a href='{lesson_url}'>Редактировать</a>"

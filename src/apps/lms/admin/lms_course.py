@@ -1,3 +1,5 @@
+from typing import Any
+
 from adminsortable2.admin import SortableAdminBase
 from django.db.models import QuerySet
 from django.http import HttpRequest
@@ -36,6 +38,9 @@ class CourseAdmin(SortableAdminBase, ModelAdmin):
             return "—"
 
         return str(obj.module_count)
+
+    def has_add_permission(self, request: HttpRequest, obj: Any = None) -> bool:
+        return False
 
     class Media:
         css = {
