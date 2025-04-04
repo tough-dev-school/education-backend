@@ -52,6 +52,7 @@ class AppAdminMixin:
         }
 
     def formfield_for_foreignkey(self, db_field: "ForeignKey", request: "HttpRequest", **kwargs: Any) -> "ModelChoiceField":
+        """Custom querysets for ForeignKey fields. Works in the add form only to prevent losing data during edit"""
         if "add" in request.path and request.method == "GET":
             if hasattr(self, "foreignkey_queryset_overrides") and str(db_field) in self.foreignkey_queryset_overrides:
                 kwargs["queryset"] = self.foreignkey_queryset_overrides[str(db_field)](apps)
