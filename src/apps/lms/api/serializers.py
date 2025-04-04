@@ -71,5 +71,4 @@ class ModuleSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "name",
-            "lessons_count",
         ]

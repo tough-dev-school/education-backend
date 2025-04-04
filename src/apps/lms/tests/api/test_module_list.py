@@ -3,12 +3,12 @@ import pytest
 pytestmark = [pytest.mark.django_db]
 
 
-def test_ok(api, course, lesson):
+def test_ok(api, course, module):
     got = api.get(f"/api/v2/lms/modules/?course={course.pk}")
 
     assert len(got["results"]) == 1
-    assert got["results"][0]["id"] == lesson.id
-    assert got["results"][0]["name"] == lesson.name
+    assert got["results"][0]["id"] == module.id
+    assert got["results"][0]["name"] == module.name
 
 
 @pytest.mark.usefixtures("_no_purchase")
@@ -48,7 +48,20 @@ def test_hidden_modules_not_shown(api, course, module):
         "1",
     ],
 )
-def test_pagination_could_be_disable_with_query_param(api, course, lesson, disable_pagination_value):
+def test_pagination_could_be_disable_with_query_param(api, course, module, disable_pagination_value):
     got = api.get(f"/api/v2/lms/modules/?course={course.pk}&disable_pagination={disable_pagination_value}")
 
-    assert got[0]["id"] == lesson.id
+    assert got[0]["id"] == module.id
+
+
+def test_query_count(api, module, course, factory, django_assert_num_queries):
+    module.delete()
+
+    for _ in range(10):
+        factory.module(
+            course=course,
+        )
+
+    with django_assert_num_queries(4):
+        got = api.get(f"/api/v2/lms/modules/?course={course.pk}")
+        assert len(got["results"]) == 10
