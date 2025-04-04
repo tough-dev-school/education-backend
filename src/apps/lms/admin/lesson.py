@@ -53,10 +53,10 @@ class LessonAdmin(ModelAdmin):
         "material_id",
         "material_title",
     ]
-    raw_id_fields = [
-        "question",
-    ]
     readonly_fields = ["material_id", "material_title"]
+    foreignkey_queryset_overrides = {
+        "lms.Lesson.question": lambda apps: apps.get_model("homework.Question").filter(courses__in=apps.get_model("products.Course").for_admin()).distinct(),
+    }
 
     class Media:
         js = ["admin/js/vendor/jquery/jquery.js", "admin/add_material_link.js"]
