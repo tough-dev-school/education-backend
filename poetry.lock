@@ -664,14 +664,14 @@ types-awscrt = "*"
 
 [[package]]
 name = "celery"
-version = "5.5.0"
+version = "5.5.1"
 description = "Distributed Task Queue."
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "celery-5.5.0-py3-none-any.whl", hash = "sha256:f4170c6e5952281318448a899d9e9a15b9cbd007e002091766900dc8f71b9394"},
-    {file = "celery-5.5.0.tar.gz", hash = "sha256:10d49f9926d16237310109b0e6e1e2f7a2133b84e684bb36534d7663e66919bb"},
+    {file = "celery-5.5.1-py3-none-any.whl", hash = "sha256:9f4f9e57e36000c097c1b6f7a8ab29814b82771e5439836f83915823809729c8"},
+    {file = "celery-5.5.1.tar.gz", hash = "sha256:2af9109a10fe28155044f4c387ce0e5e7f1fc89f9584cfb4b0df94f99a5fedc7"},
 ]
 
 [package.dependencies]
@@ -3768,4 +3768,4 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "2.1"
 python-versions = "~=3.11"
-content-hash = "50836380d5b3a90d3066b45283c6a3e1030a8e11186bfe9e29b8aba4fdef60dd"
+content-hash = "362265ec58727927f5752f8d7dc5d6df4d1f983e955fa12f4edf08115221de30"
