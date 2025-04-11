@@ -5,7 +5,7 @@ from django.db.models import QuerySet
 from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
-from apps.lms.admin.module_inline import ModuleInline
+from apps.lms.admin.module.inline import ModuleInline
 from apps.lms.models import Course
 from core.admin import ModelAdmin, admin
 
