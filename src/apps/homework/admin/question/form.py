@@ -55,15 +55,17 @@ class QuestionForm(ModelForm):
 
     @classmethod
     def _detach_all_other_lessons(cls, question: Question) -> None:
+        if question is not None and question.pk is None:  # handle 'save as new' functionality
+            return None  # type: ignore [unreachable]
+
         for lesson in Lesson.objects.filter(question=question).iterator():
             cls._update_question(lesson, question=None)
-            cls._write_admin_log(lesson, msg=f"Question '{question}' detached from the lesson")
+            cls._write_admin_log(lesson, msg=f"Question '{question}' (#{question.pk}) detached from the lesson")
 
     @staticmethod
     def _update_question(lesson: Lesson, question: Question | None = None) -> None:
         if question is not None and question.pk is None:  # handle 'save as new' functionality
             return None  # type: ignore [unreachable]
-
         lesson.question = question
         lesson.save(update_fields=["modified", "question"])
 
