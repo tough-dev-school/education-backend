@@ -22,7 +22,12 @@ class LessonQuerySet(QuerySet):
         return self.filter(module__course__in=purchased_courses)
 
     def for_admin(self) -> "LessonQuerySet":
-        return self.select_related("module", "module__course", "module__course__group")
+        return self.select_related(
+            "module",
+            "module__course",
+            "module__course__group",
+            "material",
+        )
 
     def with_is_sent(self, user: User) -> "LessonQuerySet":
         Answer = apps.get_model("homework.Answer")
