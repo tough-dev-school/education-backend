@@ -21,6 +21,14 @@ class LessonQuerySet(QuerySet):
         purchased_courses = apps.get_model("studying.Study").objects.filter(student=user).values_list("course_id", flat=True)
         return self.filter(module__course__in=purchased_courses)
 
+    def for_admin(self) -> "LessonQuerySet":
+        return self.select_related(
+            "module",
+            "module__course",
+            "module__course__group",
+            "material",
+        )
+
     def with_is_sent(self, user: User) -> "LessonQuerySet":
         Answer = apps.get_model("homework.Answer")
         user_answers = Answer.objects.root_only().filter(
@@ -67,3 +75,6 @@ class Lesson(TimestampedModel):
         ]
         verbose_name = pgettext_lazy("lms", "Lesson")
         verbose_name_plural = pgettext_lazy("lms", "Lessons")
+
+    def __str__(self) -> str:
+        return f"{self.name} {self.module}"

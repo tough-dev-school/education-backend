@@ -26,3 +26,8 @@ def write_admin_log(
         object_repr=str(obj),
         user_id=user_id,
     )
+
+
+__all__ = [
+    "write_admin_log",
+]

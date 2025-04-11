@@ -26,7 +26,7 @@ class ModuleQuerySet(QuerySet):
         )
         return self.annotate(
             lesson_count=SubqueryCount(lessons),
-        )
+        ).select_related("course", "course__group")
 
 
 class Module(TimestampedModel):
@@ -45,3 +45,6 @@ class Module(TimestampedModel):
 
         verbose_name = _("Module")
         verbose_name_plural = _("Modules")
+
+    def __str__(self) -> str:
+        return f"{self.name} ({self.course})"

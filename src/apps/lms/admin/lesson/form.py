@@ -1,11 +1,10 @@
 from django import forms
-from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
 from apps.lms.models import Lesson
 from apps.notion.id import page_url_to_id, uuid_to_id
 from apps.notion.models import Material
-from core.admin import ModelAdmin, ModelForm, admin
+from core.admin.forms import ModelForm
 
 
 class LessonForm(ModelForm):
@@ -40,41 +39,3 @@ class LessonForm(ModelForm):
             raise forms.ValidationError(_("Material not found"))
 
         return material
-
-
-@admin.register(Lesson)
-class LessonAdmin(ModelAdmin):
-    form = LessonForm
-    fields = [
-        "name",
-        "material",
-        "question",
-        "hidden",
-        "material_id",
-        "material_title",
-    ]
-    readonly_fields = ["material_id", "material_title"]
-    foreignkey_queryset_overrides = {
-        "lms.Lesson.question": lambda apps: apps.get_model("homework.Question").filter(courses__in=apps.get_model("products.Course").for_admin()).distinct(),
-    }
-
-    class Media:
-        js = ["admin/js/vendor/jquery/jquery.js", "admin/add_material_link.js"]
-        css = {
-            "all": ["admin/lesson_form.css"],
-        }
-
-    def material_id(self, lesson: Lesson) -> int | None:
-        return lesson.material_id
-
-    def material_title(self, lesson: Lesson) -> str | None:
-        if lesson.material is not None:
-            return lesson.material.title
-
-    def has_add_permission(self, request: HttpRequest) -> bool:
-        return False
-
-
-__all__ = [
-    "LessonAdmin",
-]

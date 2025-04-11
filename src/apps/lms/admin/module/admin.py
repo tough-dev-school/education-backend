@@ -3,7 +3,7 @@ from django.db.models import QuerySet
 from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
-from apps.lms.admin.lesson_inline import LessonInline
+from apps.lms.admin.lesson.inline import LessonInline
 from apps.lms.models import Module
 from apps.products.admin.filters import CourseFilter
 from core.admin import ModelAdmin, admin
