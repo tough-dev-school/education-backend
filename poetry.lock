@@ -1320,18 +1320,18 @@ files = [
 
 [[package]]
 name = "django-cachalot"
-version = "2.7.0"
+version = "2.8.0"
 description = "Caches your Django ORM queries and automatically invalidates them."
 optional = false
 python-versions = "*"
 groups = ["main"]
 files = [
-    {file = "django_cachalot-2.7.0-py3-none-any.whl", hash = "sha256:a96fa16a25dc07110770d0bde0b01b444c065c7693d4c162c75da9e447f1750c"},
-    {file = "django_cachalot-2.7.0.tar.gz", hash = "sha256:834b95d5cffdc8953018a33a4e16ef63c8cfe2226a4dc36573e8bf3d62130175"},
+    {file = "django_cachalot-2.8.0-py3-none-any.whl", hash = "sha256:315da766a5356c7968318326f7b0579f64571ad909f64cad0601f38153ca4e16"},
+    {file = "django_cachalot-2.8.0.tar.gz", hash = "sha256:30456720ac9f3fabeb90ce898530fe01130c25a1eca911cd016cfaeab251d627"},
 ]
 
 [package.dependencies]
-Django = ">=3.2,<5.2"
+Django = ">=3.2,<5.3"
 
 [[package]]
 name = "django-cors-headers"
