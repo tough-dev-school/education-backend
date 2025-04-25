@@ -11,7 +11,7 @@ class DolyameNetmaskPermission(permissions.BasePermission):
     proof: https://dolyame.ru/develop/help/webhooks/
     """
 
-    message = "Dolyament requests are allowed only from apps.tinkoff network"
+    message = "Dolyament requests are allowed only from the tbank network"
 
     def has_permission(self, request: Request, view: APIView, *args: Any, **kwargs: dict[str, Any]) -> bool:
         sender_ip = IPv4Address(request.META["REMOTE_ADDR"])

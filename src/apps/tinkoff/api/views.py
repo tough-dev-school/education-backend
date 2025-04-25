@@ -6,7 +6,6 @@ from rest_framework.request import Request
 from rest_framework.views import APIView
 
 from apps.orders.models import Order
-from apps.tinkoff.api.permissions import DolyameNetmaskPermission
 from apps.tinkoff.api.serializers import DolyameNotificationSerializer, PaymentNotificationSerializer
 from apps.tinkoff.token_validator import TinkoffNotificationsTokenValidator
 
@@ -32,7 +31,7 @@ class TinkoffPaymentNotificationsView(APIView):
 class DolyameNotificationsView(APIView):
     """Receive dolyame notifications."""
 
-    permission_classes = [DolyameNetmaskPermission]
+    permission_classes = [AllowAny]
 
     def post(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> HttpResponse:
         serializer = DolyameNotificationSerializer(
