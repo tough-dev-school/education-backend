@@ -40,6 +40,7 @@ def test_autocommit_is_sent(api, notification, order, respx_mock):
     api.post("/api/v2/banking/dolyame-notifications/", notification(status="wait_for_commit"), expected_status_code=200)
 
 
+@pytest.mark.xfail(strict=True, reason="Dolyame authentication temporary disabled")
 def test_permission(fake_client, notification):
     fake_client.post("/api/v2/banking/dolyame-notifications/", notification(status="approved"), expected_status_code=401)
 
