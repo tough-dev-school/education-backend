@@ -66,6 +66,8 @@ class Lesson(TimestampedModel):
     question = models.ForeignKey(
         to="homework.Question", blank=True, null=True, related_name="+", on_delete=models.PROTECT, verbose_name=pgettext_lazy("lms", "Question")
     )
+
+    call = models.ForeignKey("lms.Call", blank=True, null=True, on_delete=models.CASCADE, verbose_name=pgettext_lazy("lms", "Call"))
     hidden = models.BooleanField(_("Hidden"), help_text=_("Users can't find such materials in the listing"), default=True)
 
     class Meta:

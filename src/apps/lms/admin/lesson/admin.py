@@ -18,6 +18,7 @@ class LessonAdmin(ModelAdmin):
         "name",
         "material",
         "question",
+        "call",
         "hidden",
         "material_id",
         "material_title",
@@ -42,7 +43,7 @@ class LessonAdmin(ModelAdmin):
     ]
 
     class Media:
-        js = ["admin/js/vendor/jquery/jquery.js", "admin/add_material_link.js"]
+        js = ["admin/js/vendor/jquery/jquery.js", "admin/add_material_link.js", "admin/remove_call_select.js"]
         css = {
             "all": ["admin/lesson_form.css"],
         }
