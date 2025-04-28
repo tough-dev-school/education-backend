@@ -12,8 +12,25 @@ from core.admin import ModelAdmin, admin
 
 @admin.register(Course)
 class CourseAdmin(SortableAdminBase, ModelAdmin):
-    fields = [
-        "name",
+    fieldsets = [
+        (
+            _("Name"),
+            {
+                "fields": [
+                    "name",
+                    "cover",
+                ],
+            },
+        ),
+        (
+            _("URLs"),
+            {
+                "fields": [
+                    "calendar",
+                    "chat",
+                ],
+            },
+        ),
     ]
     readonly_fields = [
         "name",

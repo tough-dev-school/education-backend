@@ -1,5 +1,6 @@
+from apps.lms.models.call import Call
 from apps.lms.models.lesson import Lesson
 from apps.lms.models.lms_course import Course
 from apps.lms.models.module import Module
 
-__all__ = ["Course", "Lesson", "Module"]
+__all__ = ["Call", "Course", "Lesson", "Module"]

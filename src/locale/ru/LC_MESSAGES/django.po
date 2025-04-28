@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-04 22:25+0300\n"
+"POT-Creation-Date: 2025-04-28 12:57+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -46,7 +46,7 @@ msgstr "Статус"
 
 #: apps/b2b/admin/deals/admin.py:69 apps/b2b/models.py:28
 #: apps/orders/admin/orders/admin.py:90 apps/orders/models/order.py:45
-#: apps/products/admin/course.py:33
+#: apps/products/admin/course.py:30 apps/products/admin/course.py:101
 msgid "Price"
 msgstr "Цена"
 
@@ -200,16 +200,18 @@ msgstr "В списке только не запущенные и не заар�
 
 #: apps/chains/admin/message.py:49 apps/chains/models/chain.py:33
 #: apps/diplomas/admin/diploma.py:56 apps/homework/admin/answer/admin.py:56
-#: apps/homework/admin/answer/admin.py:106 apps/orders/models/order.py:60
-#: apps/products/admin/filters.py:12 apps/products/models/course.py:80
-#: apps/studying/models.py:9
+#: apps/homework/admin/answer/admin.py:106
+#: apps/homework/admin/question/form.py:14 apps/lms/admin/lesson/admin.py:57
+#: apps/orders/models/order.py:60 apps/products/admin/filters.py:12
+#: apps/products/models/course.py:83 apps/studying/models.py:9
 msgid "Course"
 msgstr "Курс"
 
 #: apps/chains/models/chain.py:32 apps/chains/models/message.py:32
-#: apps/homework/models/question.py:14 apps/lms/admin/module_inline.py:23
-#: apps/lms/models/lesson.py:52 apps/magnets/models.py:20
-#: apps/products/admin/course.py:16
+#: apps/homework/models/question.py:22 apps/lms/admin/lms_course/admin.py:17
+#: apps/lms/admin/module/inline.py:23 apps/lms/models/call.py:8
+#: apps/lms/models/lesson.py:60 apps/magnets/models.py:20
+#: apps/products/admin/course.py:18
 msgid "Name"
 msgstr "Название"
 
@@ -253,8 +255,8 @@ msgstr "Письмо"
 msgid "Email chain messages"
 msgstr "Письма"
 
-#: apps/diplomas/admin/diploma.py:60 apps/homework/models/question.py:21
-#: apps/lms/admin/lesson_inline.py:37
+#: apps/diplomas/admin/diploma.py:60 apps/homework/models/question.py:29
+#: apps/lms/admin/lesson/inline.py:37
 msgid "Homework"
 msgstr "Домашка"
 
@@ -343,7 +345,7 @@ msgstr "Учеников проверяет"
 msgid "Author"
 msgstr "Автор"
 
-#: apps/homework/admin/answer/admin.py:113
+#: apps/homework/admin/answer/admin.py:113 apps/lms/admin/lesson/admin.py:72
 msgid "Question"
 msgstr "Вопрос"
 
@@ -355,9 +357,21 @@ msgstr ""
 msgid "Is root answer"
 msgstr "Первый ответ"
 
-#: apps/homework/admin/question/admin.py:30
+#: apps/homework/admin/question/admin.py:39
 msgid "Dispatch crosscheck"
 msgstr "Запустить p2p-проверку домашки"
+
+#: apps/homework/admin/question/form.py:15 apps/lms/admin/lesson/admin.py:61
+#: apps/lms/models/lesson.py:61 apps/lms/models/module.py:46
+msgid "Module"
+msgstr "Модуль"
+
+#: apps/homework/admin/question/form.py:16
+#, fuzzy
+#| msgctxt "lms"
+#| msgid "Lesson"
+msgid "Lesson"
+msgstr "Урок"
 
 #: apps/homework/models/answer.py:81
 msgid "Exclude from cross-checking"
@@ -379,15 +393,15 @@ msgstr "Видит все ответы на домашку"
 msgid "Date when crosscheck got checked"
 msgstr "Когда проверен"
 
-#: apps/homework/models/question.py:18
+#: apps/homework/models/question.py:26
 msgid "Deadline"
 msgstr "Дедлайн"
 
-#: apps/homework/models/question.py:22
+#: apps/homework/models/question.py:30
 msgid "Homeworks"
 msgstr "Домашки"
 
-#: apps/homework/models/question.py:24
+#: apps/homework/models/question.py:32
 msgid "May see questions for all homeworks"
 msgstr "Видит все вопросы домашки"
 
@@ -403,58 +417,72 @@ msgstr "Реакции"
 msgid "Invalid emoji symbol"
 msgstr "Неверный символ emoji"
 
-#: apps/lms/admin/lesson.py:13
+#: apps/lms/admin/lesson/admin.py:65 apps/lms/admin/lesson/form.py:12
 msgid "Material"
 msgstr "Страница в ноушене"
 
-#: apps/lms/admin/lesson.py:15
+#: apps/lms/admin/lesson/form.py:14
 msgid "Our slug or notion page_id"
 msgstr "Внутренний id или из notion"
 
-#: apps/lms/admin/lesson.py:40
+#: apps/lms/admin/lesson/form.py:39
 msgid "Material not found"
 msgstr "Урок не найден"
 
-#: apps/lms/admin/lesson_inline.py:28
+#: apps/lms/admin/lesson/inline.py:28
 msgid "Change"
 msgstr "Изменить"
 
-#: apps/lms/admin/lesson_inline.py:46 apps/lms/models/lesson.py:56
+#: apps/lms/admin/lesson/inline.py:46 apps/lms/models/lesson.py:64
 msgctxt "lessons"
 msgid "Material"
 msgstr "Страница в ноушене"
 
-#: apps/lms/admin/lms_course.py:35
+#: apps/lms/admin/lms_course/admin.py:26
+msgid "URLs"
+msgstr "Ссылки"
+
+#: apps/lms/admin/lms_course/admin.py:52
 msgid "Module count"
 msgstr "Модули"
 
-#: apps/lms/admin/module.py:41
+#: apps/lms/admin/module/admin.py:41
 msgid "Lesson count"
 msgstr "Уроки"
 
-#: apps/lms/models/lesson.py:53 apps/lms/models/module.py:46
-msgid "Module"
-msgstr "Модуль"
+#: apps/lms/models/call.py:9
+msgid "URL"
+msgstr "Ссылка"
 
-#: apps/lms/models/lesson.py:59
+#: apps/lms/models/call.py:12 apps/lms/models/lesson.py:70
+msgctxt "lms"
+msgid "Call"
+msgstr "Созвон"
+
+#: apps/lms/models/call.py:13
+msgctxt "lms"
+msgid "Calls"
+msgstr "Созвоны"
+
+#: apps/lms/models/lesson.py:67
 msgctxt "lms"
 msgid "Question"
 msgstr "Домашка"
 
-#: apps/lms/models/lesson.py:61 apps/lms/models/module.py:37
+#: apps/lms/models/lesson.py:71 apps/lms/models/module.py:37
 msgid "Hidden"
 msgstr "Скрыт"
 
-#: apps/lms/models/lesson.py:61 apps/lms/models/module.py:37
+#: apps/lms/models/lesson.py:71 apps/lms/models/module.py:37
 msgid "Users can't find such materials in the listing"
 msgstr "Студенты не видят"
 
-#: apps/lms/models/lesson.py:68
+#: apps/lms/models/lesson.py:78
 msgctxt "lms"
 msgid "Lesson"
 msgstr "Урок"
 
-#: apps/lms/models/lesson.py:69
+#: apps/lms/models/lesson.py:79
 msgctxt "lms"
 msgid "Lessons"
 msgstr "Уроки"
@@ -902,11 +930,16 @@ msgstr ""
 msgid "Amount to refund should be more or equal 0"
 msgstr ""
 
-#: apps/products/admin/course.py:42
+#: apps/products/admin/course.py:39
+msgctxt "products"
+msgid "Invoices"
+msgstr "Чеки"
+
+#: apps/products/admin/course.py:50
 msgid "Email messages"
 msgstr "Письма"
 
-#: apps/products/admin/course.py:51
+#: apps/products/admin/course.py:59
 msgid "Order confirmation"
 msgstr "Подтверждение покупки (для бесплатных курсов)"
 
@@ -985,25 +1018,33 @@ msgstr "Уходит пользователю, если он берёт бесп
 msgid "Confirmation success URL"
 msgstr "Ссылка после успешного подтверждения"
 
+#: apps/products/models/course.py:71
+msgid "Calendar URL"
+msgstr "Календарь"
+
 #: apps/products/models/course.py:72
+msgid "Chat URL"
+msgstr "Чат"
+
+#: apps/products/models/course.py:75
 msgid "Cover image"
 msgstr "Обложка"
 
-#: apps/products/models/course.py:75
+#: apps/products/models/course.py:78
 msgid "The cover image of course"
 msgstr "Обложка курса"
 
-#: apps/products/models/course.py:81
+#: apps/products/models/course.py:84
 msgid "Courses"
 msgstr "Курсы"
 
-#: apps/products/models/course.py:90
+#: apps/products/models/course.py:93
 msgid "Both confirmation_template_id and confirmation_success_url must be set"
 msgstr ""
 "У курсов с подтверждением обязательно нужно устанавливать оба поля: и "
 "почтовый шаблон и ссылку для упешного подтверждения "
 
-#: apps/products/models/course.py:93
+#: apps/products/models/course.py:96
 msgid "Courses with confirmation should have zero price"
 msgstr ""
 "Курсы с подтверждением могут быть только бесплатными. Если пользователь "

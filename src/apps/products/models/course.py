@@ -68,6 +68,9 @@ class Course(Shippable):
     )
     confirmation_success_url = models.URLField(_("Confirmation success URL"), null=True, blank=True)
 
+    calendar = models.URLField(_("Calendar URL"), blank=True, null=True)
+    chat = models.URLField(_("Chat URL"), blank=True, null=True)
+
     cover = models.ImageField(
         verbose_name=_("Cover image"),
         upload_to=RandomFileName("courses/covers"),
