@@ -70,6 +70,18 @@ def test_uses_default_configuration_if_theres_no_configurations(owl, configurati
 
 
 @pytest.mark.usefixtures("configurations")
+def test_uses_default_configuration_if_feature_is_disabled(owl, mocked_send, template_not_found_exception, settings):
+    settings.PER_COURSE_EMAIL_CONFIGURATION = False
+    sender = owl()
+    mocked_send.side_effect = [template_not_found_exception, None]
+
+    with pytest.raises(TemplateNotFoundError):  # First configuration raises exception and it is propagated, cuz the second configuration is disabled
+        sender()
+
+    assert mocked_send.call_count == 1, "Second configuration is not tried"
+
+
+@pytest.mark.usefixtures("configurations")
 def test_sends_second_time_if_first_raised(owl, mocked_send, template_not_found_exception):
     sender = owl()
     mocked_send.side_effect = [template_not_found_exception, None]
@@ -134,7 +146,7 @@ def test_uses_all_configurations_and_raises(owl, mocker, configurations, email_c
     )
 
 
-def test_uses_first_configuration_if_it_is_not_raises(owl, mocker, configurations, email_configuration, ya_email_configuration):
+def test_uses_first_configuration_if_it_does_not_raise(owl, mocker, configurations, email_configuration, ya_email_configuration):
     configurations.return_value = [email_configuration, ya_email_configuration]
     sender = owl()
     inner_send = mocker.patch.object(sender, "send")

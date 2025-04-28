@@ -3,8 +3,6 @@ from typing import TYPE_CHECKING, Optional
 from django.apps import apps
 
 if TYPE_CHECKING:
-    from django.db.models import QuerySet
-
     from apps.mailing.models import EmailConfiguration
     from apps.products.models import Course
 
@@ -17,8 +15,8 @@ def get_configuration(*, recipient: str) -> Optional["EmailConfiguration"]:
         return last_contacted_course.email_configuration
 
 
-def get_configurations(recipient: str) -> "QuerySet[EmailConfiguration]":
-    return apps.get_model("mailing.EmailConfiguration").objects.filter(course__order__user__email=recipient).order_by("-course__order__created")
+def get_configurations(recipient: str) -> list["EmailConfiguration"]:
+    return list(apps.get_model("mailing.EmailConfiguration").objects.filter(course__order__user__email=recipient).order_by("-course__order__created"))
 
 
 def get_last_contacted_course(recipient: str) -> Optional["Course"]:
