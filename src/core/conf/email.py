@@ -18,6 +18,7 @@ DANGEROUS_OPERATION_HAPPENED_EMAILS = env(
     cast=tuple,
     default=["fedor@borshev.com", "marianaonysko@gmail.com"],
 )
+PER_COURSE_EMAIL_CONFIGURATION = env("PER_COURSE_EMAIL_CONFIGURATION", cast=bool, default=False)
 
 # Postmark template IDs
 PASSWORDLESS_TOKEN_TEMPLATE_ID = env("PASSWORDLESS_TOKEN_TEMPLATE_ID", cast=str, default="passwordless-token")
