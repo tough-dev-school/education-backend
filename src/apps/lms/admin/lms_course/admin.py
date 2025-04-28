@@ -14,6 +14,7 @@ from core.admin import ModelAdmin, admin
 class CourseAdmin(SortableAdminBase, ModelAdmin):
     fields = [
         "name",
+        "cover",
     ]
     readonly_fields = [
         "name",

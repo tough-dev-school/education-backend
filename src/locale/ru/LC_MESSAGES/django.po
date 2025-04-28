@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-28 12:29+0300\n"
+"POT-Creation-Date: 2025-04-28 12:44+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -46,7 +46,7 @@ msgstr "Статус"
 
 #: apps/b2b/admin/deals/admin.py:69 apps/b2b/models.py:28
 #: apps/orders/admin/orders/admin.py:90 apps/orders/models/order.py:45
-#: apps/products/admin/course.py:33
+#: apps/products/admin/course.py:30 apps/products/admin/course.py:101
 msgid "Price"
 msgstr "Цена"
 
@@ -210,7 +210,7 @@ msgstr "Курс"
 #: apps/chains/models/chain.py:32 apps/chains/models/message.py:32
 #: apps/homework/models/question.py:22 apps/lms/admin/module/inline.py:23
 #: apps/lms/models/call.py:8 apps/lms/models/lesson.py:60
-#: apps/magnets/models.py:20 apps/products/admin/course.py:16
+#: apps/magnets/models.py:20 apps/products/admin/course.py:18
 msgid "Name"
 msgstr "Название"
 
@@ -437,7 +437,7 @@ msgctxt "lessons"
 msgid "Material"
 msgstr "Страница в ноушене"
 
-#: apps/lms/admin/lms_course/admin.py:35
+#: apps/lms/admin/lms_course/admin.py:36
 msgid "Module count"
 msgstr "Модули"
 
@@ -925,11 +925,16 @@ msgstr ""
 msgid "Amount to refund should be more or equal 0"
 msgstr ""
 
-#: apps/products/admin/course.py:42
+#: apps/products/admin/course.py:39
+msgctxt "products"
+msgid "Invoices"
+msgstr "Чеки"
+
+#: apps/products/admin/course.py:50
 msgid "Email messages"
 msgstr "Письма"
 
-#: apps/products/admin/course.py:51
+#: apps/products/admin/course.py:59
 msgid "Order confirmation"
 msgstr "Подтверждение покупки (для бесплатных курсов)"
 

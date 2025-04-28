@@ -2,11 +2,13 @@ from typing import Any
 
 from django.http import HttpRequest
 from django.utils.translation import gettext as _
+from django.utils.translation import pgettext_lazy
 
 from apps.amocrm import tasks
 from apps.products.admin.courses import actions, inlines
 from apps.products.models import Course
 from core.admin import ModelAdmin, admin
+from core.pricing import format_price
 
 
 @admin.register(Course)
@@ -18,14 +20,9 @@ class CourseAdmin(ModelAdmin):
                 "fields": [
                     "name",
                     "slug",
-                    "cover",
+                    "group",
                     "display_in_lms",
                     "disable_triggers",
-                    "group",
-                    "name_genitive",
-                    "name_receipt",
-                    "full_name",
-                    "name_international",
                 ],
             },
         ),
@@ -35,6 +32,17 @@ class CourseAdmin(ModelAdmin):
                 "fields": [
                     "price",
                     "old_price",
+                ],
+            },
+        ),
+        (
+            pgettext_lazy("products", "Invoices"),
+            {
+                "fields": [
+                    "name_genitive",
+                    "name_receipt",
+                    "full_name",
+                    "name_international",
                 ],
             },
         ),
@@ -63,7 +71,7 @@ class CourseAdmin(ModelAdmin):
         "group",
         "name",
         "slug",
-        "has_cover",
+        "formatted_price",
     )
 
     list_filter = ("group",)
@@ -90,9 +98,9 @@ class CourseAdmin(ModelAdmin):
     save_as = True
     search_fields = ("name",)
 
-    @admin.display(boolean=True)
-    def has_cover(self, course: Course) -> bool:
-        return bool(course.cover)
+    @admin.display(description=_("Price"), ordering="price")
+    def formatted_price(self, course: Course) -> str:
+        return format_price(course.price)
 
     def save_model(self, request: HttpRequest, obj: Course, form: Any, change: Any) -> None:
         super().save_model(request, obj, form, change)
