@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 from apps.homework.api.serializers import QuestionSerializer
 from apps.homework.models import Question
-from apps.lms.models import Lesson, Module
+from apps.lms.models import Call, Lesson, Module
 from apps.notion.models import Material as NotionMaterial
 
 
@@ -15,6 +15,15 @@ class NotionMaterialSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "title",
+        ]
+
+
+class CallSerializr(serializers.ModelSerializer):
+    class Meta:
+        model = Call
+        fields = [
+            "name",
+            "url",
         ]
 
 
@@ -41,6 +50,7 @@ class LessonForUserSerializer(serializers.ModelSerializer):
     """Serialize lesson for the user, lesson should be annotated with crosschecks stats"""
 
     material = NotionMaterialSerializer(required=False)
+    call = CallSerializr(required=False)
     homework = serializers.SerializerMethodField()
 
     class Meta:
@@ -50,6 +60,7 @@ class LessonForUserSerializer(serializers.ModelSerializer):
             "name",
             "material",
             "homework",
+            "call",
         ]
 
     @extend_schema_field(field=HomeworkStatsSerializer)
