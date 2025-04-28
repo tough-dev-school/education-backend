@@ -95,6 +95,11 @@ def mock_rebuild_tags(mocker):
 
 
 @pytest.fixture
+def _disable_refund_throttling(mocker):
+    mocker.patch("apps.orders.services.order_refunder.OrderRefunder.validate_throttling")
+
+
+@pytest.fixture
 def not_paid_order(course, factory, user):
     order = factory.order(
         user=user,
@@ -253,6 +258,7 @@ def test_refund_notification_email_context_and_template_correct(refund, paid_ord
             payment_method_name=BANKS["dolyame"].name,
             price="0",
             amount="999",
+            is_full=True,
             order_admin_site_url=f"http://absolute-url.url/admin/orders/order/{paid_order.id}/change/",
         ),
     )
@@ -367,10 +373,9 @@ def test_partial_refund_order_not_unshipped(paid_tinkoff_order, refund, spy_unsh
     spy_unshipper.assert_not_called()
 
 
-@pytest.mark.usefixtures("mock_tinkoff_refund")
+@pytest.mark.usefixtures("mock_tinkoff_refund", "_disable_refund_throttling")
 def test_partial_refund_order_unshipped_when_total_refund_eq_price(paid_tinkoff_order, refund, spy_unshipper):
     refund(paid_tinkoff_order, 500)
-    time.sleep(10)
 
     refund(paid_tinkoff_order, 499)
 
@@ -408,6 +413,7 @@ def test_partial_refund_notification_email_context_and_template_correct(refund, 
             payment_method_name=BANKS["tinkoff_bank"].name,
             price="499",
             amount="500",
+            is_full=False,
             order_admin_site_url=f"http://absolute-url.url/admin/orders/order/{paid_tinkoff_order.id}/change/",
         ),
     )

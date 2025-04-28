@@ -154,6 +154,7 @@ class OrderRefunder(BaseService):
             "payment_method_name": self.payment_method_before_service_call,
             "price": format_price(self.order.price),
             "amount": format_price(self.amount),
+            "is_full": self.order.price == 0,
             "order_admin_site_url": urljoin(
                 settings.ABSOLUTE_HOST,
                 reverse("admin:orders_order_change", args=[self.order.pk]),
