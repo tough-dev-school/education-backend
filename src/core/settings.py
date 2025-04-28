@@ -15,6 +15,7 @@ CI = env("CI", cast=bool, default=False)
 # Application definition
 
 include(
+    "conf/admin.py",
     "conf/api.py",
     "conf/auth.py",
     "conf/boilerplate.py",
