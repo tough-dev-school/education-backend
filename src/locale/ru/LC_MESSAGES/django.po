@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-28 12:44+0300\n"
+"POT-Creation-Date: 2025-04-28 12:57+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -203,14 +203,15 @@ msgstr "В списке только не запущенные и не заар�
 #: apps/homework/admin/answer/admin.py:106
 #: apps/homework/admin/question/form.py:14 apps/lms/admin/lesson/admin.py:57
 #: apps/orders/models/order.py:60 apps/products/admin/filters.py:12
-#: apps/products/models/course.py:80 apps/studying/models.py:9
+#: apps/products/models/course.py:83 apps/studying/models.py:9
 msgid "Course"
 msgstr "Курс"
 
 #: apps/chains/models/chain.py:32 apps/chains/models/message.py:32
-#: apps/homework/models/question.py:22 apps/lms/admin/module/inline.py:23
-#: apps/lms/models/call.py:8 apps/lms/models/lesson.py:60
-#: apps/magnets/models.py:20 apps/products/admin/course.py:18
+#: apps/homework/models/question.py:22 apps/lms/admin/lms_course/admin.py:17
+#: apps/lms/admin/module/inline.py:23 apps/lms/models/call.py:8
+#: apps/lms/models/lesson.py:60 apps/magnets/models.py:20
+#: apps/products/admin/course.py:18
 msgid "Name"
 msgstr "Название"
 
@@ -437,7 +438,11 @@ msgctxt "lessons"
 msgid "Material"
 msgstr "Страница в ноушене"
 
-#: apps/lms/admin/lms_course/admin.py:36
+#: apps/lms/admin/lms_course/admin.py:26
+msgid "URLs"
+msgstr "Ссылки"
+
+#: apps/lms/admin/lms_course/admin.py:52
 msgid "Module count"
 msgstr "Модули"
 
@@ -1013,25 +1018,33 @@ msgstr "Уходит пользователю, если он берёт бесп
 msgid "Confirmation success URL"
 msgstr "Ссылка после успешного подтверждения"
 
+#: apps/products/models/course.py:71
+msgid "Calendar URL"
+msgstr "Календарь"
+
 #: apps/products/models/course.py:72
+msgid "Chat URL"
+msgstr "Чат"
+
+#: apps/products/models/course.py:75
 msgid "Cover image"
 msgstr "Обложка"
 
-#: apps/products/models/course.py:75
+#: apps/products/models/course.py:78
 msgid "The cover image of course"
 msgstr "Обложка курса"
 
-#: apps/products/models/course.py:81
+#: apps/products/models/course.py:84
 msgid "Courses"
 msgstr "Курсы"
 
-#: apps/products/models/course.py:90
+#: apps/products/models/course.py:93
 msgid "Both confirmation_template_id and confirmation_success_url must be set"
 msgstr ""
 "У курсов с подтверждением обязательно нужно устанавливать оба поля: и "
 "почтовый шаблон и ссылку для упешного подтверждения "
 
-#: apps/products/models/course.py:93
+#: apps/products/models/course.py:96
 msgid "Courses with confirmation should have zero price"
 msgstr ""
 "Курсы с подтверждением могут быть только бесплатными. Если пользователь "
