@@ -2,8 +2,8 @@ from decimal import Decimal
 
 import pytest
 
-from apps.orders.models import Order
 from apps.banking.models import AcquiringPercent
+from apps.orders.models import Order
 
 pytestmark = [pytest.mark.django_db]
 

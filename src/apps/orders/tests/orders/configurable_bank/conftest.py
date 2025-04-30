@@ -52,10 +52,10 @@ def dolyame_bank(mocker):
 
 @pytest.fixture(autouse=True)
 def _freeze_currency_rate_rate(mocker):
-    mocker.patch("apps.tinkoff.bank.TinkoffBank.get_currency_rate", return_value=11)
-    mocker.patch("apps.stripebank.bank.StripeBankUSD.get_currency_rate", return_value=33)
-    mocker.patch("apps.stripebank.bank.StripeBankKZT.get_currency_rate", return_value=33)
-    mocker.patch("apps.tinkoff.dolyame.Dolyame.get_currency_rate", return_value=44)
+    mocker.patch("apps.tinkoff.bank.TinkoffBank.default_currency_rate", "11")
+    mocker.patch("apps.stripebank.bank.StripeBankUSD.default_currency_rate", "33")
+    mocker.patch("apps.stripebank.bank.StripeBankKZT.default_currency_rate", "33")
+    mocker.patch("apps.tinkoff.dolyame.Dolyame.default_currency_rate", "44")
 
 
 @pytest.fixture(autouse=True)

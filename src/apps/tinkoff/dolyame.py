@@ -19,6 +19,7 @@ class Dolyame(Bank):
     """
 
     default_acquiring_percent = Decimal("6.9")
+    default_currency_rate = Decimal(1)
     base_url = "https://partner.dolyame.ru/v1/"
     name = _("Dolyame")
     bank_id = "dolyame"
