@@ -15,7 +15,7 @@ class ZeroPriceBank(Bank):
 
     currency = "KIS"
     currency_symbol = "💋"
-    acquiring_percent = Decimal(0)
+    default_acquiring_percent = Decimal(0)
     name = _("Zero Price")
 
     def __init__(

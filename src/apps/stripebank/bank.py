@@ -11,7 +11,7 @@ from apps.stripebank.models import StripeNotification
 
 class BaseStripeBank(Bank):
     currency = "USD"
-    acquiring_percent = Decimal(4)
+    default_acquiring_percent = Decimal(4)
     name = _("Stripe")
     api_key: str = ""
     webhook_secret: str = ""

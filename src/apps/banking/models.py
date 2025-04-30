@@ -1,11 +1,10 @@
-from django.db import models
 from django.db.models import TextChoices
 from django.utils.translation import gettext_lazy as _
 
-from core.models import DefaultModel
+from core.models import TimestampedModel, models
 
 
-class CurrencyRate(DefaultModel):
+class CurrencyRate(TimestampedModel):
     class Currency(TextChoices):
         RUB = "RUB", _("RUB")
         USD = "USD", _("USD")
@@ -18,3 +17,15 @@ class CurrencyRate(DefaultModel):
     class Meta:
         verbose_name = _("Currency")
         verbose_name_plural = _("Currencies")
+
+
+class AcquiringPercent(TimestampedModel):
+    slug = models.CharField(max_length=60, unique=True, db_index=True)
+    percent = models.DecimalField(_("Percent"), max_digits=9, decimal_places=2)
+
+    class Meta:
+        verbose_name = _("Acquiring percent")
+        verbose_name_plural = _("Acquiring percents")
+
+    def __str__(self) -> str:
+        return self.slug

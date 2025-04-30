@@ -59,8 +59,8 @@ def _freeze_currency_rate_rate(mocker):
 
 
 @pytest.fixture(autouse=True)
-def _freeze_acquiring_percent(mocker):
-    mocker.patch("apps.tinkoff.bank.TinkoffBank.acquiring_percent", "1.2")
-    mocker.patch("apps.stripebank.bank.StripeBankUSD.acquiring_percent", "1.4")
-    mocker.patch("apps.stripebank.bank.StripeBankKZT.acquiring_percent", "1.4")
-    mocker.patch("apps.tinkoff.dolyame.Dolyame.acquiring_percent", "1.5")
+def _freeze_default_acquiring_percent(mocker):
+    mocker.patch("apps.tinkoff.bank.TinkoffBank.default_acquiring_percent", "1.2")
+    mocker.patch("apps.stripebank.bank.StripeBankUSD.default_acquiring_percent", "1.4")
+    mocker.patch("apps.stripebank.bank.StripeBankKZT.default_acquiring_percent", "1.4")
+    mocker.patch("apps.tinkoff.dolyame.Dolyame.default_acquiring_percent", "1.5")
