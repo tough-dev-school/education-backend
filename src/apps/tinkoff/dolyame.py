@@ -6,6 +6,7 @@ from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 from apps.banking.base import Bank
+from apps.banking.models import AcquiringPercent
 
 
 class DolyameRequestException(Exception):
@@ -102,3 +103,16 @@ class Dolyame(Bank):
     @staticmethod
     def get_notification_url() -> str:
         return urljoin(settings.ABSOLUTE_HOST, "/api/v2/banking/dolyame-notifications/")
+
+    def get_acquiring_percent(self) -> Decimal:
+        """Dynamic acquring percent based on order price"""
+        try:
+            big = AcquiringPercent.objects.get(slug="dolyame-big").percent
+            small = AcquiringPercent.objects.get(slug="dolyame-small").percent
+        except AcquiringPercent.DoesNotExist:
+            return super().get_acquiring_percent()
+
+        if self.order.price > 50_000:  # change it later
+            return big
+
+        return small
