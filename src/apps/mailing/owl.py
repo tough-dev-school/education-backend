@@ -5,7 +5,6 @@ from anymail.message import AnymailMessage
 from django.conf import settings
 from django.core import mail
 from django.core.mail.backends.base import BaseEmailBackend
-from django.db.models import QuerySet
 from django.utils.functional import cached_property
 
 from apps.mailing import helpers
@@ -71,9 +70,12 @@ class Owl(BaseService):
             merge_global_data=self.normalized_message_context,
         )
 
-    @cached_property
-    def configurations(self) -> "QuerySet[EmailConfiguration]":
-        return get_configurations(recipient=self.to)
+    @property
+    def configurations(self) -> list[EmailConfiguration]:
+        if settings.PER_COURSE_EMAIL_CONFIGURATION:
+            return get_configurations(recipient=self.to)
+
+        return []
 
     @cached_property
     def default_configuration(self) -> EmailConfiguration:

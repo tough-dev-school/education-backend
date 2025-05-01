@@ -1289,19 +1289,19 @@ resend = ["svix"]
 
 [[package]]
 name = "django-axes"
-version = "7.0.2"
+version = "7.1.0"
 description = "Keep track of failed login attempts in Django-powered sites."
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "django_axes-7.0.2-py3-none-any.whl", hash = "sha256:893dacce259d39e8cbcff655c61a008b3b827797c2f733f64fd9baf6bc7256e9"},
-    {file = "django_axes-7.0.2.tar.gz", hash = "sha256:a96bd6cdca9fbcbd250cf5ce1d92bfc72f2ce64b928804d9802d30a090406c59"},
+    {file = "django_axes-7.1.0-py3-none-any.whl", hash = "sha256:0d73f2a5240ec6c03a1b343c0dd1bd0e6278ce181eaa700cf185536313c10df1"},
+    {file = "django_axes-7.1.0.tar.gz", hash = "sha256:e56edc4ba7eeebb3f30af3b59301db0a9880514eabc1e64f98b5fe5057829bfa"},
 ]
 
 [package.dependencies]
 asgiref = ">=3.6.0"
-django = ">=3.2"
+django = ">=4.2"
 
 [package.extras]
 ipware = ["django-ipware (>=3)"]
@@ -1351,14 +1351,14 @@ django = ">=4.2"
 
 [[package]]
 name = "django-debug-toolbar"
-version = "5.1.0"
+version = "5.2.0"
 description = "A configurable set of panels that display various debug information about the current request/response."
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "django_debug_toolbar-5.1.0-py3-none-any.whl", hash = "sha256:c0591e338ee9603bdfce5aebf8d18ca7341fdbb69595e2b0b34869be5857180e"},
-    {file = "django_debug_toolbar-5.1.0.tar.gz", hash = "sha256:8a3b9da4aeab8d384a366e20304bd939a451f0242523c5b7b402248ad474eed2"},
+    {file = "django_debug_toolbar-5.2.0-py3-none-any.whl", hash = "sha256:15627f4c2836a9099d795e271e38e8cf5204ccd79d5dbcd748f8a6c284dcd195"},
+    {file = "django_debug_toolbar-5.2.0.tar.gz", hash = "sha256:9e7f0145e1a1b7d78fcc3b53798686170a5b472d9cf085d88121ff823e900821"},
 ]
 
 [package.dependencies]
@@ -2452,14 +2452,14 @@ plugins = ["importlib-metadata"]
 
 [[package]]
 name = "pyjwt"
-version = "2.8.0"
+version = "2.9.0"
 description = "JSON Web Token implementation in Python"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "PyJWT-2.8.0-py3-none-any.whl", hash = "sha256:59127c392cc44c2da5bb3192169a91f429924e17aff6534d70fdc02ab3e04320"},
-    {file = "PyJWT-2.8.0.tar.gz", hash = "sha256:57e28d156e3d5c10088e0c68abb90bfac3df82b40a71bd0daa20c65ccd5c23de"},
+    {file = "PyJWT-2.9.0-py3-none-any.whl", hash = "sha256:3b02fb0f44517787776cf48f2ae25d8e14f300e6d7545a4315cee571a415e850"},
+    {file = "pyjwt-2.9.0.tar.gz", hash = "sha256:7e1e5b56cc735432a7369cbfa0efe50fa113ebecdc04ae6922deba8b84582d0c"},
 ]
 
 [package.dependencies]
@@ -2467,8 +2467,8 @@ cryptography = {version = ">=3.4.0", optional = true, markers = "extra == \"cryp
 
 [package.extras]
 crypto = ["cryptography (>=3.4.0)"]
-dev = ["coverage[toml] (==5.0.4)", "cryptography (>=3.4.0)", "pre-commit", "pytest (>=6.0.0,<7.0.0)", "sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface"]
-docs = ["sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface"]
+dev = ["coverage[toml] (==5.0.4)", "cryptography (>=3.4.0)", "pre-commit", "pytest (>=6.0.0,<7.0.0)", "sphinx", "sphinx-rtd-theme", "zope.interface"]
+docs = ["sphinx", "sphinx-rtd-theme", "zope.interface"]
 tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
 
 [[package]]
@@ -2838,18 +2838,19 @@ files = [
 
 [[package]]
 name = "redis"
-version = "5.2.1"
+version = "5.3.0"
 description = "Python client for Redis database and key-value store"
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "redis-5.2.1-py3-none-any.whl", hash = "sha256:ee7e1056b9aea0f04c6c2ed59452947f34c4940ee025f5dd83e6a6418b6989e4"},
-    {file = "redis-5.2.1.tar.gz", hash = "sha256:16f2e22dff21d5125e8481515e386711a34cbec50f0e44413dd7d9c060a54e0f"},
+    {file = "redis-5.3.0-py3-none-any.whl", hash = "sha256:f1deeca1ea2ef25c1e4e46b07f4ea1275140526b1feea4c6459c0ec27a10ef83"},
+    {file = "redis-5.3.0.tar.gz", hash = "sha256:8d69d2dde11a12dc85d0dbf5c45577a5af048e2456f7077d87ad35c1c81c310e"},
 ]
 
 [package.dependencies]
 async-timeout = {version = ">=4.0.3", markers = "python_full_version < \"3.11.3\""}
+PyJWT = ">=2.9.0,<2.10.0"
 
 [package.extras]
 hiredis = ["hiredis (>=3.0.0)"]
@@ -3380,14 +3381,14 @@ files = [
 
 [[package]]
 name = "stripe"
-version = "12.0.1"
+version = "12.1.0"
 description = "Python bindings for the Stripe API"
 optional = false
 python-versions = ">=3.6"
 groups = ["main"]
 files = [
-    {file = "stripe-12.0.1-py2.py3-none-any.whl", hash = "sha256:b10b19dbd0622868b98a7c6e879ebde704be96ad75c780944bca4069bb427988"},
-    {file = "stripe-12.0.1.tar.gz", hash = "sha256:3fc7cc190946d8ebcc5b637e7e04f387d61b9c5156a89619a3ba90704ac09d4a"},
+    {file = "stripe-12.1.0-py2.py3-none-any.whl", hash = "sha256:1a3c9c0647c46da152efbd3b49f3494a32472b222857758e43df99759e790f29"},
+    {file = "stripe-12.1.0.tar.gz", hash = "sha256:4a4b8516952cf5095e982257f0d47c45c1d2bbf7743e2cb12d6685f55da8b8d4"},
 ]
 
 [package.dependencies]

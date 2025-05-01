@@ -20,6 +20,7 @@ def _settings(settings):
     settings.EMAIL_BACKEND = DEFAULT_BACKEND
     settings.DEFAULT_FROM_EMAIL = DEFAULT_FROM_EMAIL
     settings.DEFAULT_REPLY_TO = DEFAULT_REPLY_TO
+    settings.PER_COURSE_EMAIL_CONFIGURATION = True
 
 
 @pytest.fixture
@@ -43,6 +44,11 @@ def owl(owl):
     return owl()
 
 
+@pytest.fixture
+def test_backend(mocker):
+    return mocker.patch(f"{TEST_BACKEND}.__init__", return_value=None)
+
+
 def test_defaults(owl):
     message = owl.get_message(owl.default_configuration)
 
@@ -52,19 +58,17 @@ def test_defaults(owl):
 
 @pytest.mark.usefixtures("configurations")
 def test_custom(owl):
-    message = owl.get_message(owl.configurations.first())
+    message = owl.get_message(owl.configurations[0])
 
     assert message.from_email == TEST_FROM_EMAIL
     assert message.reply_to == [TEST_REPLY_TO]
 
 
 @pytest.mark.usefixtures("configurations")
-def test_backend_options_are_applied(owl, email_configration, mocker):
+def test_custom_configuration_is_applied(owl, email_configration, test_backend):
     email_configration.backend_options = {"test": "__mocked"}
     email_configration.save()
 
-    backend_init = mocker.patch(f"{TEST_BACKEND}.__init__", return_value=None)
+    owl.get_connection(owl.configurations[0])  # call the connection property
 
-    owl.get_connection(owl.configurations.first())  # call the connection property
-
-    backend_init.assert_called_once_with(fail_silently=False, test="__mocked")
+    test_backend.assert_called_once_with(fail_silently=False, test="__mocked")
