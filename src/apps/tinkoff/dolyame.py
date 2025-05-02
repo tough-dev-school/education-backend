@@ -112,7 +112,7 @@ class Dolyame(Bank):
         except AcquiringPercent.DoesNotExist:
             return super().get_acquiring_percent()
 
-        if self.order.price > 50_000:  # change it later
+        if self.order.price >= 30_000:
             return big
 
         return small
