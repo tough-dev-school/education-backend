@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-28 12:57+0300\n"
+"POT-Creation-Date: 2025-04-30 18:36+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -149,33 +149,45 @@ msgstr "B2B"
 msgid "—"
 msgstr ""
 
-#: apps/banking/models.py:10
+#: apps/banking/models.py:9
 msgid "RUB"
 msgstr "Рубль"
 
-#: apps/banking/models.py:11
+#: apps/banking/models.py:10
 msgid "USD"
 msgstr "Доллар"
 
-#: apps/banking/models.py:12
+#: apps/banking/models.py:11
 msgid "KZT"
 msgstr "Тенге"
 
-#: apps/banking/models.py:13
+#: apps/banking/models.py:12
 msgid "KIS (for zero-price orders)"
 msgstr "KIS (для бесплатных заказов)"
 
-#: apps/banking/models.py:16
+#: apps/banking/models.py:15
 msgid "Rate"
 msgstr "Курс"
 
-#: apps/banking/models.py:19
+#: apps/banking/models.py:18
 msgid "Currency"
 msgstr "Курс валюты"
 
-#: apps/banking/models.py:20
+#: apps/banking/models.py:19
 msgid "Currencies"
 msgstr "Курсы валют"
+
+#: apps/banking/models.py:24
+msgid "Percent"
+msgstr "Процент"
+
+#: apps/banking/models.py:27 apps/orders/models/order.py:58
+msgid "Acquiring percent"
+msgstr "Комиссия банка"
+
+#: apps/banking/models.py:28
+msgid "Acquiring percents"
+msgstr "Комиссии банков"
 
 #: apps/banking/zero_price_bank.py:19
 msgid "Zero Price"

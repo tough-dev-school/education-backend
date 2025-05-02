@@ -40,6 +40,7 @@ def get_bank_or_default(desired: str | None = None) -> Type[Bank]:
 
 
 def get_bank(bank_id: str) -> Type[Bank] | None:
+    """Find bank class by id"""
     if not bank_id:
         return None
 
@@ -49,6 +50,15 @@ def get_bank(bank_id: str) -> Type[Bank] | None:
         raise BankDoesNotExist(f"The bank with id '{bank_id}' does not exists.")
 
     return Bank
+
+
+def get_id(Bank: type[Bank]) -> str:
+    """Find bank id by its class. Reverse for the above function"""
+    for id, bank in BANKS.items():
+        if bank == Bank:
+            return id
+
+    raise BankDoesNotExist(f"Bank {Bank} does not have an id")
 
 
 __all__ = [
