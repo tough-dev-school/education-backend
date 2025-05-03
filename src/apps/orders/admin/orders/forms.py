@@ -60,6 +60,7 @@ class OrderAddForm(forms.ModelForm):
             user=self.cleaned_data["user"],
             item=self.cleaned_data["course"] or self.cleaned_data["bundle"] or self.cleaned_data["record"],
             price=self.cleaned_data["price"],
+            desired_bank=self.cleaned_data["bank_id"],
         )
 
         return order_creator()
