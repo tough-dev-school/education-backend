@@ -66,7 +66,13 @@ class OrderAddForm(forms.ModelForm):
         return order_creator()
 
     def clean_bank_id(self) -> str:
-        return self.cleaned_data["bank_id"] or "adhoc"
+        if self.cleaned_data["bank_id"]:
+            return self.cleaned_data["bank_id"]
+
+        if int(self.cleaned_data["price"] > 0):
+            return "b2b"
+
+        return "adhoc"
 
     def save_m2m(self, *args: Any, **kwargs: dict[str, Any]) -> None:
         """For some weird reason django requires this method to be present"""

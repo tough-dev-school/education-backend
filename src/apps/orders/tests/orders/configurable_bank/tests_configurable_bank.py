@@ -3,6 +3,7 @@ from decimal import Decimal
 import pytest
 
 from apps.banking.models import AcquiringPercent
+from apps.banking.selector import DEFAULT_BANK, get_id
 from apps.orders.models import Order
 
 pytestmark = [pytest.mark.django_db]
@@ -95,12 +96,12 @@ def test_configurabole_acqiring_percent(call_purchase):
     assert order.acquiring_percent == Decimal("10.55")
 
 
-def test_by_default_desired_bank_is_empty_string(call_purchase):
+def test_by_default_desired_bank_is_default(call_purchase):
     call_purchase()
 
     order = Order.objects.last()
 
-    assert order.bank_id == ""
+    assert order.bank_id == get_id(DEFAULT_BANK)
 
 
 def test_non_existed_bank_could_not_be_chosen_as_desired(api, default_user_data):
