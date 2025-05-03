@@ -14,6 +14,7 @@ from apps.b2b.models import Deal
 from apps.banking.base import Bank
 from apps.banking.selector import get_bank_or_default
 from apps.dashamail import tasks as dashamail
+from apps.dashamail.enabled import dashamail_enabled
 from apps.mailing.tasks import send_mail
 from apps.orders.models import Order, PromoCode
 from apps.products.models.base import Shippable
@@ -137,6 +138,9 @@ class OrderCreator(BaseService):
         ).apply_async(countdown=10)
 
     def do_push_to_dashamail(self, order: Order) -> None:
+        if not dashamail_enabled():
+            return
+
         if self.subscribe and order.user.email and len(order.user.email):
             dashamail.update_subscription.apply_async(
                 kwargs={"student_id": order.user.id},
@@ -144,6 +148,9 @@ class OrderCreator(BaseService):
             )  # hope rebuild_tags from push_to_amocrm is complete
 
     def do_push_to_dashamail_directcrm(self, order: Order) -> None:
+        if not dashamail_enabled():
+            return
+
         chain(
             dashamail.directcrm_subscribe.si(order_id=order.pk),
             dashamail.push_order_event.si(

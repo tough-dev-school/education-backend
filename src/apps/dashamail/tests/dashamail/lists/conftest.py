@@ -10,7 +10,6 @@ def _mock_subscription_updater():  # override global mock to test dashamail
 
 @pytest.fixture(autouse=True)
 def _set_dashamail_credentials(settings):
-    settings.DASHAMAIL_API_KEY = "apikey"
     settings.DASHAMAIL_LIST_ID = "1"
 
 
