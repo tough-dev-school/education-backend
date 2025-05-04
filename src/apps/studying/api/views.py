@@ -10,6 +10,8 @@ from core.views import AuthenticatedRequest
 
 
 class PurchasedCoursesView(DisablePaginationWithQueryParamMixin, ListAPIView):
+    """List of courses, purchased by particular user"""
+
     serializer_class = CourseSerializer
     permission_classes = [IsAuthenticated]
     request: AuthenticatedRequest
