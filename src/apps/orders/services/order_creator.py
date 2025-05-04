@@ -14,6 +14,7 @@ from apps.b2b.models import Deal
 from apps.banking.base import Bank
 from apps.banking.selector import get_bank_or_default
 from apps.dashamail import tasks as dashamail
+from apps.dashamail.enabled import dashamail_enabled
 from apps.mailing.tasks import send_mail
 from apps.orders.models import Order, PromoCode
 from apps.products.models.base import Shippable
@@ -40,9 +41,6 @@ class OrderCreator(BaseService):
     analytics: str | None = None
     deal: Deal | None = None
 
-    subscribe: bool = False
-    push_to_amocrm: bool = True
-
     def __post_init__(self) -> None:
         self.price = self.price if self.price is not None else self.item.get_price(promocode=self.promocode)
         self.promocode = self._get_promocode(self.promocode)
@@ -68,9 +66,12 @@ class OrderCreator(BaseService):
         self.send_confirmation_message(order)
         self.update_user_tags(order)
 
-        self.do_push_to_amocrm(order)
-        self.do_push_to_dashamail(order)
-        self.do_push_to_dashamail_directcrm(order)
+        if amocrm_enabled():
+            self.push_to_amocrm(order)
+
+        if dashamail_enabled():
+            self.push_to_dashamail(order)
+            self.push_to_dashamail_directcrm(order)
 
         return order
 
@@ -124,10 +125,7 @@ class OrderCreator(BaseService):
     def update_user_tags(order: Order) -> None:
         rebuild_tags.delay(student_id=order.user_id)
 
-    def do_push_to_amocrm(self, order: Order) -> None:
-        if not self.push_to_amocrm or not amocrm_enabled():
-            return
-
+    def push_to_amocrm(self, order: Order) -> None:
         if order.price <= 0:
             return
 
@@ -136,14 +134,14 @@ class OrderCreator(BaseService):
             push_order.si(order_id=order.id),
         ).apply_async(countdown=10)
 
-    def do_push_to_dashamail(self, order: Order) -> None:
-        if self.subscribe and order.user.email and len(order.user.email):
+    def push_to_dashamail(self, order: Order) -> None:
+        if order.user.email and len(order.user.email):
             dashamail.update_subscription.apply_async(
                 kwargs={"student_id": order.user.id},
                 countdown=30,
             )  # hope rebuild_tags from push_to_amocrm is complete
 
-    def do_push_to_dashamail_directcrm(self, order: Order) -> None:
+    def push_to_dashamail_directcrm(self, order: Order) -> None:
         chain(
             dashamail.directcrm_subscribe.si(order_id=order.pk),
             dashamail.push_order_event.si(
