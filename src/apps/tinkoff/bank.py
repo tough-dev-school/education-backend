@@ -13,7 +13,8 @@ from apps.tinkoff.exceptions import TinkoffRequestException
 
 
 class TinkoffBank(Bank):
-    acquiring_percent = Decimal("2.49")
+    default_acquiring_percent = Decimal("2.49")
+    default_currency_rate = Decimal(1)
     name = _("Tinkoff")
 
     @property

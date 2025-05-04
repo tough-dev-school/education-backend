@@ -2,6 +2,7 @@ from decimal import Decimal
 
 import pytest
 
+from apps.banking.models import AcquiringPercent
 from apps.orders.models import Order
 
 pytestmark = [pytest.mark.django_db]
@@ -83,6 +84,15 @@ def test_acquiring_percent_is_saved(call_purchase, bank, acquiring_percent):
     order = Order.objects.last()
 
     assert order.acquiring_percent == Decimal(acquiring_percent)
+
+
+def test_configurabole_acqiring_percent(call_purchase):
+    AcquiringPercent.objects.create(slug="tinkoff_bank", percent="10.55")
+
+    call_purchase(desired_bank="tinkoff_bank")
+    order = Order.objects.last()
+
+    assert order.acquiring_percent == Decimal("10.55")
 
 
 def test_by_default_desired_bank_is_empty_string(call_purchase):

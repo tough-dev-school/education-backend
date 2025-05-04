@@ -52,15 +52,15 @@ def dolyame_bank(mocker):
 
 @pytest.fixture(autouse=True)
 def _freeze_currency_rate_rate(mocker):
-    mocker.patch("apps.tinkoff.bank.TinkoffBank.get_currency_rate", return_value=11)
-    mocker.patch("apps.stripebank.bank.StripeBankUSD.get_currency_rate", return_value=33)
-    mocker.patch("apps.stripebank.bank.StripeBankKZT.get_currency_rate", return_value=33)
-    mocker.patch("apps.tinkoff.dolyame.Dolyame.get_currency_rate", return_value=44)
+    mocker.patch("apps.tinkoff.bank.TinkoffBank.default_currency_rate", "11")
+    mocker.patch("apps.stripebank.bank.StripeBankUSD.default_currency_rate", "33")
+    mocker.patch("apps.stripebank.bank.StripeBankKZT.default_currency_rate", "33")
+    mocker.patch("apps.tinkoff.dolyame.Dolyame.default_currency_rate", "44")
 
 
 @pytest.fixture(autouse=True)
-def _freeze_acquiring_percent(mocker):
-    mocker.patch("apps.tinkoff.bank.TinkoffBank.acquiring_percent", "1.2")
-    mocker.patch("apps.stripebank.bank.StripeBankUSD.acquiring_percent", "1.4")
-    mocker.patch("apps.stripebank.bank.StripeBankKZT.acquiring_percent", "1.4")
-    mocker.patch("apps.tinkoff.dolyame.Dolyame.acquiring_percent", "1.5")
+def _freeze_default_acquiring_percent(mocker):
+    mocker.patch("apps.tinkoff.bank.TinkoffBank.default_acquiring_percent", "1.2")
+    mocker.patch("apps.stripebank.bank.StripeBankUSD.default_acquiring_percent", "1.4")
+    mocker.patch("apps.stripebank.bank.StripeBankKZT.default_acquiring_percent", "1.4")
+    mocker.patch("apps.tinkoff.dolyame.Dolyame.default_acquiring_percent", "1.5")

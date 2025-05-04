@@ -63,6 +63,8 @@ class OrderCreator(BaseService):
         order.set_item(self.item)
         order.save()
 
+        self.save_acquring_details(order)
+
         self.send_confirmation_message(order)
         self.update_user_tags(order)
 
@@ -80,8 +82,6 @@ class OrderCreator(BaseService):
             promocode=self.promocode,
             deal=self.deal,
             bank_id=self.desired_bank,
-            ue_rate=self.bank.get_currency_rate(),
-            acquiring_percent=self.bank.acquiring_percent,
             analytics=self._parse_analytics(self.analytics),
         )
 
@@ -113,7 +113,15 @@ class OrderCreator(BaseService):
                     ctx=self._get_confirmation_template_context(order),
                 )
 
-    def update_user_tags(self, order: Order) -> None:
+    def save_acquring_details(self, order: Order) -> None:
+        bank = self.bank(order)
+        order.acquiring_percent = bank.get_acquiring_percent()
+        order.ue_rate = bank.get_currency_rate()
+
+        order.save(update_fields=["modified", "acquiring_percent", "ue_rate"])
+
+    @staticmethod
+    def update_user_tags(order: Order) -> None:
         rebuild_tags.delay(student_id=order.user_id)
 
     def do_push_to_amocrm(self, order: Order) -> None:
