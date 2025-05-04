@@ -42,10 +42,15 @@ def test_event_is_not_pushed_when_dashamail_is_disabled(create, user, course, up
     update_dashamail_directcrm.assert_not_called()
 
 
-def test_user_is_subscribed_to_the_dedicated_maillist(create, user, course, update_dashamail):
+def test_user_is_subscribed_to_the_dedicated_maillist(create, user, course, update_dashamail, mocker):
     create(user=user, item=course)
 
-    update_dashamail.assert_called_once_with(to=DashamailList(list_id=500500))
+    update_dashamail.assert_has_calls(
+        [
+            mocker.call(),  # common maillistr
+            mocker.call(to=DashamailList(list_id=500500)),  # particular course maillist
+        ]
+    )
 
 
 def test_user_is_not_subscribed_if_dashamail_is_disabled(create, user, course, update_dashamail, settings):

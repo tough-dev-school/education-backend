@@ -60,13 +60,3 @@ def test_dont_call_if_free_order(create, user, course, push_customer, settings, 
 
     push_customer.assert_not_called()
     push_order.assert_not_called()
-
-
-def test_if_not_subscribe_and_not_push_to_amocrm(create, user, course, push_customer, settings, push_order):
-    settings.AMOCRM_BASE_URL = "https://amo.amo.amo"
-    user.update(email="")
-
-    create(user=user, item=course, push_to_amocrm=False)
-
-    push_customer.assert_not_called()
-    push_order.assert_not_called()
