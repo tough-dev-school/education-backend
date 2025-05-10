@@ -14,6 +14,7 @@ pytest_plugins = [
     "apps.products.fixtures",
     "apps.users.fixtures",
     "apps.lms.factory",
+    "apps.dashamail.fixtures",
     "core.fixtures",
 ]
 # fmt: on

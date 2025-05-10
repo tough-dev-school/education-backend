@@ -19,8 +19,13 @@ def push_customer_to_amocrm(mocker):
 
 
 @pytest.fixture
-def update_dashamail(mocker):
-    return mocker.patch("apps.dashamail.tasks.update_subscription.apply_async")
+def push_to_dashamail(mocker):
+    return mocker.patch("apps.orders.services.order_creator.OrderCreator.push_to_dashamail")
+
+
+@pytest.fixture
+def push_to_dashamail_directcrm(mocker):
+    return mocker.patch("apps.orders.services.order_creator.OrderCreator.push_to_dashamail_directcrm")
 
 
 @pytest.fixture
@@ -96,23 +101,12 @@ def test_order_creation_does_not_fail_with_nonexistant_params(call_purchase):
     assert get_order() is not None
 
 
-@pytest.mark.parametrize(
-    ("wants_to_subscribe", "should_be_subscribed"),
-    [
-        ("True", True),
-        ("true", True),
-        ("1", True),
-        (1, True),
-        ("False", False),
-        ("false", False),
-        ("0", False),
-        (0, False),
-    ],
-)
-def test_user_is_subscribed_to_dashamail_if_allowed(call_purchase, wants_to_subscribe, should_be_subscribed, update_dashamail):
-    call_purchase(subscribe=wants_to_subscribe)
+@pytest.mark.dashamail
+def test_user_is_subscribed_to_dashamail(call_purchase, push_to_dashamail, push_to_dashamail_directcrm):
+    call_purchase()
 
-    assert (update_dashamail.call_count == 1) is should_be_subscribed
+    assert push_to_dashamail.call_count == 1
+    assert push_to_dashamail_directcrm.call_count == 1
 
 
 def test_integrations_are_updated(call_purchase, rebuild_tags, push_customer_to_amocrm, push_order_to_amocrm, settings):
@@ -128,12 +122,20 @@ def test_integrations_are_updated(call_purchase, rebuild_tags, push_customer_to_
     push_order_to_amocrm.assert_called_once_with(order_id=placed.id)
 
 
-def test_by_default_user_is_not_subscribed(call_purchase):
+def test_by_default_user_is_subscribed(call_purchase):
     call_purchase()
 
     placed = get_order()
 
-    assert placed.user.subscribed is False
+    assert placed.user.subscribed is True
+
+
+def test_subscribe_false_is_ignored(call_purchase):
+    call_purchase(subscribe=False)
+
+    placed = get_order()
+
+    assert placed.user.subscribed is True
 
 
 def test_redirect(call_purchase):
