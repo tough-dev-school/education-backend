@@ -57,7 +57,6 @@ class LessonForUserSerializer(serializers.ModelSerializer):
         model = Lesson
         fields = [
             "id",
-            "name",
             "material",
             "homework",
             "call",

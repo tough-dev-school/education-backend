@@ -29,7 +29,6 @@ INSTALLED_APPS = [
     "apps.diplomas",
     "apps.homework",
     "apps.lms",
-    "apps.magnets",
     "apps.mailing",
     "apps.notion",
     "apps.orders",

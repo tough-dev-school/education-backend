@@ -57,7 +57,6 @@ class LessonQuerySet(QuerySet):
 class Lesson(TimestampedModel):
     objects = LessonQuerySet.as_manager()
 
-    name = models.CharField(_("Name"), max_length=255)
     module = models.ForeignKey("lms.Module", on_delete=models.CASCADE, verbose_name=_("Module"))
     position = models.PositiveIntegerField(default=0, blank=False, null=False, db_index=True)
     material = models.ForeignKey(
@@ -79,4 +78,13 @@ class Lesson(TimestampedModel):
         verbose_name_plural = pgettext_lazy("lms", "Lessons")
 
     def __str__(self) -> str:
-        return f"{self.name} {self.module}"
+        if self.material is not None:
+            return str(self.material)
+
+        if self.question is not None:
+            return str(self.question)
+
+        if self.call is not None:
+            return str(self.call)
+
+        return '—'

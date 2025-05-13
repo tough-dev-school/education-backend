@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-30 18:36+0300\n"
+"POT-Creation-Date: 2025-05-13 20:13+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -213,7 +213,7 @@ msgstr "В списке только не запущенные и не заар�
 #: apps/chains/admin/message.py:49 apps/chains/models/chain.py:33
 #: apps/diplomas/admin/diploma.py:56 apps/homework/admin/answer/admin.py:56
 #: apps/homework/admin/answer/admin.py:106
-#: apps/homework/admin/question/form.py:14 apps/lms/admin/lesson/admin.py:57
+#: apps/homework/admin/question/form.py:14 apps/lms/admin/lesson/admin.py:55
 #: apps/orders/models/order.py:60 apps/products/admin/filters.py:12
 #: apps/products/models/course.py:83 apps/studying/models.py:9
 msgid "Course"
@@ -222,7 +222,6 @@ msgstr "Курс"
 #: apps/chains/models/chain.py:32 apps/chains/models/message.py:32
 #: apps/homework/models/question.py:22 apps/lms/admin/lms_course/admin.py:17
 #: apps/lms/admin/module/inline.py:23 apps/lms/models/call.py:8
-#: apps/lms/models/lesson.py:60 apps/magnets/models.py:20
 #: apps/products/admin/course.py:18
 msgid "Name"
 msgstr "Название"
@@ -357,7 +356,7 @@ msgstr "Учеников проверяет"
 msgid "Author"
 msgstr "Автор"
 
-#: apps/homework/admin/answer/admin.py:113 apps/lms/admin/lesson/admin.py:72
+#: apps/homework/admin/answer/admin.py:113 apps/lms/admin/lesson/admin.py:70
 msgid "Question"
 msgstr "Вопрос"
 
@@ -373,8 +372,8 @@ msgstr "Первый ответ"
 msgid "Dispatch crosscheck"
 msgstr "Запустить p2p-проверку домашки"
 
-#: apps/homework/admin/question/form.py:15 apps/lms/admin/lesson/admin.py:61
-#: apps/lms/models/lesson.py:61 apps/lms/models/module.py:46
+#: apps/homework/admin/question/form.py:15 apps/lms/admin/lesson/admin.py:59
+#: apps/lms/models/lesson.py:60 apps/lms/models/module.py:46
 msgid "Module"
 msgstr "Модуль"
 
@@ -429,7 +428,7 @@ msgstr "Реакции"
 msgid "Invalid emoji symbol"
 msgstr "Неверный символ emoji"
 
-#: apps/lms/admin/lesson/admin.py:65 apps/lms/admin/lesson/form.py:12
+#: apps/lms/admin/lesson/admin.py:63 apps/lms/admin/lesson/form.py:12
 msgid "Material"
 msgstr "Страница в ноушене"
 
@@ -445,7 +444,7 @@ msgstr "Урок не найден"
 msgid "Change"
 msgstr "Изменить"
 
-#: apps/lms/admin/lesson/inline.py:46 apps/lms/models/lesson.py:64
+#: apps/lms/admin/lesson/inline.py:46 apps/lms/models/lesson.py:63
 msgctxt "lessons"
 msgid "Material"
 msgstr "Страница в ноушене"
@@ -466,7 +465,7 @@ msgstr "Уроки"
 msgid "URL"
 msgstr "Ссылка"
 
-#: apps/lms/models/call.py:12 apps/lms/models/lesson.py:70
+#: apps/lms/models/call.py:12 apps/lms/models/lesson.py:69
 msgctxt "lms"
 msgid "Call"
 msgstr "Созвон"
@@ -476,25 +475,25 @@ msgctxt "lms"
 msgid "Calls"
 msgstr "Созвоны"
 
-#: apps/lms/models/lesson.py:67
+#: apps/lms/models/lesson.py:66
 msgctxt "lms"
 msgid "Question"
 msgstr "Домашка"
 
-#: apps/lms/models/lesson.py:71 apps/lms/models/module.py:37
+#: apps/lms/models/lesson.py:70 apps/lms/models/module.py:37
 msgid "Hidden"
 msgstr "Скрыт"
 
-#: apps/lms/models/lesson.py:71 apps/lms/models/module.py:37
+#: apps/lms/models/lesson.py:70 apps/lms/models/module.py:37
 msgid "Users can't find such materials in the listing"
 msgstr "Студенты не видят"
 
-#: apps/lms/models/lesson.py:78
+#: apps/lms/models/lesson.py:77
 msgctxt "lms"
 msgid "Lesson"
 msgstr "Урок"
 
-#: apps/lms/models/lesson.py:79
+#: apps/lms/models/lesson.py:78
 msgctxt "lms"
 msgid "Lessons"
 msgstr "Уроки"
@@ -512,38 +511,6 @@ msgstr "Курсы"
 #: apps/lms/models/module.py:47
 msgid "Modules"
 msgstr "Модули"
-
-#: apps/magnets/admin.py:31
-msgid "Lead count"
-msgstr "Количество лидов"
-
-#: apps/magnets/apps.py:8
-msgid "Magnets"
-msgstr "Лид-магниты"
-
-#: apps/magnets/models.py:23
-msgid "Letter template id"
-msgstr "ID почтового шаблона"
-
-#: apps/magnets/models.py:23
-msgid "Will be sent upon amocrm_lead registration"
-msgstr "Автоматически уходит юзеру, когда он зарегился"
-
-#: apps/magnets/models.py:25
-msgid "Success Message"
-msgstr "Сообщение об успехе"
-
-#: apps/magnets/models.py:25
-msgid "Will be shown under tilda form"
-msgstr "Покажется под формой в тильде"
-
-#: apps/magnets/models.py:28
-msgid "Email Lead Magnet Campaign"
-msgstr "Почтовая кампания"
-
-#: apps/magnets/models.py:29
-msgid "Email Lead Magnet Campaigns"
-msgstr "Почтовые кампании"
 
 #: apps/mailing/models/configuration.py:11
 msgid "Unset"
@@ -1082,17 +1049,17 @@ msgstr "Если оставить пустым — будет дефолтным
 msgid "Records"
 msgstr "Записи"
 
-#: apps/stripebank/bank.py:15
+#: apps/stripebank/bank.py:16
 msgid "Stripe"
 msgstr "Страйп"
 
-#: apps/stripebank/bank.py:68
+#: apps/stripebank/bank.py:69
 #, fuzzy
 #| msgid "Stripe"
 msgid "Stripe USD"
 msgstr "Страйп"
 
-#: apps/stripebank/bank.py:76
+#: apps/stripebank/bank.py:77
 #, fuzzy
 #| msgid "Stripe"
 msgid "Stripe KZT"
@@ -1110,11 +1077,11 @@ msgstr "Домашка принята"
 msgid "Studies"
 msgstr "Студенты-курсы"
 
-#: apps/tinkoff/bank.py:17
+#: apps/tinkoff/bank.py:18
 msgid "Tinkoff"
 msgstr "Тинькофф"
 
-#: apps/tinkoff/dolyame.py:23
+#: apps/tinkoff/dolyame.py:25
 msgid "Dolyame"
 msgstr "Долями"
 
@@ -1227,6 +1194,30 @@ msgstr "Да"
 #: core/admin/filters.py:26
 msgid "No"
 msgstr "Нет"
+
+#~ msgid "Lead count"
+#~ msgstr "Количество лидов"
+
+#~ msgid "Magnets"
+#~ msgstr "Лид-магниты"
+
+#~ msgid "Letter template id"
+#~ msgstr "ID почтового шаблона"
+
+#~ msgid "Will be sent upon amocrm_lead registration"
+#~ msgstr "Автоматически уходит юзеру, когда он зарегился"
+
+#~ msgid "Success Message"
+#~ msgstr "Сообщение об успехе"
+
+#~ msgid "Will be shown under tilda form"
+#~ msgstr "Покажется под формой в тильде"
+
+#~ msgid "Email Lead Magnet Campaign"
+#~ msgstr "Почтовая кампания"
+
+#~ msgid "Email Lead Magnet Campaigns"
+#~ msgstr "Почтовые кампании"
 
 #~ msgctxt "Course"
 #~ msgid "lms"
