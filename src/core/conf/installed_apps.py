@@ -13,7 +13,6 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "dj_rest_auth",
     "django_filters",
-    "drf_recaptcha",
     "drf_spectacular",
     "drf_spectacular_sidecar",
     "prettyjson",
