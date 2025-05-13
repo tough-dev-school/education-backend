@@ -37,11 +37,6 @@ def order(factory, nameless_user, course):
     return factory.order(user=nameless_user, item=course)
 
 
-@pytest.fixture(autouse=True)
-def subscribe(mocker):
-    return mocker.patch("apps.dashamail.tasks.update_subscription.delay")
-
-
 def test_user_is_changed(email_changer, user, order):
     changer = email_changer(order, email=user.email)
 
