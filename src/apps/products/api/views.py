@@ -96,6 +96,7 @@ class PurchaseView(APIView):
         return UserCreator(
             name=name,
             email=email.strip(),
+            subscribe=True,
         )()
 
     @staticmethod
@@ -103,7 +104,6 @@ class PurchaseView(APIView):
         create_order = OrderCreator(
             user=user,
             item=item,
-            subscribe=data.get("subscribe", False),
             promocode=data.get("promocode"),
             desired_bank=data.get("desired_bank"),
             analytics=data.get("analytics"),
