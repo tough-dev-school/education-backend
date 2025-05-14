@@ -17,6 +17,9 @@ class PurchasedCoursesView(DisablePaginationWithQueryParamMixin, ListAPIView):
     request: AuthenticatedRequest
 
     def get_queryset(self) -> QuerySet[Course]:
-        studies = Study.objects.filter(student=self.request.user)
+        if self.request.user.has_perm("studying.purchased_all_courses"):
+            return Course.objects.for_lms().all()
 
-        return Course.objects.for_lms().filter(id__in=studies.values("course"))
+        return Course.objects.for_lms().filter(
+            id__in=Study.objects.filter(student=self.request.user).values("course"),
+        )
