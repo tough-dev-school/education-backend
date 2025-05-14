@@ -20,6 +20,9 @@ class Study(TimestampedModel):
         ]
         verbose_name = _("Study")
         verbose_name_plural = _("Studies")
+        permissions = [
+            ("purchased_all_courses", _("May access all courses as if has purchased them")),
+        ]
 
     def __str__(self) -> str:
         return f"{self.student} / {self.course}"

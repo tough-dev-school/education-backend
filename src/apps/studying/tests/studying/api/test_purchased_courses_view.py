@@ -25,6 +25,22 @@ def test_list_includes_only_purchased(api):
     assert len(got) == 0
 
 
+@pytest.mark.usefixtures("unpaid_order")
+def test_list_includes_all_courses_if_user_has_permission(api):
+    api.user.add_perm("studying.study.purchased_all_courses")
+    got = api.get("/api/v2/purchased-courses/")["results"]
+
+    assert len(got) == 1
+
+
+@pytest.mark.usefixtures("unpaid_order")
+def test_list_includes_all_courses_if_user_is_a_superuser(api):
+    api.user.update(is_superuser=True)
+    got = api.get("/api/v2/purchased-courses/")["results"]
+
+    assert len(got) == 1
+
+
 def test_list_excludes_courses_that_should_not_be_displayed_in_lms(api, course):
     course.update(display_in_lms=False)
 
