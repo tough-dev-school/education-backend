@@ -26,7 +26,8 @@ class CourseAdmin(SortableAdminBase, ModelAdmin):
             _("URLs"),
             {
                 "fields": [
-                    "calendar",
+                    "calendar_google",
+                    "calendar_ios",
                     "chat",
                 ],
             },
