@@ -15,7 +15,6 @@ class LessonAdmin(ModelAdmin):
         LessonCourseFilter,
     ]
     fields = [
-        "name",
         "material",
         "question",
         "call",
@@ -35,7 +34,6 @@ class LessonAdmin(ModelAdmin):
     }
 
     list_display = [
-        "name",
         "course_name",
         "module_name",
         "material_title",

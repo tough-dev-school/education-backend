@@ -11,7 +11,6 @@ from core.admin import admin
 class LessonInline(SortableTabularInline):
     model = Lesson
     fields = [
-        "name",
         "_edit",
         "_material",
         "_question",
