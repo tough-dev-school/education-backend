@@ -68,7 +68,7 @@ class Lesson(TimestampedModel):
     )
 
     call = models.ForeignKey("lms.Call", blank=True, null=True, on_delete=models.CASCADE, verbose_name=pgettext_lazy("lms", "Call"))
-    hidden = models.BooleanField(_("Hidden"), help_text=_("Users can't find such materials in the listing"), default=True)
+    hidden = models.BooleanField(_("Hidden"), help_text=_("Users can't find such materials in the listing"), default=False)
 
     class Meta:
         ordering = ["position"]

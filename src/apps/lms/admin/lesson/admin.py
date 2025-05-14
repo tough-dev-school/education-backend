@@ -34,6 +34,7 @@ class LessonAdmin(ModelAdmin):
     }
 
     list_display = [
+        "name",
         "course_name",
         "module_name",
         "material_title",
@@ -73,6 +74,10 @@ class LessonAdmin(ModelAdmin):
             return lesson.question.name
 
         return "—"
+
+    @admin.display(description=_("Name"))
+    def name(self, lesson: Lesson) -> str:
+        return str(lesson)
 
     def has_add_permission(self, request: HttpRequest) -> bool:
         return False
