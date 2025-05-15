@@ -1252,14 +1252,14 @@ bcrypt = ["bcrypt"]
 
 [[package]]
 name = "django-admin-sortable2"
-version = "2.2.7"
+version = "2.2.8"
 description = "Generic drag-and-drop sorting for the List, the Stacked- and the Tabular-Inlines Views in the Django Admin"
 optional = false
 python-versions = "*"
 groups = ["main"]
 files = [
-    {file = "django_admin_sortable2-2.2.7-py3-none-any.whl", hash = "sha256:9084186109b9223d200c4369a1e33a59cf8cdfb37fef2cf9a686ddaa9bd428c9"},
-    {file = "django_admin_sortable2-2.2.7.tar.gz", hash = "sha256:f389a1c6a938ffbcfcc95ab06270c749201931de95bfbd505dfa885a1e7ba627"},
+    {file = "django_admin_sortable2-2.2.8-py3-none-any.whl", hash = "sha256:b4cf66d75450b0f89c883d94b10e6133a4e7832c5bfed1568e3e71e400dc2b48"},
+    {file = "django_admin_sortable2-2.2.8.tar.gz", hash = "sha256:59dfd7ced63e66adfb471b2a4d89ba3faae49c0148827047c8cf65759fc54c9e"},
 ]
 
 [package.dependencies]
