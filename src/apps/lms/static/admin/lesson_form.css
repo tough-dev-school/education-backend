@@ -10,3 +10,7 @@ p.material_link {
 .field-material input {
   width: 250px;
 }
+
+.call-name {
+  display: inline;
+}
