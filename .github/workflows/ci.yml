@@ -71,14 +71,14 @@ jobs:
 
       - name: Publish test results
         uses: phoenix-actions/test-reporting@v13
-        if: ${{ !contains(github.triggering_actor, '[bot]') }} && github.repository_owner == 'tough-dev-school'
+        if: ${{ !contains(github.triggering_actor, '[bot]') }} && github.event.pull_request.head.repo.full_name == github.repository
         with:
           name: Test results
           path: "src/junit-*.xml"
           reporter: java-junit
 
       - name: Upload code coverage to codeclimate
-        if: ${{ !contains(github.triggering_actor, '[bot]') }} && github.repository_owner == 'tough-dev-school'
+        if: ${{ github.ref == 'refs/heads/master' }} && github.repository_owner == 'tough-dev-school'
         uses: paambaati/codeclimate-action@v8.0.0
         env:
           CC_TEST_REPORTER_ID: dd4cac59d43b52ee4c29cfed9d5162098a49ff65d9e72003abc1fa65cd608f1d
