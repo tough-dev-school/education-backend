@@ -15,7 +15,6 @@ class LessonAdmin(ModelAdmin):
         LessonCourseFilter,
     ]
     fields = [
-        "name",
         "material",
         "question",
         "call",
@@ -75,6 +74,10 @@ class LessonAdmin(ModelAdmin):
             return lesson.question.name
 
         return "—"
+
+    @admin.display(description=_("Name"))
+    def name(self, lesson: Lesson) -> str:
+        return str(lesson)
 
     def has_add_permission(self, request: HttpRequest) -> bool:
         return False

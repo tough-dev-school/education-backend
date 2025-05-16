@@ -27,6 +27,7 @@ class LessonQuerySet(QuerySet):
             "module__course",
             "module__course__group",
             "material",
+            "call",
         )
 
     def with_is_sent(self, user: User) -> "LessonQuerySet":
@@ -57,7 +58,6 @@ class LessonQuerySet(QuerySet):
 class Lesson(TimestampedModel):
     objects = LessonQuerySet.as_manager()
 
-    name = models.CharField(_("Name"), max_length=255)
     module = models.ForeignKey("lms.Module", on_delete=models.CASCADE, verbose_name=_("Module"))
     position = models.PositiveIntegerField(default=0, blank=False, null=False, db_index=True)
     material = models.ForeignKey(
@@ -68,7 +68,7 @@ class Lesson(TimestampedModel):
     )
 
     call = models.ForeignKey("lms.Call", blank=True, null=True, on_delete=models.CASCADE, verbose_name=pgettext_lazy("lms", "Call"))
-    hidden = models.BooleanField(_("Hidden"), help_text=_("Users can't find such materials in the listing"), default=True)
+    hidden = models.BooleanField(_("Hidden"), help_text=_("Users can't find such materials in the listing"), default=False)
 
     class Meta:
         ordering = ["position"]
@@ -79,4 +79,13 @@ class Lesson(TimestampedModel):
         verbose_name_plural = pgettext_lazy("lms", "Lessons")
 
     def __str__(self) -> str:
-        return f"{self.name} {self.module}"
+        if self.material_id is not None:
+            return str(self.material)
+
+        if self.question_id is not None:
+            return str(self.question)
+
+        if self.call_id is not None:
+            return str(self.call)
+
+        return "—"

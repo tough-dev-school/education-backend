@@ -8,7 +8,6 @@ def test_ok(api, module, lesson):
 
     assert len(got["results"]) == 1
     assert got["results"][0]["id"] == lesson.id
-    assert got["results"][0]["name"] == lesson.name
 
 
 @pytest.mark.usefixtures("_no_purchase")

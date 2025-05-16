@@ -15,7 +15,6 @@ def test_list(api, course):
     assert "http://" in got[0]["cover"]
 
     assert got[0]["chat"] == "https://t.me/chat"
-    assert got[0]["calendar"] == "ios://cal"
 
 
 @pytest.mark.usefixtures("unpaid_order")

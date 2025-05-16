@@ -15,7 +15,8 @@ def test_list(api, course):
     assert "http://" in got[0]["cover"]
 
     assert got[0]["chat"] == "https://t.me/chat"
-    assert got[0]["calendar"] == "ios://cal"
+    assert got[0]["calendar_ios"] == "ios://cal"
+    assert got[0]["calendar_google"] == "google://cal"
 
 
 @pytest.mark.usefixtures("unpaid_order")
@@ -23,6 +24,22 @@ def test_list_includes_only_purchased(api):
     got = api.get("/api/v2/purchased-courses/")["results"]
 
     assert len(got) == 0
+
+
+@pytest.mark.usefixtures("unpaid_order")
+def test_list_includes_all_courses_if_user_has_permission(api):
+    api.user.add_perm("studying.study.purchased_all_courses")
+    got = api.get("/api/v2/purchased-courses/")["results"]
+
+    assert len(got) == 1
+
+
+@pytest.mark.usefixtures("unpaid_order")
+def test_list_includes_all_courses_if_user_is_a_superuser(api):
+    api.user.update(is_superuser=True)
+    got = api.get("/api/v2/purchased-courses/")["results"]
+
+    assert len(got) == 1
 
 
 def test_list_excludes_courses_that_should_not_be_displayed_in_lms(api, course):
