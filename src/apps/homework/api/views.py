@@ -17,6 +17,8 @@ class QuestionView(generics.RetrieveAPIView):
 
 
 class AnswerCommentView(generics.ListAPIView):
+    """Recursive list list answer comments"""
+
     queryset = Answer.objects.for_viewset()
     serializer_class = serializers.AnswerCommentTreeSerializer
     filterset_class = AnswerCommentFilterSet
@@ -34,6 +36,8 @@ class AnswerImageUploadView(generics.CreateAPIView):
 
 
 class AnswerCrossCheckView(generics.ListAPIView):
+    """Retrieves crosscheck status"""
+
     queryset = AnswerCrossCheck.objects.for_viewset()
     serializer_class = AnswerCrossCheckSerializer
     filterset_class = AnswerCrossCheckFilterSet
