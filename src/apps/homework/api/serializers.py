@@ -120,6 +120,16 @@ class AnswerCreateSerializer(serializers.ModelSerializer):
         ]
 
 
+class AnswerUpdateSerializer(serializers.ModelSerializer):
+    """For swagger only"""
+
+    class Meta:
+        model = Answer
+        fields = [
+            "text",
+        ]
+
+
 class AnswerCommentTreeSerializer(AnswerTreeSerializer):
     class Meta:
         model = Answer

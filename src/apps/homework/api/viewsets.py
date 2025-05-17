@@ -1,6 +1,7 @@
 from typing import Any
 
 from django.db.models import QuerySet
+from django.utils.decorators import method_decorator
 from django.utils.functional import cached_property
 from drf_spectacular.utils import extend_schema
 from rest_framework.exceptions import MethodNotAllowed
@@ -19,6 +20,7 @@ from apps.homework.api.permissions import (
 from apps.homework.api.serializers import (
     AnswerCreateSerializer,
     AnswerDetailedSerializer,
+    AnswerUpdateSerializer,
     ReactionCreateSerializer,
     ReactionDetailedSerializer,
 )
@@ -32,7 +34,21 @@ from core.api.mixins import DisablePaginationWithQueryParamMixin
 from core.viewsets import AppViewSet, CreateDeleteAppViewSet
 
 
+@method_decorator(
+    extend_schema(
+        description="List allowed answers",
+    ),
+    name="list",
+)
+@method_decorator(
+    extend_schema(
+        description="Get an answer by slug (any answer can be accessible if user knows the slug",
+    ),
+    name="retrieve",
+)
 class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
+    """Answer CRUD"""
+
     queryset = Answer.objects.for_viewset()
     serializer_class = AnswerDetailedSerializer
     serializer_action_classes = {
@@ -49,7 +65,9 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     ]
     filterset_class = AnswerFilterSet
 
+    @extend_schema(request=AnswerCreateSerializer, responses=AnswerDetailedSerializer)
     def create(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
+        """Create an answer"""
         answer = AnswerCreator(
             question_slug=request.data["question"],
             parent_slug=request.data.get("parent"),
@@ -60,7 +78,9 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
         Serializer = self.get_serializer_class(action="retrieve")
         return Response(Serializer(answer).data, status=201)
 
+    @extend_schema(request=AnswerUpdateSerializer, responses=AnswerDetailedSerializer)
     def update(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
+        """Update answer text"""
         if not kwargs.get("partial", False):
             raise MethodNotAllowed("Please use patch")
 
@@ -74,6 +94,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
         return response
 
     def destroy(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
+        """Remove an answer if allowed"""
         AnswerRemover(instance=self.get_object())()
         return Response(status=204)
 
@@ -124,8 +145,9 @@ class ReactionViewSet(CreateDeleteAppViewSet):
 
     lookup_field = "slug"
 
-    @extend_schema(responses=ReactionDetailedSerializer)
+    @extend_schema(request=ReactionCreateSerializer, responses=ReactionDetailedSerializer)
     def create(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
+        """Create a reaction"""
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data.copy()
