@@ -1,6 +1,8 @@
 from typing import Any
 
 from django.db.models import QuerySet
+from drf_spectacular.utils import extend_schema, inline_serializer
+from rest_framework import serializers
 from rest_framework.exceptions import NotFound
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -13,8 +15,48 @@ from apps.notion.models import Material
 from core.views import AuthenticatedAPIView
 
 
-class NotionMaterialView(AuthenticatedAPIView):
+class MaterialView(AuthenticatedAPIView):
     throttle_classes = [NotionThrottle]
+
+    @extend_schema(
+        description="Fetch material",
+        responses={
+            200: inline_serializer(
+                name="MaterialSerilizer",
+                fields={
+                    "breadcrumbs": serializers.ListField(),
+                    "content": serializers.DictField(),
+                },
+            ),
+        },
+    )
+    def get(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
+        material = self.get_material()
+
+        if material is None:
+            raise NotFound()
+
+        page = get_cached_page_or_fetch(material.page_id)
+
+        return Response(
+            data=NotionPageSerializer(page).data,
+            status=200,
+        )
+
+    def get_material(self) -> Material | None:
+        queryset = self.get_queryset()
+
+        return queryset.get_by_page_id_or_slug(uuid_to_id(self.kwargs["page_id"]))  # type: ignore
+
+    def get_queryset(self) -> QuerySet[Material]:
+        if self.request.user.is_superuser or self.request.user.has_perm("notion.see_all_materials"):
+            return Material.objects.all()
+
+        return Material.objects.for_student(self.request.user)
+
+
+class LegacyNotionMaterialView(AuthenticatedAPIView):
+    """Legacy API View"""
 
     def get(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         material = self.get_material()
