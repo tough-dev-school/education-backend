@@ -39,7 +39,10 @@ class MaterialView(AuthenticatedAPIView):
         page = get_cached_page_or_fetch(material.page_id)
 
         return Response(
-            data=NotionPageSerializer(page).data,
+            data={
+                "breadcrumbs": {},
+                "content": NotionPageSerializer(page).data,
+            },
             status=200,
         )
 
