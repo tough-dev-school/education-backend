@@ -1,9 +1,9 @@
-from drf_spectacular.utils import extend_schema_field
+from drf_spectacular.utils import extend_schema_field, inline_serializer
 from rest_framework import serializers
 
 from apps.homework.api.serializers import QuestionSerializer
 from apps.homework.models import Question
-from apps.lms.models import Call, Lesson, Module
+from apps.lms.models import Call, Course, Lesson, Module
 from apps.notion.models import Material as NotionMaterial
 
 
@@ -82,3 +82,44 @@ class ModuleSerializer(serializers.ModelSerializer):
             "id",
             "name",
         ]
+
+
+class CourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = [
+            "id",
+            "slug",
+            "name",
+            "cover",
+            "chat",
+            "calendar_ios",
+            "calendar_google",
+        ]
+
+
+class BreadcrumbsSerializer(serializers.ModelSerializer):
+    module = ModuleSerializer()
+    course = CourseSerializer(source="module.course")
+    lesson = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Lesson
+        fields = [
+            "module",
+            "course",
+            "lesson",
+        ]
+
+    @extend_schema_field(
+        field=inline_serializer(
+            name="LessonPlainSerializer",
+            fields={
+                "id": serializers.IntegerField(),
+            },
+        )
+    )
+    def get_lesson(self, lesson: Lesson) -> dict:
+        return {
+            "id": lesson.id,
+        }

@@ -7,8 +7,10 @@ from rest_framework.exceptions import NotFound
 from rest_framework.request import Request
 from rest_framework.response import Response
 
+from apps.lms.api.serializers import BreadcrumbsSerializer
 from apps.notion.api.serializers import NotionPageSerializer
 from apps.notion.api.throttling import NotionThrottle
+from apps.notion.breadcrumbs import get_lesson
 from apps.notion.cache import get_cached_page_or_fetch
 from apps.notion.id import uuid_to_id
 from apps.notion.models import Material
@@ -24,7 +26,7 @@ class MaterialView(AuthenticatedAPIView):
             200: inline_serializer(
                 name="MaterialSerilizer",
                 fields={
-                    "breadcrumbs": serializers.ListField(),
+                    "breadcrumbs": BreadcrumbsSerializer(),
                     "content": serializers.DictField(),
                 },
             ),
@@ -37,10 +39,11 @@ class MaterialView(AuthenticatedAPIView):
             raise NotFound()
 
         page = get_cached_page_or_fetch(material.page_id)
+        lesson = get_lesson(material)
 
         return Response(
             data={
-                "breadcrumbs": {},
+                "breadcrumbs": BreadcrumbsSerializer(lesson).data if lesson is not None else {},
                 "content": NotionPageSerializer(page).data,
             },
             status=200,
