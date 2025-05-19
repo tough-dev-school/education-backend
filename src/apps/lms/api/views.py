@@ -21,7 +21,23 @@ class LessonListView(DisablePaginationWithQueryParamMixin, ListAPIView):
     filterset_class = LessonFilterSet
 
     def get_queryset(self) -> "LessonQuerySet":
-        return Lesson.objects.for_viewset(self.request.user)
+        queryset = Lesson.objects.for_viewset()
+
+        if self.request.user.has_perm("studying.purchased_all_courses"):
+            # Adding fake data for the serializers
+            return queryset.with_fake_is_sent().with_fake_crosscheck_stats()
+
+        return (
+            queryset.for_user(
+                self.request.user,  # type: ignore
+            )
+            .with_is_sent(
+                self.request.user,  # type: ignore
+            )
+            .with_crosscheck_stats(
+                self.request.user,  # type: ignore
+            )
+        )
 
 
 class ModuleListView(DisablePaginationWithQueryParamMixin, ListAPIView):
@@ -32,4 +48,9 @@ class ModuleListView(DisablePaginationWithQueryParamMixin, ListAPIView):
     filterset_class = ModuleFilterSet
 
     def get_queryset(self) -> "ModuleQuerySet":
-        return Module.objects.for_viewset(self.request.user)
+        queryset = Module.objects.for_viewset()
+
+        if self.request.user.has_perm("studying.purchased_all_courses"):
+            return queryset
+
+        return queryset.for_user(self.request.user)  # type: ignore

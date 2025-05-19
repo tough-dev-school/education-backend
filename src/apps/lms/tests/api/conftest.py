@@ -2,6 +2,14 @@ import pytest
 
 
 @pytest.fixture
+def api(api):
+    """We test it as normal student, not superuser to check permissions"""
+    api.user.update(is_superuser=False)
+
+    return api
+
+
+@pytest.fixture
 def course(factory):
     return factory.course()
 

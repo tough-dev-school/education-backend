@@ -18,6 +18,15 @@ def test_zero_modules_if_no_purchase(api, course):
     assert len(got["results"]) == 0
 
 
+@pytest.mark.usefixtures("_no_purchase")
+def test_all_modules_for_users_with_permissions(api, course):
+    api.user.add_perm("studying.study.purchased_all_courses")
+
+    got = api.get(f"/api/v2/lms/modules/?course={course.pk}")
+
+    assert len(got["results"]) == 1
+
+
 def test_401_for_anon_users(anon, course):
     anon.get(f"/api/v2/lms/modules/?course={course.pk}", expected_status_code=401)
 
@@ -57,11 +66,11 @@ def test_pagination_could_be_disable_with_query_param(api, course, module, disab
 def test_query_count(api, module, course, factory, django_assert_num_queries):
     module.delete()
 
-    for _ in range(10):
+    for _ in range(15):
         factory.module(
             course=course,
         )
 
-    with django_assert_num_queries(4):
+    with django_assert_num_queries(6):
         got = api.get(f"/api/v2/lms/modules/?course={course.pk}")
-        assert len(got["results"]) == 10
+        assert len(got["results"]) == 15
