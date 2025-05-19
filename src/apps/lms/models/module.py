@@ -1,5 +1,4 @@
 from django.apps import apps
-from django.contrib.auth.models import AnonymousUser
 from django.db.models import Index, OuterRef, QuerySet
 from django.utils.translation import gettext_lazy as _
 
@@ -8,11 +7,8 @@ from core.models import SubqueryCount, TimestampedModel, models
 
 
 class ModuleQuerySet(QuerySet):
-    def for_viewset(self, user: User | AnonymousUser) -> "ModuleQuerySet":
-        if user.is_anonymous:
-            return self.none()
-
-        return self.for_user(user).filter(hidden=False).order_by("position")
+    def for_viewset(self) -> "ModuleQuerySet":
+        return self.filter(hidden=False).order_by("position")
 
     def for_user(self, user: User) -> "ModuleQuerySet":
         purchased_courses = apps.get_model("studying.Study").objects.filter(student=user).values_list("course_id", flat=True)

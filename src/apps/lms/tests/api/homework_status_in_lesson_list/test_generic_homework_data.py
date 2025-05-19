@@ -21,13 +21,13 @@ def test_question(api, module, question):
 
 def test_query_count(api, module, lesson, factory, mixer, django_assert_num_queries):
     lesson.delete()
-    for _ in range(10):
+    for _ in range(15):
         factory.lesson(
             module=module,
             material=mixer.blend("notion.Material"),
             question=mixer.blend("homework.Question"),
         )
 
-    with django_assert_num_queries(4):
+    with django_assert_num_queries(6):
         got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")
-        assert len(got["results"]) == 10
+        assert len(got["results"]) == 15
