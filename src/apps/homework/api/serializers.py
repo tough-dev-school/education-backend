@@ -1,5 +1,5 @@
-from typing import cast
-
+from drf_spectacular.helpers import lazy_serializer
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from apps.homework.models import Answer, AnswerCrossCheck, AnswerImage, Question
@@ -88,6 +88,7 @@ class AnswerTreeSerializer(AnswerDetailedSerializer):
             "reactions",
         ]
 
+    @extend_schema_field(lazy_serializer("apps.homework.api.serializers.AnswerTreeSerializer")(many=True))
     def get_descendants(self, obj: Answer) -> list[dict]:
         queryset = (
             obj.get_limited_comments_for_user_by_crosschecks(self.context["request"].user)
@@ -96,13 +97,11 @@ class AnswerTreeSerializer(AnswerDetailedSerializer):
             .prefetch_reactions()
         )
 
-        serializer = AnswerTreeSerializer(
+        return AnswerTreeSerializer(  # type: ignore
             queryset,
             many=True,
             context=self.context,
-        )
-
-        return cast("list[dict]", serializer.data)
+        ).data
 
 
 class AnswerCreateSerializer(serializers.ModelSerializer):
@@ -116,6 +115,16 @@ class AnswerCreateSerializer(serializers.ModelSerializer):
             "author",
             "question",
             "parent",
+            "text",
+        ]
+
+
+class AnswerUpdateSerializer(serializers.ModelSerializer):
+    """For swagger only"""
+
+    class Meta:
+        model = Answer
+        fields = [
             "text",
         ]
 
