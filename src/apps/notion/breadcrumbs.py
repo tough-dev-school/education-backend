@@ -9,3 +9,8 @@ def get_lesson(material: Material) -> Lesson | None:
     """
 
     return Lesson.objects.filter(module__course_id=material.course_id, material_id=material.id).first()
+
+
+__all__ = [
+    "get_lesson",
+]

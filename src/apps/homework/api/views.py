@@ -11,7 +11,7 @@ from apps.homework.models import Answer, AnswerCrossCheck, AnswerImage, Question
 
 class QuestionView(generics.RetrieveAPIView):
     queryset = Question.objects.all()
-    serializer_class = serializers.QuestionSerializer
+    serializer_class = serializers.QuestionDetailSerializer
     permission_classes = [ShouldHavePurchasedCoursePermission]
     lookup_field = "slug"
 
