@@ -1,11 +1,13 @@
 import pytest
 
-from apps.notion.video import get_youtube_video_id
+from core.video import get_youtube_video_id
 
 
 @pytest.mark.parametrize(
     "input, expected",
     [
+        (None, None),
+        ("", None),
         ("https://youtu.be/1aSDLtmircA", "1aSDLtmircA"),
         ("1aSDLtmircA", None),
         ("https://youtu.be/watch?v=1aSDLtmircA", "1aSDLtmircA"),

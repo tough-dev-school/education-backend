@@ -1,6 +1,6 @@
 import pytest
 
-from apps.notion.video import get_rutube_video_id
+from core.video import get_rutube_video_id
 
 
 @pytest.mark.parametrize(
