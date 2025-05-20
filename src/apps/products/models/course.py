@@ -14,12 +14,12 @@ from core.models import models
 
 
 class CourseQuerySet(QuerySet):
-    def for_lms(self) -> QuerySet["Course"]:
+    def for_lms(self) -> "CourseQuerySet":
         return self.filter(
             display_in_lms=True,
         ).with_course_homepage()
 
-    def with_course_homepage(self) -> QuerySet["Course"]:
+    def with_course_homepage(self) -> "CourseQuerySet":
         materials = (
             apps.get_model("notion.Material")
             .objects.filter(
@@ -38,8 +38,13 @@ class CourseQuerySet(QuerySet):
             home_page_slug=Subquery(materials[:1]),
         )
 
-    def for_admin(self) -> QuerySet["Course"]:
+    def for_admin(self) -> "CourseQuerySet":
         return self.select_related("group").filter(Q(group__created__gte=timezone.now() - timedelta(days=365)) | Q(group__evergreen=True))
+
+    def purchased_by(self, user: User) -> "CourseQuerySet":
+        return self.filter(
+            id__in=apps.get_model("studying.Study").objects.filter(student=user).values("course"),
+        )
 
 
 CourseManager = models.Manager.from_queryset(CourseQuerySet)
