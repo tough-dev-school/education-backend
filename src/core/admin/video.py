@@ -42,8 +42,8 @@ class VideoForm(ModelForm):
         cleaned_data["rutube_id"] = get_rutube_video_id(cleaned_data.get("rutube") or "")
         cleaned_data["rutube_access_key"] = get_rutube_access_key(cleaned_data.get("rutube") or "")
 
-        del cleaned_data['youtube']
-        del cleaned_data['rutube']
+        del cleaned_data["youtube"]
+        del cleaned_data["rutube"]
 
         return cleaned_data
 
