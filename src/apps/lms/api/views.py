@@ -19,6 +19,7 @@ class LessonListView(DisablePaginationWithQueryParamMixin, ListAPIView):
     serializer_class = LessonForUserSerializer
     permission_classes = [IsAuthenticated]
     filterset_class = LessonFilterSet
+    queryset = Lesson.objects.none()  # needed for swaggeer
 
     def get_queryset(self) -> "LessonQuerySet":
         queryset = Lesson.objects.for_viewset()
@@ -46,6 +47,7 @@ class ModuleListView(DisablePaginationWithQueryParamMixin, ListAPIView):
     serializer_class = ModuleSerializer
     permission_classes = [IsAuthenticated]
     filterset_class = ModuleFilterSet
+    queryset = Module.objects.none()  # needed for swagger
 
     def get_queryset(self) -> "ModuleQuerySet":
         queryset = Module.objects.for_viewset()

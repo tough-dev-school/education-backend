@@ -14,6 +14,7 @@ class PurchasedCoursesView(DisablePaginationWithQueryParamMixin, ListAPIView):
     serializer_class = CourseSerializer
     permission_classes = [IsAuthenticated]
     request: AuthenticatedRequest
+    queryset = Course.objects.none()  # needed for swagger
 
     def get_queryset(self) -> QuerySet[Course]:
         queryset = Course.objects.for_lms()

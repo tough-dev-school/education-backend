@@ -84,7 +84,7 @@ class ModuleSerializer(serializers.ModelSerializer):
         ]
 
 
-class CourseSerializer(serializers.ModelSerializer):
+class LMSCourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = [
@@ -100,7 +100,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
 class BreadcrumbsSerializer(serializers.ModelSerializer):
     module = ModuleSerializer()
-    course = CourseSerializer(source="module.course")
+    course = LMSCourseSerializer(source="module.course")
     lesson = serializers.SerializerMethodField()
 
     class Meta:
