@@ -4,7 +4,6 @@ from rest_framework.permissions import IsAuthenticated
 
 from apps.products.models import Course
 from apps.studying.api.serializers import CourseSerializer
-from apps.studying.models import Study
 from core.api.mixins import DisablePaginationWithQueryParamMixin
 from core.views import AuthenticatedRequest
 
@@ -15,11 +14,11 @@ class PurchasedCoursesView(DisablePaginationWithQueryParamMixin, ListAPIView):
     serializer_class = CourseSerializer
     permission_classes = [IsAuthenticated]
     request: AuthenticatedRequest
+    queryset = Course.objects.none()  # needed for swagger
 
     def get_queryset(self) -> QuerySet[Course]:
+        queryset = Course.objects.for_lms()
         if self.request.user.has_perm("studying.purchased_all_courses"):
-            return Course.objects.for_lms().all()
+            return queryset.all()
 
-        return Course.objects.for_lms().filter(
-            id__in=Study.objects.filter(student=self.request.user).values("course"),
-        )
+        return queryset.purchased_by(self.request.user)

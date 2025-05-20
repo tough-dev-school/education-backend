@@ -32,6 +32,23 @@ def test_markdown(api, question):
     assert "<em>should be rendered" in got["text"]
 
 
+def test_empty_breadcrumbs(api, question):
+    got = api.get(f"/api/v2/homework/questions/{question.slug}/")
+
+    assert got["breadcrumbs"] is None
+
+
+def test_breadcrumbs(api, question, factory):
+    module = factory.module(course=question.courses.first())
+    lesson = factory.lesson(module=module, question=question)
+
+    got = api.get(f"/api/v2/homework/questions/{question.slug}/")
+
+    assert got["breadcrumbs"]["lesson"]["id"] == lesson.pk
+    assert got["breadcrumbs"]["module"]["id"] == module.pk
+    assert got["breadcrumbs"]["course"]["id"] == module.course_id
+
+
 def test_403_for_not_purchased_users(api, question, purchase):
     purchase.refund(purchase.price)
 

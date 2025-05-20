@@ -64,7 +64,10 @@ class MaterialView(AuthenticatedAPIView):
 class LegacyNotionMaterialView(AuthenticatedAPIView):
     """Legacy API View"""
 
+    serializer_class = NotionPageSerializer()
+
     def get(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
+        """[DEPRECATED] Fetch notion materials"""
         material = self.get_material()
 
         if material is None:
