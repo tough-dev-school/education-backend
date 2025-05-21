@@ -1,12 +1,13 @@
 from typing import Literal
 
-from drf_spectacular.utils import extend_schema_field, inline_serializer
+from drf_spectacular.utils import OpenApiExample, extend_schema_field, extend_schema_serializer, inline_serializer
 from rest_framework import serializers
 
 from apps.homework.api.serializers import QuestionSerializer
 from apps.homework.models import Question
 from apps.lms.models import Call, Course, Lesson, Module
 from apps.notion.models import Material as NotionMaterial
+from core.serializers import MarkdownField
 
 
 class NotionMaterialSerializer(serializers.ModelSerializer):
@@ -43,7 +44,7 @@ class CallSerializer(serializers.ModelSerializer):
                 "src": serializers.URLField(),
             },
             many=True,
-        )
+        ),
     )
     def get_video(self, call: Call) -> list[dict]:
         videos = []
@@ -130,12 +131,29 @@ class LessonForUserSerializer(serializers.ModelSerializer):
             }
 
 
+@extend_schema_serializer(
+    examples=[
+        OpenApiExample(
+            name="Markdown in descrpition",
+            value={
+                "id": 100500,
+                "name": "Первая неделя",
+                "description": "Cамая важная неделя",
+                "text": "<p><strong>Первая</strong> неделя — <em>самая важная неделя</em></p>",
+            },
+        ),
+    ]
+)
 class ModuleSerializer(serializers.ModelSerializer):
+    text = MarkdownField()
+
     class Meta:
         model = Module
         fields = [
             "id",
             "name",
+            "description",
+            "text",
         ]
 
 

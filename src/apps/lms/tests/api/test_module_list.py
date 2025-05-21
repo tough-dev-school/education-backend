@@ -3,12 +3,21 @@ import pytest
 pytestmark = [pytest.mark.django_db]
 
 
-def test_ok(api, course, module):
+def test_fields(api, course, module):
     got = api.get(f"/api/v2/lms/modules/?course={course.pk}")
 
     assert len(got["results"]) == 1
     assert got["results"][0]["id"] == module.id
-    assert got["results"][0]["name"] == module.name
+    assert got["results"][0]["name"] == "Первая неделя"
+    assert got["results"][0]["description"] == "Самая важная неделя"
+
+
+def test_markdown_in_text(api, course, module):
+    module.update(text="*should be rendered*")
+
+    got = api.get(f"/api/v2/lms/modules/?course={course.pk}")
+
+    assert "<em>should be rendered</em>" in got["results"][0]["text"]
 
 
 @pytest.mark.usefixtures("_no_purchase")

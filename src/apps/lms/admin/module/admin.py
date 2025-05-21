@@ -14,6 +14,8 @@ class ModuleAdmin(SortableAdminBase, ModelAdmin):
     fields = [
         "name",
         "course",
+        "description",
+        "text",
     ]
     readonly_fields = [
         "lesson_count",
