@@ -18,13 +18,50 @@ class NotionMaterialSerializer(serializers.ModelSerializer):
         ]
 
 
-class CallSerializr(serializers.ModelSerializer):
+class CallSerializer(serializers.ModelSerializer):
+    video = serializers.SerializerMethodField()
+
     class Meta:
         model = Call
         fields = [
             "name",
             "url",
+            "video",
         ]
+
+    @extend_schema_field(
+        field=inline_serializer(
+            name="VideoProviderSerializer",
+            fields={
+                "provider": serializers.CharField(),
+                "embed": serializers.URLField(),
+                "src": serializers.URLField(),
+            },
+            many=True,
+        )
+    )
+    def get_video(self, call: Call) -> list[dict]:
+        videos = []
+
+        if call.youtube_id:
+            videos.append(
+                {
+                    "provider": "youtube",
+                    "embed": call.get_youtube_embed_src(),
+                    "src": call.get_youtube_url(),
+                }
+            )
+
+        if call.rutube_id:
+            videos.append(
+                {
+                    "provider": "rutube",
+                    "embed": call.get_rutube_embed_src(),
+                    "src": call.get_rutube_url(),
+                }
+            )
+
+        return videos
 
 
 class HomeworkSerializer(serializers.ModelSerializer):
@@ -50,7 +87,7 @@ class LessonForUserSerializer(serializers.ModelSerializer):
     """Serialize lesson for the user, lesson should be annotated with crosschecks stats"""
 
     material = NotionMaterialSerializer(required=False)
-    call = CallSerializr(required=False)
+    call = CallSerializer(required=False)
     homework = serializers.SerializerMethodField()
 
     class Meta:
