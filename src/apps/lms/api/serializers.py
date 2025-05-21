@@ -1,3 +1,5 @@
+from typing import Literal
+
 from drf_spectacular.utils import extend_schema_field, inline_serializer
 from rest_framework import serializers
 
@@ -20,6 +22,7 @@ class NotionMaterialSerializer(serializers.ModelSerializer):
 
 class CallSerializer(serializers.ModelSerializer):
     video = serializers.SerializerMethodField()
+    recommended_video_provider = serializers.SerializerMethodField()
 
     class Meta:
         model = Call
@@ -27,6 +30,7 @@ class CallSerializer(serializers.ModelSerializer):
             "name",
             "url",
             "video",
+            "recommended_video_provider",
         ]
 
     @extend_schema_field(
@@ -62,6 +66,19 @@ class CallSerializer(serializers.ModelSerializer):
             )
 
         return videos
+
+    def get_recommended_video_provider(self, call: Call) -> Literal["youtube", "rutube"] | None:
+        request = self.context["request"]
+        if request is not None and request.country_code == "RU" and call.rutube_id is not None:
+            return "rutube"
+
+        if call.youtube_id is None and call.rutube_id is not None:
+            return "rutube"
+
+        if call.youtube_id is not None:
+            return "youtube"
+
+        return None
 
 
 class HomeworkSerializer(serializers.ModelSerializer):

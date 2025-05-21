@@ -8,6 +8,21 @@ def call(mixer):
     return mixer.blend("lms.Call", name="Обязательный созвон", url="https://skype.icq")
 
 
+@pytest.fixture
+def _youtube_video(call):
+    call.update(
+        youtube_id="B3EE",
+    )
+
+
+@pytest.fixture
+def _rutube_video(call):
+    call.update(
+        rutube_id="D4FF",
+        rutube_access_key="KFF",
+    )
+
+
 @pytest.fixture(autouse=True)
 def lesson(lesson, call):
     lesson.update(call=call)
@@ -37,13 +52,8 @@ def test_empty_video(api, module):
     assert got["results"][0]["call"]["video"] == []
 
 
-def test_both_videos(api, module, call):
-    call.update(
-        youtube_id="B3EE",
-        rutube_id="D4FF",
-        rutube_access_key="KFF",
-    )
-
+@pytest.mark.usefixtures("_youtube_video", "_rutube_video")
+def test_both_videos(api, module):
     got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")["results"][0]["call"]["video"]
 
     assert got[0]["provider"] == "youtube"
@@ -59,11 +69,8 @@ def test_both_videos(api, module, call):
     assert "KFF" in got[1]["embed"], "rutube access key"
 
 
-def test_youtube_video(api, module, call):
-    call.update(
-        youtube_id="B3EE",
-    )
-
+@pytest.mark.usefixtures("_youtube_video")
+def test_youtube_video(api, module):
     got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")["results"][0]["call"]["video"]
 
     assert len(got) == 1
@@ -72,12 +79,8 @@ def test_youtube_video(api, module, call):
     assert "B3EE" in got[0]["embed"], "youtube embed"
 
 
-def test_rutube_video(api, module, call):
-    call.update(
-        rutube_id="D4FF",
-        rutube_access_key="KFF",
-    )
-
+@pytest.mark.usefixtures("_rutube_video")
+def test_rutube_video(api, module):
     got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")["results"][0]["call"]["video"]
 
     assert len(got) == 1
@@ -86,3 +89,48 @@ def test_rutube_video(api, module, call):
     assert "D4FF" in got[0]["embed"], "rutube embed"
     assert "KFF" in got[0]["src"], "rutube access key"
     assert "KFF" in got[0]["embed"], "rutube access key"
+
+
+@pytest.mark.usefixtures("_youtube_video", "_rutube_video")
+def test_recommended_video_provider_by_default(api, module):
+    got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")["results"][0]["call"]
+
+    assert got["recommended_video_provider"] == "youtube"
+
+
+@pytest.mark.usefixtures("_rutube_video")
+def test_rutube_only(api, module):
+    got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")["results"][0]["call"]
+
+    assert got["recommended_video_provider"] == "rutube"
+
+
+@pytest.mark.parametrize(
+    ("country", "expected_provider"),
+    [
+        ("RU", "rutube"),
+        ("PL", "youtube"),
+    ],
+)
+@pytest.mark.usefixtures("_youtube_video", "_rutube_video")
+def test_country_based_rewriting(api, module, country, expected_provider):
+    got = api.get(
+        f"/api/v2/lms/lessons/?module={module.pk}",
+        headers={
+            "cf-ipcountry": country,
+        },
+    )["results"][0]["call"]
+
+    assert got["recommended_video_provider"] == expected_provider
+
+
+@pytest.mark.usefixtures("_youtube_video")
+def test_youtube_only(api, module):
+    got = api.get(
+        f"/api/v2/lms/lessons/?module={module.pk}",
+        headers={
+            "cf-ipcountry": "RU",
+        },
+    )["results"][0]["call"]
+
+    assert got["recommended_video_provider"] == "youtube"
