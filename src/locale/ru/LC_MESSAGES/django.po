@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-14 19:39+0300\n"
+"POT-Creation-Date: 2025-05-21 22:45+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -215,14 +215,14 @@ msgstr "В списке только не запущенные и не заар�
 #: apps/homework/admin/answer/admin.py:106
 #: apps/homework/admin/question/form.py:14 apps/lms/admin/lesson/admin.py:56
 #: apps/orders/models/order.py:60 apps/products/admin/filters.py:12
-#: apps/products/models/course.py:85 apps/studying/models.py:9
+#: apps/products/models/course.py:90 apps/studying/models.py:9
 msgid "Course"
 msgstr "Курс"
 
 #: apps/chains/models/chain.py:32 apps/chains/models/message.py:32
 #: apps/homework/models/question.py:22 apps/lms/admin/lesson/admin.py:78
 #: apps/lms/admin/lesson/inline.py:28 apps/lms/admin/lms_course/admin.py:17
-#: apps/lms/admin/module/inline.py:23 apps/lms/models/call.py:8
+#: apps/lms/admin/module/inline.py:23 apps/lms/models/call.py:9
 #: apps/products/admin/course.py:18
 msgid "Name"
 msgstr "Название"
@@ -374,7 +374,7 @@ msgid "Dispatch crosscheck"
 msgstr "Запустить p2p-проверку домашки"
 
 #: apps/homework/admin/question/form.py:15 apps/lms/admin/lesson/admin.py:60
-#: apps/lms/models/lesson.py:61 apps/lms/models/module.py:46
+#: apps/lms/models/lesson.py:77 apps/lms/models/module.py:44
 msgid "Module"
 msgstr "Модуль"
 
@@ -445,7 +445,7 @@ msgstr "Урок не найден"
 msgid "Change"
 msgstr "Изменить"
 
-#: apps/lms/admin/lesson/inline.py:51 apps/lms/models/lesson.py:64
+#: apps/lms/admin/lesson/inline.py:51 apps/lms/models/lesson.py:80
 msgctxt "lessons"
 msgid "Material"
 msgstr "Страница в ноушене"
@@ -458,43 +458,51 @@ msgstr "Ссылки"
 msgid "Module count"
 msgstr "Модули"
 
-#: apps/lms/admin/module/admin.py:41
+#: apps/lms/admin/module/admin.py:43
 msgid "Lesson count"
 msgstr "Уроки"
 
-#: apps/lms/models/call.py:9
+#: apps/lms/models/call.py:10
 msgid "URL"
 msgstr "Ссылка"
 
-#: apps/lms/models/call.py:12 apps/lms/models/lesson.py:70
+#: apps/lms/models/call.py:15
+#, fuzzy
+#| msgctxt "lms"
+#| msgid "Call"
+msgctxt "lms"
+msgid "Call date"
+msgstr "Созвон"
+
+#: apps/lms/models/call.py:18 apps/lms/models/lesson.py:86
 msgctxt "lms"
 msgid "Call"
 msgstr "Созвон"
 
-#: apps/lms/models/call.py:13
+#: apps/lms/models/call.py:19
 msgctxt "lms"
 msgid "Calls"
 msgstr "Созвоны"
 
-#: apps/lms/models/lesson.py:67
+#: apps/lms/models/lesson.py:83
 msgctxt "lms"
 msgid "Question"
 msgstr "Домашка"
 
-#: apps/lms/models/lesson.py:71 apps/lms/models/module.py:37
+#: apps/lms/models/lesson.py:87 apps/lms/models/module.py:35
 msgid "Hidden"
 msgstr "Скрыт"
 
-#: apps/lms/models/lesson.py:71 apps/lms/models/module.py:37
+#: apps/lms/models/lesson.py:87 apps/lms/models/module.py:35
 msgid "Users can't find such materials in the listing"
 msgstr "Студенты не видят"
 
-#: apps/lms/models/lesson.py:78
+#: apps/lms/models/lesson.py:94
 msgctxt "lms"
 msgid "Lesson"
 msgstr "Урок"
 
-#: apps/lms/models/lesson.py:79
+#: apps/lms/models/lesson.py:95
 msgctxt "lms"
 msgid "Lessons"
 msgstr "Уроки"
@@ -509,7 +517,15 @@ msgctxt "lms"
 msgid "Courses"
 msgstr "Курсы"
 
-#: apps/lms/models/module.py:47
+#: apps/lms/models/module.py:32
+msgid "Short description"
+msgstr "Подзаг"
+
+#: apps/lms/models/module.py:33
+msgid "Text"
+msgstr "Текст"
+
+#: apps/lms/models/module.py:45
 msgid "Modules"
 msgstr "Модули"
 
@@ -563,25 +579,13 @@ msgstr ""
 msgid "Notion"
 msgstr "ID страницы в ноушене"
 
-#: apps/notion/admin/video.py:13 apps/notion/models/video.py:9
-msgid "Title"
-msgstr "Название"
-
-#: apps/notion/admin/video.py:14 apps/notion/admin/video.py:65
+#: apps/notion/admin/video.py:26 core/admin/video.py:11
 msgid "Youtube"
 msgstr "Youtube"
 
-#: apps/notion/admin/video.py:14 apps/notion/admin/video.py:15
-msgid "Paste it from the address bar"
-msgstr "Скопируйте адрес из строки браузера"
-
-#: apps/notion/admin/video.py:15 apps/notion/admin/video.py:72
+#: apps/notion/admin/video.py:33 core/admin/video.py:12
 msgid "RuTube"
 msgstr "Rutube"
-
-#: apps/notion/admin/video.py:39
-msgid "This video is already in the database"
-msgstr "Это видео уже добавлено"
 
 #: apps/notion/models/asset.py:11
 msgid "Image size in bytes"
@@ -660,11 +664,15 @@ msgstr "ID страницы LMS"
 msgid "Destination page notion id"
 msgstr "ID страницы в ноушене"
 
-#: apps/notion/models/video.py:15
+#: apps/notion/models/video.py:10
+msgid "Title"
+msgstr "Название"
+
+#: apps/notion/models/video.py:16
 msgid "Notion video"
 msgstr "Видео"
 
-#: apps/notion/models/video.py:16
+#: apps/notion/models/video.py:17
 msgid "Notion videos"
 msgstr "Видео"
 
@@ -962,73 +970,73 @@ msgstr "Группа товаров (аналитика)"
 msgid "Bundles"
 msgstr "Наборы"
 
-#: apps/products/models/course.py:51
+#: apps/products/models/course.py:56
 msgid "Genitive name"
 msgstr "В родительном падеже"
 
-#: apps/products/models/course.py:54
+#: apps/products/models/course.py:59
 msgid "Welcome letter template id"
 msgstr "ID шаблона приветственного письма"
 
-#: apps/products/models/course.py:54
+#: apps/products/models/course.py:59
 msgid "Will be sent upon purchase if set"
 msgstr "Если задать — письмо будет уходить вместе с каждой покупкой"
 
-#: apps/products/models/course.py:56
+#: apps/products/models/course.py:61
 msgid "Display in LMS"
 msgstr "Показывать в LMS"
 
-#: apps/products/models/course.py:56
+#: apps/products/models/course.py:61
 msgid "If disabled will not be shown in LMS"
 msgstr "Если снять галочку, студенты не будут видеть курс в LMS"
 
-#: apps/products/models/course.py:60
+#: apps/products/models/course.py:65
 msgid "Disable all triggers"
 msgstr "Отключить триггерные письма"
 
-#: apps/products/models/course.py:63
+#: apps/products/models/course.py:68
 msgid "Confirmation template id"
 msgstr "ID шаблона для письма-подтверждения"
 
-#: apps/products/models/course.py:67
+#: apps/products/models/course.py:72
 msgid "If set user sill receive this message upon creating zero-priced order"
 msgstr "Уходит пользователю, если он берёт бесплатный курс"
 
-#: apps/products/models/course.py:69
+#: apps/products/models/course.py:74
 msgid "Confirmation success URL"
 msgstr "Ссылка после успешного подтверждения"
 
-#: apps/products/models/course.py:71
+#: apps/products/models/course.py:76
 msgid "Calendar URL (Google)"
 msgstr "Календарь (Google)"
 
-#: apps/products/models/course.py:72
+#: apps/products/models/course.py:77
 msgid "Calendar URL (iOS)"
 msgstr "Календарь (iOS)"
 
-#: apps/products/models/course.py:74
+#: apps/products/models/course.py:79
 msgid "Chat URL"
 msgstr "Чат"
 
-#: apps/products/models/course.py:77
+#: apps/products/models/course.py:82
 msgid "Cover image"
 msgstr "Обложка"
 
-#: apps/products/models/course.py:80
+#: apps/products/models/course.py:85
 msgid "The cover image of course"
 msgstr "Обложка курса"
 
-#: apps/products/models/course.py:86
+#: apps/products/models/course.py:91
 msgid "Courses"
 msgstr "Курсы"
 
-#: apps/products/models/course.py:95
+#: apps/products/models/course.py:100
 msgid "Both confirmation_template_id and confirmation_success_url must be set"
 msgstr ""
 "У курсов с подтверждением обязательно нужно устанавливать оба поля: и "
 "почтовый шаблон и ссылку для упешного подтверждения "
 
-#: apps/products/models/course.py:98
+#: apps/products/models/course.py:103
 msgid "Courses with confirmation should have zero price"
 msgstr ""
 "Курсы с подтверждением могут быть только бесплатными. Если пользователь "
@@ -1203,6 +1211,14 @@ msgstr "Да"
 #: core/admin/filters.py:26
 msgid "No"
 msgstr "Нет"
+
+#: core/admin/video.py:11 core/admin/video.py:12
+msgid "Paste it from the address bar"
+msgstr "Скопируйте адрес из строки браузера"
+
+#: core/admin/video.py:31
+msgid "This video is already in the database"
+msgstr "Это видео уже добавлено"
 
 #~ msgid "Lead count"
 #~ msgstr "Количество лидов"
