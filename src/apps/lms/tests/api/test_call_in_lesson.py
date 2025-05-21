@@ -5,7 +5,7 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def call(mixer):
-    return mixer.blend("lms.Call", name="Обязательный созвон", url="https://skype.icq")
+    return mixer.blend("lms.Call", name="Обязательный созвон", url="https://skype.icq", datetime="2032-12-01 15:30:44 +03:00")
 
 
 @pytest.fixture
@@ -38,12 +38,20 @@ def test_no_call(api, module, lesson):
     assert got["results"][0]["call"] is None
 
 
-def test_call(api, module, lesson):
+def test_fields(api, module, lesson):
     got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")
 
     assert got["results"][0]["id"] == lesson.id
     assert got["results"][0]["call"]["name"] == "Обязательный созвон"
     assert got["results"][0]["call"]["url"] == "https://skype.icq"
+    assert got["results"][0]["call"]["datetime"] == "2032-12-01T15:30:44+03:00"
+
+
+@pytest.mark.usefixtures("kamchatka_timezone")
+def test_timezone(api, module):
+    got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")
+
+    assert got["results"][0]["call"]["datetime"] == "2032-12-02T00:30:44+12:00"
 
 
 def test_empty_video(api, module):

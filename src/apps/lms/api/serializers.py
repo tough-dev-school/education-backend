@@ -30,6 +30,7 @@ class CallSerializer(serializers.ModelSerializer):
             "name",
             "url",
             "video",
+            "datetime",
             "recommended_video_provider",
         ]
 

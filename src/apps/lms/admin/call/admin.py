@@ -9,6 +9,7 @@ class CallForm(VideoForm):
         fields = (
             "name",
             "url",
+            "datetime",
             "youtube_id",
             "rutube_id",
             "rutube_access_key",
