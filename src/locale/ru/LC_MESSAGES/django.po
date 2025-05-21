@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-21 22:45+0300\n"
+"POT-Creation-Date: 2025-05-21 22:53+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -466,20 +466,21 @@ msgstr "Уроки"
 msgid "URL"
 msgstr "Ссылка"
 
-#: apps/lms/models/call.py:15
-#, fuzzy
-#| msgctxt "lms"
-#| msgid "Call"
+#: apps/lms/models/call.py:11
+msgid "Description"
+msgstr "Описание"
+
+#: apps/lms/models/call.py:16
 msgctxt "lms"
 msgid "Call date"
-msgstr "Созвон"
+msgstr "Дата"
 
-#: apps/lms/models/call.py:18 apps/lms/models/lesson.py:86
+#: apps/lms/models/call.py:19 apps/lms/models/lesson.py:86
 msgctxt "lms"
 msgid "Call"
 msgstr "Созвон"
 
-#: apps/lms/models/call.py:19
+#: apps/lms/models/call.py:20
 msgctxt "lms"
 msgid "Calls"
 msgstr "Созвоны"

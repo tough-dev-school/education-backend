@@ -5,7 +5,13 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def call(mixer):
-    return mixer.blend("lms.Call", name="Обязательный созвон", url="https://skype.icq", datetime="2032-12-01 15:30:44 +03:00")
+    return mixer.blend(
+        "lms.Call",
+        name="Обязательный созвон",
+        description="Не пропустите",
+        url="https://skype.icq",
+        datetime="2032-12-01 15:30:44 +03:00",
+    )
 
 
 @pytest.fixture
@@ -43,6 +49,7 @@ def test_fields(api, module, lesson):
 
     assert got["results"][0]["id"] == lesson.id
     assert got["results"][0]["call"]["name"] == "Обязательный созвон"
+    assert got["results"][0]["call"]["description"] == "Не пропустите"
     assert got["results"][0]["call"]["url"] == "https://skype.icq"
     assert got["results"][0]["call"]["datetime"] == "2032-12-01T15:30:44+03:00"
 

@@ -10,6 +10,7 @@ class CallForm(VideoForm):
             "name",
             "url",
             "datetime",
+            "description",
             "youtube_id",
             "rutube_id",
             "rutube_access_key",

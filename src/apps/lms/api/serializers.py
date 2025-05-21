@@ -29,6 +29,7 @@ class CallSerializer(serializers.ModelSerializer):
         model = Call
         fields = [
             "name",
+            "description",
             "url",
             "video",
             "datetime",
