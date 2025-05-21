@@ -142,20 +142,7 @@ def test_video_is_not_rewritten_for_russia(api, material, country, should_rewrit
         f"/api/v2/notion/materials/{material.page_id}/",
         headers={
             "cf-ipcountry": country,
-            "frkn": "1",
         },
     )
 
     assert ("rutube" in got["block-video"]["value"]["format"]["display_source"]) is should_rewrite
-
-
-@pytest.mark.usefixtures("_rutube_video")
-def test_rewrite_is_not_made_without_frkn_header(api, material):
-    """Remove this test after frontend update"""
-    got = api.get(
-        f"/api/v2/notion/materials/{material.page_id}/",
-        headers={
-            "cf-ipcountry": "RU",
-        },
-    )
-    assert "rutube" not in got["block-video"]["value"]["format"]["display_source"]

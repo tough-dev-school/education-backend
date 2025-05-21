@@ -1,10 +1,13 @@
-from drf_spectacular.utils import extend_schema_field, inline_serializer
+from typing import Literal
+
+from drf_spectacular.utils import OpenApiExample, extend_schema_field, extend_schema_serializer, inline_serializer
 from rest_framework import serializers
 
 from apps.homework.api.serializers import QuestionSerializer
 from apps.homework.models import Question
 from apps.lms.models import Call, Course, Lesson, Module
 from apps.notion.models import Material as NotionMaterial
+from core.serializers import MarkdownField
 
 
 class NotionMaterialSerializer(serializers.ModelSerializer):
@@ -18,13 +21,67 @@ class NotionMaterialSerializer(serializers.ModelSerializer):
         ]
 
 
-class CallSerializr(serializers.ModelSerializer):
+class CallSerializer(serializers.ModelSerializer):
+    video = serializers.SerializerMethodField()
+    recommended_video_provider = serializers.SerializerMethodField()
+
     class Meta:
         model = Call
         fields = [
             "name",
+            "description",
             "url",
+            "video",
+            "datetime",
+            "recommended_video_provider",
         ]
+
+    @extend_schema_field(
+        field=inline_serializer(
+            name="VideoProviderSerializer",
+            fields={
+                "provider": serializers.CharField(),
+                "embed": serializers.URLField(),
+                "src": serializers.URLField(),
+            },
+            many=True,
+        ),
+    )
+    def get_video(self, call: Call) -> list[dict]:
+        videos = []
+
+        if call.youtube_id:
+            videos.append(
+                {
+                    "provider": "youtube",
+                    "embed": call.get_youtube_embed_src(),
+                    "src": call.get_youtube_url(),
+                }
+            )
+
+        if call.rutube_id:
+            videos.append(
+                {
+                    "provider": "rutube",
+                    "embed": call.get_rutube_embed_src(),
+                    "src": call.get_rutube_url(),
+                }
+            )
+
+        return videos
+
+    def get_recommended_video_provider(self, call: Call) -> Literal["youtube", "rutube"] | None:
+        request = self.context["request"]
+        if request is not None and request.country_code == "RU" and call.rutube_id is not None:
+            return "rutube"
+
+        if call.youtube_id is None and call.rutube_id is not None:
+            return "rutube"
+
+        if call.youtube_id is not None:
+            return "youtube"
+
+        return None
 
 
 class HomeworkSerializer(serializers.ModelSerializer):
@@ -50,7 +107,7 @@ class LessonForUserSerializer(serializers.ModelSerializer):
     """Serialize lesson for the user, lesson should be annotated with crosschecks stats"""
 
     material = NotionMaterialSerializer(required=False)
-    call = CallSerializr(required=False)
+    call = CallSerializer(required=False)
     homework = serializers.SerializerMethodField()
 
     class Meta:
@@ -75,12 +132,29 @@ class LessonForUserSerializer(serializers.ModelSerializer):
             }
 
 
+@extend_schema_serializer(
+    examples=[
+        OpenApiExample(
+            name="Markdown in descrpition",
+            value={
+                "id": 100500,
+                "name": "Первая неделя",
+                "description": "Cамая важная неделя",
+                "text": "<p><strong>Первая</strong> неделя — <em>самая важная неделя</em></p>",
+            },
+        ),
+    ]
+)
 class ModuleSerializer(serializers.ModelSerializer):
+    text = MarkdownField()
+
     class Meta:
         model = Module
         fields = [
             "id",
             "name",
+            "description",
+            "text",
         ]
 
 

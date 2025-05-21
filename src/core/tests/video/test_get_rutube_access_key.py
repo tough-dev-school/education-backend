@@ -1,6 +1,6 @@
 import pytest
 
-from apps.notion.video import get_rutube_access_key
+from core.video import get_rutube_access_key
 
 
 @pytest.mark.parametrize(

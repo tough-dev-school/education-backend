@@ -15,9 +15,8 @@ def apply_our_adjustments(notion_block_data: BlockData) -> BlockData:
 
     request = get_request()
     if request is not None and request.country_code == "RU":
-        if "frkn" in request.headers:
-            adjusted = rewrite_video(adjusted)  # apply video adjustments for russian users
-            adjusted = rewrite_youtube_links(adjusted)
+        adjusted = rewrite_video(adjusted)  # apply video adjustments for russian users
+        adjusted = rewrite_youtube_links(adjusted)
 
     return rewrite_notion_so_assets(adjusted)  # rewrite remaining assets to go though notion.so so they would sign our request to their S3
 

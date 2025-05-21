@@ -21,7 +21,11 @@ def another_course(factory):
 
 @pytest.fixture
 def module(factory, course):
-    return factory.module(course=course)
+    return factory.module(
+        course=course,
+        name="Первая неделя",
+        description="Самая важная неделя",
+    )
 
 
 @pytest.fixture
