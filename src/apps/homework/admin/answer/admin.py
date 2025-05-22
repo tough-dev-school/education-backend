@@ -14,7 +14,7 @@ class AnswerAdmin(ModelAdmin):
     list_filter = [
         IsRootFilter,
         "question",
-        "question__courses",
+        "study__course",
     ]
     list_display = [
         "created",
@@ -51,7 +51,7 @@ class AnswerAdmin(ModelAdmin):
     ]
 
     def get_queryset(self, request: Request) -> QuerySet:  # type: ignore
-        return super().get_queryset(request).with_crosscheck_count().select_related("author", "question", "study", "study__course", "study__course__group")  # type: ignore
+        return super().get_queryset(request).with_crosscheck_count().select_related("author", "question", "study__course__group")  # type: ignore
 
     @admin.display(description=_("Course"))
     def course(self, obj: Answer) -> str:
@@ -99,7 +99,9 @@ class AnswerCrossCheckAdmin(ModelAdmin):
             super()
             .get_queryset(request)
             .select_related(
-                "answer", "answer__question", "answer__question", "answer__author", "answer__study", "answer__study__course", "answer__study__course__group"
+                "answer__question",
+                "answer__author",
+                "answer__study__course__group",
             )
         )
 
