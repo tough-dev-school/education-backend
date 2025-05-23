@@ -1,6 +1,9 @@
+from typing import Literal
+
 from dj_rest_auth import views as dj_rest_auth_views
 from django.conf import settings
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import OpenApiExample, extend_schema
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -47,6 +50,20 @@ class RequestPasswordLessToken(AnonymousAPIView):
 class ObtainJSONWebTokenViaPasswordlessToken(AnonymousAPIView):
     throttle_classes = [AuthAnonRateThrottle]
 
+    @extend_schema(
+        description="Exchange passwordless token to JWT",
+        responses={
+            201: dict[Literal["token"], str],
+        },
+        examples=[
+            OpenApiExample(
+                name="default",
+                value={
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+                },
+            ),
+        ],
+    )
     def get(self, request: Request, token: str) -> Response:
         passwordless_auth_token = get_object_or_404(PasswordlessAuthToken.objects.valid(), token=token)
 
@@ -62,6 +79,20 @@ class ObtainJSONWebTokenViaPasswordlessToken(AnonymousAPIView):
 class ObtainJSONWebTokenViaUserId(APIView):
     permission_classes = [SuperUserOnly]
 
+    @extend_schema(
+        description="Get token for given user_id. Superuser only!",
+        responses={
+            201: dict[Literal["token"], str],
+        },
+        examples=[
+            OpenApiExample(
+                name="default",
+                value={
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+                },
+            ),
+        ],
+    )
     def get(self, request: Request, user_id: str) -> Response:
         user = get_object_or_404(User, pk=user_id)
 
