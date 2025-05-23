@@ -13,7 +13,7 @@ class Call(TimestampedModel, VideoModelMixin):
     youtube_id = models.CharField(max_length=256, blank=True, null=True, db_index=True)
     rutube_id = models.CharField(max_length=256, blank=True, null=True, db_index=True)
     rutube_access_key = models.CharField(max_length=256, blank=True, null=True)
-    datetime = models.DateTimeField(verbose_name=pgettext_lazy("lms", "Call date"))
+    datetime = models.DateTimeField(verbose_name=pgettext_lazy("lms", "Call date"), blank=True, null=True)
 
     class Meta:
         verbose_name = pgettext_lazy("lms", "Call")
