@@ -8,7 +8,7 @@ from core.video import get_rutube_access_key, get_rutube_video_id, get_youtube_v
 
 
 class VideoForm(ModelForm):
-    youtube = forms.CharField(label=_("Youtube"), required=True, help_text=_("Paste it from the address bar"))
+    youtube = forms.CharField(label=_("Youtube"), required=False, help_text=_("Paste it from the address bar"))
     rutube = forms.CharField(label=_("RuTube"), required=False, help_text=_("Paste it from the address bar"))
 
     youtube_id = forms.CharField(widget=forms.HiddenInput(), required=False)
@@ -42,8 +42,11 @@ class VideoForm(ModelForm):
         cleaned_data["rutube_id"] = get_rutube_video_id(cleaned_data.get("rutube") or "")
         cleaned_data["rutube_access_key"] = get_rutube_access_key(cleaned_data.get("rutube") or "")
 
-        del cleaned_data["youtube"]
-        del cleaned_data["rutube"]
+        if "youtube" in cleaned_data:
+            del cleaned_data["youtube"]
+
+        if "rutube" in cleaned_data:
+            del cleaned_data["rutube"]
 
         return cleaned_data
 
