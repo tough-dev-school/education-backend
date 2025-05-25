@@ -3,9 +3,7 @@ from core.conf.environ import env
 ABSOLUTE_HOST = env("ABSOLUTE_HOST", cast=str, default="https://app.tough-dev.school")
 ALLOWED_HOSTS = ["*"]
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://app.tough-dev.school",
-]
+CSRF_USE_SESSIONS = True
 CORS_ALLOWED_ORIGINS = [
     "https://education.borshev.com",
     "https://tough-dev.school",
