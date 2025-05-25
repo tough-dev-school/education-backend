@@ -58,7 +58,7 @@ ENV NO_CACHE=On
 RUN ./manage.py compilemessages
 RUN ./manage.py collectstatic --noinput
 ENV NO_CACHE=Off
-ENV RELEASE=${RELEASE:unset}
+ENV RELEASE=${RELEASE:-unset}
 
 USER nobody
 
