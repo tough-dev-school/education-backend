@@ -1,4 +1,5 @@
 ARG PYTHON_VERSION=3.11
+ARG RELEASE=unset
 
 #
 # Compile custom uwsgi, cuz debian's one is weird
@@ -58,7 +59,7 @@ ENV NO_CACHE=On
 RUN ./manage.py compilemessages
 RUN ./manage.py collectstatic --noinput
 ENV NO_CACHE=Off
-ENV RELEASE=${RELEASE:-unset}
+ENV RELEASE=${RELEASE}
 
 USER nobody
 
