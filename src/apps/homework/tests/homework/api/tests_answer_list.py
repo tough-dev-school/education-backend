@@ -52,13 +52,12 @@ def test_has_descendants_is_true_if_answer_has_children(api, question, answer, a
     assert got[0]["has_descendants"] is True
 
 
-@pytest.mark.xfail
 def test_nplusone(api, question, answer, another_answer, django_assert_num_queries, mixer):
     for _ in range(15):
         mixer.blend("homework.Reaction", author=api.user, answer=answer)
         mixer.blend("homework.Reaction", author=api.user, answer=another_answer)
 
-    with django_assert_num_queries(8):
+    with django_assert_num_queries(7):
         api.get(f"/api/v2/homework/answers/?question={question.slug}")
 
 
