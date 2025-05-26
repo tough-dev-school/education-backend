@@ -2,7 +2,7 @@ manage = poetry run python src/manage.py
 SIMULTANEOUS_TEST_JOBS=4
 
 compilemessages:
-	$(manage) compilemessages
+	$(manage) compilemessages --ignore .venv
 
 fmt:
 	poetry run ruff format src
