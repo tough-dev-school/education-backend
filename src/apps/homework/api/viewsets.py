@@ -108,6 +108,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
 
     def limit_queryset_to_user(self, queryset: AnswerQuerySet) -> AnswerQuerySet:
         if self.action != "retrieve" and not self.request.user.has_perm("homework.see_all_answers"):
+            # Each user may access any answer knowing its slug
             return queryset.for_user(self.request.user)  # type: ignore
 
         return queryset
