@@ -2,8 +2,6 @@ import contextlib
 from collections.abc import Callable
 from typing import Any
 
-from django.contrib.auth.middleware import get_user
-from django.utils.functional import SimpleLazyObject
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.exceptions import APIException
 from rest_framework.request import Request
@@ -19,9 +17,10 @@ class UserMiddleware:
         self.get_response = get_response
 
     def __call__(self, request: Request) -> Any:
-        if not request.user.is_authenticated:
-            # try ours get_user(), if fails -- django's stock one
-            request.user = SimpleLazyObject(lambda: self.get_user(request) or get_user(request))  # type: ignore
+        if "/admin/" not in request.path:  # for non-admin django views we rewrite user as if it would be authenticated by DRF
+            user = self.get_user(request)
+            if user is not None:
+                request.user = user
 
         return self.get_response(request)
 
