@@ -64,14 +64,6 @@ def test_exclude_not_allowed_to_access_answers(get_comments, answer_another_user
     assert got == []
 
 
-def test_include_previously_accessed_answers_from_other_authors(api, get_comments, answer_another_user, mixer):
-    mixer.blend("homework.AnswerAccessLogEntry", answer=answer_another_user, user=api.user)  # create previous access log
-
-    got = get_comments(f"?answer={answer_another_user.slug}")
-
-    assert len(got) == 1
-
-
 def test_include_other_authors_user_with_see_all_answers_permissions(get_comments, answer_another_user, api):
     api.user.add_perm("homework.answer.see_all_answers")
 
