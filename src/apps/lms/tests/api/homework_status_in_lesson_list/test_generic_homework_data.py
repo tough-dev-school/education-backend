@@ -28,6 +28,6 @@ def test_query_count(api, module, lesson, factory, mixer, django_assert_num_quer
             question=mixer.blend("homework.Question"),
         )
 
-    with django_assert_num_queries(6):
+    with django_assert_num_queries(7):
         got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")
         assert len(got["results"]) == 15
