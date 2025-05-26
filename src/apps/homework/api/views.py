@@ -26,7 +26,12 @@ class AnswerCommentView(generics.ListAPIView):
     pagination_class = None
 
     def get_queryset(self) -> QuerySet[Answer]:
-        return super().get_queryset().root_only().allowed_for_user(self.request.user)  # type: ignore
+        queryset = super().get_queryset().root_only()  # type: ignore
+
+        if self.request.user.has_perm("homework.see_all_answers"):
+            return queryset
+
+        return queryset.for_user(self.request.user)
 
 
 class AnswerImageUploadView(generics.CreateAPIView):

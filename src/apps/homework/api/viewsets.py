@@ -24,7 +24,7 @@ from apps.homework.api.serializers import (
     ReactionCreateSerializer,
     ReactionDetailedSerializer,
 )
-from apps.homework.models import Answer, AnswerAccessLogEntry
+from apps.homework.models import Answer
 from apps.homework.models.answer import AnswerQuerySet
 from apps.homework.models.reaction import Reaction
 from apps.homework.services import ReactionCreator
@@ -107,8 +107,8 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
         return queryset.with_children_count().order_by("created").prefetch_reactions()
 
     def limit_queryset_to_user(self, queryset: AnswerQuerySet) -> AnswerQuerySet:
-        if self.action != "retrieve":
-            return queryset.allowed_for_user(self.request.user)  # type: ignore
+        if self.action != "retrieve" and not self.request.user.has_perm("homework.see_all_answers"):
+            return queryset.for_user(self.request.user)  # type: ignore
 
         return queryset
 
@@ -117,22 +117,6 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
             return queryset.root_only()
 
         return queryset
-
-    def get_object(self) -> Answer:
-        """Write a log entry for each answer from another user that is retrieved"""
-        instance = super().get_object()
-
-        self.write_log_entry(answer=instance)
-
-        return instance
-
-    def write_log_entry(self, answer: Answer) -> None:
-        if not self.request.user.has_perm("homework.see_all_answers"):
-            if answer.author != self.request.user:
-                AnswerAccessLogEntry.objects.get_or_create(
-                    user=self.request.user,
-                    answer=answer,
-                )
 
 
 class ReactionViewSet(CreateDeleteAppViewSet):
