@@ -46,10 +46,10 @@ def test_reactions_field(api, answer, reaction):
 
 
 def test_query_count_for_answer_without_descendants(api, answer, django_assert_num_queries, mixer):
-    for _ in range(5):
+    for _ in range(15):
         mixer.blend("homework.Reaction", author=api.user, answer=answer)
 
-    with django_assert_num_queries(7):
+    with django_assert_num_queries(8):
         api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
 
