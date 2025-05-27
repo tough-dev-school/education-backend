@@ -4,7 +4,6 @@ from drf_spectacular.utils import OpenApiExample, extend_schema_field, extend_sc
 from rest_framework import serializers
 
 from apps.homework.api.serializers import QuestionSerializer
-from apps.homework.models import Question
 from apps.lms.models import Call, Course, Lesson, Module
 from apps.notion.models import Material as NotionMaterial
 from core.serializers import MarkdownField
@@ -84,25 +83,6 @@ class CallSerializer(serializers.ModelSerializer):
         return None
 
 
-class HomeworkSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Question
-        fields = [
-            "is_sent",
-        ]
-
-
-class CrosscheckStatsSerializer(serializers.Serializer):  # for docs only
-    total = serializers.IntegerField()
-    checked = serializers.IntegerField()
-
-
-class HomeworkStatsSerializer(serializers.Serializer):  # for docs only
-    is_sent = serializers.BooleanField()
-    crosschecks = CrosscheckStatsSerializer(required=False)
-    question = QuestionSerializer()
-
-
 class LessonForUserSerializer(serializers.ModelSerializer):
     """Serialize lesson for the user, lesson should be annotated with crosschecks stats"""
 
@@ -119,7 +99,23 @@ class LessonForUserSerializer(serializers.ModelSerializer):
             "call",
         ]
 
-    @extend_schema_field(field=HomeworkStatsSerializer)
+    @extend_schema_field(
+        field=inline_serializer(
+            name="HomeworkStatsSerializer",
+            fields={
+                "is_sent": serializers.BooleanField(),
+                "crosschecks": inline_serializer(
+                    name="CrosscheckStatsSerializer",
+                    fields={
+                        "total": serializers.IntegerField(),
+                        "checked": serializers.IntegerField(),
+                    },
+                    required=False,
+                ),
+                "question": QuestionSerializer(),
+            },
+        )
+    )
     def get_homework(self, lesson: Lesson) -> dict | None:
         if lesson.question is not None:
             return {
