@@ -1,5 +1,4 @@
 ARG PYTHON_VERSION=3.11
-ARG RELEASE=unset
 
 #
 # Compile custom uwsgi, cuz debian's one is weird
@@ -31,6 +30,7 @@ RUN poetry export --format=requirements.txt --without-hashes > requirements.txt
 # Base image with django dependecines
 #
 FROM python:${PYTHON_VERSION}-slim-bookworm AS base
+ARG RELEASE=unset
 LABEL maintainer="fedor@borshev.com"
 
 LABEL com.datadoghq.ad.logs='[{"source": "uwsgi", "service": "django"}]'
@@ -59,10 +59,11 @@ ENV NO_CACHE=On
 RUN ./manage.py compilemessages
 RUN ./manage.py collectstatic --noinput
 ENV NO_CACHE=Off
-
 ENV RELEASE=$RELEASE
 
 USER nobody
+
+RUN echo built for ${release}
 
 #
 # Web worker image
