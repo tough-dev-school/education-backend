@@ -22,26 +22,13 @@ class LessonListView(DisablePaginationWithQueryParamMixin, ListAPIView):
     queryset = Lesson.objects.for_viewset()
 
     def get_queryset(self) -> "LessonQuerySet":
-        queryset = super().get_queryset().with_answer_ids(self.request.user)  # type: ignore
+        queryset = super().get_queryset()
 
-        if self.request.user.has_perm("studying.purchased_all_courses"):
-            # Adding fake data for the serializers
-            return queryset.with_fake_is_sent().with_fake_crosscheck_stats().with_fake_comment_count()
-
-        return (
-            queryset.for_user(
-                self.request.user,
-            )
-            .with_is_sent(
-                self.request.user,
-            )
-            .with_crosscheck_stats(
-                self.request.user,
-            )
-            .with_comment_count(
-                self.request.user,
-            )
-        )
+        if not self.request.user.has_perm("studying.purchased_all_courses"):
+            return queryset.with_annotations(self.request.user).for_user(self.request.user)
+        else:
+            # Adding fake data for the serializers if user may access all courses
+            return queryset.with_fake_annotations()
 
 
 class ModuleListView(DisablePaginationWithQueryParamMixin, ListAPIView):
