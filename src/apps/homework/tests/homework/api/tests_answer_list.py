@@ -44,12 +44,20 @@ def test_has_reaction_fields_if_there_is_reaction(api, question, reaction):
     assert reactions[0]["author"]["last_name"] == reaction.author.last_name
 
 
-def test_has_descendants_is_true_if_answer_has_children(api, question, answer, another_answer):
-    another_answer.update(parent=answer)
+def test_has_descendants_is_true_if_answer_has_children(api, question, answer, another_answer, another_user):
+    another_answer.update(parent=answer, author=another_user)
 
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 
     assert got[0]["has_descendants"] is True
+
+
+def test_has_descendants_is_false_if_answer_has_only_children_that_belong_to_its_author(api, question, answer, another_answer):
+    another_answer.update(parent=answer, author=answer.author)
+
+    got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
+
+    assert got[0]["has_descendants"] is False
 
 
 def test_nplusone(api, question, answer, another_answer, django_assert_num_queries, mixer):

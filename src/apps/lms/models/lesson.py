@@ -1,5 +1,6 @@
 from django.apps import apps
-from django.db.models import Exists, Index, OuterRef, QuerySet, Value
+from django.contrib.postgres.aggregates import ArrayAgg
+from django.db.models import Exists, Index, OuterRef, QuerySet, Sum, Value
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
@@ -20,6 +21,24 @@ class LessonQuerySet(QuerySet):
             .order_by("position")
         )
 
+    def with_annotations(self, user: User) -> "LessonQuerySet":
+        return (
+            self.with_answer_ids(
+                user,
+            )
+            .with_comment_count(user)
+            .with_is_sent(user)
+            .with_crosscheck_stats(user)
+        )
+
+    def with_fake_annotations(self) -> "LessonQuerySet":
+        return self.annotate(
+            is_sent=Value(False),
+            crosschecks_total=Value(0),
+            crosschecks_checked=Value(0),
+            comment_count=Value(0),
+        )
+
     def for_user(self, user: User) -> "LessonQuerySet":
         purchased_courses = apps.get_model("studying.Study").objects.filter(student=user).values_list("course_id", flat=True)
         return self.filter(
@@ -35,6 +54,36 @@ class LessonQuerySet(QuerySet):
             "call",
         )
 
+    def with_answer_ids(self, user: User) -> "LessonQuerySet":
+        Answer = apps.get_model("homework.Answer")
+        user_answers = (
+            Answer.objects.root_only()
+            .filter(
+                question=OuterRef("question"),
+                author=user,
+            )
+            .values("id")
+        )
+
+        return self.annotate(
+            answer_ids=ArrayAgg(user_answers),
+        )
+
+    def with_comment_count(self, user: User) -> "LessonQuerySet":
+        Answer = apps.get_model("homework.Answer")
+        user_answers = (
+            Answer.objects.root_only()
+            .filter(
+                question=OuterRef("question"),
+                author=user,
+            )
+            .with_children_count()
+        )
+
+        return self.annotate(
+            comment_count=Sum(user_answers.values("children_count")),
+        )
+
     def with_is_sent(self, user: User) -> "LessonQuerySet":
         Answer = apps.get_model("homework.Answer")
         user_answers = Answer.objects.root_only().filter(
@@ -43,11 +92,6 @@ class LessonQuerySet(QuerySet):
         )
 
         return self.annotate(is_sent=Exists(user_answers))
-
-    def with_fake_is_sent(self) -> "LessonQuerySet":
-        """The same as above but with fake data"""
-
-        return self.annotate(is_sent=Value(False))
 
     def with_crosscheck_stats(self, user: User) -> "LessonQuerySet":
         AnswerCrossCheck = apps.get_model("homework.AnswerCrossCheck")
@@ -62,12 +106,6 @@ class LessonQuerySet(QuerySet):
         return self.annotate(
             crosschecks_total=SubqueryCount(total),
             crosschecks_checked=SubqueryCount(checked),
-        )
-
-    def with_fake_crosscheck_stats(self) -> "LessonQuerySet":
-        return self.annotate(
-            crosschecks_total=Value(0),
-            crosschecks_checked=Value(0),
         )
 
 
@@ -105,3 +143,15 @@ class Lesson(TimestampedModel):
             return str(self.call)
 
         return "—"
+
+    def get_allowed_comment_count(self, user: User) -> int:
+        if not hasattr(self, "answer_ids"):
+            raise RuntimeError("Please annoatte with .with_answer_ids() method")
+
+        count = 0
+        for answer in apps.get_model("homework.Answer").objects.filter(pk__in=self.answer_ids):
+            assert answer.is_root
+            assert answer.is_author_of_root_answer(user)
+            count += answer.get_limited_comments_for_user_by_crosschecks(user).count()
+
+        return count

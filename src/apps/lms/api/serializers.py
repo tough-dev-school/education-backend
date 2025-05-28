@@ -112,6 +112,13 @@ class LessonForUserSerializer(serializers.ModelSerializer):
                     },
                     required=False,
                 ),
+                "comments": inline_serializer(
+                    name="CommentStatsSerializer",
+                    fields={
+                        "comments": serializers.IntegerField(),
+                        "hidden_before_crosscheck_completed": serializers.IntegerField(),
+                    },
+                ),
                 "question": QuestionSerializer(),
             },
         )
@@ -125,7 +132,18 @@ class LessonForUserSerializer(serializers.ModelSerializer):
                     "total": lesson.crosschecks_total,
                     "checked": lesson.crosschecks_checked,
                 },
+                "comments": self.get_comment_stats(lesson),
             }
+
+    def get_comment_stats(self, lesson: Lesson) -> dict:
+        if not lesson.is_sent:
+            return {}
+
+        request = self.context["request"]
+        return {
+            "comments": lesson.comment_count,
+            "hidden_before_crosscheck_completed": lesson.comment_count - lesson.get_allowed_comment_count(request.user),  # hope lesson is annotated
+        }
 
 
 @extend_schema_serializer(

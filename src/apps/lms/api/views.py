@@ -19,26 +19,16 @@ class LessonListView(DisablePaginationWithQueryParamMixin, ListAPIView):
     serializer_class = LessonForUserSerializer
     permission_classes = [IsAuthenticated]
     filterset_class = LessonFilterSet
-    queryset = Lesson.objects.none()  # needed for swaggeer
+    queryset = Lesson.objects.for_viewset()
 
     def get_queryset(self) -> "LessonQuerySet":
-        queryset = Lesson.objects.for_viewset()
+        queryset = super().get_queryset()
 
-        if self.request.user.has_perm("studying.purchased_all_courses"):
-            # Adding fake data for the serializers
-            return queryset.with_fake_is_sent().with_fake_crosscheck_stats()
-
-        return (
-            queryset.for_user(
-                self.request.user,  # type: ignore
-            )
-            .with_is_sent(
-                self.request.user,  # type: ignore
-            )
-            .with_crosscheck_stats(
-                self.request.user,  # type: ignore
-            )
-        )
+        if not self.request.user.has_perm("studying.purchased_all_courses"):
+            return queryset.with_annotations(self.request.user).for_user(self.request.user)  # type: ignore
+        else:
+            # Adding fake data for the serializers if user may access all courses
+            return queryset.with_fake_annotations()  # type: ignore
 
 
 class ModuleListView(DisablePaginationWithQueryParamMixin, ListAPIView):
