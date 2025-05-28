@@ -1,5 +1,6 @@
 from django.apps import apps
-from django.db.models import Exists, Index, OuterRef, QuerySet, Value
+from django.contrib.postgres.aggregates import ArrayAgg
+from django.db.models import Exists, Index, OuterRef, QuerySet, Sum, Value
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
@@ -34,6 +35,39 @@ class LessonQuerySet(QuerySet):
             "material",
             "call",
         )
+
+    def with_answer_ids(self, user: User) -> "LessonQuerySet":
+        Answer = apps.get_model("homework.Answer")
+        user_answers = (
+            Answer.objects.root_only()
+            .filter(
+                question=OuterRef("question"),
+                author=user,
+            )
+            .values("id")
+        )
+
+        return self.annotate(
+            answer_ids=ArrayAgg(user_answers),
+        )
+
+    def with_comment_count(self, user: User) -> "LessonQuerySet":
+        Answer = apps.get_model("homework.Answer")
+        user_answers = (
+            Answer.objects.root_only()
+            .filter(
+                question=OuterRef("question"),
+                author=user,
+            )
+            .with_children_count()
+        )
+
+        return self.annotate(
+            comment_count=Sum(user_answers.values("children_count")),
+        )
+
+    def with_fake_comment_count(self) -> "LessonQuerySet":
+        return self.annotate(comment_count=Value(0))
 
     def with_is_sent(self, user: User) -> "LessonQuerySet":
         Answer = apps.get_model("homework.Answer")
@@ -105,3 +139,15 @@ class Lesson(TimestampedModel):
             return str(self.call)
 
         return "—"
+
+    def get_allowed_comment_count(self, user: User) -> int:
+        if not hasattr(self, "answer_ids"):
+            raise RuntimeError("Please annoatte with .with_answer_ids() method")
+
+        count = 0
+        for answer in apps.get_model("homework.Answer").objects.filter(pk__in=self.answer_ids):
+            assert answer.is_root
+            assert answer.is_author_of_root_answer(user)
+            count += answer.get_limited_comments_for_user_by_crosschecks(user).count()
+
+        return count
