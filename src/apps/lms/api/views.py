@@ -25,10 +25,10 @@ class LessonListView(DisablePaginationWithQueryParamMixin, ListAPIView):
         queryset = super().get_queryset()
 
         if not self.request.user.has_perm("studying.purchased_all_courses"):
-            return queryset.with_annotations(self.request.user).for_user(self.request.user)
+            return queryset.with_annotations(self.request.user).for_user(self.request.user)  # type: ignore
         else:
             # Adding fake data for the serializers if user may access all courses
-            return queryset.with_fake_annotations()
+            return queryset.with_fake_annotations()  # type: ignore
 
 
 class ModuleListView(DisablePaginationWithQueryParamMixin, ListAPIView):
