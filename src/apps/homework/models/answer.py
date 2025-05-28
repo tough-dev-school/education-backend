@@ -3,7 +3,7 @@ import uuid
 from urllib.parse import urljoin, urlparse
 
 from django.conf import settings
-from django.db.models import Count, Prefetch
+from django.db.models import Count, Prefetch, Q
 from django.utils.translation import gettext_lazy as _
 from tree_queries.models import TreeNode
 from tree_queries.query import TreeQuerySet
@@ -34,7 +34,7 @@ class AnswerQuerySet(TreeQuerySet):
         return self.filter(parent__isnull=True)
 
     def with_children_count(self) -> "AnswerQuerySet":
-        return self.annotate(children_count=Count("children"))
+        return self.annotate(children_count=Count("children", filter=~Q(children__author=models.F("author"))))
 
 
 class Answer(TestUtilsMixin, TreeNode):

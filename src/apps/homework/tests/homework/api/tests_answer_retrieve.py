@@ -26,12 +26,20 @@ def test_ok(api, answer, question):
     assert "src" in got
 
 
-def test_has_descendants_is_true_if_answer_has_children(api, answer, another_answer):
-    another_answer.update(parent=answer)
+def test_has_descendants_is_true_if_answer_has_children(api, answer, another_answer, another_user):
+    another_answer.update(parent=answer, author=another_user)
 
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
     assert got["has_descendants"] is True
+
+
+def test_has_descendants_is_false_if_answer_has_only_children_that_belong_to_its_author(api, answer, another_answer):
+    another_answer.update(parent=answer, author=answer.author)
+
+    got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
+
+    assert got["has_descendants"] is False
 
 
 def test_reactions_field(api, answer, reaction):
