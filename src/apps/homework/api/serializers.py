@@ -70,7 +70,7 @@ class QuestionDetailSerializer(serializers.ModelSerializer):
         return BreadcrumbsSerializer(lesson).data
 
 
-class AnswerDetailedSerializer(serializers.ModelSerializer):
+class AnswerSerializer(serializers.ModelSerializer):
     author = UserSafeSerializer()
     text = MarkdownField()
     src = serializers.CharField(source="text")
@@ -95,7 +95,7 @@ class AnswerDetailedSerializer(serializers.ModelSerializer):
         ]
 
 
-class AnswerTreeSerializer(AnswerDetailedSerializer):
+class AnswerTreeSerializer(AnswerSerializer):
     descendants = serializers.SerializerMethodField()
 
     class Meta:
@@ -176,8 +176,8 @@ class AnswerImageSerializer(serializers.ModelSerializer):
         ]
 
 
-class SimpleAnswerSerializer(serializers.ModelSerializer):
-    url = serializers.CharField(source="get_absolute_url")
+class AnswerSimpleSerializer(serializers.ModelSerializer):
+    url = serializers.URLField(source="get_absolute_url")
     author = UserSafeSerializer()
 
     class Meta:
@@ -186,7 +186,7 @@ class SimpleAnswerSerializer(serializers.ModelSerializer):
 
 
 class AnswerCrossCheckSerializer(serializers.ModelSerializer):
-    answer = SimpleAnswerSerializer()
+    answer = AnswerSimpleSerializer()
     is_checked = serializers.SerializerMethodField()
 
     class Meta:

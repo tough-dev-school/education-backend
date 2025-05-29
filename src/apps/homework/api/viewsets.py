@@ -19,7 +19,7 @@ from apps.homework.api.permissions import (
 )
 from apps.homework.api.serializers import (
     AnswerCreateSerializer,
-    AnswerDetailedSerializer,
+    AnswerSerializer,
     AnswerUpdateSerializer,
     ReactionCreateSerializer,
     ReactionDetailedSerializer,
@@ -50,7 +50,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     """Answer CRUD"""
 
     queryset = Answer.objects.for_viewset()
-    serializer_class = AnswerDetailedSerializer
+    serializer_class = AnswerSerializer
     serializer_action_classes = {
         "partial_update": AnswerCreateSerializer,
     }
@@ -65,7 +65,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     ]
     filterset_class = AnswerFilterSet
 
-    @extend_schema(request=AnswerCreateSerializer, responses=AnswerDetailedSerializer)
+    @extend_schema(request=AnswerCreateSerializer, responses=AnswerSerializer)
     def create(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         """Create an answer"""
         answer = AnswerCreator(
@@ -78,7 +78,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
         Serializer = self.get_serializer_class(action="retrieve")
         return Response(Serializer(answer).data, status=201)
 
-    @extend_schema(request=AnswerUpdateSerializer, responses=AnswerDetailedSerializer)
+    @extend_schema(request=AnswerUpdateSerializer, responses=AnswerSerializer)
     def update(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         """Update answer text"""
         if not kwargs.get("partial", False):
