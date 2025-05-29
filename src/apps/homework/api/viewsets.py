@@ -20,6 +20,7 @@ from apps.homework.api.permissions import (
 from apps.homework.api.serializers import (
     AnswerCreateSerializer,
     AnswerSerializer,
+    AnswerTreeSerializer,
     AnswerUpdateSerializer,
     ReactionCreateSerializer,
     ReactionDetailedSerializer,
@@ -53,6 +54,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     serializer_class = AnswerSerializer
     serializer_action_classes = {
         "partial_update": AnswerCreateSerializer,
+        "retrieve": AnswerTreeSerializer,
     }
 
     lookup_field = "slug"
@@ -65,7 +67,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     ]
     filterset_class = AnswerFilterSet
 
-    @extend_schema(request=AnswerCreateSerializer, responses=AnswerSerializer)
+    @extend_schema(request=AnswerCreateSerializer, responses=AnswerTreeSerializer)
     def create(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         """Create an answer"""
         answer = AnswerCreator(
@@ -76,9 +78,15 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
 
         answer = self.get_queryset().get(pk=answer.pk)  # augment answer with methods from .for_viewset() to display it properly
         Serializer = self.get_serializer_class(action="retrieve")
-        return Response(Serializer(answer).data, status=201)
+        return Response(
+            Serializer(
+                answer,
+                context=self.get_serializer_context(),
+            ).data,
+            status=201,
+        )
 
-    @extend_schema(request=AnswerUpdateSerializer, responses=AnswerSerializer)
+    @extend_schema(request=AnswerUpdateSerializer, responses=AnswerTreeSerializer)
     def update(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         """Update answer text"""
         if not kwargs.get("partial", False):
@@ -89,7 +97,10 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
         answer = self.get_object()
         answer.refresh_from_db()
         Serializer = self.get_serializer_class(action="retrieve")
-        response.data = Serializer(answer).data
+        response.data = Serializer(
+            answer,
+            context=self.get_serializer_context(),
+        ).data
 
         return response
 
