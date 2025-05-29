@@ -38,4 +38,3 @@ def test_second_level_descendant(api, answer, mixer, question):
 
     assert got["descendants"][0]["descendants"][0]["slug"] == str(second_evel_descendant.slug)
     assert got["descendants"][0]["descendants"][0]["has_descendants"] is False
-
