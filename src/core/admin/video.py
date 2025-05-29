@@ -22,23 +22,13 @@ class VideoForm(ModelForm):
             self.fields["youtube"].initial = self.instance.get_youtube_url()
             self.fields["rutube"].initial = self.instance.get_rutube_url() if self.instance.rutube_id else None
 
-    def get_youtube_id(self) -> str | None:
-        youtube_id = get_youtube_video_id(self.cleaned_data.get("youtube") or "")
-
-        if youtube_id:
-            videos_with_same_youtube_id = self.__class__.Meta.model.objects.exclude(id=self.instance.id).filter(youtube_id=youtube_id)  # type: ignore
-            if videos_with_same_youtube_id.exists():
-                self.add_error("youtube", _("This video is already in the database"))
-
-        return youtube_id
-
     def clean(self) -> dict[str, Any] | None:
         cleaned_data = super().clean()
 
         if cleaned_data is None:
             return None
 
-        cleaned_data["youtube_id"] = self.get_youtube_id()
+        cleaned_data["youtube_id"] = get_youtube_video_id(cleaned_data.get("youtube") or "")
         cleaned_data["rutube_id"] = get_rutube_video_id(cleaned_data.get("rutube") or "")
         cleaned_data["rutube_access_key"] = get_rutube_access_key(cleaned_data.get("rutube") or "")
 
