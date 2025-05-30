@@ -1,6 +1,6 @@
 from django.apps import apps
 from django.contrib.postgres.aggregates import ArrayAgg
-from django.db.models import Exists, Index, IntegerField, OuterRef, QuerySet, Sum, Value
+from django.db.models import Exists, Index, IntegerField, OuterRef, QuerySet, Value
 from django.db.models.expressions import RawSQL
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
