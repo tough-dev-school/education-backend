@@ -100,7 +100,11 @@ class AnswerSerializer(serializers.ModelSerializer):
         ]
 
     def get_descendants_queryset(self, answer: Answer) -> "AnswerQuerySet":
-        return answer.get_limited_comments_for_user_by_crosschecks(self.context["request"].user)
+        user = self.context["request"].user
+        if user.has_perm("homework.see_all_answers"):
+            return answer.get_comments()
+
+        return answer.get_limited_comments_for_user_by_crosschecks(user)
 
     def get_has_descendants(self, answer: Answer) -> bool:
         if answer.author_id == self.context["request"].user.id:

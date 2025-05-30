@@ -117,8 +117,11 @@ class Answer(TestUtilsMixin, TreeNode):
     def is_author_of_root_answer(self, user: "User") -> bool:
         return self.get_root_answer().author == user
 
+    def get_comments(self) -> "AnswerQuerySet":
+        return self.get_first_level_descendants().order_by("created")
+
     def get_limited_comments_for_user_by_crosschecks(self, user: "User") -> "AnswerQuerySet":
-        queryset = self.get_first_level_descendants().order_by("created")
+        queryset = self.get_comments()
 
         if not self.is_root or not self.is_author_of_root_answer(user):
             return queryset

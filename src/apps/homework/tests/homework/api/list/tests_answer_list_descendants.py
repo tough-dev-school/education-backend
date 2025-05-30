@@ -1,63 +1,65 @@
-from datetime import datetime, timezone
-
 import pytest
+from django.utils import timezone
 
 pytestmark = [
     pytest.mark.django_db,
 ]
 
 
-@pytest.fixture
-def user(api):
-    return api.user
+@pytest.fixture(autouse=True)
+def answer(mixer, api, question):
+    return mixer.blend("homework.Answer", author=api.user, question=question, parent=None)
 
 
-@pytest.fixture
-def crosscheck(mixer, answer, user):
-    return mixer.blend("homework.AnswerCrossCheck", answer=answer, checker=user)
+@pytest.mark.usefixtures("comments", "crosschecks")
+def test_no_comments_when_crosscheck_is_dispatched_but_user_did_not_perform_it(api, question):
+    got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
+
+    assert got[0]["has_descendants"] is False
 
 
-def test_question_is_required(api):
-    got = api.get("/api/v2/homework/crosschecks/", expected_status_code=400)
+@pytest.mark.usefixtures("comments")
+def test_users_without_crosschecks_see_all_descendandts(api, question, crosschecks, another_user):
+    crosschecks["to_perform"].update(checker=another_user)
 
-    assert "question" in got
+    got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 
-
-def test_as_anonymous(anon):
-    anon.get("/api/v2/homework/crosschecks/?question=slug", expected_status_code=401)
-
-
-def test_base_response(api, question, crosscheck):
-    got = api.get(f"/api/v2/homework/crosschecks/?question={question.slug}")[0]
-
-    assert got["answer"]["url"] == crosscheck.answer.get_absolute_url()
-    assert got["answer"]["author"]["uuid"] == str(crosscheck.answer.author.uuid)
-    assert got["answer"]["author"]["first_name"] == crosscheck.answer.author.first_name
-    assert got["answer"]["author"]["last_name"] == crosscheck.answer.author.last_name
-    assert got["answer"]["author"]["avatar"] is None
+    assert got[0]["has_descendants"] is True
 
 
-@pytest.mark.parametrize(("checked", "is_checked"), [(None, False), (datetime(2032, 1, 1, tzinfo=timezone.utc), True)])
-def test_is_checked(api, question, crosscheck, checked, is_checked):
-    crosscheck.checked = checked
-    crosscheck.save()
+@pytest.mark.xfail(strict=True, reason="WIP for @brachkow")
+@pytest.mark.usefixtures("comments", "crosschecks")
+def test_use_is_able_to_access_his_own_comments_even_when_they_did_not_perform_a_crosscheck(api, mixer, answer):
+    mixer.blend("homework.Answer", parent=answer.parent, question=answer.question, author=api.user)
 
-    got = api.get(f"/api/v2/homework/crosschecks/?question={question.slug}")[0]
+    got = api.get("/api/v2/homework/answers/")
 
-    assert got["is_checked"] is is_checked
-
-
-def test_exclude_cross_check_from_another_checker(api, question, crosscheck, ya_user):
-    crosscheck.checker = ya_user
-    crosscheck.save()
-
-    got = api.get(f"/api/v2/homework/crosschecks/?question={question.slug}")
-
-    assert len(got) == 0
+    assert got[0]["has_descendants"] is True
 
 
-@pytest.mark.usefixtures("crosscheck")
-def test_exclude_cross_check_from_another_question(api, another_question):
-    got = api.get(f"/api/v2/homework/crosschecks/?question={another_question.slug}")
+@pytest.mark.usefixtures("comments")
+def test_crosscheck_is_performed(api, crosschecks, question):
+    crosschecks["to_perform"].update(checked=timezone.now())
 
-    assert len(got) == 0
+    got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
+
+    assert got[0]["has_descendants"] is True
+
+
+@pytest.mark.usefixtures("comments", "one_more_crosscheck_that_user_should_perform")
+def test_only_one_crosscheck_is_performed(api, question, crosschecks):
+    crosschecks["to_perform"].update(checked=timezone.now())  # check only one crosscheck, leaving the second one unchecked
+
+    got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
+
+    assert got[0]["has_descendants"] is True
+
+
+@pytest.mark.usefixtures("comments", "one_more_crosscheck_that_user_should_perform")
+def test_endpoint_does_not_die_for_users_with_permissions(api, question, crosschecks):
+    api.user.add_perm("homework.answer.see_all_answers")
+    crosschecks["to_perform"].update(checked=timezone.now())  # check only one crosscheck, leaving the second one unchecked
+
+    got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
+
+    assert got[0]["has_descendants"] is True
