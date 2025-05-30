@@ -10,7 +10,7 @@ INSTALLED_APPS = [
     "anymail",
     "axes",
     "corsheaders",
-    # "debug_toolbar",
+    "debug_toolbar",
     "dj_rest_auth",
     "django_filters",
     "drf_spectacular",

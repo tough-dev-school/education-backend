@@ -14,6 +14,8 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://.*\.lms-frontend-v2\.pages\.dev",
 ]
 
+DATA_UPLOAD_MAX_NUMBER_FIELDS = None
+
 FRONTEND_URL = env("FRONTEND_URL", cast=str, default="https://lms.tough-dev.school/")
 DIPLOMA_FRONTEND_URL = env("DIPLOMA_FRONTEND_URL", cast=str, default="https://cert.tough-dev.school/")
 
