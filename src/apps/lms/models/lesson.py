@@ -1,6 +1,7 @@
 from django.apps import apps
 from django.contrib.postgres.aggregates import ArrayAgg
-from django.db.models import Exists, Index, OuterRef, QuerySet, Sum, Value
+from django.db.models import Exists, Index, IntegerField, OuterRef, QuerySet, Sum, Value
+from django.db.models.expressions import RawSQL
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
@@ -70,18 +71,20 @@ class LessonQuerySet(QuerySet):
         )
 
     def with_comment_count(self, user: User) -> "LessonQuerySet":
-        Answer = apps.get_model("homework.Answer")
-        user_answers = (
-            Answer.objects.root_only()
-            .filter(
-                question=OuterRef("question"),
-                author=user,
-            )
-            .with_children_count()
-        )
-
         return self.annotate(
-            comment_count=Sum(user_answers.values("children_count")),
+            comment_count=RawSQL(
+                """
+                SELECT COUNT(child.id)
+                FROM homework_answer AS child
+                JOIN homework_answer AS parent ON child.parent_id = parent.id
+                WHERE parent.question_id = lms_lesson.question_id
+                AND parent.parent_id IS NULL
+                AND parent.author_id = %s
+                AND child.author_id != %s
+                """,
+                [user.id, user.id],
+                output_field=IntegerField(),
+            ),
         )
 
     def with_is_sent(self, user: User) -> "LessonQuerySet":
