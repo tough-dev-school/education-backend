@@ -57,7 +57,7 @@ whitenoise = "^6.5.0"
 
 [tool.poetry.group.dev.dependencies]
 boto3-stubs = "^1.28.48"
-django-stubs = "^4.2.6"
+django-stubs = "^5.0.0"
 djangorestframework-stubs = "^3.14.4"
 freezegun = "^1.2.2"
 ipython = "^9.0.0"
