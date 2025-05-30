@@ -1,5 +1,3 @@
-from django.db.models import QuerySet
-from django.http import HttpRequest
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
@@ -24,21 +22,17 @@ class AnswerCrossCheckAdmin(ModelAdmin):
         "author",
         "view",
     )
-    list_filter = (
+    list_filter = ("answer__question",)
+    list_select_related = (
+        "answer",
         "answer__question",
-        "answer__question__courses",
+        "answer__author",
+        "answer__study__course",
+        "answer__study__course__group",
     )
-
-    def get_queryset(self, request: HttpRequest) -> QuerySet:
-        return (
-            super()
-            .get_queryset(request)
-            .select_related(
-                "answer__question",
-                "answer__author",
-                "answer__study__course__group",
-            )
-        )
+    actions = [
+        "delete_selected",
+    ]
 
     @admin.display(description=_("Course"))
     def course(self, obj: AnswerCrossCheck) -> str:
