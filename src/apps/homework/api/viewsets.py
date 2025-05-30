@@ -44,6 +44,7 @@ from core.viewsets import AppViewSet, CreateDeleteAppViewSet
 @method_decorator(
     extend_schema(
         description="Get an answer by slug (any answer can be accessible if user knows the slug",
+        responses=AnswerTreeSerializer,
     ),
     name="retrieve",
 )

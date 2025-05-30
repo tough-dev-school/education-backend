@@ -132,7 +132,7 @@ class AnswerTreeSerializer(AnswerSerializer):
             "reactions",
         ]
 
-    @extend_schema_field(lazy_serializer("apps.homework.api.serializers.AnswerTreeSerializer")(many=True))
+    @extend_schema_field(AnswerSerializer(many=True))
     def get_descendants(self, answer: Answer) -> list[dict]:
         cached = self._get_cached_descendands(answer)
         if cached is not None:
