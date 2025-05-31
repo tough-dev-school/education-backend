@@ -95,7 +95,7 @@ jobs:
           tags: |
             ghcr.io/${{ steps.image.outputs.lowercase }}/dev-backend:${{ github.sha }}
             ghcr.io/${{ steps.image.outputs.lowercase }}/dev-backend:${{ github.ref_name }}
-            ${{ github.ref == 'refs/heads/master' && 'ghcr.io/${{ steps.image.outputs.lowercase }}/dev-backend:latest' || '' }}
+            ${{ github.ref == 'refs/heads/master' && 'ghcr.io/tough-dev-school/dev-backend:latest' || '' }}
           build-args: |
             PYTHON_VERSION=${{ env.python-version }}
             RELEASE=${{ github.sha }}
