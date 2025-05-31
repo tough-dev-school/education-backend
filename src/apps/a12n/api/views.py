@@ -27,6 +27,19 @@ class RefreshJSONWebTokenView(jwt.RefreshJSONWebTokenView):
     throttle_classes = [AuthAnonRateThrottle]
 
 
+@extend_schema(
+    responses={
+        200: dict[Literal["ok"], bool],
+    },
+    examples=[
+        OpenApiExample(
+            name="default",
+            value={
+                "ok": "True",
+            },
+        ),
+    ],
+)
 class RequestPasswordLessToken(AnonymousAPIView):
     throttle_classes = [AuthAnonRateThrottle]
 
