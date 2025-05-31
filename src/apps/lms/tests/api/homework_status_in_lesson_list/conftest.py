@@ -19,3 +19,13 @@ def another_question(mixer):
     )
 
     return question
+
+
+@pytest.fixture
+def answer(mixer, api, question):
+    return mixer.blend(
+        "homework.Answer",
+        author=api.user,
+        question=question,
+        parent_id=None,
+    )

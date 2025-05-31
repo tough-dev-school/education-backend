@@ -6,8 +6,17 @@ from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
 from apps.lms.admin.module.inline import ModuleInline
-from apps.lms.models import Course
-from core.admin import ModelAdmin, admin
+from apps.lms.models import Course, CourseLink
+from core.admin import ModelAdmin, StackedInline, admin
+
+
+class CourseLinkInline(StackedInline):
+    model = CourseLink
+    fields = [
+        "name",
+        "url",
+    ]
+    extra = 1
 
 
 @admin.register(Course)
@@ -45,7 +54,10 @@ class CourseAdmin(SortableAdminBase, ModelAdmin):
         "group",
     ]
 
-    inlines = [ModuleInline]
+    inlines = [
+        CourseLinkInline,
+        ModuleInline,
+    ]
 
     def get_queryset(self, request: HttpRequest) -> QuerySet[Course]:
         return super().get_queryset(request).for_admin()  # type: ignore

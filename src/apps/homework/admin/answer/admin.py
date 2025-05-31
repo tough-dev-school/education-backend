@@ -1,11 +1,11 @@
 from django.db.models import QuerySet
+from django.http import HttpRequest
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-from rest_framework.request import Request
 
 from apps.homework.admin.answer.filters import IsRootFilter
-from apps.homework.models import Answer, AnswerCrossCheck
+from apps.homework.models import Answer
 from core.admin import ModelAdmin, admin
 
 
@@ -14,7 +14,7 @@ class AnswerAdmin(ModelAdmin):
     list_filter = [
         IsRootFilter,
         "question",
-        "question__courses",
+        "study__course",
     ]
     list_display = [
         "created",
@@ -50,8 +50,8 @@ class AnswerAdmin(ModelAdmin):
         "text",
     ]
 
-    def get_queryset(self, request: Request) -> QuerySet:  # type: ignore
-        return super().get_queryset(request).with_crosscheck_count().select_related("author", "question", "study", "study__course", "study__course__group")  # type: ignore
+    def get_queryset(self, request: HttpRequest) -> QuerySet:
+        return super().get_queryset(request).with_crosscheck_count().select_related("author", "question", "study__course__group")  # type: ignore
 
     @admin.display(description=_("Course"))
     def course(self, obj: Answer) -> str:
@@ -70,55 +70,3 @@ class AnswerAdmin(ModelAdmin):
     def _author(self, obj: Answer) -> str:
         author_url = reverse("admin:users_student_change", args=[obj.author_id])
         return f'<a href="{author_url}">{obj.author}</a>'
-
-
-@admin.register(AnswerCrossCheck)
-class AnswerCrossCheckAdmin(ModelAdmin):
-    fields = (
-        "course",
-        "question",
-        "checked",
-        "author",
-        "view",
-    )
-    list_display = fields
-    readonly_fields = (
-        "question",
-        "course",
-        "checked",
-        "author",
-        "view",
-    )
-    list_filter = (
-        "answer__question",
-        "answer__question__courses",
-    )
-
-    def get_queryset(self, request: Request) -> QuerySet:  # type: ignore
-        return (
-            super()
-            .get_queryset(request)
-            .select_related(
-                "answer", "answer__question", "answer__question", "answer__author", "answer__study", "answer__study__course", "answer__study__course__group"
-            )
-        )
-
-    @admin.display(description=_("Course"))
-    def course(self, obj: AnswerCrossCheck) -> str:
-        if obj.answer.study is not None:
-            return str(obj.answer.study.course)
-
-        return "—"
-
-    @admin.display(description=_("Question"), ordering="answer__question")
-    def question(self, obj: AnswerCrossCheck) -> str:
-        return str(obj.answer.question)
-
-    @admin.display(description=_("Author"), ordering="answer__author")
-    def author(self, obj: AnswerCrossCheck) -> str:
-        return str(obj.answer.author)
-
-    @admin.display(description=_("View"))
-    @mark_safe
-    def view(self, obj: AnswerCrossCheck) -> str:
-        return f"<a href={obj.answer.get_absolute_url()}>Смотреть на сайте</a>"

@@ -50,6 +50,13 @@ class SubqueryCount(models.Subquery):
     output_field = models.IntegerField()
 
 
+class SubquerySum(models.Subquery):
+    template = '(SELECT SUM(_agg."%(column)s") FROM (%(subquery)s) _agg)'
+
+    def __init__(self, queryset: models.QuerySet, column: str, **kwargs: dict) -> None:
+        super().__init__(queryset=queryset, output_field=models.IntegerField(), column=column, **kwargs)
+
+
 def only_one_or_zero_is_set(*fields: str) -> models.Q:
     """Generate a query for CheckConstraint that allows to set only one (or none of) given fields"""
     constraints = []

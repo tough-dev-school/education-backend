@@ -26,12 +26,20 @@ def test_ok(api, answer, question):
     assert "src" in got
 
 
-def test_has_descendants_is_true_if_answer_has_children(api, answer, another_answer):
-    another_answer.update(parent=answer)
+def test_has_descendants_is_true_if_answer_has_children(api, answer, another_answer, another_user):
+    another_answer.update(parent=answer, author=another_user)
 
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
     assert got["has_descendants"] is True
+
+
+def test_has_descendants_is_false_if_answer_has_only_children_that_belong_to_its_author(api, answer, another_answer):
+    another_answer.update(parent=answer, author=answer.author)
+
+    got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
+
+    assert got["has_descendants"] is False
 
 
 def test_reactions_field(api, answer, reaction):
@@ -46,10 +54,10 @@ def test_reactions_field(api, answer, reaction):
 
 
 def test_query_count_for_answer_without_descendants(api, answer, django_assert_num_queries, mixer):
-    for _ in range(5):
+    for _ in range(15):
         mixer.blend("homework.Reaction", author=api.user, answer=answer)
 
-    with django_assert_num_queries(7):
+    with django_assert_num_queries(8):
         api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
 
