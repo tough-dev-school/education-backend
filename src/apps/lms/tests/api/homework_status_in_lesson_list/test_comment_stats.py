@@ -58,6 +58,15 @@ def test_no_answer(api, module, answer):
     assert got["results"][0]["homework"]["comments"] == {}
 
 
+def test_two_root_answers(api, module, answer, mixer):
+    """Addresses a bug from https://app.glitchtip.com/tough-dev-school/issues/2972425"""
+    mixer.blend("homework.Answer", author=api.user, question=answer.question, parent=None)
+
+    got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")
+
+    assert len(got["results"]) == 1
+
+
 def test_no_comments(api, module):
     got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")
 
@@ -80,6 +89,17 @@ def test_crosscheck_is_not_dispatched(api, module):
 def test_own_comments_are_ignored(api, module, comments):
     for comment in comments:
         comment.update(author=api.user)
+
+    got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")
+
+    assert got["results"][0]["homework"]["comments"]["comments"] == 0
+
+
+def test_comments_from_another_questions_are_ignored(api, module, comments, mixer):
+    another_question = mixer.blend("homework.Question", course=module.course)
+    another_answer = mixer.blend("homework.Answer", author=api.user, question=another_question)
+    for comment in comments:
+        comment.update(question=another_question, parent=another_answer)
 
     got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")
 
