@@ -1,11 +1,10 @@
 from django.apps import apps
-from django.contrib.postgres.aggregates import ArrayAgg
-from django.db.models import Exists, Index, OuterRef, QuerySet, Sum, Value
+from django.db.models import Exists, Index, OuterRef, QuerySet, Value
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
 from apps.users.models import User
-from core.models import SubqueryCount, TimestampedModel, models
+from core.models import SubqueryCount, SubquerySum, TimestampedModel, models
 
 
 class LessonQuerySet(QuerySet):
@@ -22,14 +21,7 @@ class LessonQuerySet(QuerySet):
         )
 
     def with_annotations(self, user: User) -> "LessonQuerySet":
-        return (
-            self.with_answer_ids(
-                user,
-            )
-            .with_comment_count(user)
-            .with_is_sent(user)
-            .with_crosscheck_stats(user)
-        )
+        return self.with_comment_count(user).with_is_sent(user).with_crosscheck_stats(user)
 
     def with_fake_annotations(self) -> "LessonQuerySet":
         return self.annotate(
@@ -54,21 +46,6 @@ class LessonQuerySet(QuerySet):
             "call",
         )
 
-    def with_answer_ids(self, user: User) -> "LessonQuerySet":
-        Answer = apps.get_model("homework.Answer")
-        user_answers = (
-            Answer.objects.root_only()
-            .filter(
-                question=OuterRef("question"),
-                author=user,
-            )
-            .values("id")
-        )
-
-        return self.annotate(
-            answer_ids=ArrayAgg(user_answers),
-        )
-
     def with_comment_count(self, user: User) -> "LessonQuerySet":
         Answer = apps.get_model("homework.Answer")
         user_answers = (
@@ -81,7 +58,7 @@ class LessonQuerySet(QuerySet):
         )
 
         return self.annotate(
-            comment_count=Sum(user_answers.values("children_count")),
+            comment_count=SubquerySum(user_answers, column=("children_count")),
         )
 
     def with_is_sent(self, user: User) -> "LessonQuerySet":
@@ -145,13 +122,8 @@ class Lesson(TimestampedModel):
         return "—"
 
     def get_allowed_comment_count(self, user: User) -> int:
-        if not hasattr(self, "answer_ids"):
-            raise RuntimeError("Please annoatte with .with_answer_ids() method")
-
         count = 0
-        for answer in apps.get_model("homework.Answer").objects.filter(pk__in=self.answer_ids):
-            assert answer.is_root
-            assert answer.is_author_of_root_answer(user)
+        for answer in apps.get_model("homework.Answer").objects.filter(question=self.question_id, author=user).root_only():
             count += answer.get_limited_comments_for_user_by_crosschecks(user).count()
 
         return count
