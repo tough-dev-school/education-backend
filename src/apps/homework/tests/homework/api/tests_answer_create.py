@@ -50,7 +50,6 @@ def test_create_answer_fields(api, question, another_answer):
         },
     )
 
-    assert len(got) == 10
     assert got["created"] == "2023-01-23T08:30:40+12:00"
     assert got["modified"] == "2023-01-23T08:30:40+12:00"
     assert "-4" in got["slug"]
@@ -120,7 +119,6 @@ def test_create_answer_without_parent_do_not_have_parent_field_in_response(api, 
         },
     )
 
-    assert len(got) == 9
     assert "parent" not in got
 
 

@@ -79,15 +79,11 @@ class AppViewSet(MultiSerializerMixin, ModelViewSet):
     def update(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         """
         Always serialize response with the default serializer.
-
-        CAUTION: we are loosing serializer context here!
-
-        If you need it, feel free to rewrite this method with http://www.cdrf.co/3.6/rest_framework.mixins/UpdateModelMixin.html
         """
         response = super().update(request, *args, **kwargs)
 
         Serializer = self.get_serializer_class(action="retrieve")
-        response.data = Serializer(self.get_object()).data
+        response.data = Serializer(self.get_object(), context=self.get_serializer_context()).data
 
         return response
 
@@ -95,9 +91,6 @@ class AppViewSet(MultiSerializerMixin, ModelViewSet):
         """
         Always serialize response with the default serializer.
 
-        CAUTION: we are loosing serializer context here!
-
-        If you need it, feel free to rewrite this method with http://www.cdrf.co/3.6/rest_framework.mixins/CreateModelMixin.html
         """
         response = super().create(request, *args, **kwargs)
 
@@ -109,7 +102,7 @@ class AppViewSet(MultiSerializerMixin, ModelViewSet):
             return response  # if you want to mangle with response serializing, please provide ID or lookup_url_kwarg in your serializer
 
         Serializer = self.get_serializer_class(action="retrieve")
-        response.data = Serializer(self.get_object()).data
+        response.data = Serializer(self.get_object(), context=self.get_serializer_context()).data
 
         return response
 

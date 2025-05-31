@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     "prettyjson",
     "rest_framework",
     "rest_framework.authtoken",
+    # "silk",
 
     "apps.a12n",
     "apps.amocrm",

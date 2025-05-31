@@ -19,7 +19,8 @@ from apps.homework.api.permissions import (
 )
 from apps.homework.api.serializers import (
     AnswerCreateSerializer,
-    AnswerDetailedSerializer,
+    AnswerSerializer,
+    AnswerTreeSerializer,
     AnswerUpdateSerializer,
     ReactionCreateSerializer,
     ReactionDetailedSerializer,
@@ -43,6 +44,7 @@ from core.viewsets import AppViewSet, CreateDeleteAppViewSet
 @method_decorator(
     extend_schema(
         description="Get an answer by slug (any answer can be accessible if user knows the slug",
+        responses=AnswerTreeSerializer,
     ),
     name="retrieve",
 )
@@ -50,9 +52,10 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     """Answer CRUD"""
 
     queryset = Answer.objects.for_viewset()
-    serializer_class = AnswerDetailedSerializer
+    serializer_class = AnswerSerializer
     serializer_action_classes = {
         "partial_update": AnswerCreateSerializer,
+        "retrieve": AnswerTreeSerializer,
     }
 
     lookup_field = "slug"
@@ -65,7 +68,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     ]
     filterset_class = AnswerFilterSet
 
-    @extend_schema(request=AnswerCreateSerializer, responses=AnswerDetailedSerializer)
+    @extend_schema(request=AnswerCreateSerializer, responses=AnswerTreeSerializer)
     def create(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         """Create an answer"""
         answer = AnswerCreator(
@@ -76,9 +79,15 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
 
         answer = self.get_queryset().get(pk=answer.pk)  # augment answer with methods from .for_viewset() to display it properly
         Serializer = self.get_serializer_class(action="retrieve")
-        return Response(Serializer(answer).data, status=201)
+        return Response(
+            Serializer(
+                answer,
+                context=self.get_serializer_context(),
+            ).data,
+            status=201,
+        )
 
-    @extend_schema(request=AnswerUpdateSerializer, responses=AnswerDetailedSerializer)
+    @extend_schema(request=AnswerUpdateSerializer, responses=AnswerTreeSerializer)
     def update(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         """Update answer text"""
         if not kwargs.get("partial", False):
@@ -89,7 +98,10 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
         answer = self.get_object()
         answer.refresh_from_db()
         Serializer = self.get_serializer_class(action="retrieve")
-        response.data = Serializer(answer).data
+        response.data = Serializer(
+            answer,
+            context=self.get_serializer_context(),
+        ).data
 
         return response
 
