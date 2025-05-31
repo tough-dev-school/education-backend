@@ -1,6 +1,7 @@
 from typing import Any
 
 from django.http import HttpResponse
+from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.views import APIView
@@ -10,6 +11,7 @@ from apps.tinkoff.api.serializers import DolyameNotificationSerializer, PaymentN
 from apps.tinkoff.token_validator import TinkoffNotificationsTokenValidator
 
 
+@extend_schema(exclude=True)
 class TinkoffPaymentNotificationsView(APIView):
     permission_classes = [AllowAny]  # validation is done later via supplied JSON
 
@@ -28,6 +30,7 @@ class TinkoffPaymentNotificationsView(APIView):
         return HttpResponse("OK")
 
 
+@extend_schema(exclude=True)
 class DolyameNotificationsView(APIView):
     """Receive dolyame notifications."""
 
