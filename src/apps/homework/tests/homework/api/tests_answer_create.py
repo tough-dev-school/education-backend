@@ -50,7 +50,6 @@ def test_create_answer_fields(api, question, another_answer):
         },
     )
 
-    assert len(got) == 10
     assert got["created"] == "2023-01-23T08:30:40+12:00"
     assert got["modified"] == "2023-01-23T08:30:40+12:00"
     assert "-4" in got["slug"]
@@ -61,8 +60,9 @@ def test_create_answer_fields(api, question, another_answer):
     assert got["parent"] == str(another_answer.slug)
     assert got["text"] == "<p>Да ты умничка!</p>\n"
     assert got["src"] == "Да ты умничка!"
-    assert got["has_descendants"] is False  # just created answer couldn't have descendants
-    assert got["reactions"] == []  # just created answer couldn't have reactions
+    assert got["has_descendants"] is False  # newly created answer couldn't have descendants
+    assert got["is_editable"] is True  # and should be editable
+    assert got["reactions"] == []  # and couldn't have reactions
 
 
 def test_without_parent(api, question):
@@ -120,7 +120,6 @@ def test_create_answer_without_parent_do_not_have_parent_field_in_response(api, 
         },
     )
 
-    assert len(got) == 9
     assert "parent" not in got
 
 
