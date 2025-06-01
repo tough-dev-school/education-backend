@@ -11,7 +11,7 @@ pytestmark = [
 ]
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def _set_editability_period(settings):
     settings.HOMEWORK_ANSWER_EDIT_PERIOD = timedelta(days=1)
 

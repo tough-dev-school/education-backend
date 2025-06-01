@@ -8,5 +8,4 @@ DISABLE_HOMEWORK_PERMISSIONS_CHECKING = env("DISABLE_HOMEWORK_PERMISSIONS_CHECKI
 
 DISABLE_NEW_ANSWER_NOTIFICATIONS = env("DISABLE_NEW_ANSWER_NOTIFICATIONS", cast=bool, default=False)
 
-# Time period during which homework answers can be edited
 HOMEWORK_ANSWER_EDIT_PERIOD = timedelta(days=1)
