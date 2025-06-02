@@ -120,18 +120,8 @@ class AnswerTreeSerializer(AnswerSerializer):
 
     class Meta:
         model = Answer
-        fields = [
-            "created",
-            "modified",
-            "slug",
-            "question",
-            "author",
-            "parent",
-            "text",
-            "src",
+        fields = AnswerSerializer.Meta.fields + [
             "descendants",
-            "has_descendants",
-            "reactions",
         ]
 
     @extend_schema_field(AnswerSerializer(many=True))
