@@ -3,7 +3,8 @@ import uuid
 from urllib.parse import urljoin, urlparse
 
 from django.conf import settings
-from django.db.models import Count, Prefetch, Q
+from django.db.models import Count, IntegerField, Prefetch
+from django.db.models.expressions import RawSQL
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from tree_queries.models import TreeNode
@@ -17,7 +18,7 @@ from core.models import TestUtilsMixin, models
 
 class AnswerQuerySet(TreeQuerySet):
     def for_viewset(self) -> "AnswerQuerySet":
-        return self.with_tree_fields().select_related("author", "question")
+        return self.with_tree_fields().with_children_count().select_related("author", "question")
 
     def prefetch_reactions(self) -> "AnswerQuerySet":
         """
@@ -35,7 +36,17 @@ class AnswerQuerySet(TreeQuerySet):
         return self.filter(parent__isnull=True)
 
     def with_children_count(self) -> "AnswerQuerySet":
-        return self.annotate(children_count=Count("children", filter=~Q(children__author=models.F("author"))))
+        return self.annotate(  # SQL here cuz django-tree-queries make too long queries
+            children_count=RawSQL(
+                """
+                SELECT COUNT(*)
+                FROM homework_answer AS child
+                WHERE child.parent_id = homework_answer.id
+                """,
+                [],
+                output_field=IntegerField(),
+            )
+        )
 
 
 class Answer(TestUtilsMixin, TreeNode):
@@ -112,8 +123,11 @@ class Answer(TestUtilsMixin, TreeNode):
     def is_author_of_root_answer(self, user: "User") -> bool:
         return self.get_root_answer().author == user
 
+    def get_comments(self) -> "AnswerQuerySet":
+        return self.get_first_level_descendants().order_by("created")
+
     def get_limited_comments_for_user_by_crosschecks(self, user: "User") -> "AnswerQuerySet":
-        queryset = self.get_first_level_descendants().order_by("created")
+        queryset = self.get_comments()
 
         if not self.is_root or not self.is_author_of_root_answer(user):
             return queryset

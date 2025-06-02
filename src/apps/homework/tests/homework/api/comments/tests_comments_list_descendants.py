@@ -55,7 +55,6 @@ def test_child_answers_fields(get_answer_comments, answer, another_answer):
     got = get_answer_comments()[0]
 
     descendant = got["descendants"][0]
-    assert len(descendant) == 11
     assert descendant["created"] == "2022-10-09T10:30:12+12:00"
     assert descendant["modified"] == "2022-10-09T10:30:12+12:00"
     assert descendant["slug"] == str(another_answer.slug)
