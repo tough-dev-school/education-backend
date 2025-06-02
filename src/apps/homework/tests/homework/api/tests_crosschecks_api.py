@@ -31,10 +31,16 @@ def test_base_response(api, question, crosscheck):
     got = api.get(f"/api/v2/homework/crosschecks/?question={question.slug}")[0]
 
     assert got["answer"]["url"] == crosscheck.answer.get_absolute_url()
+    assert got["answer"]["slug"] == str(crosscheck.answer.slug)
+
     assert got["answer"]["author"]["uuid"] == str(crosscheck.answer.author.uuid)
     assert got["answer"]["author"]["first_name"] == crosscheck.answer.author.first_name
     assert got["answer"]["author"]["last_name"] == crosscheck.answer.author.last_name
     assert got["answer"]["author"]["avatar"] is None
+
+    assert got["answer"]["question"]["slug"] == str(question.slug)
+    assert got["answer"]["question"]["name"] == question.name
+    assert "text" in got["answer"]["question"]
 
 
 @pytest.mark.parametrize(("checked", "is_checked"), [(None, False), (datetime(2032, 1, 1, tzinfo=timezone.utc), True)])
