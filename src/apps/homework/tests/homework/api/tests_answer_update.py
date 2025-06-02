@@ -11,6 +11,11 @@ pytestmark = [
 ]
 
 
+@pytest.fixture(autouse=True)
+def _set_editability_period(settings):
+    settings.HOMEWORK_ANSWER_EDIT_PERIOD = timedelta(days=1)
+
+
 @pytest.fixture
 def answer(answer, another_answer):
     Answer.objects.filter(pk=answer.pk).update(
@@ -50,6 +55,7 @@ def test_patch_changing_text_response_fields(api, answer, another_answer):
     assert got["text"] == "<p><em>patched</em></p>\n"
     assert got["src"] == "*patched*"
     assert got["has_descendants"] is False
+    assert got["is_editable"] is True
 
 
 def test_update_answer_without_parent_do_not_have_parent_field_in_response(api, answer):

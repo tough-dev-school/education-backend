@@ -119,21 +119,6 @@ tests = ["attrs[tests-no-zope]", "zope-interface"]
 tests-no-zope = ["cloudpickle ; platform_python_implementation == \"CPython\"", "hypothesis", "mypy (>=1.1.1) ; platform_python_implementation == \"CPython\"", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins ; platform_python_implementation == \"CPython\" and python_version < \"3.11\"", "pytest-xdist[psutil]"]
 
 [[package]]
-name = "autopep8"
-version = "2.3.2"
-description = "A tool that automatically formats Python code to conform to the PEP 8 style guide"
-optional = false
-python-versions = ">=3.9"
-groups = ["main"]
-files = [
-    {file = "autopep8-2.3.2-py2.py3-none-any.whl", hash = "sha256:ce8ad498672c845a0c3de2629c15b635ec2b05ef8177a6e7c91c74f3e9b51128"},
-    {file = "autopep8-2.3.2.tar.gz", hash = "sha256:89440a4f969197b69a995e4ce0661b031f455a9f776d2c5ba3dbd83466931758"},
-]
-
-[package.dependencies]
-pycodestyle = ">=2.12.0"
-
-[[package]]
 name = "babel"
 version = "2.17.0"
 description = "Internationalization utilities"
@@ -679,14 +664,14 @@ types-awscrt = "*"
 
 [[package]]
 name = "celery"
-version = "5.5.2"
+version = "5.5.3"
 description = "Distributed Task Queue."
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "celery-5.5.2-py3-none-any.whl", hash = "sha256:54425a067afdc88b57cd8d94ed4af2ffaf13ab8c7680041ac2c4ac44357bdf4c"},
-    {file = "celery-5.5.2.tar.gz", hash = "sha256:4d6930f354f9d29295425d7a37261245c74a32807c45d764bedc286afd0e724e"},
+    {file = "celery-5.5.3-py3-none-any.whl", hash = "sha256:0b5761a07057acee94694464ca482416b959568904c9dfa41ce8413a7d65d525"},
+    {file = "celery-5.5.3.tar.gz", hash = "sha256:6c972ae7968c2b5281227f01c3a3f984037d21c5129d07bf3550cc2afc6b10a5"},
 ]
 
 [package.dependencies]
@@ -717,20 +702,20 @@ gcs = ["google-cloud-firestore (==2.20.1)", "google-cloud-storage (>=2.10.0)", "
 gevent = ["gevent (>=1.5.0)"]
 librabbitmq = ["librabbitmq (>=2.0.0) ; python_version < \"3.11\""]
 memcache = ["pylibmc (==1.6.3) ; platform_system != \"Windows\""]
-mongodb = ["pymongo (==4.10.1)"]
-msgpack = ["msgpack (==1.1.0)"]
+mongodb = ["kombu[mongodb]"]
+msgpack = ["kombu[msgpack]"]
 pydantic = ["pydantic (>=2.4)"]
 pymemcache = ["python-memcached (>=1.61)"]
 pyro = ["pyro4 (==4.82) ; python_version < \"3.11\""]
 pytest = ["pytest-celery[all] (>=1.2.0,<1.3.0)"]
-redis = ["redis (>=4.5.2,!=4.5.5,<6.0.0)"]
+redis = ["kombu[redis]"]
 s3 = ["boto3 (>=1.26.143)"]
 slmq = ["softlayer_messaging (>=1.0.3)"]
 solar = ["ephem (==4.2) ; platform_python_implementation != \"PyPy\""]
-sqlalchemy = ["sqlalchemy (>=1.4.48,<2.1)"]
-sqs = ["boto3 (>=1.26.143)", "kombu[sqs] (>=5.3.4)", "urllib3 (>=1.26.16)"]
+sqlalchemy = ["kombu[sqlalchemy]"]
+sqs = ["boto3 (>=1.26.143)", "kombu[sqs] (>=5.5.0)", "urllib3 (>=1.26.16)"]
 tblib = ["tblib (>=1.3.0) ; python_version < \"3.8.0\"", "tblib (>=1.5.0) ; python_version >= \"3.8.0\""]
-yaml = ["PyYAML (>=3.10)"]
+yaml = ["kombu[yaml]"]
 zookeeper = ["kazoo (>=1.3.1)"]
 zstd = ["zstandard (==0.23.0)"]
 
@@ -1467,21 +1452,23 @@ standardjson = ">=0.3.1"
 
 [[package]]
 name = "django-silk"
-version = "5.3.2"
+version = "5.4.0"
 description = "Silky smooth profiling for the Django Framework"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "django_silk-5.3.2-py3-none-any.whl", hash = "sha256:49f1caebfda28b1707f0cfef524e0476beb82b8c5e40f5ccff7f73a6b4f6d3ac"},
-    {file = "django_silk-5.3.2.tar.gz", hash = "sha256:b0db54eebedb8d16f572321bd6daccac0bd3f547ae2618bb45d96fe8fc02229d"},
+    {file = "django_silk-5.4.0-py3-none-any.whl", hash = "sha256:caf720a06e24a6cf1acf825c1868b2a6ece8158b13725363f6d3a1a9994d0fa6"},
+    {file = "django_silk-5.4.0.tar.gz", hash = "sha256:2247870ac8080b6c6c5db17f2f1042d39d95e4a5fa061d661882777ec9adb672"},
 ]
 
 [package.dependencies]
-autopep8 = "*"
 Django = ">=4.2"
 gprof2dot = ">=2017.09.19"
 sqlparse = "*"
+
+[package.extras]
+formatting = ["autopep8"]
 
 [[package]]
 name = "django-split-settings"
@@ -1900,14 +1887,14 @@ files = [
 
 [[package]]
 name = "ipython"
-version = "9.2.0"
+version = "9.3.0"
 description = "IPython: Productive Interactive Computing"
 optional = false
 python-versions = ">=3.11"
 groups = ["dev"]
 files = [
-    {file = "ipython-9.2.0-py3-none-any.whl", hash = "sha256:fef5e33c4a1ae0759e0bba5917c9db4eb8c53fee917b6a526bd973e1ca5159f6"},
-    {file = "ipython-9.2.0.tar.gz", hash = "sha256:62a9373dbc12f28f9feaf4700d052195bf89806279fc8ca11f3f54017d04751b"},
+    {file = "ipython-9.3.0-py3-none-any.whl", hash = "sha256:1a0b6dd9221a1f5dddf725b57ac0cb6fddc7b5f470576231ae9162b9b3455a04"},
+    {file = "ipython-9.3.0.tar.gz", hash = "sha256:79eb896f9f23f50ad16c3bc205f686f6e030ad246cc309c6279a242b14afe9d8"},
 ]
 
 [package.dependencies]
@@ -2448,18 +2435,6 @@ groups = ["main"]
 files = [
     {file = "py-1.11.0-py2.py3-none-any.whl", hash = "sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378"},
     {file = "py-1.11.0.tar.gz", hash = "sha256:51c75c4126074b472f746a24399ad32f6053d1b34b68d2fa41e558e6f4a98719"},
-]
-
-[[package]]
-name = "pycodestyle"
-version = "2.13.0"
-description = "Python style guide checker"
-optional = false
-python-versions = ">=3.9"
-groups = ["main"]
-files = [
-    {file = "pycodestyle-2.13.0-py2.py3-none-any.whl", hash = "sha256:35863c5974a271c7a726ed228a14a4f6daf49df369d8c50cd9a6f58a5e143ba9"},
-    {file = "pycodestyle-2.13.0.tar.gz", hash = "sha256:c8415bf09abe81d9c7f872502a6eee881fbe85d8763dd5b9924bb0a01d67efae"},
 ]
 
 [[package]]
@@ -3818,4 +3793,4 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "2.1"
 python-versions = "~=3.11"
-content-hash = "ff03d6cc0d01c8452703d399372a68ea14111b10dfc3cd03c49436f091d6d9a8"
+content-hash = "221aa81e7a7e756165274113dec0057807c51c35d208e04df7760c7adf11761c"

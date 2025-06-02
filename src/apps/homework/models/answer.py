@@ -5,6 +5,7 @@ from urllib.parse import urljoin, urlparse
 from django.conf import settings
 from django.db.models import Count, IntegerField, Prefetch
 from django.db.models.expressions import RawSQL
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from tree_queries.models import TreeNode
 from tree_queries.query import TreeQuerySet
@@ -113,6 +114,11 @@ class Answer(TestUtilsMixin, TreeNode):
     def is_root(self) -> bool:
         """Can be used to determine homework answer"""
         return self.parent is None
+
+    @property
+    def is_editable(self) -> bool:
+        """May be edited by user"""
+        return timezone.now() - self.created < settings.HOMEWORK_ANSWER_EDIT_PERIOD
 
     def is_author_of_root_answer(self, user: "User") -> bool:
         return self.get_root_answer().author == user

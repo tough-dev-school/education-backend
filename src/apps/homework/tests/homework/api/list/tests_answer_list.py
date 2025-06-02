@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 import pytest
 
 pytestmark = [
@@ -16,7 +18,6 @@ def answer_from_another_user(another_user, another_answer, question):
 def test_ok(api, question, answer):
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 
-    assert len(got[0]) == 9
     assert got[0]["created"] == "2022-10-09T10:30:12+12:00"
     assert got[0]["modified"] == "2022-10-09T10:30:12+12:00"
     assert got[0]["slug"] == str(answer.slug)
@@ -28,6 +29,7 @@ def test_ok(api, question, answer):
     assert got[0]["author"]["last_name"] == api.user.last_name
     assert got[0]["author"]["avatar"] is None
     assert got[0]["has_descendants"] is False
+    assert got[0]["is_editable"] is True
     assert got[0]["reactions"] == []
 
 
@@ -42,6 +44,25 @@ def test_has_reaction_fields_if_there_is_reaction(api, question, reaction):
     assert reactions[0]["author"]["uuid"] == str(reaction.author.uuid)
     assert reactions[0]["author"]["first_name"] == reaction.author.first_name
     assert reactions[0]["author"]["last_name"] == reaction.author.last_name
+
+
+@pytest.mark.freeze_time("2022-10-09 10:30:12+12:00")  # +12 hours kamchatka timezone
+@pytest.mark.usefixtures("kamchatka_timezone")
+@pytest.mark.parametrize(
+    ["time", "should_be_editable"],
+    [
+        ("2022-10-09 11:20+12:00", True),
+        ("2032-10-09 11:20+12:00", False),
+    ],
+)
+@pytest.mark.usefixtures("answer")
+def test_is_editable_field(api, question, freezer, settings, time, should_be_editable):
+    settings.HOMEWORK_ANSWER_EDIT_PERIOD = timedelta(hours=2)
+    freezer.move_to(time)
+
+    got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
+
+    assert got[0]["is_editable"] is should_be_editable
 
 
 def test_has_descendants_is_true_if_answer_has_children(api, question, answer, another_answer, another_user):

@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 import pytest
 
 pytestmark = [
@@ -21,6 +23,7 @@ def test_ok(api, answer, question):
     assert got["question"] == str(question.slug)
     assert got["has_descendants"] is False
     assert got["descendants"] == []
+    assert got["is_editable"] is True
     assert got["reactions"] == []
     assert "text" in got
     assert "src" in got
@@ -41,6 +44,24 @@ def test_has_descendants_is_true_if_answer_has_only_children_that_belong_to_its_
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
     assert got["has_descendants"] is True  # вот тут было False
+
+
+@pytest.mark.freeze_time("2022-10-09 11:10+12:00")
+@pytest.mark.usefixtures("kamchatka_timezone")
+@pytest.mark.parametrize(
+    ["time", "should_be_editable"],
+    [
+        ("2022-10-09 11:20+12:00", True),
+        ("2032-10-09 11:20+12:00", False),
+    ],
+)
+def test_is_editable_field(api, answer, freezer, settings, time, should_be_editable):
+    settings.HOMEWORK_ANSWER_EDIT_PERIOD = timedelta(hours=2)
+    freezer.move_to(time)
+
+    got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
+
+    assert got["is_editable"] is should_be_editable
 
 
 def test_reactions_field(api, answer, reaction):

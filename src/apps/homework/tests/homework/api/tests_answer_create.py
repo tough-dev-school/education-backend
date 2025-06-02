@@ -60,8 +60,9 @@ def test_create_answer_fields(api, question, another_answer):
     assert got["parent"] == str(another_answer.slug)
     assert got["text"] == "<p>Да ты умничка!</p>\n"
     assert got["src"] == "Да ты умничка!"
-    assert got["has_descendants"] is False  # just created answer couldn't have descendants
-    assert got["reactions"] == []  # just created answer couldn't have reactions
+    assert got["has_descendants"] is False  # newly created answer couldn't have descendants
+    assert got["is_editable"] is True  # and should be editable
+    assert got["reactions"] == []  # and couldn't have reactions
 
 
 def test_without_parent(api, question):

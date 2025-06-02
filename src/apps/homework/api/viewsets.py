@@ -12,7 +12,7 @@ from rest_framework.response import Response
 
 from apps.homework.api.filtersets import AnswerFilterSet
 from apps.homework.api.permissions import (
-    MayChangeAnswerOnlyForLimitedTime,
+    AnswerShouldBeEditable,
     MayChangeAnswerOnlyWithoutDescendants,
     ShouldBeAuthorOrReadOnly,
     ShouldHavePurchasedQuestionCoursePermission,
@@ -63,7 +63,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
         IsAuthenticated
         & ShouldHavePurchasedQuestionCoursePermission
         & ShouldBeAuthorOrReadOnly
-        & MayChangeAnswerOnlyForLimitedTime
+        & AnswerShouldBeEditable
         & MayChangeAnswerOnlyWithoutDescendants,
     ]
     filterset_class = AnswerFilterSet

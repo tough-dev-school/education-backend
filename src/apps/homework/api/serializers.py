@@ -83,6 +83,7 @@ class AnswerSerializer(serializers.ModelSerializer):
     question = serializers.CharField(source="question.slug")
     has_descendants = serializers.SerializerMethodField()
     reactions = ReactionDetailedSerializer(many=True)
+    is_editable = serializers.BooleanField()
 
     class Meta:
         model = Answer
@@ -96,6 +97,7 @@ class AnswerSerializer(serializers.ModelSerializer):
             "text",
             "src",
             "has_descendants",
+            "is_editable",
             "reactions",
         ]
 
