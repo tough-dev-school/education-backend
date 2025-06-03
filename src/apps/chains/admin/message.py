@@ -8,6 +8,7 @@ from apps.chains.models import Message
 from apps.products.admin.filters import CourseFilter
 from core.admin import ModelAdmin, admin
 
+
 @admin.register(Message)
 class MessageAdmin(ModelAdmin):
     add_form = MessageAddForm
