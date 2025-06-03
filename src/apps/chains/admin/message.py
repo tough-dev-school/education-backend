@@ -1,5 +1,5 @@
 from django.contrib.admin import RelatedOnlyFieldListFilter
-from django.db.models import QuerySet, F
+from django.db.models import F, QuerySet
 from django.http.request import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
