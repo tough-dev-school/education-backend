@@ -1,5 +1,5 @@
 from django.contrib.admin import RelatedOnlyFieldListFilter
-from django.db.models import QuerySet
+from django.db.models import F, QuerySet
 from django.http.request import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
@@ -15,7 +15,8 @@ class MessageAdmin(ModelAdmin):
     form = MessageEditForm
 
     def get_queryset(self, request: HttpRequest) -> QuerySet[Message]:
-        return super().get_queryset(request).not_archived()  # type: ignore
+        qs = super().get_queryset(request).not_archived()  # type: ignore
+        return qs.annotate(course_id=F("chain__course_id"))
 
     fields = [
         "name",
