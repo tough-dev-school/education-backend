@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from apps.homework.api import serializers
 from apps.homework.api.filtersets import AnswerCommentFilterSet, AnswerCrossCheckFilterSet
 from apps.homework.api.permissions import ShouldHavePurchasedCoursePermission
-from apps.homework.api.serializers import AnswerCrossCheckSerializer
+from apps.homework.api.serializers import CrossCheckSerializer
 from apps.homework.models import Answer, AnswerCrossCheck, AnswerImage, Question
 
 
@@ -17,7 +17,7 @@ class QuestionView(generics.RetrieveAPIView):
 
 
 class AnswerCommentView(generics.ListAPIView):
-    """Recursive list list answer comments"""
+    """Recursively list answer comments"""
 
     queryset = Answer.objects.for_viewset()
     serializer_class = serializers.AnswerCommentTreeSerializer
@@ -34,17 +34,19 @@ class AnswerCommentView(generics.ListAPIView):
         return queryset.for_user(self.request.user)
 
 
-class AnswerImageUploadView(generics.CreateAPIView):
+class ImageUploadView(generics.CreateAPIView):
+    """Upload an image"""
+
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.AnswerImageSerializer
     queryset = AnswerImage.objects.all()
 
 
-class AnswerCrossCheckView(generics.ListAPIView):
-    """Retrieves crosscheck status"""
+class CrossCheckView(generics.ListAPIView):
+    """Crosscheck status"""
 
     queryset = AnswerCrossCheck.objects.for_viewset()
-    serializer_class = AnswerCrossCheckSerializer
+    serializer_class = CrossCheckSerializer
     filterset_class = AnswerCrossCheckFilterSet
     permission_classes = [IsAuthenticated]
     pagination_class = None
