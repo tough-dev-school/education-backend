@@ -15,6 +15,18 @@ class QuestionView(generics.RetrieveAPIView):
     permission_classes = [ShouldHavePurchasedCoursePermission]
     lookup_field = "slug"
 
+    def get_queryset(self) -> QuerySet[Question]:
+        queryset = super().get_queryset()
+
+        if self.request.user.is_anonymous:
+            return queryset.none()
+
+        if not self.request.user.has_perm("studying.purchased_all_courses"):
+            return queryset.with_annotations(self.request.user)  # type: ignore
+        else:
+            # Adding fake data for the serializers if user may access all courses
+            return queryset.with_fake_annotations()  # type: ignore
+
 
 class AnswerCommentView(generics.ListAPIView):
     """Recursively list answer comments"""

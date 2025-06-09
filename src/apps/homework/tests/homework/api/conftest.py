@@ -12,11 +12,6 @@ def api(api):
 
 
 @pytest.fixture
-def another_user(mixer):
-    return mixer.blend("users.User")
-
-
-@pytest.fixture
 def question(mixer, course):
     question = mixer.blend("homework.Question")
     question.courses.add(course)
@@ -61,9 +56,9 @@ def purchase(factory, course, api):
 
 
 @pytest.fixture
-def _no_purchase(purchase):
+def _no_purchase(purchase, _set_current_user):
     """Invalidate the purchase"""
-    purchase.update(paid=None)
+    purchase.refund(amount=purchase.price)
 
 
 @pytest.fixture

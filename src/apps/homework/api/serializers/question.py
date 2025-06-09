@@ -2,6 +2,7 @@ from drf_spectacular.helpers import lazy_serializer
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
+from apps.homework.api.serializers.stats import HomeworkStatsSerializer
 from apps.homework.models import Question
 from core.serializers import MarkdownField
 
@@ -22,6 +23,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 class QuestionDetailSerializer(serializers.ModelSerializer):
     text = MarkdownField()
     breadcrumbs = serializers.SerializerMethodField()
+    homework = HomeworkStatsSerializer(source="*")
 
     class Meta:
         model = Question
@@ -31,6 +33,7 @@ class QuestionDetailSerializer(serializers.ModelSerializer):
             "name",
             "text",
             "deadline",
+            "homework",
         ]
 
     @extend_schema_field(lazy_serializer("apps.lms.api.serializers.BreadcrumbsSerializer")())
