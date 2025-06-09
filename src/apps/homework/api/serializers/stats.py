@@ -3,7 +3,6 @@ from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from apps.homework.models import Question
-from apps.lms.models import Lesson
 
 
 class CrossCheckStatsSerializer(serializers.Serializer):
@@ -15,11 +14,11 @@ class CommentStatsSerializer(serializers.Serializer):
     comments = serializers.IntegerField(source="comment_count")
     hidden_before_crosscheck_completed = serializers.SerializerMethodField()
 
-    def get_hidden_before_crosscheck_completed(self, instance: Lesson | Question) -> int | None:
+    def get_hidden_before_crosscheck_completed(self, instance: Question) -> int | None:
         request = self.context["request"]
         return instance.comment_count - instance.get_allowed_comment_count(request.user)  # hope lesson is annotated
 
-    def to_representation(self, instance: Lesson | Question) -> dict:
+    def to_representation(self, instance: Question) -> dict:
         if not instance.is_sent:
             return {}
 
@@ -33,7 +32,7 @@ class HomeworkStatsSerializer(serializers.Serializer):
     question = serializers.SerializerMethodField(required=False)
 
     @extend_schema_field(field=lazy_serializer("apps.homework.api.serializers.question.QuestionSerializer"))
-    def get_question(self, instance: Lesson | Question) -> dict:
+    def get_question(self, instance: Question) -> dict:
         from apps.homework.api.serializers import QuestionSerializer
 
         return QuestionSerializer(instance, context=self.context).data

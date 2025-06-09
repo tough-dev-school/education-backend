@@ -15,6 +15,12 @@ class QuestionQuerySet(QuerySet):
     def for_admin(self) -> "QuestionQuerySet":
         return self.prefetch_related("courses", "courses__group")
 
+    def for_user(self, user: User) -> "QuestionQuerySet":
+        if not user.has_perm("studying.purchased_all_courses"):
+            return self.with_annotations(user)
+        else:
+            return self.with_fake_annotations()
+
     def with_annotations(self, user: User) -> "QuestionQuerySet":
         return self.with_is_sent(user).with_comment_count(user).with_crosscheck_stats(user)
 

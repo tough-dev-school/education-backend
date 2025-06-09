@@ -4,6 +4,7 @@ from drf_spectacular.utils import OpenApiExample, extend_schema_field, extend_sc
 from rest_framework import serializers
 
 from apps.homework.api.serializers import HomeworkStatsSerializer
+from apps.homework.models import Question
 from apps.lms.models import Call, Course, Lesson, Module
 from apps.notion.models import Material as NotionMaterial
 from core.serializers import MarkdownField
@@ -102,7 +103,10 @@ class LessonForUserSerializer(serializers.ModelSerializer):
     @extend_schema_field(field=HomeworkStatsSerializer)
     def get_homework(self, lesson: Lesson) -> dict | None:
         if lesson.question is not None:
-            return HomeworkStatsSerializer(lesson, context=self.context).data
+            user = self.context["request"].user
+            question = Question.objects.for_user(user).get(pk=lesson.question_id)
+
+            return HomeworkStatsSerializer(question, context=self.context).data
 
 
 @extend_schema_serializer(

@@ -21,11 +21,7 @@ class QuestionView(generics.RetrieveAPIView):
         if self.request.user.is_anonymous:
             return queryset.none()
 
-        if not self.request.user.has_perm("studying.purchased_all_courses"):
-            return queryset.with_annotations(self.request.user)  # type: ignore
-        else:
-            # Adding fake data for the serializers if user may access all courses
-            return queryset.with_fake_annotations()  # type: ignore
+        return queryset.for_user(self.request.user)  # type: ignore
 
 
 class AnswerCommentView(generics.ListAPIView):

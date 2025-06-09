@@ -1,11 +1,10 @@
 from django.apps import apps
-from django.db.models import Exists, Index, IntegerField, OuterRef, QuerySet, Value
-from django.db.models.expressions import RawSQL
+from django.db.models import Index, QuerySet
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
 from apps.users.models import User
-from core.models import SubqueryCount, TimestampedModel, models
+from core.models import TimestampedModel, models
 
 
 class LessonQuerySet(QuerySet):
@@ -21,17 +20,6 @@ class LessonQuerySet(QuerySet):
             .order_by("position")
         )
 
-    def with_annotations(self, user: User) -> "LessonQuerySet":
-        return self.with_comment_count(user).with_is_sent(user).with_crosscheck_stats(user)
-
-    def with_fake_annotations(self) -> "LessonQuerySet":
-        return self.annotate(
-            is_sent=Value(False),
-            crosschecks_total=Value(0),
-            crosschecks_checked=Value(0),
-            comment_count=Value(0),
-        )
-
     def for_user(self, user: User) -> "LessonQuerySet":
         purchased_courses = apps.get_model("studying.Study").objects.filter(student=user).values_list("course_id", flat=True)
         return self.filter(
@@ -45,47 +33,6 @@ class LessonQuerySet(QuerySet):
             "module__course__group",
             "material",
             "call",
-        )
-
-    def with_comment_count(self, user: User) -> "LessonQuerySet":
-        return self.annotate(
-            comment_count=RawSQL(  # django-treeqeury is 3 times slower here
-                """
-                SELECT COUNT(child.id)
-                FROM homework_answer AS child
-                JOIN homework_answer AS parent ON child.parent_id = parent.id
-                WHERE parent.question_id = lms_lesson.question_id
-                AND parent.parent_id IS NULL
-                AND parent.author_id = %s
-                AND child.author_id != %s
-                """,
-                [user.id, user.id],
-                output_field=IntegerField(),
-            ),
-        )
-
-    def with_is_sent(self, user: User) -> "LessonQuerySet":
-        Answer = apps.get_model("homework.Answer")
-        user_answers = Answer.objects.root_only().filter(
-            question=OuterRef("question"),
-            author=user,
-        )
-
-        return self.annotate(is_sent=Exists(user_answers))
-
-    def with_crosscheck_stats(self, user: User) -> "LessonQuerySet":
-        AnswerCrossCheck = apps.get_model("homework.AnswerCrossCheck")
-
-        total = AnswerCrossCheck.objects.filter(
-            answer__question=OuterRef("question"),
-            checker=user,
-        )
-
-        checked = total.filter(checked__isnull=False)
-
-        return self.annotate(
-            crosschecks_total=SubqueryCount(total),
-            crosschecks_checked=SubqueryCount(checked),
         )
 
 
