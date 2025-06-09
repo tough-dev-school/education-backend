@@ -1,8 +1,7 @@
-from drf_spectacular.helpers import lazy_serializer
-from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from apps.homework.models import Question
+from core.serializers import MarkdownField
 
 
 class CrossCheckStatsSerializer(serializers.Serializer):
@@ -25,14 +24,21 @@ class CommentStatsSerializer(serializers.Serializer):
         return super().to_representation(instance)
 
 
+class TemporarySoonToBeDepricatedQuestionSerializer(serializers.ModelSerializer):
+    text = MarkdownField()
+
+    class Meta:
+        model = Question
+        fields = [
+            "slug",
+            "name",
+            "text",
+            "deadline",
+        ]
+
+
 class HomeworkStatsSerializer(serializers.Serializer):
     is_sent = serializers.BooleanField()
     crosschecks = CrossCheckStatsSerializer(required=False, source="*")
     comments = CommentStatsSerializer(required=False, source="*")
-    question = serializers.SerializerMethodField(required=False)
-
-    @extend_schema_field(field=lazy_serializer("apps.homework.api.serializers.question.QuestionSerializer"))
-    def get_question(self, instance: Question) -> dict:
-        from apps.homework.api.serializers import QuestionSerializer
-
-        return QuestionSerializer(instance, context=self.context).data
+    question = TemporarySoonToBeDepricatedQuestionSerializer(source="*")

@@ -3,7 +3,7 @@ from typing import Literal
 from drf_spectacular.utils import OpenApiExample, extend_schema_field, extend_schema_serializer, inline_serializer
 from rest_framework import serializers
 
-from apps.homework.api.serializers import HomeworkStatsSerializer
+from apps.homework.api.serializers import HomeworkStatsSerializer, QuestionSerializer
 from apps.homework.models import Question
 from apps.lms.models import Call, Course, Lesson, Module
 from apps.notion.models import Material as NotionMaterial
@@ -84,12 +84,13 @@ class CallSerializer(serializers.ModelSerializer):
         return None
 
 
-class LessonForUserSerializer(serializers.ModelSerializer):
+class LessonSerializer(serializers.ModelSerializer):
     """Serialize lesson for the user, lesson should be annotated with crosschecks stats"""
 
     material = NotionMaterialSerializer(required=False)
     call = CallSerializer(required=False)
     homework = serializers.SerializerMethodField()
+    question = QuestionSerializer()
 
     class Meta:
         model = Lesson
@@ -97,6 +98,7 @@ class LessonForUserSerializer(serializers.ModelSerializer):
             "id",
             "material",
             "homework",
+            "question",
             "call",
         ]
 

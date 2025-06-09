@@ -3,7 +3,7 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import IsAuthenticated
 
 from apps.lms.api.filters import LessonFilterSet
-from apps.lms.api.serializers import LessonForUserSerializer
+from apps.lms.api.serializers import LessonSerializer
 from apps.lms.models import Lesson
 from apps.lms.models.lesson import LessonQuerySet
 from core.api.mixins import DisablePaginationWithQueryParamMixin
@@ -19,7 +19,7 @@ from core.viewsets import ReadOnlyAppViewSet
 class LessonViewSet(DisablePaginationWithQueryParamMixin, ReadOnlyAppViewSet):
     """List lessons, accessible to user. Better use it filtering by module"""
 
-    serializer_class = LessonForUserSerializer
+    serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated]
     filterset_class = LessonFilterSet
     queryset = Lesson.objects.for_viewset()
