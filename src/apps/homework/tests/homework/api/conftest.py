@@ -12,7 +12,7 @@ def api(api):
 
 
 @pytest.fixture
-def ya_user(mixer):
+def another_user(mixer):
     return mixer.blend("users.User")
 
 
