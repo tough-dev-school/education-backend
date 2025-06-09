@@ -29,5 +29,5 @@ class LessonViewSet(DisablePaginationWithQueryParamMixin, ReadOnlyAppViewSet):
 
         if self.request.user.has_perm("studying.purchased_all_courses"):
             return queryset
-        else:
-            return queryset.for_user(self.request.user)  # type: ignore
+
+        return queryset.for_user(self.request.user)  # type: ignore

@@ -106,7 +106,7 @@ class LessonSerializer(serializers.ModelSerializer):
     def get_homework(self, lesson: Lesson) -> dict | None:
         if lesson.question is not None:
             user = self.context["request"].user
-            question = Question.objects.for_user(user).get(pk=lesson.question_id)
+            question = Question.objects.for_user(user).get(pk=lesson.question_id)  # extra N+1 query to annotate the question with statistics
 
             return HomeworkStatsSerializer(question, context=self.context).data
 
