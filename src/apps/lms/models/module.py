@@ -29,6 +29,7 @@ class Module(TimestampedModel):
     objects = ModuleQuerySet.as_manager()
 
     name = models.CharField(max_length=255)
+    start_date = models.DateTimeField(_("Start date"), null=True, blank=True)
     description = models.CharField(_("Short description"), blank=True, null=True, max_length=512)
     text = models.TextField(_("Text"), blank=True, null=True)
     course = models.ForeignKey("lms.Course", on_delete=models.CASCADE, related_name="modules")

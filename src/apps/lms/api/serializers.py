@@ -153,6 +153,7 @@ class LessonForUserSerializer(serializers.ModelSerializer):
             value={
                 "id": 100500,
                 "name": "Первая неделя",
+                "start_date": "2023-12-01 15:30:00+03:00",
                 "description": "Cамая важная неделя",
                 "text": "<p><strong>Первая</strong> неделя — <em>самая важная неделя</em></p>",
             },
@@ -167,6 +168,7 @@ class ModuleSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "name",
+            "start_date",
             "description",
             "text",
         ]
