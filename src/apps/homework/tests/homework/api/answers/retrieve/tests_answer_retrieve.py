@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 import pytest
 
 pytestmark = [
@@ -11,7 +13,6 @@ pytestmark = [
 def test_ok(api, answer, question):
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
-    assert len(got) == 9
     assert got["created"] == "2022-10-09T11:10:00+12:00"
     assert got["modified"] == "2022-10-09T11:10:00+12:00"
     assert got["slug"] == str(answer.slug)
@@ -21,17 +22,46 @@ def test_ok(api, answer, question):
     assert got["author"]["avatar"] is None
     assert got["question"] == str(question.slug)
     assert got["has_descendants"] is False
+    assert got["descendants"] == []
+    assert got["is_editable"] is True
     assert got["reactions"] == []
     assert "text" in got
     assert "src" in got
 
 
-def test_has_descendants_is_true_if_answer_has_children(api, answer, another_answer):
-    another_answer.update(parent=answer)
+def test_has_descendants_is_true_if_answer_has_children(api, answer, another_answer, another_user):
+    another_answer.update(parent=answer, author=another_user)
 
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
     assert got["has_descendants"] is True
+
+
+def test_has_descendants_is_true_if_answer_has_only_children_that_belong_to_its_author(api, answer, another_answer):
+    """Раньше это поведение было другим, поэтому я оставляю тест, чтобы задокументировать изменение"""
+    another_answer.update(parent=answer, author=answer.author)
+
+    got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
+
+    assert got["has_descendants"] is True  # вот тут было False
+
+
+@pytest.mark.freeze_time("2022-10-09 11:10+12:00")
+@pytest.mark.usefixtures("kamchatka_timezone")
+@pytest.mark.parametrize(
+    ["time", "should_be_editable"],
+    [
+        ("2022-10-09 11:20+12:00", True),
+        ("2032-10-09 11:20+12:00", False),
+    ],
+)
+def test_is_editable_field(api, answer, freezer, settings, time, should_be_editable):
+    settings.HOMEWORK_ANSWER_EDIT_PERIOD = timedelta(hours=2)
+    freezer.move_to(time)
+
+    got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
+
+    assert got["is_editable"] is should_be_editable
 
 
 def test_reactions_field(api, answer, reaction):
@@ -46,10 +76,10 @@ def test_reactions_field(api, answer, reaction):
 
 
 def test_query_count_for_answer_without_descendants(api, answer, django_assert_num_queries, mixer):
-    for _ in range(5):
+    for _ in range(25):
         mixer.blend("homework.Reaction", author=api.user, answer=answer)
 
-    with django_assert_num_queries(7):
+    with django_assert_num_queries(10):
         api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
 

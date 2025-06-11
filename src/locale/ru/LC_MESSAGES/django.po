@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-21 22:53+0300\n"
+"POT-Creation-Date: 2025-05-29 16:17+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -212,7 +212,7 @@ msgstr "В списке только не запущенные и не заар�
 
 #: apps/chains/admin/message.py:49 apps/chains/models/chain.py:33
 #: apps/diplomas/admin/diploma.py:56 apps/homework/admin/answer/admin.py:56
-#: apps/homework/admin/answer/admin.py:106
+#: apps/homework/admin/answer/admin.py:108
 #: apps/homework/admin/question/form.py:14 apps/lms/admin/lesson/admin.py:56
 #: apps/orders/models/order.py:60 apps/products/admin/filters.py:12
 #: apps/products/models/course.py:90 apps/studying/models.py:9
@@ -221,9 +221,9 @@ msgstr "Курс"
 
 #: apps/chains/models/chain.py:32 apps/chains/models/message.py:32
 #: apps/homework/models/question.py:22 apps/lms/admin/lesson/admin.py:78
-#: apps/lms/admin/lesson/inline.py:28 apps/lms/admin/lms_course/admin.py:17
+#: apps/lms/admin/lesson/inline.py:28 apps/lms/admin/lms_course/admin.py:26
 #: apps/lms/admin/module/inline.py:23 apps/lms/models/call.py:9
-#: apps/products/admin/course.py:18
+#: apps/lms/models/course_link.py:8 apps/products/admin/course.py:18
 msgid "Name"
 msgstr "Название"
 
@@ -353,15 +353,15 @@ msgid "Crosschecking people"
 msgstr "Учеников проверяет"
 
 #: apps/homework/admin/answer/admin.py:69
-#: apps/homework/admin/answer/admin.py:117 apps/orders/models/refund.py:27
+#: apps/homework/admin/answer/admin.py:119 apps/orders/models/refund.py:27
 msgid "Author"
 msgstr "Автор"
 
-#: apps/homework/admin/answer/admin.py:113 apps/lms/admin/lesson/admin.py:71
+#: apps/homework/admin/answer/admin.py:115 apps/lms/admin/lesson/admin.py:71
 msgid "Question"
 msgstr "Вопрос"
 
-#: apps/homework/admin/answer/admin.py:121
+#: apps/homework/admin/answer/admin.py:123
 msgid "View"
 msgstr ""
 
@@ -374,7 +374,7 @@ msgid "Dispatch crosscheck"
 msgstr "Запустить p2p-проверку домашки"
 
 #: apps/homework/admin/question/form.py:15 apps/lms/admin/lesson/admin.py:60
-#: apps/lms/models/lesson.py:77 apps/lms/models/module.py:44
+#: apps/lms/models/lesson.py:115 apps/lms/models/module.py:44
 msgid "Module"
 msgstr "Модуль"
 
@@ -385,19 +385,19 @@ msgstr "Модуль"
 msgid "Lesson"
 msgstr "Урок"
 
-#: apps/homework/models/answer.py:81
+#: apps/homework/models/answer.py:50
 msgid "Exclude from cross-checking"
 msgstr "Исключить из p2p-проверки"
 
-#: apps/homework/models/answer.py:86
+#: apps/homework/models/answer.py:55
 msgid "Homework answer"
 msgstr "Ответ на домашку"
 
-#: apps/homework/models/answer.py:87
+#: apps/homework/models/answer.py:56
 msgid "Homework answers"
 msgstr "Ответы на домашку"
 
-#: apps/homework/models/answer.py:90
+#: apps/homework/models/answer.py:59
 msgid "May see answers from every user"
 msgstr "Видит все ответы на домашку"
 
@@ -445,16 +445,16 @@ msgstr "Урок не найден"
 msgid "Change"
 msgstr "Изменить"
 
-#: apps/lms/admin/lesson/inline.py:51 apps/lms/models/lesson.py:80
+#: apps/lms/admin/lesson/inline.py:51 apps/lms/models/lesson.py:118
 msgctxt "lessons"
 msgid "Material"
 msgstr "Страница в ноушене"
 
-#: apps/lms/admin/lms_course/admin.py:26
+#: apps/lms/admin/lms_course/admin.py:35
 msgid "URLs"
 msgstr "Ссылки"
 
-#: apps/lms/admin/lms_course/admin.py:53
+#: apps/lms/admin/lms_course/admin.py:65
 msgid "Module count"
 msgstr "Модули"
 
@@ -462,7 +462,7 @@ msgstr "Модули"
 msgid "Lesson count"
 msgstr "Уроки"
 
-#: apps/lms/models/call.py:10
+#: apps/lms/models/call.py:10 apps/lms/models/course_link.py:9
 msgid "URL"
 msgstr "Ссылка"
 
@@ -475,7 +475,7 @@ msgctxt "lms"
 msgid "Call date"
 msgstr "Дата"
 
-#: apps/lms/models/call.py:19 apps/lms/models/lesson.py:86
+#: apps/lms/models/call.py:19 apps/lms/models/lesson.py:124
 msgctxt "lms"
 msgid "Call"
 msgstr "Созвон"
@@ -485,25 +485,33 @@ msgctxt "lms"
 msgid "Calls"
 msgstr "Созвоны"
 
-#: apps/lms/models/lesson.py:83
+#: apps/lms/models/course_link.py:12
+msgid "Course link"
+msgstr "Ссылка в свободной форме"
+
+#: apps/lms/models/course_link.py:13
+msgid "Course links"
+msgstr "Ссылки в свободной форме"
+
+#: apps/lms/models/lesson.py:121
 msgctxt "lms"
 msgid "Question"
 msgstr "Домашка"
 
-#: apps/lms/models/lesson.py:87 apps/lms/models/module.py:35
+#: apps/lms/models/lesson.py:125 apps/lms/models/module.py:35
 msgid "Hidden"
 msgstr "Скрыт"
 
-#: apps/lms/models/lesson.py:87 apps/lms/models/module.py:35
+#: apps/lms/models/lesson.py:125 apps/lms/models/module.py:35
 msgid "Users can't find such materials in the listing"
 msgstr "Студенты не видят"
 
-#: apps/lms/models/lesson.py:94
+#: apps/lms/models/lesson.py:132
 msgctxt "lms"
 msgid "Lesson"
 msgstr "Урок"
 
-#: apps/lms/models/lesson.py:95
+#: apps/lms/models/lesson.py:133
 msgctxt "lms"
 msgid "Lessons"
 msgstr "Уроки"
@@ -575,32 +583,36 @@ msgid "LMS"
 msgstr ""
 
 #: apps/notion/admin/material.py:83
-#, fuzzy
-#| msgid "Notion page id"
 msgid "Notion"
-msgstr "ID страницы в ноушене"
+msgstr "Ноушен"
 
-#: apps/notion/admin/video.py:26 core/admin/video.py:11
+#: apps/notion/admin/video.py:18
+msgid "Please add youtube id"
+msgstr "Сссылка на youtube обязательна"
+
+#: apps/notion/admin/video.py:22
+msgid "This video is already in the database"
+msgstr "Это видео уже добавлено"
+
+#: apps/notion/admin/video.py:38 core/admin/video.py:11
 msgid "Youtube"
 msgstr "Youtube"
 
-#: apps/notion/admin/video.py:33 core/admin/video.py:12
+#: apps/notion/admin/video.py:45 core/admin/video.py:12
 msgid "RuTube"
 msgstr "Rutube"
 
 #: apps/notion/models/asset.py:11
 msgid "Image size in bytes"
-msgstr ""
+msgstr "Размер картинки, байт"
 
 #: apps/notion/models/asset.py:15
-#, fuzzy
-#| msgid "Notion page id"
 msgid "Notion asset"
-msgstr "ID страницы в ноушене"
+msgstr "Файл ноушена"
 
 #: apps/notion/models/asset.py:16
 msgid "Notion assets"
-msgstr "Файлы"
+msgstr "Файлы ноушена"
 
 #: apps/notion/models/material.py:66
 msgid "Our page id"
@@ -1216,10 +1228,6 @@ msgstr "Нет"
 #: core/admin/video.py:11 core/admin/video.py:12
 msgid "Paste it from the address bar"
 msgstr "Скопируйте адрес из строки браузера"
-
-#: core/admin/video.py:31
-msgid "This video is already in the database"
-msgstr "Это видео уже добавлено"
 
 #~ msgid "Lead count"
 #~ msgstr "Количество лидов"

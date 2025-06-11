@@ -3,7 +3,7 @@ import pytest
 pytestmark = [pytest.mark.django_db]
 
 
-def test_list(api, course):
+def test_fields(api, course):
     got = api.get("/api/v2/purchased-courses/")["results"]
 
     assert got[0]["id"] == course.id
@@ -17,6 +17,20 @@ def test_list(api, course):
     assert got[0]["chat"] == "https://t.me/chat"
     assert got[0]["calendar_ios"] == "ios://cal"
     assert got[0]["calendar_google"] == "google://cal"
+
+    assert got[0]["links"] == []
+
+
+def test_links(api, course, mixer):
+    mixer.blend("lms.CourseLink", course=course, name="Как учиться", url="/materials/e0e245e30a5a439b91402ba46144b51c")
+    mixer.blend("lms.CourseLink", course=course, name="Как учиться 2", url="https://how.to.learn.com")
+
+    got = api.get("/api/v2/purchased-courses/")["results"]
+
+    assert got[0]["links"][0]["name"] == "Как учиться"
+    assert got[0]["links"][0]["url"] == "/materials/e0e245e30a5a439b91402ba46144b51c"
+    assert got[0]["links"][1]["name"] == "Как учиться 2"
+    assert got[0]["links"][1]["url"] == "https://how.to.learn.com"
 
 
 @pytest.mark.usefixtures("unpaid_order")

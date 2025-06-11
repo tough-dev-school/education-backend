@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 class AnswerCrossCheckQuerySet(models.QuerySet):
     def for_viewset(self) -> "AnswerCrossCheckQuerySet":
-        return self.select_related("checker", "answer")
+        return self.select_related("checker", "answer", "answer__question")
 
     def count_for_question(self, question: "Question") -> dict[str, int]:
         return self.filter(answer__question=question).aggregate(

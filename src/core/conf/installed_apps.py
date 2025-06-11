@@ -10,7 +10,7 @@ INSTALLED_APPS = [
     "anymail",
     "axes",
     "corsheaders",
-    # "debug_toolbar",
+    "debug_toolbar",
     "dj_rest_auth",
     "django_filters",
     "drf_spectacular",
@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     "prettyjson",
     "rest_framework",
     "rest_framework.authtoken",
+    # "silk",
 
     "apps.a12n",
     "apps.amocrm",

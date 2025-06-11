@@ -3,8 +3,9 @@ import uuid
 from urllib.parse import urljoin, urlparse
 
 from django.conf import settings
-from django.db.models import Count, Prefetch, Q
-from django.db.models.query_utils import FilteredRelation
+from django.db.models import Count, IntegerField, Prefetch
+from django.db.models.expressions import RawSQL
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from tree_queries.models import TreeNode
 from tree_queries.query import TreeQuerySet
@@ -17,55 +18,35 @@ from core.models import TestUtilsMixin, models
 
 class AnswerQuerySet(TreeQuerySet):
     def for_viewset(self) -> "AnswerQuerySet":
-        return self.with_tree_fields().select_related("author", "question")
+        return self.with_tree_fields().with_children_count().select_related("author", "question")
 
     def prefetch_reactions(self) -> "AnswerQuerySet":
         """
-        Must be called after all other queryset methods if needed with allowed_for_user method
-        due to iterator() usage in allowed_for_user
+        Prefetch reactions for the queryset
         """
         return self.prefetch_related(Prefetch("reactions", queryset=Reaction.objects.for_viewset()))
 
-    def accessed_by(self, user: User) -> "AnswerQuerySet":
-        return (
-            self.with_tree_fields()
-            .annotate(
-                access_log_entries_for_this_user=FilteredRelation("answeraccesslogentry", condition=Q(answeraccesslogentry__user=user)),
-            )
-            .filter(
-                Q(author=user) | Q(access_log_entries_for_this_user__user=user),
-            )
-        )
-
-    def allowed_for_user(self, user: User) -> "AnswerQuerySet":
-        """
-        Return all child answers of allowed to access answers
-
-        The answer is allowed to access for user:
-            1. If user has permissions 'homework.see_all_answers': all answers without restrictions
-            2. All other users: answers where user is author or any other answers that have ever been accessed
-            by given user
-        """
-        if user.has_perm("homework.see_all_answers"):
-            return self
-
-        accessed_answers = self.accessed_by(user)
-
-        roots_of_accessed_answers = [str(answer.tree_path[0]) for answer in accessed_answers.iterator()]
-
-        if len(roots_of_accessed_answers) > 0:
-            return self.with_tree_fields().extra(where=[f"tree_path[1] in ({','.join(roots_of_accessed_answers)})"])  # NOQA: S610
-        else:
-            return self.none()
-
     def with_crosscheck_count(self) -> "AnswerQuerySet":
         return self.annotate(crosscheck_count=Count("answercrosscheck"))
+
+    def for_user(self, user: User) -> "AnswerQuerySet":
+        return self.filter(author=user)
 
     def root_only(self) -> "AnswerQuerySet":
         return self.filter(parent__isnull=True)
 
     def with_children_count(self) -> "AnswerQuerySet":
-        return self.annotate(children_count=Count("children"))
+        return self.annotate(  # SQL here cuz django-tree-queries make too long queries
+            children_count=RawSQL(
+                """
+                SELECT COUNT(*)
+                FROM homework_answer AS child
+                WHERE child.parent_id = homework_answer.id
+                """,
+                [],
+                output_field=IntegerField(),
+            )
+        )
 
 
 class Answer(TestUtilsMixin, TreeNode):
@@ -134,11 +115,19 @@ class Answer(TestUtilsMixin, TreeNode):
         """Can be used to determine homework answer"""
         return self.parent is None
 
+    @property
+    def is_editable(self) -> bool:
+        """May be edited by user"""
+        return timezone.now() - self.created < settings.HOMEWORK_ANSWER_EDIT_PERIOD
+
     def is_author_of_root_answer(self, user: "User") -> bool:
         return self.get_root_answer().author == user
 
+    def get_comments(self) -> "AnswerQuerySet":
+        return self.get_first_level_descendants().order_by("created")
+
     def get_limited_comments_for_user_by_crosschecks(self, user: "User") -> "AnswerQuerySet":
-        queryset = self.get_first_level_descendants().order_by("created")
+        queryset = self.get_comments()
 
         if not self.is_root or not self.is_author_of_root_answer(user):
             return queryset

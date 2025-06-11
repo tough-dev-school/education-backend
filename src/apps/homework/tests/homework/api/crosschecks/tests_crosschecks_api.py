@@ -31,10 +31,16 @@ def test_base_response(api, question, crosscheck):
     got = api.get(f"/api/v2/homework/crosschecks/?question={question.slug}")[0]
 
     assert got["answer"]["url"] == crosscheck.answer.get_absolute_url()
+    assert got["answer"]["slug"] == str(crosscheck.answer.slug)
+
     assert got["answer"]["author"]["uuid"] == str(crosscheck.answer.author.uuid)
     assert got["answer"]["author"]["first_name"] == crosscheck.answer.author.first_name
     assert got["answer"]["author"]["last_name"] == crosscheck.answer.author.last_name
     assert got["answer"]["author"]["avatar"] is None
+
+    assert got["answer"]["question"]["slug"] == str(question.slug)
+    assert got["answer"]["question"]["name"] == question.name
+    assert "text" in got["answer"]["question"]
 
 
 @pytest.mark.parametrize(("checked", "is_checked"), [(None, False), (datetime(2032, 1, 1, tzinfo=timezone.utc), True)])
@@ -47,8 +53,8 @@ def test_is_checked(api, question, crosscheck, checked, is_checked):
     assert got["is_checked"] is is_checked
 
 
-def test_exclude_cross_check_from_another_checker(api, question, crosscheck, ya_user):
-    crosscheck.checker = ya_user
+def test_exclude_cross_check_from_another_checker(api, question, crosscheck, another_user):
+    crosscheck.checker = another_user
     crosscheck.save()
 
     got = api.get(f"/api/v2/homework/crosschecks/?question={question.slug}")

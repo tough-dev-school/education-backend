@@ -1,6 +1,7 @@
 from typing import Any, Type
 
 import stripe
+from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -38,12 +39,14 @@ class BaseStripeWebhookView(APIView):
             raise AppServiceException("Not a valid webhook request")
 
 
+@extend_schema(exclude=True)
 class StripeWebhookUSDView(BaseStripeWebhookView):
     @property
     def bank(self) -> Type[BaseStripeBank]:
         return StripeBankUSD
 
 
+@extend_schema(exclude=True)
 class StripeWebhookKZTView(BaseStripeWebhookView):
     @property
     def bank(self) -> Type[BaseStripeBank]:

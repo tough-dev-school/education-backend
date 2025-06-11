@@ -3,7 +3,7 @@ from typing import Literal
 from drf_spectacular.utils import OpenApiExample, extend_schema_field, extend_schema_serializer, inline_serializer
 from rest_framework import serializers
 
-from apps.homework.api.serializers import QuestionSerializer
+from apps.homework.api.serializers import HomeworkStatsSerializer, QuestionSerializer
 from apps.homework.models import Question
 from apps.lms.models import Call, Course, Lesson, Module
 from apps.notion.models import Material as NotionMaterial
@@ -84,31 +84,13 @@ class CallSerializer(serializers.ModelSerializer):
         return None
 
 
-class HomeworkSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Question
-        fields = [
-            "is_sent",
-        ]
-
-
-class CrosscheckStatsSerializer(serializers.Serializer):  # for docs only
-    total = serializers.IntegerField()
-    checked = serializers.IntegerField()
-
-
-class HomeworkStatsSerializer(serializers.Serializer):  # for docs only
-    is_sent = serializers.BooleanField()
-    crosschecks = CrosscheckStatsSerializer(required=False)
-    question = QuestionSerializer()
-
-
-class LessonForUserSerializer(serializers.ModelSerializer):
+class LessonSerializer(serializers.ModelSerializer):
     """Serialize lesson for the user, lesson should be annotated with crosschecks stats"""
 
     material = NotionMaterialSerializer(required=False)
     call = CallSerializer(required=False)
     homework = serializers.SerializerMethodField()
+    question = QuestionSerializer()
 
     class Meta:
         model = Lesson
@@ -116,20 +98,17 @@ class LessonForUserSerializer(serializers.ModelSerializer):
             "id",
             "material",
             "homework",
+            "question",
             "call",
         ]
 
     @extend_schema_field(field=HomeworkStatsSerializer)
     def get_homework(self, lesson: Lesson) -> dict | None:
         if lesson.question is not None:
-            return {
-                "is_sent": lesson.is_sent,
-                "question": QuestionSerializer(lesson.question).data,
-                "crosschecks": {
-                    "total": lesson.crosschecks_total,
-                    "checked": lesson.crosschecks_checked,
-                },
-            }
+            user = self.context["request"].user
+            question = Question.objects.for_user(user).get(pk=lesson.question_id)  # extra N+1 query to annotate the question with statistics
+
+            return HomeworkStatsSerializer(question, context=self.context).data
 
 
 @extend_schema_serializer(
