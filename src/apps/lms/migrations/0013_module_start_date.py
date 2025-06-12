@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('lms', '0012_course_links'),
+        ("lms", "0012_course_links"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='module',
-            name='start_date',
-            field=models.DateTimeField(blank=True, null=True, verbose_name='Start date'),
+            model_name="module",
+            name="start_date",
+            field=models.DateTimeField(blank=True, null=True, verbose_name="Start date"),
         ),
     ]
