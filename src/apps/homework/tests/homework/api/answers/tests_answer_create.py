@@ -225,8 +225,8 @@ def test_doesnt_marks_crosscheck_as_checked_for_another_answer(api, question, an
     assert crosscheck.checked is None
 
 
-def test_doesnt_marks_crosscheck_as_checked_for_another_checker(api, question, another_answer, ya_user, mixer):
-    crosscheck = mixer.blend("homework.AnswerCrossCheck", answer=another_answer, checker=ya_user)
+def test_doesnt_marks_crosscheck_as_checked_for_another_checker(api, question, another_answer, another_user, mixer):
+    crosscheck = mixer.blend("homework.AnswerCrossCheck", answer=another_answer, checker=another_user)
 
     api.post(
         "/api/v2/homework/answers/",

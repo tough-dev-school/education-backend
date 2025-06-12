@@ -53,8 +53,8 @@ def test_is_checked(api, question, crosscheck, checked, is_checked):
     assert got["is_checked"] is is_checked
 
 
-def test_exclude_cross_check_from_another_checker(api, question, crosscheck, ya_user):
-    crosscheck.checker = ya_user
+def test_exclude_cross_check_from_another_checker(api, question, crosscheck, another_user):
+    crosscheck.checker = another_user
     crosscheck.save()
 
     got = api.get(f"/api/v2/homework/crosschecks/?question={question.slug}")
