@@ -4,7 +4,7 @@ import pytest
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures("purchase", "_set_current_user"),
+    pytest.mark.usefixtures("purchase"),
 ]
 
 
@@ -49,34 +49,34 @@ def test_breadcrumbs(api, question, factory):
     assert got["breadcrumbs"]["course"]["id"] == module.course_id
 
 
-def test_403_for_not_purchased_users(api, question, purchase):
-    purchase.refund(purchase.price)
+@pytest.mark.usefixtures("_no_purchase")
+def test_403_for_not_purchased_users(api, question):
+    assert api.user.is_superuser is False
+    assert not api.user.has_perm("homework.see_all_questions")
 
     api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=403)
 
 
-def test_ok_for_superusers_even_when_they_did_not_purchase_the_course(api, question, purchase):
-    purchase.refund(purchase.price)
-
+@pytest.mark.usefixtures("_no_purchase")
+def test_ok_for_superusers_even_when_they_did_not_purchase_the_course(api, question):
     api.user.update(is_superuser=True)
 
     api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=200)
 
 
-def test_ok_for_users_with_permission_even_when_they_did_not_purchase_the_course(api, question, purchase):
-    purchase.refund(purchase.price)
-
+@pytest.mark.usefixtures("_no_purchase")
+def test_ok_for_users_with_permission_even_when_they_did_not_purchase_the_course(api, question):
     api.user.add_perm("homework.question.see_all_questions")
 
     api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=200)
 
 
-def test_ok_if_user_has_not_purchased_but_permission_check_is_disabled(api, settings, question, purchase):
+@pytest.mark.usefixtures("_no_purchase")
+def test_ok_if_user_has_not_purchased_but_permission_check_is_disabled(api, settings, question):
     settings.DISABLE_HOMEWORK_PERMISSIONS_CHECKING = True
-    purchase.refund(purchase.price)
 
     api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=200)
 
 
 def test_no_anon(anon, question):
-    anon.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=401)
+    anon.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=404)
