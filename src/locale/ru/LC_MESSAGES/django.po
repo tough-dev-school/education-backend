@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-29 16:17+0300\n"
+"POT-Creation-Date: 2025-06-11 18:17+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -212,7 +212,7 @@ msgstr "В списке только не запущенные и не заар�
 
 #: apps/chains/admin/message.py:49 apps/chains/models/chain.py:33
 #: apps/diplomas/admin/diploma.py:56 apps/homework/admin/answer/admin.py:56
-#: apps/homework/admin/answer/admin.py:108
+#: apps/homework/admin/crosscheck/admin.py:37
 #: apps/homework/admin/question/form.py:14 apps/lms/admin/lesson/admin.py:56
 #: apps/orders/models/order.py:60 apps/products/admin/filters.py:12
 #: apps/products/models/course.py:90 apps/studying/models.py:9
@@ -353,28 +353,28 @@ msgid "Crosschecking people"
 msgstr "Учеников проверяет"
 
 #: apps/homework/admin/answer/admin.py:69
-#: apps/homework/admin/answer/admin.py:119 apps/orders/models/refund.py:27
+#: apps/homework/admin/crosscheck/admin.py:48 apps/orders/models/refund.py:27
 msgid "Author"
 msgstr "Автор"
-
-#: apps/homework/admin/answer/admin.py:115 apps/lms/admin/lesson/admin.py:71
-msgid "Question"
-msgstr "Вопрос"
-
-#: apps/homework/admin/answer/admin.py:123
-msgid "View"
-msgstr ""
 
 #: apps/homework/admin/answer/filters.py:9
 msgid "Is root answer"
 msgstr "Первый ответ"
+
+#: apps/homework/admin/crosscheck/admin.py:44 apps/lms/admin/lesson/admin.py:71
+msgid "Question"
+msgstr "Вопрос"
+
+#: apps/homework/admin/crosscheck/admin.py:52
+msgid "View"
+msgstr ""
 
 #: apps/homework/admin/question/admin.py:39
 msgid "Dispatch crosscheck"
 msgstr "Запустить p2p-проверку домашки"
 
 #: apps/homework/admin/question/form.py:15 apps/lms/admin/lesson/admin.py:60
-#: apps/lms/models/lesson.py:115 apps/lms/models/module.py:44
+#: apps/lms/models/lesson.py:95 apps/lms/models/module.py:45
 msgid "Module"
 msgstr "Модуль"
 
@@ -385,19 +385,19 @@ msgstr "Модуль"
 msgid "Lesson"
 msgstr "Урок"
 
-#: apps/homework/models/answer.py:50
+#: apps/homework/models/answer.py:62
 msgid "Exclude from cross-checking"
 msgstr "Исключить из p2p-проверки"
 
-#: apps/homework/models/answer.py:55
+#: apps/homework/models/answer.py:67
 msgid "Homework answer"
 msgstr "Ответ на домашку"
 
-#: apps/homework/models/answer.py:56
+#: apps/homework/models/answer.py:68
 msgid "Homework answers"
 msgstr "Ответы на домашку"
 
-#: apps/homework/models/answer.py:59
+#: apps/homework/models/answer.py:71
 msgid "May see answers from every user"
 msgstr "Видит все ответы на домашку"
 
@@ -445,7 +445,7 @@ msgstr "Урок не найден"
 msgid "Change"
 msgstr "Изменить"
 
-#: apps/lms/admin/lesson/inline.py:51 apps/lms/models/lesson.py:118
+#: apps/lms/admin/lesson/inline.py:51 apps/lms/models/lesson.py:98
 msgctxt "lessons"
 msgid "Material"
 msgstr "Страница в ноушене"
@@ -458,7 +458,7 @@ msgstr "Ссылки"
 msgid "Module count"
 msgstr "Модули"
 
-#: apps/lms/admin/module/admin.py:43
+#: apps/lms/admin/module/admin.py:44
 msgid "Lesson count"
 msgstr "Уроки"
 
@@ -475,7 +475,7 @@ msgctxt "lms"
 msgid "Call date"
 msgstr "Дата"
 
-#: apps/lms/models/call.py:19 apps/lms/models/lesson.py:124
+#: apps/lms/models/call.py:19 apps/lms/models/lesson.py:104
 msgctxt "lms"
 msgid "Call"
 msgstr "Созвон"
@@ -493,25 +493,25 @@ msgstr "Ссылка в свободной форме"
 msgid "Course links"
 msgstr "Ссылки в свободной форме"
 
-#: apps/lms/models/lesson.py:121
+#: apps/lms/models/lesson.py:101
 msgctxt "lms"
 msgid "Question"
 msgstr "Домашка"
 
-#: apps/lms/models/lesson.py:125 apps/lms/models/module.py:35
+#: apps/lms/models/lesson.py:105 apps/lms/models/module.py:36
 msgid "Hidden"
 msgstr "Скрыт"
 
-#: apps/lms/models/lesson.py:125 apps/lms/models/module.py:35
+#: apps/lms/models/lesson.py:105 apps/lms/models/module.py:36
 msgid "Users can't find such materials in the listing"
 msgstr "Студенты не видят"
 
-#: apps/lms/models/lesson.py:132
+#: apps/lms/models/lesson.py:112
 msgctxt "lms"
 msgid "Lesson"
 msgstr "Урок"
 
-#: apps/lms/models/lesson.py:133
+#: apps/lms/models/lesson.py:113
 msgctxt "lms"
 msgid "Lessons"
 msgstr "Уроки"
@@ -527,14 +527,18 @@ msgid "Courses"
 msgstr "Курсы"
 
 #: apps/lms/models/module.py:32
+msgid "Start date"
+msgstr "Дата начала"
+
+#: apps/lms/models/module.py:33
 msgid "Short description"
 msgstr "Подзаг"
 
-#: apps/lms/models/module.py:33
+#: apps/lms/models/module.py:34
 msgid "Text"
 msgstr "Текст"
 
-#: apps/lms/models/module.py:45
+#: apps/lms/models/module.py:46
 msgid "Modules"
 msgstr "Модули"
 
