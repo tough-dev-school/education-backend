@@ -130,18 +130,18 @@ def test_video_is_not_rewritten_for_unknown_country(api, material):
 
 @pytest.mark.usefixtures("_rutube_video")
 @pytest.mark.parametrize(
-    "ip_addr, should_rewrite",
+    "country, should_rewrite",
     [
-        ("8.8.8.8", False),
-        ("77.88.44.55", True),
-        ("212.93.97.105", False),
+        ("XX", False),
+        ("RU", True),
+        ("LV", False),
     ],
 )
-def test_video_is_not_rewritten_for_russia(api, material, ip_addr, should_rewrite):
+def test_video_is_not_rewritten_for_russia(api, material, country, should_rewrite):
     got = api.get(
         f"/api/v2/materials/{material.page_id}/",
         headers={
-            "X-Forwarded-For": ip_addr,
+            "cf-ipcountry": country,
         },
     )["content"]
 
