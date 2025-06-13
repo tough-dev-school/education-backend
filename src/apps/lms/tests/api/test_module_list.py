@@ -10,6 +10,15 @@ def test_fields(api, course, module):
     assert got["results"][0]["id"] == module.id
     assert got["results"][0]["name"] == "Первая неделя"
     assert got["results"][0]["description"] == "Самая важная неделя"
+    assert got["results"][0]["start_date"] == "2032-12-01T15:30:00+03:00"
+
+
+def test_empty_start_date(api, course, module):
+    module.update(start_date=None)
+
+    got = api.get(f"/api/v2/lms/modules/?course={course.pk}")
+
+    assert got["results"][0]["start_date"] is None
 
 
 def test_markdown_in_text(api, course, module):

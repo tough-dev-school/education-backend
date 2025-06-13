@@ -13,6 +13,7 @@ from core.admin import ModelAdmin, admin
 class ModuleAdmin(SortableAdminBase, ModelAdmin):
     fields = [
         "name",
+        "start_date",
         "course",
         "description",
         "text",
