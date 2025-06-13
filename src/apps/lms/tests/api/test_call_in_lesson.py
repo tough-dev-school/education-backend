@@ -121,18 +121,19 @@ def test_rutube_only(api, module):
 
 
 @pytest.mark.parametrize(
-    ("country", "expected_provider"),
+    ("ip_addr", "expected_provider"),
     [
-        ("RU", "rutube"),
-        ("PL", "youtube"),
+        ("8.8.8.8", "youtube"),
+        ("77.88.44.55", "rutube"),
+        ("212.93.97.105", "youtube"),
     ],
 )
 @pytest.mark.usefixtures("_youtube_video", "_rutube_video")
-def test_country_based_rewriting(api, module, country, expected_provider):
+def test_country_based_rewriting(api, module, ip_addr, expected_provider):
     got = api.get(
         f"/api/v2/lms/lessons/?module={module.pk}",
         headers={
-            "cf-ipcountry": country,
+            "X-Forwarded-For": ip_addr,
         },
     )["results"][0]["call"]
 

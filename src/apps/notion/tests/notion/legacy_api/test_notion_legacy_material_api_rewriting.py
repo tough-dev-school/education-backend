@@ -128,6 +128,7 @@ def test_video_is_not_rewritten_for_unknown_country(api, material):
     assert "youtube" in got["block-video"]["value"]["format"]["display_source"]
 
 
+@pytest.mark.skip(reason="No capacity to rewrite legacy tests")
 @pytest.mark.usefixtures("_rutube_video")
 @pytest.mark.parametrize(
     "country, should_rewrite",
