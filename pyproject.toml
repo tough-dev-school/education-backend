@@ -42,6 +42,7 @@ djangorestframework = "^3.14.0"
 drf-jwt = "^1.19.2"
 drf-spectacular = {extras = ["sidecar"], version = "^0.28.0"}
 emoji = "^2.8.0"
+geoip2fast = "^1.2.2"
 httpx = {extras = ["http2"], version = "^0.27.0"}
 pillow = "^11.0.0"
 psycopg2-binary = "^2.9.7"
