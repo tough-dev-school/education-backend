@@ -27,6 +27,15 @@ jobs:
       - name: Lint
         run: make lint
 
+      - name: Install xmllint
+        uses: awalsh128/cache-apt-pkgs-action@v1
+        with:
+          packages: libxml2-utils
+          version: 1
+
+      - name: Lint XML files
+        run: find src/core -type f -name '*.xml'|xargs xmllint --noout
+
   test:
     needs: lint
     runs-on: ${{ contains(github.triggering_actor, '[bot]') && 'ubuntu-24.04' || 'ubuntu-8x' }}
