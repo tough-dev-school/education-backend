@@ -65,8 +65,8 @@ class NotionBlock:
         if self.type == "page":
             result = list()
             for key in ("page_icon", "page_cover"):
-                if key in self.format and is_notion_url(self.format[key]):  # type: ignore
-                    result.append(self.format[key])  # type: ignore
+                if key in self.format and is_notion_url(self.format[key]):
+                    result.append(self.format[key])
 
             return result
 
