@@ -191,6 +191,7 @@ ignore = [
     "PERF401",  # use a list comprehension to create a transformed list
     "PGH003",  # use specific rule codes when ignoring type issues
     "PGH004",  # use specific rule codes when using `noqa`
+    "PLC0415",  # import should be at the top of the file
     "PLR0913",  # too many arguments in function definition ({} > {})
     "PLR2004",  # magic value used in comparison, consider replacing {} with constant variable
     "PLR5501",  # use `elif` instead of `else` then `if` to reduce indentation
