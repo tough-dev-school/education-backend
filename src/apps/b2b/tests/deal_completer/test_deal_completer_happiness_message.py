@@ -37,7 +37,7 @@ def test_message_is_sent(send_message, completer, deal):
 
 
 def test_message_text(send_message, completer, deal):
-    deal.price = Decimal("200500")
+    deal.price = Decimal(200500)
     deal.customer.name = "Росатом"
 
     completer(deal=deal)()
