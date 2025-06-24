@@ -79,7 +79,7 @@ pytest-xdist = "^3.3.1"
 requests-mock = "^1.11.0"
 respx = "^0.22.0"
 rope = "^1.10.0"
-ruff = "^0.11.0"
+ruff = "^0.12.0"
 toml-sort = "^0.24.0"
 types-babel = "^2.11.0.15"
 types-bleach = "^6.0.0.4"
@@ -191,6 +191,7 @@ ignore = [
     "PERF401",  # use a list comprehension to create a transformed list
     "PGH003",  # use specific rule codes when ignoring type issues
     "PGH004",  # use specific rule codes when using `noqa`
+    "PLC0415",  # import should be at the top of the file
     "PLR0913",  # too many arguments in function definition ({} > {})
     "PLR2004",  # magic value used in comparison, consider replacing {} with constant variable
     "PLR5501",  # use `elif` instead of `else` then `if` to reduce indentation

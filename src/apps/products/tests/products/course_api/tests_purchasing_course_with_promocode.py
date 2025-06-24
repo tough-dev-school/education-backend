@@ -42,7 +42,7 @@ def test_incompatible_promocode(call_purchase, another_course, testcode):
     call_purchase(promocode="TESTCODE")
     placed = get_order()
 
-    assert placed.price == Decimal("1900"), "promocode should not be accepteed"
+    assert placed.price == Decimal(1900), "promocode should not be accepteed"
 
 
 @pytest.mark.freeze_time("2032-12-01 23:59")
@@ -52,7 +52,7 @@ def test_expired_promocode(call_purchase, testcode):
     call_purchase(promocode="TESTCODE")
     placed = get_order()
 
-    assert placed.price == Decimal("1900"), "promocode should not be accepteed"
+    assert placed.price == Decimal(1900), "promocode should not be accepteed"
 
 
 def test_promocode_is_stored(call_purchase, testcode):
