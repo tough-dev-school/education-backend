@@ -7,7 +7,9 @@ from core.models import SubqueryCount, TimestampedModel, models
 
 
 class ModuleQuerySet(QuerySet):
-    def for_viewset(self) -> "ModuleQuerySet":
+    def for_viewset(self, include_hidden: bool = False) -> "ModuleQuerySet":
+        if include_hidden:
+            return self.order_by("position")
         return self.filter(hidden=False).order_by("position")
 
     def for_user(self, user: User) -> "ModuleQuerySet":
