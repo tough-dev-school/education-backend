@@ -26,6 +26,7 @@ def module(factory, course):
         start_date="2032-12-01 15:30+03:00",
         name="Первая неделя",
         description="Самая важная неделя",
+        text="Текст модуля",
     )
 
 
