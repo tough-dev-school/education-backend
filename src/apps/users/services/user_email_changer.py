@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from django.core.exceptions import ValidationError
+
 from apps.users.models import User
 from core.services import BaseService
 
@@ -11,11 +13,15 @@ class UserEmailChanger(BaseService):
 
     def act(self) -> None:
         if not User.objects.filter(email=self.new_email).exists():
-            self.change_email_for_existing_user()
+            self._check_if_username_is_not_taken(self.new_email)
+            self.user.email = self.new_email
+            self.user.username = self.new_email
+            self.user.save(update_fields=["email", "username"])
 
         else:
             raise NotImplementedError("User merging is not implemented yet")
 
-    def change_email_for_existing_user(self) -> None:
-        self.user.email = self.new_email
-        self.user.save(update_fields=["email"])
+    @staticmethod
+    def _check_if_username_is_not_taken(username: str) -> None:
+        if User.objects.filter(username=username).exists():
+            raise ValidationError("Username already exists")

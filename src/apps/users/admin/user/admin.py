@@ -1,6 +1,6 @@
 from django.utils.translation import gettext_lazy as _
 
-from apps.users.admin.user.forms import PasswordlessUserCreationForm
+from apps.users.admin.user import forms
 from apps.users.models import AdminUserProxy
 from core.admin import ModelAdmin, admin
 
@@ -9,7 +9,8 @@ from core.admin import ModelAdmin, admin
 class UserAdmin(ModelAdmin):
     """Basic admin for students"""
 
-    add_form = PasswordlessUserCreationForm
+    add_form = forms.PasswordlessUserCreationForm
+    form = forms.UserChangeForm
     add_fieldsets = (
         (
             None,
@@ -33,6 +34,7 @@ class UserAdmin(ModelAdmin):
     )
     readonly_fields = [
         "tags",
+        "username",
     ]
 
 
