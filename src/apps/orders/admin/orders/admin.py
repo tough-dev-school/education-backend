@@ -54,6 +54,7 @@ class OrderAdmin(ModelAdmin):
     readonly_fields = [
         "author",
         "deal",
+        "email",
         "login_as",
         "paid",
         "shipped",
@@ -86,6 +87,10 @@ class OrderAdmin(ModelAdmin):
                 "course",
             )
         )
+
+    @admin.display(description=_("email"))
+    def email(self, obj: Order) -> str:
+        return obj.user.email
 
     @admin.display(description=_("Price"), ordering="price")
     def formatted_price(self, obj: Order) -> str:

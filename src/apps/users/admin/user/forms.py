@@ -44,12 +44,14 @@ class PasswordlessUserCreationForm(ModelForm):
 class UserChangeForm(_UserChangeForm):
     def clean_email(self) -> str:
         from apps.users.services import UserEmailChanger
+
         if self.initial["email"] != self.cleaned_data["email"]:
             if User.objects.exclude(pk=self.instance.pk).filter(Q(email=self.cleaned_data["email"]) | Q(username=self.cleaned_data["email"])).exists():
                 raise ValidationError(_("User with such email or login already exists"))
-            UserEmailChanger(user=self.instance, new_email=self.cleaned_data['email'])()
+            UserEmailChanger(user=self.instance, new_email=self.cleaned_data["email"])()
 
         return self.cleaned_data["email"]
+
 
 __all__ = [
     "PasswordlessUserCreationForm",
