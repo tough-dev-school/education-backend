@@ -69,7 +69,7 @@ class OrderAdmin(ModelAdmin):
         (
             None,
             {
-                "fields": ["user", "course", "price", "email", "deal", "author", "login_as", "paid", "shipped", "bank_id"],
+                "fields": ["user", "email", "course", "price", "deal", "author", "login_as", "paid", "shipped", "bank_id"],
             },
         ),
     ]
