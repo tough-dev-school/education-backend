@@ -1,4 +1,8 @@
-from django.db.models import QuerySet
+from typing import Any
+
+from django.db.models import ForeignKey, QuerySet
+from django.forms.models import ModelChoiceField
+from django.http import HttpRequest
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 from rest_framework.request import Request
@@ -10,6 +14,7 @@ from apps.orders.admin.orders.forms import OrderAddForm, OrderChangeForm
 from apps.orders.admin.refunds.admin import RefundInline
 from apps.orders.models import Order
 from apps.products.admin.filters import CourseFilter
+from apps.products.models import Course
 from apps.users.models import AdminUserProxy
 from core.admin import ModelAdmin, admin
 from core.pricing import format_price
@@ -69,10 +74,6 @@ class OrderAdmin(ModelAdmin):
         ),
     ]
 
-    foreignkey_queryset_overrides = {
-        "orders.Order.course": lambda apps: apps.get_model("products.Course").objects.for_admin(),
-    }
-
     class Media:
         css = {"all": ["admin/order_list.css"]}
         js = ["admin/js/vendor/jquery/jquery.js", "admin/check_partial_refunds.js"]
@@ -87,6 +88,15 @@ class OrderAdmin(ModelAdmin):
                 "course",
             )
         )
+
+    def formfield_for_foreignkey(self, db_field: ForeignKey, request: HttpRequest, **kwargs: Any) -> ModelChoiceField:
+        if str(db_field) == "orders.Order.course" and request.method == "GET":
+            if "add" in request.path:
+                kwargs["queryset"] = Course.objects.for_admin()
+            else:
+                kwargs["queryset"] = Course.objects.select_related("group")
+
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     @admin.display(description=_("email"))
     def email(self, obj: Order) -> str:
