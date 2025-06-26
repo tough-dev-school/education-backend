@@ -7,7 +7,10 @@ from core.admin import ModelAdmin, admin
 
 @admin.register(AdminUserProxy)
 class UserAdmin(ModelAdmin):
-    """Basic admin for students"""
+    """Replacement of django stock admin
+
+    Takes care of emails uniqueness and our custom fields
+    """
 
     add_form = forms.PasswordlessUserCreationForm
     form = forms.UserChangeForm
