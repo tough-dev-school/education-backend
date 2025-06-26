@@ -10,7 +10,7 @@ from apps.orders.admin.orders.forms import OrderAddForm, OrderChangeForm
 from apps.orders.admin.refunds.admin import RefundInline
 from apps.orders.models import Order
 from apps.products.admin.filters import CourseFilter
-from apps.users.models import Student
+from apps.users.models import AdminUserProxy
 from core.admin import ModelAdmin, admin
 from core.pricing import format_price
 
@@ -113,7 +113,7 @@ class OrderAdmin(ModelAdmin):
         if obj.pk is None:
             return "—"  # type: ignore
 
-        login_as_url = Student.objects.get(pk=obj.user_id).get_absolute_url()
+        login_as_url = AdminUserProxy.objects.get(pk=obj.user_id).get_absolute_url()
 
         return f'<a href="{login_as_url}" target="_blank">Зайти</a>'
 

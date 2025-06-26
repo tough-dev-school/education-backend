@@ -100,7 +100,7 @@ class User(TestUtilsMixin, AbstractUser):
             self.user_permissions.add(permission)
 
 
-class Student(User):
+class AdminUserProxy(User):
     """Proxy model used for not-trusted administration of the user accounts"""
 
     class Meta:

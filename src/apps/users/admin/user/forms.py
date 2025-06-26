@@ -3,7 +3,7 @@ from typing import Any
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from apps.users.models import Student, User
+from apps.users.models import AdminUserProxy, User
 from core.admin import ModelForm
 
 
@@ -13,7 +13,7 @@ class PasswordlessUserCreationForm(ModelForm):
     last_name = forms.CharField(label=_("last name"), required=False)
 
     class Meta:
-        model = Student
+        model = AdminUserProxy
         fields = [
             "email",
             "first_name",
@@ -36,3 +36,8 @@ class PasswordlessUserCreationForm(ModelForm):
 
     @staticmethod
     def _send_to_dashamail(user: User) -> None: ...
+
+
+__all__ = [
+    "PasswordlessUserCreationForm",
+]
