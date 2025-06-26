@@ -19,7 +19,7 @@ def _set_frontend_url(settings):
 
 @pytest.fixture
 def student(mixer):
-    return mixer.blend("users.Student")
+    return mixer.blend("users.AdminUserProxy")
 
 
 def test_url(student):
