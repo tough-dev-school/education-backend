@@ -68,5 +68,5 @@ class AnswerAdmin(ModelAdmin):
     @mark_safe
     @admin.display(description=_("Author"), ordering="author")
     def _author(self, obj: Answer) -> str:
-        author_url = reverse("admin:users_student_change", args=[obj.author_id])
+        author_url = reverse("admin:users_adminuserproxy_change", args=[obj.author_id])
         return f'<a href="{author_url}">{obj.author}</a>'
