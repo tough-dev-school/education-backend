@@ -10,7 +10,7 @@ pytestmark = [
 
 
 def test_get_currency_rate(factory):
-    factory.currency_rate(name="RUB", rate=Decimal(1050))
+    factory.currency(name="RUB", rate=Decimal(1050))
 
     assert TinkoffBank.get_currency_rate() == 1050
 
