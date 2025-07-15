@@ -14,6 +14,7 @@ def deal(
     author: User | None = None,
     course: Course | None = None,
     price: Decimal | None = None,
+    currency: str | None = "RUB",
     student_count: int | None = 0,
     **kwargs: dict[str, Any],
 ) -> Deal:
@@ -21,12 +22,14 @@ def deal(
     author = self.mixer.blend("users.User") if author is None else author
     course = self.course() if course is None else course
     price = price if price is not None else Decimal(self.price())
+    currency = self.currency(name=currency)
 
     deal = Deal.objects.create(
         customer=customer,
         course=course,
         price=price,
         author=author,
+        currency=currency,  # type: ignore
         **kwargs,
     )
 

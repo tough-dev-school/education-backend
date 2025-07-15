@@ -15,6 +15,7 @@ def test_deal_is_created(customer, course):
         customer=customer,
         course=course,
         price=Decimal("100.50"),
+        currency='RUB',
     )()
 
     assert deal.customer == customer

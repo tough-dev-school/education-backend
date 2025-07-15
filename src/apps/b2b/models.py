@@ -26,6 +26,7 @@ class Deal(TimestampedModel):
     canceled = models.DateTimeField(_("Date when the deal got canceled"), null=True, blank=True)
     shipped_without_payment = models.DateTimeField(_("Date when the deal got shipped without payment"), null=True, blank=True)
     price = models.DecimalField(_("Price"), max_digits=9, decimal_places=2)
+    currency = models.ForeignKey("banking.Currency", verbose_name=_("Currency"), on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = _("Deal")
