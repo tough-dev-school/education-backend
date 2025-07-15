@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="order",
             name="user",
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to="users.student", verbose_name="User"),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to="users.User", verbose_name="User"),
+            # there was a reference to users.Student, but i renamed the model to users.AdminUserProxy for better nameing, and the migration broken
         ),
     ]

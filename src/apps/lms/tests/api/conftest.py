@@ -2,6 +2,14 @@ import pytest
 
 
 @pytest.fixture
+def api(api):
+    """We test it as normal student, not superuser to check permissions"""
+    api.user.update(is_superuser=False)
+
+    return api
+
+
+@pytest.fixture
 def course(factory):
     return factory.course()
 
@@ -13,7 +21,13 @@ def another_course(factory):
 
 @pytest.fixture
 def module(factory, course):
-    return factory.module(course=course)
+    return factory.module(
+        course=course,
+        start_date="2032-12-01 15:30+03:00",
+        name="Первая неделя",
+        description="Самая важная неделя",
+        text="Текст модуля",
+    )
 
 
 @pytest.fixture

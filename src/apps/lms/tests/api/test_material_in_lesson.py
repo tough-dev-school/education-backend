@@ -15,7 +15,7 @@ def test_no_material(api, module, lesson):
     assert got["results"][0]["material"] is None
 
 
-def test_attachmed_material(api, module, lesson, material):
+def test_attached_material(api, module, lesson, material):
     lesson.update(material=material)
 
     got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")

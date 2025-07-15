@@ -30,4 +30,5 @@
 - Follow Django REST framework patterns for API endpoints
 - Keep models thin, use services for business logic
 - Use factory pattern for object creation in tests
+- Use django.settings framework for constants: `from django.conf import settings` in the top module
 - Never use exception checking in management commands

@@ -4,7 +4,7 @@ from django.core.cache import cache
 
 from apps.notion.models import Video
 from apps.notion.types import BlockData as NotionBlockData
-from apps.notion.video import get_youtube_video_id
+from core.video import get_youtube_video_id
 
 
 def get_video_mapping() -> Mapping[str, Mapping[str, str]]:

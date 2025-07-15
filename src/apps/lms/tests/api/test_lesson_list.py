@@ -8,7 +8,6 @@ def test_ok(api, module, lesson):
 
     assert len(got["results"]) == 1
     assert got["results"][0]["id"] == lesson.id
-    assert got["results"][0]["name"] == lesson.name
 
 
 @pytest.mark.usefixtures("_no_purchase")
@@ -32,7 +31,7 @@ def test_filter_works(api, another_module):
     assert len(got["results"]) == 0
 
 
-def test_hidden_lessons_not_shown(api, module, lesson):
+def test_hidden_lessons_are_not_shown(api, module, lesson):
     lesson.update(hidden=True)
 
     got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")

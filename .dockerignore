@@ -4,3 +4,6 @@ storage/
 .env
 .git
 tests/
+.mypy_cache/
+src/.mypy_cache/
+.pytest_cache/

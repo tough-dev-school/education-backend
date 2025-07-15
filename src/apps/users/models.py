@@ -1,4 +1,5 @@
 import uuid
+from datetime import timedelta
 from typing import cast
 from urllib.parse import urljoin
 
@@ -99,7 +100,7 @@ class User(TestUtilsMixin, AbstractUser):
             self.user_permissions.add(permission)
 
 
-class Student(User):
+class AdminUserProxy(User):
     """Proxy model used for not-trusted administration of the user accounts"""
 
     class Meta:
@@ -111,4 +112,12 @@ class Student(User):
         return super().__str__()
 
     def get_absolute_url(self) -> str:
-        return urljoin(settings.FRONTEND_URL, f"/auth/as/{self.pk}/")
+        from apps.a12n.utils import get_jwt
+        from core.current_user import get_current_user
+
+        current_user = get_current_user()
+        if current_user is None:
+            raise RuntimeError("This method should be called by an authenticated user")
+
+        token = get_jwt(current_user, lifetime=timedelta(minutes=5))
+        return urljoin(settings.FRONTEND_URL, f"/auth/as/{self.pk}/?t={token}")

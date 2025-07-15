@@ -1,8 +1,6 @@
-from datetime import timedelta
 from typing import Any
 
 from django.conf import settings
-from django.utils import timezone
 from rest_framework import permissions
 from rest_framework.request import Request
 from rest_framework.views import APIView
@@ -44,12 +42,12 @@ class ShouldBeAuthorOrReadOnly(permissions.BasePermission):
         return obj.author == request.user
 
 
-class MayChangeAnswerOnlyForLimitedTime(permissions.BasePermission):
+class AnswerShouldBeEditable(permissions.BasePermission):
     def has_object_permission(self, request: Request, view: APIView, obj: Any) -> bool:
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        return timezone.now() - obj.created < timedelta(days=1)
+        return obj.is_editable
 
 
 class MayChangeAnswerOnlyWithoutDescendants(permissions.BasePermission):

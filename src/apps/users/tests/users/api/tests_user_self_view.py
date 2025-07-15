@@ -150,3 +150,24 @@ def test_user_update_avatar(api, factory):
     assert "http://" in got["avatar"]
     assert "/users/avatars/" in got["avatar"]
     assert ".gif" in api.user.avatar.url
+
+
+@pytest.mark.parametrize(
+    "ip_addr, country",
+    [
+        ("8.8.8.8", "US"),
+        ("77.88.44.55", "RU"),
+        ("127.0.0.1", "--"),
+    ],
+)
+def test_country_code_and_ip(api, ip_addr, country):
+    got = api.get(
+        "/api/v2/users/me/",
+        headers={
+            "X-Forwarded-For": ip_addr,
+        },
+        as_response=True,
+    )
+
+    assert got.headers["X-Request-IP"] == ip_addr
+    assert got.headers["X-Request-Country"] == country

@@ -1,25 +1,30 @@
 from django.apps import apps
-from django.contrib.auth.models import AnonymousUser
-from django.db.models import Exists, Index, OuterRef, QuerySet
+from django.db.models import Index, QuerySet
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
 from apps.users.models import User
-from core.models import SubqueryCount, TimestampedModel, models
+from core.models import TimestampedModel, models
 
 
 class LessonQuerySet(QuerySet):
-    def for_viewset(self, user: User | AnonymousUser) -> "LessonQuerySet":
-        if user.is_anonymous:
-            return self.none()
-
+    def for_viewset(self) -> "LessonQuerySet":
         return (
-            self.for_user(user).with_is_sent(user).with_crosscheck_stats(user).filter(hidden=False).select_related("question", "material").order_by("position")
+            self.filter(
+                hidden=False,
+            )
+            .select_related(
+                "question",
+                "material",
+            )
+            .order_by("position")
         )
 
     def for_user(self, user: User) -> "LessonQuerySet":
         purchased_courses = apps.get_model("studying.Study").objects.filter(student=user).values_list("course_id", flat=True)
-        return self.filter(module__course__in=purchased_courses)
+        return self.filter(
+            module__course__in=purchased_courses,
+        )
 
     def for_admin(self) -> "LessonQuerySet":
         return self.select_related(
@@ -27,37 +32,13 @@ class LessonQuerySet(QuerySet):
             "module__course",
             "module__course__group",
             "material",
-        )
-
-    def with_is_sent(self, user: User) -> "LessonQuerySet":
-        Answer = apps.get_model("homework.Answer")
-        user_answers = Answer.objects.root_only().filter(
-            question=OuterRef("question"),
-            author=user,
-        )
-
-        return self.annotate(is_sent=Exists(user_answers))
-
-    def with_crosscheck_stats(self, user: User) -> "LessonQuerySet":
-        AnswerCrossCheck = apps.get_model("homework.AnswerCrossCheck")
-
-        total = AnswerCrossCheck.objects.filter(
-            answer__question=OuterRef("question"),
-            checker=user,
-        )
-
-        checked = total.filter(checked__isnull=False)
-
-        return self.annotate(
-            crosschecks_total=SubqueryCount(total),
-            crosschecks_checked=SubqueryCount(checked),
+            "call",
         )
 
 
 class Lesson(TimestampedModel):
     objects = LessonQuerySet.as_manager()
 
-    name = models.CharField(_("Name"), max_length=255)
     module = models.ForeignKey("lms.Module", on_delete=models.CASCADE, verbose_name=_("Module"))
     position = models.PositiveIntegerField(default=0, blank=False, null=False, db_index=True)
     material = models.ForeignKey(
@@ -68,7 +49,7 @@ class Lesson(TimestampedModel):
     )
 
     call = models.ForeignKey("lms.Call", blank=True, null=True, on_delete=models.CASCADE, verbose_name=pgettext_lazy("lms", "Call"))
-    hidden = models.BooleanField(_("Hidden"), help_text=_("Users can't find such materials in the listing"), default=True)
+    hidden = models.BooleanField(_("Hidden"), help_text=_("Users can't find such materials in the listing"), default=False)
 
     class Meta:
         ordering = ["position"]
@@ -79,4 +60,20 @@ class Lesson(TimestampedModel):
         verbose_name_plural = pgettext_lazy("lms", "Lessons")
 
     def __str__(self) -> str:
-        return f"{self.name} {self.module}"
+        if self.material_id is not None:
+            return str(self.material)
+
+        if self.question_id is not None:
+            return str(self.question)
+
+        if self.call_id is not None:
+            return str(self.call)
+
+        return "—"
+
+    def get_allowed_comment_count(self, user: User) -> int:
+        count = 0
+        for answer in apps.get_model("homework.Answer").objects.filter(question=self.question_id, author=user).root_only():
+            count += answer.get_limited_comments_for_user_by_crosschecks(user).count()
+
+        return count

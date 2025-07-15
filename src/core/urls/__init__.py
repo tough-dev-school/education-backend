@@ -12,6 +12,7 @@ api = [
 urlpatterns = [
     path("api/", include(api)),
     path("admin/", admin.site.urls),
+    # path('silk/', include('silk.urls', namespace='silk')),  # NOQA: ERA001
     path("__debug__/", include(debug_toolbar.urls)),
     path("", HomePageView.as_view()),
 ]

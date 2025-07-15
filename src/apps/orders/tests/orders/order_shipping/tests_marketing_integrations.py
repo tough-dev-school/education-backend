@@ -59,8 +59,20 @@ def test_dashamail_is_updated(order, update_dashamail):
     update_dashamail.assert_called_once()
 
 
+def test_dashamail_is_not_updated_if_disabled(order, update_dashamail):
+    order.set_paid()
+
+    update_dashamail.assert_not_called()
+
+
 @pytest.mark.dashamail
 def test_dashamail_directm_is_updated(order, update_dashamail_directcrm):
     order.set_paid()
 
     update_dashamail_directcrm.assert_called_once()
+
+
+def test_dashamail_directcrm_is_not_updated_if_disabled(order, update_dashamail_directcrm):
+    order.set_paid()
+
+    update_dashamail_directcrm.assert_not_called()

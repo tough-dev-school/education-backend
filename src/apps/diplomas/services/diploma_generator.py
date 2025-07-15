@@ -56,6 +56,7 @@ class DiplomaGenerator(BaseService):
         response = httpx.get(
             url=self.get_external_service_url(),
             params=self.get_template_context(),
+            timeout=settings.DIPLOMA_GENERATOR_TIMEOUT,
             headers={
                 "Authorization": f"Bearer {settings.DIPLOMA_GENERATOR_TOKEN}",
             },

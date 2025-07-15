@@ -21,7 +21,13 @@ class SelfView(GenericAPIView):
         user = self.get_object()
         serializer = self.get_serializer(user)
 
-        return Response(serializer.data)
+        return Response(
+            serializer.data,
+            headers={
+                "X-Request-IP": self.request.META["REMOTE_ADDR"],
+                "X-Request-Country": self.request.country_code,
+            },
+        )
 
     def patch(self, request: Request) -> Response:
         user_updater = UserUpdater(

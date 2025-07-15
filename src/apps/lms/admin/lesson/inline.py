@@ -11,18 +11,23 @@ from core.admin import admin
 class LessonInline(SortableTabularInline):
     model = Lesson
     fields = [
-        "name",
+        "_name",
         "_edit",
         "_material",
         "_question",
         "hidden",
     ]
     readonly_fields = [
+        "_name",
         "_edit",
         "_material",
         "_question",
     ]
     extra = 0
+
+    @admin.display(description=_("Name"))
+    def _name(self, lesson: Lesson) -> str:
+        return str(lesson)
 
     @mark_safe
     @admin.display(description=_("Change"))

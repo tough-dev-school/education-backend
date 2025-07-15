@@ -18,13 +18,13 @@ babel = "^2.12.1"
 bcrypt = "^4.0.1"
 bleach = "^6.0.0"
 boto3 = "^1.28.48"
-celery = "5.5.2"
+celery = "5.5.3"
 cmarkgfm = "^2024.0.0"
 dj-rest-auth = "^7.0.0"
 django = "^4.2.5"
 django-admin-sortable2 = "^2.2.4"
 django-anymail = "^12.0"
-django-axes = "^7.0.0"
+django-axes = "^8.0.0"
 django-behaviors = "^0.5.1"
 django-cachalot = "^2.6.1"
 django-cors-headers = "^4.2.0"
@@ -34,20 +34,21 @@ django-filter = "^23.2"
 django-healthchecks = "^1.5.0"
 django-ipware = "^7.0.0"
 django-prettyjson = "^0.4.1"
+django-silk = "^5.3.2"
 django-split-settings = "^1.2.0"
 django-storages = "^1.14"
-django-tree-queries = "^0.19.0"
+django-tree-queries = "^0.20.0"
 djangorestframework = "^3.14.0"
 drf-jwt = "^1.19.2"
-drf-recaptcha = "^4.0.0"
 drf-spectacular = {extras = ["sidecar"], version = "^0.28.0"}
 emoji = "^2.8.0"
+geoip2fast = "^1.2.2"
 httpx = {extras = ["http2"], version = "^0.27.0"}
-pillow = "^11.0.0"
+pillow = "^11.3.0"
 psycopg2-binary = "^2.9.7"
 python = "~=3.11"
 python-benedict = "^0.34.0"
-redis = "^5.0.0"
+redis = "^6.0.0"
 retry = "^0.9.2"
 sentry-sdk = "^2.0.0"
 shortuuid = "^1.0.11"
@@ -78,7 +79,7 @@ pytest-xdist = "^3.3.1"
 requests-mock = "^1.11.0"
 respx = "^0.22.0"
 rope = "^1.10.0"
-ruff = "^0.11.0"
+ruff = "^0.12.0"
 toml-sort = "^0.24.0"
 types-babel = "^2.11.0.15"
 types-bleach = "^6.0.0.4"
@@ -109,7 +110,7 @@ env = [
     "DISABLE_HOMEWORK_PERMISSIONS_CHECKING = on",
     "DISABLE_NEW_ANSWER_NOTIFICATIONS = on",
     "DISABLE_THROTTLING = on",
-    "RECAPTCHA_ENABLED = off",
+    "RELEASE = CI-testing",
 ]
 filterwarnings = [
     "error",
@@ -190,6 +191,7 @@ ignore = [
     "PERF401",  # use a list comprehension to create a transformed list
     "PGH003",  # use specific rule codes when ignoring type issues
     "PGH004",  # use specific rule codes when using `noqa`
+    "PLC0415",  # import should be at the top of the file
     "PLR0913",  # too many arguments in function definition ({} > {})
     "PLR2004",  # magic value used in comparison, consider replacing {} with constant variable
     "PLR5501",  # use `elif` instead of `else` then `if` to reduce indentation
