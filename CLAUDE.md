@@ -1,5 +1,8 @@
 # Django Backend Development Guide
 
+## Development cycle
+- Before writing any code, come up with a good plan, review the plan, and then ask the user for permission to execute the plan.
+
 ## Build/Test Commands
 - Use poetry for package management and running commands
 - `make fmt` - Format the code using ruff
