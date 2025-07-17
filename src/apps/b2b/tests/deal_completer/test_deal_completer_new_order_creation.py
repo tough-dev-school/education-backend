@@ -71,6 +71,7 @@ def test_price_calculation(completer, factory, student_count, single_order_price
     [
         ("RUB", "50.00"),
         ("USD", "5000.00"),
+        ("NNE", "50.00"),  # for nonexistant currencis the default rate is used
     ],
 )
 def test_currency_price_calculation(completer, factory, currency, single_order_price):

@@ -66,8 +66,12 @@ class DealCompleter(BaseService):
             order.ship_without_payment()
 
     def get_currency_rate(self) -> Decimal:
-        currency = apps.get_model("banking.Currency").objects.get(name=self.deal.currency)
-        return currency.rate
+        Currency = apps.get_model("banking.Currency")
+
+        try:
+            return Currency.objects.get(name=self.deal.currency).rate
+        except Currency.DoesNotExist:
+            return Decimal(1)
 
     def send_happiness_message(self) -> None:
         if not settings.HAPPINESS_MESSAGES_CHAT_ID:
