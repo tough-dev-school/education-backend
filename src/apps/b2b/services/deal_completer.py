@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from decimal import Decimal
 
+from django.apps import apps
 from django.conf import settings
 from django.contrib.admin.models import CHANGE
 from django.utils import timezone
@@ -42,7 +43,7 @@ class DealCompleter(BaseService):
 
     def get_single_order_price(self) -> Decimal:
         try:
-            return Decimal(self.deal.price / self.deal.students.count())
+            return Decimal(self.deal.price * self.get_currency_rate() / self.deal.students.count())
         except ArithmeticError:
             return Decimal(0)
 
@@ -63,6 +64,10 @@ class DealCompleter(BaseService):
     def ship_without_payment(orders: list[Order]) -> None:
         for order in orders:
             order.ship_without_payment()
+
+    def get_currency_rate(self) -> Decimal:
+        currency = apps.get_model("banking.Currency").objects.get(name=self.deal.currency)
+        return currency.rate
 
     def send_happiness_message(self) -> None:
         if not settings.HAPPINESS_MESSAGES_CHAT_ID:
