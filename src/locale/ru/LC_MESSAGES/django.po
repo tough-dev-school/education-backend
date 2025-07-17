@@ -171,11 +171,11 @@ msgstr "Курс"
 
 #: apps/banking/models.py:18
 msgid "Currency"
-msgstr "Курс валюты"
+msgstr "Валюта"
 
 #: apps/banking/models.py:19
 msgid "Currencies"
-msgstr "Курсы валют"
+msgstr "Валюты"
 
 #: apps/banking/models.py:24
 msgid "Percent"
