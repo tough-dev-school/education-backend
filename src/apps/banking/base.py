@@ -7,7 +7,8 @@ from urllib.parse import urljoin
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
-from apps.banking.models import AcquiringPercent, Currency
+from apps.banking import currency
+from apps.banking.models import AcquiringPercent
 
 if TYPE_CHECKING:
     from django_stubs_ext import StrPromise
@@ -71,12 +72,7 @@ class Bank(metaclass=ABCMeta):
 
     @classmethod
     def get_currency_rate(cls) -> Decimal:
-        try:
-            configured = Currency.objects.get(name=cls.currency)
-            return configured.rate
-
-        except Currency.DoesNotExist:
-            return cls.default_currency_rate
+        return currency.get_rate(name=cls.currency) or cls.default_currency_rate
 
     def get_acquiring_percent(self) -> Decimal:
         from apps.banking import selector
