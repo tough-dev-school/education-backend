@@ -14,6 +14,7 @@ def deal(
     author: User | None = None,
     course: Course | None = None,
     price: Decimal | None = None,
+    currency: str | None = None,
     student_count: int | None = 0,
     **kwargs: dict[str, Any],
 ) -> Deal:
@@ -27,6 +28,7 @@ def deal(
         course=course,
         price=price,
         author=author,
+        currency=currency if currency is not None else "RUB",
         **kwargs,
     )
 

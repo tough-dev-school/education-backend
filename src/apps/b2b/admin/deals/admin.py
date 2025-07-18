@@ -21,6 +21,7 @@ class DealAdmin(ModelAdmin):
     list_display = [
         "customer",
         "price_formatted",
+        "currency",
         "orders",
         "status",
         "author",
@@ -30,6 +31,7 @@ class DealAdmin(ModelAdmin):
         "customer",
         "course",
         "price",
+        "currency",
         "comment",
         "students",
         "orders",
@@ -80,4 +82,5 @@ class DealAdmin(ModelAdmin):
             "customer",
             "course",
             "price",
+            "currency",
         ]

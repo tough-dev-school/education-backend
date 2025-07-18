@@ -1,5 +1,7 @@
 import pytest
 
+from apps.banking.models import Currency
+
 pytestmark = [pytest.mark.django_db]
 
 
@@ -50,8 +52,13 @@ def dolyame_bank(mocker):
     return mocker.patch("apps.tinkoff.dolyame.Dolyame.get_initial_payment_url", return_value="https://mocked.link")
 
 
+@pytest.fixture
+def _remove_preconfigured_currency_rates():
+    Currency.objects.all().delete()
+
+
 @pytest.fixture(autouse=True)
-def _freeze_currency_rate_rate(mocker):
+def _freeze_currency_rate_rate(mocker, _remove_preconfigured_currency_rates):
     mocker.patch("apps.tinkoff.bank.TinkoffBank.default_currency_rate", "11")
     mocker.patch("apps.stripebank.bank.StripeBankUSD.default_currency_rate", "33")
     mocker.patch("apps.stripebank.bank.StripeBankKZT.default_currency_rate", "33")

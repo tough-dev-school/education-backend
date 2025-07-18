@@ -7,6 +7,11 @@ from apps.orders.models import Order
 pytestmark = [pytest.mark.django_db]
 
 
+@pytest.fixture(autouse=True)
+def _usd_rate(factory):
+    factory.currency(name="USD", rate=Decimal(100))
+
+
 def test_orders_are_created(completer, factory):
     completer(deal=factory.deal(student_count=3))()
 
@@ -54,6 +59,23 @@ def test_created_orders_are_paid(completer, factory):
 )
 def test_price_calculation(completer, factory, student_count, single_order_price):
     deal = factory.deal(student_count=student_count, price=Decimal("100.50"))
+
+    completer(deal=deal)()
+    order = Order.objects.first()
+
+    assert str(order.price) == single_order_price
+
+
+@pytest.mark.parametrize(
+    ("currency", "single_order_price"),
+    [
+        ("RUB", "50.00"),
+        ("USD", "5000.00"),
+        ("NNE", "50.00"),  # for nonexistant currencis the default rate is used
+    ],
+)
+def test_currency_price_calculation(completer, factory, currency, single_order_price):
+    deal = factory.deal(student_count=2, price=Decimal("100.00"), currency=currency)
 
     completer(deal=deal)()
     order = Order.objects.first()

@@ -1,7 +1,7 @@
-from apps.banking.models import CurrencyRate
+from apps.banking.models import Currency
 from core.admin import ModelAdmin, admin
 
 
-@admin.register(CurrencyRate)
+@admin.register(Currency)
 class CurrencyRateAdmin(ModelAdmin):
     list_display = ["name", "rate"]
