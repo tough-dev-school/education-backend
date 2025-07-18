@@ -11,8 +11,8 @@ from django.utils.functional import cached_property
 
 from apps.amocrm.tasks import amocrm_enabled, push_order, push_user
 from apps.b2b.models import Deal
+from apps.banking import selector
 from apps.banking.base import Bank
-from apps.banking.selector import get_bank_or_default
 from apps.dashamail import tasks as dashamail
 from apps.dashamail.enabled import dashamail_enabled
 from apps.mailing.tasks import send_mail
@@ -82,7 +82,6 @@ class OrderCreator(BaseService):
             price=self.price,  # type: ignore
             promocode=self.promocode,
             deal=self.deal,
-            bank_id=self.desired_bank,
             analytics=self._parse_analytics(self.analytics),
         )
 
@@ -103,7 +102,7 @@ class OrderCreator(BaseService):
 
     @cached_property
     def bank(self) -> Type[Bank]:
-        return get_bank_or_default(self.desired_bank)
+        return selector.get_bank_or_default(self.desired_bank)
 
     def send_confirmation_message(self, order: Order) -> None:
         if order.price == 0 and order.item is not None:
@@ -118,8 +117,16 @@ class OrderCreator(BaseService):
         bank = self.bank(order)
         order.acquiring_percent = bank.get_acquiring_percent()
         order.ue_rate = bank.get_currency_rate()
+        order.bank_id = selector.get_id(bank.__class__)
 
-        order.save(update_fields=["modified", "acquiring_percent", "ue_rate"])
+        order.save(
+            update_fields=[
+                "modified",
+                "acquiring_percent",
+                "ue_rate",
+                "bank_id",
+            ]
+        )
 
     @staticmethod
     def update_user_tags(order: Order) -> None:

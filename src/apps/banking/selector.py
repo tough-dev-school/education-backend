@@ -1,5 +1,6 @@
 from typing import Type
 
+from apps.banking.adhoc_bank import AdhocBank
 from apps.banking.b2b import B2BBank
 from apps.banking.base import Bank
 from apps.banking.exceptions import BankDoesNotExist
@@ -15,6 +16,7 @@ BANKS: dict[str, Type[Bank]] = {
     "dolyame": Dolyame,
     "zero_price": ZeroPriceBank,
     "b2b": B2BBank,
+    "adhoc": AdhocBank,
 }
 
 BANK_KEYS = sorted(BANKS.keys())
