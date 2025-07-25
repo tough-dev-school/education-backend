@@ -45,15 +45,16 @@ class OrderDraftView(AnonymousAPIView):
 
     @extend_schema(
         request=OrderDraftRequestSerializer,
-        responses=[
-            inline_serializer(
+        description="Create an order draft with given bank and promocode",
+        responses={
+            200: inline_serializer(
                 name="OrderDraftSerializer",
                 fields={
                     "course": CourseSimpleSerializer(),
                     "price": PriceSerializer(),
                 },
             ),
-        ],
+        },
         examples=[
             OpenApiExample(
                 name="Product slug",
@@ -98,7 +99,6 @@ class OrderDraftView(AnonymousAPIView):
         ],
     )
     def post(self, request: Request) -> Response:
-        """Create an order draft"""
         OrderDraftRequestSerializer(data=request.data).is_valid(raise_exception=True)
 
         course = self.get_course(request)

@@ -19,8 +19,8 @@ class Price:
 class PriceSerializer(serializers.Serializer):
     price = serializers.DecimalField(max_digits=9, decimal_places=2)
     formatted_price = serializers.CharField()
-    currency = serializers.CharField()
-    currency_symbol = serializers.CharField()
+    currency = serializers.CharField(max_length=4)
+    currency_symbol = serializers.CharField(max_length=1)
 
     def to_representation(self, instance: Price) -> dict[str, Any]:
         return {
