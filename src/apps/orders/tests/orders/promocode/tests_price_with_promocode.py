@@ -30,7 +30,7 @@ def _freeze_stripe_kz_course(mocker):
 def test(api, course, code):
     got = api.get(f"/api/v2/courses/{course.slug}/promocode/?promocode={code}")
 
-    assert got["price"] == 90450
+    assert got["price"] == "90450"
     assert got["formatted_price"] == "90 450"
     assert got["currency"] == "RUB"
     assert got["currency_symbol"] == "₽"
@@ -39,10 +39,10 @@ def test(api, course, code):
 @pytest.mark.parametrize(
     ("bank", "expected_price", "expected_formatted_price", "expected_currency", "expected_currency_symbol"),
     [
-        ("tinkoff_bank", 90450, "90 450", "RUB", "₽"),
-        ("tinkoff_credit", 90450, "90 450", "RUB", "₽"),
-        ("stripe", 1292, "1 292", "USD", "$"),
-        ("stripe_kz", 502500, "502 500", "KZT", "₸"),
+        ("tinkoff_bank", "90450", "90 450", "RUB", "₽"),
+        ("tinkoff_credit", "90450", "90 450", "RUB", "₽"),
+        ("stripe", "1292", "1 292", "USD", "$"),
+        ("stripe_kz", "502500", "502 500", "KZT", "₸"),
     ],
 )
 def test_promocode_with_bank(api, course, bank, expected_price, expected_formatted_price, expected_currency, expected_currency_symbol):
@@ -64,7 +64,7 @@ def test_promocode_with_bank(api, course, bank, expected_price, expected_formatt
 def test_bad_promocode(api, course, code):
     got = api.get(f"/api/v2/courses/{course.slug}/promocode/?promocode={code}")
 
-    assert got["price"] == 100500
+    assert got["price"] == "100500"
 
 
 def test_incompatible_promocode(api, course, another_course, ten_percent_promocode):
@@ -72,7 +72,7 @@ def test_incompatible_promocode(api, course, another_course, ten_percent_promoco
 
     got = api.get(f"/api/v2/courses/{another_course.slug}/promocode/?promocode=TESTCODE")
 
-    assert got["price"] == 100500
+    assert got["price"] == "100500"
 
 
 def test_compatible_promocode(api, course, ten_percent_promocode):
@@ -80,7 +80,7 @@ def test_compatible_promocode(api, course, ten_percent_promocode):
 
     got = api.get(f"/api/v2/courses/{course.slug}/promocode/?promocode=TESTCODE")
 
-    assert got["price"] == 90450
+    assert got["price"] == "90450"
 
 
 def test_wihtout_promocode(api, course):
@@ -88,7 +88,7 @@ def test_wihtout_promocode(api, course):
         f"/api/v2/courses/{course.slug}/promocode/",
     )
 
-    assert got["price"] == 100500
+    assert got["price"] == "100500"
     assert got["formatted_price"] == "100 500"
     assert got["currency"] == "RUB"
     assert got["currency_symbol"] == "₽"

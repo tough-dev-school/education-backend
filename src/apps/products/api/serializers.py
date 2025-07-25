@@ -10,6 +10,8 @@ class CourseSimpleSerializer(serializers.ModelSerializer):
         fields = [
             "name",
             "name_international",
+            "product_name",
+            "tariff_name",
         ]
 
 

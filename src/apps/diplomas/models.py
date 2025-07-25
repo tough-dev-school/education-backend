@@ -92,7 +92,7 @@ class Diploma(TimestampedModel):
 
 class DiplomaTemplate(TimestampedModel):
     course = models.ForeignKey("products.Course", on_delete=models.CASCADE)
-    slug = models.CharField(max_length=32, help_text=_("Check out https://is.gd/eutOYr for available templates"))
+    slug = models.CharField(max_length=32)
     language = models.CharField(max_length=3, choices=Languages.choices, db_index=True)
     homework_accepted = models.BooleanField(_("This template is for students that have completed the homework"), default=False)
 

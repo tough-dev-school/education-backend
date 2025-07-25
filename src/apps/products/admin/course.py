@@ -18,7 +18,8 @@ class CourseAdmin(ModelAdmin):
             _("Name"),
             {
                 "fields": [
-                    "name",
+                    "product_name",
+                    "tariff_name",
                     "slug",
                     "group",
                     "display_in_lms",
@@ -81,9 +82,6 @@ class CourseAdmin(ModelAdmin):
         "name",
     )
 
-    prepopulated_fields = {
-        "slug": ["name"],
-    }
     inlines = (
         inlines.EmailConfigurationAdmin,
         inlines.DiplomaTemplateAdmin,

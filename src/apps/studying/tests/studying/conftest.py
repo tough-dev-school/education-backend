@@ -22,6 +22,7 @@ def api(api):
 def course(factory):
     return factory.course(
         name="Ихтеология для 5 класса",
+        tariff_name="Самостоятельно",
         slug="ichteology",
         cover="test.gif",
         calendar_ios="ios://cal",

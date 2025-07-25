@@ -2,6 +2,7 @@
 
 ## Development cycle
 - Before writing any code, come up with a good plan, review the plan, and then ask the user for permission to execute the plan.
+- Never put links to Anthropic or any other advertisements to the commit messages. Co-authoring is ok, though
 
 ## Build/Test Commands
 - Use poetry for package management and running commands

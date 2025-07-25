@@ -9,14 +9,13 @@ from rest_framework.views import APIView
 
 from apps.banking import price_calculator
 from apps.banking.selector import BANK_KEYS, get_bank_or_default
-from apps.orders.api.serializers import PromocodeSerializer
-from apps.orders.api.throttling import PromocodeThrottle, PurchaseThrottle
+from apps.orders.api.serializers import Price, PriceSerializer
+from apps.orders.api.throttling import OrderDraftThrottle, PurchaseThrottle
 from apps.orders.models import PromoCode
 from apps.orders.services import OrderCreator
 from apps.products.api.serializers import PurchaseSerializer
 from apps.products.models import Course
 from apps.users.services import UserCreator
-from core.pricing import format_price
 
 if TYPE_CHECKING:
     from rest_framework.request import Request
@@ -26,11 +25,11 @@ if TYPE_CHECKING:
 
 
 class PromocodeView(APIView):
-    throttle_classes = [PromocodeThrottle]
+    throttle_classes = [OrderDraftThrottle]
     permission_classes = [AllowAny]
 
     @extend_schema(
-        responses=PromocodeSerializer,
+        responses=PriceSerializer,
         parameters=[
             OpenApiParameter(name="promocode", type=str),
             OpenApiParameter(name="desired_bank", type=str, many=False, enum=BANK_KEYS),
@@ -44,14 +43,7 @@ class PromocodeView(APIView):
         Bank = get_bank_or_default(desired=request.GET.get("desired_bank"))
         price = price_calculator.to_bank(Bank, price)
 
-        serializer = PromocodeSerializer(
-            {
-                "price": price,
-                "formatted_price": format_price(price),
-                "currency": Bank.currency,
-                "currency_symbol": Bank.currency_symbol,
-            }
-        )
+        serializer = PriceSerializer(instance=Price(price, Bank))
 
         return Response(serializer.data)
 
