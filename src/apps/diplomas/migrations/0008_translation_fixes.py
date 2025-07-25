@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('diplomas', '0007_set_default_related_name_and_verbose_names'),
+        ("diplomas", "0007_set_default_related_name_and_verbose_names"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='diplomatemplate',
-            name='slug',
+            model_name="diplomatemplate",
+            name="slug",
             field=models.CharField(max_length=32),
         ),
     ]
