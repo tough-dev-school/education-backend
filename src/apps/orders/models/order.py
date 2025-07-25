@@ -58,8 +58,8 @@ class Order(TimestampedModel):
     acquiring_percent = models.DecimalField(_("Acquiring percent"), max_digits=4, decimal_places=2, default=0)
 
     course = ItemField(to="products.Course", verbose_name=_("Course"), null=True, blank=True, on_delete=models.PROTECT)
-    record = ItemField(to="products.Record", verbose_name=_("Record"), null=True, blank=True, on_delete=models.PROTECT)
-    bundle = ItemField(to="products.Bundle", verbose_name=_("Bundle"), null=True, blank=True, on_delete=models.PROTECT)
+    record = ItemField(to="products.LegacyRecord", verbose_name=_("Record"), null=True, blank=True, on_delete=models.PROTECT)
+    bundle = ItemField(to="products.LegacyBundle", verbose_name=_("Bundle"), null=True, blank=True, on_delete=models.PROTECT)
 
     amocrm_lead = models.OneToOneField("amocrm.AmoCRMOrderLead", on_delete=models.SET_NULL, null=True, blank=True, related_name="order")
     amocrm_transaction = models.OneToOneField("amocrm.AmoCRMOrderTransaction", on_delete=models.SET_NULL, null=True, blank=True, related_name="order")
