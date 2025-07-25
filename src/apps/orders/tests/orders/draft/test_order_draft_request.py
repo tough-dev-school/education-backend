@@ -11,8 +11,8 @@ def promocode(mixer):
 
 
 @pytest.fixture
-def course(mixer):
-    return mixer.blend("products.Course", price=100500)
+def course(factory):
+    return factory.course(price=100500, name="Радиология для 5 класса", tariff_name="самостоятельно")
 
 
 @pytest.fixture(autouse=True)
@@ -38,10 +38,12 @@ def draft(anon):
     return _draft
 
 
-def test_course_only(draft, course):
+def test_basic_response(draft, course):
     got = draft(course.slug)
 
-    assert got["course"]["name"] == course.name
+    assert got["course"]["name"] == "Радиология для 5 класса (самостоятельно)"
+    assert got["course"]["product_name"] == "Радиология для 5 класса"
+    assert got["course"]["tariff_name"] == "самостоятельно"
     assert got["price"]["price"] == str(course.price)
 
 
