@@ -7,10 +7,17 @@ from core.test.factory import FixtureFactory, register
 
 @register
 def course(
-    self: FixtureFactory, name: str | None = None, slug: str | None = None, group: Group | None = None, price: Decimal | None = None, **kwargs: dict
+    self: FixtureFactory,
+    name: str | None = None,
+    tariff_name: str | None = None,
+    slug: str | None = None,
+    group: Group | None = None,
+    price: Decimal | None = None,
+    **kwargs: dict,
 ) -> Course:
     return Course.objects.create(
-        name=name if name else self.faker.catch_phrase(),
+        product_name=name if name else self.faker.catch_phrase(),
+        tariff_name=tariff_name if tariff_name else "",
         slug=slug if slug is not None else random_string(49),
         group=group if group is not None else self.group(),
         price=price if price is not None else self.price(),

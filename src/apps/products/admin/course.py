@@ -81,9 +81,6 @@ class CourseAdmin(ModelAdmin):
         "name",
     )
 
-    prepopulated_fields = {
-        "slug": ["name"],
-    }
     inlines = (
         inlines.EmailConfigurationAdmin,
         inlines.DiplomaTemplateAdmin,

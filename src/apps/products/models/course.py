@@ -59,7 +59,8 @@ CourseManager = models.Manager.from_queryset(CourseQuerySet)
 class Course(TimestampedModel):
     objects = CourseManager()
 
-    name = models.CharField(max_length=255)
+    product_name = models.CharField(_("Name"), max_length=255)
+    tariff_name = models.CharField(_("Tariff name"), null=True, blank=True, max_length=64)
     name_genitive = models.CharField(_("Genitive name"), max_length=255, help_text="«мастер-класса о TDD». К примеру для записей.")
     name_receipt = models.CharField(
         _("Name for receipts"), max_length=255, help_text="«посещение мастер-класса по TDD» или «Доступ к записи курсов кройки и шитья»"
@@ -115,6 +116,13 @@ class Course(TimestampedModel):
         verbose_name = _("Course")
         verbose_name_plural = _("Courses")
         db_table = "courses_course"
+
+    @property
+    def name(self) -> str:
+        if self.tariff_name is not None and len(self.tariff_name) > 0:
+            return f"{self.product_name} ({self.tariff_name})"
+
+        return self.product_name
 
     def __str__(self) -> str:
         return f"{self.name} - {self.group.name}"
