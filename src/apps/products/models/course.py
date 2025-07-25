@@ -116,7 +116,9 @@ class Course(TimestampedModel):
         verbose_name_plural = _("Courses")
         db_table = "courses_course"
 
-    # Methods from Shippable mixin
+    def __str__(self) -> str:
+        return f"{self.name} - {self.group.name}"
+
     def get_price_display(self) -> str:
         return format_price(self.price)
 
@@ -140,14 +142,6 @@ class Course(TimestampedModel):
 
         return self.price
 
-    def get_template_id(self) -> str | None:
-        """Get custom per-item template_id"""
-        if not hasattr(self, "template_id"):
-            return None
-
-        if self.template_id is not None and len(self.template_id):
-            return self.template_id
-
     def clean(self) -> None:
         """Check for correct setting of confirmation_template_id and confirmation_success_url"""
         if not self.confirmation_template_id and not self.confirmation_success_url:
@@ -170,6 +164,3 @@ class Course(TimestampedModel):
                 to=user.email,
                 template_id=template_id,
             )
-
-    def __str__(self) -> str:
-        return f"{self.name} - {self.group.name}"
