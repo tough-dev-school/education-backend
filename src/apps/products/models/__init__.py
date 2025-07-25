@@ -1,18 +1,18 @@
 from typing import Type
 
-from apps.products.models.bundle import Bundle
+from apps.products.models.bundle import LegacyBundle
 from apps.products.models.course import Course
 from apps.products.models.group import Group
-from apps.products.models.record import Record
+from apps.products.models.record import LegacyRecord
 
 Product = Course
 ProductType = Type[Course]
 
 __all__ = [
-    "Bundle",
     "Course",
     "Group",
+    "LegacyBundle",
+    "LegacyRecord",
     "Product",
     "ProductType",
-    "Record",
 ]

@@ -1,18 +1,35 @@
-from collections.abc import Generator
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from django.utils.translation import gettext_lazy as _
 
-from apps.products.models.base import Shippable
-from core.models import models
-
-if TYPE_CHECKING:
-    from apps.orders.models import Order
-    from apps.users.models import User
+from core.models import TimestampedModel, models
 
 
-class Bundle(Shippable):
-    records = models.ManyToManyField("products.Record")
+class LegacyBundle(TimestampedModel):
+    name = models.CharField(max_length=255)
+    name_receipt = models.CharField(
+        _("Name for receipts"), max_length=255, help_text="«посещение мастер-класса по TDD» или «Доступ к записи курсов кройки и шитья»"
+    )
+    full_name = models.CharField(
+        _("Full name for letters"),
+        max_length=255,
+        help_text="Билет на мастер-класс о TDD или «запись курсов кройки и шитья»",
+    )
+    name_international = models.CharField(_("Name used for international purchases"), max_length=255, blank=True, default="")
+
+    slug = models.SlugField(unique=True)
+
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+    old_price = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
+
+    tinkoff_credit_promo_code = models.CharField(
+        _("Fixed promo code for tinkoff credit"), max_length=64, blank=True, help_text=_("Used in tinkoff credit only")
+    )
+
+    group = models.ForeignKey("products.Group", verbose_name=_("Analytical group"), on_delete=models.PROTECT)
+
+    # LegacyBundle-specific fields
+    records = models.ManyToManyField("products.LegacyRecord")
     courses = models.ManyToManyField("products.Course")
 
     class Meta:
@@ -20,18 +37,6 @@ class Bundle(Shippable):
         verbose_name = _("Bundle")
         verbose_name_plural = _("Bundles")
         db_table = "courses_bundle"
-
-    def iterate_bundled_items(self) -> Generator[Shippable, None, None]:
-        yield from self.records.iterator()
-        yield from self.courses.iterator()
-
-    def ship(self, *args: "User | Order", **kwargs: "User | Order") -> None:
-        for item in self.iterate_bundled_items():
-            item.ship(*args, **kwargs)  # type: ignore
-
-    def unship(self, *args: "Order", **kwargs: "Order") -> None:
-        for item in self.iterate_bundled_items():
-            item.unship(*args, **kwargs)
 
     def save(self, *args: Any, **kwargs: Any) -> None:
         raise RuntimeError("Deprecated model")

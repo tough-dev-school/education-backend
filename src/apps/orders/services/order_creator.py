@@ -17,7 +17,7 @@ from apps.dashamail import tasks as dashamail
 from apps.dashamail.enabled import dashamail_enabled
 from apps.mailing.tasks import send_mail
 from apps.orders.models import Order, PromoCode
-from apps.products.models.base import Shippable
+from apps.products.models import Course
 from apps.users.models import User
 from apps.users.tasks import rebuild_tags
 from core.current_user import get_current_user
@@ -33,7 +33,7 @@ class OrderCreatorException(AppServiceException):
 @dataclass
 class OrderCreator(BaseService):
     user: User
-    item: Shippable
+    item: Course
     price: Decimal | None = None
     author: User | None = None
     promocode: str | None = None

@@ -9,12 +9,12 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def record(mixer):
-    return mixer.blend("products.Record")
+    return mixer.blend("products.LegacyRecord")
 
 
 @pytest.fixture
 def bundle(mixer):
-    return mixer.blend("products.Bundle")
+    return mixer.blend("products.LegacyBundle")
 
 
 @pytest.fixture
