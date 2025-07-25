@@ -87,6 +87,8 @@ class OrderDraftView(AnonymousAPIView):
                     "course": {
                         "name": "Коммуникации систем (самостоятельно)",
                         "name_international": "System communications (self)",
+                        "product_name": "Коммуникации систем",
+                        "tariff_name": "самостоятельно",
                     },
                     "price": {
                         "price": "33000",
