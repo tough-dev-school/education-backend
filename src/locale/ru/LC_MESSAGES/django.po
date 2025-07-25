@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-11 18:17+0300\n"
+"POT-Creation-Date: 2025-07-25 18:51+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -35,31 +35,31 @@ msgstr "Допустить до уроков без оплаты"
 msgid "Cancel the deal"
 msgstr "Отменить"
 
-#: apps/b2b/admin/deals/admin.py:54
+#: apps/b2b/admin/deals/admin.py:56
 msgctxt "deals"
 msgid "Orders"
 msgstr "Заказы"
 
-#: apps/b2b/admin/deals/admin.py:65
+#: apps/b2b/admin/deals/admin.py:67
 msgid "Status"
 msgstr "Статус"
 
-#: apps/b2b/admin/deals/admin.py:69 apps/b2b/models.py:28
-#: apps/orders/admin/orders/admin.py:90 apps/orders/models/order.py:45
-#: apps/products/admin/course.py:30 apps/products/admin/course.py:101
+#: apps/b2b/admin/deals/admin.py:71 apps/b2b/models.py:29
+#: apps/orders/admin/orders/admin.py:105 apps/orders/models/order.py:45
+#: apps/products/admin/course.py:30 apps/products/admin/course.py:98
 msgid "Price"
 msgstr "Цена"
 
-#: apps/b2b/admin/deals/forms.py:14 apps/b2b/models.py:57
-#: apps/users/models.py:108
+#: apps/b2b/admin/deals/forms.py:14 apps/b2b/models.py:60
+#: apps/users/models.py:109
 msgid "Students"
 msgstr "Студенты"
 
-#: apps/b2b/admin/deals/forms.py:41
+#: apps/b2b/admin/deals/forms.py:42
 msgid "Bulk students add"
 msgstr "Добавить студентов"
 
-#: apps/b2b/admin/deals/forms.py:42
+#: apps/b2b/admin/deals/forms.py:43
 msgid "For complete deals new students will create new orders"
 msgstr ""
 "Если сделка завершена — создатутся новые заказы с нулевой ценой. Не забудьте "
@@ -69,75 +69,79 @@ msgstr ""
 msgid "name"
 msgstr "Имя"
 
-#: apps/b2b/admin/students.py:30
+#: apps/b2b/admin/students.py:30 apps/orders/admin/orders/admin.py:101
 msgid "email"
 msgstr "Почта"
 
-#: apps/b2b/models.py:13
+#: apps/b2b/models.py:14
 #, fuzzy
 #| msgid "Customer"
 msgctxt "deals"
 msgid "Customer name"
 msgstr "Название"
 
-#: apps/b2b/models.py:16 apps/b2b/models.py:21
+#: apps/b2b/models.py:17 apps/b2b/models.py:22
 msgid "Customer"
 msgstr "Клиент"
 
-#: apps/b2b/models.py:17
+#: apps/b2b/models.py:18
 msgid "Customers"
 msgstr "Клиенты"
 
-#: apps/b2b/models.py:23
+#: apps/b2b/models.py:24
 msgid "Deal author"
 msgstr "Продавец"
 
-#: apps/b2b/models.py:24
+#: apps/b2b/models.py:25
 msgid "Comment"
 msgstr "Комментарий"
 
-#: apps/b2b/models.py:25
+#: apps/b2b/models.py:26
 msgid "Date when the deal got completed"
 msgstr "Завершена"
 
-#: apps/b2b/models.py:26
+#: apps/b2b/models.py:27
 msgid "Date when the deal got canceled"
 msgstr "Отменена"
 
-#: apps/b2b/models.py:27
+#: apps/b2b/models.py:28
 msgid "Date when the deal got shipped without payment"
 msgstr "Дата, когда студентов допустили до уроков без оплаты"
 
-#: apps/b2b/models.py:31 apps/orders/models/order.py:47
+#: apps/b2b/models.py:30 apps/banking/models.py:12
+msgid "Currency"
+msgstr "Валюта"
+
+#: apps/b2b/models.py:34 apps/orders/models/order.py:47
 msgid "Deal"
 msgstr "Сделка"
 
-#: apps/b2b/models.py:32
+#: apps/b2b/models.py:35
 msgid "Deals"
 msgstr "Сделки"
 
-#: apps/b2b/models.py:40
+#: apps/b2b/models.py:43
 msgctxt "deals"
 msgid "Canceled"
 msgstr "Отменена"
 
-#: apps/b2b/models.py:43
+#: apps/b2b/models.py:46
 msgctxt "deals"
 msgid "Complete"
 msgstr "Завершена"
 
-#: apps/b2b/models.py:46
+#: apps/b2b/models.py:49
 msgctxt "deals"
 msgid "Shipped without payment"
 msgstr "Ждём денег"
 
-#: apps/b2b/models.py:48
+#: apps/b2b/models.py:51
 msgctxt "deals"
 msgid "In progress"
 msgstr "В работе"
 
-#: apps/b2b/models.py:56 apps/diplomas/admin/diploma.py:52
-#: apps/studying/models.py:8 apps/users/models.py:107
+#: apps/b2b/models.py:59 apps/diplomas/admin/diploma.py:52
+#: apps/studying/models.py:8 apps/users/models.py:108
 msgid "Student"
 msgstr "Студент"
 
@@ -145,47 +149,43 @@ msgstr "Студент"
 msgid "B2B Bank"
 msgstr "B2B"
 
-#: apps/banking/base.py:24
+#: apps/banking/base.py:25
 msgid "—"
 msgstr ""
 
-#: apps/banking/models.py:9
+#: apps/banking/currency.py:10
 msgid "RUB"
 msgstr "Рубль"
 
-#: apps/banking/models.py:10
+#: apps/banking/currency.py:11
 msgid "USD"
 msgstr "Доллар"
 
-#: apps/banking/models.py:11
+#: apps/banking/currency.py:12
 msgid "KZT"
 msgstr "Тенге"
 
-#: apps/banking/models.py:12
+#: apps/banking/currency.py:13
 msgid "KIS (for zero-price orders)"
 msgstr "KIS (для бесплатных заказов)"
 
-#: apps/banking/models.py:15
+#: apps/banking/models.py:9
 msgid "Rate"
 msgstr "Курс"
 
-#: apps/banking/models.py:18
-msgid "Currency"
-msgstr "Валюта"
-
-#: apps/banking/models.py:19
+#: apps/banking/models.py:13
 msgid "Currencies"
 msgstr "Валюты"
 
-#: apps/banking/models.py:24
+#: apps/banking/models.py:18
 msgid "Percent"
 msgstr "Процент"
 
-#: apps/banking/models.py:27 apps/orders/models/order.py:58
+#: apps/banking/models.py:21 apps/orders/models/order.py:58
 msgid "Acquiring percent"
 msgstr "Комиссия банка"
 
-#: apps/banking/models.py:28
+#: apps/banking/models.py:22
 msgid "Acquiring percents"
 msgstr "Комиссии банков"
 
@@ -210,20 +210,21 @@ msgid ""
 "Only the chains that are neither archived nor active for sending are listed"
 msgstr "В списке только не запущенные и не заархивированные цепочки"
 
-#: apps/chains/admin/message.py:49 apps/chains/models/chain.py:33
+#: apps/chains/admin/message.py:44 apps/chains/models/chain.py:33
 #: apps/diplomas/admin/diploma.py:56 apps/homework/admin/answer/admin.py:56
 #: apps/homework/admin/crosscheck/admin.py:37
 #: apps/homework/admin/question/form.py:14 apps/lms/admin/lesson/admin.py:56
 #: apps/orders/models/order.py:60 apps/products/admin/filters.py:12
-#: apps/products/models/course.py:90 apps/studying/models.py:9
+#: apps/products/models/course.py:116 apps/studying/models.py:9
 msgid "Course"
 msgstr "Курс"
 
 #: apps/chains/models/chain.py:32 apps/chains/models/message.py:32
-#: apps/homework/models/question.py:22 apps/lms/admin/lesson/admin.py:78
+#: apps/homework/models/question.py:82 apps/lms/admin/lesson/admin.py:78
 #: apps/lms/admin/lesson/inline.py:28 apps/lms/admin/lms_course/admin.py:26
 #: apps/lms/admin/module/inline.py:23 apps/lms/models/call.py:9
 #: apps/lms/models/course_link.py:8 apps/products/admin/course.py:18
+#: apps/products/models/course.py:62
 msgid "Name"
 msgstr "Название"
 
@@ -267,12 +268,12 @@ msgstr "Письмо"
 msgid "Email chain messages"
 msgstr "Письма"
 
-#: apps/diplomas/admin/diploma.py:60 apps/homework/models/question.py:29
+#: apps/diplomas/admin/diploma.py:60 apps/homework/models/question.py:89
 #: apps/lms/admin/lesson/inline.py:42
 msgid "Homework"
 msgstr "Домашка"
 
-#: apps/diplomas/admin/diploma.py:64 apps/orders/admin/orders/admin.py:94
+#: apps/diplomas/admin/diploma.py:64 apps/orders/admin/orders/admin.py:109
 msgid "Date"
 msgstr "Дата"
 
@@ -324,10 +325,6 @@ msgstr "Видит все дипломы"
 msgid "Diploma"
 msgstr "Диплом"
 
-#: apps/diplomas/models.py:95
-msgid "Check out https://is.gd/eutOYr for available templates"
-msgstr "Шаблоны искать в https://is.gd/eutOYr"
-
 #: apps/diplomas/models.py:97
 msgid "This template is for students that have completed the homework"
 msgstr "Для тех, кто сдал домашку"
@@ -374,7 +371,7 @@ msgid "Dispatch crosscheck"
 msgstr "Запустить p2p-проверку домашки"
 
 #: apps/homework/admin/question/form.py:15 apps/lms/admin/lesson/admin.py:60
-#: apps/lms/models/lesson.py:95 apps/lms/models/module.py:45
+#: apps/lms/models/lesson.py:42 apps/lms/models/module.py:47
 msgid "Module"
 msgstr "Модуль"
 
@@ -405,15 +402,15 @@ msgstr "Видит все ответы на домашку"
 msgid "Date when crosscheck got checked"
 msgstr "Когда проверен"
 
-#: apps/homework/models/question.py:26
+#: apps/homework/models/question.py:86
 msgid "Deadline"
 msgstr "Дедлайн"
 
-#: apps/homework/models/question.py:30
+#: apps/homework/models/question.py:90
 msgid "Homeworks"
 msgstr "Домашки"
 
-#: apps/homework/models/question.py:32
+#: apps/homework/models/question.py:92
 msgid "May see questions for all homeworks"
 msgstr "Видит все вопросы домашки"
 
@@ -445,7 +442,7 @@ msgstr "Урок не найден"
 msgid "Change"
 msgstr "Изменить"
 
-#: apps/lms/admin/lesson/inline.py:51 apps/lms/models/lesson.py:98
+#: apps/lms/admin/lesson/inline.py:51 apps/lms/models/lesson.py:45
 msgctxt "lessons"
 msgid "Material"
 msgstr "Страница в ноушене"
@@ -475,7 +472,7 @@ msgctxt "lms"
 msgid "Call date"
 msgstr "Дата"
 
-#: apps/lms/models/call.py:19 apps/lms/models/lesson.py:104
+#: apps/lms/models/call.py:19 apps/lms/models/lesson.py:51
 msgctxt "lms"
 msgid "Call"
 msgstr "Созвон"
@@ -493,25 +490,25 @@ msgstr "Ссылка в свободной форме"
 msgid "Course links"
 msgstr "Ссылки в свободной форме"
 
-#: apps/lms/models/lesson.py:101
+#: apps/lms/models/lesson.py:48
 msgctxt "lms"
 msgid "Question"
 msgstr "Домашка"
 
-#: apps/lms/models/lesson.py:105 apps/lms/models/module.py:36
+#: apps/lms/models/lesson.py:52 apps/lms/models/module.py:38
 msgid "Hidden"
 msgstr "Скрыт"
 
-#: apps/lms/models/lesson.py:105 apps/lms/models/module.py:36
+#: apps/lms/models/lesson.py:52 apps/lms/models/module.py:38
 msgid "Users can't find such materials in the listing"
 msgstr "Студенты не видят"
 
-#: apps/lms/models/lesson.py:112
+#: apps/lms/models/lesson.py:59
 msgctxt "lms"
 msgid "Lesson"
 msgstr "Урок"
 
-#: apps/lms/models/lesson.py:113
+#: apps/lms/models/lesson.py:60
 msgctxt "lms"
 msgid "Lessons"
 msgstr "Уроки"
@@ -526,19 +523,19 @@ msgctxt "lms"
 msgid "Courses"
 msgstr "Курсы"
 
-#: apps/lms/models/module.py:32
+#: apps/lms/models/module.py:34
 msgid "Start date"
 msgstr "Дата начала"
 
-#: apps/lms/models/module.py:33
+#: apps/lms/models/module.py:35
 msgid "Short description"
 msgstr "Подзаг"
 
-#: apps/lms/models/module.py:34
+#: apps/lms/models/module.py:36
 msgid "Text"
 msgstr "Текст"
 
-#: apps/lms/models/module.py:46
+#: apps/lms/models/module.py:48
 msgid "Modules"
 msgstr "Модули"
 
@@ -554,17 +551,9 @@ msgstr "Постмарк"
 msgid "Email sender"
 msgstr "Отправитель"
 
-#: apps/mailing/models/configuration.py:16
-msgid "E.g. Fedor Borshev &lt;fedor@borshev.com&gt;. MUST configure postmark!"
-msgstr ""
-
 #: apps/mailing/models/configuration.py:17
 msgid "Reply-to header"
 msgstr "Reply-to"
-
-#: apps/mailing/models/configuration.py:17
-msgid "E.g. Fedor Borshev &lt;fedor@borshev.com&gt;"
-msgstr ""
 
 #: apps/mailing/models/configuration.py:22
 msgid "Email configuration"
@@ -722,19 +711,19 @@ msgstr "Засчитать домашку"
 msgid "Disaccept homework"
 msgstr "Не засчитать домашку"
 
-#: apps/orders/admin/orders/admin.py:98 apps/orders/models/order.py:44
+#: apps/orders/admin/orders/admin.py:113 apps/orders/models/order.py:44
 msgid "User"
 msgstr "Юзер"
 
-#: apps/orders/admin/orders/admin.py:102
+#: apps/orders/admin/orders/admin.py:117
 msgid "Item"
 msgstr "Товар"
 
-#: apps/orders/admin/orders/admin.py:106
+#: apps/orders/admin/orders/admin.py:121
 msgid "Payment"
 msgstr "Оплата"
 
-#: apps/orders/admin/orders/admin.py:110
+#: apps/orders/admin/orders/admin.py:125
 msgid "Login as customer"
 msgstr "Зайти от имени студента"
 
@@ -755,11 +744,7 @@ msgstr "Оплачен"
 msgid "Shipped without payment"
 msgstr "Ждём денег"
 
-#: apps/orders/admin/orders/forms.py:12 apps/users/admin/student.py:13
-msgid "Email"
-msgstr "Почта"
-
-#: apps/orders/admin/orders/forms.py:12 apps/orders/admin/orders/forms.py:18
+#: apps/orders/admin/orders/forms.py:16
 msgid "User receives new welcome letter"
 msgstr "Студент заново получит все письма"
 
@@ -816,11 +801,11 @@ msgstr "Банк"
 msgid "Purchase-time UE rate"
 msgstr "Курс у.е. на момент покупки"
 
-#: apps/orders/models/order.py:61 apps/products/models/record.py:18
+#: apps/orders/models/order.py:61 apps/products/models/legacy.py:14
 msgid "Record"
 msgstr "Запись"
 
-#: apps/orders/models/order.py:62 apps/products/models/bundle.py:20
+#: apps/orders/models/order.py:62 apps/products/models/legacy.py:28
 msgid "Bundle"
 msgstr "Набор"
 
@@ -956,104 +941,105 @@ msgstr "ID шаблона в постмарке"
 msgid "Send email to all purchased_users"
 msgstr "Отправить письмо всем купившим"
 
-#: apps/products/models/base.py:21
+#: apps/products/models/course.py:63
+msgid "Tariff name"
+msgstr "Тариф"
+
+#: apps/products/models/course.py:64
+msgid "Genitive name"
+msgstr "В родительном падеже"
+
+#: apps/products/models/course.py:66
 msgid "Name for receipts"
 msgstr "Для чеков"
 
-#: apps/products/models/base.py:24
+#: apps/products/models/course.py:69
 msgid "Full name for letters"
 msgstr "Для писем"
 
-#: apps/products/models/base.py:28
+#: apps/products/models/course.py:73
 msgid "Name used for international purchases"
 msgstr "Название для международных покупок"
 
-#: apps/products/models/base.py:36
+#: apps/products/models/course.py:75 apps/products/models/group.py:15
+#: apps/products/models/legacy.py:10 apps/products/models/legacy.py:24
+msgid "Analytical group"
+msgstr "Группа товаров (аналитика)"
+
+#: apps/products/models/course.py:82
 msgid "Fixed promo code for tinkoff credit"
 msgstr "Промо-код на рассрочку в Тинькофф"
 
-#: apps/products/models/base.py:36
+#: apps/products/models/course.py:82
 msgid "Used in tinkoff credit only"
 msgstr ""
 "Пересылается в тинькофф, если покупатель оформляет рассрочку на курс. Если "
 "не заполнять — покупатель переплатит за кредит. Можно взять в админке "
 "Тинькофф"
 
-#: apps/products/models/base.py:39 apps/products/models/group.py:15
-msgid "Analytical group"
-msgstr "Группа товаров (аналитика)"
-
-#: apps/products/models/bundle.py:21
-msgid "Bundles"
-msgstr "Наборы"
-
-#: apps/products/models/course.py:56
-msgid "Genitive name"
-msgstr "В родительном падеже"
-
-#: apps/products/models/course.py:59
+#: apps/products/models/course.py:85
 msgid "Welcome letter template id"
 msgstr "ID шаблона приветственного письма"
 
-#: apps/products/models/course.py:59
+#: apps/products/models/course.py:85
 msgid "Will be sent upon purchase if set"
 msgstr "Если задать — письмо будет уходить вместе с каждой покупкой"
 
-#: apps/products/models/course.py:61
+#: apps/products/models/course.py:87
 msgid "Display in LMS"
 msgstr "Показывать в LMS"
 
-#: apps/products/models/course.py:61
+#: apps/products/models/course.py:87
 msgid "If disabled will not be shown in LMS"
 msgstr "Если снять галочку, студенты не будут видеть курс в LMS"
 
-#: apps/products/models/course.py:65
+#: apps/products/models/course.py:91
 msgid "Disable all triggers"
 msgstr "Отключить триггерные письма"
 
-#: apps/products/models/course.py:68
+#: apps/products/models/course.py:94
 msgid "Confirmation template id"
 msgstr "ID шаблона для письма-подтверждения"
 
-#: apps/products/models/course.py:72
+#: apps/products/models/course.py:98
 msgid "If set user sill receive this message upon creating zero-priced order"
 msgstr "Уходит пользователю, если он берёт бесплатный курс"
 
-#: apps/products/models/course.py:74
+#: apps/products/models/course.py:100
 msgid "Confirmation success URL"
 msgstr "Ссылка после успешного подтверждения"
 
-#: apps/products/models/course.py:76
+#: apps/products/models/course.py:102
 msgid "Calendar URL (Google)"
 msgstr "Календарь (Google)"
 
-#: apps/products/models/course.py:77
+#: apps/products/models/course.py:103
 msgid "Calendar URL (iOS)"
 msgstr "Календарь (iOS)"
 
-#: apps/products/models/course.py:79
+#: apps/products/models/course.py:105
 msgid "Chat URL"
 msgstr "Чат"
 
-#: apps/products/models/course.py:82
+#: apps/products/models/course.py:108
 msgid "Cover image"
 msgstr "Обложка"
 
-#: apps/products/models/course.py:85
+#: apps/products/models/course.py:111
 msgid "The cover image of course"
 msgstr "Обложка курса"
 
-#: apps/products/models/course.py:91
+#: apps/products/models/course.py:117
 msgid "Courses"
 msgstr "Курсы"
 
-#: apps/products/models/course.py:100
+#: apps/products/models/course.py:159
 msgid "Both confirmation_template_id and confirmation_success_url must be set"
 msgstr ""
 "У курсов с подтверждением обязательно нужно устанавливать оба поля: и "
 "почтовый шаблон и ссылку для упешного подтверждения "
 
-#: apps/products/models/course.py:103
+#: apps/products/models/course.py:162
 msgid "Courses with confirmation should have zero price"
 msgstr ""
 "Курсы с подтверждением могут быть только бесплатными. Если пользователь "
@@ -1067,17 +1053,13 @@ msgstr ""
 msgid "Analytical groups"
 msgstr "Группы товаров (аналитика)"
 
-#: apps/products/models/record.py:14
-msgid "Postmark template_id"
-msgstr "ID шаблона в постмарке"
-
-#: apps/products/models/record.py:14
-msgid "Leave it blank for the default template"
-msgstr "Если оставить пустым — будет дефолтным"
-
-#: apps/products/models/record.py:19
+#: apps/products/models/legacy.py:15
 msgid "Records"
 msgstr "Записи"
+
+#: apps/products/models/legacy.py:29
+msgid "Bundles"
+msgstr "Наборы"
 
 #: apps/stripebank/bank.py:16
 msgid "Stripe"
@@ -1165,59 +1147,71 @@ msgstr ""
 msgid "Completed"
 msgstr ""
 
-#: apps/users/admin/student.py:14
-msgid "first name"
-msgstr "Имя"
-
-#: apps/users/admin/student.py:15
-msgid "last name"
-msgstr "Фамилия"
-
-#: apps/users/admin/student.py:57
+#: apps/users/admin/user/admin.py:29
 msgid "Personal info"
 msgstr "Персональные данные"
 
-#: apps/users/admin/student.py:58
+#: apps/users/admin/user/admin.py:30
 msgid "Name in english"
 msgstr "Имя на английском"
+
+#: apps/users/admin/user/admin.py:31
+msgid "Marketing"
+msgstr ""
+
+#: apps/users/admin/user/forms.py:14
+msgid "Email"
+msgstr "Почта"
+
+#: apps/users/admin/user/forms.py:15
+msgid "first name"
+msgstr "Имя"
+
+#: apps/users/admin/user/forms.py:16
+msgid "last name"
+msgstr "Фамилия"
+
+#: apps/users/admin/user/forms.py:50
+msgid "User with such email or login already exists"
+msgstr ""
 
 #: apps/users/apps.py:7
 msgid "Users"
 msgstr "Юзеры"
 
-#: apps/users/models.py:21
+#: apps/users/models.py:22
 msgid "Male"
 msgstr "Мужчина"
 
-#: apps/users/models.py:22
+#: apps/users/models.py:23
 msgid "Female"
 msgstr "Женщина"
 
-#: apps/users/models.py:24
+#: apps/users/models.py:25
 msgid "Subscribed to newsletter"
 msgstr "Подписан на новости"
 
-#: apps/users/models.py:25
+#: apps/users/models.py:26
 msgid "first name in english"
 msgstr "Имя на английском"
 
-#: apps/users/models.py:26
+#: apps/users/models.py:27
 msgid "last name in english"
 msgstr "Фамилия на английском"
 
-#: apps/users/models.py:29
+#: apps/users/models.py:30
 msgid "Gender"
 msgstr "Пол"
 
-#: apps/users/models.py:37
+#: apps/users/models.py:38
 msgid "Avatar"
 msgstr "Аватар"
 
-#: apps/users/models.py:46
+#: apps/users/models.py:47
 msgid "user"
 msgstr "пользователь"
 
-#: apps/users/models.py:47
+#: apps/users/models.py:48
 msgid "users"
 msgstr "пользователи"
 
@@ -1232,6 +1226,15 @@ msgstr "Нет"
 #: core/admin/video.py:11 core/admin/video.py:12
 msgid "Paste it from the address bar"
 msgstr "Скопируйте адрес из строки браузера"
+
+#~ msgid "Check out https://is.gd/eutOYr for available templates"
+#~ msgstr "Шаблоны искать в https://is.gd/eutOYr"
+
+#~ msgid "Postmark template_id"
+#~ msgstr "ID шаблона в постмарке"
+
+#~ msgid "Leave it blank for the default template"
+#~ msgstr "Если оставить пустым — будет дефолтным"
 
 #~ msgid "Lead count"
 #~ msgstr "Количество лидов"
