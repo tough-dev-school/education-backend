@@ -9,8 +9,8 @@ from rest_framework.views import APIView
 
 from apps.banking import price_calculator
 from apps.banking.selector import BANK_KEYS, get_bank_or_default
-from apps.orders.api.serializers import PromocodeSerializer
-from apps.orders.api.throttling import PromocodeThrottle, PurchaseThrottle
+from apps.orders.api.serializers import Price, PriceSerializer
+from apps.orders.api.throttling import OrderDraftThrottle, PurchaseThrottle
 from apps.orders.models import PromoCode
 from apps.orders.services import OrderCreator
 from apps.products.api.serializers import PurchaseSerializer
@@ -26,7 +26,7 @@ if TYPE_CHECKING:
 
 
 class PromocodeView(APIView):
-    throttle_classes = [PromocodeThrottle]
+    throttle_classes = [OrderDraftThrottle]
     permission_classes = [AllowAny]
 
     @extend_schema(
