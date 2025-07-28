@@ -150,6 +150,20 @@ def test_custom_success_url(call_purchase, bank):
     assert bank.call_args[1]["success_url"] == "https://ok.true/yes"
 
 
+def test_course_purchase_success_url_used_when_no_success_url_provided(call_purchase, bank, course):
+    course.update(purchase_success_url="https://course.success.url/")
+
+    call_purchase()
+    assert bank.call_args[1]["success_url"] == "https://course.success.url/"
+
+
+def test_custom_success_url_overrides_course_purchase_success_url(call_purchase, bank, course):
+    course.update(purchase_success_url="https://course.success.url/")
+
+    call_purchase(success_url="https://custom.success.url/")
+    assert bank.call_args[1]["success_url"] == "https://custom.success.url/"
+
+
 def test_invalid(client):
     response = client.post("/api/v2/courses/ruloning-oboev/purchase/", {})
 

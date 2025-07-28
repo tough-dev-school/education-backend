@@ -60,7 +60,7 @@ class PurchaseView(APIView):
     throttle_classes = [PurchaseThrottle]
     permission_classes = [AllowAny]
 
-    @extend_schema(request=PurchaseSerializer, responses={301: None})
+    @extend_schema(request=PurchaseSerializer, responses={302: None})
     def post(self, request: "Request", slug: str | None = None, **kwargs: dict[str, Any]) -> HttpResponseRedirect:
         item = get_object_or_404(Course, slug=slug)
         serializer = PurchaseSerializer(data=request.data)
@@ -105,6 +105,9 @@ class PurchaseView(APIView):
 
     @staticmethod
     def get_payment_link(order: "Order", success_url: str | None, redirect_url: str | None) -> str:
+        if success_url is None:
+            success_url = order.item.purchase_success_url
+
         Bank = get_bank_or_default(desired=order.bank_id)
         bank = Bank(
             order=order,

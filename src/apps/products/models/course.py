@@ -95,6 +95,7 @@ class Course(TimestampedModel):
         help_text=_("If set user sill receive this message upon creating zero-priced order"),
     )
     confirmation_success_url = models.URLField(_("Confirmation success URL"), null=True, blank=True)
+    purchase_success_url = models.URLField(_("Purchase success URL"), null=True, blank=True)
 
     calendar_google = models.URLField(_("Calendar URL (Google)"), blank=True, null=True)
     calendar_ios = models.URLField(_("Calendar URL (iOS)"), blank=True, null=True)
