@@ -8,9 +8,10 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from apps.banking import price_calculator
+from apps.banking.api.serializers import Price, PriceSerializer
 from apps.banking.base import Bank
 from apps.banking.selector import get_bank_or_default
-from apps.orders.api.serializers import OrderDraftRequestSerializer, Price, PriceSerializer
+from apps.orders.api.serializers import OrderDraftRequestSerializer
 from apps.orders.api.throttling import OrderDraftThrottle
 from apps.orders.models import Order, PromoCode
 from apps.products.api.serializers import CourseSimpleSerializer

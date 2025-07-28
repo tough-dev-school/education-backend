@@ -1,0 +1,35 @@
+from dataclasses import dataclass
+from decimal import Decimal
+from typing import Any, Type
+
+from rest_framework import serializers
+
+from apps.banking.base import Bank
+from core.pricing import format_price
+
+
+@dataclass
+class Price:
+    price: Decimal
+    bank: Type[Bank]
+
+
+class PriceSerializer(serializers.Serializer):
+    price = serializers.DecimalField(max_digits=9, decimal_places=2)
+    formatted_price = serializers.CharField()
+    currency = serializers.CharField(max_length=4)
+    currency_symbol = serializers.CharField(max_length=1)
+
+    def to_representation(self, instance: Price) -> dict[str, Any]:
+        return {
+            "price": str(instance.price).replace(".00", ""),
+            "formatted_price": format_price(instance.price),
+            "currency": instance.bank.currency,
+            "currency_symbol": instance.bank.currency_symbol,
+        }
+
+
+__all__ = [
+    "Price",
+    "PriceSerializer",
+]
