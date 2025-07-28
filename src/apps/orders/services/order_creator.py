@@ -42,8 +42,11 @@ class OrderCreator(BaseService):
     deal: Deal | None = None
 
     def __post_init__(self) -> None:
-        self.price = self.price if self.price is not None else self.item.get_price(promocode=self.promocode)
+        self.price = self.price if self.price is not None else self.item.price
         self.promocode = self._get_promocode(self.promocode)
+        if self.promocode is not None:
+            self.price = self.promocode.apply(self.item)
+
         self.desired_bank = self.desired_bank if self.desired_bank is not None else ""
 
     def get_author(self) -> User:

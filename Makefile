@@ -10,10 +10,12 @@ fmt:
 	poetry run toml-sort pyproject.toml
 
 lint:
-	$(manage) makemigrations --check --no-input --dry-run
 	poetry run ruff format --check src
 	poetry run ruff check src
 	poetry run mypy src
+	$(manage) makemigrations --check --no-input --dry-run
+	$(manage) check
+	$(manage) spectacular --api-version v1 --fail-on-warn > /dev/null
 	poetry run toml-sort pyproject.toml --check
 	poetry run pymarkdown scan README.md
 

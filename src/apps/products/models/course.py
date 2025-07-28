@@ -1,5 +1,4 @@
 from datetime import timedelta
-from decimal import Decimal
 from typing import TYPE_CHECKING
 
 from django.apps import apps
@@ -8,12 +7,10 @@ from django.db.models import OuterRef, Q, QuerySet, Subquery
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from apps.mailing.tasks import send_mail
 from apps.studying import shipment_factory as ShipmentFactory
 from apps.users.models import User
 from core.files import RandomFileName
 from core.models import TimestampedModel, models
-from core.pricing import format_old_price, format_price
 
 if TYPE_CHECKING:
     from apps.orders.models import Order
@@ -127,28 +124,11 @@ class Course(TimestampedModel):
     def __str__(self) -> str:
         return f"{self.name} - {self.group.name}"
 
-    def get_price_display(self) -> str:
-        return format_price(self.price)
-
-    def get_old_price_display(self) -> str:
-        return format_price(self.old_price)
-
-    def get_formatted_price_display(self) -> str:
-        return format_old_price(self.old_price, self.price)
-
     def ship(self, to: User, order: "Order") -> None:
         return ShipmentFactory.ship(self, to=to, order=order)
 
     def unship(self, order: "Order") -> None:
         return ShipmentFactory.unship(order=order)
-
-    def get_price(self, promocode: str | None = None) -> Decimal:
-        promocode_obj = apps.get_model("orders.PromoCode").objects.get_or_nothing(name=promocode)
-
-        if promocode_obj is not None:
-            return promocode_obj.apply(self)
-
-        return self.price
 
     def clean(self) -> None:
         """Check for correct setting of confirmation_template_id and confirmation_success_url"""
@@ -165,10 +145,3 @@ class Course(TimestampedModel):
         return User.objects.filter(
             pk__in=apps.get_model("studying.Study").objects.filter(course=self).values_list("student", flat=True),
         )
-
-    def send_email_to_all_purchased_users(self, template_id: str) -> None:
-        for user in self.get_purchased_users().iterator():
-            send_mail.delay(
-                to=user.email,
-                template_id=template_id,
-            )
