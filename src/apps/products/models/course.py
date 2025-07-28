@@ -1,5 +1,4 @@
 from datetime import timedelta
-from decimal import Decimal
 from typing import TYPE_CHECKING
 
 from django.apps import apps
@@ -12,7 +11,6 @@ from apps.studying import shipment_factory as ShipmentFactory
 from apps.users.models import User
 from core.files import RandomFileName
 from core.models import TimestampedModel, models
-from core.pricing import format_old_price, format_price
 
 if TYPE_CHECKING:
     from apps.orders.models import Order
@@ -131,14 +129,6 @@ class Course(TimestampedModel):
 
     def unship(self, order: "Order") -> None:
         return ShipmentFactory.unship(order=order)
-
-    def get_price(self, promocode: str | None = None) -> Decimal:
-        promocode_obj = apps.get_model("orders.PromoCode").objects.get_or_nothing(name=promocode)
-
-        if promocode_obj is not None:
-            return promocode_obj.apply(self)
-
-        return self.price
 
     def clean(self) -> None:
         """Check for correct setting of confirmation_template_id and confirmation_success_url"""
