@@ -22,6 +22,7 @@ class CourseAdmin(ModelAdmin):
                     "tariff_name",
                     "slug",
                     "group",
+                    "purchase_success_url",
                     "display_in_lms",
                     "disable_triggers",
                 ],

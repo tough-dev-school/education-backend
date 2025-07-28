@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-25 18:51+0300\n"
+"POT-Creation-Date: 2025-07-28 19:13+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -46,7 +46,7 @@ msgstr "Статус"
 
 #: apps/b2b/admin/deals/admin.py:71 apps/b2b/models.py:29
 #: apps/orders/admin/orders/admin.py:105 apps/orders/models/order.py:45
-#: apps/products/admin/course.py:30 apps/products/admin/course.py:98
+#: apps/products/admin/course.py:32 apps/products/admin/course.py:94
 msgid "Price"
 msgstr "Цена"
 
@@ -215,7 +215,7 @@ msgstr "В списке только не запущенные и не заар�
 #: apps/homework/admin/crosscheck/admin.py:37
 #: apps/homework/admin/question/form.py:14 apps/lms/admin/lesson/admin.py:56
 #: apps/orders/models/order.py:60 apps/products/admin/filters.py:12
-#: apps/products/models/course.py:116 apps/studying/models.py:9
+#: apps/products/models/course.py:114 apps/studying/models.py:9
 msgid "Course"
 msgstr "Курс"
 
@@ -224,7 +224,7 @@ msgstr "Курс"
 #: apps/lms/admin/lesson/inline.py:28 apps/lms/admin/lms_course/admin.py:26
 #: apps/lms/admin/module/inline.py:23 apps/lms/models/call.py:9
 #: apps/lms/models/course_link.py:8 apps/products/admin/course.py:18
-#: apps/products/models/course.py:62
+#: apps/products/models/course.py:59
 msgid "Name"
 msgstr "Название"
 
@@ -699,7 +699,6 @@ msgid "Ship again if paid"
 msgstr "Ещё раз выполнить (если заказ не оплачен — не выполнится)"
 
 #: apps/orders/admin/orders/actions.py:85
-#: apps/products/admin/courses/actions.py:40
 msgid "Generate diplomas"
 msgstr "Сгенерировать дипломы"
 
@@ -920,126 +919,122 @@ msgstr ""
 msgid "Amount to refund should be more or equal 0"
 msgstr ""
 
-#: apps/products/admin/course.py:39
+#: apps/products/admin/course.py:41
 msgctxt "products"
 msgid "Invoices"
 msgstr "Чеки"
 
-#: apps/products/admin/course.py:50
+#: apps/products/admin/course.py:52
 msgid "Email messages"
 msgstr "Письма"
 
-#: apps/products/admin/course.py:59
+#: apps/products/admin/course.py:61
 msgid "Order confirmation"
 msgstr "Подтверждение покупки (для бесплатных курсов)"
 
-#: apps/products/admin/courses/actions.py:15
-msgid "Email template id"
-msgstr "ID шаблона в постмарке"
-
-#: apps/products/admin/courses/actions.py:26
-msgid "Send email to all purchased_users"
-msgstr "Отправить письмо всем купившим"
-
-#: apps/products/models/course.py:63
+#: apps/products/models/course.py:60
 msgid "Tariff name"
 msgstr "Тариф"
 
-#: apps/products/models/course.py:64
+#: apps/products/models/course.py:61
 msgid "Genitive name"
 msgstr "В родительном падеже"
 
-#: apps/products/models/course.py:66
+#: apps/products/models/course.py:63
 msgid "Name for receipts"
 msgstr "Для чеков"
 
-#: apps/products/models/course.py:69
+#: apps/products/models/course.py:66
 msgid "Full name for letters"
 msgstr "Для писем"
 
-#: apps/products/models/course.py:73
+#: apps/products/models/course.py:70
 msgid "Name used for international purchases"
 msgstr "Название для международных покупок"
 
-#: apps/products/models/course.py:75 apps/products/models/group.py:15
+#: apps/products/models/course.py:72 apps/products/models/group.py:15
 #: apps/products/models/legacy.py:10 apps/products/models/legacy.py:24
 msgid "Analytical group"
 msgstr "Группа товаров (аналитика)"
 
-#: apps/products/models/course.py:82
+#: apps/products/models/course.py:79
 msgid "Fixed promo code for tinkoff credit"
 msgstr "Промо-код на рассрочку в Тинькофф"
 
-#: apps/products/models/course.py:82
+#: apps/products/models/course.py:79
 msgid "Used in tinkoff credit only"
 msgstr ""
 "Пересылается в тинькофф, если покупатель оформляет рассрочку на курс. Если "
 "не заполнять — покупатель переплатит за кредит. Можно взять в админке "
 "Тинькофф"
 
-#: apps/products/models/course.py:85
+#: apps/products/models/course.py:82
 msgid "Welcome letter template id"
 msgstr "ID шаблона приветственного письма"
 
-#: apps/products/models/course.py:85
+#: apps/products/models/course.py:82
 msgid "Will be sent upon purchase if set"
 msgstr "Если задать — письмо будет уходить вместе с каждой покупкой"
 
-#: apps/products/models/course.py:87
+#: apps/products/models/course.py:84
 msgid "Display in LMS"
 msgstr "Показывать в LMS"
 
-#: apps/products/models/course.py:87
+#: apps/products/models/course.py:84
 msgid "If disabled will not be shown in LMS"
 msgstr "Если снять галочку, студенты не будут видеть курс в LMS"
 
-#: apps/products/models/course.py:91
+#: apps/products/models/course.py:88
 msgid "Disable all triggers"
 msgstr "Отключить триггерные письма"
 
-#: apps/products/models/course.py:94
+#: apps/products/models/course.py:91
 msgid "Confirmation template id"
 msgstr "ID шаблона для письма-подтверждения"
 
-#: apps/products/models/course.py:98
+#: apps/products/models/course.py:95
 msgid "If set user sill receive this message upon creating zero-priced order"
 msgstr "Уходит пользователю, если он берёт бесплатный курс"
 
-#: apps/products/models/course.py:100
+#: apps/products/models/course.py:97
 msgid "Confirmation success URL"
 msgstr "Ссылка после успешного подтверждения"
 
-#: apps/products/models/course.py:102
+#: apps/products/models/course.py:98
+msgid "Purchase success URL"
+msgstr "Страница, которая открывается после покупки"
+
+#: apps/products/models/course.py:100
 msgid "Calendar URL (Google)"
 msgstr "Календарь (Google)"
 
-#: apps/products/models/course.py:103
+#: apps/products/models/course.py:101
 msgid "Calendar URL (iOS)"
 msgstr "Календарь (iOS)"
 
-#: apps/products/models/course.py:105
+#: apps/products/models/course.py:103
 msgid "Chat URL"
 msgstr "Чат"
 
-#: apps/products/models/course.py:108
+#: apps/products/models/course.py:106
 msgid "Cover image"
 msgstr "Обложка"
 
-#: apps/products/models/course.py:111
+#: apps/products/models/course.py:109
 msgid "The cover image of course"
 msgstr "Обложка курса"
 
-#: apps/products/models/course.py:117
+#: apps/products/models/course.py:115
 msgid "Courses"
 msgstr "Курсы"
 
-#: apps/products/models/course.py:159
+#: apps/products/models/course.py:140
 msgid "Both confirmation_template_id and confirmation_success_url must be set"
 msgstr ""
 "У курсов с подтверждением обязательно нужно устанавливать оба поля: и "
 "почтовый шаблон и ссылку для упешного подтверждения "
 
-#: apps/products/models/course.py:162
+#: apps/products/models/course.py:143
 msgid "Courses with confirmation should have zero price"
 msgstr ""
 "Курсы с подтверждением могут быть только бесплатными. Если пользователь "
@@ -1226,6 +1221,12 @@ msgstr "Нет"
 #: core/admin/video.py:11 core/admin/video.py:12
 msgid "Paste it from the address bar"
 msgstr "Скопируйте адрес из строки браузера"
+
+#~ msgid "Email template id"
+#~ msgstr "ID шаблона в постмарке"
+
+#~ msgid "Send email to all purchased_users"
+#~ msgstr "Отправить письмо всем купившим"
 
 #~ msgid "Check out https://is.gd/eutOYr for available templates"
 #~ msgstr "Шаблоны искать в https://is.gd/eutOYr"
