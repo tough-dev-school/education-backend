@@ -126,15 +126,6 @@ class Course(TimestampedModel):
     def __str__(self) -> str:
         return f"{self.name} - {self.group.name}"
 
-    def get_price_display(self) -> str:
-        return format_price(self.price)
-
-    def get_old_price_display(self) -> str:
-        return format_price(self.old_price)
-
-    def get_formatted_price_display(self) -> str:
-        return format_old_price(self.old_price, self.price)
-
     def ship(self, to: User, order: "Order") -> None:
         return ShipmentFactory.ship(self, to=to, order=order)
 
