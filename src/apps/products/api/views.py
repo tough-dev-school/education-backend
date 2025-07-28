@@ -105,7 +105,6 @@ class PurchaseView(APIView):
 
     @staticmethod
     def get_payment_link(order: "Order", success_url: str | None, redirect_url: str | None) -> str:
-        # Use course's purchase_success_url if no success_url is provided
         if success_url is None:
             success_url = order.item.purchase_success_url
 
