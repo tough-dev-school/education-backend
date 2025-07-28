@@ -8,7 +8,6 @@ from django.db.models import OuterRef, Q, QuerySet, Subquery
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from apps.mailing.tasks import send_mail
 from apps.studying import shipment_factory as ShipmentFactory
 from apps.users.models import User
 from core.files import RandomFileName
@@ -165,10 +164,3 @@ class Course(TimestampedModel):
         return User.objects.filter(
             pk__in=apps.get_model("studying.Study").objects.filter(course=self).values_list("student", flat=True),
         )
-
-    def send_email_to_all_purchased_users(self, template_id: str) -> None:
-        for user in self.get_purchased_users().iterator():
-            send_mail.delay(
-                to=user.email,
-                template_id=template_id,
-            )
