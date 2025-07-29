@@ -41,8 +41,8 @@ class OrderAdmin(ModelAdmin):
         CourseFilter,
     ]
     search_fields = [
-        "course__name",
-        "record__course__name",
+        "course__product_name",
+        "record__course__product_name",
         "user__first_name",
         "user__last_name",
         "user__email",

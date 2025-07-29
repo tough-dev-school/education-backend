@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-28 19:13+0300\n"
+"POT-Creation-Date: 2025-07-29 15:16+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -215,7 +215,7 @@ msgstr "В списке только не запущенные и не заар�
 #: apps/homework/admin/crosscheck/admin.py:37
 #: apps/homework/admin/question/form.py:14 apps/lms/admin/lesson/admin.py:56
 #: apps/orders/models/order.py:60 apps/products/admin/filters.py:12
-#: apps/products/models/course.py:114 apps/studying/models.py:9
+#: apps/products/models/course.py:116 apps/studying/models.py:9
 msgid "Course"
 msgstr "Курс"
 
@@ -447,11 +447,11 @@ msgctxt "lessons"
 msgid "Material"
 msgstr "Страница в ноушене"
 
-#: apps/lms/admin/lms_course/admin.py:35
+#: apps/lms/admin/lms_course/admin.py:36
 msgid "URLs"
 msgstr "Ссылки"
 
-#: apps/lms/admin/lms_course/admin.py:65
+#: apps/lms/admin/lms_course/admin.py:66
 msgid "Module count"
 msgstr "Модули"
 
@@ -1024,17 +1024,21 @@ msgstr "Обложка"
 msgid "The cover image of course"
 msgstr "Обложка курса"
 
-#: apps/products/models/course.py:115
+#: apps/products/models/course.py:112
+msgid "Homework check recommendations"
+msgstr "Рекомендации по проверке домашки"
+
+#: apps/products/models/course.py:117
 msgid "Courses"
 msgstr "Курсы"
 
-#: apps/products/models/course.py:140
+#: apps/products/models/course.py:142
 msgid "Both confirmation_template_id and confirmation_success_url must be set"
 msgstr ""
 "У курсов с подтверждением обязательно нужно устанавливать оба поля: и "
 "почтовый шаблон и ссылку для упешного подтверждения "
 
-#: apps/products/models/course.py:143
+#: apps/products/models/course.py:145
 msgid "Courses with confirmation should have zero price"
 msgstr ""
 "Курсы с подтверждением могут быть только бесплатными. Если пользователь "

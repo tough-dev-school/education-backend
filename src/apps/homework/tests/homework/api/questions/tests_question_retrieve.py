@@ -4,15 +4,18 @@ import pytest
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures("purchase"),
+    pytest.mark.usefixtures("purchase", "purchase_of_another_course"),
 ]
 
 
-def test_ok(api, question):
+def test_ok(api, question, course):
     got = api.get(f"/api/v2/homework/questions/{question.slug}/")
 
     assert got["slug"] == str(question.slug)
     assert got["name"] == question.name
+    assert got["course"]["id"] == course.id
+    assert got["course"]["slug"] == course.slug
+    assert got["course"]["name"] == course.name
 
 
 @pytest.mark.usefixtures("kamchatka_timezone")
@@ -24,12 +27,14 @@ def test_question_deadline(api, question):
     assert got["deadline"] == "2032-12-25T03:13:00+12:00"
 
 
-def test_markdown(api, question):
+def test_markdown(api, question, course):
     question.update(text="*should be rendered*")
+    course.update(homework_check_recommendations="*should be rendered*")
 
     got = api.get(f"/api/v2/homework/questions/{question.slug}/")
 
     assert "<em>should be rendered" in got["text"]
+    assert "<em>should be rendered" in got["course"]["homework_check_recommendations"]
 
 
 def test_empty_breadcrumbs(api, question):
@@ -38,15 +43,25 @@ def test_empty_breadcrumbs(api, question):
     assert got["breadcrumbs"] is None
 
 
-def test_breadcrumbs(api, question, factory):
-    module = factory.module(course=question.courses.first())
+def test_breadcrumbs(api, question, factory, another_course):
+    module = factory.module(course=another_course)
     lesson = factory.lesson(module=module, question=question)
 
     got = api.get(f"/api/v2/homework/questions/{question.slug}/")
 
     assert got["breadcrumbs"]["lesson"]["id"] == lesson.pk
     assert got["breadcrumbs"]["module"]["id"] == module.pk
-    assert got["breadcrumbs"]["course"]["id"] == module.course_id
+    assert got["breadcrumbs"]["course"]["id"] == another_course.id
+
+
+def test_course_info_with_attached_lesson(api, question, factory, another_course):
+    module = factory.module(course=another_course)
+    factory.lesson(module=module, question=question)
+
+    got = api.get(f"/api/v2/homework/questions/{question.slug}/")
+
+    assert got["course"]["id"] == another_course.id
+    assert got["course"]["name"] == another_course.name
 
 
 @pytest.mark.usefixtures("_no_purchase")

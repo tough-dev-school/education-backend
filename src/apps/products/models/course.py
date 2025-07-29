@@ -109,6 +109,8 @@ class Course(TimestampedModel):
         help_text=_("The cover image of course"),
     )
 
+    homework_check_recommendations = models.TextField(_("Homework check recommendations"), blank=True)
+
     class Meta:
         ordering = ["-id"]
         verbose_name = _("Course")

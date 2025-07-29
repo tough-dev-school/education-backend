@@ -56,6 +56,14 @@ def purchase(factory, course, api):
 
 
 @pytest.fixture
+def purchase_of_another_course(factory, another_course, api):
+    order = factory.order(user=api.user, item=another_course)
+    order.set_paid()
+
+    return order
+
+
+@pytest.fixture
 def _no_purchase(purchase, _set_current_user):
     """Invalidate the purchase"""
     purchase.refund(amount=purchase.price)
