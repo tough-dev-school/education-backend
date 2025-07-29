@@ -23,25 +23,19 @@ COPY poetry.lock pyproject.toml /
 # Version is taken from poetry.lock, assuming it is generated with up-to-date version of poetry
 RUN pip install --no-cache-dir poetry==$(cat poetry.lock |head -n1|awk -v FS='(Poetry |and)' '{print $2}')
 RUN poetry self add poetry-plugin-export
-RUN poetry export --format=requirements.txt --without-hashes > requirements.txt
+RUN poetry export --format=requirements.txt --without-hashes -o requirements.txt
 
 
 #
 # Base image with django dependecines
 #
 FROM python:${PYTHON_VERSION}-slim-bookworm AS base
-ARG RELEASE=unset
-LABEL maintainer="fedor@borshev.com"
-
-LABEL com.datadoghq.ad.logs='[{"source": "uwsgi", "service": "django"}]'
 
 ENV PYTHONUNBUFFERED=1
 ENV DEBIAN_FRONTEND=noninteractive
 
 ENV STATIC_ROOT=/var/lib/django-static
 ENV CELERY_APP=core.celery
-
-ENV _WAITFOR_VERSION=2.2.3
 
 RUN apt-get update \
   && apt-get --no-install-recommends install -y gettext locales-all tzdata git wait-for-it wget \
@@ -50,10 +44,12 @@ RUN apt-get update \
 COPY --from=uwsgi-compile /uwsgi /usr/local/bin/
 RUN pip install --no-cache-dir --upgrade pip
 COPY --from=deps-compile /requirements.txt /
-RUN pip install --no-cache-dir --root-user-action=ignore -r requirements.txt
+RUN pip install --no-cache-dir --root-user-action=ignore -r /requirements.txt
 
 WORKDIR /src
 COPY src /src
+
+ARG RELEASE=unset
 
 ENV NO_CACHE=On
 RUN ./manage.py compilemessages
@@ -63,7 +59,7 @@ ENV RELEASE=$RELEASE
 
 USER nobody
 
-RUN echo built for ${release}
+RUN echo Built for ${release}
 
 #
 # Web worker image
