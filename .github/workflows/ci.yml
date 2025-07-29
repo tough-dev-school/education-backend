@@ -27,6 +27,9 @@ jobs:
       - name: Lint
         run: make lint
 
+      - name: Lint the Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+
       - name: Install xmllint
         uses: awalsh128/cache-apt-pkgs-action@v1
         with:
