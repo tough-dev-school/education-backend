@@ -135,6 +135,7 @@ class PurchaseView(APIView):
             response_only=True,
             status_codes=[200],
             value={
+                "slug": "popug-2-self",
                 "name": "Коммуникации систем (самостоятельно)",
                 "name_international": "System communications (self)",
                 "product_name": "Коммуникации систем",
