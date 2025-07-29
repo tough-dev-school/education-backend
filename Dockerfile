@@ -6,7 +6,7 @@ ARG PYTHON_VERSION=3.11
 FROM python:${PYTHON_VERSION}-slim-bookworm AS uwsgi-compile
 ENV _UWSGI_VERSION=2.0.22
 RUN apt-get update && apt-get --no-install-recommends install -y build-essential wget && rm -rf /var/lib/apt/lists/*
-RUN wget -O uwsgi-${_UWSGI_VERSION}.tar.gz https://github.com/unbit/uwsgi/archive/${_UWSGI_VERSION}.tar.gz \
+RUN wget --progress=dot:giga -O uwsgi-${_UWSGI_VERSION}.tar.gz https://github.com/unbit/uwsgi/archive/${_UWSGI_VERSION}.tar.gz \
   && tar zxvf uwsgi-*.tar.gz \
   && UWSGI_BIN_NAME=/uwsgi make -C uwsgi-${_UWSGI_VERSION} \
   && rm -Rf uwsgi-*
@@ -21,9 +21,10 @@ WORKDIR /
 COPY poetry.lock pyproject.toml /
 
 # Version is taken from poetry.lock, assuming it is generated with up-to-date version of poetry
-RUN pip install --no-cache-dir poetry==$(cat poetry.lock |head -n1|awk -v FS='(Poetry |and)' '{print $2}')
-RUN poetry self add poetry-plugin-export
-RUN poetry export --format=requirements.txt --without-hashes -o requirements.txt
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN pip install --no-cache-dir poetry==$(cat poetry.lock |head -n1|awk -v FS='(Poetry |and)' '{print $2}') \
+  && poetry self add poetry-plugin-export \
+  && poetry export --format=requirements.txt --without-hashes -o requirements.txt
 
 
 #
@@ -42,7 +43,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 COPY --from=uwsgi-compile /uwsgi /usr/local/bin/
-RUN pip install --no-cache-dir --upgrade pip
+RUN pip install --no-cache-dir --upgrade pip==24.2
 COPY --from=deps-compile /requirements.txt /
 RUN pip install --no-cache-dir --root-user-action=ignore -r /requirements.txt
 
@@ -50,16 +51,14 @@ WORKDIR /src
 COPY src /src
 
 ARG RELEASE=unset
-
-ENV NO_CACHE=On
-RUN ./manage.py compilemessages
-RUN ./manage.py collectstatic --noinput
-ENV NO_CACHE=Off
 ENV RELEASE=$RELEASE
+
+RUN NO_CACHE=On ./manage.py compilemessages \
+  && ./manage.py collectstatic --noinput
 
 USER nobody
 
-RUN echo Built for ${release}
+RUN echo "Built for ${RELEASE}"
 
 #
 # Web worker image
