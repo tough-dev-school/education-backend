@@ -1,6 +1,11 @@
+from typing import Any
+
+import sentry_sdk
 from django.db.models import QuerySet
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.request import Request
+from rest_framework.response import Response
 
 from apps.homework.api import serializers
 from apps.homework.api.filtersets import AnswerCommentFilterSet, AnswerCrossCheckFilterSet
@@ -25,13 +30,17 @@ class QuestionView(generics.RetrieveAPIView):
 
 
 class AnswerCommentView(generics.ListAPIView):
-    """Recursively list answer comments"""
+    """[DEPRECATED] Recursively list answer comments"""
 
     queryset = Answer.objects.for_viewset()
     serializer_class = serializers.AnswerCommentTreeSerializer
     filterset_class = AnswerCommentFilterSet
     permission_classes = [IsAuthenticated]
     pagination_class = None
+
+    def list(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+        sentry_sdk.capture_message("Trying to fetch comments on /v2/homework/comments", level="warning")
+        return Response(status=500)
 
     def get_queryset(self) -> QuerySet[Answer]:
         queryset = super().get_queryset().root_only()  # type: ignore
