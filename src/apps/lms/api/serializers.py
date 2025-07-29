@@ -140,6 +140,8 @@ class ModuleSerializer(serializers.ModelSerializer):
 
 
 class LMSCourseSerializer(serializers.ModelSerializer):
+    homework_check_recommendations = MarkdownField()
+
     class Meta:
         model = Course
         fields = [
@@ -150,6 +152,7 @@ class LMSCourseSerializer(serializers.ModelSerializer):
             "chat",
             "calendar_ios",
             "calendar_google",
+            "homework_check_recommendations",
         ]
 
 

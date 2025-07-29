@@ -1,13 +1,9 @@
-from typing import TYPE_CHECKING
-
 from django.db.models import QuerySet
 
 from apps.homework.models import Question
 from apps.lms.models import Lesson
+from apps.products.models import Course
 from apps.users.models import User
-
-if TYPE_CHECKING:
-    from apps.products.models import Course
 
 
 def get_lesson(question: Question, user: User) -> Lesson | None:
@@ -18,12 +14,12 @@ def get_lesson(question: Question, user: User) -> Lesson | None:
     """
     return Lesson.objects.filter(
         question=question,
-        module__course__in=_find_courses(question, user),
+        module__course__in=_find_courses(user),
     ).first()
 
 
-def _find_courses(question: Question, user: User) -> QuerySet["Course"]:
-    queryset = question.courses.all()
+def _find_courses(user: User) -> QuerySet[Course]:
+    queryset = Course.objects.for_lms()
 
     if user.has_perm("studying.purchased_all_courses"):
         return queryset

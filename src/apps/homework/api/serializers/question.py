@@ -24,6 +24,7 @@ class QuestionDetailSerializer(serializers.ModelSerializer):
     text = MarkdownField()
     breadcrumbs = serializers.SerializerMethodField()
     homework = HomeworkStatsSerializer(source="*")
+    course = serializers.SerializerMethodField()
 
     class Meta:
         model = Question
@@ -34,7 +35,21 @@ class QuestionDetailSerializer(serializers.ModelSerializer):
             "text",
             "deadline",
             "homework",
+            "course",
         ]
+
+    @extend_schema_field(lazy_serializer("apps.lms.api.serializers.LMSCourseSerializer")())
+    def get_course(self, question: Question) -> dict:
+        from apps.homework.breadcrumbs import get_lesson
+        from apps.lms.api.serializers import LMSCourseSerializer
+
+        lesson = get_lesson(question, user=self.context["request"].user)
+
+        course = question.courses.first()
+        if lesson is not None:
+            course = lesson.module.course
+
+        return LMSCourseSerializer(course).data
 
     @extend_schema_field(lazy_serializer("apps.lms.api.serializers.BreadcrumbsSerializer")())
     def get_breadcrumbs(self, question: Question) -> dict | None:

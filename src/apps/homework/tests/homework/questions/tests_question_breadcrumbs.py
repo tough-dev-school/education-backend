@@ -56,12 +56,8 @@ def test_no_purchase(question, user):
     assert get_lesson(question, user=user) is None
 
 
-@pytest.mark.usefixtures("_no_purchase")
-def test_no_breadcrumbs_on_question_and_lesson_course_mismatch(question, user, another_course, factory, module):
-    """Purchase another course, but attach no questions there"""
-    module.update(course=another_course)
-    factory.order(item=another_course, user=user, is_paid=True)
-
+@pytest.mark.usefixtures("_no_purchase", "another_course")
+def test_not_attached_courses_do_not_appear_in_the_breadcrumbs(question, user):
     assert get_lesson(question, user=user) is None
 
 
