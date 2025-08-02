@@ -1,0 +1,6 @@
+#result_list {
+  .field-our_page,
+  .field-notion_page {
+    white-space: nowrap !important;
+  }
+}
