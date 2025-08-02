@@ -11,7 +11,7 @@ class LessonForm(ModelForm):
     material = forms.CharField(
         label=_("Material"),
         required=False,
-        widget=forms.TextInput(attrs={"placeholder": _("Our slug or notion page_id"), "maxlength": 32}),
+        widget=forms.TextInput(attrs={"placeholder": _("Our slug or notion page_id"), "maxlength": 256}),
     )
     material_id = forms.CharField(widget=forms.HiddenInput(), required=False)
     material_title = forms.CharField(widget=forms.HiddenInput(), required=False)
