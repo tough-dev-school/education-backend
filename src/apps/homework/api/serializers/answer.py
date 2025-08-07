@@ -17,7 +17,7 @@ class AnswerSerializer(serializers.ModelSerializer):
     question = serializers.CharField(source="question.slug")
     has_descendants = serializers.SerializerMethodField()
     reactions = ReactionDetailedSerializer(many=True)
-    is_editable = serializers.BooleanField()
+    is_editable = serializers.SerializerMethodField()
 
     class Meta:
         model = Answer
@@ -34,6 +34,9 @@ class AnswerSerializer(serializers.ModelSerializer):
             "is_editable",
             "reactions",
         ]
+
+    def get_is_editable(self, answer: Answer) -> bool:
+        return answer.is_editable and self.context["request"].user == answer.author
 
     def get_descendants_queryset(self, answer: Answer) -> AnswerQuerySet:
         user = self.context["request"].user

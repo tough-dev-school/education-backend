@@ -55,13 +55,23 @@ def test_has_descendants_is_true_if_answer_has_only_children_that_belong_to_its_
         ("2032-10-09 11:20+12:00", False),
     ],
 )
-def test_is_editable_field(api, answer, freezer, settings, time, should_be_editable):
+def test_is_editable_by_time(api, answer, freezer, settings, time, should_be_editable):
     settings.HOMEWORK_ANSWER_EDIT_PERIOD = timedelta(hours=2)
     freezer.move_to(time)
 
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
     assert got["is_editable"] is should_be_editable
+
+
+@pytest.mark.freeze_time("2022-10-09 10:30:12+12:00")  # +12 hours kamchatka timezone
+@pytest.mark.usefixtures("kamchatka_timezone")
+def test_is_editable_is_only_set_to_author(api, answer, another_user):
+    answer.update(author=another_user)
+
+    got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
+
+    assert got["is_editable"] is False
 
 
 def test_reactions_field(api, answer, reaction):
