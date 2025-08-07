@@ -117,7 +117,7 @@ class Answer(TestUtilsMixin, TreeNode):
 
     @property
     def is_editable(self) -> bool:
-        """May be edited by user"""
+        """May be edited by author"""
         return timezone.now() - self.created < settings.HOMEWORK_ANSWER_EDIT_PERIOD
 
     def is_author_of_root_answer(self, user: "User") -> bool:

@@ -56,7 +56,7 @@ def test_has_reaction_fields_if_there_is_reaction(api, question, reaction):
     ],
 )
 @pytest.mark.usefixtures("answer")
-def test_is_editable_field(api, question, freezer, settings, time, should_be_editable):
+def test_is_editable_by_time(api, question, freezer, settings, time, should_be_editable):
     settings.HOMEWORK_ANSWER_EDIT_PERIOD = timedelta(hours=2)
     freezer.move_to(time)
 
