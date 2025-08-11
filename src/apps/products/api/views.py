@@ -93,7 +93,6 @@ class PurchaseView(APIView):
         return UserCreator(
             name=name,
             email=email.strip(),
-            subscribe=True,
         )()
 
     @staticmethod

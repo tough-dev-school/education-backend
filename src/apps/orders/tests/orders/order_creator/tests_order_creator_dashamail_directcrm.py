@@ -29,13 +29,13 @@ def course(factory, group):
 
 
 def test_event_is_pushed(create, user, course, update_dashamail_directcrm):
-    create(user=user, item=course)
+    create(user=user, item=course, subscribe=True)
 
     update_dashamail_directcrm.assert_called_once()
 
 
 def test_user_is_subscribed_to_the_dedicated_maillist(create, user, course, update_dashamail, mocker):
-    create(user=user, item=course)
+    create(user=user, item=course, subscribe=True)
 
     update_dashamail.assert_has_calls(
         [
@@ -48,7 +48,7 @@ def test_user_is_subscribed_to_the_dedicated_maillist(create, user, course, upda
 def test_event_is_not_pushed_when_dashamail_is_disabled(create, user, course, update_dashamail_directcrm, settings):
     settings.DASHAMAIL_API_KEY = ""
 
-    create(user=user, item=course)
+    create(user=user, item=course, subscribe=True)
 
     update_dashamail_directcrm.assert_not_called()
 
@@ -56,6 +56,6 @@ def test_event_is_not_pushed_when_dashamail_is_disabled(create, user, course, up
 def test_user_is_not_subscribed_if_dashamail_is_disabled(create, user, course, update_dashamail, settings):
     settings.DASHAMAIL_API_KEY = ""
 
-    create(user=user, item=course)
+    create(user=user, item=course, subscribe=True)
 
     update_dashamail.assert_not_called()

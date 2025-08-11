@@ -159,22 +159,6 @@ def test_raw_request_data_is_saved(call_purchase):
     assert "test_param" in placed.raw["analytics"]
 
 
-def test_by_default_user_is_subscribed(call_purchase):
-    call_purchase()
-
-    placed = get_order()
-
-    assert placed.user.subscribed is True
-
-
-def test_subscribe_false_is_ignored(call_purchase):
-    call_purchase(subscribe=False)
-
-    placed = get_order()
-
-    assert placed.user.subscribed is True
-
-
 def test_redirect(call_purchase):
     response = call_purchase(as_response=True)
 

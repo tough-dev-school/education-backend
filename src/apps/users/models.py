@@ -22,7 +22,6 @@ class User(TestUtilsMixin, AbstractUser):
         MALE = "male", _("Male")
         FEMALE = "female", _("Female")
 
-    subscribed = models.BooleanField(_("Subscribed to newsletter"), default=False)
     first_name_en = models.CharField(_("first name in english"), max_length=150, blank=True)
     last_name_en = models.CharField(_("last name in english"), max_length=150, blank=True)
     uuid = models.UUIDField(db_index=True, unique=True, default=uuid.uuid4)

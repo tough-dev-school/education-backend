@@ -16,7 +16,6 @@ class UserCreateSerializer(serializers.ModelSerializer):
             "last_name",
             "username",
             "email",
-            "subscribed",
         ]
 
 
@@ -24,7 +23,6 @@ class UserCreateSerializer(serializers.ModelSerializer):
 class UserCreator(BaseService):
     email: str
     name: str | None = ""
-    subscribe: bool | None = False
 
     @cached_property
     def username(self) -> str:
@@ -42,7 +40,6 @@ class UserCreator(BaseService):
             data={
                 "email": self.email.lower(),
                 "username": self.username,
-                "subscribed": self.subscribe,
                 **User.parse_name(self.name or ""),
             }
         )
