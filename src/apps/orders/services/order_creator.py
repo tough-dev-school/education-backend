@@ -34,12 +34,14 @@ class OrderCreatorException(AppServiceException):
 class OrderCreator(BaseService):
     user: User
     item: Course
+    subscribe: bool | None = False
     price: Decimal | None = None
     author: User | None = None
     promocode: str | None = None
     desired_bank: str | None = None
     analytics: str | None = None
     deal: Deal | None = None
+    raw: dict | None = None
 
     def __post_init__(self) -> None:
         self.price = self.price if self.price is not None else self.item.price
@@ -72,7 +74,7 @@ class OrderCreator(BaseService):
         if amocrm_enabled():
             self.push_to_amocrm(order)
 
-        if dashamail_enabled():
+        if self.subscribe and dashamail_enabled():
             self.push_to_dashamail(order)
             self.push_to_dashamail_directcrm(order)
 
@@ -87,6 +89,7 @@ class OrderCreator(BaseService):
             deal=self.deal,
             bank_id=self.desired_bank,
             analytics=self._parse_analytics(self.analytics),
+            raw=self.raw if self.raw is not None else {},
         )
 
     @staticmethod

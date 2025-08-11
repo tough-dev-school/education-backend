@@ -65,6 +65,7 @@ class Order(TimestampedModel):
     amocrm_transaction = models.OneToOneField("amocrm.AmoCRMOrderTransaction", on_delete=models.SET_NULL, null=True, blank=True, related_name="order")
 
     analytics = models.JSONField(default=dict)
+    raw = models.JSONField(default=dict)
 
     class Meta:
         ordering = ["-id"]
