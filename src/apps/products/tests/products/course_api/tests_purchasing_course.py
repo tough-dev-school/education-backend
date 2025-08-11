@@ -108,11 +108,25 @@ def test_order_creation_does_not_fail_with_nonexistant_params(call_purchase):
 
 
 @pytest.mark.dashamail
-def test_user_is_subscribed_to_dashamail(call_purchase, push_to_dashamail, push_to_dashamail_directcrm):
-    call_purchase()
+@pytest.mark.parametrize(
+    ("subscribe", "should_be_subscribed"),
+    [
+        (True, True),
+        (False, False),
+        ("tRue", True),
+        ("YES", True),
+        ("1", True),
+        (1, True),
+        (0, False),
+        ("0", False),
+        ("", False),
+    ],
+)
+def test_user_is_subscribed_to_dashamail_if_subscribe_is_true(call_purchase, push_to_dashamail, push_to_dashamail_directcrm, subscribe, should_be_subscribed):
+    call_purchase(subscribe=subscribe)
 
-    assert push_to_dashamail.call_count == 1
-    assert push_to_dashamail_directcrm.call_count == 1
+    assert (push_to_dashamail.call_count == 1) is should_be_subscribed
+    assert (push_to_dashamail_directcrm.call_count == 1) is should_be_subscribed
 
 
 def test_integrations_are_updated(call_purchase, rebuild_tags, push_customer_to_amocrm, push_order_to_amocrm, settings):

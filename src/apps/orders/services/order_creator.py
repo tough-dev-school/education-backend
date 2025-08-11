@@ -34,6 +34,7 @@ class OrderCreatorException(AppServiceException):
 class OrderCreator(BaseService):
     user: User
     item: Course
+    subscribe: bool | None = False
     price: Decimal | None = None
     author: User | None = None
     promocode: str | None = None
@@ -73,7 +74,7 @@ class OrderCreator(BaseService):
         if amocrm_enabled():
             self.push_to_amocrm(order)
 
-        if dashamail_enabled():
+        if self.subscribe and dashamail_enabled():
             self.push_to_dashamail(order)
             self.push_to_dashamail_directcrm(order)
 

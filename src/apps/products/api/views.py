@@ -77,6 +77,7 @@ class PurchaseView(APIView):
             user=user,
             item=item,
             data=serializer.validated_data,
+            subscribe=self.should_subscribe(request),
             raw=request.data,
         )
 
@@ -96,10 +97,11 @@ class PurchaseView(APIView):
         )()
 
     @staticmethod
-    def create_order(user: "User", item: Course, data: dict, raw: dict | None = None) -> "Order":
+    def create_order(user: "User", item: Course, subscribe: bool, data: dict, raw: dict | None = None) -> "Order":
         create_order = OrderCreator(
             user=user,
             item=item,
+            subscribe=subscribe,
             promocode=data.get("promocode"),
             desired_bank=data.get("desired_bank"),
             analytics=data.get("analytics"),
@@ -121,6 +123,15 @@ class PurchaseView(APIView):
         )
 
         return bank.get_initial_payment_url()
+
+    @staticmethod
+    def should_subscribe(request: "Request") -> bool:
+        if "subscribe" not in request.data:
+            return False
+
+        subscribe = request.data["subscribe"]
+
+        return subscribe.lower() in ["1", "true", "yes"]
 
 
 @extend_schema(
