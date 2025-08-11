@@ -123,7 +123,6 @@ class OrderCreator(BaseService):
     def save_acquring_details(self, order: Order) -> None:
         bank = self.bank(order)
         order.acquiring_percent = bank.get_acquiring_percent()
-
         order.ue_rate = bank.get_currency_rate()
 
         order.save(update_fields=["modified", "acquiring_percent", "ue_rate"])
