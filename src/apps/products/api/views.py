@@ -77,6 +77,7 @@ class PurchaseView(APIView):
             user=user,
             item=item,
             data=serializer.validated_data,
+            raw=request.data,
         )
 
         payment_link = self.get_payment_link(
@@ -95,13 +96,14 @@ class PurchaseView(APIView):
         )()
 
     @staticmethod
-    def create_order(user: "User", item: Course, data: dict) -> "Order":
+    def create_order(user: "User", item: Course, data: dict, raw: dict | None = None) -> "Order":
         create_order = OrderCreator(
             user=user,
             item=item,
             promocode=data.get("promocode"),
             desired_bank=data.get("desired_bank"),
             analytics=data.get("analytics"),
+            raw=raw,
         )
 
         return create_order()

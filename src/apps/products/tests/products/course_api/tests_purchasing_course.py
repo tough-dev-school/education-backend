@@ -86,19 +86,25 @@ def test_analytics_metadata(call_purchase):
 def test_weird_analytics_params_do_not_break_order_creation(call_purchase, weird):
     call_purchase(analytics=weird)
 
-    assert get_order() is not None
+    placed = get_order()
+
+    assert placed is not None
+    assert "name" in placed.raw
 
 
 def test_order_creation_does_not_fail_with_nonexistant_params(call_purchase):
     """Need this test cuz we may alter frontend request without corresponding changes on backend"""
     call_purchase(
-        {
-            "nonexistant": None,
+        **{  # NOQA: PIE804
+            "nonexistant": "None",
             "Петрович": "Львович",
         }
     )
 
-    assert get_order() is not None
+    placed = get_order()
+
+    assert placed is not None
+    assert "Петрович" in placed.raw
 
 
 @pytest.mark.dashamail
@@ -120,6 +126,23 @@ def test_integrations_are_updated(call_purchase, rebuild_tags, push_customer_to_
     rebuild_tags.assert_called_once_with(student_id=placed.user.id)
     push_customer_to_amocrm.assert_called_once_with(user_id=placed.user.id)
     push_order_to_amocrm.assert_called_once_with(order_id=placed.id)
+
+
+def test_raw_request_data_is_saved(call_purchase):
+    call_purchase(
+        analytics=json.dumps(
+            {
+                "test_param": "test_value",
+                "empty": None,
+            }
+        ),
+    )
+
+    placed = get_order()
+
+    assert "email" in placed.raw
+    assert "name" in placed.raw
+    assert "test_param" in placed.raw["analytics"]
 
 
 def test_by_default_user_is_subscribed(call_purchase):

@@ -40,6 +40,7 @@ class OrderCreator(BaseService):
     desired_bank: str | None = None
     analytics: str | None = None
     deal: Deal | None = None
+    raw: dict | None = None
 
     def __post_init__(self) -> None:
         self.price = self.price if self.price is not None else self.item.price
@@ -87,6 +88,7 @@ class OrderCreator(BaseService):
             deal=self.deal,
             bank_id=self.desired_bank,
             analytics=self._parse_analytics(self.analytics),
+            raw=self.raw if self.raw is not None else {},
         )
 
     @staticmethod
