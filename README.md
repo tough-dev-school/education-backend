@@ -1,6 +1,6 @@
 # Backend for [tough-dev.school](https://tough-dev.school/)
 
-![CI](https://github.com/tough-dev-school/education-backend/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/tough-dev-school/education-backend/actions/workflows/ci.yml/badge.svg) [![Crossplatform](https://github.com/tough-dev-school/education-backend/actions/workflows/crossplatform.yml/badge.svg)](https://github.com/tough-dev-school/education-backend/actions/workflows/crossplatform.yml)
 
 Django-based production project, integrated with Tinkoff, Dashamail, Postmark, S3 and telegram. Frontend is built on vue.js in the [separate repo](https://github.com/tough-dev-school/lms-frontend-v2).
 
