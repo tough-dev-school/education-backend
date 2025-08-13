@@ -1452,14 +1452,14 @@ standardjson = ">=0.3.1"
 
 [[package]]
 name = "django-silk"
-version = "5.4.0"
+version = "5.4.1"
 description = "Silky smooth profiling for the Django Framework"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "django_silk-5.4.0-py3-none-any.whl", hash = "sha256:caf720a06e24a6cf1acf825c1868b2a6ece8158b13725363f6d3a1a9994d0fa6"},
-    {file = "django_silk-5.4.0.tar.gz", hash = "sha256:2247870ac8080b6c6c5db17f2f1042d39d95e4a5fa061d661882777ec9adb672"},
+    {file = "django_silk-5.4.1-py3-none-any.whl", hash = "sha256:3625acc029f172bd94fd32284ec49a07552c5e58f02ede26db90a2fa33e9507e"},
+    {file = "django_silk-5.4.1.tar.gz", hash = "sha256:4c09b2ff37a45af70553cb04ff507f512abfc768646de13373b9741fe8d538da"},
 ]
 
 [package.dependencies]
