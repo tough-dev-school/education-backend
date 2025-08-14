@@ -9,7 +9,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
-        "rest_framework_jwt.authentication.JSONWebTokenAuthentication",
+        "apps.a12n.jwt.AppJSONWebTokenAuthentication",
     ],
     "DEFAULT_RENDERER_CLASSES": [
         "core.renderers.AppJSONRenderer",
