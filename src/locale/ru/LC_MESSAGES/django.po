@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-29 15:16+0300\n"
+"POT-Creation-Date: 2025-08-14 14:40+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -18,6 +18,18 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: apps/a12n/jwt.py:41
+msgid "Invalid token."
+msgstr ""
+
+#: apps/a12n/models.py:45
+msgid "Blacklisted token"
+msgstr ""
+
+#: apps/a12n/models.py:46
+msgid "Blacklisted tokens"
+msgstr ""
 
 #: apps/a12n/signals/handlers.py:13
 msgid "Too many failed login attempts"
@@ -45,13 +57,13 @@ msgid "Status"
 msgstr "Статус"
 
 #: apps/b2b/admin/deals/admin.py:71 apps/b2b/models.py:29
-#: apps/orders/admin/orders/admin.py:105 apps/orders/models/order.py:45
+#: apps/orders/admin/orders/admin.py:103 apps/orders/models/order.py:45
 #: apps/products/admin/course.py:32 apps/products/admin/course.py:94
 msgid "Price"
 msgstr "Цена"
 
 #: apps/b2b/admin/deals/forms.py:14 apps/b2b/models.py:60
-#: apps/users/models.py:109
+#: apps/users/models.py:108
 msgid "Students"
 msgstr "Студенты"
 
@@ -69,7 +81,7 @@ msgstr ""
 msgid "name"
 msgstr "Имя"
 
-#: apps/b2b/admin/students.py:30 apps/orders/admin/orders/admin.py:101
+#: apps/b2b/admin/students.py:30 apps/orders/admin/orders/admin.py:99
 msgid "email"
 msgstr "Почта"
 
@@ -141,7 +153,7 @@ msgid "In progress"
 msgstr "В работе"
 
 #: apps/b2b/models.py:59 apps/diplomas/admin/diploma.py:52
-#: apps/studying/models.py:8 apps/users/models.py:108
+#: apps/studying/models.py:8 apps/users/models.py:107
 msgid "Student"
 msgstr "Студент"
 
@@ -273,7 +285,7 @@ msgstr "Письма"
 msgid "Homework"
 msgstr "Домашка"
 
-#: apps/diplomas/admin/diploma.py:64 apps/orders/admin/orders/admin.py:109
+#: apps/diplomas/admin/diploma.py:64 apps/orders/admin/orders/admin.py:107
 msgid "Date"
 msgstr "Дата"
 
@@ -455,7 +467,7 @@ msgstr "Ссылки"
 msgid "Module count"
 msgstr "Модули"
 
-#: apps/lms/admin/module/admin.py:44
+#: apps/lms/admin/module/admin.py:47
 msgid "Lesson count"
 msgstr "Уроки"
 
@@ -571,11 +583,11 @@ msgstr "Домен личного email"
 msgid "Personal email domains"
 msgstr "Домены личных email"
 
-#: apps/notion/admin/material.py:73
+#: apps/notion/admin/material.py:76
 msgid "LMS"
 msgstr ""
 
-#: apps/notion/admin/material.py:83
+#: apps/notion/admin/material.py:86
 msgid "Notion"
 msgstr "Ноушен"
 
@@ -710,19 +722,19 @@ msgstr "Засчитать домашку"
 msgid "Disaccept homework"
 msgstr "Не засчитать домашку"
 
-#: apps/orders/admin/orders/admin.py:113 apps/orders/models/order.py:44
+#: apps/orders/admin/orders/admin.py:111 apps/orders/models/order.py:44
 msgid "User"
 msgstr "Юзер"
 
-#: apps/orders/admin/orders/admin.py:117
+#: apps/orders/admin/orders/admin.py:115
 msgid "Item"
 msgstr "Товар"
 
-#: apps/orders/admin/orders/admin.py:121
+#: apps/orders/admin/orders/admin.py:119
 msgid "Payment"
 msgstr "Оплата"
 
-#: apps/orders/admin/orders/admin.py:125
+#: apps/orders/admin/orders/admin.py:123
 msgid "Login as customer"
 msgstr "Зайти от имени студента"
 
@@ -808,21 +820,21 @@ msgstr "Запись"
 msgid "Bundle"
 msgstr "Набор"
 
-#: apps/orders/models/order.py:71
+#: apps/orders/models/order.py:72
 msgctxt "orders"
 msgid "Order"
 msgstr "Заказ"
 
-#: apps/orders/models/order.py:72
+#: apps/orders/models/order.py:73
 msgctxt "orders"
 msgid "Orders"
 msgstr "Заказы"
 
-#: apps/orders/models/order.py:75
+#: apps/orders/models/order.py:76
 msgid "May mark orders as paid"
 msgstr "Отмечать заказы оплаченными"
 
-#: apps/orders/models/order.py:76
+#: apps/orders/models/order.py:77
 msgid "May mark orders as unpaid"
 msgstr "Возвращать заказы"
 
@@ -1187,30 +1199,26 @@ msgid "Female"
 msgstr "Женщина"
 
 #: apps/users/models.py:25
-msgid "Subscribed to newsletter"
-msgstr "Подписан на новости"
-
-#: apps/users/models.py:26
 msgid "first name in english"
 msgstr "Имя на английском"
 
-#: apps/users/models.py:27
+#: apps/users/models.py:26
 msgid "last name in english"
 msgstr "Фамилия на английском"
 
-#: apps/users/models.py:30
+#: apps/users/models.py:29
 msgid "Gender"
 msgstr "Пол"
 
-#: apps/users/models.py:38
+#: apps/users/models.py:37
 msgid "Avatar"
 msgstr "Аватар"
 
-#: apps/users/models.py:47
+#: apps/users/models.py:46
 msgid "user"
 msgstr "пользователь"
 
-#: apps/users/models.py:48
+#: apps/users/models.py:47
 msgid "users"
 msgstr "пользователи"
 
@@ -1225,6 +1233,9 @@ msgstr "Нет"
 #: core/admin/video.py:11 core/admin/video.py:12
 msgid "Paste it from the address bar"
 msgstr "Скопируйте адрес из строки браузера"
+
+#~ msgid "Subscribed to newsletter"
+#~ msgstr "Подписан на новости"
 
 #~ msgid "Email template id"
 #~ msgstr "ID шаблона в постмарке"

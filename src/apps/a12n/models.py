@@ -4,6 +4,7 @@ from urllib.parse import urljoin
 
 from django.conf import settings
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 from core.models import TimestampedModel, models
 
@@ -35,3 +36,11 @@ class PasswordlessAuthToken(TimestampedModel):
         if not settings.DANGEROUSLY_MAKE_ONE_TIME_PASSWORDLESS_TOKEN_MULTI_PASS:
             self.used = timezone.now()
             self.save()
+
+
+class JWTBlacklist(TimestampedModel):
+    token = models.TextField(db_index=True, unique=True, null=False)
+
+    class Meta:
+        verbose_name = _("Blacklisted token")
+        verbose_name_plural = _("Blacklisted tokens")

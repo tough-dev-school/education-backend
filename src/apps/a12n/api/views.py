@@ -21,10 +21,6 @@ class ObtainJSONWebTokenView(jwt.ObtainJSONWebTokenView):
     throttle_classes = [AuthAnonRateThrottle]
 
 
-class RefreshJSONWebTokenView(jwt.RefreshJSONWebTokenView):
-    throttle_classes = [AuthAnonRateThrottle]
-
-
 @extend_schema(responses={200: OkSerializer})
 class RequestPasswordLessToken(AnonymousAPIView):
     throttle_classes = [AuthAnonRateThrottle]
