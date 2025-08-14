@@ -6,14 +6,12 @@ from apps.a12n.api.views import (
     ObtainJSONWebTokenViaPasswordlessToken,
     ObtainJSONWebTokenViaUserId,
     ObtainJSONWebTokenView,
-    RefreshJSONWebTokenView,
     RequestPasswordLessToken,
     RequestPasswordResetView,
 )
 
 urlpatterns = [
     path("token/", ObtainJSONWebTokenView.as_view()),
-    path("token/refresh/", RefreshJSONWebTokenView.as_view()),
     path("password/reset/", RequestPasswordResetView.as_view()),
     path("password/reset/confirm/", DjRestAuthPasswordResetConfirmView.as_view()),
     path("password/change/", DjRestAuthPasswordChangeView.as_view()),
