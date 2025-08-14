@@ -65,7 +65,7 @@ RUN echo "Built for ${RELEASE}"
 #
 FROM base AS web
 HEALTHCHECK CMD wget -q -O /dev/null http://localhost:8000/api/v2/healthchecks/db/ --header "Host: app.tough-dev.school" || exit 1
-CMD ["sh", "-c", "./manage.py migrate && uwsgi --master --http :8000 --module core.wsgi --workers 2 --threads 2 --harakiri 25 --max-requests 1000 --log-x-forwarded-for"]
+CMD ["sh", "-c", "./manage.py migrate && uwsgi --master --http :8000 --module core.wsgi --workers 2 --threads 2 --harakiri 25 --max-requests 1000 --buffer-size 8192 --log-x-forwarded-for"]
 
 #
 # Background processing image
