@@ -4,7 +4,7 @@ ARG PYTHON_VERSION=3.11
 # Compile custom uwsgi, cuz debian's one is weird
 #
 FROM python:${PYTHON_VERSION}-slim-bookworm AS uwsgi-compile
-ENV _UWSGI_VERSION=2.0.22
+ENV _UWSGI_VERSION=2.0.30
 RUN apt-get update && apt-get --no-install-recommends install -y build-essential wget && rm -rf /var/lib/apt/lists/*
 RUN wget --progress=dot:giga -O uwsgi-${_UWSGI_VERSION}.tar.gz https://github.com/unbit/uwsgi/archive/${_UWSGI_VERSION}.tar.gz \
   && tar zxvf uwsgi-*.tar.gz \
