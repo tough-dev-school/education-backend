@@ -27,7 +27,6 @@ class AppJSONWebTokenAuthentication(JSONWebTokenAuthentication):
 
     def authenticate(self, request: Request) -> tuple[User, str] | None:
         authentication_result = super().authenticate(request)
-
         if authentication_result is None:
             return None
 
