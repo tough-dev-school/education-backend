@@ -8,13 +8,13 @@ pytestmark = [
 
 
 @pytest.fixture
-def question(mixer):
-    return mixer.blend("homework.Question")
+def question(factory):
+    return factory.question()
 
 
 @pytest.fixture
-def ya_question(mixer):
-    return mixer.blend("homework.Question")
+def another_question(factory):
+    return factory.question()
 
 
 @pytest.fixture
@@ -47,8 +47,8 @@ def test_with_checked(crosscheck, question):
 
 
 @pytest.mark.usefixtures("crosscheck", "ya_crosscheck")
-def test_for_ya_question(ya_question):
-    got = AnswerCrossCheck.objects.count_for_question(ya_question)
+def test_for_another_question(another_question):
+    got = AnswerCrossCheck.objects.count_for_question(another_question)
 
     assert got["checked"] == 0
     assert got["total"] == 0

@@ -4,8 +4,8 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def question(mixer):
-    return mixer.blend("homework.Question", name="Вторая домашка")
+def question(factory):
+    return factory.question(name="Вторая домашка")
 
 
 @pytest.fixture

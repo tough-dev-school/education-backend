@@ -8,9 +8,8 @@ pytestmark = [
 
 
 @pytest.fixture
-def question(mixer, course):
-    question = mixer.blend("homework.Question", name="Девятнадцатая домашка")
-    question.courses.add(course)
+def question(factory, course):
+    question = factory.question(name="Девятнадцатая домашка")
 
     return question
 

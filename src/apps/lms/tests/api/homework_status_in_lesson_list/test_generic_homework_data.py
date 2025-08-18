@@ -34,7 +34,7 @@ def test_query_count(api, module, lesson, factory, mixer, django_assert_num_quer
         factory.lesson(
             module=module,
             material=mixer.blend("notion.Material"),
-            question=mixer.blend("homework.Question"),
+            question=factory.question(),
         )
 
     with django_assert_num_queries(7):

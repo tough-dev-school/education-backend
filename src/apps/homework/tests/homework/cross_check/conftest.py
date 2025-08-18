@@ -16,8 +16,8 @@ def question_dispatcher(question):
 
 
 @pytest.fixture
-def question(mixer):
-    return mixer.blend("homework.Question")
+def question(factory):
+    return factory.question()
 
 
 @pytest.fixture(autouse=True)
