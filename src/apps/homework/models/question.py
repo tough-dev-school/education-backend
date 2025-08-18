@@ -17,9 +17,6 @@ if TYPE_CHECKING:
 
 
 class QuestionQuerySet(QuerySet):
-    def for_admin(self) -> "QuestionQuerySet":
-        return self
-
     def for_user(self, user: User) -> "QuestionQuerySet":
         if user.has_perm("studying.purchased_all_courses") or user.has_perm("homework.see_all_questions"):
             return self.with_fake_annotations()
@@ -131,9 +128,7 @@ class Question(TimestampedModel):
         purchased_courses = apps.get_model("products.Course").objects.for_user(user)
 
         return (
-            apps.get_model("lms.Lesson")
-            .objects.filter(
-                question=self,
+            self.lesson_set.filter(
                 module__course__in=purchased_courses,
             )
             .order_by("-created")
