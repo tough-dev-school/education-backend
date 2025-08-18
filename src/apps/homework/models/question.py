@@ -12,6 +12,7 @@ from apps.users.models import User
 from core.models import SubqueryCount, TimestampedModel, models
 
 if TYPE_CHECKING:
+    from apps.lms.models import Lesson
     from apps.products.models import Course
 
 
@@ -126,26 +127,20 @@ class Question(TimestampedModel):
     def get_legacy_course(self) -> Optional["Course"]:
         return self._legacy_course
 
-    def get_course(self, user: User) -> Optional["Course"]:
-        purchased_lessons = (
-            apps.get_model("lms.Lesson")
-            .objects.for_user(
-                user,
-            )
-            .filter(
-                question=self,
-            )
-            .values("module")
-            .distinct()
-        )
-        purchased_modules = apps.get_model("lms.Module").objects.filter(
-            pk__in=purchased_lessons,
-        )
+    def get_lesson(self, user: User) -> Optional["Lesson"]:
+        purchased_courses = apps.get_model("products.Course").objects.for_user(user)
 
         return (
-            apps.get_model("products.Course")
+            apps.get_model("lms.Lesson")
             .objects.filter(
-                pk__in=purchased_modules.values("course"),
+                question=self,
+                module__course__in=purchased_courses,
             )
+            .order_by("-created")
             .first()
         )
+
+    def get_course(self, user: User) -> Optional["Course"]:
+        lesson = self.get_lesson(user)
+        if lesson is not None:
+            return lesson.module.course
