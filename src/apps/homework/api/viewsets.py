@@ -15,7 +15,6 @@ from apps.homework.api.permissions import (
     AnswerShouldBeEditable,
     MayChangeAnswerOnlyWithoutDescendants,
     ShouldBeAuthorOrReadOnly,
-    ShouldHavePurchasedQuestionCoursePermission,
 )
 from apps.homework.api.serializers import (
     AnswerCreateSerializer,
@@ -60,11 +59,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
 
     lookup_field = "slug"
     permission_classes = [
-        IsAuthenticated
-        & ShouldHavePurchasedQuestionCoursePermission
-        & ShouldBeAuthorOrReadOnly
-        & AnswerShouldBeEditable
-        & MayChangeAnswerOnlyWithoutDescendants,
+        IsAuthenticated & ShouldBeAuthorOrReadOnly & AnswerShouldBeEditable & MayChangeAnswerOnlyWithoutDescendants,
     ]
     filterset_class = AnswerFilterSet
 

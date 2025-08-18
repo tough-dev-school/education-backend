@@ -62,9 +62,9 @@ class AnswerCreator(BaseService):
     def study(self) -> Study | None:
         """Find the study record of a student to the given course.
         No record means its is the answer from expert or one of us"""
-        for course_id in self.question.courses.values_list("id", flat=True):
-            with contextlib.suppress(Study.DoesNotExist):
-                return Study.objects.get(course_id=course_id, student=self.author)
+        course = self.question.get_course(user=self.author)
+        with contextlib.suppress(Study.DoesNotExist):
+            return Study.objects.get(course=course, student=self.author)
 
     def is_answer_to_crosscheck(self, instance: Answer) -> bool:
         if instance.parent is None:

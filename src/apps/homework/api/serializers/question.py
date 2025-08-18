@@ -44,10 +44,7 @@ class QuestionDetailSerializer(serializers.ModelSerializer):
         from apps.lms.api.serializers import LMSCourseSerializer
 
         lesson = get_lesson(question, user=self.context["request"].user)
-
-        course = question.courses.first()
-        if lesson is not None:
-            course = lesson.module.course
+        course = lesson.module.course if lesson is not None else question.get_legacy_course()
 
         return LMSCourseSerializer(course).data
 

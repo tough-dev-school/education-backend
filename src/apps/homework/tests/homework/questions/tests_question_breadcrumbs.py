@@ -8,7 +8,7 @@ pytestmark = [
 
 
 @pytest.fixture
-def question(factory, course):
+def question(factory):
     question = factory.question(name="Девятнадцатая домашка")
 
     return question
