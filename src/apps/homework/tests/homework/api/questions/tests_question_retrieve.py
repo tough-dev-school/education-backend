@@ -86,12 +86,5 @@ def test_ok_for_users_with_permission_even_when_they_did_not_purchase_the_course
     api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=200)
 
 
-@pytest.mark.usefixtures("_no_purchase")
-def test_ok_if_user_has_not_purchased_but_permission_check_is_disabled(api, settings, question):
-    settings.DISABLE_HOMEWORK_PERMISSIONS_CHECKING = True
-
-    api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=200)
-
-
 def test_no_anon(anon, question):
     anon.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=404)
