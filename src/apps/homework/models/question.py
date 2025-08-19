@@ -4,6 +4,7 @@ from urllib.parse import urljoin
 
 from django.apps import apps
 from django.conf import settings
+from django.contrib.postgres.fields import ArrayField
 from django.db.models import Exists, OuterRef, QuerySet, Value
 from django.db.models.expressions import RawSQL
 from django.utils.translation import gettext_lazy as _
@@ -95,7 +96,7 @@ class Question(TimestampedModel):
 
     deadline = models.DateTimeField(_("Deadline"), null=True, blank=True)
 
-    _legacy_course = models.ForeignKey("products.Course", null=True, on_delete=models.PROTECT)
+    _legacy_courses = ArrayField(models.PositiveIntegerField(), blank=True, null=True)
 
     class Meta:
         verbose_name = _("Homework")
@@ -122,7 +123,9 @@ class Question(TimestampedModel):
         return count
 
     def get_legacy_course(self) -> Optional["Course"]:
-        return self._legacy_course
+        """Returns random course to simplify later investigation"""
+        legacy_course_ids = self._legacy_courses if self._legacy_courses is not None else []
+        return apps.get_model("products.Course").objects.filter(pk__in=legacy_course_ids).order_by("?").first()
 
     def get_lesson(self, user: User) -> Optional["Lesson"]:
         purchased_courses = apps.get_model("products.Course").objects.for_user(user)
