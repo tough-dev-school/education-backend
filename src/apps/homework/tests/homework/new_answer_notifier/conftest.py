@@ -9,13 +9,18 @@ def notifier():
 
 
 @pytest.fixture
-def another_answer(mixer):
-    return mixer.blend("homework.Answer")
+def question(factory, course):
+    return factory.question(course=course, name="Вторая домашка")
 
 
 @pytest.fixture
-def parent_of_another_answer(mixer, another_answer):
-    answer = mixer.blend("homework.Answer")
+def another_answer(mixer, question):
+    return mixer.blend("homework.Answer", question=question)
+
+
+@pytest.fixture
+def parent_of_another_answer(mixer, another_answer, question):
+    answer = mixer.blend("homework.Answer", question=question)
 
     another_answer.update(parent=answer)
 

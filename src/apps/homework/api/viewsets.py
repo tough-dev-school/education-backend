@@ -4,7 +4,7 @@ from django.db.models import QuerySet
 from django.utils.decorators import method_decorator
 from django.utils.functional import cached_property
 from drf_spectacular.utils import extend_schema
-from rest_framework.exceptions import MethodNotAllowed
+from rest_framework.exceptions import MethodNotAllowed, PermissionDenied
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
@@ -24,12 +24,13 @@ from apps.homework.api.serializers import (
     ReactionCreateSerializer,
     ReactionDetailedSerializer,
 )
-from apps.homework.models import Answer
+from apps.homework.models import Answer, Question
 from apps.homework.models.answer import AnswerQuerySet
 from apps.homework.models.reaction import Reaction
 from apps.homework.services import ReactionCreator
 from apps.homework.services.answer_creator import AnswerCreator
 from apps.homework.services.answer_remover import AnswerRemover
+from apps.users.models import User
 from core.api.mixins import DisablePaginationWithQueryParamMixin
 from core.viewsets import AppViewSet, CreateDeleteAppViewSet
 
@@ -66,6 +67,8 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     @extend_schema(request=AnswerCreateSerializer, responses=AnswerTreeSerializer)
     def create(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         """Create an answer"""
+        self._check_question_permissions(user=self.user, question_slug=request.data["question"])
+
         answer = AnswerCreator(
             question_slug=request.data["question"],
             parent_slug=request.data.get("parent"),
@@ -114,9 +117,9 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
         return queryset.with_children_count().order_by("created").prefetch_reactions()
 
     def limit_queryset_to_user(self, queryset: AnswerQuerySet) -> AnswerQuerySet:
-        if self.action != "retrieve" and not self.request.user.has_perm("homework.see_all_answers"):
+        if self.action != "retrieve" and not self.user.has_perm("homework.see_all_answers"):
             # Each user may access any answer knowing its slug
-            return queryset.for_user(self.request.user)  # type: ignore
+            return queryset.for_user(self.user)
 
         return queryset
 
@@ -125,6 +128,15 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
             return queryset.root_only()
 
         return queryset
+
+    @staticmethod
+    def _check_question_permissions(user: User, question_slug: str) -> None:
+        if not Question.objects.for_user(user).filter(slug=question_slug).exists():
+            raise PermissionDenied()
+
+    @property
+    def user(self) -> User:
+        return self.request.user  # type: ignore
 
 
 class ReactionViewSet(CreateDeleteAppViewSet):

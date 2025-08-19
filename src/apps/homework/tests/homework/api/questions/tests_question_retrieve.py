@@ -66,6 +66,7 @@ def test_course_info_with_attached_lesson(api, question, factory, another_course
 def test_404_for_not_purchased_users(api, question):
     assert api.user.is_superuser is False
     assert not api.user.has_perm("homework.see_all_questions")
+    assert not api.user.has_perm("studying.purchased_all_courses")
 
     api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=404)
 
@@ -78,8 +79,15 @@ def test_ok_for_superusers_even_when_they_did_not_purchase_the_course(api, quest
 
 
 @pytest.mark.usefixtures("_no_purchase")
-def test_ok_for_users_with_permission_even_when_they_did_not_purchase_the_course(api, question):
-    api.user.add_perm("homework.question.see_all_questions")
+@pytest.mark.parametrize(
+    "permission",
+    [
+        "homework.see_all_questions",
+        "studying.purchased_all_courses",
+    ],
+)
+def test_ok_for_users_with_permission_even_when_they_did_not_purchase_the_course(api, question, permission):
+    api.user.add_perm(permission)
 
     api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=200)
 
