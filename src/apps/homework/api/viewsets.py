@@ -12,9 +12,9 @@ from rest_framework.response import Response
 
 from apps.homework.api.filtersets import AnswerFilterSet
 from apps.homework.api.permissions import (
-    AnswerShouldBeEditable,
-    MayChangeAnswerOnlyWithoutDescendants,
-    ShouldBeAuthorOrReadOnly,
+    AuthorOrReadonly,
+    IsEditable,
+    NoDescendants,
 )
 from apps.homework.api.serializers import (
     AnswerCreateSerializer,
@@ -60,7 +60,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
 
     lookup_field = "slug"
     permission_classes = [
-        IsAuthenticated & ShouldBeAuthorOrReadOnly & AnswerShouldBeEditable & MayChangeAnswerOnlyWithoutDescendants,
+        IsAuthenticated & AuthorOrReadonly & IsEditable & NoDescendants,
     ]
     filterset_class = AnswerFilterSet
 
@@ -145,7 +145,7 @@ class ReactionViewSet(CreateDeleteAppViewSet):
     serializer_action_classes = {
         "create": ReactionCreateSerializer,
     }
-    permission_classes = [IsAuthenticated & ShouldBeAuthorOrReadOnly]
+    permission_classes = [IsAuthenticated & AuthorOrReadonly]
 
     lookup_field = "slug"
 

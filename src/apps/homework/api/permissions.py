@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from apps.homework.models import Answer, Reaction
 
 
-class ShouldBeAuthorOrReadOnly(permissions.BasePermission):
+class AuthorOrReadonly(permissions.BasePermission):
     def has_object_permission(self, request: Request, view: APIView, obj: Answer | Reaction) -> bool:
         if request.method in permissions.SAFE_METHODS:
             return True
@@ -13,7 +13,7 @@ class ShouldBeAuthorOrReadOnly(permissions.BasePermission):
         return obj.author == request.user
 
 
-class AnswerShouldBeEditable(permissions.BasePermission):
+class IsEditable(permissions.BasePermission):
     def has_object_permission(self, request: Request, view: APIView, answer: Answer) -> bool:
         if request.method in permissions.SAFE_METHODS:
             return True
@@ -21,7 +21,7 @@ class AnswerShouldBeEditable(permissions.BasePermission):
         return answer.is_editable
 
 
-class MayChangeAnswerOnlyWithoutDescendants(permissions.BasePermission):
+class NoDescendants(permissions.BasePermission):
     def has_object_permission(self, request: Request, view: APIView, answer: Answer) -> bool:
         if request.method in permissions.SAFE_METHODS:
             return True
