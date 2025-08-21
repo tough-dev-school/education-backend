@@ -73,6 +73,7 @@ class Answer(TestUtilsMixin, TreeNode):
         indexes = [
             models.Index(fields=["question", "author"]),
             models.Index(fields=["question", "study"]),
+            models.Index(fields=["parent_id", "created"]),
         ]
 
     def __str__(self) -> str:
