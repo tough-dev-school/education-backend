@@ -29,6 +29,7 @@ class AnswerSerializer(serializers.ModelSerializer):
             "author",
             "parent",
             "text",
+            "content",
             "src",
             "has_descendants",
             "is_editable",
@@ -104,6 +105,7 @@ class AnswerCreateSerializer(serializers.ModelSerializer):
             "question",
             "parent",
             "text",
+            "content",
         ]
 
 
@@ -112,6 +114,7 @@ class AnswerUpdateSerializer(serializers.ModelSerializer):
         model = Answer
         fields = [
             "text",
+            "content",
         ]
 
 

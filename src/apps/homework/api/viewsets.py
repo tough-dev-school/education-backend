@@ -66,15 +66,15 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     @extend_schema(request=AnswerCreateSerializer, responses=AnswerTreeSerializer)
     def create(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         """Create an answer"""
-        self._check_question_permissions(user=self.user, question_slug=request.data["question"])
 
         answer = AnswerCreator(
             question_slug=request.data["question"],
             parent_slug=request.data.get("parent"),
-            text=request.data["text"],
+            text=request.data.get("text", ""),
+            content=request.data.get("content", {}),
         )()
 
-        answer = self.get_queryset().get(pk=answer.pk)  # augment answer with methods from .for_viewset() to display it properly
+        answer = self.get_queryset().get(pk=answer.pk)  # augment answer with annotations from .for_viewset() to display it properly
         Serializer = self.get_serializer_class(action="retrieve")
         return Response(
             Serializer(

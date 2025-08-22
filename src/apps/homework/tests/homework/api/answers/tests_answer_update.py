@@ -11,6 +11,21 @@ pytestmark = [
 ]
 
 
+JSON = {
+    "type": "doc",
+    "content": [
+        {
+            "type": "paragraph",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "Горите в аду (отредактировано в 08:30)",
+                }
+            ],
+        }
+    ],
+}
+
 @pytest.fixture(autouse=True)
 def _set_editability_period(settings):
     settings.HOMEWORK_ANSWER_EDIT_PERIOD = timedelta(days=1)
@@ -33,6 +48,15 @@ def test_changing_text(api, answer):
     answer.refresh_from_db()
 
     assert answer.text == "*patched*"
+    assert answer.modified == datetime(2032, 12, 1, 15, 30, 12, tzinfo=timezone(timedelta(hours=3)))  # modified time updated
+
+
+def test_changing_json(api, answer):
+    api.patch(f"/api/v2/homework/answers/{answer.slug}/", {"content": JSON})
+
+    answer.refresh_from_db()
+
+    assert answer.content == JSON
     assert answer.modified == datetime(2032, 12, 1, 15, 30, 12, tzinfo=timezone(timedelta(hours=3)))  # modified time updated
 
 

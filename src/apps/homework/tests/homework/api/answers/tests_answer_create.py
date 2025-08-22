@@ -9,6 +9,21 @@ pytestmark = [
     pytest.mark.usefixtures("purchase"),
 ]
 
+JSON = {
+    "type": "doc",
+    "content": [
+        {
+            "type": "paragraph",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "Горите в аду",
+                }
+            ],
+        }
+    ],
+}
+
 
 @pytest.fixture
 def _no_purchase(purchase):
@@ -19,7 +34,8 @@ def get_answer():
     return Answer.objects.last()
 
 
-def test_creation(api, question, another_answer, purchase):
+def test_creation_with_text(api, question, another_answer, purchase):
+    """Drop it when you remove the 'text' field"""
     api.post(
         "/api/v2/homework/answers/",
         {
@@ -36,6 +52,26 @@ def test_creation(api, question, another_answer, purchase):
     assert created.author == api.user
     assert created.study == purchase.study
     assert created.text == "Горите в аду!"
+
+
+def test_creation_with_json(api, question, another_answer, purchase):
+    """Drop it when you remove the 'text' field"""
+    api.post(
+        "/api/v2/homework/answers/",
+        {
+            "content": JSON,
+            "question": question.slug,
+            "parent": another_answer.slug,
+        },
+    )
+
+    created = get_answer()
+
+    assert created.question == question
+    assert created.parent == another_answer
+    assert created.author == api.user
+    assert created.study == purchase.study
+    assert created.content == JSON
 
 
 @pytest.mark.usefixtures("kamchatka_timezone")

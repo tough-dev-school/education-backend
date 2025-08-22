@@ -18,6 +18,7 @@ from core.services import BaseService
 @dataclass
 class AnswerCreator(BaseService):
     text: str
+    content: dict
     question_slug: str
     parent_slug: str | None = None
 
@@ -30,6 +31,11 @@ class AnswerCreator(BaseService):
 
         return instance
 
+    def get_validators(self) -> list[Callable]:
+        return [
+            self.validate_json_or_text,
+        ]
+
     def create(self) -> Answer:
         return Answer.objects.create(
             parent=self.parent,
@@ -37,6 +43,7 @@ class AnswerCreator(BaseService):
             author=self.author,
             study=self.study,
             text=self.text,
+            content=self.content,
         )
 
     @cached_property
@@ -83,3 +90,9 @@ class AnswerCreator(BaseService):
 
     def complete_crosscheck(self, instance: Answer) -> None:
         instance.parent.answercrosscheck_set.filter(checker=self.author).update(checked=timezone.now())
+
+    def validate_json_or_text(self) -> None:
+        """Remove it after frontend migration"""
+        if self.text is None or len(self.text) == 0:
+            if self.content is None or not len(self.content.keys()):
+                raise ValidationError("Please provide text or json")
