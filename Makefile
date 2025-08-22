@@ -14,7 +14,7 @@ lint:
 	poetry run ruff check src
 	poetry run mypy src
 	$(manage) makemigrations --check --no-input --dry-run
-	$(manage) check
+	$(manage) check --fail-level WARNING
 	$(manage) spectacular --api-version v1 --fail-on-warn > /dev/null
 	poetry run toml-sort pyproject.toml --check
 	poetry run pymarkdown scan README.md
