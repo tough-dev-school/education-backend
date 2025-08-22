@@ -12,6 +12,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="answer",
             name="content",
-            field=models.JSONField(blank=True, null=True),
+            field=models.JSONField(blank=True, null=True, default=dict),
         ),
     ]

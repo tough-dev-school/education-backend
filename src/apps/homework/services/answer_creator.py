@@ -95,9 +95,9 @@ class AnswerCreator(BaseService):
 
     def validate_json_or_text(self) -> None:
         """Remove it after frontend migration"""
-        if self.text is None or len(self.text) == 0:
-            if self.content is None or not len(self.content.keys()):
-                raise ValidationError("Please provide text or json")
+        if self.text is None or len(self.text) == 0:  # validating json
+            if not isinstance(self.content, dict) or not len(self.content.keys()):
+                raise ValidationError("Please provide text or content field")
 
     def validate_question_slug(self) -> None:
         """Validate only format, database validation is performed later"""

@@ -98,6 +98,27 @@ def test_no_question(api, another_answer):
     )
 
 
+@pytest.mark.parametrize(
+    "shit",
+    [
+        "",
+        "text",
+        ["a"],
+        '{"a": "b"}',
+    ],
+)
+def test_invalid_json(api, another_answer, question, shit):
+    api.post(
+        "/api/v2/homework/answers/",
+        {
+            "content": shit,
+            "parent": another_answer.slug,
+            "question": question.slug,
+        },
+        expected_status_code=400,
+    )
+
+
 @pytest.mark.usefixtures("kamchatka_timezone")
 @pytest.mark.freeze_time("2023-01-23 08:30:40+12:00")
 def test_create_answer_fields(api, question, another_answer):

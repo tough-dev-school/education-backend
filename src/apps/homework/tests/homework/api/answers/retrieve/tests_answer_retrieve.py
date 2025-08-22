@@ -28,6 +28,24 @@ def test_ok(api, answer, question):
     assert got["content"]["type"] == "doc"
 
 
+def test_text_content(api, answer):
+    answer.update(content={}, text="*legacy*")
+
+    got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
+
+    assert got["content"] == {}
+    assert "legacy" in got["text"]
+
+
+def test_json_content(api, answer):
+    answer.update(content={"type": "doc"}, text="")
+
+    got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
+
+    assert got["content"]["type"] == "doc"
+    assert got["text"] == ""
+
+
 def test_has_descendants_is_true_if_answer_has_children(api, answer, another_answer, another_user):
     another_answer.update(parent=answer, author=another_user)
 

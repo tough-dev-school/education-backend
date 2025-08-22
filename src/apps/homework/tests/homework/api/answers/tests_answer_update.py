@@ -61,6 +61,27 @@ def test_changing_json(api, answer):
     assert answer.modified == datetime(2032, 12, 1, 15, 30, 12, tzinfo=timezone(timedelta(hours=3)))  # modified time updated
 
 
+def test_no_text_and_not_json(api, answer):
+    api.patch(f"/api/v2/homework/answers/{answer.slug}/", {}, expected_status_code=400)
+
+
+@pytest.mark.parametrize(
+    "shit",
+    [
+        "",
+        "text",
+        ["a"],
+        '{"a": "b"}',
+    ],
+)
+def test_invalid_json(api, answer, shit):
+    api.patch(
+        f"/api/v2/homework/answers/{answer.slug}/",
+        {"content": shit},
+        expected_status_code=400,
+    )
+
+
 def test_patch_changing_content_response_fields(api, answer, another_answer):
     got = api.patch(f"/api/v2/homework/answers/{answer.slug}/", {"content": JSON})
 

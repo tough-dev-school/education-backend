@@ -32,6 +32,24 @@ def test_ok(api, question, answer):
     assert got[0]["reactions"] == []
 
 
+def test_text_content(api, question, answer):
+    answer.update(content={}, text="*legacy*")
+
+    got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
+
+    assert got[0]["content"] == {}
+    assert "legacy" in got[0]["text"]
+
+
+def test_json_content(api, question, answer):
+    answer.update(content={"type": "doc"}, text="")
+
+    got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
+
+    assert got[0]["content"]["type"] == "doc"
+    assert got[0]["text"] == ""
+
+
 def test_has_reaction_fields_if_there_is_reaction(api, question, reaction):
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 
