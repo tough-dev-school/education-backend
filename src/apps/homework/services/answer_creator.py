@@ -33,6 +33,8 @@ class AnswerCreator(BaseService):
 
     def get_validators(self) -> list[Callable]:
         return [
+            self.validate_question_slug,
+            self.validate_parent_slug,
             self.validate_json_or_text,
         ]
 
@@ -56,7 +58,7 @@ class AnswerCreator(BaseService):
 
     @cached_property
     def parent(self) -> Answer | None:
-        if not is_valid_uuid(self.parent_slug):
+        if self.parent_slug is None or len(self.parent_slug) == 0:
             return None
 
         with contextlib.suppress(Answer.DoesNotExist):
@@ -96,3 +98,18 @@ class AnswerCreator(BaseService):
         if self.text is None or len(self.text) == 0:
             if self.content is None or not len(self.content.keys()):
                 raise ValidationError("Please provide text or json")
+
+    def validate_question_slug(self) -> None:
+        """Validate only format, database validation is performed later"""
+        if not is_valid_uuid(self.question_slug):
+            raise ValidationError("Question should be a valid uuid")
+
+    def validate_parent_slug(self) -> None:
+        if self.parent_slug is None or not len(self.parent_slug):  # adding a root answer
+            return
+
+        if not is_valid_uuid(self.parent_slug):
+            raise ValidationError("Question should be a valid uuid")
+
+        if not Answer.objects.filter(slug=self.parent_slug).exists():
+            raise ValidationError("Answer does not exist")

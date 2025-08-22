@@ -23,6 +23,10 @@ def append_to_query_string(url: str, **kwargs: str) -> str:
 
 
 def is_valid_uuid(value: str | None) -> bool:
+    """
+    Validate uuid4
+    You can find this method as is_uuid or is_uuid4
+    """
     if value is None:
         return False
 

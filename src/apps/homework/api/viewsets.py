@@ -68,7 +68,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
         """Create an answer"""
 
         answer = AnswerCreator(
-            question_slug=request.data["question"],
+            question_slug=request.data.get("question"),  # type: ignore
             parent_slug=request.data.get("parent"),
             text=request.data.get("text", ""),
             content=request.data.get("content", {}),

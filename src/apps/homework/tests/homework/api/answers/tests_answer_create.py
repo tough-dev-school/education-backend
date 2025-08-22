@@ -52,6 +52,7 @@ def test_creation_with_text(api, question, another_answer, purchase):
     assert created.author == api.user
     assert created.study == purchase.study
     assert created.text == "Горите в аду!"
+    assert created.content == {}
 
 
 def test_creation_with_json(api, question, another_answer, purchase):
@@ -72,6 +73,29 @@ def test_creation_with_json(api, question, another_answer, purchase):
     assert created.author == api.user
     assert created.study == purchase.study
     assert created.content == JSON
+    assert created.text == ""
+
+
+def test_no_text_nor_json(api, question, another_answer):
+    api.post(
+        "/api/v2/homework/answers/",
+        {
+            "question": question.slug,
+            "parent": another_answer.slug,
+        },
+        expected_status_code=400,
+    )
+
+
+def test_no_question(api, another_answer):
+    api.post(
+        "/api/v2/homework/answers/",
+        {
+            "content": JSON,
+            "parent": another_answer.slug,
+        },
+        expected_status_code=400,
+    )
 
 
 @pytest.mark.usefixtures("kamchatka_timezone")
@@ -100,7 +124,7 @@ def test_create_answer_fields(api, question, another_answer):
     assert got["reactions"] == []  # and couldn't have reactions
 
 
-def test_without_parent(api, question):
+def test_creating_root_answer(api, question):
     api.post(
         "/api/v2/homework/answers/",
         {
@@ -123,10 +147,8 @@ def test_nonexistant_parent(api, question):
             "question": question.slug,
             "content": JSON,
         },
+        expected_status_code=400,
     )
-    created = get_answer()
-
-    assert created.parent is None
 
 
 @pytest.mark.parametrize("empty_parent", ["", None])
