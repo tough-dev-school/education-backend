@@ -19,11 +19,3 @@ class IsEditable(permissions.BasePermission):
             return True
 
         return answer.is_editable
-
-
-class NoDescendants(permissions.BasePermission):
-    def has_object_permission(self, request: Request, view: APIView, answer: Answer) -> bool:
-        if request.method in permissions.SAFE_METHODS:
-            return True
-
-        return answer.get_first_level_descendants().count() == 0
