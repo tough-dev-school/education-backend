@@ -53,7 +53,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     queryset = Answer.objects.for_viewset()
     serializer_class = AnswerSerializer
     serializer_action_classes = {
-        "partial_update": AnswerCreateSerializer,
+        "partial_update": AnswerUpdateSerializer,
         "retrieve": AnswerTreeSerializer,
     }
 
