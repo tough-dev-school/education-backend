@@ -35,6 +35,8 @@ def test_text_content(api, answer):
 
     assert got["content"] == {}
     assert "legacy" in got["text"]
+    assert "legacy" in got["legacy_text"]
+    assert "<em>" in got["legacy_text"]
 
 
 def test_json_content(api, answer):
@@ -44,6 +46,7 @@ def test_json_content(api, answer):
 
     assert got["content"]["type"] == "doc"
     assert got["text"] == ""
+    assert got["legacy_text"] == ""
 
 
 def test_has_descendants_is_true_if_answer_has_children(api, answer, another_answer, another_user):

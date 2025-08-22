@@ -39,6 +39,8 @@ def test_text_content(api, question, answer):
 
     assert got[0]["content"] == {}
     assert "legacy" in got[0]["text"]
+    assert "legacy" in got[0]["legacy_text"]
+    assert "<em>" in got[0]["legacy_text"]
 
 
 def test_json_content(api, question, answer):
