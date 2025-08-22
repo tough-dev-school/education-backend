@@ -124,14 +124,14 @@ def test_create_answer_without_parent_do_not_have_parent_field_in_response(api, 
 
 
 @pytest.mark.usefixtures("_no_purchase")
-def test_403_for_not_purchased_users(api, question):
+def test_404_for_not_purchased_users(api, question):
     api.post(
         "/api/v2/homework/answers/",
         {
             "question": question.slug,
             "text": "Верните деньги!",
         },
-        expected_status_code=403,
+        expected_status_code=404,
     )
 
 
@@ -181,7 +181,7 @@ def test_ok_for_superusers(api, question):
     assert created.study is None
 
 
-def test_403_if_user_has_not_purchase_record_at_all(api, question, purchase):
+def test_404_if_user_has_not_purchase_record_at_all(api, question, purchase):
     purchase.delete()
 
     api.post(
@@ -191,7 +191,7 @@ def test_403_if_user_has_not_purchase_record_at_all(api, question, purchase):
             "question": question.slug,
             "parent": None,
         },
-        expected_status_code=403,
+        expected_status_code=404,
     )
 
     created = get_answer()

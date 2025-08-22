@@ -1,10 +1,11 @@
 import contextlib
 from dataclasses import dataclass
+from typing import Callable
 
 from django.db import transaction
 from django.utils import timezone
 from django.utils.functional import cached_property
-from rest_framework.exceptions import NotAuthenticated
+from rest_framework.exceptions import NotAuthenticated, NotFound, ValidationError
 
 from apps.homework.models import Answer, Question
 from apps.studying.models import Study
@@ -56,7 +57,15 @@ class AnswerCreator(BaseService):
 
     @cached_property
     def question(self) -> Question:
-        return Question.objects.get(slug=self.question_slug)
+        try:
+            return Question.objects.for_user(
+                self.author,
+            ).get(
+                slug=self.question_slug,
+            )
+
+        except Question.DoesNotExist:
+            raise NotFound()
 
     @cached_property
     def study(self) -> Study | None:

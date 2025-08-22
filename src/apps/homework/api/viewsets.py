@@ -4,7 +4,7 @@ from django.db.models import QuerySet
 from django.utils.decorators import method_decorator
 from django.utils.functional import cached_property
 from drf_spectacular.utils import extend_schema
-from rest_framework.exceptions import MethodNotAllowed, PermissionDenied
+from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
@@ -23,7 +23,7 @@ from apps.homework.api.serializers import (
     ReactionCreateSerializer,
     ReactionDetailedSerializer,
 )
-from apps.homework.models import Answer, Question
+from apps.homework.models import Answer
 from apps.homework.models.answer import AnswerQuerySet
 from apps.homework.models.reaction import Reaction
 from apps.homework.services import ReactionCreator
@@ -127,11 +127,6 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
             return queryset.root_only()
 
         return queryset
-
-    @staticmethod
-    def _check_question_permissions(user: User, question_slug: str) -> None:
-        if not Question.objects.for_user(user).filter(slug=question_slug).exists():
-            raise PermissionDenied()
 
     @property
     def user(self) -> User:
