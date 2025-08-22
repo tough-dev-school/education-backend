@@ -98,7 +98,16 @@ def test_answers_from_other_questions_are_excluded(api, another_question):
     assert len(got) == 0
 
 
-def test_two_root_answers(api, question, answer, another_answer):  # NOQA: ARG001
+@pytest.mark.xfail(strict=True, reason="Not implemented")
+@pytest.mark.usefixtures("question", "answer", "another_answer")
+def test_no_answers_without_question_filter(api):
+    got = api.get("/api/v2/homework/answers/")["results"]
+
+    assert len(got) == 0
+
+
+@pytest.mark.usefixtures("answer", "another_answer")
+def test_two_root_answers(api, question):
     """Test just to make the test below more readable"""
 
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
@@ -116,8 +125,15 @@ def test_non_root_answers_are_excluded(api, question, answer, another_answer):
 
 
 @pytest.mark.usefixtures("answer", "answer_from_another_user")
-def test_answers_from_other_questions_are_excluded_even_if_user_has_the_permission(api, another_question):
-    api.user.add_perm("homework.answer.see_all_answers")
+@pytest.mark.parametrize(
+    "permission",
+    [
+        "homework.see_all_questions",
+        "studying.purchased_all_courses",
+    ],
+)
+def test_answers_from_other_questions_are_excluded_even_if_user_has_the_permission(api, another_question, permission):
+    api.user.add_perm(permission)
 
     got = api.get(f"/api/v2/homework/answers/?question={another_question.slug}")["results"]
 
@@ -131,8 +147,9 @@ def test_answers_from_another_authors_are_excluded(api, question):
     assert len(got) == 0
 
 
-def test_users_with_permission_may_see_all_answers(api, question, answer_from_another_user):
-    api.user.add_perm("homework.answer.see_all_answers")
+def test_users_with_permission_may_see_all_answers_for_given_question(api, question, answer_from_another_user):
+    assert api.user.is_superuser is False
+    api.user.add_perm("homework.see_all_answers")
 
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 

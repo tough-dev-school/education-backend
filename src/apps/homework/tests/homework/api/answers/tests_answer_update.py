@@ -87,12 +87,6 @@ def test_only_answers_without_descendants_may_be_edited(api, answer):
     api.patch(f"/api/v2/homework/answers/{answer.slug}/", {"text": "*patched*"}, expected_status_code=403)
 
 
-@pytest.mark.xfail(reason="WIP: will add per-course permissions later")
-@pytest.mark.usefixtures("_no_purchase")
-def test_403_without_a_purchase(api, answer):
-    api.patch(f"/api/v2/homework/answers/{answer.slug}/", {"text": "*patched*"}, expected_status_code=403)
-
-
 def test_404_for_answer_of_another_author(api, answer, another_user):
     answer.update(author=another_user)
 

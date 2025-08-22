@@ -12,19 +12,14 @@ def api(api):
 
 
 @pytest.fixture
-def question(mixer, course):
-    question = mixer.blend("homework.Question")
-    question.courses.add(course)
-
-    return question
+def question(factory, course):
+    """Question that belongs to a course"""
+    return factory.question(course=course)
 
 
 @pytest.fixture
-def another_question(mixer, course):
-    another_question = mixer.blend("homework.Question")
-    another_question.courses.add(course)
-
-    return another_question
+def another_question(factory, course):
+    return factory.question(course=course)
 
 
 @pytest.fixture

@@ -7,10 +7,8 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def questions(mixer, course):
-    questions = mixer.cycle(2).blend("homework.Question")
-    course.question_set.add(*questions)
-    return questions
+def questions(factory, course):
+    return factory.cycle(2).question(course=course)
 
 
 @pytest.fixture

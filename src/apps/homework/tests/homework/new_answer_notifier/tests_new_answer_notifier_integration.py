@@ -13,6 +13,13 @@ def commenter(mixer):
 
 
 @pytest.fixture(autouse=True)
+def purchases(factory, commenter, another_user, course):
+    """Purchased for all users mentioned in the suite"""
+    factory.order(item=course, user=commenter, is_paid=True)
+    factory.order(item=course, user=another_user, is_paid=True)
+
+
+@pytest.fixture(autouse=True)
 def _enable_new_answer_notification(settings):
     settings.DISABLE_NEW_ANSWER_NOTIFICATIONS = False
 

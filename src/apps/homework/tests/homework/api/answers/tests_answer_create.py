@@ -123,7 +123,6 @@ def test_create_answer_without_parent_do_not_have_parent_field_in_response(api, 
     assert "parent" not in got
 
 
-@pytest.mark.xfail(reason="WIP: will per-course permissions later")
 @pytest.mark.usefixtures("_no_purchase")
 def test_403_for_not_purchased_users(api, question):
     api.post(
@@ -137,8 +136,16 @@ def test_403_for_not_purchased_users(api, question):
 
 
 @pytest.mark.usefixtures("_no_purchase")
-def test_ok_for_users_with_permission(api, question):
-    api.user.add_perm("homework.question.see_all_questions")
+@pytest.mark.parametrize(
+    "permission",
+    [
+        "homework.see_all_questions",
+        "studying.purchased_all_courses",
+    ],
+)
+def test_ok_for_users_with_permission(api, question, permission):
+    assert api.user.is_superuser is False
+    api.user.add_perm(permission)
 
     api.post(
         "/api/v2/homework/answers/",
@@ -174,7 +181,6 @@ def test_ok_for_superusers(api, question):
     assert created.study is None
 
 
-@pytest.mark.xfail(strict=True, reason="Мы не проверяем право доступа к вопросу при создании ответа. Считаем это неважным, см #1370")
 def test_403_if_user_has_not_purchase_record_at_all(api, question, purchase):
     purchase.delete()
 

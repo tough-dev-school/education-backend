@@ -1,8 +1,10 @@
 import uuid
+from typing import TYPE_CHECKING, Optional
 from urllib.parse import urljoin
 
 from django.apps import apps
 from django.conf import settings
+from django.contrib.postgres.fields import ArrayField
 from django.db.models import Exists, OuterRef, QuerySet, Value
 from django.db.models.expressions import RawSQL
 from django.utils.translation import gettext_lazy as _
@@ -10,16 +12,26 @@ from django.utils.translation import gettext_lazy as _
 from apps.users.models import User
 from core.models import SubqueryCount, TimestampedModel, models
 
+if TYPE_CHECKING:
+    from apps.lms.models import Lesson
+    from apps.products.models import Course
+
 
 class QuestionQuerySet(QuerySet):
-    def for_admin(self) -> "QuestionQuerySet":
-        return self.prefetch_related("courses", "courses__group")
-
     def for_user(self, user: User) -> "QuestionQuerySet":
-        if not user.has_perm("studying.purchased_all_courses"):
-            return self.with_annotations(user)
-        else:
+        if user.has_perm("studying.purchased_all_courses") or user.has_perm("homework.see_all_questions"):
             return self.with_fake_annotations()
+
+        return self.with_annotations(
+            user,
+        ).limit_to_questions_from_purchased_course(
+            user,
+        )
+
+    def limit_to_questions_from_purchased_course(self, user: User) -> "QuestionQuerySet":
+        purchased_lessons = apps.get_model("lms.Lesson").objects.for_user(user).exclude(question=None)
+
+        return self.filter(pk__in=purchased_lessons.values("question").distinct())
 
     def with_annotations(self, user: User) -> "QuestionQuerySet":
         return self.with_is_sent(user).with_comment_count(user).with_crosscheck_stats(user)
@@ -78,12 +90,13 @@ class Question(TimestampedModel):
     objects = QuestionQuerySet.as_manager()
 
     slug = models.UUIDField(db_index=True, unique=True, default=uuid.uuid4)
-    courses = models.ManyToManyField("products.Course")
     name = models.CharField(_("Name"), max_length=256)
 
     text = models.TextField()
 
     deadline = models.DateTimeField(_("Deadline"), null=True, blank=True)
+
+    _legacy_courses = ArrayField(models.PositiveIntegerField(), blank=True, null=True)
 
     class Meta:
         verbose_name = _("Homework")
@@ -108,3 +121,24 @@ class Question(TimestampedModel):
             count += answer.get_limited_comments_for_user_by_crosschecks(user).count()
 
         return count
+
+    def get_legacy_course(self) -> Optional["Course"]:
+        """Returns random course to simplify later investigation"""
+        legacy_course_ids = self._legacy_courses if self._legacy_courses is not None else []
+        return apps.get_model("products.Course").objects.filter(pk__in=legacy_course_ids).order_by("?").first()
+
+    def get_lesson(self, user: User) -> Optional["Lesson"]:
+        purchased_courses = apps.get_model("products.Course").objects.for_user(user)
+
+        return (
+            self.lesson_set.filter(
+                module__course__in=purchased_courses,
+            )
+            .order_by("-created")
+            .first()
+        )
+
+    def get_course(self, user: User) -> Optional["Course"]:
+        lesson = self.get_lesson(user)
+        if lesson is not None:
+            return lesson.module.course

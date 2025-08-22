@@ -40,24 +40,19 @@ class QuestionDetailSerializer(serializers.ModelSerializer):
 
     @extend_schema_field(lazy_serializer("apps.lms.api.serializers.LMSCourseSerializer")())
     def get_course(self, question: Question) -> dict:
-        from apps.homework.breadcrumbs import get_lesson
         from apps.lms.api.serializers import LMSCourseSerializer
 
-        lesson = get_lesson(question, user=self.context["request"].user)
+        course = question.get_course(user=self.context["request"].user)
 
-        course = question.courses.first()
-        if lesson is not None:
-            course = lesson.module.course
+        if course is None:
+            course = question.get_legacy_course()
 
         return LMSCourseSerializer(course).data
 
     @extend_schema_field(lazy_serializer("apps.lms.api.serializers.BreadcrumbsSerializer")())
     def get_breadcrumbs(self, question: Question) -> dict | None:
-        from apps.homework.breadcrumbs import get_lesson
         from apps.lms.api.serializers import BreadcrumbsSerializer
 
-        lesson = get_lesson(question, user=self.context["request"].user)
-        if lesson is None:
-            return None
+        lesson = question.get_lesson(user=self.context["request"].user)
 
-        return BreadcrumbsSerializer(lesson).data
+        return BreadcrumbsSerializer(lesson).data if lesson is not None else None

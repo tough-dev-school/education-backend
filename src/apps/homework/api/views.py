@@ -4,7 +4,6 @@ from rest_framework.permissions import IsAuthenticated
 
 from apps.homework.api import serializers
 from apps.homework.api.filtersets import AnswerCommentFilterSet, AnswerCrossCheckFilterSet
-from apps.homework.api.permissions import ShouldHavePurchasedCoursePermission
 from apps.homework.api.serializers import CrossCheckSerializer
 from apps.homework.models import Answer, AnswerCrossCheck, AnswerImage, Question
 
@@ -12,14 +11,10 @@ from apps.homework.models import Answer, AnswerCrossCheck, AnswerImage, Question
 class QuestionView(generics.RetrieveAPIView):
     queryset = Question.objects.all()
     serializer_class = serializers.QuestionDetailSerializer
-    permission_classes = [ShouldHavePurchasedCoursePermission]
     lookup_field = "slug"
 
     def get_queryset(self) -> QuerySet[Question]:
         queryset = super().get_queryset()
-
-        if self.request.user.is_anonymous:
-            return queryset.none()
 
         return queryset.for_user(self.request.user)  # type: ignore
 

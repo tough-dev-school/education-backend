@@ -4,24 +4,20 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.homework.models import Question
 from apps.lms.models import Lesson, Module
-from apps.products.models import Course
 from core.admin.forms import ModelForm
 from core.current_user import get_current_user
 from core.tasks import write_admin_log
 
 
 class QuestionForm(ModelForm):
-    course = forms.ModelChoiceField(label=_("Course"), queryset=Course.objects.for_admin(), required=False)
     module = forms.ModelChoiceField(label=_("Module"), queryset=Module.objects.for_admin(), required=False)
     lesson = forms.ModelChoiceField(label=_("Lesson"), queryset=Lesson.objects.for_admin(), required=False)
 
     class Meta:
         model = Question
         fields = [
-            "courses",
             "name",
             "deadline",
-            "course",
             "module",
             "lesson",
             "text",

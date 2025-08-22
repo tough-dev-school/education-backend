@@ -17,6 +17,12 @@ if TYPE_CHECKING:
 
 
 class CourseQuerySet(QuerySet):
+    def for_user(self, user: User) -> "CourseQuerySet":
+        if user.has_perm("studying.purchased_all_courses"):
+            return self
+
+        return self.purchased_by(user)
+
     def for_lms(self) -> "CourseQuerySet":
         return self.filter(
             display_in_lms=True,

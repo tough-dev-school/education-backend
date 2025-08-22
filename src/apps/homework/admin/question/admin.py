@@ -13,11 +13,9 @@ from core.admin import ModelAdmin, admin
 class QuestionAdmin(ModelAdmin):
     list_display = [
         "name",
-        "courses_list",
+        "course",
     ]
     fields = [
-        "courses",
-        "course",
         "module",
         "lesson",
         "name",
@@ -30,11 +28,16 @@ class QuestionAdmin(ModelAdmin):
     save_as = True
     form = QuestionForm
 
-    def get_queryset(self, request: HttpRequest) -> QuerySet[Question]:
-        return super().get_queryset(request).for_admin()  # type: ignore
+    @admin.display(description=_("Course"))
+    def course(self, question: Question) -> str:
+        lesson = question.lesson_set.select_related("module", "module__course", "module__course__group").first()
+        if lesson is None:
+            return "-"
 
-    def courses_list(self, question: Question) -> str:
-        return ", ".join([course.name for course in question.courses.all()])
+        return str(lesson.module.course)
+
+    def get_queryset(self, request: HttpRequest) -> QuerySet[Question]:
+        return super().get_queryset(request).prefetch_related("lesson_set")
 
     @admin.action(description=_("Dispatch crosscheck"))
     def dispatch_crosscheck(self, request: Request, queryset: QuerySet) -> None:

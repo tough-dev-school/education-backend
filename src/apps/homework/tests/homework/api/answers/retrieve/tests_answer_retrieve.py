@@ -89,7 +89,7 @@ def test_query_count_for_answer_without_descendants(api, answer, django_assert_n
     for _ in range(25):
         mixer.blend("homework.Reaction", author=api.user, answer=answer)
 
-    with django_assert_num_queries(10):
+    with django_assert_num_queries(8):
         api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
 
@@ -117,12 +117,12 @@ def test_answers_with_parents_have_parent_field(api, answer, another_answer):
     assert "parent" in got
 
 
-def test_403_for_not_purchased_users(api, answer, purchase):
+def test_200_for_not_purchased_users(api, answer, purchase):
     purchase.refund(purchase.price)
 
     api.get(
         f"/api/v2/homework/answers/{answer.slug}/",
-        expected_status_code=403,
+        expected_status_code=200,
     )
 
 
@@ -141,17 +141,6 @@ def test_ok_for_users_with_permission_even_when_they_did_not_purchase_the_course
     purchase.refund(purchase.price)
 
     api.user.add_perm("homework.question.see_all_questions")
-
-    api.get(
-        f"/api/v2/homework/answers/{answer.slug}/",
-        expected_status_code=200,
-    )
-
-
-def test_configurable_permissions_checking(api, answer, purchase, settings):
-    purchase.refund(purchase.price)
-
-    settings.DISABLE_HOMEWORK_PERMISSIONS_CHECKING = True
 
     api.get(
         f"/api/v2/homework/answers/{answer.slug}/",
