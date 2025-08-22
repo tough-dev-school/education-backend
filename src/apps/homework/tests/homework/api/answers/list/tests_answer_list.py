@@ -22,8 +22,7 @@ def test_ok(api, question, answer):
     assert got[0]["modified"] == "2022-10-09T10:30:12+12:00"
     assert got[0]["slug"] == str(answer.slug)
     assert got[0]["question"] == str(answer.question.slug)
-    assert "<em>test</em>" in got[0]["text"]
-    assert got[0]["src"] == "*test*"
+    assert got[0]["content"]["type"] == "doc"
     assert got[0]["author"]["uuid"] == str(api.user.uuid)
     assert got[0]["author"]["first_name"] == api.user.first_name
     assert got[0]["author"]["last_name"] == api.user.last_name

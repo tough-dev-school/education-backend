@@ -80,7 +80,7 @@ def test_create_answer_fields(api, question, another_answer):
     got = api.post(
         "/api/v2/homework/answers/",
         {
-            "text": "Да ты умничка!",
+            "content": JSON,
             "question": question.slug,
             "parent": another_answer.slug,
         },
@@ -94,8 +94,7 @@ def test_create_answer_fields(api, question, another_answer):
     assert got["author"]["first_name"] == api.user.first_name
     assert got["author"]["last_name"] == api.user.last_name
     assert got["parent"] == str(another_answer.slug)
-    assert got["text"] == "<p>Да ты умничка!</p>\n"
-    assert got["src"] == "Да ты умничка!"
+    assert got["content"] == JSON
     assert got["has_descendants"] is False  # newly created answer couldn't have descendants
     assert got["is_editable"] is True  # and should be editable
     assert got["reactions"] == []  # and couldn't have reactions
@@ -106,7 +105,7 @@ def test_without_parent(api, question):
         "/api/v2/homework/answers/",
         {
             "question": question.slug,
-            "text": "Верните деньги!",
+            "content": JSON,
         },
     )
 
@@ -122,7 +121,7 @@ def test_nonexistant_parent(api, question):
         {
             "parent": "41c24524-3d44-4cb8-ace3-c4cded405b24",  # не существует, инфа сотка
             "question": question.slug,
-            "text": "Даже в гикбрейнс лучше!",
+            "content": JSON,
         },
     )
     created = get_answer()
@@ -137,7 +136,7 @@ def test_empty_parent(api, question, empty_parent):
         {
             "parent": empty_parent,
             "question": question.slug,
-            "text": "Верните деньги!",
+            "content": JSON,
         },
     )
 
@@ -152,7 +151,7 @@ def test_create_answer_without_parent_do_not_have_parent_field_in_response(api, 
         "/api/v2/homework/answers/",
         {
             "question": question.slug,
-            "text": "Верните деньги!",
+            "content": JSON,
         },
     )
 
@@ -165,7 +164,7 @@ def test_404_for_not_purchased_users(api, question):
         "/api/v2/homework/answers/",
         {
             "question": question.slug,
-            "text": "Верните деньги!",
+            "content": JSON,
         },
         expected_status_code=404,
     )
@@ -187,7 +186,7 @@ def test_ok_for_users_with_permission(api, question, permission):
         "/api/v2/homework/answers/",
         {
             "question": question.slug,
-            "text": "Верните деньги!",
+            "content": JSON,
         },
         expected_status_code=201,
     )
@@ -206,7 +205,7 @@ def test_ok_for_superusers(api, question):
         "/api/v2/homework/answers/",
         {
             "question": question.slug,
-            "text": "Верните деньги!",
+            "content": JSON,
         },
         expected_status_code=201,
     )
@@ -223,7 +222,7 @@ def test_404_if_user_has_not_purchase_record_at_all(api, question, purchase):
     api.post(
         "/api/v2/homework/answers/",
         {
-            "text": "Чёто права доступа не сделали",
+            "content": JSON,
             "question": question.slug,
             "parent": None,
         },
@@ -241,7 +240,7 @@ def test_marks_crosscheck_as_checked(api, question, another_answer, mixer):
     api.post(
         "/api/v2/homework/answers/",
         {
-            "text": "Горите в аду!",
+            "content": JSON,
             "question": question.slug,
             "parent": another_answer.slug,
         },
@@ -257,7 +256,7 @@ def test_doesnt_marks_crosscheck_as_checked_for_another_answer(api, question, an
     api.post(
         "/api/v2/homework/answers/",
         {
-            "text": "Горите в аду!",
+            "content": JSON,
             "question": question.slug,
             "parent": another_answer.slug,
         },
@@ -273,7 +272,7 @@ def test_doesnt_marks_crosscheck_as_checked_for_another_checker(api, question, a
     api.post(
         "/api/v2/homework/answers/",
         {
-            "text": "Горите в аду!",
+            "content": JSON,
             "question": question.slug,
             "parent": another_answer.slug,
         },

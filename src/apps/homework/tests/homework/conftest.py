@@ -10,7 +10,7 @@ def question(factory):
 
 @pytest.fixture
 def answer(mixer, question):
-    return mixer.blend("homework.Answer", question=question)
+    return mixer.blend("homework.Answer", question=question, content={"type": "doc", "text": "тест"})
 
 
 @pytest.fixture

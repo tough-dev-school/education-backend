@@ -25,8 +25,7 @@ def test_ok(api, answer, question):
     assert got["descendants"] == []
     assert got["is_editable"] is True
     assert got["reactions"] == []
-    assert "text" in got
-    assert "src" in got
+    assert got["content"]["type"] == "doc"
 
 
 def test_has_descendants_is_true_if_answer_has_children(api, answer, another_answer, another_user):
@@ -91,15 +90,6 @@ def test_query_count_for_answer_without_descendants(api, answer, django_assert_n
 
     with django_assert_num_queries(8):
         api.get(f"/api/v2/homework/answers/{answer.slug}/")
-
-
-def test_markdown(api, answer):
-    answer.update(text="*should be rendered*")
-
-    got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
-
-    assert got["text"].startswith("<p><em>should be rendered"), f'"{got["text"]}" should start with "<p><em>should be rendered"'
-    assert got["src"] == "*should be rendered*"
 
 
 def test_non_root_answers_are_ok(api, answer, another_answer):
