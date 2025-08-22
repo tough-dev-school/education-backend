@@ -22,8 +22,7 @@ def test_ok(api, question, answer):
     assert got[0]["modified"] == "2022-10-09T10:30:12+12:00"
     assert got[0]["slug"] == str(answer.slug)
     assert got[0]["question"] == str(answer.question.slug)
-    assert "<em>test</em>" in got[0]["text"]
-    assert got[0]["src"] == "*test*"
+    assert got[0]["content"]["type"] == "doc"
     assert got[0]["author"]["uuid"] == str(api.user.uuid)
     assert got[0]["author"]["first_name"] == api.user.first_name
     assert got[0]["author"]["last_name"] == api.user.last_name
@@ -31,6 +30,26 @@ def test_ok(api, question, answer):
     assert got[0]["has_descendants"] is False
     assert got[0]["is_editable"] is True
     assert got[0]["reactions"] == []
+
+
+def test_text_content(api, question, answer):
+    answer.update(content={}, text="*legacy*")
+
+    got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
+
+    assert got[0]["content"] == {}
+    assert "legacy" in got[0]["text"]
+    assert "legacy" in got[0]["legacy_text"]
+    assert "<em>" in got[0]["legacy_text"]
+
+
+def test_json_content(api, question, answer):
+    answer.update(content={"type": "doc"}, text="")
+
+    got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
+
+    assert got[0]["content"]["type"] == "doc"
+    assert got[0]["text"] == ""
 
 
 def test_has_reaction_fields_if_there_is_reaction(api, question, reaction):

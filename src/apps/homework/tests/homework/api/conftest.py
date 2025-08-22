@@ -24,7 +24,12 @@ def another_question(factory, course):
 
 @pytest.fixture
 def answer(mixer, question, api):
-    return mixer.blend("homework.Answer", question=question, author=api.user, text="*test*")
+    return mixer.blend(
+        "homework.Answer",
+        question=question,
+        author=api.user,
+        content={"type": "doc", "text": "Пыщ!"},
+    )
 
 
 @pytest.fixture

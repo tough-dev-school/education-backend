@@ -1,10 +1,11 @@
 import contextlib
 from dataclasses import dataclass
+from typing import Callable
 
 from django.db import transaction
 from django.utils import timezone
 from django.utils.functional import cached_property
-from rest_framework.exceptions import NotAuthenticated
+from rest_framework.exceptions import NotAuthenticated, NotFound, ValidationError
 
 from apps.homework.models import Answer, Question
 from apps.studying.models import Study
@@ -17,6 +18,7 @@ from core.services import BaseService
 @dataclass
 class AnswerCreator(BaseService):
     text: str
+    content: dict
     question_slug: str
     parent_slug: str | None = None
 
@@ -29,6 +31,13 @@ class AnswerCreator(BaseService):
 
         return instance
 
+    def get_validators(self) -> list[Callable]:
+        return [
+            self.validate_question_slug,
+            self.validate_parent_slug,
+            self.validate_json_or_text,
+        ]
+
     def create(self) -> Answer:
         return Answer.objects.create(
             parent=self.parent,
@@ -36,6 +45,7 @@ class AnswerCreator(BaseService):
             author=self.author,
             study=self.study,
             text=self.text,
+            content=self.content,
         )
 
     @cached_property
@@ -48,7 +58,7 @@ class AnswerCreator(BaseService):
 
     @cached_property
     def parent(self) -> Answer | None:
-        if not is_valid_uuid(self.parent_slug):
+        if self.parent_slug is None or len(self.parent_slug) == 0:
             return None
 
         with contextlib.suppress(Answer.DoesNotExist):
@@ -56,7 +66,15 @@ class AnswerCreator(BaseService):
 
     @cached_property
     def question(self) -> Question:
-        return Question.objects.get(slug=self.question_slug)
+        try:
+            return Question.objects.for_user(
+                self.author,
+            ).get(
+                slug=self.question_slug,
+            )
+
+        except Question.DoesNotExist:
+            raise NotFound()
 
     @cached_property
     def study(self) -> Study | None:
@@ -74,3 +92,24 @@ class AnswerCreator(BaseService):
 
     def complete_crosscheck(self, instance: Answer) -> None:
         instance.parent.answercrosscheck_set.filter(checker=self.author).update(checked=timezone.now())
+
+    def validate_json_or_text(self) -> None:
+        """Remove it after frontend migration"""
+        if self.text is None or len(self.text) == 0:  # validating json
+            if not isinstance(self.content, dict) or not len(self.content.keys()):
+                raise ValidationError("Please provide text or content field")
+
+    def validate_question_slug(self) -> None:
+        """Validate only format, database validation is performed later"""
+        if not is_valid_uuid(self.question_slug):
+            raise ValidationError("Question should be a valid uuid")
+
+    def validate_parent_slug(self) -> None:
+        if self.parent_slug is None or not len(self.parent_slug):  # adding a root answer
+            return
+
+        if not is_valid_uuid(self.parent_slug):
+            raise ValidationError("Question should be a valid uuid")
+
+        if not Answer.objects.filter(slug=self.parent_slug).exists():
+            raise ValidationError("Answer does not exist")

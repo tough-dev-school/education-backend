@@ -1,5 +1,6 @@
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from apps.homework.api.serializers.question import QuestionSerializer
 from apps.homework.api.serializers.reaction import ReactionDetailedSerializer
@@ -12,6 +13,7 @@ from core.serializers import MarkdownField, SoftField
 class AnswerSerializer(serializers.ModelSerializer):
     author = UserSafeSerializer()
     text = MarkdownField()
+    legacy_text = MarkdownField(source="text")
     src = serializers.CharField(source="text")
     parent = SoftField(source="parent.slug")  # type: ignore
     question = serializers.CharField(source="question.slug")
@@ -29,6 +31,8 @@ class AnswerSerializer(serializers.ModelSerializer):
             "author",
             "parent",
             "text",
+            "legacy_text",
+            "content",
             "src",
             "has_descendants",
             "is_editable",
@@ -104,17 +108,27 @@ class AnswerCreateSerializer(serializers.ModelSerializer):
             "question",
             "parent",
             "text",
+            "content",
         ]
 
 
 class AnswerUpdateSerializer(serializers.ModelSerializer):
-    """For swagger only"""
-
     class Meta:
         model = Answer
         fields = [
             "text",
+            "content",
         ]
+
+    def validate(self, data: dict) -> dict:
+        """Copy-paste from AnswerCreator. Remove it after frontend migration"""
+        text = data.get("text")
+        content = data.get("content")
+        if text is None or len(text) == 0:  # validating json
+            if not isinstance(content, dict) or not len(content.keys()):
+                raise ValidationError("Please provide text or content field")
+
+        return data
 
 
 class AnswerCommentTreeSerializer(AnswerTreeSerializer):

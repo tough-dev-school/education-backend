@@ -62,6 +62,7 @@ class Answer(TestUtilsMixin, TreeNode):
     do_not_crosscheck = models.BooleanField(_("Exclude from cross-checking"), default=False, db_index=True)
 
     text = models.TextField()
+    content = models.JSONField(blank=True, null=True, default=dict)
 
     class Meta:
         verbose_name = _("Homework answer")

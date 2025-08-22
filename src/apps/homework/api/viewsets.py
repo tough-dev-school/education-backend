@@ -4,7 +4,7 @@ from django.db.models import QuerySet
 from django.utils.decorators import method_decorator
 from django.utils.functional import cached_property
 from drf_spectacular.utils import extend_schema
-from rest_framework.exceptions import MethodNotAllowed, PermissionDenied
+from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
@@ -23,7 +23,7 @@ from apps.homework.api.serializers import (
     ReactionCreateSerializer,
     ReactionDetailedSerializer,
 )
-from apps.homework.models import Answer, Question
+from apps.homework.models import Answer
 from apps.homework.models.answer import AnswerQuerySet
 from apps.homework.models.reaction import Reaction
 from apps.homework.services import ReactionCreator
@@ -53,7 +53,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     queryset = Answer.objects.for_viewset()
     serializer_class = AnswerSerializer
     serializer_action_classes = {
-        "partial_update": AnswerCreateSerializer,
+        "partial_update": AnswerUpdateSerializer,
         "retrieve": AnswerTreeSerializer,
     }
 
@@ -66,15 +66,15 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     @extend_schema(request=AnswerCreateSerializer, responses=AnswerTreeSerializer)
     def create(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         """Create an answer"""
-        self._check_question_permissions(user=self.user, question_slug=request.data["question"])
 
         answer = AnswerCreator(
-            question_slug=request.data["question"],
+            question_slug=request.data.get("question"),  # type: ignore
             parent_slug=request.data.get("parent"),
-            text=request.data["text"],
+            text=request.data.get("text", ""),
+            content=request.data.get("content", {}),
         )()
 
-        answer = self.get_queryset().get(pk=answer.pk)  # augment answer with methods from .for_viewset() to display it properly
+        answer = self.get_queryset().get(pk=answer.pk)  # augment answer with annotations from .for_viewset() to display it properly
         Serializer = self.get_serializer_class(action="retrieve")
         return Response(
             Serializer(
@@ -127,11 +127,6 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
             return queryset.root_only()
 
         return queryset
-
-    @staticmethod
-    def _check_question_permissions(user: User, question_slug: str) -> None:
-        if not Question.objects.for_user(user).filter(slug=question_slug).exists():
-            raise PermissionDenied()
 
     @property
     def user(self) -> User:
