@@ -6,7 +6,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("homework", "0023_drop_question_courses_field"),
+        ("homework", "0024_drop_question_courses_field"),
         ("notion", "0015_better_cache_key_name"),
         ("lms", "0013_module_start_date"),
     ]

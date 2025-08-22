@@ -15,7 +15,7 @@ def populate_legacy_course_id(apps, schema_editor):  # NOQA: ARG001
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("homework", "0022_drop_answer_acess_log"),
+        ("homework", "0023_answer_indexes"),
     ]
 
     operations = [
