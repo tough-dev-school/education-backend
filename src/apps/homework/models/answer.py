@@ -119,12 +119,15 @@ class Answer(TestUtilsMixin, TreeNode):
     @property
     def is_editable(self) -> bool:
         """May be edited by author"""
-        return all(
-            [
-                (timezone.now() - self.created < settings.HOMEWORK_ANSWER_EDIT_PERIOD),
-                (self.get_first_level_descendants().count() == 0),
-            ]
-        )
+
+        if hasattr(self, "children_count"):  # if the instance is annotated
+            if self.children_count > 0:
+                return False
+        else:
+            if self.get_first_level_descendants().count() > 0:  # otherwise -- run an extra query
+                return False
+
+        return timezone.now() - self.created < settings.HOMEWORK_ANSWER_EDIT_PERIOD
 
     def is_author_of_root_answer(self, user: "User") -> bool:
         return self.get_root_answer().author == user
