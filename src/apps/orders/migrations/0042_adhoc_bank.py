@@ -7,6 +7,7 @@ from django.db.models import F, Q
 def set_adhoc_bank(apps, schema_editor):  # NOQA: ARG001
     apps.get_model("orders.Order").objects.filter(
         Q(bank_id__isnull=True) | Q(bank_id=""),
+    ).filter(
         price=0,
     ).exclude(
         user_id=F("author_id"),

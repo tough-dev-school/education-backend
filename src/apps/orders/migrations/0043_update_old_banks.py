@@ -8,6 +8,7 @@ from django.db.models import F, Q
 def set_default_bank_for_selfpaid_orders(apps, schema_editor):  # NOQA: ARG001
     apps.get_model("orders.Order").objects.filter(
         Q(bank_id__isnull=True) | Q(bank_id=""),
+    ).filter(
         price__gt=0,
         user_id=F("author_id"),
     ).update(bank_id="tinkoff_bank")
@@ -16,6 +17,7 @@ def set_default_bank_for_selfpaid_orders(apps, schema_editor):  # NOQA: ARG001
 def set_b2b_bank_for_b2b_orders(apps, schema_editor):  # NOQA: ARG001
     apps.get_model("orders.Order").objects.filter(
         Q(bank_id__isnull=True) | Q(bank_id=""),
+    ).filter(
         price__gt=0,
     ).exclude(
         user_id=F("author_id"),
