@@ -9,6 +9,7 @@ from core.serializers import MarkdownField
 
 class QuestionSerializer(serializers.ModelSerializer):
     text = MarkdownField()
+    markdown_text = serializers.CharField(source="text")
 
     class Meta:
         model = Question
@@ -16,12 +17,14 @@ class QuestionSerializer(serializers.ModelSerializer):
             "slug",
             "name",
             "text",
+            "markdown_text",
             "deadline",
         ]
 
 
 class QuestionDetailSerializer(serializers.ModelSerializer):
     text = MarkdownField()
+    markdown_text = serializers.CharField(source="text")
     breadcrumbs = serializers.SerializerMethodField()
     homework = HomeworkStatsSerializer(source="*")
     course = serializers.SerializerMethodField()
@@ -33,6 +36,7 @@ class QuestionDetailSerializer(serializers.ModelSerializer):
             "slug",
             "name",
             "text",
+            "markdown_text",
             "deadline",
             "homework",
             "course",

@@ -25,6 +25,8 @@ def test_question(api, module, question):
 
     assert got["name"] == question.name
     assert "<em>" in got["text"], "text is rendered"
+    assert "<em>" not in got["markdown_text"], "text is not rendered"
+    assert "*" in got["markdown_text"], "text is not rendered"
 
 
 @pytest.mark.xfail(reason="Moved N+1 out of scope, cuz too few real-world users will encounter it")
