@@ -13,8 +13,8 @@ def _freeze_absolute_url(settings):
 
 
 @pytest.fixture
-def ya_question(mixer):
-    return mixer.blend("homework.Question")
+def another_question(factory):
+    return factory.question()
 
 
 @pytest.fixture
@@ -100,8 +100,8 @@ def test_cannot_be_sent_if_theres_no_non_completed_crosscheck(notification, answ
     assert notification(answer=child_answer, user=answer.author).should_send() is False
 
 
-def test_cannot_be_sent_if_crosscheck_belongs_to_another_question(notification, crosscheck, answer, child_answer, ya_question):
-    crosscheck.answer.question = ya_question
+def test_cannot_be_sent_if_crosscheck_belongs_to_another_question(notification, crosscheck, answer, child_answer, another_question):
+    crosscheck.answer.question = another_question
     crosscheck.answer.save()
 
     assert notification(answer=child_answer, user=answer.author).should_send() is False

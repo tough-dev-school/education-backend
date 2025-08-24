@@ -3,8 +3,8 @@ from rest_framework.throttling import AnonRateThrottle
 from core.throttling import ConfigurableThrottlingMixin
 
 
-class PromocodeThrottle(ConfigurableThrottlingMixin, AnonRateThrottle):  # type: ignore
-    scope = "promocode"
+class OrderDraftThrottle(ConfigurableThrottlingMixin, AnonRateThrottle):  # type: ignore
+    scope = "order-draft"
 
 
 class PurchaseThrottle(ConfigurableThrottlingMixin, AnonRateThrottle):  # type: ignore

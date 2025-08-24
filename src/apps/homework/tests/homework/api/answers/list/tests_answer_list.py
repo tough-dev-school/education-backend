@@ -22,8 +22,7 @@ def test_ok(api, question, answer):
     assert got[0]["modified"] == "2022-10-09T10:30:12+12:00"
     assert got[0]["slug"] == str(answer.slug)
     assert got[0]["question"] == str(answer.question.slug)
-    assert "<em>test</em>" in got[0]["text"]
-    assert got[0]["src"] == "*test*"
+    assert got[0]["content"]["type"] == "doc"
     assert got[0]["author"]["uuid"] == str(api.user.uuid)
     assert got[0]["author"]["first_name"] == api.user.first_name
     assert got[0]["author"]["last_name"] == api.user.last_name
@@ -31,6 +30,26 @@ def test_ok(api, question, answer):
     assert got[0]["has_descendants"] is False
     assert got[0]["is_editable"] is True
     assert got[0]["reactions"] == []
+
+
+def test_text_content(api, question, answer):
+    answer.update(content={}, text="*legacy*")
+
+    got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
+
+    assert got[0]["content"] == {}
+    assert "legacy" in got[0]["text"]
+    assert "legacy" in got[0]["legacy_text"]
+    assert "<em>" in got[0]["legacy_text"]
+
+
+def test_json_content(api, question, answer):
+    answer.update(content={"type": "doc"}, text="")
+
+    got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
+
+    assert got[0]["content"]["type"] == "doc"
+    assert got[0]["text"] == ""
 
 
 def test_has_reaction_fields_if_there_is_reaction(api, question, reaction):
@@ -56,7 +75,7 @@ def test_has_reaction_fields_if_there_is_reaction(api, question, reaction):
     ],
 )
 @pytest.mark.usefixtures("answer")
-def test_is_editable_field(api, question, freezer, settings, time, should_be_editable):
+def test_is_editable_by_time(api, question, freezer, settings, time, should_be_editable):
     settings.HOMEWORK_ANSWER_EDIT_PERIOD = timedelta(hours=2)
     freezer.move_to(time)
 
@@ -98,7 +117,16 @@ def test_answers_from_other_questions_are_excluded(api, another_question):
     assert len(got) == 0
 
 
-def test_two_root_answers(api, question, answer, another_answer):  # NOQA: ARG001
+@pytest.mark.xfail(strict=True, reason="Not implemented")
+@pytest.mark.usefixtures("question", "answer", "another_answer")
+def test_no_answers_without_question_filter(api):
+    got = api.get("/api/v2/homework/answers/")["results"]
+
+    assert len(got) == 0
+
+
+@pytest.mark.usefixtures("answer", "another_answer")
+def test_two_root_answers(api, question):
     """Test just to make the test below more readable"""
 
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
@@ -116,8 +144,15 @@ def test_non_root_answers_are_excluded(api, question, answer, another_answer):
 
 
 @pytest.mark.usefixtures("answer", "answer_from_another_user")
-def test_answers_from_other_questions_are_excluded_even_if_user_has_the_permission(api, another_question):
-    api.user.add_perm("homework.answer.see_all_answers")
+@pytest.mark.parametrize(
+    "permission",
+    [
+        "homework.see_all_questions",
+        "studying.purchased_all_courses",
+    ],
+)
+def test_answers_from_other_questions_are_excluded_even_if_user_has_the_permission(api, another_question, permission):
+    api.user.add_perm(permission)
 
     got = api.get(f"/api/v2/homework/answers/?question={another_question.slug}")["results"]
 
@@ -131,8 +166,9 @@ def test_answers_from_another_authors_are_excluded(api, question):
     assert len(got) == 0
 
 
-def test_users_with_permission_may_see_all_answers(api, question, answer_from_another_user):
-    api.user.add_perm("homework.answer.see_all_answers")
+def test_users_with_permission_may_see_all_answers_for_given_question(api, question, answer_from_another_user):
+    assert api.user.is_superuser is False
+    api.user.add_perm("homework.see_all_answers")
 
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 

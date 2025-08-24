@@ -39,9 +39,11 @@ def test_message_is_sent(send_message, completer, deal):
 def test_message_text(send_message, completer, deal):
     deal.price = Decimal(200500)
     deal.customer.name = "Росатом"
+    deal.course.product_name = "Противопожарная безопасность"
 
     completer(deal=deal)()
 
     assert str(deal.author) in send_message.call_args[1]["text"]
     assert "200\xa0500" in send_message.call_args[1]["text"]
     assert "Росатом" in send_message.call_args[1]["text"]
+    assert "безопасность" in send_message.call_args[1]["text"]

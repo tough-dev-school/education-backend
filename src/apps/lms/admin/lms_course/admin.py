@@ -28,6 +28,7 @@ class CourseAdmin(SortableAdminBase, ModelAdmin):
                 "fields": [
                     "name",
                     "cover",
+                    "homework_check_recommendations",
                 ],
             },
         ),

@@ -1,5 +1,9 @@
 # Django Backend Development Guide
 
+## Development cycle
+- Before writing any code, come up with a good plan, review the plan, and then ask the user for permission to execute the plan.
+- Never put links to Anthropic or Claude code to the commit messages. Co-authoring is ok, though
+
 ## Build/Test Commands
 - Use poetry for package management and running commands
 - `make fmt` - Format the code using ruff
@@ -14,15 +18,16 @@
 
 
 ## Code Style
-- Type checking: Use mypy annotations for all non-test code
+- Type checking: Use mypy annotations for all non-test code. Never use type annotations in tests until excplictly asked.
 - Line length: 160 characters max
 - Use absolute imports, no relative imports
 - Format Python imports with standard library first, then third-party, then local
 - Class/variable naming: Follow Django conventions with snake_case
 - Error handling: Use typed exceptions with descriptive messages
-- Tests: Use pytest fixtures, keep tests atomic and isolated
 - Documentation: Use docstrings for public methods, especially for complex functionality
 - We do not need `__init__.py` in the management command or test folders
+- Tests: Use pytest fixtures, keep tests atomic and isolated
+- Tests: Use Model.update() for changing model properties in the test code. I.e. instead of `object.property = 'test' \n object.save()` use `object.update(property='test')`.
 
 
 ## Django Patterns

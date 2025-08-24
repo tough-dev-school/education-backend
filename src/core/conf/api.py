@@ -9,7 +9,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
-        "rest_framework_jwt.authentication.JSONWebTokenAuthentication",
+        "apps.a12n.jwt.AppJSONWebTokenAuthentication",
     ],
     "DEFAULT_RENDERER_CLASSES": [
         "core.renderers.AppJSONRenderer",
@@ -22,7 +22,7 @@ REST_FRAMEWORK = {
         "anon-auth": "10/min",
         "public-id": "60/hour",
         "notion-materials": "100/hour",
-        "promocode": "100/hour",
+        "order-draft": "100/hour",
         "purchase": "100/hour",
     },
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",

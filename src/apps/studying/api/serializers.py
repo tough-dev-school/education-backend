@@ -20,6 +20,8 @@ class CourseSerializer(serializers.ModelSerializer):
             "id",
             "slug",
             "name",
+            "product_name",
+            "tariff_name",
             "home_page_slug",
             "cover",
             "chat",

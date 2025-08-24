@@ -22,7 +22,6 @@ class User(TestUtilsMixin, AbstractUser):
         MALE = "male", _("Male")
         FEMALE = "female", _("Female")
 
-    subscribed = models.BooleanField(_("Subscribed to newsletter"), default=False)
     first_name_en = models.CharField(_("first name in english"), max_length=150, blank=True)
     last_name_en = models.CharField(_("last name in english"), max_length=150, blank=True)
     uuid = models.UUIDField(db_index=True, unique=True, default=uuid.uuid4)
@@ -91,13 +90,30 @@ class User(TestUtilsMixin, AbstractUser):
 
     def add_perm(self, perm: str) -> None:
         """Add permission to the user.
-        This is a shortcut method for testing, please do not use in production
+        This is a shortcut method for testing, never use it in production
         """
-        [app_label, model, codename] = perm.split(".")
+        path = perm.split(".")
+        if len(path) == 3:  # exact path: app, model and codename
+            [app_label, model, codename] = path
 
-        permission = Permission.objects.get_by_natural_key(codename, app_label, model)
-        if permission is not None:
+            permission = Permission.objects.get_by_natural_key(codename, app_label, model)
+            if permission is None:
+                raise Permission.DoesNotExist(f"Wrong permission path: '{perm}'")
+
             self.user_permissions.add(permission)
+
+        if len(path) == 2:  # from app and codename, guessing the model
+            [app_label, codename] = path
+
+            opportunistic_permissions = Permission.objects.filter(content_type__app_label=app_label, codename=codename)
+
+            if opportunistic_permissions.count() > 1:
+                raise Permission.DoesNotExist(f"Found multiple permissions with app_label '{app_label}' and codename '{codename}'")
+
+            if opportunistic_permissions.count() == 0:
+                raise Permission.DoesNotExist(f"Wrong permission path, no permissions with app_label '{app_label}' and codename '{codename}'")
+
+            self.user_permissions.add(opportunistic_permissions.get())
 
 
 class AdminUserProxy(User):

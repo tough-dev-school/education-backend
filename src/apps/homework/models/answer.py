@@ -62,6 +62,7 @@ class Answer(TestUtilsMixin, TreeNode):
     do_not_crosscheck = models.BooleanField(_("Exclude from cross-checking"), default=False, db_index=True)
 
     text = models.TextField()
+    content = models.JSONField(blank=True, null=True, default=dict)
 
     class Meta:
         verbose_name = _("Homework answer")
@@ -73,6 +74,7 @@ class Answer(TestUtilsMixin, TreeNode):
         indexes = [
             models.Index(fields=["question", "author"]),
             models.Index(fields=["question", "study"]),
+            models.Index(fields=["parent_id", "created"]),
         ]
 
     def __str__(self) -> str:
@@ -117,7 +119,15 @@ class Answer(TestUtilsMixin, TreeNode):
 
     @property
     def is_editable(self) -> bool:
-        """May be edited by user"""
+        """May be edited by author"""
+
+        if hasattr(self, "children_count"):  # if the instance is annotated
+            if self.children_count > 0:
+                return False
+        else:
+            if self.get_first_level_descendants().count() > 0:  # otherwise -- run an extra query
+                return False
+
         return timezone.now() - self.created < settings.HOMEWORK_ANSWER_EDIT_PERIOD
 
     def is_author_of_root_answer(self, user: "User") -> bool:

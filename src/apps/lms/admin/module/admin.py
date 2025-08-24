@@ -34,6 +34,9 @@ class ModuleAdmin(SortableAdminBase, ModelAdmin):
         LessonInline,
     ]
 
+    class Media:
+        js = ["admin/js/vendor/jquery/jquery.js", "admin/autoset-hidden-fiend-during-lesson-adding.js"]
+
     foreignkey_queryset_overrides = {
         "lms.Module.course": lambda apps: apps.get_model("lms.Course").objects.for_admin(),
     }

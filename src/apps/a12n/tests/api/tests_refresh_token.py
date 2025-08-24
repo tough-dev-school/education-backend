@@ -6,6 +6,7 @@ from apps.a12n.utils import get_jwt
 pytestmark = [
     pytest.mark.django_db,
     pytest.mark.freeze_time("2049-01-05"),
+    pytest.mark.skip(reason="We dropped refreshing functionality, but may restore it in the future, so this will save the API"),
 ]
 
 

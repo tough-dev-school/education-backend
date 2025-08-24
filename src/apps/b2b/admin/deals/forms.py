@@ -25,6 +25,7 @@ class DealCreateForm(ModelForm):
             customer=self.cleaned_data["customer"],
             course=self.cleaned_data["course"],
             price=self.cleaned_data["price"],
+            currency=self.cleaned_data["currency"],
         )()
 
         student_list = self.cleaned_data["students"]

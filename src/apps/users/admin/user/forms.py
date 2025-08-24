@@ -28,17 +28,17 @@ class PasswordlessUserCreationForm(ModelForm):
 
     def save(self, commit: bool = True) -> User:
         user = self._create_user()
-        self._send_to_dashamail(user)
 
         return user
 
     def _create_user(self) -> User:
         from apps.users.services import UserCreator
 
-        return UserCreator(name=f"{self.cleaned_data['first_name']} {self.cleaned_data['last_name']}", email=self.cleaned_data["email"])()
-
-    @staticmethod
-    def _send_to_dashamail(user: User) -> None: ...
+        return UserCreator(
+            name=f"{self.cleaned_data['first_name']} {self.cleaned_data['last_name']}",
+            email=self.cleaned_data["email"],
+            force_subscribe=True,
+        )()
 
 
 class UserChangeForm(_UserChangeForm):

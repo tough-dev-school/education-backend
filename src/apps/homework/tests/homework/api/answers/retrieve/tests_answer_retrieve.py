@@ -25,8 +25,28 @@ def test_ok(api, answer, question):
     assert got["descendants"] == []
     assert got["is_editable"] is True
     assert got["reactions"] == []
-    assert "text" in got
-    assert "src" in got
+    assert got["content"]["type"] == "doc"
+
+
+def test_text_content(api, answer):
+    answer.update(content={}, text="*legacy*")
+
+    got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
+
+    assert got["content"] == {}
+    assert "legacy" in got["text"]
+    assert "legacy" in got["legacy_text"]
+    assert "<em>" in got["legacy_text"]
+
+
+def test_json_content(api, answer):
+    answer.update(content={"type": "doc"}, text="")
+
+    got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
+
+    assert got["content"]["type"] == "doc"
+    assert got["text"] == ""
+    assert got["legacy_text"] == ""
 
 
 def test_has_descendants_is_true_if_answer_has_children(api, answer, another_answer, another_user):
@@ -55,13 +75,23 @@ def test_has_descendants_is_true_if_answer_has_only_children_that_belong_to_its_
         ("2032-10-09 11:20+12:00", False),
     ],
 )
-def test_is_editable_field(api, answer, freezer, settings, time, should_be_editable):
+def test_is_editable_by_time(api, answer, freezer, settings, time, should_be_editable):
     settings.HOMEWORK_ANSWER_EDIT_PERIOD = timedelta(hours=2)
     freezer.move_to(time)
 
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
     assert got["is_editable"] is should_be_editable
+
+
+@pytest.mark.freeze_time("2022-10-09 10:30:12+12:00")  # +12 hours kamchatka timezone
+@pytest.mark.usefixtures("kamchatka_timezone")
+def test_is_editable_is_only_set_to_author(api, answer, another_user):
+    answer.update(author=another_user)
+
+    got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
+
+    assert got["is_editable"] is False
 
 
 def test_reactions_field(api, answer, reaction):
@@ -79,17 +109,8 @@ def test_query_count_for_answer_without_descendants(api, answer, django_assert_n
     for _ in range(25):
         mixer.blend("homework.Reaction", author=api.user, answer=answer)
 
-    with django_assert_num_queries(10):
+    with django_assert_num_queries(8):
         api.get(f"/api/v2/homework/answers/{answer.slug}/")
-
-
-def test_markdown(api, answer):
-    answer.update(text="*should be rendered*")
-
-    got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
-
-    assert got["text"].startswith("<p><em>should be rendered"), f'"{got["text"]}" should start with "<p><em>should be rendered"'
-    assert got["src"] == "*should be rendered*"
 
 
 def test_non_root_answers_are_ok(api, answer, another_answer):
@@ -107,12 +128,12 @@ def test_answers_with_parents_have_parent_field(api, answer, another_answer):
     assert "parent" in got
 
 
-def test_403_for_not_purchased_users(api, answer, purchase):
+def test_200_for_not_purchased_users(api, answer, purchase):
     purchase.refund(purchase.price)
 
     api.get(
         f"/api/v2/homework/answers/{answer.slug}/",
-        expected_status_code=403,
+        expected_status_code=200,
     )
 
 
@@ -131,17 +152,6 @@ def test_ok_for_users_with_permission_even_when_they_did_not_purchase_the_course
     purchase.refund(purchase.price)
 
     api.user.add_perm("homework.question.see_all_questions")
-
-    api.get(
-        f"/api/v2/homework/answers/{answer.slug}/",
-        expected_status_code=200,
-    )
-
-
-def test_configurable_permissions_checking(api, answer, purchase, settings):
-    purchase.refund(purchase.price)
-
-    settings.DISABLE_HOMEWORK_PERMISSIONS_CHECKING = True
 
     api.get(
         f"/api/v2/homework/answers/{answer.slug}/",

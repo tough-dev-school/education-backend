@@ -1,22 +1,24 @@
 from typing import TYPE_CHECKING, Any
 
+from django.db.models import QuerySet
 from django.http import HttpResponseRedirect
-from drf_spectacular.utils import OpenApiParameter, extend_schema
-from rest_framework.generics import get_object_or_404
+from drf_spectacular.utils import OpenApiExample, OpenApiParameter, extend_schema
+from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.banking import price_calculator
+from apps.banking.api.serializers import Price, PriceSerializer
 from apps.banking.selector import BANK_KEYS, get_bank_or_default
-from apps.orders.api.serializers import PromocodeSerializer
-from apps.orders.api.throttling import PromocodeThrottle, PurchaseThrottle
+from apps.orders.api.throttling import OrderDraftThrottle, PurchaseThrottle
 from apps.orders.models import PromoCode
 from apps.orders.services import OrderCreator
-from apps.products.api.serializers import PurchaseSerializer
+from apps.products.api.serializers import CourseWithPriceSerializer, PurchaseSerializer
 from apps.products.models import Course
+from apps.products.models import Group as ProductGroup
 from apps.users.services import UserCreator
-from core.pricing import format_price
+from core.throttling import PublicIDThrottle
 
 if TYPE_CHECKING:
     from rest_framework.request import Request
@@ -26,11 +28,11 @@ if TYPE_CHECKING:
 
 
 class PromocodeView(APIView):
-    throttle_classes = [PromocodeThrottle]
+    throttle_classes = [OrderDraftThrottle]
     permission_classes = [AllowAny]
 
     @extend_schema(
-        responses=PromocodeSerializer,
+        responses=PriceSerializer,
         parameters=[
             OpenApiParameter(name="promocode", type=str),
             OpenApiParameter(name="desired_bank", type=str, many=False, enum=BANK_KEYS),
@@ -44,14 +46,7 @@ class PromocodeView(APIView):
         Bank = get_bank_or_default(desired=request.GET.get("desired_bank"))
         price = price_calculator.to_bank(Bank, price)
 
-        serializer = PromocodeSerializer(
-            {
-                "price": price,
-                "formatted_price": format_price(price),
-                "currency": Bank.currency,
-                "currency_symbol": Bank.currency_symbol,
-            }
-        )
+        serializer = PriceSerializer(instance=Price(price, Bank))
 
         return Response(serializer.data)
 
@@ -68,7 +63,7 @@ class PurchaseView(APIView):
     throttle_classes = [PurchaseThrottle]
     permission_classes = [AllowAny]
 
-    @extend_schema(request=PurchaseSerializer, responses={301: None})
+    @extend_schema(request=PurchaseSerializer, responses={302: None})
     def post(self, request: "Request", slug: str | None = None, **kwargs: dict[str, Any]) -> HttpResponseRedirect:
         item = get_object_or_404(Course, slug=slug)
         serializer = PurchaseSerializer(data=request.data)
@@ -82,6 +77,8 @@ class PurchaseView(APIView):
             user=user,
             item=item,
             data=serializer.validated_data,
+            subscribe=self.should_subscribe(request),
+            raw=request.data,
         )
 
         payment_link = self.get_payment_link(
@@ -96,23 +93,27 @@ class PurchaseView(APIView):
         return UserCreator(
             name=name,
             email=email.strip(),
-            subscribe=True,
         )()
 
     @staticmethod
-    def create_order(user: "User", item: Course, data: dict) -> "Order":
+    def create_order(user: "User", item: Course, subscribe: bool, data: dict, raw: dict | None = None) -> "Order":
         create_order = OrderCreator(
             user=user,
             item=item,
+            subscribe=subscribe,
             promocode=data.get("promocode"),
             desired_bank=data.get("desired_bank"),
             analytics=data.get("analytics"),
+            raw=raw,
         )
 
         return create_order()
 
     @staticmethod
     def get_payment_link(order: "Order", success_url: str | None, redirect_url: str | None) -> str:
+        if success_url is None:
+            success_url = order.item.purchase_success_url
+
         Bank = get_bank_or_default(desired=order.bank_id)
         bank = Bank(
             order=order,
@@ -121,3 +122,63 @@ class PurchaseView(APIView):
         )
 
         return bank.get_initial_payment_url()
+
+    @staticmethod
+    def should_subscribe(request: "Request") -> bool:
+        if "subscribe" not in request.data:
+            return False
+
+        subscribe = request.data["subscribe"]
+
+        return subscribe.lower() in ["1", "true", "yes"]
+
+
+@extend_schema(
+    parameters=[
+        OpenApiParameter(
+            name="desired_bank",
+            description="Optional bank to calculate price",
+            type=str,
+        ),
+    ],
+    examples=[
+        OpenApiExample(
+            name="Default response",
+            response_only=True,
+            status_codes=[200],
+            value={
+                "slug": "popug-2-self",
+                "name": "Коммуникации систем (самостоятельно)",
+                "name_international": "System communications (self)",
+                "product_name": "Коммуникации систем",
+                "tariff_name": "самостоятельно",
+                "price": {
+                    "price": "33000",
+                    "formatted_price": "33 000",
+                    "currency": "RUB",
+                    "currency_symbol": "₽",
+                },
+            },
+        ),
+    ],
+)
+class ProductGroupView(ListAPIView):
+    """A list of courses with price"""
+
+    throttle_classes = [PublicIDThrottle]
+    permission_classes = [AllowAny]
+    queryset = Course.objects.all()
+    serializer_class = CourseWithPriceSerializer
+    pagination_class = None
+
+    def filter_queryset(self, queryset: QuerySet[Course]) -> QuerySet[Course]:
+        queryset = super().filter_queryset(queryset)
+
+        group = get_object_or_404(ProductGroup, slug=self.kwargs["slug"])
+
+        return queryset.filter(group=group)
+
+    def get_serializer_context(self) -> dict:
+        return {
+            "Bank": get_bank_or_default(self.request.GET.get("desired_bank")),
+        }

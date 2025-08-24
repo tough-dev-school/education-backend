@@ -17,7 +17,7 @@ from apps.dashamail import tasks as dashamail
 from apps.dashamail.enabled import dashamail_enabled
 from apps.mailing.tasks import send_mail
 from apps.orders.models import Order, PromoCode
-from apps.products.models.base import Shippable
+from apps.products.models import Course
 from apps.users.models import User
 from apps.users.tasks import rebuild_tags
 from core.current_user import get_current_user
@@ -33,17 +33,22 @@ class OrderCreatorException(AppServiceException):
 @dataclass
 class OrderCreator(BaseService):
     user: User
-    item: Shippable
+    item: Course
+    subscribe: bool | None = False
     price: Decimal | None = None
     author: User | None = None
     promocode: str | None = None
     desired_bank: str | None = None
     analytics: str | None = None
     deal: Deal | None = None
+    raw: dict | None = None
 
     def __post_init__(self) -> None:
-        self.price = self.price if self.price is not None else self.item.get_price(promocode=self.promocode)
+        self.price = self.price if self.price is not None else self.item.price
         self.promocode = self._get_promocode(self.promocode)
+        if self.promocode is not None:
+            self.price = self.promocode.apply(self.item)
+
         self.desired_bank = self.desired_bank if self.desired_bank is not None else ""
 
     def get_author(self) -> User:
@@ -69,7 +74,7 @@ class OrderCreator(BaseService):
         if amocrm_enabled():
             self.push_to_amocrm(order)
 
-        if dashamail_enabled():
+        if self.subscribe and dashamail_enabled():
             self.push_to_dashamail(order)
             self.push_to_dashamail_directcrm(order)
 
@@ -83,6 +88,7 @@ class OrderCreator(BaseService):
             promocode=self.promocode,
             deal=self.deal,
             analytics=self._parse_analytics(self.analytics),
+            raw=self.raw if self.raw is not None else {},
         )
 
     @staticmethod

@@ -29,4 +29,4 @@ def retrieve_request_json(respx_mock: MockRouter):
 
 @pytest.fixture(autouse=True)
 def rub(factory):
-    return factory.currency_rate(name="RUB", rate=1)
+    return factory.currency(name="RUB", rate=1)

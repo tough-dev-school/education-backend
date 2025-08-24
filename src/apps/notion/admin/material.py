@@ -62,6 +62,9 @@ class NotionMaterialAdmin(ModelAdmin):
     form = NotionMaterialForm
     save_as = True
 
+    class Media:
+        css = {"all": ("admin/css/material_admin.css",)}
+
     def get_search_results(self, request: HttpRequest, queryset: QuerySet, search_term: str) -> tuple[QuerySet, bool]:
         """Allow searching both by long and short ids"""
         if len(search_term) == 36:

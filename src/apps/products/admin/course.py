@@ -5,7 +5,7 @@ from django.utils.translation import gettext as _
 from django.utils.translation import pgettext_lazy
 
 from apps.amocrm import tasks
-from apps.products.admin.courses import actions, inlines
+from apps.products.admin.courses import inlines
 from apps.products.models import Course
 from core.admin import ModelAdmin, admin
 from core.pricing import format_price
@@ -18,9 +18,11 @@ class CourseAdmin(ModelAdmin):
             _("Name"),
             {
                 "fields": [
-                    "name",
+                    "product_name",
+                    "tariff_name",
                     "slug",
                     "group",
+                    "purchase_success_url",
                     "display_in_lms",
                     "disable_triggers",
                 ],
@@ -81,19 +83,10 @@ class CourseAdmin(ModelAdmin):
         "name",
     )
 
-    prepopulated_fields = {
-        "slug": ["name"],
-    }
     inlines = (
         inlines.EmailConfigurationAdmin,
         inlines.DiplomaTemplateAdmin,
     )
-    action_form = actions.CourseActionForm
-
-    actions = [
-        actions.send_email_to_all_purchased_users,
-        actions.generate_deplomas_for_all_purchased_users,
-    ]
 
     save_as = True
     search_fields = ("name",)

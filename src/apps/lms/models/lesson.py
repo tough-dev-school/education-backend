@@ -41,12 +41,8 @@ class Lesson(TimestampedModel):
 
     module = models.ForeignKey("lms.Module", on_delete=models.CASCADE, verbose_name=_("Module"))
     position = models.PositiveIntegerField(default=0, blank=False, null=False, db_index=True)
-    material = models.ForeignKey(
-        "notion.Material", blank=True, null=True, related_name="+", on_delete=models.PROTECT, verbose_name=pgettext_lazy("lessons", "Material")
-    )
-    question = models.ForeignKey(
-        to="homework.Question", blank=True, null=True, related_name="+", on_delete=models.PROTECT, verbose_name=pgettext_lazy("lms", "Question")
-    )
+    material = models.ForeignKey("notion.Material", blank=True, null=True, on_delete=models.PROTECT, verbose_name=pgettext_lazy("lessons", "Material"))
+    question = models.ForeignKey(to="homework.Question", blank=True, null=True, on_delete=models.PROTECT, verbose_name=pgettext_lazy("lms", "Question"))
 
     call = models.ForeignKey("lms.Call", blank=True, null=True, on_delete=models.CASCADE, verbose_name=pgettext_lazy("lms", "Call"))
     hidden = models.BooleanField(_("Hidden"), help_text=_("Users can't find such materials in the listing"), default=False)

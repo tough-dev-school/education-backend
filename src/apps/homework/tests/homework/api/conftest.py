@@ -12,24 +12,24 @@ def api(api):
 
 
 @pytest.fixture
-def question(mixer, course):
-    question = mixer.blend("homework.Question")
-    question.courses.add(course)
-
-    return question
+def question(factory, course):
+    """Question that belongs to a course"""
+    return factory.question(course=course)
 
 
 @pytest.fixture
-def another_question(mixer, course):
-    another_question = mixer.blend("homework.Question")
-    another_question.courses.add(course)
-
-    return another_question
+def another_question(factory, course):
+    return factory.question(course=course)
 
 
 @pytest.fixture
 def answer(mixer, question, api):
-    return mixer.blend("homework.Answer", question=question, author=api.user, text="*test*")
+    return mixer.blend(
+        "homework.Answer",
+        question=question,
+        author=api.user,
+        content={"type": "doc", "text": "Пыщ!"},
+    )
 
 
 @pytest.fixture
@@ -50,6 +50,14 @@ def child_answer_of_same_user(answer, question, mixer, api):
 @pytest.fixture
 def purchase(factory, course, api):
     order = factory.order(user=api.user, item=course)
+    order.set_paid()
+
+    return order
+
+
+@pytest.fixture
+def purchase_of_another_course(factory, another_course, api):
+    order = factory.order(user=api.user, item=another_course)
     order.set_paid()
 
     return order

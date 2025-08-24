@@ -95,8 +95,7 @@ def test_own_comments_are_ignored(api, module, comments):
     assert got["results"][0]["homework"]["comments"]["comments"] == 0
 
 
-def test_comments_from_another_questions_are_ignored(api, module, comments, mixer):
-    another_question = mixer.blend("homework.Question", course=module.course)
+def test_comments_from_another_questions_are_ignored(api, another_question, module, comments, mixer):
     another_answer = mixer.blend("homework.Answer", author=api.user, question=another_question)
     for comment in comments:
         comment.update(question=another_question, parent=another_answer)

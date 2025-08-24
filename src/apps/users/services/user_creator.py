@@ -4,6 +4,8 @@ from dataclasses import dataclass
 from django.utils.functional import cached_property
 from rest_framework import serializers
 
+from apps.dashamail import tasks as dashamail
+from apps.dashamail.enabled import dashamail_enabled
 from apps.users.models import User
 from core.services import BaseService
 
@@ -16,7 +18,6 @@ class UserCreateSerializer(serializers.ModelSerializer):
             "last_name",
             "username",
             "email",
-            "subscribed",
         ]
 
 
@@ -24,14 +25,23 @@ class UserCreateSerializer(serializers.ModelSerializer):
 class UserCreator(BaseService):
     email: str
     name: str | None = ""
-    subscribe: bool | None = False
+    force_subscribe: bool | None = False
 
     @cached_property
     def username(self) -> str:
         return self.email.lower() or str(uuid.uuid4())
 
     def act(self) -> User:
-        return self.get() or self.create()
+        existing_user = self.get()
+        if existing_user is not None:
+            return existing_user
+
+        created_user = self.create()
+
+        if self.force_subscribe and dashamail_enabled():
+            self.push_to_dashamail(created_user)
+
+        return created_user
 
     def get(self) -> User | None:
         if self.email:
@@ -42,7 +52,6 @@ class UserCreator(BaseService):
             data={
                 "email": self.email.lower(),
                 "username": self.username,
-                "subscribed": self.subscribe,
                 **User.parse_name(self.name or ""),
             }
         )
@@ -51,3 +60,10 @@ class UserCreator(BaseService):
         serializer.save()
 
         return serializer.instance  # type: ignore
+
+    @staticmethod
+    def push_to_dashamail(user: User) -> None:
+        dashamail.update_subscription.apply_async(
+            kwargs={"student_id": user.id},
+            countdown=5,  # voodoo sleep to make sure the new row became available in all other transactions
+        )

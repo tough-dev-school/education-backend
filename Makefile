@@ -10,12 +10,20 @@ fmt:
 	poetry run toml-sort pyproject.toml
 
 lint:
-	$(manage) makemigrations --check --no-input --dry-run
 	poetry run ruff format --check src
 	poetry run ruff check src
 	poetry run mypy src
+	$(manage) makemigrations --check --no-input --dry-run
+	$(manage) check --fail-level WARNING
+	$(manage) spectacular --api-version v1 --fail-on-warn > /dev/null
 	poetry run toml-sort pyproject.toml --check
 	poetry run pymarkdown scan README.md
+	@if command -v hadolint >/dev/null 2>&1; then \
+		echo Running hadolint...; \
+		hadolint Dockerfile; \
+	else \
+		echo "hadolint not found, skipping Dockerfile linting"; \
+	fi
 
 messages: compilemessages
 	$(manage) makemessages --locale ru
