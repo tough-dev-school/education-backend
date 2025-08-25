@@ -26,6 +26,15 @@ class LessonQuerySet(QuerySet):
             module__course__in=purchased_courses,
         )
 
+    def for_user_including_neighbour_courses(self, user: User) -> "LessonQuerySet":
+        """The same as above, but with all courses belonging to the same product groups that user has puchased"""
+        purchased_courses = apps.get_model("studying.Study").objects.filter(student=user).values_list("course_id", flat=True)
+        purchased_groups = apps.get_model("products.Course").objects.filter(pk__in=purchased_courses).values("group_id").distinct()
+
+        return self.filter(
+            module__course__group__in=purchased_groups,
+        )
+
     def for_admin(self) -> "LessonQuerySet":
         return self.select_related(
             "module",

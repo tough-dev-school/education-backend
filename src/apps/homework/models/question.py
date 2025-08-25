@@ -29,7 +29,7 @@ class QuestionQuerySet(QuerySet):
         )
 
     def limit_to_questions_from_purchased_course(self, user: User) -> "QuestionQuerySet":
-        purchased_lessons = apps.get_model("lms.Lesson").objects.for_user(user).exclude(question=None)
+        purchased_lessons = apps.get_model("lms.Lesson").objects.for_user_including_neighbour_courses(user).exclude(question=None)
 
         return self.filter(pk__in=purchased_lessons.values("question").distinct())
 
