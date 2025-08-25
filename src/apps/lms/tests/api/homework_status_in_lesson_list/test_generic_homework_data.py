@@ -17,16 +17,14 @@ def test_question_to_deprecate(api, module, question):
     got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")["results"][0]["homework"]["question"]
 
     assert got["name"] == question.name
-    assert "<em>" in got["text"], "text is rendered"
 
 
 def test_question(api, module, question):
     got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")["results"][0]["question"]
 
     assert got["name"] == question.name
-    assert "<em>" in got["text"], "text is rendered"
-    assert "<em>" not in got["markdown_text"], "text is not rendered"
     assert "*" in got["markdown_text"], "text is not rendered"
+    assert "<em>" not in got["markdown_text"], "text is not rendered"
 
 
 @pytest.mark.xfail(reason="Moved N+1 out of scope, cuz too few real-world users will encounter it")

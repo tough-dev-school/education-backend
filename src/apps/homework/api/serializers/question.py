@@ -4,11 +4,9 @@ from rest_framework import serializers
 
 from apps.homework.api.serializers.stats import HomeworkStatsSerializer
 from apps.homework.models import Question
-from core.serializers import MarkdownField
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-    text = MarkdownField()
     markdown_text = serializers.CharField(source="text")
 
     class Meta:
@@ -16,14 +14,12 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = [
             "slug",
             "name",
-            "text",
             "markdown_text",
             "deadline",
         ]
 
 
 class QuestionDetailSerializer(serializers.ModelSerializer):
-    text = MarkdownField()
     markdown_text = serializers.CharField(source="text")
     breadcrumbs = serializers.SerializerMethodField()
     homework = HomeworkStatsSerializer(source="*")
@@ -35,7 +31,6 @@ class QuestionDetailSerializer(serializers.ModelSerializer):
             "breadcrumbs",
             "slug",
             "name",
-            "text",
             "markdown_text",
             "deadline",
             "homework",

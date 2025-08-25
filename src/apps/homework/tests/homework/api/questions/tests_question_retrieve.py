@@ -35,12 +35,9 @@ def test_markdown(api, question, course):
 
     got = api.get(f"/api/v2/homework/questions/{question.slug}/")
 
-    assert "<em>should be rendered" in got["text"]
-    assert "*" not in got["text"]
-    assert "<em>should be rendered" in got["course"]["homework_check_recommendations"]
-
     assert "*" in got["markdown_text"], "The field is not rendered"
     assert "<em>" not in got["markdown_text"], "The field is not rendered"
+    assert "<em>should be rendered" in got["course"]["homework_check_recommendations"]
 
 
 def test_breadcrumbs(api, question, factory, another_course):
