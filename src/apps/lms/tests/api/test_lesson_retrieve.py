@@ -72,4 +72,3 @@ def test_question(api, lesson, question):
     got = api.get(f"/api/v2/lms/lessons/{lesson.pk}/")
 
     assert got["homework"]["question"]["name"] == question.name
-    assert "<em>" in got["homework"]["question"]["text"], "Make sure text is rendered"

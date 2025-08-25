@@ -40,7 +40,7 @@ def test_base_response(api, question, crosscheck):
 
     assert got["answer"]["question"]["slug"] == str(question.slug)
     assert got["answer"]["question"]["name"] == question.name
-    assert "text" in got["answer"]["question"]
+    assert "markdown_text" in got["answer"]["question"]
 
 
 @pytest.mark.parametrize(("checked", "is_checked"), [(None, False), (datetime(2032, 1, 1, tzinfo=timezone.utc), True)])

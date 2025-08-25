@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from apps.homework.models import Question
-from core.serializers import MarkdownField
 
 
 class CrossCheckStatsSerializer(serializers.Serializer):
@@ -25,14 +24,11 @@ class CommentStatsSerializer(serializers.Serializer):
 
 
 class TemporarySoonToBeDepricatedQuestionSerializer(serializers.ModelSerializer):
-    text = MarkdownField()
-
     class Meta:
         model = Question
         fields = [
             "slug",
             "name",
-            "text",
             "deadline",
         ]
 
