@@ -134,7 +134,7 @@ class Order(TimestampedModel):
 
         OrderPaidSetter(self, silent=silent)()
 
-    def refund(self, amount: Decimal) -> None:
+    def refund(self, amount: Decimal | None = None) -> None:
         from apps.orders.services import OrderRefunder
 
         OrderRefunder(self, amount)()
