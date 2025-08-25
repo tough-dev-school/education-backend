@@ -109,7 +109,7 @@ class AnswerCreator(BaseService):
             return
 
         if not is_valid_uuid(self.parent_slug):
-            raise ValidationError("Question should be a valid uuid")
+            raise ValidationError("Parent should be a valid uuid")
 
         if not Answer.objects.filter(slug=self.parent_slug).exists():
             raise ValidationError("Answer does not exist")
