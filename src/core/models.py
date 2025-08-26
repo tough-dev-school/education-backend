@@ -17,7 +17,7 @@ class TestUtilsMixin:
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-        self.save()
+        self.save(update_fields=kwargs.keys())
 
         return self
 
