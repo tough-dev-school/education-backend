@@ -14,7 +14,7 @@ from core.services import BaseService
 class QuestionCrossCheckDispatcher(BaseService):
     """Dispatches crosschecks for given question (and its neighbours).
 
-    For the readability to the code is split into two services:
+    To improve readability, the user story is split in 2 services:
         - QuestionCrossCheckDispatcher (this one) finds the answers to mix between students
         - AnswerCrossCheckDispatcher mixes them between students
     """
