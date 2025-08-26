@@ -44,13 +44,38 @@ class QuestionCrossCheckDispatcher(BaseService):
         return [crosscheck for crosscheck in self.crosschecks if crosscheck.checker == user]
 
     def get_answers_to_check(self) -> QuerySet[Answer]:
+        questions = self.get_questions_to_check()
         return (
-            Answer.objects.filter(question=self.question)
+            Answer.objects.filter(question__in=questions)
             .root_only()
             .exclude(
                 do_not_crosscheck=True,
             )
         )
+
+    def get_questions_to_check(self) -> QuerySet[Question]:
+        """
+        Get questions from lessons that belong to the same products.Group
+        and have the same name as the current question's lesson.
+        """
+        from apps.lms.models import Lesson
+
+        # Get the lesson for the current question
+        current_lesson = Lesson.objects.filter(question=self.question).first()
+        if current_lesson is None:
+            return Question.objects.filter(pk=self.question.pk)
+
+        # Find all lessons with the same name in courses that belong to the same group
+        same_group_lessons = Lesson.objects.filter(
+            module__course__group=current_lesson.module.course.group,
+            question__name__iexact=self.question.name,
+            question__isnull=False,
+        ).select_related("question")
+
+        # Get question IDs from those lessons
+        question_ids = same_group_lessons.values_list("question_id", flat=True)
+
+        return Question.objects.filter(pk__in=question_ids)
 
     @staticmethod
     def get_notification_context(crosschecks: list[AnswerCrossCheck]) -> dict:

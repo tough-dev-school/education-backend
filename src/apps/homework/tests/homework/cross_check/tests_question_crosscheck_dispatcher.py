@@ -6,7 +6,52 @@ from apps.homework.models import AnswerCrossCheck
 pytestmark = [pytest.mark.django_db]
 
 
+@pytest.fixture(autouse=True)
+def common_group_for_both_courses(course, another_course, mixer):
+    group = mixer.blend("products.Group")
+
+    course.update(group=group)
+    another_course.update(group=group)
+
+    return group
+
+
 def test_crosschecks_are_created(question_dispatcher):
+    question_dispatcher()
+
+    assert AnswerCrossCheck.objects.count() == 2
+
+
+@pytest.mark.usefixtures("answers_to_another_question")
+def test_answers_to_another_questions_are_ignored(question_dispatcher, question, another_question):
+    first_question_course = question.lesson_set.first().module.course
+    second_question_course = another_question.lesson_set.first().module.course
+    assert first_question_course != second_question_course, "Questions are attached to the different courses"
+    assert first_question_course.group == second_question_course.group, "Courses have the same group"
+
+    question_dispatcher()
+
+    assert AnswerCrossCheck.objects.count() == 2
+
+
+@pytest.mark.usefixtures("answers_to_another_question")
+def test_answers_to_another_questions_are_dispatched_if_product_and_name_match(question, another_question, question_dispatcher):
+    question.update(name="Одинаковая домаЩка")  # also check case insensitiviy
+    another_question.update(name="Одинаковая домащка")
+
+    question_dispatcher()
+
+    assert AnswerCrossCheck.objects.count() == 4
+
+
+@pytest.mark.usefixtures("answers_to_another_question")
+def test_anothers_to_another_questions_are_not_dispatched_if_name_matches_but_product_does_not(question, another_question, question_dispatcher, mixer):
+    """Same as above, but changing product group of one of the courses"""
+    question.update(name="Одинаковая домаЩка")
+    another_question.update(name="Одинаковая домащка")
+
+    question.lesson_set.first().module.course.update(group=mixer.blend("products.Group"))  # this removes 2 questions from the crosscheck
+
     question_dispatcher()
 
     assert AnswerCrossCheck.objects.count() == 2
