@@ -4,6 +4,7 @@ from django.db.models import QuerySet
 
 from apps.homework.models import Answer, AnswerCrossCheck, Question
 from apps.homework.services.answer_crosscheck_dispatcher import AnswerCrossCheckDispatcher
+from apps.lms.models import Lesson
 from apps.mailing.tasks import send_mail
 from apps.users.models import User
 from core.services import BaseService
@@ -11,6 +12,13 @@ from core.services import BaseService
 
 @dataclass
 class QuestionCrossCheckDispatcher(BaseService):
+    """Dispatches crosschecks for given question (and its neighbours).
+
+    For the readability to the code is split into two services:
+        - QuestionCrossCheckDispatcher (this one) finds the answers to mix between students
+        - AnswerCrossCheckDispatcher mixes them between students
+    """
+
     question: Question
     answers_per_user: int = 3
 
@@ -55,27 +63,20 @@ class QuestionCrossCheckDispatcher(BaseService):
 
     def get_questions_to_check(self) -> QuerySet[Question]:
         """
-        Get questions from lessons that belong to the same products.Group
-        and have the same name as the current question's lesson.
+        Questions with the same name that belong to the same product.group
         """
-        from apps.lms.models import Lesson
-
-        # Get the lesson for the current question
         current_lesson = Lesson.objects.filter(question=self.question).first()
         if current_lesson is None:
             return Question.objects.filter(pk=self.question.pk)
 
-        # Find all lessons with the same name in courses that belong to the same group
         same_group_lessons = Lesson.objects.filter(
             module__course__group=current_lesson.module.course.group,
             question__name__iexact=self.question.name,
-            question__isnull=False,
-        ).select_related("question")
+        )
 
-        # Get question IDs from those lessons
-        question_ids = same_group_lessons.values_list("question_id", flat=True)
-
-        return Question.objects.filter(pk__in=question_ids)
+        return Question.objects.filter(
+            pk__in=same_group_lessons.values_list("question_id"),
+        )
 
     @staticmethod
     def get_notification_context(crosschecks: list[AnswerCrossCheck]) -> dict:
