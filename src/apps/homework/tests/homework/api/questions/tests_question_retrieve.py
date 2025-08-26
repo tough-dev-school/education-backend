@@ -10,6 +10,16 @@ pytestmark = [
 ]
 
 
+@pytest.fixture
+def group(mixer, course, another_course):
+    group = mixer.blend("products.Group")
+
+    course.update(group=group)
+    another_course.update(group=group)
+
+    return group
+
+
 def test_ok(api, question, course):
     got = api.get(f"/api/v2/homework/questions/{question.slug}/")
 
@@ -77,6 +87,22 @@ def test_ok_for_superusers_even_when_they_did_not_purchase_the_course(api, quest
     api.user.update(is_superuser=True)
 
     api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=200)
+
+
+@pytest.mark.usefixtures("group", "purchase_of_another_course", "_set_current_user")
+def test_ok_if_user_purchased_same_course_from_the_group(api, purchase, question):
+    purchase.refund()
+
+    api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=200)
+
+
+@pytest.mark.usefixtures("group", "_set_current_user")
+def test_fail_if_user_has_not_purchased_same_course_from_the_group(api, mixer, purchase, purchase_of_another_course, question):
+    """Same as above, just to make sure above test works"""
+    purchase.refund()
+    purchase_of_another_course.course.update(group=mixer.blend("products.Group"))  # another_group
+
+    api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=404)
 
 
 @pytest.mark.usefixtures("_no_purchase")
