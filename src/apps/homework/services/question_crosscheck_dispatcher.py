@@ -14,38 +14,34 @@ class QuestionCrossCheckDispatcher(BaseService):
     question: Question
     answers_per_user: int = 3
 
-    def __post_init__(self) -> None:
-        self.dispatcher = AnswerCrossCheckDispatcher(
-            answers=self.get_answers_to_check(),
-            answers_per_user=self.answers_per_user,
-        )
-
-        self.checks: list[AnswerCrossCheck] = list()
-
     def act(self) -> int:
-        self.dispatch_crosschecks()
+        self.crosschecks = self.dispatch_crosschecks()
         self.notify_users()
 
         return self.get_users_to_notify().count()
 
-    def dispatch_crosschecks(self) -> None:
-        self.checks = self.dispatcher()
+    def dispatch_crosschecks(self) -> list[AnswerCrossCheck]:
+        dispatcher = AnswerCrossCheckDispatcher(
+            answers=self.get_answers_to_check(),
+            answers_per_user=self.answers_per_user,
+        )
+        return dispatcher()
 
     def notify_users(self) -> None:
         for user in self.get_users_to_notify():
-            user_checks_list = self.get_checks_for_user(user)
+            user_crosschecks_list = self.get_crosschecks_for_user(user)
             send_mail.delay(
                 to=user.email,
                 template_id="new-answers-to-check",
-                ctx=self.get_notification_context(user_checks_list),
+                ctx=self.get_notification_context(user_crosschecks_list),
                 disable_antispam=True,
             )
 
     def get_users_to_notify(self) -> QuerySet[User]:
-        return User.objects.filter(pk__in=[check.checker_id for check in self.checks])
+        return User.objects.filter(pk__in=[check.checker_id for check in self.crosschecks])
 
-    def get_checks_for_user(self, user: User) -> list[AnswerCrossCheck]:
-        return [check for check in self.checks if check.checker == user]
+    def get_crosschecks_for_user(self, user: User) -> list[AnswerCrossCheck]:
+        return [crosscheck for crosscheck in self.crosschecks if crosscheck.checker == user]
 
     def get_answers_to_check(self) -> QuerySet[Answer]:
         return (
@@ -57,14 +53,14 @@ class QuestionCrossCheckDispatcher(BaseService):
         )
 
     @staticmethod
-    def get_notification_context(checks: list[AnswerCrossCheck]) -> dict:
+    def get_notification_context(crosschecks: list[AnswerCrossCheck]) -> dict:
         answers = list()
 
-        for check in checks:
+        for crosscheck in crosschecks:
             answers.append(
                 {
-                    "url": check.answer.get_absolute_url(),
-                    "text": str(check.answer),
+                    "url": crosscheck.answer.get_absolute_url(),
+                    "text": str(crosscheck.answer),
                 }
             )
 
