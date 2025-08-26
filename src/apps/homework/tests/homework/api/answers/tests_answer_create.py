@@ -214,7 +214,7 @@ def test_404_for_not_purchased_users(api, question):
 
 
 @pytest.mark.usefixtures("_no_purchase")
-def test_ok_for_users_that_purchased_another_course_from_the_group(api, question, course, factory):
+def test_ok_for_users_that_purchased_another_course_from_the_same_group(api, question, course, factory):
     """Create a purchase of the item with the same group as the course, and check if user can post an answer"""
     another_course = factory.course(group=course.group)
     factory.order(item=another_course, user=api.user, is_paid=True)
@@ -223,6 +223,23 @@ def test_ok_for_users_that_purchased_another_course_from_the_group(api, question
         "/api/v2/homework/answers/",
         {
             "question": question.slug,
+            "content": JSON,
+        },
+        expected_status_code=201,
+    )
+
+
+@pytest.mark.usefixtures("_no_purchase")
+def test_parent_answer_ok_for_users_that_purchased_another_course_from_the_same_group(api, question, course, another_answer, factory):
+    """Same as above, but for the non-root answer"""
+    another_course = factory.course(group=course.group)
+    factory.order(item=another_course, user=api.user, is_paid=True)
+
+    api.post(
+        "/api/v2/homework/answers/",
+        {
+            "question": question.slug,
+            "parent": another_answer.slug,
             "content": JSON,
         },
         expected_status_code=201,
@@ -275,7 +292,7 @@ def test_ok_for_superusers(api, question):
     assert created.study is None
 
 
-def test_404_if_user_has_not_purchase_record_at_all(api, question, purchase):
+def test_404_if_user_has_no_order_at_all(api, question, purchase):
     purchase.delete()
 
     api.post(
