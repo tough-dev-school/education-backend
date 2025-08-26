@@ -9,9 +9,9 @@ pytestmark = [
 
 
 @pytest.fixture
-def get(dispatcher, answers):
+def get(answer_dispatcher, answers):
     def _get(user):
-        service = dispatcher(answers=answers)
+        service = answer_dispatcher(answers=answers)
 
         return service.get_answer_to_check(user)
 

@@ -16,8 +16,8 @@ def answers(mixer, question, user, another_user):
 
 
 @pytest.fixture
-def dispatcher(dispatcher, answers):
-    return dispatcher(answers=answers)
+def dispatcher(answer_dispatcher, answers):
+    return answer_dispatcher(answers=answers)
 
 
 @pytest.fixture

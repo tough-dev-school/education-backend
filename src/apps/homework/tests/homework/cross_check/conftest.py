@@ -61,7 +61,7 @@ def answers_to_another_question(mixer, another_question):
 
 
 @pytest.fixture
-def dispatcher():
+def answer_dispatcher():
     return AnswerCrossCheckDispatcher
 
 
