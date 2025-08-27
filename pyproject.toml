@@ -40,6 +40,7 @@ django-storages = "^1.14"
 django-tree-queries = "^0.20.0"
 djangorestframework = "^3.14.0"
 drf-jwt = "^1.19.2"
+drf-orjson-renderer = "^1.7.3"
 drf-spectacular = {extras = ["sidecar"], version = "^0.28.0"}
 emoji = "^2.8.0"
 geoip2fast = "^1.2.2"

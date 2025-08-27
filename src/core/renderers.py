@@ -1,5 +1,5 @@
-from rest_framework.renderers import JSONRenderer
+from drf_orjson_renderer.renderers import ORJSONRenderer
 
 
-class AppJSONRenderer(JSONRenderer):
+class AppJSONRenderer(ORJSONRenderer):
     charset = "utf-8"  # force DRF to add charset header to the content-type
