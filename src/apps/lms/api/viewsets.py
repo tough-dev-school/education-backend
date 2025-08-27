@@ -40,7 +40,7 @@ class LessonViewSet(DisablePaginationWithQueryParamMixin, ReadOnlyAppViewSet):
     ),
     name="retrieve",
 )
-class ModuleListView(DisablePaginationWithQueryParamMixin, ReadOnlyAppViewSet):
+class ModuleViewSet(DisablePaginationWithQueryParamMixin, ReadOnlyAppViewSet):
     """List modules, accessible to user. Better use it filtering by course"""
 
     serializer_class = ModuleSerializer
