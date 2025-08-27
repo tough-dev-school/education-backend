@@ -3,14 +3,41 @@ import pytest
 pytestmark = [pytest.mark.django_db]
 
 
-def test_fields(api, course, module):
+def test_fields(api, course, module, lesson):
     got = api.get(f"/api/v2/lms/modules/?course={course.pk}")
 
     assert len(got["results"]) == 1
     assert got["results"][0]["id"] == module.id
     assert got["results"][0]["name"] == "Первая неделя"
+    assert got["results"][0]["lesson_count"] == 1
+    assert got["results"][0]["single_lesson_id"] == lesson.pk
     assert got["results"][0]["description"] == "Самая важная неделя"
     assert got["results"][0]["start_date"] == "2032-12-01T15:30:00+03:00"
+
+
+def test_zero_lesson_count(api, course, lesson):
+    lesson.delete()
+    got = api.get(f"/api/v2/lms/modules/?course={course.pk}")
+
+    assert got["results"][0]["lesson_count"] == 0
+    assert got["results"][0]["single_lesson_id"] is None
+
+
+def test_lessons_from_other_modules_are_ignored(api, course, lesson, another_module):
+    lesson.update(module=another_module)
+
+    got = api.get(f"/api/v2/lms/modules/?course={course.pk}")
+
+    assert got["results"][0]["lesson_count"] == 0
+
+
+def test_multiple_lesson_count(api, course, lesson, mixer):
+    mixer.cycle(3).blend("lms.Lesson", module=lesson.module)
+
+    got = api.get(f"/api/v2/lms/modules/?course={course.pk}")
+
+    assert got["results"][0]["lesson_count"] == 4  # existing lesson + 3 generated
+    assert got["results"][0]["single_lesson_id"] is None
 
 
 def test_empty_start_date(api, course, module):

@@ -1,5 +1,5 @@
 from django.apps import apps
-from django.db.models import Index, OuterRef, QuerySet
+from django.db.models import Case, Index, OuterRef, QuerySet, Subquery, Value, When
 from django.utils.translation import gettext_lazy as _
 
 from apps.users.models import User
@@ -7,10 +7,20 @@ from core.models import SubqueryCount, TimestampedModel, models
 
 
 class ModuleQuerySet(QuerySet):
-    def for_viewset(self, include_hidden: bool = False) -> "ModuleQuerySet":
-        if include_hidden:
-            return self.order_by("position")
-        return self.filter(hidden=False).order_by("position")
+    def for_viewset(self) -> "ModuleQuerySet":
+        lessons = apps.get_model("lms.Lesson").objects.filter(module=OuterRef("pk"), hidden=False)
+
+        return (
+            self.filter(hidden=False)
+            .annotate(lesson_count=SubqueryCount(lessons))
+            .annotate(
+                single_lesson_id=Case(
+                    When(lesson_count=1, then=Subquery(lessons.values("id")[:1])),
+                    default=Value(None),
+                )
+            )
+            .order_by("position")
+        )
 
     def for_user(self, user: User) -> "ModuleQuerySet":
         purchased_courses = apps.get_model("studying.Study").objects.filter(student=user).values_list("course_id", flat=True)
