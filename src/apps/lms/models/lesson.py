@@ -1,5 +1,6 @@
 from django.apps import apps
-from django.db.models import Index, QuerySet
+from django.db.models import Index, Q, QuerySet
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
@@ -9,15 +10,18 @@ from core.models import TimestampedModel, models
 
 class LessonQuerySet(QuerySet):
     def for_viewset(self) -> "LessonQuerySet":
-        return (
-            self.filter(
-                hidden=False,
-            )
-            .select_related(
-                "question",
-                "material",
-            )
-            .order_by("position")
+        return self.select_related(
+            "question",
+            "material",
+        ).order_by(
+            "position",
+        )
+
+    def exclude_not_opened(self) -> "LessonQuerySet":
+        return self.filter(
+            hidden=False,
+        ).filter(
+            Q(module__start_date__isnull=True) | Q(module__start_date__lte=timezone.now()),
         )
 
     def for_user(self, user: User) -> "LessonQuerySet":

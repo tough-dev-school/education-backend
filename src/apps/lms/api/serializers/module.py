@@ -1,3 +1,4 @@
+from django.utils import timezone
 from drf_spectacular.utils import OpenApiExample, extend_schema_serializer
 from rest_framework import serializers
 
@@ -12,6 +13,7 @@ from core.serializers import MarkdownField
             value={
                 "id": 100500,
                 "name": "Первая неделя",
+                "has_started": True,
                 "start_date": "2023-12-01 15:30:00+03:00",
                 "description": "Cамая важная неделя",
                 "text": "<p><strong>Первая</strong> неделя — <em>самая важная неделя</em></p>",
@@ -21,6 +23,7 @@ from core.serializers import MarkdownField
 )
 class ModuleSerializer(serializers.ModelSerializer):
     text = MarkdownField()
+    has_started = serializers.SerializerMethodField()
 
     class Meta:
         model = Module
@@ -28,9 +31,16 @@ class ModuleSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "start_date",
+            "has_started",
             "description",
             "text",
         ]
+
+    def get_has_started(self, module: Module) -> bool:
+        if module.start_date is None:
+            return True
+
+        return module.start_date <= timezone.now()
 
 
 @extend_schema_serializer(
@@ -40,6 +50,7 @@ class ModuleSerializer(serializers.ModelSerializer):
             value={
                 "id": 100500,
                 "name": "Первая неделя",
+                "has_started": True,
                 "start_date": "2023-12-01 15:30:00+03:00",
                 "description": "Cамая важная неделя",
                 "lesson_count": 1,
@@ -52,6 +63,7 @@ class ModuleSerializer(serializers.ModelSerializer):
             value={
                 "id": 100500,
                 "name": "Вторая неделя",
+                "has_started": True,
                 "start_date": "2023-12-01 15:30:00+03:00",
                 "description": "Тоже важная неделя",
                 "lesson_count": 2,

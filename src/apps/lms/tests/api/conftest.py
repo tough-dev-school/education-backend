@@ -23,7 +23,7 @@ def another_course(factory):
 def module(factory, course):
     return factory.module(
         course=course,
-        start_date="2032-12-01 15:30+03:00",
+        start_date="1972-12-01 15:30+03:00",  # to avoid hiding upon select
         name="Первая неделя",
         description="Самая важная неделя",
         text="Текст модуля",

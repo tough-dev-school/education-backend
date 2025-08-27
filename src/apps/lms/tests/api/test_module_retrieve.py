@@ -9,7 +9,8 @@ def test_ok(api, module, lesson):
     assert got["id"] == module.id
     assert got["name"] == "Первая неделя"
     assert got["description"] == "Самая важная неделя"
-    assert got["start_date"] == "2032-12-01T15:30:00+03:00"
+    assert got["start_date"] == "1972-12-01T15:30:00+03:00"
+    assert got["has_started"] is True
     assert got["text"] == "<p>Текст модуля</p>\n"
     assert got["lesson_count"] == 1
     assert got["single_lesson_id"] == lesson.pk

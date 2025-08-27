@@ -40,6 +40,25 @@ def test_404_if_no_purchase(api, lesson):
     api.get(f"/api/v2/lms/lessons/{lesson.pk}/", expected_status_code=404)
 
 
+def test_404_if_hidden(api, lesson):
+    lesson.update(hidden=True)
+
+    api.get(f"/api/v2/lms/lessons/{lesson.pk}/", expected_status_code=404)
+
+
+@pytest.mark.freeze_time("2032-12-09 15:30:30+03:00")
+def test_404_if_module_is_not_started_yet(api, lesson):
+    lesson.module.update(start_date="2032-12-15 15:30:30+03:00")
+
+    api.get(f"/api/v2/lms/lessons/{lesson.pk}/", expected_status_code=404)
+
+
+def test_ok_for_module_without_start_date(api, lesson):
+    lesson.module.update(start_date=None)
+
+    api.get(f"/api/v2/lms/lessons/{lesson.pk}/", expected_status_code=200)
+
+
 def test_no_anon(anon, lesson):
     anon.get(f"/api/v2/lms/lessons/{lesson.pk}/", expected_status_code=401)
 

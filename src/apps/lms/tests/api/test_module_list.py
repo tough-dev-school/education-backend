@@ -12,7 +12,8 @@ def test_fields(api, course, module, lesson):
     assert got["results"][0]["lesson_count"] == 1
     assert got["results"][0]["single_lesson_id"] == lesson.pk
     assert got["results"][0]["description"] == "Самая важная неделя"
-    assert got["results"][0]["start_date"] == "2032-12-01T15:30:00+03:00"
+    assert got["results"][0]["start_date"] == "1972-12-01T15:30:00+03:00"
+    assert got["results"][0]["has_started"] is True
 
 
 def test_zero_lesson_count(api, course, lesson):
@@ -46,6 +47,16 @@ def test_empty_start_date(api, course, module):
     got = api.get(f"/api/v2/lms/modules/?course={course.pk}")
 
     assert got["results"][0]["start_date"] is None
+    assert got["results"][0]["has_started"] is True
+
+
+@pytest.mark.freeze_time("2032-12-15 12:30:00+03:00")
+def test_has_not_started(api, course, module):
+    module.update(start_date="2032-12-20 11:11:11+03:00")
+
+    got = api.get(f"/api/v2/lms/modules/?course={course.pk}")
+
+    assert got["results"][0]["has_started"] is False
 
 
 def test_markdown_in_text(api, course, module):
