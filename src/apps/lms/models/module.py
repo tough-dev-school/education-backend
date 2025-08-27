@@ -1,5 +1,6 @@
 from django.apps import apps
-from django.db.models import Case, Index, OuterRef, QuerySet, Subquery, Value, When
+from django.db.models import Case, Index, OuterRef, Q, QuerySet, Subquery, Value, When
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from apps.users.models import User
@@ -11,8 +12,7 @@ class ModuleQuerySet(QuerySet):
         lessons = apps.get_model("lms.Lesson").objects.filter(module=OuterRef("pk"), hidden=False)
 
         return (
-            self.filter(hidden=False)
-            .annotate(lesson_count=SubqueryCount(lessons))
+            self.annotate(lesson_count=SubqueryCount(lessons))
             .annotate(
                 single_lesson_id=Case(
                     When(lesson_count=1, then=Subquery(lessons.values("id")[:1])),
@@ -20,6 +20,14 @@ class ModuleQuerySet(QuerySet):
                 )
             )
             .order_by("position")
+        )
+
+    def exclude_hidden(self) -> "ModuleQuerySet":
+        return self.filter(hidden=False)
+
+    def exclude_not_opened(self) -> "ModuleQuerySet":
+        return self.filter(
+            Q(start_date__isnull=True) | Q(start_date__lte=timezone.now()),
         )
 
     def for_user(self, user: User) -> "ModuleQuerySet":

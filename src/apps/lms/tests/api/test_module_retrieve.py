@@ -31,15 +31,25 @@ def test_404_if_hidden_module(api, module):
     api.get(f"/api/v2/lms/modules/{module.pk}/", expected_status_code=404)
 
 
-@pytest.mark.xfail(strict=True, reason="I disabled this functionality, cuz couldn't understand how it works. Will fix it if someone complains")
 @pytest.mark.usefixtures("_no_purchase")
-def test_all_visible_for_users_with_permissions(api, module):
-    api.user.add_perm("studying.study.purchased_all_courses")
+def test_hidden_modules_are_displayed_for_users_with_permissions(api, module):
     module.update(hidden=True)
+    api.user.add_perm("studying.purchased_all_courses")
 
     got = api.get(f"/api/v2/lms/modules/{module.pk}/")
 
     assert got["id"] == module.id
+
+
+@pytest.mark.freeze_time("2032-12-15 12:30:00+03:00")
+def test_not_started_modules_are_displayed_for_users_with_permissions(api, module):
+    module.update(start_date="2032-12-20 11:11:11+03:00")
+    api.user.add_perm("studying.purchased_all_courses")
+
+    got = api.get(f"/api/v2/lms/modules/{module.pk}/")
+
+    assert got["id"] == module.id
+    assert got["has_started"] is False
 
 
 def test_zero_lesson_count(api, module, lesson):

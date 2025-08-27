@@ -52,8 +52,10 @@ class ModuleViewSet(DisablePaginationWithQueryParamMixin, ReadOnlyAppViewSet):
         queryset: ModuleQuerySet = super().get_queryset()  # type: ignore
 
         if self.request.user.has_perm("studying.purchased_all_courses"):
-            if self.action == "retrieve":
-                return queryset
             return queryset
 
-        return queryset.for_user(self.request.user)  # type: ignore
+        queryset = queryset.exclude_hidden().for_user(self.request.user)  # type: ignore
+        if self.action == "retrieve":  # hide detail view if the module is not opened yet
+            queryset = queryset.exclude_not_opened()
+
+        return queryset

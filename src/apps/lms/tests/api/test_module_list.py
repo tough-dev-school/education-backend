@@ -52,6 +52,7 @@ def test_empty_start_date(api, course, module):
 
 @pytest.mark.freeze_time("2032-12-15 12:30:00+03:00")
 def test_has_not_started(api, course, module):
+    """Not started modules are marked as not started, but still acessible"""
     module.update(start_date="2032-12-20 11:11:11+03:00")
 
     got = api.get(f"/api/v2/lms/modules/?course={course.pk}")
@@ -97,7 +98,7 @@ def test_filter_works(api, another_course):
     assert len(got["results"]) == 0
 
 
-def test_hidden_modules_not_shown(api, course, module):
+def test_hidden_modules_are_not_displayed(api, course, module):
     module.update(hidden=True)
 
     got = api.get(f"/api/v2/lms/modules/?course={course.pk}")
