@@ -4,9 +4,22 @@ from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
 from apps.lms.admin.lesson.inline import LessonInline
+from apps.lms.admin.module import actions
 from apps.lms.models import Module
 from apps.products.admin.filters import CourseFilter
 from core.admin import ModelAdmin, admin
+from core.admin.filters import DefaultFalseBooleanFilter
+
+
+class Archived(DefaultFalseBooleanFilter):
+    title = _("Archived")
+    parameter_name = "archived"
+
+    def t(self, request: HttpRequest, queryset: QuerySet[Module]) -> QuerySet:
+        return queryset.filter(archived=True)
+
+    def f(self, request: HttpRequest, queryset: QuerySet[Module]) -> QuerySet:
+        return queryset.filter(archived=False)
 
 
 @admin.register(Module)
@@ -15,6 +28,7 @@ class ModuleAdmin(SortableAdminBase, ModelAdmin):
         "name",
         "start_date",
         "course",
+        "archived",
         "description",
         "text",
     ]
@@ -27,11 +41,16 @@ class ModuleAdmin(SortableAdminBase, ModelAdmin):
         "lesson_count",
     ]
     list_filter = [
+        Archived,
         CourseFilter,
     ]
 
     inlines = [
         LessonInline,
+    ]
+    actions = [
+        actions.archive,
+        actions.unarchive,
     ]
 
     class Media:

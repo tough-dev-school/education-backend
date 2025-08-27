@@ -53,7 +53,8 @@ class Module(TimestampedModel):
     description = models.CharField(_("Short description"), blank=True, null=True, max_length=512)
     text = models.TextField(_("Text"), blank=True, null=True)
     course = models.ForeignKey("lms.Course", on_delete=models.CASCADE, related_name="modules")
-    hidden = models.BooleanField(_("Hidden"), help_text=_("Users can't find such materials in the listing"), default=True)
+    hidden = models.BooleanField(_("Hidden"), help_text=_("Users can't find such materials in the listing"), default=True, db_index=True)
+    archived = models.BooleanField(_("Archived"), default=False, help_text=_("Hidden from the admin, but still acessible by users"), db_index=True)
     position = models.PositiveIntegerField(default=0, blank=False, null=False, db_index=True)
 
     class Meta:

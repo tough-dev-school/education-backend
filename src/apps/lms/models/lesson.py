@@ -40,7 +40,9 @@ class LessonQuerySet(QuerySet):
         )
 
     def for_admin(self) -> "LessonQuerySet":
-        return self.select_related(
+        return self.exclude(
+            module__archived=True,
+        ).select_related(
             "module",
             "module__course",
             "module__course__group",
