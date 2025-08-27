@@ -19,6 +19,9 @@ class QuestionAdmin(ModelAdmin):
         "product",
         "tariff",
     ]
+    list_filter = [
+        "lesson__module__course__group",
+    ]
     fields = [
         "module",
         "lesson",

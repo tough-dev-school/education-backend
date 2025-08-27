@@ -75,7 +75,7 @@ class Course(TimestampedModel):
     )
     name_international = models.CharField(_("Name used for international purchases"), max_length=255, blank=True, default="")
 
-    group = models.ForeignKey("products.Group", verbose_name=_("Analytical group"), on_delete=models.PROTECT)
+    group = models.ForeignKey("products.Group", verbose_name=_("Product group"), on_delete=models.PROTECT)
     slug = models.SlugField(unique=True)
 
     price = models.DecimalField(max_digits=8, decimal_places=2)
