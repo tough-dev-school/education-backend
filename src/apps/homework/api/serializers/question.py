@@ -4,6 +4,25 @@ from rest_framework import serializers
 
 from apps.homework.api.serializers.stats import HomeworkStatsSerializer
 from apps.homework.models import Question
+from apps.products.models import Course
+from core.serializers import MarkdownField
+
+
+class QuestionCourseSerializer(serializers.ModelSerializer):
+    homework_check_recommendations = MarkdownField()
+
+    class Meta:
+        model = Course
+        fields = [
+            "id",
+            "slug",
+            "name",
+            "cover",
+            "chat",
+            "calendar_ios",
+            "calendar_google",
+            "homework_check_recommendations",
+        ]
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -37,16 +56,14 @@ class QuestionDetailSerializer(serializers.ModelSerializer):
             "course",
         ]
 
-    @extend_schema_field(lazy_serializer("apps.lms.api.serializers.LMSCourseSerializer")())
+    @extend_schema_field(QuestionCourseSerializer)
     def get_course(self, question: Question) -> dict:
-        from apps.lms.api.serializers import LMSCourseSerializer
-
         course = question.get_course(user=self.context["request"].user)
 
         if course is None:
             course = question.get_legacy_course()
 
-        return LMSCourseSerializer(course).data
+        return QuestionCourseSerializer(course).data
 
     @extend_schema_field(lazy_serializer("apps.lms.api.serializers.BreadcrumbsSerializer")())
     def get_breadcrumbs(self, question: Question) -> dict | None:

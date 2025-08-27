@@ -1,0 +1,110 @@
+from typing import Literal
+
+from drf_spectacular.utils import extend_schema_field, inline_serializer
+from rest_framework import serializers
+
+from apps.homework.api.serializers import HomeworkStatsSerializer, QuestionSerializer
+from apps.homework.models import Question
+from apps.lms.models import Call, Lesson
+from apps.notion.models import Material as NotionMaterial
+
+
+class NotionMaterialSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(source="get_short_slug")
+
+    class Meta:
+        model = NotionMaterial
+        fields = [
+            "id",
+            "title",
+        ]
+
+
+class CallSerializer(serializers.ModelSerializer):
+    video = serializers.SerializerMethodField()
+    recommended_video_provider = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Call
+        fields = [
+            "name",
+            "description",
+            "url",
+            "video",
+            "datetime",
+            "recommended_video_provider",
+        ]
+
+    @extend_schema_field(
+        field=inline_serializer(
+            name="VideoProviderSerializer",
+            fields={
+                "provider": serializers.CharField(),
+                "embed": serializers.URLField(),
+                "src": serializers.URLField(),
+            },
+            many=True,
+        ),
+    )
+    def get_video(self, call: Call) -> list[dict]:
+        videos = []
+
+        if call.youtube_id:
+            videos.append(
+                {
+                    "provider": "youtube",
+                    "embed": call.get_youtube_embed_src(),
+                    "src": call.get_youtube_url(),
+                }
+            )
+
+        if call.rutube_id:
+            videos.append(
+                {
+                    "provider": "rutube",
+                    "embed": call.get_rutube_embed_src(),
+                    "src": call.get_rutube_url(),
+                }
+            )
+
+        return videos
+
+    def get_recommended_video_provider(self, call: Call) -> Literal["youtube", "rutube"] | None:
+        request = self.context["request"]
+        if request is not None and request.country_code == "RU" and call.rutube_id is not None:
+            return "rutube"
+
+        if call.youtube_id is None and call.rutube_id is not None:
+            return "rutube"
+
+        if call.youtube_id is not None:
+            return "youtube"
+
+        return None
+
+
+class LessonSerializer(serializers.ModelSerializer):
+    """Serialize lesson for the user, lesson should be annotated with crosschecks stats"""
+
+    material = NotionMaterialSerializer(required=False)
+    call = CallSerializer(required=False)
+    homework = serializers.SerializerMethodField()
+    question = QuestionSerializer()
+
+    class Meta:
+        model = Lesson
+        fields = [
+            "id",
+            "material",
+            "homework",
+            "question",
+            "call",
+        ]
+
+    @extend_schema_field(field=HomeworkStatsSerializer)
+    def get_homework(self, lesson: Lesson) -> dict | None:
+        if lesson.question is not None:
+            user = self.context["request"].user
+            question = Question.objects.for_user(user).get(pk=lesson.question_id)  # extra N+1 query to annotate the question with statistics
+
+            return HomeworkStatsSerializer(question, context=self.context).data
