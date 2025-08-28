@@ -21,8 +21,25 @@ def test_401_for_anon_users(anon, module):
     anon.get(f"/api/v2/lms/lessons/?module={module.pk}", expected_status_code=401)
 
 
-def test_no_results_for_non_existent_course(api):
+def test_no_results_for_non_existent_modules(api):
     api.get("/api/v2/lms/lessons/?module=10005000", expected_status_code=400)
+
+
+@pytest.mark.freeze_time("2032-12-09 15:30:30+03:00")
+def test_no_results_if_module_is_not_started_yet(api, module):
+    module.update(start_date="2032-12-15 15:30:30+03:00")
+
+    got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")
+
+    assert len(got["results"]) == 0
+
+
+def test_ok_for_module_without_start_date(api, module):
+    module.update(start_date=None)
+
+    got = api.get(f"/api/v2/lms/lessons/?module={module.pk}")
+
+    assert len(got["results"]) == 1
 
 
 def test_filter_works(api, another_module):

@@ -12,5 +12,5 @@ class Group(TimestampedModel):
     evergreen = models.BooleanField(_("Evergreen"), default=False)
 
     class Meta:
-        verbose_name = _("Analytical group")
-        verbose_name_plural = _("Analytical groups")
+        verbose_name = _("Product group")
+        verbose_name_plural = _("Product groups")

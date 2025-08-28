@@ -7,7 +7,7 @@ from core.models import TimestampedModel, models
 
 class LegacyRecord(TimestampedModel):
     name = models.CharField(max_length=255)
-    group = models.ForeignKey("products.Group", verbose_name=_("Analytical group"), on_delete=models.PROTECT)
+    group = models.ForeignKey("products.Group", verbose_name=_("Product group"), on_delete=models.PROTECT)
 
     class Meta:
         ordering = ["-id"]
@@ -21,7 +21,7 @@ class LegacyRecord(TimestampedModel):
 
 class LegacyBundle(TimestampedModel):
     name = models.CharField(max_length=255)
-    group = models.ForeignKey("products.Group", verbose_name=_("Analytical group"), on_delete=models.PROTECT)
+    group = models.ForeignKey("products.Group", verbose_name=_("Product group"), on_delete=models.PROTECT)
 
     class Meta:
         ordering = ["-id"]

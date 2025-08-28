@@ -1,13 +1,12 @@
 from typing import Literal
 
-from drf_spectacular.utils import OpenApiExample, extend_schema_field, extend_schema_serializer, inline_serializer
+from drf_spectacular.utils import extend_schema_field, inline_serializer
 from rest_framework import serializers
 
 from apps.homework.api.serializers import HomeworkStatsSerializer, QuestionSerializer
 from apps.homework.models import Question
-from apps.lms.models import Call, Course, Lesson, Module
+from apps.lms.models import Call, Lesson
 from apps.notion.models import Material as NotionMaterial
-from core.serializers import MarkdownField
 
 
 class NotionMaterialSerializer(serializers.ModelSerializer):
@@ -109,75 +108,3 @@ class LessonSerializer(serializers.ModelSerializer):
             question = Question.objects.for_user(user).get(pk=lesson.question_id)  # extra N+1 query to annotate the question with statistics
 
             return HomeworkStatsSerializer(question, context=self.context).data
-
-
-@extend_schema_serializer(
-    examples=[
-        OpenApiExample(
-            name="Markdown in descrpition",
-            value={
-                "id": 100500,
-                "name": "Первая неделя",
-                "start_date": "2023-12-01 15:30:00+03:00",
-                "description": "Cамая важная неделя",
-                "text": "<p><strong>Первая</strong> неделя — <em>самая важная неделя</em></p>",
-            },
-        ),
-    ]
-)
-class ModuleSerializer(serializers.ModelSerializer):
-    text = MarkdownField()
-
-    class Meta:
-        model = Module
-        fields = [
-            "id",
-            "name",
-            "start_date",
-            "description",
-            "text",
-        ]
-
-
-class LMSCourseSerializer(serializers.ModelSerializer):
-    homework_check_recommendations = MarkdownField()
-
-    class Meta:
-        model = Course
-        fields = [
-            "id",
-            "slug",
-            "name",
-            "cover",
-            "chat",
-            "calendar_ios",
-            "calendar_google",
-            "homework_check_recommendations",
-        ]
-
-
-class BreadcrumbsSerializer(serializers.ModelSerializer):
-    module = ModuleSerializer()
-    course = LMSCourseSerializer(source="module.course")
-    lesson = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Lesson
-        fields = [
-            "module",
-            "course",
-            "lesson",
-        ]
-
-    @extend_schema_field(
-        field=inline_serializer(
-            name="LessonPlainSerializer",
-            fields={
-                "id": serializers.IntegerField(),
-            },
-        )
-    )
-    def get_lesson(self, lesson: Lesson) -> dict:
-        return {
-            "id": lesson.id,
-        }

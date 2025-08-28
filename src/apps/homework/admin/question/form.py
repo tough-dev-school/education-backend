@@ -10,7 +10,7 @@ from core.tasks import write_admin_log
 
 
 class QuestionForm(ModelForm):
-    module = forms.ModelChoiceField(label=_("Module"), queryset=Module.objects.for_admin(), required=False)
+    module = forms.ModelChoiceField(label=_("Module"), queryset=Module.objects.for_admin().exclude(archived=True), required=False)
     lesson = forms.ModelChoiceField(label=_("Lesson"), queryset=Lesson.objects.for_admin(), required=False)
 
     class Meta:

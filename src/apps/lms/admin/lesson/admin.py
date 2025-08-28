@@ -34,11 +34,16 @@ class LessonAdmin(ModelAdmin):
     }
 
     list_display = [
-        "name",
+        "id",
         "course_name",
         "module_name",
         "material_title",
         "question_name",
+    ]
+
+    list_display_links = [
+        "id",
+        "course_name",
     ]
 
     class Media:
@@ -74,10 +79,6 @@ class LessonAdmin(ModelAdmin):
             return lesson.question.name
 
         return "—"
-
-    @admin.display(description=_("Name"))
-    def name(self, lesson: Lesson) -> str:
-        return str(lesson)
 
     def has_add_permission(self, request: HttpRequest) -> bool:
         return False

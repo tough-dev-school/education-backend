@@ -4,7 +4,12 @@ from core.test.factory import FixtureFactory, register
 
 
 @register
-def question(self: FixtureFactory, course: Course | None = None, name: str | None = None, **kwargs: dict) -> Question:
+def question(
+    self: FixtureFactory,
+    course: Course | None = None,
+    name: str | None = None,
+    **kwargs: dict,
+) -> Question:
     question = Question.objects.create(
         name=name or f"Please {self.faker.bs()} two times",
         **kwargs,

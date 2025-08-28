@@ -3,7 +3,7 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import IsAuthenticated
 
 from apps.lms.api.filters import LessonFilterSet, ModuleFilterSet
-from apps.lms.api.serializers import LessonSerializer, ModuleSerializer
+from apps.lms.api.serializers import LessonSerializer, ModuleDetailSerializer
 from apps.lms.models import Lesson, Module
 from apps.lms.models.lesson import LessonQuerySet
 from apps.lms.models.module import ModuleQuerySet
@@ -31,7 +31,7 @@ class LessonViewSet(DisablePaginationWithQueryParamMixin, ReadOnlyAppViewSet):
         if self.request.user.has_perm("studying.purchased_all_courses"):
             return queryset
 
-        return queryset.for_user(self.request.user)  # type: ignore
+        return queryset.for_user(self.request.user).exclude_not_opened()  # type: ignore
 
 
 @method_decorator(
@@ -40,10 +40,10 @@ class LessonViewSet(DisablePaginationWithQueryParamMixin, ReadOnlyAppViewSet):
     ),
     name="retrieve",
 )
-class ModuleListView(DisablePaginationWithQueryParamMixin, ReadOnlyAppViewSet):
+class ModuleViewSet(DisablePaginationWithQueryParamMixin, ReadOnlyAppViewSet):
     """List modules, accessible to user. Better use it filtering by course"""
 
-    serializer_class = ModuleSerializer
+    serializer_class = ModuleDetailSerializer
     permission_classes = [IsAuthenticated]
     filterset_class = ModuleFilterSet
     queryset = Module.objects.for_viewset()
@@ -52,8 +52,10 @@ class ModuleListView(DisablePaginationWithQueryParamMixin, ReadOnlyAppViewSet):
         queryset: ModuleQuerySet = super().get_queryset()  # type: ignore
 
         if self.request.user.has_perm("studying.purchased_all_courses"):
-            if self.action == "retrieve":
-                return Module.objects.for_viewset(include_hidden=True)
             return queryset
 
-        return queryset.for_user(self.request.user)  # type: ignore
+        queryset = queryset.exclude_hidden().for_user(self.request.user)  # type: ignore
+        if self.action == "retrieve":  # hide detail view if the module is not opened yet
+            queryset = queryset.exclude_not_opened()
+
+        return queryset
