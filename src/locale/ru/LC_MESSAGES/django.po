@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-27 14:53+0300\n"
+"POT-Creation-Date: 2025-08-28 10:22+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -205,9 +205,10 @@ msgstr "Комиссии банков"
 msgid "Zero Price"
 msgstr "Бесплатно"
 
-#: apps/chains/admin/chain.py:13
+#: apps/chains/admin/chain.py:13 apps/lms/admin/module/admin.py:15
+#: apps/lms/models/module.py:57
 msgid "Archived"
-msgstr "Заархивирована"
+msgstr "В архиве"
 
 #: apps/chains/admin/forms.py:17 apps/chains/models/message.py:39
 msgid "Parent"
@@ -225,18 +226,17 @@ msgstr "В списке только не запущенные и не заар�
 #: apps/chains/admin/message.py:44 apps/chains/models/chain.py:33
 #: apps/diplomas/admin/diploma.py:56 apps/homework/admin/answer/admin.py:56
 #: apps/homework/admin/crosscheck/admin.py:37
-#: apps/homework/admin/question/admin.py:38 apps/lms/admin/lesson/admin.py:56
+#: apps/homework/admin/question/admin.py:38 apps/lms/admin/lesson/admin.py:61
 #: apps/orders/models/order.py:60 apps/products/admin/filters.py:12
 #: apps/products/models/course.py:122 apps/studying/models.py:9
 msgid "Course"
 msgstr "Курс"
 
 #: apps/chains/models/chain.py:32 apps/chains/models/message.py:32
-#: apps/homework/models/question.py:93 apps/lms/admin/lesson/admin.py:78
-#: apps/lms/admin/lesson/inline.py:28 apps/lms/admin/lms_course/admin.py:26
-#: apps/lms/admin/module/inline.py:23 apps/lms/models/call.py:9
-#: apps/lms/models/course_link.py:8 apps/products/admin/course.py:18
-#: apps/products/models/course.py:65
+#: apps/homework/models/question.py:93 apps/lms/admin/lesson/inline.py:28
+#: apps/lms/admin/lms_course/admin.py:26 apps/lms/admin/module/inline.py:23
+#: apps/lms/models/call.py:9 apps/lms/models/course_link.py:8
+#: apps/products/admin/course.py:18 apps/products/models/course.py:65
 msgid "Name"
 msgstr "Название"
 
@@ -370,7 +370,7 @@ msgstr "Автор"
 msgid "Is root answer"
 msgstr "Первый ответ"
 
-#: apps/homework/admin/crosscheck/admin.py:44 apps/lms/admin/lesson/admin.py:71
+#: apps/homework/admin/crosscheck/admin.py:44 apps/lms/admin/lesson/admin.py:76
 msgid "Question"
 msgstr "Вопрос"
 
@@ -388,8 +388,8 @@ msgstr "Тариф"
 msgid "Dispatch crosscheck"
 msgstr "Запустить p2p-проверку домашки"
 
-#: apps/homework/admin/question/form.py:13 apps/lms/admin/lesson/admin.py:60
-#: apps/lms/models/lesson.py:55 apps/lms/models/module.py:65
+#: apps/homework/admin/question/form.py:13 apps/lms/admin/lesson/admin.py:65
+#: apps/lms/models/lesson.py:57 apps/lms/models/module.py:66
 msgid "Module"
 msgstr "Модуль"
 
@@ -444,7 +444,7 @@ msgstr "Реакции"
 msgid "Invalid emoji symbol"
 msgstr "Неверный символ emoji"
 
-#: apps/lms/admin/lesson/admin.py:64 apps/lms/admin/lesson/form.py:12
+#: apps/lms/admin/lesson/admin.py:69 apps/lms/admin/lesson/form.py:12
 msgid "Material"
 msgstr "Страница в ноушене"
 
@@ -460,7 +460,7 @@ msgstr "Урок не найден"
 msgid "Change"
 msgstr "Изменить"
 
-#: apps/lms/admin/lesson/inline.py:51 apps/lms/models/lesson.py:57
+#: apps/lms/admin/lesson/inline.py:51 apps/lms/models/lesson.py:59
 msgctxt "lessons"
 msgid "Material"
 msgstr "Страница в ноушене"
@@ -473,7 +473,15 @@ msgstr "Ссылки"
 msgid "Module count"
 msgstr "Модули"
 
-#: apps/lms/admin/module/admin.py:47
+#: apps/lms/admin/module/actions.py:13
+msgid "Put to archive"
+msgstr "Заархивировать"
+
+#: apps/lms/admin/module/actions.py:30
+msgid "Extract from archive"
+msgstr "Достать из архива"
+
+#: apps/lms/admin/module/admin.py:66
 msgid "Lesson count"
 msgstr "Уроки"
 
@@ -490,7 +498,7 @@ msgctxt "lms"
 msgid "Call date"
 msgstr "Дата"
 
-#: apps/lms/models/call.py:19 apps/lms/models/lesson.py:60
+#: apps/lms/models/call.py:19 apps/lms/models/lesson.py:62
 msgctxt "lms"
 msgid "Call"
 msgstr "Созвон"
@@ -508,25 +516,25 @@ msgstr "Ссылка в свободной форме"
 msgid "Course links"
 msgstr "Ссылки в свободной форме"
 
-#: apps/lms/models/lesson.py:58
+#: apps/lms/models/lesson.py:60
 msgctxt "lms"
 msgid "Question"
 msgstr "Домашка"
 
-#: apps/lms/models/lesson.py:61 apps/lms/models/module.py:56
+#: apps/lms/models/lesson.py:63 apps/lms/models/module.py:56
 msgid "Hidden"
 msgstr "Скрыт"
 
-#: apps/lms/models/lesson.py:61 apps/lms/models/module.py:56
+#: apps/lms/models/lesson.py:63 apps/lms/models/module.py:56
 msgid "Users can't find such materials in the listing"
 msgstr "Студенты не видят"
 
-#: apps/lms/models/lesson.py:68
+#: apps/lms/models/lesson.py:70
 msgctxt "lms"
 msgid "Lesson"
 msgstr "Урок"
 
-#: apps/lms/models/lesson.py:69
+#: apps/lms/models/lesson.py:71
 msgctxt "lms"
 msgid "Lessons"
 msgstr "Уроки"
@@ -553,7 +561,11 @@ msgstr "Подзаг"
 msgid "Text"
 msgstr "Текст"
 
-#: apps/lms/models/module.py:66
+#: apps/lms/models/module.py:57
+msgid "Hidden from the admin, but still acessible by users"
+msgstr "В админке будет не видно, в LMS все будет по старому"
+
+#: apps/lms/models/module.py:67
 msgid "Modules"
 msgstr "Модули"
 
@@ -970,10 +982,10 @@ msgstr "Для писем"
 msgid "Name used for international purchases"
 msgstr "Название для международных покупок"
 
-#: apps/products/models/course.py:78 apps/products/models/legacy.py:10
-#: apps/products/models/legacy.py:24
-msgid "Analytical group"
-msgstr "Группа товаров (аналитика)"
+#: apps/products/models/course.py:78 apps/products/models/group.py:15
+#: apps/products/models/legacy.py:10 apps/products/models/legacy.py:24
+msgid "Product group"
+msgstr "Поток"
 
 #: apps/products/models/course.py:85
 msgid "Fixed promo code for tinkoff credit"
@@ -1065,10 +1077,6 @@ msgstr ""
 #: apps/products/models/group.py:12
 msgid "Evergreen"
 msgstr ""
-
-#: apps/products/models/group.py:15
-msgid "Product group"
-msgstr "Поток"
 
 #: apps/products/models/group.py:16
 msgid "Product groups"
@@ -1239,6 +1247,9 @@ msgstr "Нет"
 #: core/admin/video.py:11 core/admin/video.py:12
 msgid "Paste it from the address bar"
 msgstr "Скопируйте адрес из строки браузера"
+
+#~ msgid "Analytical group"
+#~ msgstr "Группа товаров (аналитика)"
 
 #~ msgid "Analytical groups"
 #~ msgstr "Группы товаров (аналитика)"
