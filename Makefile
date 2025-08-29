@@ -1,23 +1,23 @@
-manage = poetry run python src/manage.py
+manage = uv run python src/manage.py
 SIMULTANEOUS_TEST_JOBS=4
 
 compilemessages:
 	$(manage) compilemessages
 
 fmt:
-	poetry run ruff format src
-	poetry run ruff check src --fix --unsafe-fixes
-	poetry run toml-sort pyproject.toml
+	uv run ruff format src
+	uv run ruff check src --fix --unsafe-fixes
+	uv run toml-sort pyproject.toml
 
 lint:
-	poetry run ruff format --check src
-	poetry run ruff check src
-	poetry run mypy src
+	uv run ruff format --check src
+	uv run ruff check src
+	uv run mypy src
 	$(manage) makemigrations --check --no-input --dry-run
 	$(manage) check --fail-level WARNING
 	$(manage) spectacular --api-version v1 --fail-on-warn > /dev/null
-	poetry run toml-sort pyproject.toml --check
-	poetry run pymarkdown scan README.md
+	uv run toml-sort pyproject.toml --check
+	uv run pymarkdown scan README.md
 	@if command -v hadolint >/dev/null 2>&1; then \
 		echo Running hadolint...; \
 		hadolint Dockerfile; \
@@ -35,9 +35,9 @@ server: compilemessages
 	$(manage) runserver
 
 test:
-	cd src && poetry run pytest -n ${SIMULTANEOUS_TEST_JOBS} --create-db --cov-report=xml --cov=. --junit-xml=junit-multithread.xml -m 'not single_thread'
-	cd src && poetry run pytest --create-db --cov-report=xml --cov=. --cov-append --junit-xml=junit-singlethread.xml -m 'single_thread'
-	cd src && poetry run pytest --dead-fixtures
+	cd src && uv run pytest -n ${SIMULTANEOUS_TEST_JOBS} --create-db --cov-report=xml --cov=. --junit-xml=junit-multithread.xml -m 'not single_thread'
+	cd src && uv run pytest --create-db --cov-report=xml --cov=. --cov-append --junit-xml=junit-singlethread.xml -m 'single_thread'
+	cd src && uv run pytest --dead-fixtures
 
 worker:
-	poetry run celery --app core --workdir src worker --events --purge
+	uv run celery --app core --workdir src worker --events --purge
