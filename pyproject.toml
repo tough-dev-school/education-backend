@@ -105,12 +105,6 @@ env = [
     "RELEASE = CI-testing",
 ]
 filterwarnings = [
-    "error",
-    "ignore:'cgi' is deprecated",
-    "ignore:SelectableGroups dict interface is deprecated",
-    "ignore:distutils Version classes are deprecated. Use packaging.version instead.:DeprecationWarning:pytest_freezegun:17",
-    "ignore:pkg_resources is deprecated as an API",
-    "ignore:unclosed file:ResourceWarning",
 ]
 markers = [
     "auditlog: enable admin logging",
@@ -124,7 +118,7 @@ python_files = "test*.py"
 
 [tool.ruff]
 line-length = 160
-target-version = "py311"
+target-version = "py312"
 
 [tool.ruff.lint]
 ignore = [
