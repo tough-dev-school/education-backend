@@ -1,3 +1,4 @@
+import ssl
 from decimal import Decimal
 from urllib.parse import urljoin
 
@@ -59,6 +60,9 @@ class Dolyame(Bank):
 
     def post(self, method: str, payload: dict) -> dict:
         """Query Dolyame API"""
+        ssl_context = ssl.create_default_context()
+        ssl_context.load_cert_chain(certfile=settings.DOLYAME_CERTIFICATE_PATH)
+
         response = httpx.post(
             url=urljoin(self.base_url, method),
             json=payload,
@@ -66,7 +70,7 @@ class Dolyame(Bank):
             headers={
                 "X-Correlation-ID": self.idempotency_key,
             },
-            cert=settings.DOLYAME_CERTIFICATE_PATH,
+            verify=ssl_context,
         )
 
         if response.status_code != 200:
