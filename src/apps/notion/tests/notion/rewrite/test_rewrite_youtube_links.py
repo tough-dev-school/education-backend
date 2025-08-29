@@ -5,6 +5,7 @@ from apps.notion.rewrite import rewrite_youtube_links
 
 pytestmark = [
     pytest.mark.django_db,
+    pytest.mark.single_thread,
 ]
 
 

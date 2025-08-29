@@ -48,7 +48,7 @@ dependencies = [
 description = ""
 name = "education-backend"
 readme = "README.md"
-requires-python = "~=3.12.0"
+requires-python = "~=3.13.0"
 version = "2025.08.29"
 
 [project.optional-dependencies]
@@ -118,7 +118,7 @@ python_files = "test*.py"
 
 [tool.ruff]
 line-length = 160
-target-version = "py312"
+target-version = "py313"
 
 [tool.ruff.lint]
 ignore = [

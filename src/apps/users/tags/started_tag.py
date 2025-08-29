@@ -26,7 +26,7 @@ class StartedTag(TagMechanism):
 
         return Course.objects.filter(pk__in=started_courses.difference(purchased_courses)).exclude(group__in=groups_with_purchased_courses)
 
-    def generate_slugs(self, non_paid_courses: QuerySet[Course]) -> Generator[str, None, None]:
+    def generate_slugs(self, non_paid_courses: QuerySet[Course]) -> Generator[str]:
         for course in non_paid_courses:
             yield course.slug
 
