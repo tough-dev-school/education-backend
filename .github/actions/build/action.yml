@@ -5,29 +5,27 @@ runs:
   using: composite
 
   steps:
+    - name: Restore UV venv cache
+      id: deps-cache
+      uses: actions/cache@v4
+      with:
+        path: .venv
+        key: deps-${{ hashFiles('uv.lock') }}
+
     - name: Install uv
       uses: astral-sh/setup-uv@v6
       with:
         enable-cache: true
-
-    - name: Format dependecies for not yet updated actions/setup-python
-      run: uv export --extra=dev -o requirements.txt
-      shell: bash
-
-    - name: Install python
-      id: setup-python
-      uses: actions/setup-python@v5
-      with:
-        cache: 'pip'
-        python-version-file: 'pyproject.toml'
-
-    - name: Save python version to the env
-      run: echo "python-version=${{ steps.setup-python.outputs.python-version }}" >> $GITHUB_ENV
-      shell: bash
+        activate-environment: true
 
     - name: Install deps
-      if: steps.setup-python.outputs.cache-hit != 'true'
-      run: poetry install --no-interaction --no-root
+      if: steps.deps-cache.outputs.cache-hit != 'true'
+      run:
+        uv sync --extra=dev
+      shell: bash
+
+    - name: Save python version to the env
+      run: echo "python-version=3.13.7" >> $GITHUB_ENV
       shell: bash
 
     - name: Restore default environment
