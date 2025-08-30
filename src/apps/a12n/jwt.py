@@ -1,19 +1,32 @@
+from datetime import UTC, datetime
+
 import jwt
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from drf_spectacular.contrib.rest_framework_jwt import JWTScheme
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.request import Request
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-from rest_framework_jwt.utils import jwt_create_payload
 
 from apps.a12n.models import JWTBlacklist
 from apps.users.models import User
 
 
-def payload_handler(user: User) -> dict:
-    """Add app-wide payload to generated JWT's"""
+def create_jwt_payload(user: User) -> dict:
+    """App-wide JWT payload.
+
+    original function is at https://github.com/Styria-Digital/django-rest-framework-jwt/blob/master/src/rest_framework_jwt/utils.py#L59
+    """
+
+    issued_at = datetime.now(tz=UTC)
+
     return {
-        **jwt_create_payload(user),
+        "username": user.get_username(),
+        "iat": issued_at.timestamp(),
+        "exp": issued_at + settings.JWT_AUTH["JWT_EXPIRATION_DELTA"],
+        "orig_iat": issued_at.timestamp(),
+        "iss": settings.JWT_AUTH["JWT_ISSUER"],
+        "user_id": user.pk,
         "user_public_id": user.uuid,
     }
 

@@ -15,17 +15,12 @@ RUN wget --progress=dot:giga -O uwsgi-${_UWSGI_VERSION}.tar.gz https://github.co
 #
 # Build poetry and export compiled dependecines as plain requirements.txt
 #
-FROM python:${PYTHON_VERSION}-slim-bookworm AS deps-compile
+FROM ghcr.io/astral-sh/uv:0.8.14-alpine AS deps-compile
 
 WORKDIR /
-COPY poetry.lock pyproject.toml /
+COPY uv.lock pyproject.toml /
 
-# Version is taken from poetry.lock, assuming it is generated with up-to-date version of poetry
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN pip install --no-cache-dir poetry==$(cat poetry.lock |head -n1|awk -v FS='(Poetry |and)' '{print $2}') \
-  && poetry self add poetry-plugin-export \
-  && poetry export --format=requirements.txt --without-hashes -o requirements.txt
-
+RUN uv export -o /requirements.txt
 
 #
 # Base image with django dependecines
@@ -43,7 +38,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 COPY --from=uwsgi-compile /uwsgi /usr/local/bin/
-RUN pip install --no-cache-dir --upgrade pip==24.2
+RUN pip install --no-cache-dir --upgrade pip==25.2
 COPY --from=deps-compile /requirements.txt /
 RUN pip install --no-cache-dir --root-user-action=ignore -r /requirements.txt
 

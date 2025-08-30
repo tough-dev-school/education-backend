@@ -21,7 +21,7 @@ class PurchasedTag(TagMechanism):
 
         return Course.objects.filter(pk__in=purchased_courses)
 
-    def generate_slugs(self, non_paid_courses: QuerySet[Course]) -> Generator[str, None, None]:
+    def generate_slugs(self, non_paid_courses: QuerySet[Course]) -> Generator[str]:
         for course in non_paid_courses:
             yield course.slug
 

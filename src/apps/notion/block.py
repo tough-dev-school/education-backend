@@ -139,7 +139,7 @@ class NotionBlockList(UserList[NotionBlock]):
         except KeyError:
             return False
 
-    def blocks_with_underliying_blocks(self) -> Generator[NotionBlock, None, None]:
+    def blocks_with_underliying_blocks(self) -> Generator[NotionBlock]:
         """List of non-page blocks that have other blocks in it"""
         for block in self.data:
             if block.type != "page":

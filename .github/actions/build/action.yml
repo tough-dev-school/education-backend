@@ -1,40 +1,31 @@
+---
 name: build
 
 runs:
   using: composite
 
   steps:
-    - name: Load cached poetry installation
-      id: cached-poetry
+    - name: Restore UV venv cache
+      id: deps-cache
       uses: actions/cache@v4
       with:
-        path: ~/.local
-        key: poetry-v2-${{ hashFiles('pyproject.toml') }}
+        path: .venv
+        key: deps-${{ hashFiles('uv.lock') }}
 
-    - name: Install poetry
-      if: steps.cached-poetry.outputs.cache-hit != 'true'
-      uses: snok/install-poetry@v1
+    - name: Install uv
+      uses: astral-sh/setup-uv@v6
       with:
-        version: 2.1.1
+        enable-cache: true
+        activate-environment: true
 
-    - name: Install python
-      id: setup-python
-      uses: actions/setup-python@v5
-      with:
-        cache: 'poetry'
-        python-version-file: 'pyproject.toml'
-
-    - name: Make sure poetry lockfile is up to date
-      run: poetry check --lock && echo Lockfile is ok, $(poetry --version)
+    - name: Install deps
+      if: steps.deps-cache.outputs.cache-hit != 'true'
+      run:
+        uv sync --extra=dev
       shell: bash
 
     - name: Save python version to the env
-      run: echo "python-version=${{ steps.setup-python.outputs.python-version }}" >> $GITHUB_ENV
-      shell: bash
-
-    - name: Install deps
-      if: steps.setup-python.outputs.cache-hit != 'true'
-      run: poetry install --no-interaction --no-root
+      run: echo python-version=$(uv run python --version|awk '{print $2}') >> $GITHUB_ENV
       shell: bash
 
     - name: Restore default environment
