@@ -9,21 +9,34 @@ fmt:
 	uv run ruff check src --fix --unsafe-fixes
 	uv run toml-sort pyproject.toml
 
-lint:
+lint: lint-sources lint-dockerfile lint-yaml
+	uv run toml-sort pyproject.toml --check
+	uv run pymarkdown scan README.md
+
+lint-sources:
 	uv run ruff format --check src
 	uv run ruff check src
 	uv run mypy src
 	$(manage) makemigrations --check --no-input --dry-run
 	$(manage) check --fail-level WARNING
 	$(manage) spectacular --api-version v1 --fail-on-warn > /dev/null
-	uv run toml-sort pyproject.toml --check
-	uv run pymarkdown scan README.md
+
+lint-dockerfile:
 	@if command -v hadolint >/dev/null 2>&1; then \
 		echo Running hadolint...; \
 		hadolint Dockerfile; \
 	else \
 		echo "hadolint not found, skipping Dockerfile linting"; \
 	fi
+
+lint-yaml:
+	@if command -v yamllint >/dev/null 2>&1; then \
+		echo Running yamllint...; \
+		yamllint .; \
+	else \
+		echo "yamllint not found, skipping YAML files linting"; \
+	fi
+
 
 messages: compilemessages
 	$(manage) makemessages --locale ru
