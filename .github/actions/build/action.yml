@@ -25,7 +25,7 @@ runs:
       shell: bash
 
     - name: Save python version to the env
-      run: echo "python-version=3.13.7" >> $GITHUB_ENV
+      run: echo python-version=$(uv run python --version|awk '{print $2}') >> $GITHUB_ENV
       shell: bash
 
     - name: Restore default environment
