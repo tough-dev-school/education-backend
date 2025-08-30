@@ -1,32 +1,25 @@
+---
 name: build
 
 runs:
   using: composite
 
   steps:
-    - name: Load cached poetry installation
-      id: cached-poetry
-      uses: actions/cache@v4
+    - name: Install uv
+      uses: astral-sh/setup-uv@v6
       with:
-        path: ~/.local
-        key: poetry-v2-${{ hashFiles('pyproject.toml') }}
+        enable-cache: true
 
-    - name: Install poetry
-      if: steps.cached-poetry.outputs.cache-hit != 'true'
-      uses: snok/install-poetry@v1
-      with:
-        version: 2.1.1
+    - name: Format dependecies for not yet updated actions/setup-python
+      run: uv export --extra=dev -o requirements.txt
+      shell: bash
 
     - name: Install python
       id: setup-python
       uses: actions/setup-python@v5
       with:
-        cache: 'poetry'
+        cache: 'pip'
         python-version-file: 'pyproject.toml'
-
-    - name: Make sure poetry lockfile is up to date
-      run: poetry check --lock && echo Lockfile is ok, $(poetry --version)
-      shell: bash
 
     - name: Save python version to the env
       run: echo "python-version=${{ steps.setup-python.outputs.python-version }}" >> $GITHUB_ENV
