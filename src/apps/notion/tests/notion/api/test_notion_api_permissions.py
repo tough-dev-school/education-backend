@@ -115,7 +115,7 @@ def test_ok_for_superuser(api):
 def test_ok_for_user_with_permissions(api):
     api.user.add_perm("notion.material.see_all_materials")
 
-    api.get("/api/v2/materials/0e5693d2173a4f77ae8106813b6e5329/", expected_status_code=200)
+    api.get("/api/v2/materials/0e5693d2173a4f77ae8106813b6e5329/", expected_status_code=200)  # fetching material (its is an autoused fixture)
 
 
 @pytest.mark.usefixtures("unpaid_order")
@@ -124,3 +124,19 @@ def test_superusers_do_not_fail_when_two_materials_with_the_same_id_are_present(
     mixer.cycle(2).blend("notion.Material", page_id="0e5693d2173a4f77ae8106813b6e5329")
 
     api.get("/api/v2/materials/0e5693d2173a4f77ae8106813b6e5329/", expected_status_code=200)
+
+
+def test_sql_does_not_fail_for_users_that_purchased_two_courses(api, factory, another_course):
+    """Test for a bug in the raw SQL, glitchtip id EDUCATION-BACKEND-8R"""
+    factory.order(user=api.user, item=another_course, is_paid=True)
+
+    api.get("/api/v2/materials/0e5693d2173a4f77ae8106813b6e5329/", expected_status_code=200)  # fetching material (its is an autoused fixture)
+
+
+def test_users_that_purchased_to_courses_have_access_to_both_materials(api, factory, another_course, mixer, material):
+    """Continuing the previous test to make sure users that purchased two or more courses have access to their materials"""
+    factory.order(user=api.user, item=another_course, is_paid=True)
+    another_material = mixer.blend("notion.Material", course=another_course)
+
+    api.get(f"/api/v2/materials/{material.slug}/", expected_status_code=200)  # material from the course purchased in fixtures
+    api.get(f"/api/v2/materials/{another_material.slug}/", expected_status_code=200)  # material from the course purchased here
