@@ -44,15 +44,15 @@ jobs:
     runs-on: ${{ contains(github.triggering_actor, '[bot]') && 'ubuntu-24.04' || 'ubuntu-8x' }}
     services:
       postgres:
-        image: postgres:15-alpine
+        image: bitnami/postgres:15-debian-12
         env:
           POSTGRES_PASSWORD: secret
+          POSTGRESQL_FSYNC: off
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-          -c fsync=off
         ports:
           - 5432:5432
       redis:
