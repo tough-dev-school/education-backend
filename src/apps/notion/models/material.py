@@ -21,9 +21,9 @@ class MaterialQuerySet(QuerySet):
         return self.filter(active=True)
 
     def for_student(self, student: User) -> QuerySet["Material"]:
-        available_courses = apps.get_model("studying.Study").objects.filter(student=student).values_list("course", flat=True)
+        available_course_ids = list(apps.get_model("studying.Study").objects.filter(student=student).values_list("course", flat=True))
 
-        if not len(available_courses):
+        if len(available_course_ids) == 0:
             return Material.objects.none()
 
         # Didn't want to use django-tree-queries as we do in the homework app, cuz after time
@@ -35,7 +35,7 @@ class MaterialQuerySet(QuerySet):
                 WITH RECURSIVE accessible_pages AS (
                     -- Base case: directly accessible page IDs from available courses
                     SELECT page_id FROM {apps.get_model("notion.material")._meta.db_table}
-                    WHERE active = TRUE AND course_id IN (%s)
+                    WHERE active = TRUE AND course_id = ANY(%s)
 
                     UNION
 
@@ -46,7 +46,7 @@ class MaterialQuerySet(QuerySet):
                 )
                 SELECT page_id FROM accessible_pages
             """,
-                list(available_courses),
+                [available_course_ids],
             )
         )
 
