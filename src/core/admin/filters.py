@@ -52,7 +52,21 @@ class DefaultFalseBooleanFilter(BooleanFilter):
         return self.t(request, queryset)  # type: ignore
 
 
+class ArchivedFilter(DefaultFalseBooleanFilter):
+    """Hides archived models by default"""
+
+    title = _("Archived")
+    parameter_name = "archived"
+
+    def t(self, request: HttpRequest, queryset: QuerySet) -> QuerySet:
+        return queryset.filter(archived=True)
+
+    def f(self, request: HttpRequest, queryset: QuerySet) -> QuerySet:
+        return queryset.filter(archived=False)
+
+
 __all__ = [
+    "ArchivedFilter",
     "BooleanFilter",
     "DefaultTrueBooleanFilter",
 ]

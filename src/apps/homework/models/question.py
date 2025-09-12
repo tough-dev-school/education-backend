@@ -95,6 +95,7 @@ class Question(TimestampedModel):
     text = models.TextField()
 
     deadline = models.DateTimeField(_("Deadline"), null=True, blank=True)
+    archived = models.BooleanField(_("Archived"), default=False, help_text=_("Hidden from the admin, but still acessible by users"), db_index=True)
 
     _legacy_courses = ArrayField(models.PositiveIntegerField(), blank=True, null=True)
 

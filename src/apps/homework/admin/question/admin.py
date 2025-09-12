@@ -10,6 +10,8 @@ from apps.homework.admin.question.form import QuestionForm
 from apps.homework.models import Question
 from apps.products.models import Course
 from core.admin import ModelAdmin, admin
+from core.admin.actions import archive
+from core.admin.filters import ArchivedFilter
 
 
 @admin.register(Question)
@@ -20,6 +22,7 @@ class QuestionAdmin(ModelAdmin):
         "tariff",
     ]
     list_filter = [
+        ArchivedFilter,
         "lesson__module__course__group",
     ]
     fields = [
@@ -31,6 +34,8 @@ class QuestionAdmin(ModelAdmin):
     ]
     actions = [
         "dispatch_crosscheck",
+        archive.archive,
+        archive.unarchive,
     ]
     save_as = True
     form = QuestionForm
