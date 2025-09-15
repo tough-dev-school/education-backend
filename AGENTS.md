@@ -2,17 +2,18 @@
 
 ## Development cycle
 - Before writing any code, come up with a good plan, review the plan, and then ask the user for permission to execute the plan.
+- Ignore all typing errors until the code is valid
 
 ## Build/Test Commands
-- Use poetry for package management and running commands
+- Use uv for package management and running commands
 - `make fmt` - Format the code using ruff
-- `make lint` - Run all linters (django migrations check, ruff, mypy, etc.)
+- `make lint` - Run all linters (ignore mypy errors)
 - `make test` - Run all tests with coverage
-- Run a single test: `cd src && poetry run python -m pytest path/to/test_file.py::test_function -v`
-- Run tests matching pattern: `cd src && poetry run python -m pytest -k "pattern" -v`
+- Run a single test: `cd src && uv run python -m pytest path/to/test_file.py::test_function -v`
+- Run tests matching pattern: `cd src && uv run python -m pytest -k "pattern" -v`
 - Run server: `make server`
 - Run worker: `make worker`
-- Run django manage command: `cd src && poetry run python manage.py`
+- Run django manage command: `cd src && uv run python manage.py`
 - Do not run tests or make commits until i ask explicitly
 
 
