@@ -34,7 +34,7 @@ jobs:
         ports:
           - 5432:5432
       redis:
-        image: redis:6.2.10-alpine
+        image: redis:6.2.19-alpine
         ports:
           - 6379:6379
 
