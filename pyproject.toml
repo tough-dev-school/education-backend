@@ -126,7 +126,7 @@ ignore = [
     "A002",  # argument `{}` is shadowing a Python builtin
     "A003",  # class attribute `{}` is shadowing a Python builtin
     "A005",  # Module `{}` shadows a Python standard-library module
-    "ANN401",  # dynamically typed expressions (typing.Any) are disallowed in `{}`
+    "ANN",  # let mypy handle it
     "ARG002",  # unused method argument: `{}`
     "ARG005",  # unused lambda argument: `{}`
     "B018",  # found useless expression. Either assign it to a variable or remove it

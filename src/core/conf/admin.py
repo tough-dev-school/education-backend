@@ -2,6 +2,7 @@ ADMIN_APP_ORDER = (
     "orders",
     "notion",
     "lms",
+    "homework",
     "chains",
     "products",
     "b2b",
