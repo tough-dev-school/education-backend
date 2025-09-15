@@ -2,7 +2,9 @@
   "extends": [
     "config:base"
   ],
-  "enabledManagers": ["poetry"],
+  "lockFileMaintenance": {
+    "enabled": true
+  },
   "ignoreDeps": ["boto3", "boto3-stubs", "botocore", "botocore-stubs", "s3transfer"],
   "packageRules": [
     {
