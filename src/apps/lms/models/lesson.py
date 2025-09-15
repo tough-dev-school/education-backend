@@ -40,9 +40,7 @@ class LessonQuerySet(QuerySet):
         )
 
     def for_admin(self) -> "LessonQuerySet":
-        return self.exclude(
-            module__archived=True,
-        ).select_related(
+        return self.select_related(
             "module",
             "module__course",
             "module__course__group",
@@ -71,14 +69,16 @@ class Lesson(TimestampedModel):
         verbose_name_plural = pgettext_lazy("lms", "Lessons")
 
     def __str__(self) -> str:
+        archived = "" if not self.is_archived() else "[archived] "
+
         if self.material_id is not None:
-            return str(self.material)
+            return f"{archived} {self.material}"
 
         if self.question_id is not None:
-            return str(self.question)
+            return f"{archived} {self.question}"
 
         if self.call_id is not None:
-            return str(self.call)
+            return f"{archived} {self.call}"
 
         return "—"
 
@@ -88,3 +88,12 @@ class Lesson(TimestampedModel):
             count += answer.get_limited_comments_for_user_by_crosschecks(user).count()
 
         return count
+
+    def is_archived(self) -> bool:
+        if self.module.archived is True:
+            return True
+
+        if self.question is not None and self.question.archived is True:  # NOQA: SIM103
+            return True
+
+        return False
