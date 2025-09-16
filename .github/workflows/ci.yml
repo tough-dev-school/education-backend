@@ -190,7 +190,7 @@ jobs:
           string: ${{ github.repository_owner }}
 
       - name: Update backend image
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: circle
@@ -201,7 +201,7 @@ jobs:
             docker service update app_backend --replicas 2 -d
 
       - name: Update celery worker image
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: circle
@@ -209,7 +209,7 @@ jobs:
           script: docker service update app_worker --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }} --with-registry-auth
 
       - name: Update amocrm worker image
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: circle
@@ -217,7 +217,7 @@ jobs:
           script: docker service update app_amocrm-worker --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }} --with-registry-auth
 
       - name: Update notion worker image
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: circle
@@ -225,7 +225,7 @@ jobs:
           script: docker service update app_notion-worker --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }} --with-registry-auth
 
       - name: Update celery scheduler image
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: circle
