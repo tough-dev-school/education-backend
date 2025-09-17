@@ -73,7 +73,7 @@ class Course(TimestampedModel):
         max_length=255,
         help_text="Билет на мастер-класс о TDD или «запись курсов кройки и шитья»",
     )
-    name_international = models.CharField(_("Name used for international purchases"), max_length=255, blank=True, default="")
+    name_international = models.CharField(_("Name used for international purchases"), max_length=255)
 
     group = models.ForeignKey("products.Group", verbose_name=_("Product group"), on_delete=models.PROTECT)
     slug = models.SlugField(unique=True)
