@@ -174,7 +174,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Draft sentry release
-        uses: getsentry/action-release@v1
+        uses: getsentry/action-release@v3
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
@@ -234,7 +234,7 @@ jobs:
             docker service update app_scheduler --detach --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:${{ github.sha }} --with-registry-auth
 
       - name: Finalize sentry release
-        uses: getsentry/action-release@v1
+        uses: getsentry/action-release@v3
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
