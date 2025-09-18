@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-24.04
     services:
       postgres:
-        image: postgres:13.22-alpine
+        image: postgres:17.6-alpine
         env:
           POSTGRES_PASSWORD: secret
         options: >-

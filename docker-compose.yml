@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:15-alpine
+    image: postgres:17-alpine
     # contact us to gain access to the anonymized dump
     # image: ghcr.io/tough-dev-school/dev-db
     environment:

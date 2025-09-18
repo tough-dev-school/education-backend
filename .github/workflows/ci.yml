@@ -44,7 +44,7 @@ jobs:
     runs-on: ${{ contains(github.triggering_actor, '[bot]') && 'ubuntu-24.04' || 'ubuntu-8x' }}
     services:
       postgres:
-        image: postgres:15-alpine
+        image: postgres:17-alpine
         env:
           POSTGRES_PASSWORD: secret
         options: >-
