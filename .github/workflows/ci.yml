@@ -82,7 +82,7 @@ jobs:
         run: make test -e SIMULTANEOUS_TEST_JOBS=${{ steps.cpu-cores.outputs.count }}
 
       - name: Publish test results
-        uses: phoenix-actions/test-reporting@v13
+        uses: phoenix-actions/test-reporting@v15
         if: ${{ !contains(github.triggering_actor, '[bot]') && github.event.pull_request.head.repo.full_name == github.repository }}
         with:
           name: Test results
