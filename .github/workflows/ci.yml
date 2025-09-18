@@ -175,7 +175,7 @@ jobs:
 
       - name: Read image identifiers
         id: image
-        uses: ASzc/change-string-case-action@v5
+        uses: ASzc/change-string-case-action@v6
         with:
           string: ${{ github.repository_owner }}
 
