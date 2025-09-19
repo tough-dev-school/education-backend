@@ -645,18 +645,17 @@ wheels = [
 
 [[package]]
 name = "django-stubs"
-version = "4.2.7"
+version = "5.2.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django" },
     { name = "django-stubs-ext" },
-    { name = "types-pytz" },
     { name = "types-pyyaml" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1c/1f/1b1da357d37cbbf21496c17aad5a55416c7c37944a909c4a19ddd61994df/django-stubs-4.2.7.tar.gz", hash = "sha256:8ccd2ff4ee5adf22b9e3b7b1a516d2e1c2191e9d94e672c35cc2bc3dd61e0f6b", size = 258590, upload-time = "2023-12-05T19:02:28.493Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e1/8e/286150f593481c33f54d14efb58d72178f159d57d31043529d38bbc98e2f/django_stubs-5.2.5.tar.gz", hash = "sha256:fc78384e28d8c5292d60983075a5934f644f7c304c25ae2793fc57aa66d5018b", size = 247794, upload-time = "2025-09-12T19:29:49.636Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/31/33/a4024662b31999841bc18ef845a790f6b6a9ad50f5b2aceb029896612d17/django_stubs-4.2.7-py3-none-any.whl", hash = "sha256:4cf4de258fa71adc6f2799e983091b9d46cfc67c6eebc68fe111218c9a62b3b8", size = 456669, upload-time = "2023-12-05T19:02:25.29Z" },
+    { url = "https://files.pythonhosted.org/packages/2f/02/cdbf7652ef2c9a7a1fed7c279484b7f3806f15b1bb34aec9fef8e8cfacbf/django_stubs-5.2.5-py3-none-any.whl", hash = "sha256:223c1a3324cd4873b7629dec6e9adbe224a94508284c1926b25fddff7a92252b", size = 490196, upload-time = "2025-09-12T19:29:47.954Z" },
 ]
 
 [[package]]
@@ -866,7 +865,7 @@ requires-dist = [
     { name = "django-silk", specifier = ">=5.3.2,<6.0.0" },
     { name = "django-split-settings", specifier = ">=1.2.0,<2.0.0" },
     { name = "django-storages", specifier = ">=1.14,<2.0" },
-    { name = "django-stubs", marker = "extra == 'dev'", specifier = ">=4.2.6,<5.0.0" },
+    { name = "django-stubs", marker = "extra == 'dev'", specifier = ">=5.2.5,<5.3.0" },
     { name = "django-tree-queries", specifier = ">=0.20.0,<1.0.0" },
     { name = "djangorestframework", specifier = ">=3.14.0,<4.0.0" },
     { name = "djangorestframework-stubs", marker = "extra == 'dev'", specifier = ">=3.14.4,<4.0.0" },
