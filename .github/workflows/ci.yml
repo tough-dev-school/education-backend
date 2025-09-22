@@ -28,7 +28,7 @@ jobs:
         run: make lint
 
       - name: Lint the Dockerfile
-        uses: hadolint/hadolint-action@v3.1.0
+        uses: hadolint/hadolint-action@v3.3.0
 
       - name: Install xmllint
         uses: awalsh128/cache-apt-pkgs-action@v1
@@ -55,7 +55,7 @@ jobs:
         ports:
           - 5432:5432
       redis:
-        image: redis:6.2.10-alpine
+        image: redis:6.2.19-alpine
         ports:
           - 6379:6379
 
@@ -82,7 +82,7 @@ jobs:
         run: make test -e SIMULTANEOUS_TEST_JOBS=${{ steps.cpu-cores.outputs.count }}
 
       - name: Publish test results
-        uses: phoenix-actions/test-reporting@v13
+        uses: phoenix-actions/test-reporting@v15
         if: ${{ !contains(github.triggering_actor, '[bot]') && github.event.pull_request.head.repo.full_name == github.repository }}
         with:
           name: Test results
@@ -173,24 +173,14 @@ jobs:
       - name: checkout
         uses: actions/checkout@v5
 
-      - name: Draft sentry release
-        uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-        with:
-          environment: production
-          finalize: false
-
       - name: Read image identifiers
         id: image
-        uses: ASzc/change-string-case-action@v5
+        uses: ASzc/change-string-case-action@v6
         with:
           string: ${{ github.repository_owner }}
 
       - name: Update backend image
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: circle
@@ -201,7 +191,7 @@ jobs:
             docker service update app_backend --replicas 2 -d
 
       - name: Update celery worker image
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: circle
@@ -209,7 +199,7 @@ jobs:
           script: docker service update app_worker --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }} --with-registry-auth
 
       - name: Update amocrm worker image
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: circle
@@ -217,7 +207,7 @@ jobs:
           script: docker service update app_amocrm-worker --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }} --with-registry-auth
 
       - name: Update notion worker image
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: circle
@@ -225,20 +215,10 @@ jobs:
           script: docker service update app_notion-worker --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-worker:${{ github.sha }} --with-registry-auth
 
       - name: Update celery scheduler image
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: circle
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
             docker service update app_scheduler --detach --image ghcr.io/${{ steps.image.outputs.lowercase }}/monolith-scheduler:${{ github.sha }} --with-registry-auth
-
-      - name: Finalize sentry release
-        uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-        with:
-          environment: production
-          finalize: true

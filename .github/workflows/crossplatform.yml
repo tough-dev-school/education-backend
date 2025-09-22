@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: build
         uses: ./.github/actions/build
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-24.04
     services:
       postgres:
-        image: postgres:13.9-alpine
+        image: postgres:13.22-alpine
         env:
           POSTGRES_PASSWORD: secret
         options: >-
@@ -34,13 +34,13 @@ jobs:
         ports:
           - 5432:5432
       redis:
-        image: redis:6.2.10-alpine
+        image: redis:6.2.19-alpine
         ports:
           - 6379:6379
 
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: build
         uses: ./.github/actions/build
@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: build
         uses: ./.github/actions/build
