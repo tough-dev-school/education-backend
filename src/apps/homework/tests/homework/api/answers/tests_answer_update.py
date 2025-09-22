@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta, timezone
 
 import pytest
+from django.contrib.admin.models import CHANGE, LogEntry
+from django.contrib.contenttypes.models import ContentType
 
 from apps.homework.models import Answer
 
@@ -51,6 +53,24 @@ def test_changing_json(api, answer):
     assert answer.content == JSON
     assert answer.text == "Горите в аду (отредактировано в 08:30)"
     assert answer.modified == datetime(2032, 12, 1, 15, 30, 12, tzinfo=timezone(timedelta(hours=3)))  # modified time updated
+
+
+@pytest.mark.auditlog
+@pytest.mark.usefixtures("_set_current_user")
+def test_auditlog(api, answer):
+    api.patch(f"/api/v2/homework/answers/{answer.slug}/", {"content": JSON})
+
+    log = LogEntry.objects.filter(
+        content_type=ContentType.objects.get_for_model(answer).id,
+    ).last()
+
+    assert log.action_flag == CHANGE
+    assert log.user == api.user
+    assert log.object_id == str(answer.id)
+
+    assert "Answer content updated" in log.change_message
+    assert "Пыщ" in log.change_message, "Previous content is saved"
+    assert "в аду" in log.change_message, "New content is saved"
 
 
 def test_no_json(api, answer):
