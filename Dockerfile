@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.11
+ARG PYTHON_VERSION=3.13
 
 #
 # Compile custom uwsgi, cuz debian's one is weird
