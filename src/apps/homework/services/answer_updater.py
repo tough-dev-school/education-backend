@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from core.prosemirror import prosemirror_to_text
 
 from django.db import transaction
 
@@ -13,10 +14,12 @@ class AnswerUpdater(BaseService):
 
     @transaction.atomic
     def act(self) -> Answer:
-        self.update_content()
+        self.update()
 
         return self.answer
 
-    def update_content(self) -> None:
+    def update(self) -> None:
         self.answer.content = self.content
-        self.answer.save(update_fields=["content", "modified"])
+        self.answer.text = prosemirror_to_text(self.content)
+
+        self.answer.save(update_fields=["content", "text", "modified"])

@@ -49,6 +49,7 @@ def test_changing_json(api, answer):
     answer.refresh_from_db()
 
     assert answer.content == JSON
+    assert answer.text == "Горите в аду (отредактировано в 08:30)"
     assert answer.modified == datetime(2032, 12, 1, 15, 30, 12, tzinfo=timezone(timedelta(hours=3)))  # modified time updated
 
 
