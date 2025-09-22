@@ -19,10 +19,10 @@ class AnswerUpdater(BaseService):
 
     @transaction.atomic
     def act(self) -> Answer:
-        previos_content = self.answer.content
+        previous_content = self.answer.content
 
         self.update()
-        self.write_auditlog(previos_content=previos_content)
+        self.write_auditlog(previous_content=previous_content)
         return self.answer
 
     def update(self) -> None:
@@ -30,8 +30,8 @@ class AnswerUpdater(BaseService):
         self.answer.text = prosemirror_to_text(self.content)
         self.answer.save(update_fields=["content", "text", "modified"])
 
-    def write_auditlog(self, previos_content: dict) -> None:
-        previos = json.dumps(previos_content, ensure_ascii=False)
+    def write_auditlog(self, previous_content: dict) -> None:
+        previous = json.dumps(previous_content, ensure_ascii=False)
         current = json.dumps(self.answer.content, ensure_ascii=False)
 
         user = get_current_user()
@@ -41,7 +41,7 @@ class AnswerUpdater(BaseService):
         write_admin_log.delay(
             action_flag=CHANGE,
             app="homework",
-            change_message=f"Answer content updated. Previous: {previos}. Current: {current}.",
+            change_message=f"Answer content updated. Previous: {previous}. Current: {current}.",
             model="Answer",
             object_id=self.answer.id,
             user_id=user.id,
