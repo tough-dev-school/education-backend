@@ -139,7 +139,7 @@ def test_request_fail(respx_mock, method):
     getattr(respx_mock, method)(url="https://test.amocrm.ru/api/v4/companies").respond(status_code=210)
     request = getattr(http, method)
 
-    with pytest.raises(AmoCRMClientException, match="Non-ok HTTP response from apps.amocrm: 210"):
+    with pytest.raises(AmoCRMClientException, match=r"Non-ok HTTP response from apps.amocrm: 210"):
         request("api/v4/companies", {})
 
 
@@ -148,7 +148,7 @@ def test_request_fail_with_body(respx_mock, method):
     getattr(respx_mock, method)(url="https://test.amocrm.ru/api/v4/companies").respond(status_code=210, json={"info": "damn we lost"})
     request = getattr(http, method)
 
-    with pytest.raises(AmoCRMClientException, match="Non-ok HTTP response from apps.amocrm: 210\nResponse data: {'info': 'damn we lost'}"):
+    with pytest.raises(AmoCRMClientException, match=r"Non-ok HTTP response from apps.amocrm: 210\nResponse data: {'info': 'damn we lost'}"):
         request("api/v4/companies", {})
 
 
@@ -157,5 +157,5 @@ def test_request_fail_because_of_errors_in_response(respx_mock, method):
     getattr(respx_mock, method)(url="https://test.amocrm.ru/api/v4/companies").respond(json={"_embedded": {"errors": [["All my life is an error"]]}})
     request = getattr(http, method)
 
-    with pytest.raises(AmoCRMClientException, match="Errors in response to https://test.amocrm.ru/api/v4/companies:"):
+    with pytest.raises(AmoCRMClientException, match=r"Errors in response to https://test.amocrm.ru/api/v4/companies:"):
         request("api/v4/companies", {})
