@@ -26,9 +26,7 @@ from apps.homework.api.serializers import (
 from apps.homework.models import Answer
 from apps.homework.models.answer import AnswerQuerySet
 from apps.homework.models.reaction import Reaction
-from apps.homework.services import ReactionCreator
-from apps.homework.services.answer_creator import AnswerCreator
-from apps.homework.services.answer_remover import AnswerRemover
+from apps.homework.services import AnswerCreator, AnswerRemover, AnswerUpdater, ReactionCreator
 from apps.users.models import User
 from core.api.mixins import DisablePaginationWithQueryParamMixin
 from core.viewsets import AppViewSet, CreateDeleteAppViewSet
@@ -87,20 +85,26 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     @extend_schema(request=AnswerUpdateSerializer, responses=AnswerTreeSerializer)
     def update(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         """Update answer text"""
+
         if not kwargs.get("partial", False):
             raise MethodNotAllowed("Please use patch")
 
-        response = super().update(request, *args, **kwargs)
+        AnswerUpdateSerializer(data=request.data).is_valid(raise_exception=True)
 
         answer = self.get_object()
-        answer.refresh_from_db()
-        Serializer = self.get_serializer_class(action="retrieve")
-        response.data = Serializer(
-            answer,
-            context=self.get_serializer_context(),
-        ).data
+        answer = AnswerUpdater(
+            answer=self.get_object(),
+            content=request.data["content"],
+        )()
 
-        return response
+        Serializer = self.get_serializer_class(action="retrieve")
+        return Response(
+            Serializer(
+                answer,
+                context=self.get_serializer_context(),
+            ).data,
+            status=200,
+        )
 
     def destroy(self, request: Request, *args: Any, **kwargs: dict[str, Any]) -> Response:
         """Remove an answer if allowed"""
