@@ -43,15 +43,6 @@ def answer(answer, another_answer):
     return answer
 
 
-def test_changing_text(api, answer):
-    api.patch(f"/api/v2/homework/answers/{answer.slug}/", {"text": "*patched*"})
-
-    answer.refresh_from_db()
-
-    assert answer.text == "*patched*"
-    assert answer.modified == datetime(2032, 12, 1, 15, 30, 12, tzinfo=timezone(timedelta(hours=3)))  # modified time updated
-
-
 def test_changing_json(api, answer):
     api.patch(f"/api/v2/homework/answers/{answer.slug}/", {"content": JSON})
 
@@ -61,7 +52,7 @@ def test_changing_json(api, answer):
     assert answer.modified == datetime(2032, 12, 1, 15, 30, 12, tzinfo=timezone(timedelta(hours=3)))  # modified time updated
 
 
-def test_no_text_and_not_json(api, answer):
+def test_no_json(api, answer):
     api.patch(f"/api/v2/homework/answers/{answer.slug}/", {}, expected_status_code=400)
 
 
@@ -138,7 +129,7 @@ def test_404_for_answer_of_another_author(api, answer, another_user):
     api.patch(f"/api/v2/homework/answers/{answer.slug}/", {"content": JSON}, expected_status_code=404)
 
 
-def test_changing_text_response(api, answer):
+def test_response(api, answer):
     got = api.patch(f"/api/v2/homework/answers/{answer.slug}/", {"content": JSON})
 
     assert got["content"] == JSON
