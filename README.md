@@ -10,12 +10,12 @@ Configuration is stored in `src/core/.env`, for examples see `src/core/.env.ci`
 
 ## Installing on a local machine
 
-This project requires python 3.11. Deps are managed by [Poetry](https://python-poetry.org/).
+This project requires python 3.13. Deps are managed by [uv](https://docs.astral.sh/uv/).
 
 Install requirements:
 
 ```bash
-poetry install --no-root
+uv sync
 ```
 
 Configure postgres and redis. It's convenient to use docker and docker-compose:
@@ -37,8 +37,8 @@ Run the server:
 ```bash
 cp src/core/.env.ci src/core/.env
 
-poetry run python src/manage.py migrate
-poetry run python src/manage.py createsuperuser
+uv run python src/manage.py migrate
+uv run python src/manage.py createsuperuser
 
 make server
 ```
