@@ -11,6 +11,7 @@ class CrossCheckSerializer(serializers.ModelSerializer):
     class Meta:
         model = AnswerCrossCheck
         fields = (
+            "id",
             "answer",
             "is_checked",
         )
