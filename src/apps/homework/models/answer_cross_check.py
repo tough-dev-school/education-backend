@@ -41,3 +41,5 @@ class AnswerCrossCheck(TimestampedModel):
         constraints = [
             UniqueConstraint(fields=["answer", "checker"], name="unique_checker_and_answer"),
         ]
+
+        ordering = ["id"]
