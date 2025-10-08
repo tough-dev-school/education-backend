@@ -48,7 +48,7 @@ dependencies = [
 description = ""
 name = "education-backend"
 readme = "README.md"
-requires-python = "~=3.13.0"
+requires-python = "~=3.14.0"
 version = "2025.08.29"
 
 [project.optional-dependencies]
