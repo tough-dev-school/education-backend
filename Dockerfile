@@ -15,7 +15,7 @@ RUN wget --progress=dot:giga -O uwsgi-${_UWSGI_VERSION}.tar.gz https://github.co
 #
 # Build poetry and export compiled dependecines as plain requirements.txt
 #
-FROM ghcr.io/astral-sh/uv:0.9.1-alpine AS deps-compile
+FROM ghcr.io/astral-sh/uv:0.9.2-alpine AS deps-compile
 
 WORKDIR /
 COPY uv.lock pyproject.toml /
