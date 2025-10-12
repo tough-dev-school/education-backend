@@ -66,6 +66,18 @@ def test_no_json(api, question, another_answer):
     )
 
 
+def test_non_prosemirror_json(api, question, another_answer):
+    api.post(
+        "/api/v2/homework/answers/",
+        {
+            "content": {"invalid": "json"},
+            "question": question.slug,
+            "parent": another_answer.slug,
+        },
+        expected_status_code=400,
+    )
+
+
 def test_no_question(api, another_answer):
     api.post(
         "/api/v2/homework/answers/",

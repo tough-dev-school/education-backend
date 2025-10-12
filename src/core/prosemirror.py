@@ -21,3 +21,9 @@ def prosemirror_to_text(data: dict) -> str:
     paragraphs = [_extract_text(node) for node in data["content"] if node["type"] in ["heading", "paragraph"]]
 
     return "\n\n".join(paragraphs)
+
+
+__all__ = [
+    "ProseMirrorException",
+    "prosemirror_to_text",
+]
