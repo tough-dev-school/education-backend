@@ -86,7 +86,7 @@ class QuestionCrossCheckDispatcher(BaseService):
             answers.append(
                 {
                     "url": crosscheck.answer.get_absolute_url(),
-                    "text": str(crosscheck.answer),
+                    "text": str(crosscheck.answer) if len(str(crosscheck.answer)) > 0 else crosscheck.answer.get_absolute_url(),
                 }
             )
 

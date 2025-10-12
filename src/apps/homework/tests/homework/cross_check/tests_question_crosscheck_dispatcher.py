@@ -90,3 +90,34 @@ def test_email_is_sent(question_dispatcher, send_mail, mocker, answers):
             ),
         ]
     )
+
+
+def test_answer_text(question_dispatcher, send_mail, answers):
+    answers[0].update(text="Ссылка на members-x.com")
+
+    question_dispatcher()
+
+    for call in send_mail.call_args_list:  # find the answer with updated_id
+        template_context = call.kwargs["ctx"]
+        if str(answers[0].slug) in template_context["answers"][0]["url"]:
+            assert "Ссылка на members-x.com" in template_context["answers"][0]["text"]
+
+            return
+
+    pytest.fail("Answer not found")
+
+
+def test_empty_answer_text(question_dispatcher, send_mail, answers):
+    """Template should not fail if answer has empty text"""
+    answers[0].update(text="")
+
+    question_dispatcher()
+
+    for call in send_mail.call_args_list:  # find the answer with updated_id
+        template_context = call.kwargs["ctx"]
+        if str(answers[0].slug) in template_context["answers"][0]["url"]:
+            assert template_context["answers"][0]["text"] == answers[0].get_absolute_url()  # should be a link instead of text if text is empty
+
+            return
+
+    pytest.fail("Answer not found")
