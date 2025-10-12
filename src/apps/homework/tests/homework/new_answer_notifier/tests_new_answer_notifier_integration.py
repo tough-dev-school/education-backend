@@ -6,6 +6,21 @@ pytestmark = [
     pytest.mark.django_db,
 ]
 
+ANSWER_TEXT = {
+    "type": "doc",
+    "content": [
+        {
+            "type": "paragraph",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "Горите в аду",
+                }
+            ],
+        }
+    ],
+}
+
 
 @pytest.fixture
 def commenter(mixer):
@@ -50,7 +65,7 @@ def test_notifying_author(reply, answer, get_notified_users):
     reply(
         answer,
         {
-            "text": "Верните деньги!",
+            "content": ANSWER_TEXT,
         },
     )
 
@@ -61,7 +76,7 @@ def test_not_notifying_commenter(reply, answer, commenter, get_notified_users):
     reply(
         answer,
         {
-            "text": "Верните деньги!",
+            "content": ANSWER_TEXT,
         },
         as_user=commenter,
     )
@@ -73,7 +88,7 @@ def test_not_notifying_another_commenter(reply, answer, another_user, commenter,
     reply(
         answer,
         {
-            "text": "Верните деньги!",
+            "content": ANSWER_TEXT,
         },
         as_user=commenter,
     )
@@ -81,7 +96,7 @@ def test_not_notifying_another_commenter(reply, answer, another_user, commenter,
     reply(
         answer,
         {
-            "text": "Мне тоже!",
+            "content": ANSWER_TEXT,
         },
         as_user=another_user,
     )
@@ -95,7 +110,7 @@ def test_disabling_feature_disables_sending(reply, answer, settings, get_notifie
     reply(
         answer,
         {
-            "text": "Верните деньги!",
+            "content": ANSWER_TEXT,
         },
     )
 
@@ -106,7 +121,7 @@ def test_editing_answer_does_not_send_email_for_the_second_time(reply, answer, g
     reply(
         answer,
         {
-            "text": "Верните деньги!",
+            "content": ANSWER_TEXT,
         },
     )
 

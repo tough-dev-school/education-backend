@@ -12,12 +12,12 @@ from apps.studying.models import Study
 from apps.users.models import User
 from core.current_user import get_current_user
 from core.helpers import is_valid_uuid
+from core.prosemirror import ProseMirrorException, prosemirror_to_text
 from core.services import BaseService
 
 
 @dataclass
 class AnswerCreator(BaseService):
-    text: str
     content: dict
     question_slug: str
     parent_slug: str | None = None
@@ -35,7 +35,8 @@ class AnswerCreator(BaseService):
         return [
             self.validate_question_slug,
             self.validate_parent_slug,
-            self.validate_json_or_text,
+            self.validate_content_field,
+            self.validate_content_is_prosemirror,
         ]
 
     def create(self) -> Answer:
@@ -44,7 +45,7 @@ class AnswerCreator(BaseService):
             question=self.question,
             author=self.author,
             study=self.study,
-            text=self.text,
+            text=prosemirror_to_text(self.content),
             content=self.content,
         )
 
@@ -93,11 +94,15 @@ class AnswerCreator(BaseService):
     def complete_crosscheck(self, instance: Answer) -> None:
         instance.parent.answercrosscheck_set.filter(checker=self.author).update(checked=timezone.now())
 
-    def validate_json_or_text(self) -> None:
-        """Remove it after frontend migration"""
-        if self.text is None or len(self.text) == 0:  # validating json
-            if not isinstance(self.content, dict) or not len(self.content.keys()):
-                raise ValidationError("Please provide text or content field")
+    def validate_content_field(self) -> None:
+        if not isinstance(self.content, dict) or not len(self.content.keys()):
+            raise ValidationError("Please provide content field")
+
+    def validate_content_is_prosemirror(self) -> None:
+        try:
+            prosemirror_to_text(self.content)
+        except ProseMirrorException:
+            raise ValidationError("Not a prosemirror document")
 
     def validate_question_slug(self) -> None:
         """Validate only format, database validation is performed later"""

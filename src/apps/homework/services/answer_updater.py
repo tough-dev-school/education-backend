@@ -1,13 +1,14 @@
 from dataclasses import dataclass
+from typing import Callable
 
 import simplejson as json
 from django.contrib.admin.models import CHANGE
 from django.db import transaction
-from rest_framework.exceptions import NotAuthenticated
+from rest_framework.exceptions import NotAuthenticated, ValidationError
 
 from apps.homework.models import Answer
 from core.current_user import get_current_user
-from core.prosemirror import prosemirror_to_text
+from core.prosemirror import ProseMirrorException, prosemirror_to_text
 from core.services import BaseService
 from core.tasks.write_admin_log import write_admin_log
 
@@ -24,6 +25,12 @@ class AnswerUpdater(BaseService):
         self.update()
         self.write_auditlog(previous_content=previous_content)
         return self.answer
+
+    def get_validators(self) -> list[Callable]:
+        return [
+            self.validate_content_field,
+            self.validate_content_is_prosemirror,
+        ]
 
     def update(self) -> None:
         self.answer.content = self.content
@@ -46,3 +53,13 @@ class AnswerUpdater(BaseService):
             object_id=self.answer.id,
             user_id=user.id,
         )
+
+    def validate_content_field(self) -> None:
+        if not isinstance(self.content, dict) or not len(self.content.keys()):
+            raise ValidationError("Please provide content field")
+
+    def validate_content_is_prosemirror(self) -> None:
+        try:
+            prosemirror_to_text(self.content)
+        except ProseMirrorException:
+            raise ValidationError("Not a prosemirror document")

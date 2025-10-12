@@ -77,6 +77,10 @@ def test_no_json(api, answer):
     api.patch(f"/api/v2/homework/answers/{answer.slug}/", {}, expected_status_code=400)
 
 
+def test_non_prosemirror_json(api, answer):
+    api.patch(f"/api/v2/homework/answers/{answer.slug}/", {"content": {"non": "prosemirror"}}, expected_status_code=400)
+
+
 @pytest.mark.parametrize(
     "shit",
     [

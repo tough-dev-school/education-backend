@@ -34,27 +34,6 @@ def get_answer():
     return Answer.objects.last()
 
 
-def test_creation_with_text(api, question, another_answer, purchase):
-    """Drop it when you remove the 'text' field"""
-    api.post(
-        "/api/v2/homework/answers/",
-        {
-            "text": "Горите в аду!",
-            "question": question.slug,
-            "parent": another_answer.slug,
-        },
-    )
-
-    created = get_answer()
-
-    assert created.question == question
-    assert created.parent == another_answer
-    assert created.author == api.user
-    assert created.study == purchase.study
-    assert created.text == "Горите в аду!"
-    assert created.content == {}
-
-
 def test_creation_with_json(api, question, another_answer, purchase):
     """Drop it when you remove the 'text' field"""
     api.post(
@@ -73,13 +52,25 @@ def test_creation_with_json(api, question, another_answer, purchase):
     assert created.author == api.user
     assert created.study == purchase.study
     assert created.content == JSON
-    assert created.text == ""
+    assert created.text == "Горите в аду"
 
 
-def test_no_text_nor_json(api, question, another_answer):
+def test_no_json(api, question, another_answer):
     api.post(
         "/api/v2/homework/answers/",
         {
+            "question": question.slug,
+            "parent": another_answer.slug,
+        },
+        expected_status_code=400,
+    )
+
+
+def test_non_prosemirror_json(api, question, another_answer):
+    api.post(
+        "/api/v2/homework/answers/",
+        {
+            "content": {"invalid": "json"},
             "question": question.slug,
             "parent": another_answer.slug,
         },
