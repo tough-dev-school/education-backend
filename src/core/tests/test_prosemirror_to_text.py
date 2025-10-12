@@ -16,6 +16,16 @@ def text(text: str, **kwargs) -> dict:
     }
 
 
+def link(href: str, **kwargs) -> dict:
+    return {
+        "type": "link",
+        "attrs": {
+            "href": href,
+            **kwargs,
+        },
+    }
+
+
 def test_two_paragraphs_and_a_heading():
     assert (
         prosemirror_to_text(
@@ -28,6 +38,19 @@ def test_two_paragraphs_and_a_heading():
             )
         )
         == "Заголовок\n\nРаз\n\nДва"
+    )
+
+
+def test_link():
+    assert (
+        prosemirror_to_text(
+            doc(
+                [
+                    {"type": "paragraph", "content": [text("Ссылка на "), text(text="пвн.сш", marks=[link(href="pwn.sh")])]},
+                ]
+            )
+        )
+        == "Ссылка на пвн.сш"
     )
 
 
