@@ -52,7 +52,20 @@ def submit_homework(users, submit_answer):
                 author=user,
                 question=question,
                 answer={
-                    "text": f"Горите в аду. С любовью, {user}",
+                    "content": {
+                        "type": "doc",
+                        "content": [
+                            {
+                                "type": "paragraph",
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": "Горите в аду",
+                                    }
+                                ],
+                            }
+                        ],
+                    },
                 },
             )
 
