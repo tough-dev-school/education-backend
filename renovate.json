@@ -5,7 +5,7 @@
   "lockFileMaintenance": {
     "enabled": true
   },
-  "ignoreDeps": ["boto3", "boto3-stubs", "botocore", "botocore-stubs", "s3transfer"],
+  "ignoreDeps": ["python", "boto3", "boto3-stubs", "botocore", "botocore-stubs", "s3transfer"],
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
