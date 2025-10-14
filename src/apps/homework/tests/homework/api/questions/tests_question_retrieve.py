@@ -10,8 +10,9 @@ pytestmark = [
 ]
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def group(mixer, course, another_course):
+    """Let all courses in the suite be in the same group"""
     group = mixer.blend("products.Group")
 
     course.update(group=group)
@@ -50,16 +51,34 @@ def test_markdown(api, question, course):
     assert "<em>should be rendered" in got["course"]["homework_check_recommendations"]
 
 
-def test_breadcrumbs(api, question, factory, another_course):
-    Lesson.objects.filter(question=question).delete()
-    module = factory.module(course=another_course)
-    lesson = factory.lesson(module=module, question=question)
+def test_breadcrumbs(api, question, purchase):
+    lesson = question.lesson_set.first()
 
     got = api.get(f"/api/v2/homework/questions/{question.slug}/")
 
     assert got["breadcrumbs"]["lesson"]["id"] == lesson.pk
-    assert got["breadcrumbs"]["module"]["id"] == module.pk
-    assert got["breadcrumbs"]["course"]["id"] == another_course.id
+    assert got["breadcrumbs"]["module"]["id"] == lesson.module.pk
+    assert got["breadcrumbs"]["course"]["id"] == purchase.course.id
+
+    assert got["course"]["id"] == purchase.course.id
+    assert got["course"]["slug"] == purchase.course.slug
+    assert got["course"]["name"] == purchase.course.name
+
+
+@pytest.mark.usefixtures("group", "_set_current_user")
+def test_breadcrums_if_user_purchased_same_course_from_the_group(api, question, question_of_another_course, purchase, purchase_of_another_course):
+    purchase_of_another_course.refund()
+    lesson = question.lesson_set.first()
+
+    got = api.get(f"/api/v2/homework/questions/{question_of_another_course.slug}/")
+
+    assert got["breadcrumbs"]["lesson"]["id"] == lesson.pk
+    assert got["breadcrumbs"]["module"]["id"] == lesson.module.pk
+    assert got["breadcrumbs"]["course"]["id"] == purchase.course.id
+
+    assert got["course"]["id"] == purchase.course.id
+    assert got["course"]["slug"] == purchase.course.slug
+    assert got["course"]["name"] == purchase.course.name
 
 
 def test_course_info_with_attached_lesson(api, question, factory, another_course):
@@ -89,18 +108,11 @@ def test_ok_for_superusers_even_when_they_did_not_purchase_the_course(api, quest
     api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=200)
 
 
-@pytest.mark.usefixtures("group", "purchase_of_another_course", "_set_current_user")
-def test_ok_if_user_purchased_same_course_from_the_group(api, purchase, question):
-    purchase.refund()
-
-    api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=200)
-
-
 @pytest.mark.usefixtures("group", "_set_current_user")
 def test_fail_if_user_has_not_purchased_same_course_from_the_group(api, mixer, purchase, purchase_of_another_course, question):
     """Same as above, just to make sure above test works"""
     purchase.refund()
-    purchase_of_another_course.course.update(group=mixer.blend("products.Group"))  # another_group
+    purchase_of_another_course.course.update(group=mixer.blend("products.Group"))  # Another group that user has not purchased
 
     api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=404)
 
