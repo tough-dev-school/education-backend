@@ -126,13 +126,13 @@ class Question(TimestampedModel):
         return apps.get_model("products.Course").objects.filter(pk__in=legacy_course_ids).order_by("?").first()
 
     def get_lesson(self, user: User) -> Lesson | None:
-        lessons = Lesson.objects.filter(question=self).for_user_including_neighbour_courses(user).order_by("-created").select_related("module")
-        purchased_courses = Course.objects.for_user(user).values_list("id", flat=True)
+        purchased_courses = Course.objects.for_user(user)
 
         # if any lesson is directly purchased by the user -- return it
-        for lesson in lessons.iterator():
-            if lesson.module.course_id in purchased_courses:
-                return lesson
+        lesson = self.lesson_set.filter(module__course__in=purchased_courses).order_by("-created").first()
+
+        if lesson is not None:
+            return lesson
 
         # otherwise -- find the first lesson with the given name
         return Lesson.objects.filter(question__name=self.name).for_user(user).order_by("-created").select_related("module").first()
