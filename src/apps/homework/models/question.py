@@ -1,5 +1,4 @@
 import uuid
-from typing import TYPE_CHECKING, Optional
 from urllib.parse import urljoin
 
 from django.apps import apps
@@ -9,12 +8,10 @@ from django.db.models import Exists, OuterRef, QuerySet, Value
 from django.db.models.expressions import RawSQL
 from django.utils.translation import gettext_lazy as _
 
+from apps.lms.models import Lesson
+from apps.products.models import Course
 from apps.users.models import User
 from core.models import SubqueryCount, TimestampedModel, models
-
-if TYPE_CHECKING:
-    from apps.lms.models import Lesson
-    from apps.products.models import Course
 
 
 class QuestionQuerySet(QuerySet):
@@ -123,23 +120,24 @@ class Question(TimestampedModel):
 
         return count
 
-    def get_legacy_course(self) -> Optional["Course"]:
+    def get_legacy_course(self) -> Course | None:
         """Returns random course to simplify later investigation"""
         legacy_course_ids = self._legacy_courses if self._legacy_courses is not None else []
         return apps.get_model("products.Course").objects.filter(pk__in=legacy_course_ids).order_by("?").first()
 
-    def get_lesson(self, user: User) -> Optional["Lesson"]:
-        purchased_courses = apps.get_model("products.Course").objects.for_user(user)
+    def get_lesson(self, user: User) -> Lesson | None:
+        purchased_courses = Course.objects.for_user(user)
 
-        return (
-            self.lesson_set.filter(
-                module__course__in=purchased_courses,
-            )
-            .order_by("-created")
-            .first()
-        )
+        # if any lesson is directly purchased by the user -- return it
+        lesson = self.lesson_set.filter(module__course__in=purchased_courses).order_by("-created").first()
 
-    def get_course(self, user: User) -> Optional["Course"]:
+        if lesson is not None:
+            return lesson
+
+        # otherwise -- find the first lesson with the given name
+        return Lesson.objects.filter(question__name=self.name).for_user(user).order_by("-created").select_related("module").first()
+
+    def get_course(self, user: User) -> Course | None:
         lesson = self.get_lesson(user)
         if lesson is not None:
             return lesson.module.course

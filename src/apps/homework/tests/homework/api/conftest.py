@@ -14,12 +14,39 @@ def api(api):
 @pytest.fixture
 def question(factory, course):
     """Question that belongs to a course"""
-    return factory.question(course=course)
+    question = factory.question(name="Пятнадцатая домашка")
+
+    factory.lesson(
+        module=factory.module(course=course),
+        question=question,
+    )
+
+    return question
 
 
 @pytest.fixture
 def another_question(factory, course):
-    return factory.question(course=course)
+    question = factory.question(name="Шестнадцатая домашка")
+
+    factory.lesson(
+        module=factory.module(course=course),
+        question=question,
+    )
+
+    return question
+
+
+@pytest.fixture
+def question_of_another_course(factory, another_course):
+    """The name is intenationaly the same as the 'question' fixture"""
+    question = factory.question(name="Пятнадцатая домашка")
+
+    factory.lesson(
+        module=factory.module(course=another_course),
+        question=question,
+    )
+
+    return question
 
 
 @pytest.fixture
