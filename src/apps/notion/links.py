@@ -1,7 +1,7 @@
 from apps.notion.types import NotionId, TextProperty
 
 
-def get_links(node: TextProperty) -> list[NotionId]:
+def get_links(node: TextProperty) -> list[NotionId]:  # NOQA: C901
     """Recursively find links in the notion block content"""
     links = []
     for child in node:
