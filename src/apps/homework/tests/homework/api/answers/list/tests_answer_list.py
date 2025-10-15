@@ -19,7 +19,7 @@ def test_ok(api, question, answer):
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 
     assert got[0]["created"] == "2022-10-09T10:30:12+12:00"
-    assert got[0]["modified"] == "2022-10-09T10:30:12+12:00"
+    assert got[0]["modified"] is None
     assert got[0]["slug"] == str(answer.slug)
     assert got[0]["question"] == str(answer.question.slug)
     assert got[0]["content"]["type"] == "doc"

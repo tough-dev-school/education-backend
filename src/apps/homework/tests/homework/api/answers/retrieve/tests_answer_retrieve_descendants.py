@@ -14,7 +14,7 @@ def test_descendants(api, answer, question, comments):
 
     assert got["has_descendants"] is True
     assert got["descendants"][0]["created"] == "2022-10-09T11:10:00+12:00"
-    assert got["descendants"][0]["modified"] == "2022-10-09T11:10:00+12:00"
+    assert got["descendants"][0]["modified"] is None
     assert got["descendants"][0]["slug"] == str(comments[0].slug)
     assert got["descendants"][0]["author"]["uuid"] == str(comments[0].author.uuid)
     assert got["descendants"][0]["author"]["first_name"] == comments[0].author.first_name

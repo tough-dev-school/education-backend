@@ -123,7 +123,7 @@ def test_create_answer_fields(api, question, another_answer):
     )
 
     assert got["created"] == "2023-01-23T08:30:40+12:00"
-    assert got["modified"] == "2023-01-23T08:30:40+12:00"
+    assert got["modified"] is None
     assert "-4" in got["slug"]
     assert got["question"] == str(question.slug)
     assert got["author"]["uuid"] == str(api.user.uuid)
