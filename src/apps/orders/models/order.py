@@ -79,7 +79,7 @@ class Order(TimestampedModel):
 
         constraints = [
             CheckConstraint(
-                check=only_one_or_zero_is_set("course", "record", "bundle"),
+                condition=only_one_or_zero_is_set("course", "record", "bundle"),
                 name="only_one_or_zero_item_type_is_allowed",
             ),
         ]
