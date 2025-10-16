@@ -71,7 +71,11 @@ class QuestionQuerySet(QuerySet):
         AnswerCrossCheck = apps.get_model("homework.AnswerCrossCheck")
 
         total = AnswerCrossCheck.objects.filter(
-            answer__question=OuterRef("pk"),
+            answer__question__name__iexact=OuterRef("name"),
+            answer__question__created__date=OuterRef("created__date"),
+            # Flex scope:
+            # app-wide we match questions by name and course group, but i can't
+            # figure out how to annotate it here, so we use use 'voodoo' dates
             checker=user,
         )
 
