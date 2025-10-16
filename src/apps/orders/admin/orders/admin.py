@@ -131,10 +131,10 @@ class OrderAdmin(ModelAdmin):
         return f'<a href="{login_as_url}" target="_blank">Зайти</a>'
 
     def has_pay_permission(self, request: Request) -> bool:
-        return request.user.has_perm("orders.pay_order")
+        return request.user.has_perm("orders.pay_order")  # type: ignore[union-attr]
 
     def has_unpay_permission(self, request: Request) -> bool:
-        return request.user.has_perm("orders.unpay_order")
+        return request.user.has_perm("orders.unpay_order")  # type: ignore[union-attr]
 
     def get_inlines(self, request: Request, obj: "Order | None") -> list:  # type: ignore
         if obj and obj.paid:

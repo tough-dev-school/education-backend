@@ -7,16 +7,15 @@ from django.db.models import Count, IntegerField, Prefetch
 from django.db.models.expressions import RawSQL
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from tree_queries.models import TreeNode
-from tree_queries.query import TreeQuerySet
+from tree_queries.compiler import TreeQuery
 
 from apps.homework.models.reaction import Reaction
 from apps.users.models import User
 from core.markdown import markdownify, remove_html
-from core.models import TestUtilsMixin, models
+from core.models import TimestampedModel, models
 
 
-class AnswerQuerySet(TreeQuerySet):
+class AnswerQuerySet(models.QuerySet):
     def for_viewset(self) -> "AnswerQuerySet":
         return self.with_tree_fields().with_children_count().select_related("author", "question")
 
@@ -36,7 +35,7 @@ class AnswerQuerySet(TreeQuerySet):
         return self.filter(parent__isnull=True)
 
     def with_children_count(self) -> "AnswerQuerySet":
-        return self.annotate(  # SQL here cuz django-tree-queries make too long queries
+        return self.annotate(  # SQL here cuz django-tree-queries generates too long queries
             children_count=RawSQL(
                 """
                 SELECT COUNT(*)
@@ -48,12 +47,35 @@ class AnswerQuerySet(TreeQuerySet):
             )
         )
 
+    def with_tree_fields(self) -> "AnswerQuerySet":
+        self.query.__class__ = TreeQuery
+        self.query._setup_query()  # type: ignore[attr-defined]
+        return self
 
-class Answer(TestUtilsMixin, TreeNode):
-    objects = AnswerQuerySet.as_manager()
+    def ancestors(self, of: "Answer") -> "AnswerQuerySet":
+        if of.parent_id is None:
+            # Node without parent cannot have ancestors.
+            return self.none()
 
-    created = models.DateTimeField(auto_now_add=True, db_index=True)
-    modified = models.DateTimeField(auto_now=True, db_index=True)
+        if not hasattr(of, "tree_path"):
+            of = self.with_tree_fields().get(pk=of.pk if hasattr(of, "pk") else of)
+
+        ids = of.tree_path[:-1]
+        return self.with_tree_fields().filter(pk__in=ids).extra(order_by=["__tree.tree_depth"])  # type: ignore[return-value]
+
+    def descendants(self, of: "Answer") -> "AnswerQuerySet":
+        pk = of.pk if hasattr(of, "pk") else of
+        queryset = self.with_tree_fields().extra(where=["%s = ANY(__tree.tree_path)"], params=[pk])
+
+        return queryset.exclude(pk=pk)  # type: ignore[return-value]
+
+
+AnswerManager = models.Manager.from_queryset(AnswerQuerySet)
+
+
+class Answer(TimestampedModel):
+    objects = AnswerManager()
+    parent = models.ForeignKey("self", blank=True, null=True, on_delete=models.CASCADE, verbose_name=_("parent"), related_name="children")
 
     slug = models.UUIDField(db_index=True, unique=True, default=uuid.uuid4)
     question = models.ForeignKey("homework.Question", on_delete=models.PROTECT, related_name="+")
@@ -112,9 +134,14 @@ class Answer(TestUtilsMixin, TreeNode):
     def get_first_level_descendants(self) -> "AnswerQuerySet":
         return self.descendants().filter(parent=self.id)
 
+    def ancestors(self) -> "AnswerQuerySet":
+        return self.__class__._default_manager.ancestors(self)
+
+    def descendants(self) -> "AnswerQuerySet":
+        return self.__class__._default_manager.descendants(self)
+
     @property
     def is_root(self) -> bool:
-        """Can be used to determine homework answer"""
         return self.parent is None
 
     @property

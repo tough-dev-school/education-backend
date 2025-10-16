@@ -91,9 +91,8 @@ class OrderPaidSetter(BaseService):
 
         write_admin_log.delay(
             action_flag=CHANGE,
-            app="orders",
             change_message="Order paid",
-            model="Order",
+            model="orders.Order",
             object_id=self.order.id,
             user_id=user.id,
         )

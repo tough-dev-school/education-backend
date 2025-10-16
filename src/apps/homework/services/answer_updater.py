@@ -23,7 +23,7 @@ class AnswerUpdater(BaseService):
         previous_content = self.answer.content
 
         self.update()
-        self.write_auditlog(previous_content=previous_content)
+        self.write_auditlog(previous_content=previous_content)  # type: ignore [arg-type]
         return self.answer
 
     def get_validators(self) -> list[Callable]:
@@ -47,9 +47,8 @@ class AnswerUpdater(BaseService):
 
         write_admin_log.delay(
             action_flag=CHANGE,
-            app="homework",
             change_message=f"Answer content updated. Previous: {previous}. Current: {current}.",
-            model="Answer",
+            model="homework.Answer",
             object_id=self.answer.id,
             user_id=user.id,
         )

@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
         migrations.AddConstraint(
             model_name="promocode",
             constraint=models.CheckConstraint(
-                check=models.Q(("discount_percent__isnull", False), ("discount_value__isnull", False), _connector="OR"), name="percent or value must be set"
+                condition=models.Q(("discount_percent__isnull", False), ("discount_value__isnull", False), _connector="OR"), name="percent or value must be set"
             ),
         ),
     ]

@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
         migrations.AddConstraint(
             model_name="order",
             constraint=models.CheckConstraint(
-                check=models.Q(
+                condition=models.Q(
                     models.Q(
                         models.Q(("bundle__isnull", True), ("course__isnull", False), ("record__isnull", True)),
                         models.Q(("bundle__isnull", True), ("course__isnull", True), ("record__isnull", False)),

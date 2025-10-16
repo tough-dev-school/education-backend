@@ -17,7 +17,7 @@ class PurchasedCoursesView(DisablePaginationWithQueryParamMixin, ListAPIView):
     queryset = Course.objects.none()  # needed for swagger
 
     def get_queryset(self) -> QuerySet[Course]:
-        queryset = Course.objects.for_lms()
+        queryset = Course.objects.for_lms()  # type: ignore[attr-defined]
         if self.request.user.has_perm("studying.purchased_all_courses"):
             return queryset.all()
 

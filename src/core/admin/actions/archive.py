@@ -10,18 +10,17 @@ from core.admin import admin
 from core.tasks import write_admin_log
 
 
-def _get_content_type(queryset: QuerySet) -> tuple[str, str]:
+def _get_content_type(queryset: QuerySet) -> str:
     content_type = ContentType.objects.get_for_model(queryset.model)
-    return content_type.app_label, content_type.model
+    return f"{content_type.app_label}.{content_type.model}"
 
 
 @admin.action(description=_("Put to archive"))
 def archive(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
-    app_label, model = _get_content_type(queryset)
+    model = _get_content_type(queryset)
     for module in queryset.iterator():
         write_admin_log.delay(
             action_flag=CHANGE,
-            app=app_label,
             model=model,
             change_message=f"{queryset.model._meta.verbose_name.title()} archived (bulk action)",
             object_id=module.id,
@@ -35,11 +34,10 @@ def archive(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
 
 @admin.action(description=_("Extract from archive"))
 def unarchive(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> None:
-    app_label, model = _get_content_type(queryset)
+    model = _get_content_type(queryset)
     for module in queryset.iterator():
         write_admin_log.delay(
             action_flag=CHANGE,
-            app=app_label,
             model=model,
             change_message=f"{queryset.model._meta.verbose_name.title()} unarchived (bulk action)",
             object_id=module.id,

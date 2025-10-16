@@ -25,8 +25,8 @@ dependencies = [
     "django-silk>=5.3.2,<6.0.0",
     "django-split-settings>=1.2.0,<2.0.0",
     "django-storages>=1.14,<2.0",
-    "django-tree-queries>=0.20.0,<1.0.0",
-    "django>=4.2.5,<5.0.0",
+    "django-tree-queries>=0.21.2",
+    "django>=5.2,<5.3",
     "djangorestframework>=3.14.0,<4.0.0",
     "drf-jwt>=1.19.2,<2.0.0",
     "drf-spectacular[sidecar]>=0.28.0,<1.0.0",
@@ -54,7 +54,7 @@ version = "2025.08.29"
 [project.optional-dependencies]
 dev = [
     "boto3-stubs>=1.28.48,<2.0.0",
-    "django-stubs>=4.2.6,<5.0.0",
+    "django-stubs>=5.2,<5.3",
     "djangorestframework-stubs>=3.14.4,<4.0.0",
     "ipython>=9.0.0,<10.0.0",
     "jedi>=0.19.0,<1.0.0",
@@ -105,6 +105,9 @@ env = [
     "RELEASE = CI-testing",
 ]
 filterwarnings = [
+    "error",
+    "ignore:.*datetime.datetime.utcnow.*:DeprecationWarning",
+    "ignore:The FORMS_URLFIELD_ASSUME_HTTPS transitional setting is deprecated",
 ]
 markers = [
     "auditlog: enable admin logging",

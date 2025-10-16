@@ -34,9 +34,8 @@ class OrderShipper(BaseService):
 
         write_admin_log.delay(
             action_flag=CHANGE,
-            app="orders",
             change_message="Order shipped",
-            model="Order",
+            model="orders.Order",
             object_id=self.order.id,
             user_id=user.id,
         )

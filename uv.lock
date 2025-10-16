@@ -463,16 +463,16 @@ sdist = { url = "https://files.pythonhosted.org/packages/b7/19/00150c8bedf7b6d4c
 
 [[package]]
 name = "django"
-version = "4.2.25"
+version = "5.2.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "asgiref" },
     { name = "sqlparse" },
     { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/de/f1/230c6c20a77f8f1812c01dfd0166416e7c000a43e05f701b0b83301ebfc1/django-4.2.25.tar.gz", hash = "sha256:2391ab3d78191caaae2c963c19fd70b99e9751008da22a0adcc667c5a4f8d311", size = 10456257, upload-time = "2025-10-01T15:05:55.963Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b1/96/bd84e2bb997994de8bcda47ae4560991084e86536541d7214393880f01a8/django-5.2.7.tar.gz", hash = "sha256:e0f6f12e2551b1716a95a63a1366ca91bbcd7be059862c1b18f989b1da356cdd", size = 10865812, upload-time = "2025-10-01T14:22:12.081Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/35/5d/2210dcf9a03931be94072deab1de2d3b73fa62ce91714eaea9e69f6e35c6/django-4.2.25-py3-none-any.whl", hash = "sha256:9584cf26b174b35620e53c2558b09d7eb180a655a3470474f513ff9acb494f8c", size = 7993964, upload-time = "2025-10-01T15:05:46.545Z" },
+    { url = "https://files.pythonhosted.org/packages/8f/ef/81f3372b5dd35d8d354321155d1a38894b2b766f576d0abffac4d8ae78d9/django-5.2.7-py3-none-any.whl", hash = "sha256:59a13a6515f787dec9d97a0438cd2efac78c8aca1c80025244b0fe507fe0754b", size = 8307145, upload-time = "2025-10-01T14:22:49.476Z" },
 ]
 
 [[package]]
@@ -659,18 +659,17 @@ wheels = [
 
 [[package]]
 name = "django-stubs"
-version = "4.2.7"
+version = "5.2.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django" },
     { name = "django-stubs-ext" },
-    { name = "types-pytz" },
     { name = "types-pyyaml" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1c/1f/1b1da357d37cbbf21496c17aad5a55416c7c37944a909c4a19ddd61994df/django-stubs-4.2.7.tar.gz", hash = "sha256:8ccd2ff4ee5adf22b9e3b7b1a516d2e1c2191e9d94e672c35cc2bc3dd61e0f6b", size = 258590, upload-time = "2023-12-05T19:02:28.493Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5d/a8/bc8c55212978f1e666486b60a4bfb0bc3a066de8212fa7389ff0f3dca639/django_stubs-5.2.7.tar.gz", hash = "sha256:2a07e47a8a867836a763c6bba8bf3775847b4fd9555bfa940360e32d0ee384a1", size = 257339, upload-time = "2025-10-08T08:01:18.237Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/31/33/a4024662b31999841bc18ef845a790f6b6a9ad50f5b2aceb029896612d17/django_stubs-4.2.7-py3-none-any.whl", hash = "sha256:4cf4de258fa71adc6f2799e983091b9d46cfc67c6eebc68fe111218c9a62b3b8", size = 456669, upload-time = "2023-12-05T19:02:25.29Z" },
+    { url = "https://files.pythonhosted.org/packages/ad/66/1c8063eee88a943f01d073dbbbda34ed093bf6e19738178506a66abbd5ad/django_stubs-5.2.7-py3-none-any.whl", hash = "sha256:2864e74b56ead866ff1365a051f24d852f6ed02238959664f558a6c9601c95bf", size = 507733, upload-time = "2025-10-08T08:01:16.172Z" },
 ]
 
 [[package]]
@@ -864,7 +863,7 @@ requires-dist = [
     { name = "celery", specifier = "==5.5.3" },
     { name = "cmarkgfm", specifier = ">=2024.0.0,<2025.0.0" },
     { name = "dj-rest-auth", specifier = ">=7.0.0,<8.0.0" },
-    { name = "django", specifier = ">=4.2.5,<5.0.0" },
+    { name = "django", specifier = ">=5.2,<5.3" },
     { name = "django-admin-sortable2", specifier = ">=2.2.4,<3.0.0" },
     { name = "django-anymail", specifier = ">=13.0.0,<14.0.0" },
     { name = "django-axes", specifier = ">=8.0.0,<9.0.0" },
@@ -880,8 +879,8 @@ requires-dist = [
     { name = "django-silk", specifier = ">=5.3.2,<6.0.0" },
     { name = "django-split-settings", specifier = ">=1.2.0,<2.0.0" },
     { name = "django-storages", specifier = ">=1.14,<2.0" },
-    { name = "django-stubs", marker = "extra == 'dev'", specifier = ">=4.2.6,<5.0.0" },
-    { name = "django-tree-queries", specifier = ">=0.20.0,<1.0.0" },
+    { name = "django-stubs", marker = "extra == 'dev'", specifier = ">=5.2,<5.3" },
+    { name = "django-tree-queries", specifier = ">=0.21.2" },
     { name = "djangorestframework", specifier = ">=3.14.0,<4.0.0" },
     { name = "djangorestframework-stubs", marker = "extra == 'dev'", specifier = ">=3.14.4,<4.0.0" },
     { name = "drf-jwt", specifier = ">=1.19.2,<2.0.0" },

@@ -24,7 +24,7 @@ class AmoCRMTransactionDTO:
                     "_embedded": {
                         "catalog_elements": [
                             {
-                                "id": self.order.course.amocrm_course.amocrm_id,
+                                "id": self.order.course.amocrm_course.amocrm_id,  # type: ignore[attr-defined]
                                 "metadata": {
                                     "catalog_id": products_catalog_id(),
                                     "quantity": 1,  # only 1 course per order
