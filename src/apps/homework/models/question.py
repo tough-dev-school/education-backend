@@ -82,6 +82,16 @@ class QuestionQuerySet(QuerySet):
             crosschecks_checked=SubqueryCount(checked),
         )
 
+    def neighbours(self, of_question: "Question") -> "QuestionQuerySet":
+        course_groups = [lesson.module.course.group_id for lesson in of_question.lesson_set.select_related("module__course").iterator()]
+
+        if len(course_groups) == 0:
+            return self.filter(pk=of_question.pk)
+
+        lessons = apps.get_model("lms.Lesson").objects.filter(module__course__group__in=course_groups).filter(question__name__iexact=of_question.name)
+
+        return self.filter(pk__in=lessons.values_list("question"))
+
 
 class Question(TimestampedModel):
     objects = QuestionQuerySet.as_manager()

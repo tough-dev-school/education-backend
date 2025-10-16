@@ -37,6 +37,17 @@ def another_question(factory, course):
 
 
 @pytest.fixture
+def another_course(mixer, course, another_course):
+    """Let another course be in the same group as the original course courses in the suite be in the same group"""
+    group = mixer.blend("products.Group")
+
+    course.update(group=group)
+    another_course.update(group=group)
+
+    return another_course
+
+
+@pytest.fixture
 def question_of_another_course(factory, another_course):
     """The name is intenationaly the same as the 'question' fixture"""
     question = factory.question(name="Пятнадцатая домашка")
