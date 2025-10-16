@@ -48,9 +48,8 @@ class BulkStudentCreator(BaseService):
 
         write_admin_log.delay(
             action_flag=ADDITION,
-            app="b2b",
             change_message="Student created",
-            model="Student",
+            model="b2b.Student",
             object_id=student.id,
             user_id=user.id,
         )

@@ -47,9 +47,8 @@ class AnswerUpdater(BaseService):
 
         write_admin_log.delay(
             action_flag=CHANGE,
-            app="homework",
             change_message=f"Answer content updated. Previous: {previous}. Current: {current}.",
-            model="Answer",
+            model="homework.Answer",
             object_id=self.answer.id,
             user_id=user.id,
         )

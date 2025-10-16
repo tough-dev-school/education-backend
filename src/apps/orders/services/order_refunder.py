@@ -123,9 +123,8 @@ class OrderRefunder(BaseService):
     def write_auditlog(self) -> None:
         write_admin_log.delay(
             action_flag=CHANGE,
-            app="orders",
             change_message=f"Order refunded: refunded amount - {format_price(self._amount)}",
-            model="Order",
+            model="orders.Order",
             object_id=self.order.id,
             user_id=self.refund_author.id,
         )

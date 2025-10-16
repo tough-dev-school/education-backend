@@ -81,9 +81,8 @@ class DealCompleter(BaseService):
 
         write_admin_log.delay(
             action_flag=CHANGE,
-            app="b2b",
             change_message="Deal shipped without payment" if self.ship_only else "Deal completed",
-            model="Deal",
+            model="b2b.Deal",
             object_id=self.deal.id,
             user_id=user.id,
         )

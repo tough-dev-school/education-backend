@@ -1,29 +1,17 @@
 from django.apps import apps
 from django.contrib.admin.models import LogEntry
-from django.contrib.contenttypes.models import ContentType
 
 from core.celery import celery
 
 
 @celery.task
-def write_admin_log(
-    action_flag: int,
-    app: str,
-    change_message: str,
-    model: str,
-    object_id: int,
-    user_id: int,
-) -> LogEntry:
-    content_type_id = ContentType.objects.get(app_label=app, model=model.lower()).id
+def write_admin_log(action_flag: int, change_message: str, model: str, object_id: int, user_id: int) -> LogEntry:
+    Model = apps.get_model(model)
 
-    obj = apps.get_model(app, model).objects.get(id=object_id)
-
-    return LogEntry.objects.log_action(
+    return LogEntry.objects.log_actions(
         action_flag=action_flag,
         change_message=change_message,
-        content_type_id=content_type_id,
-        object_id=object_id,
-        object_repr=str(obj),
+        queryset=Model.objects.filter(pk=object_id),
         user_id=user_id,
     )
 

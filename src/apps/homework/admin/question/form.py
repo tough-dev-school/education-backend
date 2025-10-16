@@ -73,9 +73,8 @@ class QuestionForm(ModelForm):
 
         write_admin_log.delay(
             action_flag=CHANGE,
-            app="lms",
             change_message=msg,
-            model="Lesson",
+            model="lms.Lesson",
             object_id=lesson.pk,
             user_id=user.id,
         )
