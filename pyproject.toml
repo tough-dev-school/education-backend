@@ -105,8 +105,9 @@ env = [
     "RELEASE = CI-testing",
 ]
 filterwarnings = [
-    "ignore:The FORMS_URLFIELD_ASSUME_HTTPS transitional setting is deprecated",
+    "error",
     "ignore:.*datetime.datetime.utcnow.*:DeprecationWarning",
+    "ignore:The FORMS_URLFIELD_ASSUME_HTTPS transitional setting is deprecated",
 ]
 markers = [
     "auditlog: enable admin logging",
