@@ -20,6 +20,13 @@ def crosscheck(mixer, answers, api):
     return mixer.blend("homework.AnswerCrossCheck", answer=answers[1], checker=api.user)
 
 
+@pytest.fixture
+def crosscheck_for_question_of_another_course(mixer, question_of_another_course, api):
+    answer = mixer.blend("homework.Answer", question=question_of_another_course)
+
+    return mixer.blend("homework.AnswerCrossCheck", answer=answer, checker=api.user)
+
+
 def test_no_crosscheckes(api, question, crosscheck):
     crosscheck.delete()
 
@@ -52,6 +59,14 @@ def test_three_crosschecks(api, question, mixer):
     got = api.get(f"/api/v2/homework/questions/{question.slug}/")
 
     assert got["homework"]["crosschecks"]["total"] == 3
+
+
+@pytest.mark.usefixtures("crosscheck_for_question_of_another_course")
+def test_crosscheck_for_the_question_of_another_course(api, question):
+    got = api.get(f"/api/v2/homework/questions/{question.slug}/")
+
+    assert got["homework"]["crosschecks"]["total"] == 2
+    assert got["homework"]["crosschecks"]["checked"] == 0
 
 
 def test_non_user_crosschecks_are_ignored(api, question, crosscheck, another_user):
