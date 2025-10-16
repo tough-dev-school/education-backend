@@ -144,8 +144,8 @@ class Question(TimestampedModel):
         if lesson is not None:
             return lesson
 
-        # otherwise -- find the first lesson with the given name
-        return Lesson.objects.filter(question__name=self.name).for_user(user).order_by("-created").select_related("module").first()
+        # otherwise -- find the first lesson user can access with the given name
+        return Lesson.objects.filter(question__name__iexact=self.name).for_user(user).order_by("-created").select_related("module").first()
 
     def get_course(self, user: User) -> Course | None:
         lesson = self.get_lesson(user)

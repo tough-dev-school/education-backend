@@ -50,7 +50,7 @@ def another_course(mixer, course, another_course):
 @pytest.fixture
 def question_of_another_course(factory, another_course):
     """The name is intenationaly the same as the 'question' fixture"""
-    question = factory.question(name="Пятнадцатая домашка")
+    question = factory.question(name="ПятнАдцатАя дОмашка")
 
     factory.lesson(
         module=factory.module(course=another_course),
