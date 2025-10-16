@@ -20,6 +20,13 @@ def crosscheck(mixer, answer, user):
 
 
 @pytest.fixture
+def crosscheck_for_question_of_another_course(mixer, question_of_another_course, user):
+    answer = mixer.blend("homework.Answer", question=question_of_another_course)
+
+    return mixer.blend("homework.AnswerCrossCheck", answer=answer, checker=user)
+
+
+@pytest.fixture
 def another_crosscheck(mixer, another_answer, user):
     return mixer.blend("homework.AnswerCrossCheck", answer=another_answer, checker=user, checked=datetime(2032, 1, 1, tzinfo=timezone.utc))
 
@@ -27,7 +34,11 @@ def another_crosscheck(mixer, another_answer, user):
 def test_question_is_required(api):
     got = api.get("/api/v2/homework/crosschecks/", expected_status_code=400)
 
-    assert "question" in got
+    assert "question" in got[0]
+
+
+def test_nonexistant_question(api):
+    api.get("/api/v2/homework/crosschecks/?question=nonexistan", expected_status_code=400)
 
 
 def test_as_anonymous(anon):
@@ -52,6 +63,14 @@ def test_base_response(api, question, crosscheck):
     assert "markdown_text" in got["answer"]["question"]
 
 
+@pytest.mark.xfail(reason="We do not check if user has purchased a course, cuz such users get no crosschecks dispatched", strict=True)
+@pytest.mark.usefixtures("crosscheck", "_no_purchase")
+def test_no_crosschecks_for_not_purchased_courses(api, question):
+    got = api.get(f"/api/v2/homework/crosschecks/?question={question.slug}")
+
+    assert len(got) == 0
+
+
 @pytest.mark.parametrize(("checked", "is_checked"), [(None, False), (datetime(2032, 1, 1, tzinfo=timezone.utc), True)])
 def test_is_checked(api, question, crosscheck, checked, is_checked):
     crosscheck.update(checked=checked)
@@ -61,7 +80,7 @@ def test_is_checked(api, question, crosscheck, checked, is_checked):
     assert got["is_checked"] is is_checked
 
 
-def test_exclude_cross_check_from_another_checker(api, question, crosscheck, another_user):
+def test_excludes_cross_check_from_another_checker(api, question, crosscheck, another_user):
     crosscheck.update(checker=another_user)
 
     got = api.get(f"/api/v2/homework/crosschecks/?question={question.slug}")
@@ -70,10 +89,23 @@ def test_exclude_cross_check_from_another_checker(api, question, crosscheck, ano
 
 
 @pytest.mark.usefixtures("crosscheck")
-def test_exclude_cross_check_from_another_question(api, another_question):
-    got = api.get(f"/api/v2/homework/crosschecks/?question={another_question.slug}")
+def test_excludes_cross_check_from_another_question(api, mixer, another_question, question, another_answer):
+    """Generate a crosscheck for another question for the same course and make sure GET param filter ignores it"""
 
-    assert len(got) == 0
+    another_answer = mixer.blend("homework.Answer", question=another_question)
+    mixer.blend("homework.AnswerCrossCheck", answer=another_answer, checker=api.user)
+
+    got = api.get(f"/api/v2/homework/crosschecks/?question={question.slug}")
+
+    assert len(got) == 1, "Should be only crosscheck for question"
+
+
+@pytest.mark.usefixtures("crosscheck", "crosscheck_for_question_of_another_course")
+def test_includes_crosschecks_for_questions_from_another_course_if_courses_match_the_group(api, question, question_of_another_course):
+    assert question_of_another_course.lesson_set.first().module.course.group == question.lesson_set.first().module.course.group
+    got = api.get(f"/api/v2/homework/crosschecks/?question={question.slug}")
+
+    assert len(got) == 2, "crosscheck_for_question_of_another_course should be included"
 
 
 def test_crosschecks_are_ordered_by_pk_1(api, question, crosscheck, another_crosscheck):
