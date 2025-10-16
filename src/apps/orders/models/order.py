@@ -57,9 +57,9 @@ class Order(TimestampedModel):
     ue_rate = models.DecimalField(_("Purchase-time UE rate"), decimal_places=2, max_digits=6, default=0)
     acquiring_percent = models.DecimalField(_("Acquiring percent"), max_digits=4, decimal_places=2, default=0)
 
-    course = ItemField(to="products.Course", verbose_name=_("Course"), null=True, blank=True, on_delete=models.PROTECT)
-    record = ItemField(to="products.LegacyRecord", verbose_name=_("Record"), null=True, blank=True, on_delete=models.PROTECT)
-    bundle = ItemField(to="products.LegacyBundle", verbose_name=_("Bundle"), null=True, blank=True, on_delete=models.PROTECT)
+    course = ItemField(to="products.Course", verbose_name=_("Course"), null=True, blank=True, on_delete=models.PROTECT)  # type: ignore[misc]
+    record = ItemField(to="products.LegacyRecord", verbose_name=_("Record"), null=True, blank=True, on_delete=models.PROTECT)  # type: ignore[misc]
+    bundle = ItemField(to="products.LegacyBundle", verbose_name=_("Bundle"), null=True, blank=True, on_delete=models.PROTECT)  # type: ignore[misc]
 
     amocrm_lead = models.OneToOneField("amocrm.AmoCRMOrderLead", on_delete=models.SET_NULL, null=True, blank=True, related_name="order")
     amocrm_transaction = models.OneToOneField("amocrm.AmoCRMOrderTransaction", on_delete=models.SET_NULL, null=True, blank=True, related_name="order")

@@ -19,7 +19,7 @@ class OrderPaid(DirectCRMEvent):
                 "status": "finished",
                 "lines": [
                     {
-                        "productId": self.order.course.slug,
+                        "productId": self.order.course.slug,  # type: ignore[attr-defined]
                         "quantity": 1,
                         "price": self.format_price(self.order.price),
                     }

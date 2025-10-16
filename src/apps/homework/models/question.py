@@ -126,7 +126,7 @@ class Question(TimestampedModel):
         return apps.get_model("products.Course").objects.filter(pk__in=legacy_course_ids).order_by("?").first()
 
     def get_lesson(self, user: User) -> Lesson | None:
-        purchased_courses = Course.objects.for_user(user)
+        purchased_courses = Course.objects.for_user(user)  # type: ignore[attr-defined]
 
         # if any lesson is directly purchased by the user -- return it
         lesson = self.lesson_set.filter(module__course__in=purchased_courses).order_by("-created").first()

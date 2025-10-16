@@ -161,8 +161,6 @@ class NewAnswerNotifier(BaseService):
 
     def get_users_to_notify(self) -> QuerySet[User]:
         """Get authors of ancestor answers, excluding current answer author"""
-        authors = self.answer.ancestors().values_list("author", flat=True)
-
-        authors = list(authors)  # have to execute this query cuz django-tree-queries fails to compile it
+        authors = list(self.answer.ancestors().values_list("author", flat=True))  # have to execute this query cuz django-tree-queries fails to compile it
 
         return User.objects.filter(pk__in=authors).exclude(pk=self.answer.author_id)

@@ -6,7 +6,7 @@ from core.admin import ModelForm
 
 
 class ChainChoiceField(forms.ModelChoiceField):
-    def label_from_instance(self, obj: Chain) -> str:  # type: ignore
+    def label_from_instance(self, obj: Chain) -> str:
         return f"{obj.course}, {obj}"
 
 

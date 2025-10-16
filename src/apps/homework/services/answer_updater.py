@@ -23,7 +23,7 @@ class AnswerUpdater(BaseService):
         previous_content = self.answer.content
 
         self.update()
-        self.write_auditlog(previous_content=previous_content)
+        self.write_auditlog(previous_content=previous_content)  # type: ignore [arg-type]
         return self.answer
 
     def get_validators(self) -> list[Callable]:

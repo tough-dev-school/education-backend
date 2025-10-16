@@ -15,7 +15,7 @@ class AmoCRMLeadDTO:
     def create(self) -> int:
         """Create lead for given order and returns lead_id"""
         lead_id = self._create_lead()
-        self._link_course_to_lead(lead_id=lead_id, course_id=self.order.course.amocrm_course.amocrm_id)
+        self._link_course_to_lead(lead_id=lead_id, course_id=self.order.course.amocrm_course.amocrm_id)  # type: ignore[attr-defined]
         self._set_price_from_order(lead_id=lead_id)  # update lead price, cuz the particular order price might be different from the course price
         return lead_id
 

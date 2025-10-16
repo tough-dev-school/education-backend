@@ -40,8 +40,8 @@ class User(TestUtilsMixin, AbstractUser):
         blank=True,
     )
 
-    class Meta(AbstractUser.Meta):
-        abstract = False  # type: ignore[assignment]
+    class Meta:
+        abstract = False
         indexes = [GinIndex(fields=["tags"])]
         verbose_name = _("user")
         verbose_name_plural = _("users")
