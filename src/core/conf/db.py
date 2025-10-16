@@ -7,6 +7,7 @@ DATABASES = {
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"  # https://docs.djangoproject.com/en/3.2/releases/3.2/#customizing-type-of-auto-created-primary-keys
+FORMS_URLFIELD_ASSUME_HTTPS = True
 
 if not env("DEBUG", cast=bool):
     DATABASES["default"]["CONN_MAX_AGE"] = 600
