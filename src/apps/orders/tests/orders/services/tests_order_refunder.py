@@ -128,6 +128,11 @@ def paid_stripe_order(paid_order):
 
 
 @pytest.fixture
+def paid_b2b_order(paid_order):
+    return paid_order.update(bank_id="b2b")
+
+
+@pytest.fixture
 def refund():
     def _refund(order, amount):
         return OrderRefunder(order=order, amount=amount)()
@@ -135,6 +140,7 @@ def refund():
     return _refund
 
 
+@pytest.mark.slow
 @pytest.mark.usefixtures("mock_tinkoff_refund")
 def test_5_per_day_limit(factory, paid_tinkoff_order, refund):
     with freeze_time("2022-12-12 12:00Z", tick=True):
@@ -166,10 +172,11 @@ def test_refund_negative_amount(paid_tinkoff_order, refund):
 
 
 @pytest.mark.freeze_time("2032-12-01 15:30Z")
-def test_set_order_unpaid_and_unshipped(paid_order, refund):
-    refund(paid_order, paid_order.price)
+def test_set_order_unpaid_and_unshipped(paid_order):
+    paid_order.refund(amount=paid_order.price)
 
     paid_order.refresh_from_db()
+
     assert paid_order.paid is not None
     assert paid_order.shipped is None
     assert not hasattr(paid_order, "study"), "Study record should be deleted at this point"
@@ -187,13 +194,6 @@ def test_call_unshipper_to_unship(paid_order, refund, spy_unshipper):
     spy_unshipper.assert_called_once()
     called_service = spy_unshipper.call_args.args[0]
     assert called_service.order == paid_order
-
-
-def test_do_not_call_bank_refund_if_order_unpaid(not_paid_order, refund, mock_dolyame_refund):
-    with pytest.raises(OrderRefunderException):
-        refund(not_paid_order, 0)
-
-    mock_dolyame_refund.assert_not_called()
 
 
 def test_do_not_call_bank_refund_if_refunds_disabled(paid_order, refund, mock_dolyame_refund, settings):
@@ -406,12 +406,35 @@ def test_partial_refund_notification_email_context_and_template_correct(refund, 
 
 
 @pytest.mark.usefixtures("mock_tinkoff_refund")
-def test_partial_refund_not_set_unpaid(paid_tinkoff_order, refund):
-    refund(paid_tinkoff_order, 500)
+def test_partial_refund_does_not_set_order_to_unpaid(paid_tinkoff_order):
+    paid_tinkoff_order.refund(amount=500)
 
     paid_tinkoff_order.refresh_from_db()
+
     assert paid_tinkoff_order.price == 499
     assert paid_tinkoff_order.paid is not None
+
+
+def test_full_refund_on_b2b_order(paid_b2b_order, spy_unshipper):
+    paid_b2b_order.refund(amount=paid_b2b_order.price)
+
+    paid_b2b_order.refresh_from_db()
+
+    assert paid_b2b_order.paid is not None, "should remain paid"
+    assert paid_b2b_order.shipped is None, "should be set to not-shipped"
+    spy_unshipper.assert_called_once()
+
+
+def test_full_refund_on_shipped_but_not_paid_b2b_order(paid_b2b_order, spy_unshipper):
+    paid_b2b_order.update(paid=None, price=100500)
+    assert paid_b2b_order.shipped is not None
+
+    paid_b2b_order.refund()
+    paid_b2b_order.refresh_from_db()
+
+    assert paid_b2b_order.paid is None, "should remain not-paid"
+    assert paid_b2b_order.shipped is None, "should be set to not-shipped"
+    spy_unshipper.assert_called_once()
 
 
 @pytest.mark.usefixtures("mock_tinkoff_refund")
