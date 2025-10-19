@@ -71,7 +71,7 @@ class DealCompleter(BaseService):
 
         send_telegram_message.delay(
             chat_id=settings.HAPPINESS_MESSAGES_CHAT_ID,
-            text=f"💰+{format_price(self.deal.price)} ₽, {self.deal.customer}, {self.deal.course} продавец {self.deal.author}",
+            text=f"💰+{format_price(self.deal.price)} {currency.get_symbol(self.deal.currency)}, {self.deal.customer}, {self.deal.course} продавец {self.deal.author}",
         )
 
     def write_auditlog(self) -> None:

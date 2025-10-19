@@ -4,12 +4,10 @@ import pytest
 
 from apps.orders.models import Order
 
-pytestmark = [pytest.mark.django_db]
-
-
-@pytest.fixture(autouse=True)
-def _usd_rate(factory):
-    factory.currency(name="USD", rate=Decimal(100))
+pytestmark = [
+    pytest.mark.django_db,
+    pytest.mark.usefixtures("usd"),
+]
 
 
 def test_orders_are_created(completer, factory):
@@ -66,6 +64,7 @@ def test_price_calculation(completer, factory, student_count, single_order_price
     assert str(order.price) == single_order_price
 
 
+@pytest.mark.usefixtures("usd")
 @pytest.mark.parametrize(
     ("currency", "single_order_price"),
     [

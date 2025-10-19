@@ -27,7 +27,7 @@ class Deal(TimestampedModel):
     canceled = models.DateTimeField(_("Date when the deal got canceled"), null=True, blank=True)
     shipped_without_payment = models.DateTimeField(_("Date when the deal got shipped without payment"), null=True, blank=True)
     price = models.DecimalField(_("Price"), max_digits=9, decimal_places=2)
-    currency = models.CharField(_("Currency"), choices=CurrencyCodes.choices, default="RUB")
+    currency = models.CharField(_("Currency"), choices=CurrencyCodes.choices(), default="RUB")
     currency_rate_on_creation = models.DecimalField(max_digits=9, decimal_places=2, null=True)
 
     class Meta:

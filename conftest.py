@@ -2,7 +2,6 @@ import pytest
 from django.core.cache import cache
 from django.utils import translation
 
-# fmt: off
 pytest_plugins = [
     "apps.diplomas.factory",
     "apps.orders.factory",
@@ -10,26 +9,25 @@ pytest_plugins = [
     "apps.products.factory",
     "apps.banking.factory",
     "core.factory",
-
     "apps.products.fixtures",
+    "apps.banking.fixtures",
     "apps.users.fixtures",
     "apps.lms.factory",
     "apps.homework.factory",
     "apps.dashamail.fixtures",
     "core.fixtures",
 ]
-# fmt: on
 
 
 @pytest.fixture(autouse=True)
-def _cache() -> None:  # type: ignore
+def _cache() -> None:
     """Clear django cache after each test run."""
     yield
     cache.clear()
 
 
 @pytest.fixture
-def _en() -> None: # type: ignore
+def _en() -> None:
     """Disable django translation"""
-    with translation.override('en'):
+    with translation.override("en"):
         yield

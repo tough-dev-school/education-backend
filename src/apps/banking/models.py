@@ -5,7 +5,7 @@ from core.models import TimestampedModel, models
 
 
 class Currency(TimestampedModel):
-    name = models.CharField(max_length=4, unique=True, choices=CurrencyCodes.choices, db_index=True)
+    name = models.CharField(max_length=4, unique=True, choices=CurrencyCodes.choices(), db_index=True)
     rate = models.DecimalField(max_digits=6, decimal_places=2, verbose_name=_("Rate"))
 
     class Meta:

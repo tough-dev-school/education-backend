@@ -44,6 +44,15 @@ def test_message_text(send_message, completer, deal):
     completer(deal=deal)()
 
     assert str(deal.author) in send_message.call_args[1]["text"]
-    assert "200\xa0500" in send_message.call_args[1]["text"]
+    assert "200\xa0500 ₽" in send_message.call_args[1]["text"]
     assert "Росатом" in send_message.call_args[1]["text"]
     assert "безопасность" in send_message.call_args[1]["text"]
+
+
+@pytest.mark.usefixtures("usd")
+def test_currency(send_message, completer, deal):
+    deal.update(price=Decimal(100), currency="usd")
+
+    completer(deal=deal)()
+
+    assert "100 $" in send_message.call_args[1]["text"]
