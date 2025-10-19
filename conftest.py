@@ -3,18 +3,19 @@ from django.core.cache import cache
 from django.utils import translation
 
 pytest_plugins = [
-    "apps.diplomas.factory",
-    "apps.orders.factory",
     "apps.b2b.factory",
-    "apps.products.factory",
     "apps.banking.factory",
-    "core.factory",
-    "apps.products.fixtures",
     "apps.banking.fixtures",
-    "apps.users.fixtures",
-    "apps.lms.factory",
-    "apps.homework.factory",
     "apps.dashamail.fixtures",
+    "apps.diplomas.factory",
+    "apps.homework.factory",
+    "apps.lms.factory",
+    "apps.orders.factory",
+    "apps.orders.fixtures",
+    "apps.products.factory",
+    "apps.products.fixtures",
+    "apps.users.fixtures",
+    "core.factory",
     "core.fixtures",
 ]
 

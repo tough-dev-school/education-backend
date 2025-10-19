@@ -2,7 +2,6 @@ import pytest
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures("_set_current_user"),
 ]
 
 
@@ -36,8 +35,8 @@ def test_single_user_in_two_orders(course, order, another_order):
     assert len(course.get_purchased_users()) == 1
 
 
-def test_non_purchased(course, order):
-    order.refund()
+def test_non_purchased(course, order, refund):
+    refund(order)
 
     assert len(course.get_purchased_users()) == 0
 

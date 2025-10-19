@@ -12,11 +12,6 @@ def disable_notion_cache(mocker):
     return mocker.patch("apps.notion.cache.should_bypass_cache", return_value=True)
 
 
-@pytest.fixture(autouse=True)
-def set_current_user(_set_current_user):
-    return _set_current_user
-
-
 @pytest.fixture
 def api(api):
     """We test it as normal student, not superuser to check permissions"""
@@ -35,8 +30,8 @@ def order(factory, course, api):
 
 
 @pytest.fixture
-def unpaid_order(order):
-    order.refund(order.price)
+def unpaid_order(order, refund):
+    refund(order)
 
     return order
 

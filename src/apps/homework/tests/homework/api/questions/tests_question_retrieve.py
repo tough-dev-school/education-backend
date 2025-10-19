@@ -54,9 +54,8 @@ def test_breadcrumbs(api, question, purchase):
     assert got["course"]["name"] == purchase.course.name
 
 
-@pytest.mark.usefixtures("_set_current_user")
-def test_breadcrumbs_if_user_purchased_same_course_from_the_group(api, question, question_of_another_course, purchase, purchase_of_another_course):
-    purchase_of_another_course.refund()
+def test_breadcrumbs_if_user_purchased_same_course_from_the_group(api, refund, question, question_of_another_course, purchase, purchase_of_another_course):
+    refund(purchase_of_another_course)
     lesson = question.lesson_set.first()
 
     got = api.get(f"/api/v2/homework/questions/{question_of_another_course.slug}/")
@@ -97,10 +96,9 @@ def test_ok_for_superusers_even_when_they_did_not_purchase_the_course(api, quest
     api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=200)
 
 
-@pytest.mark.usefixtures("_set_current_user")
-def test_fail_if_user_has_not_purchased_same_course_from_the_group(api, mixer, purchase, purchase_of_another_course, question):
+def test_fail_if_user_has_not_purchased_same_course_from_the_group(api, mixer, refund, purchase, purchase_of_another_course, question):
     """Same as above, just to make sure above test works"""
-    purchase.refund()
+    refund(purchase)
     purchase_of_another_course.course.update(group=mixer.blend("products.Group"))  # Another group that user has not purchased
 
     api.get(f"/api/v2/homework/questions/{question.slug}/", expected_status_code=404)
