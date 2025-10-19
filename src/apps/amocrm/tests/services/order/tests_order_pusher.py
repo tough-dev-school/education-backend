@@ -48,9 +48,9 @@ def not_paid_order_with_lead(factory, user, course, amocrm_lead):
 
 
 @pytest.fixture
-def returned_order_with_lead(factory, user, course, amocrm_lead):
+def returned_order_with_lead(factory, user, course, amocrm_lead, refund):
     order = factory.order(user=user, item=course, is_paid=True, author=user, amocrm_lead=amocrm_lead)
-    order.refund()
+    refund(order)
     return order
 
 

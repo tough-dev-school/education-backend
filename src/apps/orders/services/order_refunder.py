@@ -11,6 +11,7 @@ from django.utils.translation import gettext as _
 from apps.banking.base import Bank
 from apps.banking.selector import get_bank
 from apps.dashamail import tasks as dashamail
+from apps.dashamail.enabled import dashamail_enabled
 from apps.mailing import tasks as mailing_tasks
 from apps.orders import human_readable
 from apps.orders.models import Order, Refund
@@ -78,7 +79,8 @@ class OrderRefunder(BaseService):
         self.notify_dangerous_operation_happened()
 
         self.update_user_tags()
-        self.update_dashamail()
+        if dashamail_enabled():
+            self.update_dashamail()
         return refund
 
     def get_validators(self) -> list:
@@ -101,7 +103,7 @@ class OrderRefunder(BaseService):
             raise OrderRefunderException(_("Partial refund is not available"))
 
     def validate_amount(self) -> None:
-        if not self.order.paid:
+        if not self.order.paid and not self.order.shipped:
             raise OrderRefunderException(_("No refunds for non-paid orders"))
         if self.order.price < self._amount:
             raise OrderRefunderException(_("Amount to refund is more than available"))

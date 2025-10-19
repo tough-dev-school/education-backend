@@ -3,7 +3,7 @@ from django.utils import timezone
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures("purchase", "_set_current_user"),
+    pytest.mark.usefixtures("purchase"),
 ]
 
 
