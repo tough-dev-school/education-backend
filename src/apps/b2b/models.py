@@ -1,9 +1,10 @@
+from decimal import Decimal
 from typing import TYPE_CHECKING
 
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
-from apps.banking.currency import CurrencyCodes
+from apps.banking import currency
 from core.models import TimestampedModel, models
 
 if TYPE_CHECKING:
@@ -27,7 +28,7 @@ class Deal(TimestampedModel):
     canceled = models.DateTimeField(_("Date when the deal got canceled"), null=True, blank=True)
     shipped_without_payment = models.DateTimeField(_("Date when the deal got shipped without payment"), null=True, blank=True)
     price = models.DecimalField(_("Price"), max_digits=9, decimal_places=2)
-    currency = models.CharField(_("Currency"), choices=CurrencyCodes.choices(), default="RUB")
+    currency = models.CharField(_("Currency"), choices=currency.CurrencyCodes.choices(), default="RUB")
     currency_rate_on_creation = models.DecimalField(max_digits=9, decimal_places=2, null=True)
 
     class Meta:
@@ -49,6 +50,12 @@ class Deal(TimestampedModel):
             return pgettext_lazy("deals", "Shipped without payment")
 
         return pgettext_lazy("deals", "In progress")
+
+    def get_single_order_price(self) -> Decimal:
+        try:
+            return Decimal(self.price * currency.get_rate_or_default(self.currency) / self.students.count())
+        except ArithmeticError:
+            return Decimal(0)
 
 
 class Student(TimestampedModel):

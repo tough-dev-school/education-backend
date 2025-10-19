@@ -82,6 +82,6 @@ def test_currency_price_calculation(completer, factory, currency, single_order_p
     assert str(order.price) == single_order_price
 
 
-def test_zero_price(completer, factory):
+def test_zero_price(factory):
     deal = factory.deal(student_count=0, price=Decimal(0))
-    assert completer(deal=deal).get_single_order_price() == 0
+    assert deal.get_single_order_price() == 0

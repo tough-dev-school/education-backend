@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from decimal import Decimal
 
 from django.conf import settings
 from django.contrib.admin.models import CHANGE
@@ -28,7 +27,7 @@ class DealCompleter(BaseService):
 
         orders: list[Order] = []
 
-        orders += create_orders(deal=self.deal, single_order_price=self.get_single_order_price())
+        orders += create_orders(deal=self.deal, single_order_price=self.deal.get_single_order_price())
         orders += assign_existing_orders(deal=self.deal)
 
         if not self.ship_only:
@@ -40,12 +39,6 @@ class DealCompleter(BaseService):
             self.ship_without_payment(orders)  # this will only ship
             self.mark_deal_as_shipped_without_payment()
             self.write_auditlog()
-
-    def get_single_order_price(self) -> Decimal:
-        try:
-            return Decimal(self.deal.price * currency.get_rate_or_default(self.deal.currency) / self.deal.students.count())
-        except ArithmeticError:
-            return Decimal(0)
 
     def mark_deal_as_complete(self) -> None:
         self.deal.completed = timezone.now()
