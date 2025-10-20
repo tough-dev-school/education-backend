@@ -4,7 +4,6 @@ import django.db.models.deletion
 from django.db import migrations, models
 
 
-# type: ignore
 def populate_legacy_course_id(apps, schema_editor):  # NOQA: ARG001
     for question in apps.get_model("homework.Question").objects.all():
         course_ids = question.courses.values_list("id", flat=True)

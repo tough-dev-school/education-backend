@@ -13,7 +13,7 @@ __all__ = [
 
 
 class TestUtilsMixin:
-    def update(self: "models.Model", **kwargs: "Any") -> "models.Model":  # type: ignore[misc]
+    def update(self: "models.Model", **kwargs: "Any") -> "models.Model":
         for key, value in kwargs.items():
             setattr(self, key, value)
 

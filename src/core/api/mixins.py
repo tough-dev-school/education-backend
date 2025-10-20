@@ -29,4 +29,4 @@ class DisablePaginationWithQueryParamMixin:
         if self.pagination_disabled:
             return None
 
-        return super().paginate_queryset(queryset)  # type: ignore[safe-super]
+        return super().paginate_queryset(queryset)
