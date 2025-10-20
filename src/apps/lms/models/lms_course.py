@@ -18,7 +18,7 @@ class CourseQuerySet(QuerySet):
         )
 
 
-class CourseManager(models.Manager.from_queryset(CourseQuerySet)):  # type: ignore
+class CourseManager(models.Manager.from_queryset(CourseQuerySet)):
     def get_queryset(self) -> CourseQuerySet:
         return super().get_queryset().select_related("group")
 
@@ -26,7 +26,7 @@ class CourseManager(models.Manager.from_queryset(CourseQuerySet)):  # type: igno
 class Course(_Course):
     """Proxy model for admin matters"""
 
-    objects = CourseManager()  # type: ignore
+    objects = CourseManager()
 
     class Meta:
         proxy = True

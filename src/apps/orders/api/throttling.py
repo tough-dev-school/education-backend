@@ -3,9 +3,9 @@ from rest_framework.throttling import AnonRateThrottle
 from core.throttling import ConfigurableThrottlingMixin
 
 
-class OrderDraftThrottle(ConfigurableThrottlingMixin, AnonRateThrottle):  # type: ignore
+class OrderDraftThrottle(ConfigurableThrottlingMixin, AnonRateThrottle):
     scope = "order-draft"
 
 
-class PurchaseThrottle(ConfigurableThrottlingMixin, AnonRateThrottle):  # type: ignore
+class PurchaseThrottle(ConfigurableThrottlingMixin, AnonRateThrottle):
     scope = "purchase"

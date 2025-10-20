@@ -49,7 +49,7 @@ class AnswerQuerySet(models.QuerySet):
 
     def with_tree_fields(self) -> "AnswerQuerySet":
         self.query.__class__ = TreeQuery
-        self.query._setup_query()  # type: ignore[attr-defined]
+        self.query._setup_query()
         return self
 
     def ancestors(self, of: "Answer") -> "AnswerQuerySet":
@@ -61,13 +61,13 @@ class AnswerQuerySet(models.QuerySet):
             of = self.with_tree_fields().get(pk=of.pk if hasattr(of, "pk") else of)
 
         ids = of.tree_path[:-1]
-        return self.with_tree_fields().filter(pk__in=ids).extra(order_by=["__tree.tree_depth"])  # type: ignore[return-value]
+        return self.with_tree_fields().filter(pk__in=ids).extra(order_by=["__tree.tree_depth"])
 
     def descendants(self, of: "Answer") -> "AnswerQuerySet":
         pk = of.pk if hasattr(of, "pk") else of
         queryset = self.with_tree_fields().extra(where=["%s = ANY(__tree.tree_path)"], params=[pk])
 
-        return queryset.exclude(pk=pk)  # type: ignore[return-value]
+        return queryset.exclude(pk=pk)
 
 
 AnswerManager = models.Manager.from_queryset(AnswerQuerySet)

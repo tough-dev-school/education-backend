@@ -26,7 +26,7 @@ class EmailConfiguration(TimestampedModel):
         if self.course is not None:
             return str(self.course)
 
-        return super().__str__()  # type: ignore
+        return super().__str__()
 
     @property
     def backend_name(self) -> str:

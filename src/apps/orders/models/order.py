@@ -57,9 +57,9 @@ class Order(TimestampedModel):
     ue_rate = models.DecimalField(_("Purchase-time UE rate"), decimal_places=2, max_digits=6, default=0)
     acquiring_percent = models.DecimalField(_("Acquiring percent"), max_digits=4, decimal_places=2, default=0)
 
-    course = ItemField(to="products.Course", verbose_name=_("Course"), null=True, blank=True, on_delete=models.PROTECT)  # type: ignore[misc]
-    record = ItemField(to="products.LegacyRecord", verbose_name=_("Record"), null=True, blank=True, on_delete=models.PROTECT)  # type: ignore[misc]
-    bundle = ItemField(to="products.LegacyBundle", verbose_name=_("Bundle"), null=True, blank=True, on_delete=models.PROTECT)  # type: ignore[misc]
+    course = ItemField(to="products.Course", verbose_name=_("Course"), null=True, blank=True, on_delete=models.PROTECT)
+    record = ItemField(to="products.LegacyRecord", verbose_name=_("Record"), null=True, blank=True, on_delete=models.PROTECT)
+    bundle = ItemField(to="products.LegacyBundle", verbose_name=_("Bundle"), null=True, blank=True, on_delete=models.PROTECT)
 
     amocrm_lead = models.OneToOneField("amocrm.AmoCRMOrderLead", on_delete=models.SET_NULL, null=True, blank=True, related_name="order")
     amocrm_transaction = models.OneToOneField("amocrm.AmoCRMOrderTransaction", on_delete=models.SET_NULL, null=True, blank=True, related_name="order")
@@ -92,7 +92,7 @@ class Order(TimestampedModel):
         return self.author_id != self.user_id
 
     @property
-    def item(self) -> Product:  # type: ignore
+    def item(self) -> Product:
         """Find the attached item. Simple replacement for ContentType framework"""
         for field in self.__class__._meta.get_fields():
             if getattr(field, "_is_item", False):
@@ -103,7 +103,7 @@ class Order(TimestampedModel):
     def _iterate_items(cls) -> Iterable[models.fields.Field]:
         for field in cls._meta.get_fields():
             if getattr(field, "_is_item", False):
-                yield field  # type: ignore
+                yield field
 
     @classmethod
     def get_item_foreignkey(cls, item: Product) -> str | None:

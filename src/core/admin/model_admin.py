@@ -3,7 +3,7 @@ from django.contrib import admin
 from core.admin.mixin import AppAdminMixin
 
 
-class ModelAdmin(AppAdminMixin, admin.ModelAdmin):  # type: ignore
+class ModelAdmin(AppAdminMixin, admin.ModelAdmin):
     pass
 
 

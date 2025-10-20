@@ -48,8 +48,8 @@ class PromoCodeAdmin(ModelAdmin):
 
     actions = [actions.deactivate]
 
-    def get_queryset(self, request: Request) -> QuerySet:  # type: ignore
-        return super().get_queryset(request).with_order_count()  # type: ignore
+    def get_queryset(self, request: Request) -> QuerySet:
+        return super().get_queryset(request).with_order_count()
 
     @admin.display(description=_("Order count"), ordering="order_count")
     def order_count(self, obj: PromoCode | None = None) -> str:

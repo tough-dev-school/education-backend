@@ -101,7 +101,7 @@ class AppAdminMixin:
 
     def _natural_datetime(self, date: datetime) -> str:
         local = timezone.localtime(date)
-        return capfirst(naturalday(local)) + " " + self._time(local)  # type: ignore
+        return capfirst(naturalday(local)) + " " + self._time(local)
 
     def _time(self, date: datetime) -> str:
         return time(date, "TIME_FORMAT")

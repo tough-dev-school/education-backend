@@ -59,7 +59,7 @@ class UserCreator(BaseService):
 
         serializer.save()
 
-        return serializer.instance  # type: ignore
+        return serializer.instance
 
     @staticmethod
     def push_to_dashamail(user: User) -> None:

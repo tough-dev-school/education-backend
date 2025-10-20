@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 
 class SuperUserOnly(BasePermission):
     def has_permission(self, request: Request, view: APIView) -> bool:
-        return request.user.is_superuser  # type: ignore[union-attr]
+        return request.user.is_superuser
 
 
 __all__ = [

@@ -13,7 +13,7 @@ class OrderStatusFilter(admin.SimpleListFilter):
     title = pgettext_lazy("orders", "status")
     parameter_name = "status"
 
-    def lookups(self, *args: Any, **kwargs: dict[str, Any]) -> list[tuple]:  # type: ignore
+    def lookups(self, *args: Any, **kwargs: dict[str, Any]) -> list[tuple]:
         return [
             ("not_paid", _("Not paid")),
             ("paid", _("Paid")),
@@ -28,10 +28,10 @@ class OrderStatusFilter(admin.SimpleListFilter):
             return None
 
         if value == "not_paid":
-            return queryset.not_paid().filter(shipped__isnull=True)  # type: ignore
+            return queryset.not_paid().filter(shipped__isnull=True)
 
         if value == "paid":
-            return queryset.paid()  # type: ignore
+            return queryset.paid()
 
         if value == "shipped_without_payment":
-            return queryset.shipped_without_payment()  # type: ignore
+            return queryset.shipped_without_payment()

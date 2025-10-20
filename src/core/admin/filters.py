@@ -31,25 +31,25 @@ class BooleanFilter(admin.SimpleListFilter):
             return queryset
 
         if self.value() == "t":
-            return self.t(request, queryset)  # type: ignore
+            return self.t(request, queryset)
 
-        return self.f(request, queryset)  # type: ignore
+        return self.f(request, queryset)
 
 
 class DefaultTrueBooleanFilter(BooleanFilter):
     def queryset(self, request: HttpRequest, queryset: QuerySet) -> QuerySet:
         if not self.value() or self.value() == "t":
-            return self.t(request, queryset)  # type: ignore
+            return self.t(request, queryset)
 
-        return self.f(request, queryset)  # type: ignore
+        return self.f(request, queryset)
 
 
 class DefaultFalseBooleanFilter(BooleanFilter):
     def queryset(self, request: HttpRequest, queryset: QuerySet) -> QuerySet:
         if not self.value() or self.value() == "f":
-            return self.f(request, queryset)  # type: ignore
+            return self.f(request, queryset)
 
-        return self.t(request, queryset)  # type: ignore
+        return self.t(request, queryset)
 
 
 class ArchivedFilter(DefaultFalseBooleanFilter):

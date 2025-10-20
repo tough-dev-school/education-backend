@@ -26,12 +26,12 @@ class LessonViewSet(DisablePaginationWithQueryParamMixin, ReadOnlyAppViewSet):
     queryset = Lesson.objects.for_viewset()
 
     def get_queryset(self) -> LessonQuerySet:
-        queryset: LessonQuerySet = super().get_queryset()  # type: ignore
+        queryset: LessonQuerySet = super().get_queryset()
 
-        if self.request.user.has_perm("studying.purchased_all_courses"):  # type: ignore[union-attr]
+        if self.request.user.has_perm("studying.purchased_all_courses"):
             return queryset
 
-        return queryset.for_user(self.request.user).exclude_not_opened()  # type: ignore
+        return queryset.for_user(self.request.user).exclude_not_opened()
 
 
 @method_decorator(
@@ -49,12 +49,12 @@ class ModuleViewSet(DisablePaginationWithQueryParamMixin, ReadOnlyAppViewSet):
     queryset = Module.objects.for_viewset()
 
     def get_queryset(self) -> ModuleQuerySet:
-        queryset: ModuleQuerySet = super().get_queryset()  # type: ignore
+        queryset: ModuleQuerySet = super().get_queryset()
 
-        if self.request.user.has_perm("studying.purchased_all_courses"):  # type: ignore[union-attr]
+        if self.request.user.has_perm("studying.purchased_all_courses"):
             return queryset
 
-        queryset = queryset.exclude_hidden().for_user(self.request.user)  # type: ignore
+        queryset = queryset.exclude_hidden().for_user(self.request.user)
         if self.action == "retrieve":  # hide detail view if the module is not opened yet
             queryset = queryset.exclude_not_opened()
 

@@ -9,7 +9,7 @@ if not env("DEBUG") and SENTRY_DSN:
     from sentry_sdk.integrations.httpx import HttpxIntegration
     from sentry_sdk.integrations.redis import RedisIntegration
 
-    def strip_transactions(event, hint):  # type: ignore[no-untyped-def]
+    def strip_transactions(event, hint):
         del hint
 
         if event["transaction"] in (

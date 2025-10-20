@@ -7,7 +7,7 @@ from core.request import set_request, unset_request
 
 def set_global_request(get_response: Callable[[HttpRequest], HttpResponse]) -> Callable[[HttpRequest], HttpResponse]:
     def middleware(request: HttpRequest) -> HttpResponse:
-        set_request(request)  # type: ignore
+        set_request(request)
 
         response = get_response(request)
 

@@ -66,7 +66,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
         """Create an answer"""
 
         answer = AnswerCreator(
-            question_slug=request.data.get("question"),  # type: ignore
+            question_slug=request.data.get("question"),
             parent_slug=request.data.get("parent"),
             content=request.data.get("content", {}),
         )()
@@ -113,7 +113,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
     def get_queryset(self) -> AnswerQuerySet:
         queryset = super().get_queryset()
 
-        queryset = self.limit_queryset_to_user(queryset)  # type: ignore
+        queryset = self.limit_queryset_to_user(queryset)
         queryset = self.limit_queryset_for_list(queryset)
 
         return queryset.with_children_count().order_by("created").prefetch_reactions()
@@ -133,7 +133,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
 
     @property
     def user(self) -> User:
-        return self.request.user  # type: ignore
+        return self.request.user
 
 
 class ReactionViewSet(CreateDeleteAppViewSet):
@@ -152,7 +152,7 @@ class ReactionViewSet(CreateDeleteAppViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data.copy()
-        reaction = ReactionCreator(emoji=data.get("emoji"), slug=data.get("slug"), author=self.request.user, answer=self.answer)()  # type: ignore
+        reaction = ReactionCreator(emoji=data.get("emoji"), slug=data.get("slug"), author=self.request.user, answer=self.answer)()
 
         Serializer = self.get_serializer_class(action="retrieve")
         return Response(Serializer(reaction).data, status=201)

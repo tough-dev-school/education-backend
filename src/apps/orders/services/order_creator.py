@@ -84,7 +84,7 @@ class OrderCreator(BaseService):
         return Order.objects.create(
             user=self.user,
             author=self.get_author(),
-            price=self.price,  # type: ignore
+            price=self.price,
             promocode=self.promocode,
             deal=self.deal,
             bank_id=self.desired_bank,

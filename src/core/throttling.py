@@ -12,7 +12,7 @@ class ConfigurableThrottlingMixin:
         return super().allow_request(*args, **kwargs)  # type: ignore
 
 
-class PublicIDThrottle(ConfigurableThrottlingMixin, AnonRateThrottle):  # type: ignore
+class PublicIDThrottle(ConfigurableThrottlingMixin, AnonRateThrottle):
     """Throttle for any authorization views."""
 
     scope = "public-id"

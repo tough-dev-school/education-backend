@@ -92,7 +92,7 @@ class AnswerCreator(BaseService):
         return instance.parent.answercrosscheck_set.filter(checker=self.author).exists()
 
     def complete_crosscheck(self, instance: Answer) -> None:
-        parent: Answer = instance.parent  # type: ignore[assignment]
+        parent: Answer = instance.parent
         parent.answercrosscheck_set.filter(checker=self.author).update(checked=timezone.now())
 
     def validate_content_field(self) -> None:

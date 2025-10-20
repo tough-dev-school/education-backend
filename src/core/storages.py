@@ -1,5 +1,5 @@
 from django.core.files import File
-from storages.backends.s3boto3 import S3Boto3Storage  # type: ignore[import-untyped]
+from storages.backends.s3boto3 import S3Boto3Storage
 
 
 class ProdReadOnlyStorage(S3Boto3Storage):
