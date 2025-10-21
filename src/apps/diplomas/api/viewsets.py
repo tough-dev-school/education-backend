@@ -25,7 +25,7 @@ class DiplomaViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
         """Filter diplomas only for current user"""
         queryset: QuerySet[Diploma] = super().get_queryset()
 
-        if self.action != "retrieve" and not self.request.user.has_perm("diplomas.access_all_diplomas"):  # type: ignore[union-attr]  # type: ignore[union-attr]
+        if self.action != "retrieve" and not self.request.user.has_perm("diplomas.access_all_diplomas"):
             queryset = queryset.for_user(self.request.user)  # type: ignore
 
         return queryset

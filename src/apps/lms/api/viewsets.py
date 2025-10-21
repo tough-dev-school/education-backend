@@ -28,7 +28,7 @@ class LessonViewSet(DisablePaginationWithQueryParamMixin, ReadOnlyAppViewSet):
     def get_queryset(self) -> LessonQuerySet:
         queryset: LessonQuerySet = super().get_queryset()  # type: ignore
 
-        if self.request.user.has_perm("studying.purchased_all_courses"):  # type: ignore[union-attr]
+        if self.request.user.has_perm("studying.purchased_all_courses"):
             return queryset
 
         return queryset.for_user(self.request.user).exclude_not_opened()  # type: ignore
@@ -51,7 +51,7 @@ class ModuleViewSet(DisablePaginationWithQueryParamMixin, ReadOnlyAppViewSet):
     def get_queryset(self) -> ModuleQuerySet:
         queryset: ModuleQuerySet = super().get_queryset()  # type: ignore
 
-        if self.request.user.has_perm("studying.purchased_all_courses"):  # type: ignore[union-attr]
+        if self.request.user.has_perm("studying.purchased_all_courses"):
             return queryset
 
         queryset = queryset.exclude_hidden().for_user(self.request.user)  # type: ignore
