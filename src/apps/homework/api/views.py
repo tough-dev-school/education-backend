@@ -34,7 +34,7 @@ class AnswerCommentView(generics.ListAPIView):
     def get_queryset(self) -> QuerySet[Answer]:
         queryset = super().get_queryset().root_only()  # type: ignore
 
-        if self.request.user.has_perm("homework.see_all_answers"):  # type: ignore[union-attr]
+        if self.request.user.has_perm("homework.see_all_answers"):
             return queryset
 
         return queryset.for_user(self.request.user)
