@@ -8,7 +8,7 @@ dependencies = [
     "bleach>=6.0.0,<7.0.0",
     "boto3>=1.28.48,<2.0.0",
     "celery==5.5.3",
-    "cmarkgfm>=2024.0.0,<2025.0.0",
+    "cmarkgfm>=2025.10.22,<2025.11.0",
     "dj-rest-auth>=7.0.0,<8.0.0",
     "django-admin-sortable2>=2.2.4,<3.0.0",
     "django-anymail>=13.0.0,<14.0.0",
