@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-28 10:22+0300\n"
+"POT-Creation-Date: 2025-10-31 15:46+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -19,7 +19,7 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: apps/a12n/jwt.py:38
+#: apps/a12n/jwt.py:51
 msgid "Invalid token."
 msgstr ""
 
@@ -56,13 +56,13 @@ msgstr "Заказы"
 msgid "Status"
 msgstr "Статус"
 
-#: apps/b2b/admin/deals/admin.py:71 apps/b2b/models.py:29
+#: apps/b2b/admin/deals/admin.py:71 apps/b2b/models.py:30
 #: apps/orders/admin/orders/admin.py:103 apps/orders/models/order.py:45
 #: apps/products/admin/course.py:32 apps/products/admin/course.py:94
 msgid "Price"
 msgstr "Цена"
 
-#: apps/b2b/admin/deals/forms.py:14 apps/b2b/models.py:60
+#: apps/b2b/admin/deals/forms.py:14 apps/b2b/models.py:67
 #: apps/users/models.py:125
 msgid "Students"
 msgstr "Студенты"
@@ -85,74 +85,74 @@ msgstr "Имя"
 msgid "email"
 msgstr "Почта"
 
-#: apps/b2b/models.py:14
+#: apps/b2b/models.py:15
 #, fuzzy
 #| msgid "Customer"
 msgctxt "deals"
 msgid "Customer name"
 msgstr "Название"
 
-#: apps/b2b/models.py:17 apps/b2b/models.py:22
+#: apps/b2b/models.py:18 apps/b2b/models.py:23
 msgid "Customer"
 msgstr "Клиент"
 
-#: apps/b2b/models.py:18
+#: apps/b2b/models.py:19
 msgid "Customers"
 msgstr "Клиенты"
 
-#: apps/b2b/models.py:24
+#: apps/b2b/models.py:25
 msgid "Deal author"
 msgstr "Продавец"
 
-#: apps/b2b/models.py:25
+#: apps/b2b/models.py:26
 msgid "Comment"
 msgstr "Комментарий"
 
-#: apps/b2b/models.py:26
+#: apps/b2b/models.py:27
 msgid "Date when the deal got completed"
 msgstr "Завершена"
 
-#: apps/b2b/models.py:27
+#: apps/b2b/models.py:28
 msgid "Date when the deal got canceled"
 msgstr "Отменена"
 
-#: apps/b2b/models.py:28
+#: apps/b2b/models.py:29
 msgid "Date when the deal got shipped without payment"
 msgstr "Дата, когда студентов допустили до уроков без оплаты"
 
-#: apps/b2b/models.py:30 apps/banking/models.py:12
+#: apps/b2b/models.py:31 apps/banking/models.py:12
 msgid "Currency"
 msgstr "Валюта"
 
-#: apps/b2b/models.py:34 apps/orders/models/order.py:47
+#: apps/b2b/models.py:35 apps/orders/models/order.py:47
 msgid "Deal"
 msgstr "Сделка"
 
-#: apps/b2b/models.py:35
+#: apps/b2b/models.py:36
 msgid "Deals"
 msgstr "Сделки"
 
-#: apps/b2b/models.py:43
+#: apps/b2b/models.py:44
 msgctxt "deals"
 msgid "Canceled"
 msgstr "Отменена"
 
-#: apps/b2b/models.py:46
+#: apps/b2b/models.py:47
 msgctxt "deals"
 msgid "Complete"
 msgstr "Завершена"
 
-#: apps/b2b/models.py:49
+#: apps/b2b/models.py:50
 msgctxt "deals"
 msgid "Shipped without payment"
 msgstr "Ждём денег"
 
-#: apps/b2b/models.py:51
+#: apps/b2b/models.py:52
 msgctxt "deals"
 msgid "In progress"
 msgstr "В работе"
 
-#: apps/b2b/models.py:59 apps/diplomas/admin/diploma.py:52
+#: apps/b2b/models.py:66 apps/diplomas/admin/diploma.py:52
 #: apps/studying/models.py:8 apps/users/models.py:124
 msgid "Student"
 msgstr "Студент"
@@ -165,19 +165,23 @@ msgstr "B2B"
 msgid "—"
 msgstr ""
 
-#: apps/banking/currency.py:10
+#: apps/banking/currency.py:14
 msgid "RUB"
 msgstr "Рубль"
 
-#: apps/banking/currency.py:11
+#: apps/banking/currency.py:15
 msgid "USD"
 msgstr "Доллар"
 
-#: apps/banking/currency.py:12
+#: apps/banking/currency.py:16
+msgid "EUR"
+msgstr "Евро"
+
+#: apps/banking/currency.py:17
 msgid "KZT"
 msgstr "Тенге"
 
-#: apps/banking/currency.py:13
+#: apps/banking/currency.py:18
 msgid "KIS (for zero-price orders)"
 msgstr "KIS (для бесплатных заказов)"
 
@@ -205,8 +209,8 @@ msgstr "Комиссии банков"
 msgid "Zero Price"
 msgstr "Бесплатно"
 
-#: apps/chains/admin/chain.py:13 apps/lms/admin/module/admin.py:15
-#: apps/lms/models/module.py:57
+#: apps/chains/admin/chain.py:13 apps/homework/models/question.py:109
+#: apps/lms/models/module.py:57 core/admin/filters.py:58
 msgid "Archived"
 msgstr "В архиве"
 
@@ -226,14 +230,14 @@ msgstr "В списке только не запущенные и не заар�
 #: apps/chains/admin/message.py:44 apps/chains/models/chain.py:33
 #: apps/diplomas/admin/diploma.py:56 apps/homework/admin/answer/admin.py:56
 #: apps/homework/admin/crosscheck/admin.py:37
-#: apps/homework/admin/question/admin.py:38 apps/lms/admin/lesson/admin.py:61
+#: apps/homework/admin/question/admin.py:43 apps/lms/admin/lesson/admin.py:81
 #: apps/orders/models/order.py:60 apps/products/admin/filters.py:12
 #: apps/products/models/course.py:122 apps/studying/models.py:9
 msgid "Course"
 msgstr "Курс"
 
 #: apps/chains/models/chain.py:32 apps/chains/models/message.py:32
-#: apps/homework/models/question.py:93 apps/lms/admin/lesson/inline.py:28
+#: apps/homework/models/question.py:104 apps/lms/admin/lesson/inline.py:28
 #: apps/lms/admin/lms_course/admin.py:26 apps/lms/admin/module/inline.py:23
 #: apps/lms/models/call.py:9 apps/lms/models/course_link.py:8
 #: apps/products/admin/course.py:18 apps/products/models/course.py:65
@@ -280,7 +284,7 @@ msgstr "Письмо"
 msgid "Email chain messages"
 msgstr "Письма"
 
-#: apps/diplomas/admin/diploma.py:60 apps/homework/models/question.py:102
+#: apps/diplomas/admin/diploma.py:60 apps/homework/models/question.py:114
 #: apps/lms/admin/lesson/inline.py:42
 msgid "Homework"
 msgstr "Домашка"
@@ -370,7 +374,7 @@ msgstr "Автор"
 msgid "Is root answer"
 msgstr "Первый ответ"
 
-#: apps/homework/admin/crosscheck/admin.py:44 apps/lms/admin/lesson/admin.py:76
+#: apps/homework/admin/crosscheck/admin.py:44 apps/lms/admin/lesson/admin.py:96
 msgid "Question"
 msgstr "Вопрос"
 
@@ -378,18 +382,18 @@ msgstr "Вопрос"
 msgid "View"
 msgstr ""
 
-#: apps/homework/admin/question/admin.py:42
+#: apps/homework/admin/question/admin.py:47
 #, fuzzy
 #| msgid "Tariff name"
 msgid "Tariff Name"
 msgstr "Тариф"
 
-#: apps/homework/admin/question/admin.py:63
+#: apps/homework/admin/question/admin.py:68
 msgid "Dispatch crosscheck"
 msgstr "Запустить p2p-проверку домашки"
 
-#: apps/homework/admin/question/form.py:13 apps/lms/admin/lesson/admin.py:65
-#: apps/lms/models/lesson.py:57 apps/lms/models/module.py:66
+#: apps/homework/admin/question/form.py:13 apps/lms/admin/lesson/admin.py:85
+#: apps/lms/models/lesson.py:55 apps/lms/models/module.py:66
 msgid "Module"
 msgstr "Модуль"
 
@@ -400,19 +404,25 @@ msgstr "Модуль"
 msgid "Lesson"
 msgstr "Урок"
 
-#: apps/homework/models/answer.py:62
+#: apps/homework/models/answer.py:78
+#, fuzzy
+#| msgid "Parent"
+msgid "parent"
+msgstr "Родитель"
+
+#: apps/homework/models/answer.py:84
 msgid "Exclude from cross-checking"
 msgstr "Исключить из p2p-проверки"
 
-#: apps/homework/models/answer.py:68
+#: apps/homework/models/answer.py:90
 msgid "Homework answer"
 msgstr "Ответ на домашку"
 
-#: apps/homework/models/answer.py:69
+#: apps/homework/models/answer.py:91
 msgid "Homework answers"
 msgstr "Ответы на домашку"
 
-#: apps/homework/models/answer.py:72
+#: apps/homework/models/answer.py:94
 msgid "May see answers from every user"
 msgstr "Видит все ответы на домашку"
 
@@ -420,15 +430,19 @@ msgstr "Видит все ответы на домашку"
 msgid "Date when crosscheck got checked"
 msgstr "Когда проверен"
 
-#: apps/homework/models/question.py:97
+#: apps/homework/models/question.py:108
 msgid "Deadline"
 msgstr "Дедлайн"
 
-#: apps/homework/models/question.py:103
+#: apps/homework/models/question.py:109 apps/lms/models/module.py:57
+msgid "Hidden from the admin, but still acessible by users"
+msgstr "В админке будет не видно, в LMS все будет по старому"
+
+#: apps/homework/models/question.py:115
 msgid "Homeworks"
 msgstr "Домашки"
 
-#: apps/homework/models/question.py:105
+#: apps/homework/models/question.py:117
 msgid "May see questions for all homeworks"
 msgstr "Видит все вопросы домашки"
 
@@ -444,7 +458,8 @@ msgstr "Реакции"
 msgid "Invalid emoji symbol"
 msgstr "Неверный символ emoji"
 
-#: apps/lms/admin/lesson/admin.py:69 apps/lms/admin/lesson/form.py:12
+#: apps/lms/admin/lesson/admin.py:77 apps/lms/admin/lesson/admin.py:89
+#: apps/lms/admin/lesson/form.py:12
 msgid "Material"
 msgstr "Страница в ноушене"
 
@@ -460,7 +475,7 @@ msgstr "Урок не найден"
 msgid "Change"
 msgstr "Изменить"
 
-#: apps/lms/admin/lesson/inline.py:51 apps/lms/models/lesson.py:59
+#: apps/lms/admin/lesson/inline.py:51 apps/lms/models/lesson.py:57
 msgctxt "lessons"
 msgid "Material"
 msgstr "Страница в ноушене"
@@ -473,15 +488,7 @@ msgstr "Ссылки"
 msgid "Module count"
 msgstr "Модули"
 
-#: apps/lms/admin/module/actions.py:13
-msgid "Put to archive"
-msgstr "Заархивировать"
-
-#: apps/lms/admin/module/actions.py:30
-msgid "Extract from archive"
-msgstr "Достать из архива"
-
-#: apps/lms/admin/module/admin.py:66
+#: apps/lms/admin/module/admin.py:55
 msgid "Lesson count"
 msgstr "Уроки"
 
@@ -498,7 +505,7 @@ msgctxt "lms"
 msgid "Call date"
 msgstr "Дата"
 
-#: apps/lms/models/call.py:19 apps/lms/models/lesson.py:62
+#: apps/lms/models/call.py:19 apps/lms/models/lesson.py:60
 msgctxt "lms"
 msgid "Call"
 msgstr "Созвон"
@@ -516,25 +523,25 @@ msgstr "Ссылка в свободной форме"
 msgid "Course links"
 msgstr "Ссылки в свободной форме"
 
-#: apps/lms/models/lesson.py:60
+#: apps/lms/models/lesson.py:58
 msgctxt "lms"
 msgid "Question"
 msgstr "Домашка"
 
-#: apps/lms/models/lesson.py:63 apps/lms/models/module.py:56
+#: apps/lms/models/lesson.py:61 apps/lms/models/module.py:56
 msgid "Hidden"
 msgstr "Скрыт"
 
-#: apps/lms/models/lesson.py:63 apps/lms/models/module.py:56
+#: apps/lms/models/lesson.py:61 apps/lms/models/module.py:56
 msgid "Users can't find such materials in the listing"
 msgstr "Студенты не видят"
 
-#: apps/lms/models/lesson.py:70
+#: apps/lms/models/lesson.py:68
 msgctxt "lms"
 msgid "Lesson"
 msgstr "Урок"
 
-#: apps/lms/models/lesson.py:71
+#: apps/lms/models/lesson.py:69
 msgctxt "lms"
 msgid "Lessons"
 msgstr "Уроки"
@@ -560,10 +567,6 @@ msgstr "Подзаг"
 #: apps/lms/models/module.py:54
 msgid "Text"
 msgstr "Текст"
-
-#: apps/lms/models/module.py:57
-msgid "Hidden from the admin, but still acessible by users"
-msgstr "В админке будет не видно, в LMS все будет по старому"
 
 #: apps/lms/models/module.py:67
 msgid "Modules"
@@ -909,7 +912,7 @@ msgstr ""
 msgid "Refunds"
 msgstr "Возвраты"
 
-#: apps/orders/services/order_refunder.py:93
+#: apps/orders/services/order_refunder.py:95
 #, fuzzy
 #| msgid ""
 #| "Orders {non_refunded_orders_as_message} have not been refunded. Up to 5 "
@@ -921,7 +924,7 @@ msgstr ""
 "Заказы {non_refunded_orders_as_message} не были возвращены. Разрешено до 5 "
 "возвратов в день, попробуйте снова завтра."
 
-#: apps/orders/services/order_refunder.py:95
+#: apps/orders/services/order_refunder.py:97
 #, fuzzy
 #| msgid ""
 #| "Orders {non_refunded_orders_as_message} have not been refunded. Up to 5 "
@@ -933,19 +936,19 @@ msgstr ""
 "Заказы {non_refunded_orders_as_message} не были возвращены. Разрешено до 5 "
 "возвратов в день, попробуйте снова завтра."
 
-#: apps/orders/services/order_refunder.py:101
+#: apps/orders/services/order_refunder.py:103
 msgid "Partial refund is not available"
 msgstr "Частичные возвраты недоступны"
 
-#: apps/orders/services/order_refunder.py:105
+#: apps/orders/services/order_refunder.py:107
 msgid "No refunds for non-paid orders"
 msgstr ""
 
-#: apps/orders/services/order_refunder.py:107
+#: apps/orders/services/order_refunder.py:109
 msgid "Amount to refund is more than available"
 msgstr ""
 
-#: apps/orders/services/order_refunder.py:109
+#: apps/orders/services/order_refunder.py:111
 msgid "Amount to refund should be more or equal 0"
 msgstr ""
 
@@ -1122,7 +1125,7 @@ msgstr ""
 msgid "Tinkoff"
 msgstr "Тинькофф"
 
-#: apps/tinkoff/dolyame.py:25
+#: apps/tinkoff/dolyame.py:26
 msgid "Dolyame"
 msgstr "Долями"
 
@@ -1235,6 +1238,14 @@ msgstr "пользователь"
 #: apps/users/models.py:47
 msgid "users"
 msgstr "пользователи"
+
+#: core/admin/actions/archive.py:18
+msgid "Put to archive"
+msgstr "Заархивировать"
+
+#: core/admin/actions/archive.py:35
+msgid "Extract from archive"
+msgstr "Достать из архива"
 
 #: core/admin/filters.py:25
 msgid "Yes"
