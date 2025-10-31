@@ -15,7 +15,6 @@ INSTALLED_APPS = [
     "django_filters",
     "drf_spectacular",
     "drf_spectacular_sidecar",
-    "prettyjson",
     "rest_framework",
     "rest_framework.authtoken",
     # "silk",

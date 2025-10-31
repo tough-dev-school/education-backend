@@ -21,7 +21,6 @@ dependencies = [
     "django-filter>=25.2,<25.3",
     "django-healthchecks>=1.5.0,<2.0.0",
     "django-ipware>=7.0.0,<8.0.0",
-    "django-prettyjson>=0.4.1,<1.0.0",
     "django-silk>=5.3.2,<6.0.0",
     "django-split-settings>=1.2.0,<2.0.0",
     "django-storages>=1.14,<2.0",

@@ -1,0 +1,4 @@
+.app-json-editor--error {
+  border-color: var(--error-fg);
+  color: var(--error-fg);
+}
