@@ -11,9 +11,8 @@ from django.db.models import Field, QuerySet
 from django.template.defaultfilters import capfirst, time
 from django.utils import timezone
 from django.utils.html import format_html
-from prettyjson import PrettyJSONWidget
 
-from core.admin.widgets import AppNumberInput
+from core.admin.widgets import AppJSONEditor, AppNumberInput
 from core.pricing import format_price
 
 if TYPE_CHECKING:
@@ -38,7 +37,7 @@ class AppAdminMixin:
     formfield_overrides: Mapping[Type[Field], Mapping[str, Any]] = {
         models.DecimalField: {"widget": AppNumberInput},
         models.IntegerField: {"widget": AppNumberInput},
-        models.JSONField: {"widget": PrettyJSONWidget(attrs={"initial": "parsed"})},
+        models.JSONField: {"widget": AppJSONEditor},
     }
     foreignkey_queryset_overrides: Mapping[str, Callable[["Apps"], QuerySet]] = {}
     global_exclude = (
@@ -48,7 +47,7 @@ class AppAdminMixin:
 
     class Media:
         css = {
-            "all": ["admin.css", "prettyjson.css"],
+            "all": ["admin/admin.css"],
         }
 
     def formfield_for_foreignkey(self, db_field: "ForeignKey", request: "HttpRequest", **kwargs: Any) -> "ModelChoiceField":
