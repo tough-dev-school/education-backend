@@ -13,6 +13,7 @@ if TYPE_CHECKING:
 class CurrencyCodes(Enum):
     RUB = "RUB", _("RUB"), "₽"
     USD = "USD", _("USD"), "$"
+    EUR = "EUR", _("EUR"), "€"
     KZT = "KZT", _("KZT"), "₸"
     KIS = "KIS", _("KIS (for zero-price orders)"), "💋"
 
