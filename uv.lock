@@ -903,7 +903,7 @@ requires-dist = [
     { name = "sentry-sdk", specifier = ">=2.0.0,<3.0.0" },
     { name = "shortuuid", specifier = ">=1.0.11,<2.0.0" },
     { name = "simplejson", specifier = ">=3.19.1,<4.0.0" },
-    { name = "stripe", specifier = ">=12.0.0,<13.0.0" },
+    { name = "stripe", specifier = ">=13.1.1,<13.2.0" },
     { name = "toml-sort", marker = "extra == 'dev'", specifier = ">=0.24.0,<1.0.0" },
     { name = "tqdm", specifier = ">=4.67.1,<5.0.0" },
     { name = "types-babel", marker = "extra == 'dev'", specifier = ">=2.11.0.15,<3.0.0" },
@@ -1939,15 +1939,15 @@ wheels = [
 
 [[package]]
 name = "stripe"
-version = "12.5.1"
+version = "13.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "requests" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/bd/92/f1b72783e13662026efc7d3f0fc201230edab55edd1604326a97162d8ce4/stripe-12.5.1.tar.gz", hash = "sha256:5407d092c355c31393e767d2dcb2d5a8c3980caa9a073acb32d0ccb3c01b04b5", size = 1432826, upload-time = "2025-09-05T13:27:07.976Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/12/a0/3d13718648b8d93140ac649f70202aeb7bfc12516626d308d6fec73a5503/stripe-13.1.1.tar.gz", hash = "sha256:62141a5a2ede69c35e0f257a77acc3fa9cec6e8a30131a49f001bd90fda7a681", size = 1357445, upload-time = "2025-10-31T20:10:49.789Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1d/8d/f4c2f047eedc943aea573cb56af2c9481b2d97ee8de9819f8c5d87e9ba34/stripe-12.5.1-py2.py3-none-any.whl", hash = "sha256:39b47b331dfe933ce6cf6bd654e0ae9ba082caa9d1dd8d0ae9ae48293975f115", size = 1664067, upload-time = "2025-09-05T13:27:05.559Z" },
+    { url = "https://files.pythonhosted.org/packages/03/c9/6a968b6e3da48224f4f473884566ef660560e4f90072f14261a347987b1b/stripe-13.1.1-py3-none-any.whl", hash = "sha256:2a74981ba559f6e518e657b808c6339a397c3862f3e5dd10ec7603c3829addba", size = 1961719, upload-time = "2025-10-31T20:10:47.603Z" },
 ]
 
 [[package]]
