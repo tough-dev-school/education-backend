@@ -11,16 +11,8 @@ if TYPE_CHECKING:
     from django_stubs_ext import StrPromise
 
 
-class Customer(TimestampedModel):
-    name = models.CharField(verbose_name=pgettext_lazy("deals", "Customer name"), max_length=255)
-
-    class Meta:
-        verbose_name = _("Customer")
-        verbose_name_plural = _("Customers")
-
-
 class Deal(TimestampedModel):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, verbose_name=_("Customer"))
+    customer = models.ForeignKey("b2b.Customer", on_delete=models.CASCADE, verbose_name=_("Customer"))
     course = models.ForeignKey("products.Course", on_delete=models.PROTECT)
     author = models.ForeignKey("users.User", related_name="created_deals", verbose_name=_("Deal author"), on_delete=models.PROTECT, editable=False)
     comment = models.TextField(_("Comment"), blank=True)
@@ -56,15 +48,3 @@ class Deal(TimestampedModel):
             return Decimal(self.price * currency.get_rate_or_default(self.currency) / self.students.count())
         except ArithmeticError:
             return Decimal(0)
-
-
-class Student(TimestampedModel):
-    user = models.ForeignKey("users.User", on_delete=models.PROTECT)
-    deal = models.ForeignKey(Deal, related_name="students", on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = _("Student")
-        verbose_name_plural = _("Students")
-
-    def __str__(self) -> str:
-        return str(self.user)

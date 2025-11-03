@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-03 17:51+0300\n"
+"POT-Creation-Date: 2025-11-03 20:27+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -56,13 +56,13 @@ msgstr "Заказы"
 msgid "Status"
 msgstr "Статус"
 
-#: apps/b2b/admin/deals/admin.py:71 apps/b2b/models.py:30
+#: apps/b2b/admin/deals/admin.py:71 apps/b2b/models/deal.py:22
 #: apps/orders/admin/orders/admin.py:103 apps/orders/models/order.py:45
 #: apps/products/admin/course.py:32 apps/products/admin/course.py:94
 msgid "Price"
 msgstr "Цена"
 
-#: apps/b2b/admin/deals/forms.py:14 apps/b2b/models.py:67
+#: apps/b2b/admin/deals/forms.py:14 apps/b2b/models/student.py:12
 #: apps/users/models.py:125
 msgid "Students"
 msgstr "Студенты"
@@ -85,72 +85,80 @@ msgstr "Имя"
 msgid "email"
 msgstr "Почта"
 
-#: apps/b2b/models.py:15
+#: apps/b2b/models/customer.py:10
+msgid "Customer code can only contain digits, '-', and '.'"
+msgstr ""
+
+#: apps/b2b/models/customer.py:14
 msgctxt "deals"
 msgid "Customer name"
 msgstr "Название"
 
-#: apps/b2b/models.py:18 apps/b2b/models.py:23
+#: apps/b2b/models/customer.py:16
+msgid "TIN"
+msgstr "ИНН"
+
+#: apps/b2b/models/customer.py:25 apps/b2b/models/deal.py:15
 msgid "Customer"
 msgstr "Клиент"
 
-#: apps/b2b/models.py:19
+#: apps/b2b/models/customer.py:26
 msgid "Customers"
 msgstr "Клиенты"
 
-#: apps/b2b/models.py:25
+#: apps/b2b/models/deal.py:17
 msgid "Deal author"
 msgstr "Продавец"
 
-#: apps/b2b/models.py:26
+#: apps/b2b/models/deal.py:18
 msgid "Comment"
 msgstr "Комментарий"
 
-#: apps/b2b/models.py:27
+#: apps/b2b/models/deal.py:19
 msgid "Date when the deal got completed"
 msgstr "Завершена"
 
-#: apps/b2b/models.py:28
+#: apps/b2b/models/deal.py:20
 msgid "Date when the deal got canceled"
 msgstr "Отменена"
 
-#: apps/b2b/models.py:29
+#: apps/b2b/models/deal.py:21
 msgid "Date when the deal got shipped without payment"
 msgstr "Дата, когда студентов допустили до уроков без оплаты"
 
-#: apps/b2b/models.py:31 apps/banking/models.py:12
+#: apps/b2b/models/deal.py:23 apps/banking/models.py:12
 msgid "Currency"
 msgstr "Валюта"
 
-#: apps/b2b/models.py:35 apps/orders/models/order.py:47
+#: apps/b2b/models/deal.py:27 apps/orders/models/order.py:47
 msgid "Deal"
 msgstr "Сделка"
 
-#: apps/b2b/models.py:36
+#: apps/b2b/models/deal.py:28
 msgid "Deals"
 msgstr "Сделки"
 
-#: apps/b2b/models.py:44
+#: apps/b2b/models/deal.py:36
 msgctxt "deals"
 msgid "Canceled"
 msgstr "Отменена"
 
-#: apps/b2b/models.py:47
+#: apps/b2b/models/deal.py:39
 msgctxt "deals"
 msgid "Complete"
 msgstr "Завершена"
 
-#: apps/b2b/models.py:50
+#: apps/b2b/models/deal.py:42
 msgctxt "deals"
 msgid "Shipped without payment"
 msgstr "Ждём денег"
 
-#: apps/b2b/models.py:52
+#: apps/b2b/models/deal.py:44
 msgctxt "deals"
 msgid "In progress"
 msgstr "В работе"
 
-#: apps/b2b/models.py:66 apps/diplomas/admin/diploma.py:52
+#: apps/b2b/models/student.py:11 apps/diplomas/admin/diploma.py:52
 #: apps/studying/models.py:8 apps/users/models.py:124
 msgid "Student"
 msgstr "Студент"
