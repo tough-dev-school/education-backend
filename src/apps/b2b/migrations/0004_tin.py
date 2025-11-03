@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 max_length=50,
                 null=True,
                 unique=True,
-                validators=[apps.b2b.models.validate_customer_code],
+                validators=[apps.b2b.models.customer.validate_customer_code],
                 verbose_name="TIN",
             ),
         ),
