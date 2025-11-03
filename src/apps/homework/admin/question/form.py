@@ -16,6 +16,7 @@ class QuestionForm(ModelForm):
     class Meta:
         model = Question
         fields = [
+            "internal_name",
             "name",
             "deadline",
             "module",

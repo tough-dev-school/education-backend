@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-31 15:46+0300\n"
+"POT-Creation-Date: 2025-11-03 17:51+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -86,8 +86,6 @@ msgid "email"
 msgstr "Почта"
 
 #: apps/b2b/models.py:15
-#, fuzzy
-#| msgid "Customer"
 msgctxt "deals"
 msgid "Customer name"
 msgstr "Название"
@@ -209,7 +207,7 @@ msgstr "Комиссии банков"
 msgid "Zero Price"
 msgstr "Бесплатно"
 
-#: apps/chains/admin/chain.py:13 apps/homework/models/question.py:109
+#: apps/chains/admin/chain.py:13 apps/homework/models/question.py:110
 #: apps/lms/models/module.py:57 core/admin/filters.py:58
 msgid "Archived"
 msgstr "В архиве"
@@ -230,7 +228,7 @@ msgstr "В списке только не запущенные и не заар�
 #: apps/chains/admin/message.py:44 apps/chains/models/chain.py:33
 #: apps/diplomas/admin/diploma.py:56 apps/homework/admin/answer/admin.py:56
 #: apps/homework/admin/crosscheck/admin.py:37
-#: apps/homework/admin/question/admin.py:43 apps/lms/admin/lesson/admin.py:81
+#: apps/homework/admin/question/admin.py:44 apps/lms/admin/lesson/admin.py:81
 #: apps/orders/models/order.py:60 apps/products/admin/filters.py:12
 #: apps/products/models/course.py:122 apps/studying/models.py:9
 msgid "Course"
@@ -284,7 +282,7 @@ msgstr "Письмо"
 msgid "Email chain messages"
 msgstr "Письма"
 
-#: apps/diplomas/admin/diploma.py:60 apps/homework/models/question.py:114
+#: apps/diplomas/admin/diploma.py:60 apps/homework/models/question.py:115
 #: apps/lms/admin/lesson/inline.py:42
 msgid "Homework"
 msgstr "Домашка"
@@ -382,13 +380,11 @@ msgstr "Вопрос"
 msgid "View"
 msgstr ""
 
-#: apps/homework/admin/question/admin.py:47
-#, fuzzy
-#| msgid "Tariff name"
+#: apps/homework/admin/question/admin.py:48
 msgid "Tariff Name"
 msgstr "Тариф"
 
-#: apps/homework/admin/question/admin.py:68
+#: apps/homework/admin/question/admin.py:69
 msgid "Dispatch crosscheck"
 msgstr "Запустить p2p-проверку домашки"
 
@@ -398,15 +394,10 @@ msgid "Module"
 msgstr "Модуль"
 
 #: apps/homework/admin/question/form.py:14
-#, fuzzy
-#| msgctxt "lms"
-#| msgid "Lesson"
 msgid "Lesson"
 msgstr "Урок"
 
 #: apps/homework/models/answer.py:78
-#, fuzzy
-#| msgid "Parent"
 msgid "parent"
 msgstr "Родитель"
 
@@ -430,19 +421,23 @@ msgstr "Видит все ответы на домашку"
 msgid "Date when crosscheck got checked"
 msgstr "Когда проверен"
 
-#: apps/homework/models/question.py:108
+#: apps/homework/models/question.py:105
+msgid "Internal name"
+msgstr "Внутреннее название"
+
+#: apps/homework/models/question.py:109
 msgid "Deadline"
 msgstr "Дедлайн"
 
-#: apps/homework/models/question.py:109 apps/lms/models/module.py:57
+#: apps/homework/models/question.py:110 apps/lms/models/module.py:57
 msgid "Hidden from the admin, but still acessible by users"
 msgstr "В админке будет не видно, в LMS все будет по старому"
 
-#: apps/homework/models/question.py:115
+#: apps/homework/models/question.py:116
 msgid "Homeworks"
 msgstr "Домашки"
 
-#: apps/homework/models/question.py:117
+#: apps/homework/models/question.py:118
 msgid "May see questions for all homeworks"
 msgstr "Видит все вопросы домашки"
 
@@ -657,8 +652,6 @@ msgid "Notion page id"
 msgstr "ID страницы в ноушене"
 
 #: apps/notion/models/material.py:70
-#, fuzzy
-#| msgid "Paste it from notion address bar"
 msgid "Paste it from apps.notion address bar"
 msgstr "Скопируйте адрес из строки браузера"
 
@@ -692,16 +685,12 @@ msgid "Material files"
 msgstr "Файлы"
 
 #: apps/notion/models/page_link.py:14
-#, fuzzy
-#| msgid "Our page id"
 msgid "Source page notion id"
-msgstr "ID страницы LMS"
+msgstr "ID источника в ноушене"
 
 #: apps/notion/models/page_link.py:15
-#, fuzzy
-#| msgid "Notion page id"
 msgid "Destination page notion id"
-msgstr "ID страницы в ноушене"
+msgstr "ID цели в ноушене"
 
 #: apps/notion/models/video.py:10
 msgid "Title"
@@ -894,9 +883,6 @@ msgid "Percent or value must be set"
 msgstr "Нужно задать или процент скидки или сумму в деньгах"
 
 #: apps/orders/models/refund.py:25 apps/studying/models.py:10
-#, fuzzy
-#| msgctxt "orders"
-#| msgid "Order"
 msgid "Order"
 msgstr "Заказ"
 
@@ -906,7 +892,7 @@ msgstr "Сумма"
 
 #: apps/orders/models/refund.py:28
 msgid "Order bank at the moment of refund"
-msgstr ""
+msgstr "Банк на момент возврата"
 
 #: apps/orders/models/refund.py:32
 msgid "Refunds"
@@ -1162,18 +1148,16 @@ msgid "Canceled"
 msgstr ""
 
 #: apps/tinkoff/models.py:39
-#, fuzzy
-#| msgid "Comment"
 msgid "Committed"
-msgstr "Комментарий"
+msgstr "Подписан пользователем"
 
 #: apps/tinkoff/models.py:40
 msgid "Waiting for commit"
-msgstr ""
+msgstr "Ждем подписания от пользователя"
 
 #: apps/tinkoff/models.py:41
 msgid "Completed"
-msgstr ""
+msgstr "Завершен"
 
 #: apps/users/admin/user/admin.py:29
 msgid "Personal info"
