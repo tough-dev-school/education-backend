@@ -66,15 +66,15 @@ def test_price_calculation(completer, factory, student_count, single_order_price
 
 @pytest.mark.usefixtures("usd")
 @pytest.mark.parametrize(
-    ("currency", "single_order_price"),
+    ("currency_code", "single_order_price"),
     [
         ("RUB", "50.00"),
         ("USD", "5000.00"),
         ("NNE", "50.00"),  # for nonexistant currencis the default rate is used
     ],
 )
-def test_currency_price_calculation(completer, factory, currency, single_order_price):
-    deal = factory.deal(student_count=2, price=Decimal("100.00"), currency=currency)
+def test_currency_price_calculation(completer, factory, currency_code, single_order_price):
+    deal = factory.deal(student_count=2, price=Decimal("100.00"), currency_code=currency_code)
 
     completer(deal=deal)()
     order = Order.objects.first()

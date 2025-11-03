@@ -4,7 +4,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from apps.b2b.models import Deal
-from apps.b2b.services import BulkStudentCreator, DealCreator
+from apps.b2b.services import BulkStudentCreator, DealCreator, DealCurrencyChanger
 from core.admin import ModelForm
 
 
@@ -50,10 +50,20 @@ class DealChangeForm(forms.ModelForm):
         fields = "__all__"
 
     def save(self, commit: bool = False) -> Deal:
+        self._change_currency(deal=self.instance)
+
         deal = super().save(commit=commit)
 
+        self._create_students(deal)
+
+        return deal
+
+    def _change_currency(self, deal: Deal) -> None:
+        currency = self.cleaned_data["currency"]
+        if self.initial["currency"] != currency:
+            DealCurrencyChanger(deal, new_currency_code=currency)()
+
+    def _create_students(self, deal: Deal) -> None:
         student_list = self.cleaned_data["students"]
         if len(student_list) > 0:
             BulkStudentCreator(user_input=student_list, deal=deal)()
-
-        return deal
