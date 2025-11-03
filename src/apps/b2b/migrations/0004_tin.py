@@ -16,7 +16,6 @@ class Migration(migrations.Migration):
             name="tin",
             field=models.CharField(
                 blank=True,
-                help_text="Should be Unique",
                 max_length=50,
                 null=True,
                 unique=True,

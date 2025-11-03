@@ -6,7 +6,6 @@ from core.models import TimestampedModel, models
 
 
 def validate_customer_code(value: str) -> None:
-    """Validate that the customer code contains only digits, '-', and '.'"""
     if value and not all(c.isdigit() or c in "-." for c in value):
         raise ValidationError(_("Customer code can only contain digits, '-', and '.'"))
 
@@ -20,7 +19,6 @@ class Customer(TimestampedModel):
         null=True,
         blank=True,
         validators=[validate_customer_code],
-        help_text=_("Should be Unique"),
     )
 
     class Meta:

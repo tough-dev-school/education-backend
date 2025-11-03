@@ -4,8 +4,17 @@ from core.admin import ModelAdmin, admin
 
 @admin.register(Customer)
 class CustomerAdmin(ModelAdmin):
-    fields = ["name"]
+    fields = ["name", "tin"]
     list_display = [
+        "tin",
+        "name",
+    ]
+    search_fields = [
+        "tin",
+        "name",
+    ]
+    list_display_links = [
+        "tin",
         "name",
     ]
     actions = [
