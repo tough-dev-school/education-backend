@@ -34,6 +34,7 @@ def set_internal_name(apps, schema_editor) -> None:  # NOQA: ARG001
 class Migration(migrations.Migration):
     dependencies = [
         ("homework", "0028_answer_inheritance_fix"),
+        ("lms", "0015_module_archiving"),
     ]
 
     operations = [
