@@ -6,13 +6,8 @@ from apps.b2b.services import DealCreator
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures("_set_current_user"),
+    pytest.mark.usefixtures("_set_current_user", "kzt"),
 ]
-
-
-@pytest.fixture(autouse=True)
-def _kzt(factory):
-    factory.currency(name="KZT", rate=Decimal("0.2"))
 
 
 def test_deal_is_created(customer, course):
@@ -34,7 +29,7 @@ def test_deal_is_created(customer, course):
     [
         ("RUB", "1.0"),
         ("NNE", "1.0"),  # unknown currency
-        ("KZT", "0.2"),
+        ("KZT", "5.0"),
     ],
 )
 def test_currency_is_saved(customer, course, currency, expected_rate):
