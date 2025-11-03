@@ -70,7 +70,7 @@ class DefaultAnswerNotification(BaseAnswerNotification):
 
     def get_context(self) -> dict:
         context = {
-            "discussion_name": str(self.answer.question),
+            "discussion_name": self.answer.question.name,
             "discussion_url": self.answer.get_absolute_url(),
             "answer_text": self.get_text_with_markdown(),
             "author_name": str(self.answer.author),
@@ -112,7 +112,7 @@ class CrossCheckedAnswerNotification(BaseAnswerNotification):
             )
 
         return {
-            "discussion_name": str(self.answer.question),
+            "discussion_name": self.answer.question.name,
             "discussion_url": self.answer.get_absolute_url(),
             "author_name": str(self.answer.author),
             "crosschecks": crosschecks,

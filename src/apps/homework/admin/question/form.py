@@ -56,7 +56,7 @@ class QuestionForm(ModelForm):
 
         for lesson in Lesson.objects.filter(question=question).iterator():
             cls._update_question(lesson, question=None)
-            cls._write_admin_log(lesson, msg=f"Question '{question}' (#{question.pk}) detached from the lesson")
+            cls._write_admin_log(lesson, msg=f"Question '{question.name}' (#{question.pk}) detached from the lesson")
 
     @staticmethod
     def _update_question(lesson: Lesson, question: Question | None = None) -> None:
