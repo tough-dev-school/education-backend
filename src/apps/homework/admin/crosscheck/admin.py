@@ -43,7 +43,7 @@ class AnswerCrossCheckAdmin(ModelAdmin):
 
     @admin.display(description=_("Question"), ordering="answer__question")
     def question(self, obj: AnswerCrossCheck) -> str:
-        return str(obj.answer.question)
+        return obj.answer.question.name
 
     @admin.display(description=_("Author"), ordering="answer__author")
     def author(self, obj: AnswerCrossCheck) -> str:

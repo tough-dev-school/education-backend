@@ -71,13 +71,13 @@ class Lesson(TimestampedModel):
     def __str__(self) -> str:
         archived = "" if not self.is_archived() else "[archived] "
 
-        if self.material_id is not None:
+        if self.material is not None:
             return f"{archived} {self.material}"
 
-        if self.question_id is not None:
-            return f"{archived} {self.question}"
+        if self.question is not None:
+            return f"{archived} {self.question.name}"
 
-        if self.call_id is not None:
+        if self.call is not None:
             return f"{archived} {self.call}"
 
         return "—"

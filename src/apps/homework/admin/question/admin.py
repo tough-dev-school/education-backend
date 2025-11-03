@@ -29,6 +29,7 @@ class QuestionAdmin(ModelAdmin):
         "module",
         "lesson",
         "name",
+        "internal_name",
         "deadline",
         "text",
     ]
