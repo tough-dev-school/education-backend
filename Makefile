@@ -6,6 +6,8 @@ compilemessages:
 
 fmt:
 	uv run ruff format src
+	# Run formatter for the second time to fix errors left after first fixing
+	uv run ruff format src
 	uv run ruff check src --fix --unsafe-fixes
 	uv run toml-sort pyproject.toml
 
