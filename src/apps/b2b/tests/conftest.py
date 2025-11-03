@@ -13,7 +13,7 @@ def course(factory):
 
 @pytest.fixture
 def deal(factory, customer, course):
-    return factory.deal(customer=customer, course=course)
+    return factory.deal(customer=customer, course=course, currency_code="RUB")
 
 
 @pytest.fixture

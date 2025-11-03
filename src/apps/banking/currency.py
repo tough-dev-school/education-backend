@@ -37,7 +37,7 @@ def get_rate(name: str) -> Decimal | None:
     Currency = apps.get_model("banking.Currency")
 
     with contextlib.suppress(Currency.DoesNotExist):
-        return Currency.objects.get(name=name).rate
+        return Currency.objects.get(name__iexact=name).rate
 
 
 def get_rate_or_default(name: str) -> Decimal:
