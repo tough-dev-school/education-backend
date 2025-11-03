@@ -332,21 +332,20 @@ wheels = [
 
 [[package]]
 name = "cmarkgfm"
-version = "2024.11.20"
+version = "2025.10.22"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cffi" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/44/df/99c139c587d1fb1633b8adb22a44c8ab6b002453ed4f97ceefb1759eacdf/cmarkgfm-2024.11.20.tar.gz", hash = "sha256:5dd01cf61975a8a57213cdef5ed870e936032f13fe93d60ddf659ffb9cf73c6a", size = 146799, upload-time = "2024-11-20T22:04:51.722Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8f/0c/5010c87ceba51854dad42f45a3d28a3c67e81a21cfed8b20c34688aaa1b6/cmarkgfm-2025.10.22.tar.gz", hash = "sha256:5bec61007b65b919488442c838c58a6c8bf4741f5103c593b2ef180d39818eda", size = 146727, upload-time = "2025-10-22T23:13:22.639Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/25/5a/b7ff55e9bde4a3f00c27aff495e0f7c0e40841616a71e21fa6990c2cc636/cmarkgfm-2024.11.20-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:dd414cffe2f57ce652cfb1510637760cc761194518b0a712ceceb929a1a512d4", size = 439948, upload-time = "2024-11-20T22:05:24.995Z" },
-    { url = "https://files.pythonhosted.org/packages/da/98/47e04e7b63730315e818b9eedb32c1393f264ba7a4a798955ca11e9351a6/cmarkgfm-2024.11.20-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:61c699e399c7878f5eeef11e51c67d06eb8c4d09d0beb7675b1d6b393c1c5fb9", size = 445250, upload-time = "2024-11-20T22:05:26.166Z" },
-    { url = "https://files.pythonhosted.org/packages/aa/a0/1da2ccbce0b2048f12a5a692d2703226dc826beba361ce5f0e7df0420c95/cmarkgfm-2024.11.20-cp313-cp313-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:3d9dea0e0a0e9ad436ab11430333b6fa294de0daa00ff675ddac5757a7c628ec", size = 418172, upload-time = "2024-11-20T22:05:27.897Z" },
-    { url = "https://files.pythonhosted.org/packages/55/0c/b335f52e4d52a66cadce3eb7662f0392a8036bf1d4349e9149c2d4754e9f/cmarkgfm-2024.11.20-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:ab2543f2d1070d2dbae37b7098ad3507bedc37f5252883ea879f884dbb7b7610", size = 438704, upload-time = "2024-11-20T22:05:29.02Z" },
-    { url = "https://files.pythonhosted.org/packages/1b/34/38da4e22106fac7070d6733c662684deee595070775a4fb6f16f952ac5bd/cmarkgfm-2024.11.20-cp313-cp313-musllinux_1_2_i686.whl", hash = "sha256:ffbb3847e4d71de84e23abd30ff23fb3ce81f9096eb7bdc6569499c8b7a098b8", size = 418016, upload-time = "2024-11-20T22:05:30.446Z" },
-    { url = "https://files.pythonhosted.org/packages/ec/ca/0800f288d0db27f65aa792fb534f5abfb672bfa942b649456909700e0f6b/cmarkgfm-2024.11.20-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:4f987178288a598ddfa8c6fc19dbcc6eb796b7a211266ff4bd1e8cae436fbfd3", size = 447541, upload-time = "2024-11-20T22:05:32.232Z" },
-    { url = "https://files.pythonhosted.org/packages/5a/0d/1b3de020df6cac8074955806f38c2ba9bba533a34f4b0104123cdf632b9b/cmarkgfm-2024.11.20-cp313-cp313-win32.whl", hash = "sha256:90b3449bcbf8ab763ca693453ae29e85cf3bbd60b5580ea79e2ae056102b8cdd", size = 116846, upload-time = "2024-11-20T21:23:44.599Z" },
-    { url = "https://files.pythonhosted.org/packages/f7/b0/2bb70efd2a10797d2c07262aca576d7c079fd740b2f475bceef79d24837a/cmarkgfm-2024.11.20-cp313-cp313-win_amd64.whl", hash = "sha256:78edaff25d16dc6257d21397f257f43a7fcc8375585c6d51f46896dabacf9b6a", size = 127346, upload-time = "2024-11-20T21:23:46.136Z" },
+    { url = "https://files.pythonhosted.org/packages/e0/6b/5da9daa0fa3d6b41f1fc1755151d459625a1376e2d968aa3b3bd42589e93/cmarkgfm-2025.10.22-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:d8030955c836827b95f46f8fc520a58ab2a03fb23d4b56e2d976618099273298", size = 124618, upload-time = "2025-10-22T22:26:14.002Z" },
+    { url = "https://files.pythonhosted.org/packages/ed/78/896e022b155b663b6129830a2b17b4907661e94f03e4ca8d64a895d686ed/cmarkgfm-2025.10.22-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:862b7f15ecf040fe9cd82f3be208286daddc5af94e1a20091af8451a0fe5fe74", size = 446642, upload-time = "2025-10-22T23:13:41.508Z" },
+    { url = "https://files.pythonhosted.org/packages/00/8c/c728c4129a285bd5fb10225e69089f96313e5b0529fc423514625fed9e1f/cmarkgfm-2025.10.22-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:77840ddd24152881c2d374eae5e1baca462d24c2d78a937b6f30a12c2685cc0c", size = 449859, upload-time = "2025-10-22T23:13:43.024Z" },
+    { url = "https://files.pythonhosted.org/packages/c3/ff/e8a7b4382c2caac800a0a15ccb58eee8608a1b83f8222cdf2974d06736ab/cmarkgfm-2025.10.22-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:ba7693b9a4c30b2ae2d07d10c4bd3fd01dfaaaaa67c93784923b792dd10bb037", size = 442239, upload-time = "2025-10-22T23:13:44.458Z" },
+    { url = "https://files.pythonhosted.org/packages/58/34/7e67d73b5c243e1e9d376f0eb22cdba32f912a98d70ea63fe645df3f149b/cmarkgfm-2025.10.22-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:03435c2f57ed49be0e83b2743af5dced98c1287fb9ae41a12b8055cff984bf58", size = 448306, upload-time = "2025-10-22T23:13:45.977Z" },
+    { url = "https://files.pythonhosted.org/packages/99/1f/4441ea20cc5ee2f8e417a5920184c5ff293073c569ab50efce6187f32d96/cmarkgfm-2025.10.22-cp313-cp313-win32.whl", hash = "sha256:aee2bf397cdf133025a2e66c6281e4fb6bd70420e3734b6dcf787ea9c2aadd78", size = 116531, upload-time = "2025-10-22T22:34:52.827Z" },
+    { url = "https://files.pythonhosted.org/packages/74/c3/75407cc385a5b6e93b3493c7862e21b72d55a2e8c6aec0028fba1ae241b7/cmarkgfm-2025.10.22-cp313-cp313-win_amd64.whl", hash = "sha256:f41b76d274c8886d0a440d6577cc0d73d0ea631c3bb07758adce74ba6911d790", size = 127290, upload-time = "2025-10-22T22:34:54.079Z" },
 ]
 
 [[package]]
@@ -851,7 +850,7 @@ requires-dist = [
     { name = "boto3", specifier = ">=1.28.48,<2.0.0" },
     { name = "boto3-stubs", marker = "extra == 'dev'", specifier = ">=1.28.48,<2.0.0" },
     { name = "celery", specifier = "==5.5.3" },
-    { name = "cmarkgfm", specifier = ">=2024.0.0,<2025.0.0" },
+    { name = "cmarkgfm", specifier = ">=2025.10.22,<2025.11.0" },
     { name = "dj-rest-auth", specifier = ">=7.0.0,<8.0.0" },
     { name = "django", specifier = ">=5.2,<5.3" },
     { name = "django-admin-sortable2", specifier = ">=2.2.4,<3.0.0" },
