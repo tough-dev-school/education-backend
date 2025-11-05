@@ -4,29 +4,9 @@ from rest_framework import generics
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 
-from apps.homework.api import serializers
 from apps.homework.api.serializers import CrossCheckSerializer
-from apps.homework.models import AnswerCrossCheck, AnswerImage, Question
+from apps.homework.models import AnswerCrossCheck, Question
 from core.helpers import is_valid_uuid
-
-
-class QuestionView(generics.RetrieveAPIView):
-    queryset = Question.objects.all()
-    serializer_class = serializers.QuestionDetailSerializer
-    lookup_field = "slug"
-
-    def get_queryset(self) -> QuerySet[Question]:
-        queryset = super().get_queryset()
-
-        return queryset.for_user(self.request.user)  # type: ignore
-
-
-class ImageUploadView(generics.CreateAPIView):
-    """Upload an image"""
-
-    permission_classes = [IsAuthenticated]
-    serializer_class = serializers.AnswerImageSerializer
-    queryset = AnswerImage.objects.all()
 
 
 class CrossCheckView(generics.ListAPIView):
