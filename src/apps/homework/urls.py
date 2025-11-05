@@ -12,7 +12,6 @@ reaction_router.register("reactions", ReactionViewSet)
 
 urlpatterns = [
     path("questions/<uuid:slug>/", views.QuestionView.as_view()),
-    path("comments/", views.AnswerCommentView.as_view()),
     path("crosschecks/", views.CrossCheckView.as_view()),
     path("answers/image/", views.ImageUploadView.as_view()),
     path("", include(router.urls)),
