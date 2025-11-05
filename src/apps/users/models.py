@@ -45,6 +45,7 @@ class User(TestUtilsMixin, AbstractUser):
         indexes = [GinIndex(fields=["tags"])]
         verbose_name = _("user")
         verbose_name_plural = _("users")
+        ordering = ["-pk"]
 
     def __str__(self) -> str:
         name = f"{self.first_name} {self.last_name}"
