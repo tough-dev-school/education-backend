@@ -30,7 +30,7 @@ def test_admin_only(api):
 
 
 def test_no_anon(anon):
-    anon.get("/api/v2/users/", expected_status_code=401)
+    anon.get("/api/v2/users/", expected_status_code=403)  # somehow when i removed JWT auth, DRF started to return 403 here instead of 401
 
 
 @pytest.mark.parametrize("query", ["no@email.com", "1nv4l1d"])

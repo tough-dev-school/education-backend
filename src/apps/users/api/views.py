@@ -2,7 +2,7 @@ from typing import Any
 
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import QuerySet
-from rest_framework import permissions
+from rest_framework import permissions, authentication
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -19,6 +19,11 @@ class UserListView(ListAPIView):
     permission_classes = [permissions.IsAdminUser]
     filterset_class = UserFilterSet
     queryset = User.objects.all()
+    authentication_classes = [
+        authentication.SessionAuthentication,
+        authentication.TokenAuthentication,
+        # increasing security: no JWT auth here cuz LMS frontend does not need this view
+    ]
 
 
 class SelfView(GenericAPIView):
