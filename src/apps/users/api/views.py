@@ -2,7 +2,7 @@ from typing import Any
 
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import QuerySet
-from rest_framework import permissions, authentication
+from rest_framework import authentication, permissions
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
