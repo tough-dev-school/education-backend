@@ -18,7 +18,7 @@ class UserListView(ListAPIView):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAdminUser]
     filterset_class = UserFilterSet
-    queryset = User.objects.all()
+    queryset = User.objects.all().order_by("-date_joined")
     authentication_classes = [
         authentication.SessionAuthentication,
         authentication.TokenAuthentication,

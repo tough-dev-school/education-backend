@@ -7,7 +7,7 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Permission
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GinIndex
-from django.db.models import TextChoices
+from django.db.models import Index, TextChoices
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
@@ -42,10 +42,13 @@ class User(TestUtilsMixin, AbstractUser):
 
     class Meta:
         abstract = False
-        indexes = [GinIndex(fields=["tags"])]
+        indexes = [
+            Index(fields=["date_joined"]),
+            Index(fields=["email"]),
+            GinIndex(fields=["tags"]),
+        ]
         verbose_name = _("user")
         verbose_name_plural = _("users")
-        ordering = ["-pk"]
 
     def __str__(self) -> str:
         name = f"{self.first_name} {self.last_name}"
