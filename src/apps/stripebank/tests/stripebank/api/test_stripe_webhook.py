@@ -37,7 +37,7 @@ def test_charge_refunded(anon, webhook_charge_refunded, order, spy_stripe_webhoo
 def test_raise_if_signature_not_valid(anon, webhook_checkout_session_completed, mocker, spy_stripe_webhook_handler):
     mocker.patch(
         "stripe.WebhookSignature.verify_header",
-        side_effect=stripe.error.SignatureVerificationError("invalid signature", sig_header="not-valid-signature"),
+        side_effect=stripe.SignatureVerificationError("invalid signature", sig_header="not-valid-signature"),
     )
 
     anon.post("/api/v2/banking/stripe-webhooks/", webhook_checkout_session_completed, expected_status_code=400)

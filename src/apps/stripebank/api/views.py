@@ -35,7 +35,7 @@ class BaseStripeWebhookView(APIView):
                 api_key=self.bank.api_key,
             )
 
-        except stripe.error.StripeError:
+        except stripe.StripeError:
             raise AppServiceException("Not a valid webhook request")
 
 
