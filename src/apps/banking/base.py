@@ -59,7 +59,7 @@ class Bank(metaclass=ABCMeta):
         return self._fail_url or urljoin(settings.FRONTEND_URL, "/error/?code=banking")
 
     @property
-    def price(self) -> int | str:
+    def price(self) -> int:
         return self.get_formatted_amount(self.order.price)
 
     @property

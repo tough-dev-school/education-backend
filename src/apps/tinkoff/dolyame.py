@@ -1,5 +1,6 @@
 import ssl
 from decimal import Decimal
+from typing import no_type_check
 from urllib.parse import urljoin
 
 import httpx
@@ -101,8 +102,9 @@ class Dolyame(Bank):
         }
 
     @property
+    @no_type_check
     def price(self) -> str:
-        return str(Decimal(super().price / 100))  # type: ignore
+        return str(Decimal(super().price / 100))
 
     @staticmethod
     def get_notification_url() -> str:
