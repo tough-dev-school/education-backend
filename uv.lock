@@ -839,7 +839,6 @@ dev = [
     { name = "types-requests" },
     { name = "types-retry" },
     { name = "types-simplejson" },
-    { name = "types-stripe" },
 ]
 
 [package.metadata]
@@ -913,7 +912,6 @@ requires-dist = [
     { name = "types-requests", marker = "extra == 'dev'", specifier = ">=2.31.0.2,<3.0.0" },
     { name = "types-retry", marker = "extra == 'dev'", specifier = ">=0.9.9.4,<1.0.0" },
     { name = "types-simplejson", marker = "extra == 'dev'", specifier = ">=3.19.0.2,<4.0.0" },
-    { name = "types-stripe", marker = "extra == 'dev'", specifier = ">=3.5.2.14,<4.0.0" },
     { name = "whitenoise", specifier = ">=6.5.0,<7.0.0" },
 ]
 provides-extras = ["dev"]
@@ -2160,15 +2158,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/df/6b/96d43a90cd202bd552cdd871858a11c138fe5ef11aeb4ed8e8dc51389257/types_simplejson-3.20.0.20250822.tar.gz", hash = "sha256:2b0bfd57a6beed3b932fd2c3c7f8e2f48a7df3978c9bba43023a32b3741a95b0", size = 10608, upload-time = "2025-08-22T03:03:35.36Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/3c/9f/8e2c9e6aee9a2ff34f2ffce6ccd9c26edeef6dfd366fde611dc2e2c00ab9/types_simplejson-3.20.0.20250822-py3-none-any.whl", hash = "sha256:b5e63ae220ac7a1b0bb9af43b9cb8652237c947981b2708b0c776d3b5d8fa169", size = 10417, upload-time = "2025-08-22T03:03:34.485Z" },
-]
-
-[[package]]
-name = "types-stripe"
-version = "3.5.2.20240106"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/be/20/3f23987c2e4ee93e6d9a9ffd3058530d1e8373f5e134fd88b3f0ec5487eb/types-stripe-3.5.2.20240106.tar.gz", hash = "sha256:63a36958f0dc4a71685b027f0b6d807ff197ee337135ac19a0f8b6132365ca52", size = 19075, upload-time = "2024-01-06T02:21:44.89Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/17/73/a21fd4712675a4a0076f9260cdb193a339efbc4bf76fbe0d9a60dadd2b3f/types_stripe-3.5.2.20240106-py3-none-any.whl", hash = "sha256:9ea7bc9b9889a3d8606114c52dcc70a8fc62d44a46da4bc5ee19f0d463674bb8", size = 53986, upload-time = "2024-01-06T02:21:43.461Z" },
 ]
 
 [[package]]

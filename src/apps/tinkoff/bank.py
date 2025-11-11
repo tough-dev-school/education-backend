@@ -34,7 +34,7 @@ class TinkoffBank(Bank):
             "Cancel",
             payload={
                 "PaymentId": last_payment_notification.payment_id,
-                "Receipt": self.get_receipt(formatted_amount),  # type: ignore
+                "Receipt": self.get_receipt(formatted_amount),
                 **refund_amount_data,
             },
         )
@@ -48,7 +48,7 @@ class TinkoffBank(Bank):
                 "CustomerKey": self.user.id,
                 "SuccessURL": self.success_url,
                 "FailURL": self.fail_url,
-                "Receipt": self.get_receipt(self.price),  # type: ignore
+                "Receipt": self.get_receipt(self.price),
                 "NotificationURL": self.get_notification_url(),
             },
         )
