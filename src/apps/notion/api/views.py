@@ -1,20 +1,33 @@
 from typing import Any
 
 from django.db.models import QuerySet
+from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema, inline_serializer
-from rest_framework import serializers
+from rest_framework import permissions, serializers
 from rest_framework.exceptions import NotFound
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
 from apps.lms.api.serializers import BreadcrumbsSerializer
-from apps.notion.api.serializers import NotionPageSerializer
+from apps.notion.api.serializers import NotionCacheEntryStatusSerializer, NotionPageSerializer
 from apps.notion.api.throttling import NotionThrottle
 from apps.notion.breadcrumbs import get_lesson
 from apps.notion.cache import get_cached_page_or_fetch
 from apps.notion.id import uuid_to_id
-from apps.notion.models import Material
+from apps.notion.models import Material, NotionCacheEntryStatus
 from core.views import AuthenticatedAPIView
+
+
+class MaterialStatusView(RetrieveAPIView):
+    permission_classes = [permissions.IsAdminUser]
+    queryset = NotionCacheEntryStatus.objects.all()
+    serializer_class = NotionCacheEntryStatusSerializer
+
+    def get_object(self) -> NotionCacheEntryStatus:
+        material = get_object_or_404(Material, page_id=self.kwargs["page_id"])
+
+        return get_object_or_404(NotionCacheEntryStatus, page_id=material.page_id)
 
 
 class MaterialView(AuthenticatedAPIView):
