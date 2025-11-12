@@ -5,6 +5,18 @@ from django.db import migrations, models
 import core.models
 
 
+def create_status_for_each_cache_entry(apps, schema_editor) -> None:  # NOQA: ARG001
+    Entry = apps.get_model("notion.NotionCacheEntry")
+    Status = apps.get_model("notion.NotionCacheEntryStatus")
+
+    for entry in Entry.objects.all().iterator():
+        Status.objects.create(
+            page_id=entry.page_id,
+            fetch_started=entry.modified if entry.modified is not None else entry.created,
+            fetch_complete=entry.modified if entry.modified is not None else entry.created,
+        )
+
+
 class Migration(migrations.Migration):
     dependencies = [
         ("notion", "0016_removed_cache_expiration"),
@@ -26,4 +38,5 @@ class Migration(migrations.Migration):
             },
             bases=(core.models.TestUtilsMixin, models.Model),
         ),
+        migrations.RunPython(create_status_for_each_cache_entry),
     ]
