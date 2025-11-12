@@ -1,9 +1,10 @@
+import contextlib
+
 import pytest
 
-from apps.notion.tasks import update_cache, update_cache_for_all_pages
-from apps.notion.models import NotionCacheEntryStatus
 from apps.notion.exceptions import HTTPError
-import contextlib
+from apps.notion.models import NotionCacheEntryStatus
+from apps.notion.tasks import update_cache, update_cache_for_all_pages
 
 pytestmark = [
     pytest.mark.django_db,

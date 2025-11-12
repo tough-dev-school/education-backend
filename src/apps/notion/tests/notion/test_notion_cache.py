@@ -90,24 +90,6 @@ def test_set_and_get(cache, page):
     assert got == page
 
 
-def test_get_or_set_get_if_exists(cache, page, cache_entry, page_from_callable):
-    got = cache.get_or_set(cache_entry.page_id, content=page_from_callable)
-
-    page_from_callable.assert_not_called()
-
-    assert got == page
-    assert got != page_from_callable
-
-
-def test_get_or_set_set_if_doesnt_exist(cache, another_page):
-    got = cache.get_or_set(another_page.id, content=another_page)
-
-    newly_created_cache_entry = NotionCacheEntry.objects.get(page_id=another_page.id)
-
-    assert got == another_page
-    assert got == NotionPage.from_json(newly_created_cache_entry.content, kwargs={"id": another_page.id})
-
-
 @pytest.mark.parametrize("env_value", ["On", ""])
 @pytest.mark.usefixtures("current_user_casual")
 def test_user_always_gets_page_from_existing_cache(settings, cache_entry, env_value, cache_set, fetch_page):

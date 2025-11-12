@@ -1,7 +1,7 @@
 import pytest
 from respx import MockRouter
 
-from apps.notion.models import NotionCacheEntry
+from apps.notion.models import NotionCacheEntry, NotionCacheEntryStatus
 from core.test.api_client import DRFClient
 
 pytestmark = [
@@ -53,6 +53,14 @@ def test_request_is_done_for_the_first_time(api, respx_mock: MockRouter):
     api.get("/api/v2/materials/0e5693d2173a4f77ae8106813b6e5329/")
 
     assert len(respx_mock.calls) == 1
+
+
+def test_cache_entry_status_is_updated(api):
+    api.get("/api/v2/materials/0e5693d2173a4f77ae8106813b6e5329/")
+
+    status = NotionCacheEntryStatus.objects.get(page_id="0e5693d2173a4f77ae8106813b6e5329")
+    assert status.fetch_started is not None
+    assert status.fetch_complete is not None
 
 
 def test_request_is_cached(api, respx_mock: MockRouter):
