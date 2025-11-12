@@ -53,6 +53,23 @@ def test_incomplete_fetch(material, fetch_page):
     assert status.fetch_complete is None
 
 
+def test_started_and_not_complete_fetch_resets_fetch_complete_column(material, fetch_page):
+    NotionCacheEntryStatus.objects.create(
+        page_id=material.page_id,
+        fetch_started="2032-12-01 15:30:00+03:00",
+        fetch_complete="2032-12-01 15:30:05+03:00",
+    )
+
+    fetch_page.side_effect = HTTPError()
+
+    with contextlib.suppress(HTTPError):
+        update_cache(material.page_id)
+
+    status = NotionCacheEntryStatus.objects.get(page_id=material.page_id)
+
+    assert status.fetch_complete is None  # the date should be reset during fetch start
+
+
 def test_update_cache_for_all_pages(fetch_page, cache_set, material, page, mixer):
     for _ in range(3):
         mixer.blend("notion.Material", active=False)
