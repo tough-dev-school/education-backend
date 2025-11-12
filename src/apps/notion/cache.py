@@ -1,16 +1,12 @@
 from collections.abc import Callable
-from datetime import datetime, timedelta
 
 from django.conf import settings
-from django.utils import timezone
 
 from apps.notion.client import NotionClient
 from apps.notion.models import NotionCacheEntry
 from apps.notion.page import NotionPage
 from apps.notion.types import NotionId
 from core.current_user import get_current_user
-
-TIMEOUT = 60 * 60 * 24 * 365 * 5  # 5 years
 
 
 class NotionCache:
@@ -20,10 +16,9 @@ class NotionCache:
     """
 
     def set(self, page_id: NotionId, content: NotionPage | Callable[[], NotionPage]) -> NotionPage:
-        expires_datetime = self.get_expires_time()
         content = self.get_content_as_notion_page(content)
         content_to_save = content.to_json()
-        NotionCacheEntry.objects.update_or_create(page_id=page_id, defaults=dict(content=content_to_save, expires=expires_datetime))
+        NotionCacheEntry.objects.update_or_create(page_id=page_id, defaults=dict(content=content_to_save))
         return content
 
     def get(self, page_id: NotionId) -> NotionPage | None:
@@ -39,15 +34,11 @@ class NotionCache:
 
     @staticmethod
     def _get(page_id: NotionId) -> NotionCacheEntry | None:
-        return NotionCacheEntry.objects.not_expired().filter(page_id=page_id).first()
+        return NotionCacheEntry.objects.filter(page_id=page_id).first()
 
     @staticmethod
     def get_content_as_notion_page(content: NotionPage | Callable[[], NotionPage]) -> NotionPage:
         return content() if callable(content) else content
-
-    @staticmethod
-    def get_expires_time() -> datetime:
-        return timezone.now() + timedelta(seconds=TIMEOUT)
 
 
 cache = NotionCache()
