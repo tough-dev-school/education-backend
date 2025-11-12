@@ -22,6 +22,19 @@ def block_with_content() -> NotionBlock:
 
 
 @pytest.fixture
+def block_with_single_content_element() -> NotionBlock:
+    return NotionBlock(
+        id="with_single_content_element",
+        data={
+            "value": {
+                "content": ["a"],
+                "last_edited_time": 1642356661000,
+            },
+        },
+    )
+
+
+@pytest.fixture
 def another_block_with_content() -> NotionBlock:
     return NotionBlock(
         id="another_with_content",

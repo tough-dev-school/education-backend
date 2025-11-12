@@ -13,6 +13,12 @@ def test_content(block_with_content, block_without_content):
     assert block_list.get_underlying_block_ids() == {"a", "b", "c"}
 
 
+def test_single_content_element(block_with_single_content_element):
+    block_list = NotionBlockList([block_with_single_content_element])
+
+    assert block_list.get_underlying_block_ids() == {"a"}
+
+
 def test_block_ids_are_merged(block_with_content, another_block_with_content):
     block_list = NotionBlockList([block_with_content, another_block_with_content])
 
