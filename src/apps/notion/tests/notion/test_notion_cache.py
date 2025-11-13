@@ -1,9 +1,7 @@
 import pytest
 
-from apps.notion.block import NotionBlock, NotionBlockList
 from apps.notion.cache import NotionCache, get_cached_page_or_fetch
 from apps.notion.models import NotionCacheEntry
-from apps.notion.page import NotionPage
 
 pytestmark = [
     pytest.mark.django_db,
@@ -42,18 +40,6 @@ def fetch_page(mocker):
 @pytest.fixture
 def cache():
     return NotionCache()
-
-
-@pytest.fixture
-def another_page() -> NotionPage:
-    return NotionPage(
-        id="another-test-id",
-        blocks=NotionBlockList(
-            [
-                NotionBlock(id="block-2", data={"role": "reader-6"}),
-            ]
-        ),
-    )
 
 
 @pytest.fixture
