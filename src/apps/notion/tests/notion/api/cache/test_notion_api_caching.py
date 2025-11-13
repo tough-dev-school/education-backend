@@ -45,6 +45,27 @@ def test_staff_request_returns_uncached_page(api, as_staff, respx_mock: MockRout
     assert len(respx_mock.calls) == 2
 
 
+def test_staff_request_returns_cached_page_if_feature_flag_is_on(api, as_staff, respx_mock: MockRouter):
+    api.get("/api/v2/materials/0e5693d2173a4f77ae8106813b6e5329/")
+    as_staff.get(
+        "/api/v2/materials/0e5693d2173a4f77ae8106813b6e5329/",
+        headers={
+            "X-New-Material-Cache-Behaviour": True,
+        },
+    )
+    assert len(respx_mock.calls) == 1
+
+
+def test_staff_request_with_the_new_feature_flag_does_not_break_things(as_staff, respx_mock: MockRouter):
+    as_staff.get(
+        "/api/v2/materials/0e5693d2173a4f77ae8106813b6e5329/",
+        headers={
+            "X-New-Material-Cache-Behaviour": True,
+        },
+    )
+    assert len(respx_mock.calls) == 1
+
+
 def test_staff_request_sets_cache(api, as_staff, respx_mock: MockRouter):
     api.get("/api/v2/materials/0e5693d2173a4f77ae8106813b6e5329/")
     as_staff.get("/api/v2/materials/0e5693d2173a4f77ae8106813b6e5329/")

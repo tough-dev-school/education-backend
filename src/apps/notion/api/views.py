@@ -19,7 +19,7 @@ from apps.notion.id import uuid_to_id
 from apps.notion.models import Material, NotionCacheEntryStatus
 from apps.notion.tasks import update_cache
 from core.tasks import write_admin_log
-from core.views import AuthenticatedAPIView, AdminAPIView
+from core.views import AdminAPIView, AuthenticatedAPIView
 
 
 class MaterialStatusView(AdminAPIView, RetrieveAPIView):

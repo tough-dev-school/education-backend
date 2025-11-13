@@ -7,6 +7,7 @@ from apps.notion.models import NotionCacheEntry, NotionCacheEntryStatus
 from apps.notion.page import NotionPage
 from apps.notion.types import NotionId
 from core.current_user import get_current_user
+from core.request import get_request
 
 
 class NotionCache:
@@ -39,7 +40,12 @@ cache = NotionCache()
 
 
 def should_bypass_cache() -> bool:
+    """This method should be removed after we drop the featureflag it checks"""
     if settings.NOTION_CACHE_ONLY:
+        return False
+
+    request = get_request()
+    if request is not None and "x-new-material-cache-behaviour" in request.headers:
         return False
 
     user = get_current_user()
