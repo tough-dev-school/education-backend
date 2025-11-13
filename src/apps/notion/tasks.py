@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 @celery.task(
-    rate_limit="6/m",
+    rate_limit="10/m",
     acks_late=True,
     name="notion.update_cache",
     autoretry_for=[httpx.HTTPError, NotionError],
