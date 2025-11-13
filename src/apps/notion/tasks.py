@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 @celery.task(
-    rate_limit="6/m",
+    rate_limit="10/m",
     acks_late=True,
     name="notion.update_cache",
     autoretry_for=[httpx.HTTPError, NotionError],
@@ -24,8 +24,12 @@ def update_cache(page_id: str) -> None:
     from apps.notion.cache import cache
     from apps.notion.client import NotionClient
 
+    Status = apps.get_model("notion.NotionCacheEntryStatus")
+
+    Status.log_start(page_id)
     page = NotionClient().fetch_page(page_id)
     cache.set(page_id, page)
+    Status.log_completion(page_id)
 
 
 @celery.task(name="notion.update_cache_for_all_pages")
