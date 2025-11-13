@@ -143,7 +143,7 @@ class NotionBlockList(UserList[NotionBlock]):
         """List of non-page blocks that have other blocks in it"""
         for block in self.data:
             if block.type != "page":
-                if len(block.content) > 1:
+                if len(block.content) >= 1:
                     yield block
 
     @property
