@@ -4,7 +4,7 @@ from django.contrib.admin.models import CHANGE
 from django.db.models import QuerySet
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema, inline_serializer
-from rest_framework import permissions, serializers
+from rest_framework import serializers
 from rest_framework.exceptions import NotFound
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.request import Request
@@ -19,13 +19,12 @@ from apps.notion.id import uuid_to_id
 from apps.notion.models import Material, NotionCacheEntryStatus
 from apps.notion.tasks import update_cache
 from core.tasks import write_admin_log
-from core.views import AuthenticatedAPIView
+from core.views import AuthenticatedAPIView, AdminAPIView
 
 
-class MaterialStatusView(RetrieveAPIView):
+class MaterialStatusView(AdminAPIView, RetrieveAPIView):
     """Get material update status"""
 
-    permission_classes = [permissions.IsAdminUser]
     queryset = NotionCacheEntryStatus.objects.all()
     serializer_class = NotionCacheEntryStatusSerializer
 
@@ -35,10 +34,8 @@ class MaterialStatusView(RetrieveAPIView):
         return get_object_or_404(NotionCacheEntryStatus, page_id=material.page_id)
 
 
-class MaterialUpdateView(AuthenticatedAPIView):
+class MaterialUpdateView(AdminAPIView):
     """Trigger material update"""
-
-    permission_classes = [permissions.IsAdminUser]
 
     def get_object(self) -> Material:
         return get_object_or_404(Material, page_id=self.kwargs["page_id"])

@@ -19,5 +19,10 @@ class AuthenticatedAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
 
+class AdminAPIView(APIView):
+    request: AuthenticatedRequest
+    permission_classes = [permissions.IsAdminUser]
+
+
 class HomePageView(RedirectView):
     url = "/admin/"
