@@ -11,6 +11,7 @@ def test_ok(api):
     assert got["id"] == api.user.pk
     assert got["uuid"] == str(api.user.uuid)
     assert got["username"] == api.user.username
+    assert got["is_staff"] == api.user.is_staff
     assert got["first_name"] == api.user.first_name
     assert got["last_name"] == api.user.last_name
     assert got["first_name_en"] == api.user.first_name_en
