@@ -49,14 +49,6 @@ class MaterialUpdateView(AdminAPIView):
 
         return Response(status=200)
 
-    @staticmethod
-    def no_update_pending(material: Material) -> bool:
-        try:
-            status = NotionCacheEntryStatus.objects.get(page_id=material.page_id)
-            return (status.fetch_started is None) or (status.fetch_complete is not None)
-        except NotionCacheEntryStatus.DoesNotExist:
-            return False
-
     def write_admin_log(self, material: Material) -> None:
         write_admin_log.delay(
             action_flag=CHANGE,
