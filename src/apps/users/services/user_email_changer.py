@@ -19,15 +19,13 @@ class UserEmailChanger(BaseService):
     user: User
     new_email: str
 
-    def act(self) -> User:
+    def act(self) -> None:
         resulting_user = None
         if not User.objects.filter(email=self.new_email).exists():
             resulting_user = self.change_email_to_the_new_one()
             self.after_changing(resulting_user)
         else:
-            resulting_user = self.change_email_to_existing()
-
-        return resulting_user
+            self.change_email_to_existing()
 
     def change_email_to_the_new_one(self) -> User:
         """Simple email changing"""
@@ -40,16 +38,13 @@ class UserEmailChanger(BaseService):
 
         return user
 
-    def change_email_to_existing(self) -> User:
+    def change_email_to_existing(self) -> None:
         """Migrate current user data to existing user with the same email"""
         destination = User.objects.get(email=self.new_email)
         UserDataMigrator(
             source=self.user,
             destination=destination,
         )()
-
-        destination.refresh_from_db()
-        return destination
 
     @classmethod
     def after_changing(cls, resulting_user: User) -> None:

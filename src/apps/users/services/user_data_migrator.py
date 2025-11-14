@@ -1,10 +1,14 @@
 from dataclasses import dataclass
+from typing import Callable
 
 from django.apps import apps
 from django.contrib.admin.models import CHANGE
+from django.core.exceptions import ValidationError
 from django.db import transaction
+from django.utils.translation import gettext_lazy as _
 from rest_framework.exceptions import NotAuthenticated
 
+from apps.orders.models import Order
 from apps.users.models import User
 from core.current_user import get_current_user
 from core.services import BaseService
@@ -25,6 +29,11 @@ class UserDataMigrator(BaseService):
         self.update_homework()
 
         self.write_auditlog()
+
+    def get_validators(self) -> list[Callable]:
+        return [
+            self.validate_paid_orders_with_the_same_courses_does_not_exist,
+        ]
 
     def update_orders(self) -> None:
         apps.get_model("orders.Order").objects.filter(user=self.source).update(
@@ -47,6 +56,11 @@ class UserDataMigrator(BaseService):
         apps.get_model("homework.AnswerCrossCheck").objects.filter(checker=self.source).update(
             checker=self.destination,
         )
+
+    def validate_paid_orders_with_the_same_courses_does_not_exist(self) -> None:
+        for order in Order.objects.paid().filter(user=self.source):
+            if Order.objects.paid().filter(course=order.course, user=self.destination).exists():
+                raise ValidationError(_("Target user already has orders with the same courses, merge failed"))
 
     def write_auditlog(self) -> None:
         """Write a LogEntry for source and destination user"""

@@ -2,8 +2,6 @@ from typing import Any
 
 from django import forms
 from django.contrib.auth.forms import UserChangeForm as _UserChangeForm
-from django.core.exceptions import ValidationError
-from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
 from apps.users.models import AdminUserProxy, User
@@ -46,9 +44,7 @@ class UserChangeForm(_UserChangeForm):
         from apps.users.services import UserEmailChanger
 
         if self.initial["email"] != self.cleaned_data["email"]:
-            if User.objects.exclude(pk=self.instance.pk).filter(Q(email=self.cleaned_data["email"]) | Q(username=self.cleaned_data["email"])).exists():
-                raise ValidationError(_("User with such email or login already exists"))
-            UserEmailChanger(user=self.instance, new_email=self.cleaned_data["email"])()
+            UserEmailChanger(user=self.instance, new_email=self.cleaned_data["email"])()  # may be the same
 
         return self.cleaned_data["email"]
 

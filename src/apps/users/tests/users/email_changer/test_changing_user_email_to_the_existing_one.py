@@ -1,6 +1,7 @@
 import pytest
 from django.contrib.admin.models import CHANGE, LogEntry
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ValidationError
 
 pytestmark = [
     pytest.mark.django_db,
@@ -54,6 +55,14 @@ def test_answers_are_migrated(service, answer, user, existing_user):
     answer.refresh_from_db()
 
     assert answer.author == existing_user
+
+
+def test_changing_to_the_course_where_user_already_existst(service, order, existing_user, factory):
+    """Hope we will not encounter this issue in the real world, but i've createed some logic for developers, it should be tested as well as the user-facing"""
+    factory.order(user=existing_user, item=order.course, is_paid=True)  # order with the same course
+
+    with pytest.raises(ValidationError):
+        service(new_email="new@email.com")()
 
 
 def test_destination_user_answers_remains_the_same(service, answer, existing_user):
