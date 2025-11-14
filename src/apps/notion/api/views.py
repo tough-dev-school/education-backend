@@ -1,20 +1,65 @@
 from typing import Any
 
+from django.contrib.admin.models import CHANGE
 from django.db.models import QuerySet
+from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema, inline_serializer
 from rest_framework import serializers
 from rest_framework.exceptions import NotFound
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
 from apps.lms.api.serializers import BreadcrumbsSerializer
-from apps.notion.api.serializers import NotionPageSerializer
+from apps.notion.api.serializers import NotionCacheEntryStatusSerializer, NotionPageSerializer
 from apps.notion.api.throttling import NotionThrottle
 from apps.notion.breadcrumbs import get_lesson
 from apps.notion.cache import get_cached_page_or_fetch
 from apps.notion.id import uuid_to_id
-from apps.notion.models import Material
-from core.views import AuthenticatedAPIView
+from apps.notion.models import Material, NotionCacheEntryStatus
+from apps.notion.tasks import update_cache
+from core.tasks import write_admin_log
+from core.views import AdminAPIView, AuthenticatedAPIView
+
+
+class MaterialStatusView(AdminAPIView, RetrieveAPIView):
+    """Get material update status"""
+
+    queryset = NotionCacheEntryStatus.objects.all()
+    serializer_class = NotionCacheEntryStatusSerializer
+
+    def get_object(self) -> NotionCacheEntryStatus:
+        material = get_object_or_404(Material, page_id=self.kwargs["page_id"])
+
+        return get_object_or_404(NotionCacheEntryStatus, page_id=material.page_id)
+
+
+class MaterialUpdateView(AdminAPIView):
+    """Trigger material update"""
+
+    def get_object(self) -> Material:
+        return get_object_or_404(Material, page_id=self.kwargs["page_id"])
+
+    @extend_schema(request=None, responses={200: None})
+    def put(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+        material = self.get_object()
+
+        self.write_admin_log(material)
+        self.update_cache(material)
+
+        return Response(status=200)
+
+    def write_admin_log(self, material: Material) -> None:
+        write_admin_log.delay(
+            action_flag=CHANGE,
+            change_message="Material update triggered",
+            model="notion.Material",
+            object_id=material.id,
+            user_id=self.request.user.id,
+        )
+
+    def update_cache(self, material: Material) -> None:
+        update_cache.delay(page_id=material.page_id)
 
 
 class MaterialView(AuthenticatedAPIView):

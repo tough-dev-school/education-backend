@@ -1,5 +1,4 @@
 from decimal import Decimal
-from typing import Any
 
 import stripe
 from django.conf import settings
@@ -33,6 +32,8 @@ class BaseStripeBank(Bank):
             client_reference_id=self.order.slug,
         )
 
+        if session.url is None:
+            raise RuntimeError("stripe session did not return an url")
         return session.url
 
     def refund(self, amount: Decimal | None = None) -> None:
@@ -48,18 +49,20 @@ class BaseStripeBank(Bank):
         refund_amount_data = {"amount": self.get_formatted_amount(amount)} if amount else {}
         stripe.Refund.create(payment_intent=latest_payment_notification.payment_intent, **refund_amount_data)  # type: ignore
 
-    def get_items(self) -> list[dict[str, Any]]:
+    def get_items(self) -> list[stripe.params.checkout.SessionCreateParamsLineItem]:
         return [
-            {
-                "price_data": {
-                    "currency": self.currency.lower(),
-                    "product_data": {
-                        "name": self.order.item.name_international,
+            stripe.params.checkout.SessionCreateParamsLineItem(
+                {
+                    "price_data": {
+                        "currency": self.currency.lower(),
+                        "product_data": {
+                            "name": self.order.item.name_international,
+                        },
+                        "unit_amount": self.price,
                     },
-                    "unit_amount": self.price,
-                },
-                "quantity": 1,
-            },
+                    "quantity": 1,
+                }
+            ),
         ]
 
 

@@ -28,14 +28,14 @@ class BaseStripeWebhookView(APIView):
 
     def validate_webhook(self, request: Request) -> stripe.Event:
         try:
-            return stripe.Webhook.construct_event(
+            return stripe.Webhook.construct_event(  # type: ignore[no-untyped-call]
                 payload=request.body,
                 sig_header=request.headers.get("STRIPE_SIGNATURE", ""),
                 secret=self.bank.webhook_secret,
                 api_key=self.bank.api_key,
             )
 
-        except stripe.error.StripeError:
+        except stripe.StripeError:
             raise AppServiceException("Not a valid webhook request")
 
 

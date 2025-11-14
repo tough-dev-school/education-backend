@@ -4,6 +4,6 @@ from core.throttling import ConfigurableThrottlingMixin
 
 
 class NotionThrottle(ConfigurableThrottlingMixin, UserRateThrottle):  # type: ignore
-    """Throttle for any authorization views."""
+    """Throttle downloading materials"""
 
     scope = "notion-materials"

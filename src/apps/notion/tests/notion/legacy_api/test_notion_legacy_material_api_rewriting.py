@@ -1,7 +1,4 @@
-from datetime import timedelta
-
 import pytest
-from django.utils import timezone
 
 from apps.notion.models import NotionAsset, Video
 
@@ -32,7 +29,6 @@ def raw_notion_cache_entry(page, material, mixer):
         "notion.NotionCacheEntry",
         page_id=material.page_id,
         content=page.to_json(),
-        expires=timezone.now() + timedelta(seconds=10000),
     )
 
 

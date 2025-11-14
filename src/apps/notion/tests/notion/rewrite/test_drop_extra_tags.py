@@ -34,4 +34,4 @@ def test_required_values_are_not_dropped(block):
 
     assert block["value"]["parent_id"] == "will_no_be_dropped"
     assert block["value"]["format"]["page_icon"] == "1.ico"
-    assert block["value"]["format"]["random_key"] == "random_value"  # wildcards work wll
+    assert block["value"]["format"]["random_key"] == "random_value"  # wildcards work well
