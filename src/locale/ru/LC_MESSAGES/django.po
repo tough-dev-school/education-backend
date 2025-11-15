@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-03 20:27+0300\n"
+"POT-Creation-Date: 2025-11-14 17:31+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -63,7 +63,7 @@ msgid "Price"
 msgstr "Цена"
 
 #: apps/b2b/admin/deals/forms.py:14 apps/b2b/models/student.py:12
-#: apps/users/models.py:125
+#: apps/users/models.py:129
 msgid "Students"
 msgstr "Студенты"
 
@@ -159,7 +159,7 @@ msgid "In progress"
 msgstr "В работе"
 
 #: apps/b2b/models/student.py:11 apps/diplomas/admin/diploma.py:52
-#: apps/studying/models.py:8 apps/users/models.py:124
+#: apps/studying/models.py:8 apps/users/models.py:128
 msgid "Student"
 msgstr "Студент"
 
@@ -1087,15 +1087,15 @@ msgstr "Записи"
 msgid "Bundles"
 msgstr "Наборы"
 
-#: apps/stripebank/bank.py:16
+#: apps/stripebank/bank.py:15
 msgid "Stripe"
 msgstr "Страйп"
 
-#: apps/stripebank/bank.py:69
+#: apps/stripebank/bank.py:72
 msgid "Stripe USD"
 msgstr "Страйп"
 
-#: apps/stripebank/bank.py:77
+#: apps/stripebank/bank.py:80
 msgid "Stripe KZT"
 msgstr "Страйп"
 
@@ -1119,7 +1119,7 @@ msgstr ""
 msgid "Tinkoff"
 msgstr "Тинькофф"
 
-#: apps/tinkoff/dolyame.py:26
+#: apps/tinkoff/dolyame.py:27
 msgid "Dolyame"
 msgstr "Долями"
 
@@ -1179,21 +1179,17 @@ msgstr "Имя на английском"
 msgid "Marketing"
 msgstr ""
 
-#: apps/users/admin/user/forms.py:14
+#: apps/users/admin/user/forms.py:12
 msgid "Email"
 msgstr "Почта"
 
-#: apps/users/admin/user/forms.py:15
+#: apps/users/admin/user/forms.py:13
 msgid "first name"
 msgstr "Имя"
 
-#: apps/users/admin/user/forms.py:16
+#: apps/users/admin/user/forms.py:14
 msgid "last name"
 msgstr "Фамилия"
-
-#: apps/users/admin/user/forms.py:50
-msgid "User with such email or login already exists"
-msgstr ""
 
 #: apps/users/apps.py:7
 msgid "Users"
@@ -1223,13 +1219,17 @@ msgstr "Пол"
 msgid "Avatar"
 msgstr "Аватар"
 
-#: apps/users/models.py:46
+#: apps/users/models.py:50
 msgid "user"
 msgstr "пользователь"
 
-#: apps/users/models.py:47
+#: apps/users/models.py:51
 msgid "users"
 msgstr "пользователи"
+
+#: apps/users/services/user_data_migrator.py:63
+msgid "Target user already has orders with the same courses, merge failed"
+msgstr "У целелвого юзера есть покупки тех же курсов, что у текущего. Так мерджить нельзя, к сожалению"
 
 #: core/admin/actions/archive.py:18
 msgid "Put to archive"

@@ -45,7 +45,7 @@ class UserCreator(BaseService):
 
     def get(self) -> User | None:
         if self.email:
-            return User.objects.filter(is_active=True).filter(email__iexact=self.email).first()
+            return User.objects.filter(is_active=True).filter(email__iexact=self.email).order_by("date_joined").first()
 
     def create(self) -> User:
         serializer = UserCreateSerializer(

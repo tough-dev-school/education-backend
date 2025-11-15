@@ -40,6 +40,12 @@ class UserAdmin(ModelAdmin):
         "username",
     ]
 
+    class Media:
+        js = ["admin/js/vendor/jquery/jquery.js", "admin/js/email_change_presave.js"]
+        css = {
+            "all": ["admin/css/email_change_presave.css"],
+        }
+
 
 __all__ = [
     "UserAdmin",

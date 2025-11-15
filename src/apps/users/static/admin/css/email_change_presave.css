@@ -1,0 +1,5 @@
+.email-change-presave__notification {
+  color: var(--body-quiet-color);
+  margin-left: .5rem !important;
+  margin-top: .2rem;
+}
