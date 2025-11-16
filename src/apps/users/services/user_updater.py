@@ -1,27 +1,10 @@
 from dataclasses import dataclass
 
-from rest_framework import serializers
-
 from apps.amocrm.tasks import amocrm_enabled, push_user
 from apps.diplomas.tasks import regenerate_diplomas
+from apps.users.api.serializers import UserSelfUpdateSerializer
 from apps.users.models import User
 from core.services import BaseService
-
-
-class UserUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = [
-            "first_name",
-            "last_name",
-            "first_name_en",
-            "last_name_en",
-            "gender",
-            "github_username",
-            "linkedin_username",
-            "telegram_username",
-            "avatar",
-        ]
 
 
 @dataclass
@@ -40,7 +23,7 @@ class UserUpdater(BaseService):
         return user
 
     def update(self, user: User) -> set[str]:
-        serializer = UserUpdateSerializer(instance=user, data=self.user_data, partial=True)
+        serializer = UserSelfUpdateSerializer(instance=user, data=self.user_data, partial=True)
         serializer.is_valid(raise_exception=True)
 
         serializer.save()
