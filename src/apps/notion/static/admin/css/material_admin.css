@@ -3,4 +3,7 @@
   .field-notion_page {
     white-space: nowrap !important;
   }
+  .field-title {
+    max-width: 10rem;
+  }
 }

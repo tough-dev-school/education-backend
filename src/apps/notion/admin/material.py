@@ -1,14 +1,19 @@
+from typing import Any
+
+from django.db import transaction
 from django.db.models import QuerySet, Value
 from django.db.models.functions import Replace
 from django.http.request import HttpRequest
+from django.utils import timezone
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from httpx import HTTPError
 
+from apps.notion import tasks
 from apps.notion.client import NotionClient
 from apps.notion.exceptions import NotionError
 from apps.notion.id import page_url_to_id, uuid_to_id
-from apps.notion.models import Material
+from apps.notion.models import Material, NotionCacheEntryStatus
 from apps.products.admin.filters import CourseFilter
 from core.admin import ModelAdmin, ModelForm, admin
 
@@ -36,10 +41,32 @@ class NotionMaterialForm(ModelForm):
         return self.cleaned_data["title"]
 
 
+@admin.action(description=_("Update"))
+def update(modeladmin: Any, request: HttpRequest, queryset: QuerySet[Material]) -> None:
+    material_count = 0
+    for material in queryset.iterator():  # manualy update cache status before running the task, so user will get 'updating...' near each requested material
+        with transaction.atomic():
+            NotionCacheEntryStatus.objects.filter(
+                page_id=material.page_id,
+            ).update(
+                fetch_complete=None,
+                fetch_started=timezone.now(),
+            )
+
+        tasks.update_cache.delay(page_id=material.page_id)
+        material_count += 1
+
+    modeladmin.message_user(
+        request,
+        _(f"Started updating {material_count} materials"),
+    )
+
+
 @admin.register(Material)
 class NotionMaterialAdmin(ModelAdmin):
     list_display = (
         "title",
+        "status",
         "our_page",
         "notion_page",
     )
@@ -57,6 +84,9 @@ class NotionMaterialAdmin(ModelAdmin):
         "page_id",
         "slug_without_dashes",
     ]
+    actions = [
+        update,
+    ]
 
     list_filter = (CourseFilter,)
     form = NotionMaterialForm
@@ -64,6 +94,9 @@ class NotionMaterialAdmin(ModelAdmin):
 
     class Media:
         css = {"all": ("admin/css/material_admin.css",)}
+
+    def get_queryset(self, request: HttpRequest) -> QuerySet[Material]:
+        return Material.objects.with_cache_status()
 
     def get_search_results(self, request: HttpRequest, queryset: QuerySet, search_term: str) -> tuple[QuerySet, bool]:
         """Allow searching both by long and short ids"""
@@ -75,18 +108,27 @@ class NotionMaterialAdmin(ModelAdmin):
 
     @admin.display(description=_("LMS"))
     @mark_safe
-    def our_page(self, obj: Material) -> str:
-        slug = uuid_to_id(str(obj.slug))
-        lms_url = obj.get_absolute_url()
+    def our_page(self, material: Material) -> str:
+        lms_url = material.get_absolute_url()
 
         return f"""<a target="_blank" href="{lms_url}">
             <img class="notion-lms-logo" src="/static/logo/tds.png" />
-            {slug}</a>"""
+            Открыть</a>"""
 
     @admin.display(description=_("Notion"))
     @mark_safe
-    def notion_page(self, obj: Material) -> str:
-        notion_url = obj.get_notion_url()
+    def notion_page(self, material: Material) -> str:
+        notion_url = material.get_notion_url()
         return f"""<a target="_blank" href="{notion_url}">
             <img class="notion-logo" src="/static/logo/notion.svg" />
-            {obj.page_id}</a>"""
+            Открыть</a>"""
+
+    @admin.display(description=_("Status"), ordering="-fetch_complete")
+    def status(self, material: Material) -> str:
+        if not material.fetch_started and not material.fetch_complete:
+            return "—"
+
+        if not material.fetch_complete:
+            return "Обновляется..."
+
+        return self._natural_datetime(material.fetch_complete)
