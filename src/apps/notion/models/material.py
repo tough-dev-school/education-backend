@@ -34,7 +34,7 @@ class MaterialQuerySet(QuerySet):
                 f"""
                 WITH RECURSIVE accessible_pages AS (
                     -- Base case: directly accessible page IDs from available courses
-                    SELECT page_id FROM {apps.get_model("notion.material")._meta.db_table}
+                    SELECT page_id FROM {Material._meta.db_table}
                     WHERE active = TRUE AND course_id = ANY(%s)
 
                     UNION
@@ -55,6 +55,28 @@ class MaterialQuerySet(QuerySet):
             return self.filter(
                 Q(slug=page_id_or_slug) | Q(page_id=page_id_or_slug),
             ).first()
+
+    def with_cache_status(self) -> "MaterialQuerySet":
+        NotionCacheEntryStatus = apps.get_model("notion.NotionCacheEntryStatus")
+
+        return self.annotate(
+            fetch_started=RawSQL(
+                f"""
+                SELECT fetch_started
+                FROM {NotionCacheEntryStatus._meta.db_table}
+                WHERE {NotionCacheEntryStatus._meta.db_table}.page_id = {Material._meta.db_table}.page_id
+                """,
+                [],
+            ),
+            fetch_complete=RawSQL(
+                f"""
+                SELECT fetch_complete
+                FROM {NotionCacheEntryStatus._meta.db_table}
+                WHERE {NotionCacheEntryStatus._meta.db_table}.page_id = {Material._meta.db_table}.page_id
+                """,
+                [],
+            ),
+        )
 
 
 MaterialManager = models.Manager.from_queryset(MaterialQuerySet)

@@ -40,6 +40,7 @@ class NotionMaterialForm(ModelForm):
 class NotionMaterialAdmin(ModelAdmin):
     list_display = (
         "title",
+        "status",
         "our_page",
         "notion_page",
     )
@@ -65,6 +66,9 @@ class NotionMaterialAdmin(ModelAdmin):
     class Media:
         css = {"all": ("admin/css/material_admin.css",)}
 
+    def get_queryset(self, request: HttpRequest) -> QuerySet[Material]:
+        return Material.objects.with_cache_status()
+
     def get_search_results(self, request: HttpRequest, queryset: QuerySet, search_term: str) -> tuple[QuerySet, bool]:
         """Allow searching both by long and short ids"""
         if len(search_term) == 36:
@@ -75,18 +79,27 @@ class NotionMaterialAdmin(ModelAdmin):
 
     @admin.display(description=_("LMS"))
     @mark_safe
-    def our_page(self, obj: Material) -> str:
-        slug = uuid_to_id(str(obj.slug))
-        lms_url = obj.get_absolute_url()
+    def our_page(self, material: Material) -> str:
+        lms_url = material.get_absolute_url()
 
         return f"""<a target="_blank" href="{lms_url}">
             <img class="notion-lms-logo" src="/static/logo/tds.png" />
-            {slug}</a>"""
+            Открыть</a>"""
 
     @admin.display(description=_("Notion"))
     @mark_safe
-    def notion_page(self, obj: Material) -> str:
-        notion_url = obj.get_notion_url()
+    def notion_page(self, material: Material) -> str:
+        notion_url = material.get_notion_url()
         return f"""<a target="_blank" href="{notion_url}">
             <img class="notion-logo" src="/static/logo/notion.svg" />
-            {obj.page_id}</a>"""
+            Открыть</a>"""
+
+    @admin.display(description=_("Status"), ordering="-fetch_complete")
+    def status(self, material: Material) -> str:
+        if not material.fetch_started and not material.fetch_complete:
+            return "—"
+
+        if not material.fetch_complete:
+            return "Обновляется..."
+
+        return self._natural_datetime(material.fetch_complete)
