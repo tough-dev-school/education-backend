@@ -57,6 +57,7 @@ class MaterialQuerySet(QuerySet):
             ).first()
 
     def with_cache_status(self) -> "MaterialQuerySet":
+        """Annotating cache status via RawSQL cuz we have no conventional ForeignKey between material and its cache (for no reason)"""
         NotionCacheEntryStatus = apps.get_model("notion.NotionCacheEntryStatus")
 
         return self.annotate(

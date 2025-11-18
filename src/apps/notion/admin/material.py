@@ -44,7 +44,7 @@ class NotionMaterialForm(ModelForm):
 @admin.action(description=_("Update"))
 def update(modeladmin: Any, request: HttpRequest, queryset: QuerySet[Material]) -> None:
     material_count = 0
-    for material in queryset.iterator():
+    for material in queryset.iterator():  # manualy update cache status before running the task, so user will get 'updating...' near each requested material
         with transaction.atomic():
             NotionCacheEntryStatus.objects.filter(
                 page_id=material.page_id,
