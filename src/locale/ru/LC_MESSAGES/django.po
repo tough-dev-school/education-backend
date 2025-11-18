@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-14 17:31+0300\n"
+"POT-Creation-Date: 2025-11-18 14:47+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -52,7 +52,7 @@ msgctxt "deals"
 msgid "Orders"
 msgstr "Заказы"
 
-#: apps/b2b/admin/deals/admin.py:67
+#: apps/b2b/admin/deals/admin.py:67 apps/notion/admin/material.py:126
 msgid "Status"
 msgstr "Статус"
 
@@ -607,11 +607,15 @@ msgstr "Домен личного email"
 msgid "Personal email domains"
 msgstr "Домены личных email"
 
-#: apps/notion/admin/material.py:76
-msgid "LMS"
-msgstr ""
+#: apps/notion/admin/material.py:44
+msgid "Update"
+msgstr "Обновить"
 
-#: apps/notion/admin/material.py:86
+#: apps/notion/admin/material.py:109
+msgid "LMS"
+msgstr "ЛМС"
+
+#: apps/notion/admin/material.py:118
 msgid "Notion"
 msgstr "Ноушен"
 
@@ -643,44 +647,44 @@ msgstr "Файл ноушена"
 msgid "Notion assets"
 msgstr "Файлы ноушена"
 
-#: apps/notion/models/material.py:66
+#: apps/notion/models/material.py:88
 msgid "Our page id"
 msgstr "ID страницы LMS"
 
-#: apps/notion/models/material.py:68
+#: apps/notion/models/material.py:90
 msgid "Page title"
 msgstr "Заголовок страницы"
 
-#: apps/notion/models/material.py:68
+#: apps/notion/models/material.py:90
 msgid "Will be fetched automatically if empty"
 msgstr "Если не указать — попробуем скачать из ноушена"
 
-#: apps/notion/models/material.py:70
+#: apps/notion/models/material.py:92
 msgid "Notion page id"
 msgstr "ID страницы в ноушене"
 
-#: apps/notion/models/material.py:70
+#: apps/notion/models/material.py:92
 msgid "Paste it from apps.notion address bar"
 msgstr "Скопируйте адрес из строки браузера"
 
-#: apps/notion/models/material.py:71 apps/orders/admin/promocodes/admin.py:14
+#: apps/notion/models/material.py:93 apps/orders/admin/promocodes/admin.py:14
 #: apps/orders/admin/promocodes/admin.py:71 apps/orders/models/promocode.py:48
 msgid "Active"
 msgstr "Включено"
 
-#: apps/notion/models/material.py:72
+#: apps/notion/models/material.py:94
 msgid "Is home page of the course"
 msgstr "Главная страница курса"
 
-#: apps/notion/models/material.py:75
+#: apps/notion/models/material.py:97
 msgid "Notion material"
 msgstr "Материал"
 
-#: apps/notion/models/material.py:76
+#: apps/notion/models/material.py:98
 msgid "Notion materials"
 msgstr "Материалы"
 
-#: apps/notion/models/material.py:81
+#: apps/notion/models/material.py:103
 msgid "May access materials from every course"
 msgstr "Видит страницы ноушена от всех курсов"
 
@@ -1229,7 +1233,9 @@ msgstr "пользователи"
 
 #: apps/users/services/user_data_migrator.py:63
 msgid "Target user already has orders with the same courses, merge failed"
-msgstr "У целелвого юзера есть покупки тех же курсов, что у текущего. Так мерджить нельзя, к сожалению"
+msgstr ""
+"У целелвого юзера есть покупки тех же курсов, что у текущего. Так мерджить "
+"нельзя, к сожалению"
 
 #: core/admin/actions/archive.py:18
 msgid "Put to archive"

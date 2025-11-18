@@ -1,14 +1,19 @@
+from typing import Any
+
+from django.db import transaction
 from django.db.models import QuerySet, Value
 from django.db.models.functions import Replace
 from django.http.request import HttpRequest
+from django.utils import timezone
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from httpx import HTTPError
 
+from apps.notion import tasks
 from apps.notion.client import NotionClient
 from apps.notion.exceptions import NotionError
 from apps.notion.id import page_url_to_id, uuid_to_id
-from apps.notion.models import Material
+from apps.notion.models import Material, NotionCacheEntryStatus
 from apps.products.admin.filters import CourseFilter
 from core.admin import ModelAdmin, ModelForm, admin
 
@@ -36,6 +41,27 @@ class NotionMaterialForm(ModelForm):
         return self.cleaned_data["title"]
 
 
+@admin.action(description=_("Update"))
+def update(modeladmin: Any, request: HttpRequest, queryset: QuerySet[Material]) -> None:
+    material_count = 0
+    for material in queryset.iterator():
+        with transaction.atomic():
+            NotionCacheEntryStatus.objects.filter(
+                page_id=material.page_id,
+            ).update(
+                fetch_complete=None,
+                fetch_started=timezone.now(),
+            )
+
+        tasks.update_cache.delay(page_id=material.page_id)
+        material_count += 1
+
+    modeladmin.message_user(
+        request,
+        _(f"Started updating {material_count} materials"),
+    )
+
+
 @admin.register(Material)
 class NotionMaterialAdmin(ModelAdmin):
     list_display = (
@@ -57,6 +83,9 @@ class NotionMaterialAdmin(ModelAdmin):
     lookup_fields = [
         "page_id",
         "slug_without_dashes",
+    ]
+    actions = [
+        update,
     ]
 
     list_filter = (CourseFilter,)
