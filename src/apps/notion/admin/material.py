@@ -109,11 +109,12 @@ class NotionMaterialAdmin(ModelAdmin):
     @admin.display(description=_("LMS"))
     @mark_safe
     def our_page(self, material: Material) -> str:
+        slug = uuid_to_id(str(material.slug))
         lms_url = material.get_absolute_url()
 
         return f"""<a target="_blank" href="{lms_url}">
             <img class="notion-lms-logo" src="/static/logo/tds.png" />
-            Открыть</a>"""
+            {slug}</a>"""
 
     @admin.display(description=_("Notion"))
     @mark_safe
@@ -121,7 +122,7 @@ class NotionMaterialAdmin(ModelAdmin):
         notion_url = material.get_notion_url()
         return f"""<a target="_blank" href="{notion_url}">
             <img class="notion-logo" src="/static/logo/notion.svg" />
-            Открыть</a>"""
+            {material.page_id}</a>"""
 
     @admin.display(description=_("Status"), ordering="-fetch_complete")
     def status(self, material: Material) -> str:
