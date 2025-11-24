@@ -1,6 +1,6 @@
 import pytest
 
-from apps.notion.models import NotionCacheEntryStatus
+from apps.notion.models import NotionCacheEntry, NotionCacheEntryStatus
 
 pytestmark = [pytest.mark.django_db]
 
@@ -12,8 +12,25 @@ def api(api):
     return api
 
 
-def test_update(api, respx_mock):
-    api.put("/api/v2/materials/0e5693d2173a4f77ae8106813b6e5329/update/")
+@pytest.mark.parametrize("page_id", ["0e5693d2-173a-4f77-ae81-06813b6e5329", "0e5693d2173a4f77ae8106813b6e5329"])
+def test_update_by_page_id(api, page_id, respx_mock):
+    api.put(f"/api/v2/materials/{page_id}/update/")
+
+    assert len(respx_mock.calls) == 1
+
+
+@pytest.mark.parametrize("material_slug", ["4d5726e8-ee52-4448-b8f9-7be4c7f8e632", "4d5726e8ee524448b8f97be4c7f8e632"])
+def test_update_by_slug(api, material_slug, respx_mock):
+    api.put(f"/api/v2/materials/{material_slug}/update/")
+
+    assert len(respx_mock.calls) == 1
+
+
+def test_update_for_newly_created_materials_is_ok(api, material, respx_mock):
+    NotionCacheEntryStatus.objects.all().delete()
+    NotionCacheEntry.objects.all().delete()
+
+    api.put(f"/api/v2/materials/{material.slug}/update/")
 
     assert len(respx_mock.calls) == 1
 
