@@ -44,3 +44,11 @@ def test_admin_only(api, material):
     api.user.update(is_staff=False)
 
     api.get(f"/api/v2/materials/{material.page_id}/status/", expected_status_code=403)
+
+
+def test_no_sattus(api, status, material):
+    status.delete()
+
+    response = api.get(f"/api/v2/materials/{material.slug}/status/", expected_status_code=400)
+
+    assert "has not been fetched" in response[0]

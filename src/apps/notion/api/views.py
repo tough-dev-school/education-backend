@@ -4,7 +4,7 @@ from django.contrib.admin.models import CHANGE
 from django.db.models import QuerySet
 from drf_spectacular.utils import extend_schema, inline_serializer
 from rest_framework import serializers
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -33,7 +33,10 @@ class MaterialStatusView(AdminAPIView, RetrieveAPIView):
         if material is None:
             raise NotFound()
 
-        return NotionCacheEntryStatus.objects.get(page_id=material.page_id)
+        try:
+            return NotionCacheEntryStatus.objects.get(page_id=material.page_id)
+        except NotionCacheEntryStatus.DoesNotExist:
+            raise ValidationError("Material has not been fetched yet, use v2/materials/<id>/update/ first.")
 
 
 class MaterialUpdateView(AdminAPIView):
