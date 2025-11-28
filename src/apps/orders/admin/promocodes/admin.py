@@ -47,6 +47,7 @@ class PromoCodeAdmin(ModelAdmin):
     )
 
     actions = [actions.deactivate]
+    save_as = True
 
     def get_queryset(self, request: Request) -> QuerySet:  # type: ignore
         return super().get_queryset(request).with_order_count()  # type: ignore
