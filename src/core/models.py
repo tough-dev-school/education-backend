@@ -1,9 +1,11 @@
 import operator
+from collections.abc import Iterable
 from functools import reduce
 from typing import Any
 
-from behaviors.behaviors import Timestamped
 from django.db import models
+from django.db.models.base import ModelBase
+from django.utils import timezone
 
 __all__ = [
     "DefaultModel",
@@ -34,15 +36,33 @@ class DefaultModel(TestUtilsMixin, models.Model):
         return super().__str__()
 
 
-class TimestampedModel(DefaultModel, Timestamped):
+class TimestampedModel(DefaultModel):
     """
     Default app model that has `created` and `updated` attributes.
-
-    Currently based on https://github.com/audiolion/django-behaviors
     """
+
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    modified = models.DateTimeField(null=True, blank=True, db_index=True)
 
     class Meta:
         abstract = True
+
+    def save(
+        self,
+        *,
+        force_insert: bool | tuple[ModelBase, ...] = False,
+        force_update: bool = False,
+        using: str | None = None,
+        update_fields: Iterable[str] | None = None,
+    ) -> None:
+        if self.pk:
+            self.modified = timezone.now()
+        super().save(
+            force_insert=force_insert,
+            force_update=force_update,
+            using=using,
+            update_fields=update_fields,
+        )
 
 
 class SubqueryCount(models.Subquery):
