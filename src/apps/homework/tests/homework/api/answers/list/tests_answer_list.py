@@ -38,9 +38,8 @@ def test_text_content(api, question, answer):
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 
     assert got[0]["content"] == {}
-    assert "legacy" in got[0]["text"]
     assert "legacy" in got[0]["legacy_text"]
-    assert "<em>" in got[0]["legacy_text"]
+    assert "<em>" in got[0]["legacy_text"], "markdown is rendered"
 
 
 def test_json_content(api, question, answer):
@@ -49,7 +48,6 @@ def test_json_content(api, question, answer):
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 
     assert got[0]["content"]["type"] == "doc"
-    assert got[0]["text"] == ""
 
 
 def test_has_reaction_fields_if_there_is_reaction(api, question, reaction):

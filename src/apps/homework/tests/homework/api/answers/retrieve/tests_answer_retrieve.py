@@ -34,9 +34,8 @@ def test_text_content(api, answer):
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
     assert got["content"] == {}
-    assert "legacy" in got["text"]
     assert "legacy" in got["legacy_text"]
-    assert "<em>" in got["legacy_text"]
+    assert "<em>" in got["legacy_text"], "markdown is rendered"
 
 
 def test_json_content(api, answer):
@@ -45,7 +44,6 @@ def test_json_content(api, answer):
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
     assert got["content"]["type"] == "doc"
-    assert got["text"] == ""
     assert got["legacy_text"] == ""
 
 
