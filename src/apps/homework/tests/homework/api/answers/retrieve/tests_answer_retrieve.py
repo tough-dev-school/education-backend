@@ -49,6 +49,15 @@ def test_json_content(api, answer):
     assert got["legacy_text"] == ""
 
 
+def test_author_rank(api, answer):
+    answer.author.update(rank="Эксперт Курса", rank_label_color="#cccccc")
+
+    got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
+
+    assert got["author"]["rank"] == "Эксперт Курса"
+    assert got["author"]["rank_label_color"] == "#cccccc"
+
+
 def test_has_descendants_is_true_if_answer_has_children(api, answer, another_answer, another_user):
     another_answer.update(parent=answer, author=another_user)
 

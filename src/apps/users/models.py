@@ -40,6 +40,9 @@ class User(TestUtilsMixin, AbstractUser):
         blank=True,
     )
 
+    rank = models.CharField(_("Rank"), max_length=32, blank=True, null=True)
+    rank_label_color = models.CharField(_("Rank label color"), max_length=7, blank=True, null=True)
+
     class Meta:
         abstract = False
         indexes = [
