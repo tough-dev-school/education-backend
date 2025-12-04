@@ -13,6 +13,8 @@ class CourseLinkSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):
     home_page_slug = serializers.CharField()
     links = CourseLinkSerializer(many=True, read_only=True, source="courselink_set")
+    tariff_name = serializers.CharField(required=True)
+    cover = serializers.ImageField(required=True, allow_null=True)
 
     class Meta:
         model = Course
