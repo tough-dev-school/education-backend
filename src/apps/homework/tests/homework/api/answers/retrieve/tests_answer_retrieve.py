@@ -29,7 +29,7 @@ def test_ok(api, answer, question):
 
 
 def test_text_content(api, answer):
-    answer.update(content={}, text="*legacy*")
+    answer.update(content={}, legacy_text="*legacy*")
 
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
@@ -39,7 +39,7 @@ def test_text_content(api, answer):
 
 
 def test_json_content(api, answer):
-    answer.update(content={"type": "doc"}, text="")
+    answer.update(content={"type": "doc"}, legacy_text="")
 
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 

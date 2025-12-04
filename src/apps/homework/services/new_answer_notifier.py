@@ -88,7 +88,7 @@ class DefaultAnswerNotification(BaseAnswerNotification):
         return True
 
     def get_text_with_markdown(self) -> str:
-        return remove_img(markdownify(self.answer.text).strip())
+        return remove_img(markdownify(self.answer.legacy_text).strip())
 
 
 @dataclass

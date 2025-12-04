@@ -34,8 +34,8 @@ class AnswerUpdater(BaseService):
 
     def update(self) -> None:
         self.answer.content = self.content
-        self.answer.text = prosemirror_to_text(self.content)
-        self.answer.save(update_fields=["content", "text", "modified"])
+        self.answer.legacy_text = prosemirror_to_text(self.content)
+        self.answer.save(update_fields=["content", "legacy_text", "modified"])
 
     def write_auditlog(self, previous_content: dict) -> None:
         previous = json.dumps(previous_content, ensure_ascii=False)

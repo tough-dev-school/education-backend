@@ -52,7 +52,7 @@ def test_creation_with_json(api, question, another_answer, purchase):
     assert created.author == api.user
     assert created.study == purchase.study
     assert created.content == JSON
-    assert created.text == "Горите в аду"
+    assert created.legacy_text == "Горите в аду"
 
 
 def test_no_json(api, question, another_answer):

@@ -11,7 +11,7 @@ from core.serializers import MarkdownField, SoftField
 
 class AnswerSerializer(serializers.ModelSerializer):
     author = UserSafeSerializer()
-    legacy_text = MarkdownField(source="text")
+    legacy_text = MarkdownField()
     parent = SoftField(source="parent.slug")  # type: ignore
     question = serializers.CharField(source="question.slug")
     has_descendants = serializers.SerializerMethodField()
