@@ -43,5 +43,6 @@ SPECTACULAR_SETTINGS = {
     "REDOC_DIST": "SIDECAR",
     "POSTPROCESSING_HOOKS": [
         "drf_spectacular.hooks.postprocess_schema_enums",
+        "core.api.swagger.postprocessing.add_required_fields.process",
     ],
 }
