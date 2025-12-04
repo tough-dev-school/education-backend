@@ -17,6 +17,7 @@ class AnswerSerializer(serializers.ModelSerializer):
     has_descendants = serializers.SerializerMethodField()
     reactions = ReactionDetailedSerializer(many=True)
     is_editable = serializers.SerializerMethodField()
+    content = serializers.DictField(required=True)
 
     class Meta:
         model = Answer
