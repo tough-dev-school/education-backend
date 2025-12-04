@@ -25,8 +25,8 @@ from apps.homework.models import Answer, AnswerImage
 from apps.homework.models.answer import AnswerQuerySet
 from apps.homework.services import AnswerCreator, AnswerRemover, AnswerUpdater
 from apps.users.models import User
-from core.api.fields import BinaryUploadField
 from core.api.mixins import DisablePaginationWithQueryParamMixin
+from core.api.swagger.fields import BinaryUploadField
 from core.viewsets import AppViewSet
 
 
