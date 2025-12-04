@@ -31,6 +31,15 @@ def test_ok(api):
     assert got["avatar"] == api.user.avatar
 
 
+def test_rank(api):
+    api.user.update(rank="Эксперт Курса", rank_label_color="#cccccc")
+
+    got = api.get("/api/v2/users/me/")
+
+    assert got["rank"] == "Эксперт Курса"
+    assert got["rank_label_color"] == "#cccccc"
+
+
 def test_anon(anon):
     got = anon.get("/api/v2/users/me/", as_response=True)
 
