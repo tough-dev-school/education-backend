@@ -83,7 +83,7 @@ class Answer(TimestampedModel):
     author = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="+")
     do_not_crosscheck = models.BooleanField(_("Exclude from cross-checking"), default=False, db_index=True)
 
-    text = models.TextField()
+    legacy_text = models.TextField()
     content = models.JSONField(blank=True, null=True, default=dict)
 
     class Meta:
@@ -100,10 +100,10 @@ class Answer(TimestampedModel):
         ]
 
     def __str__(self) -> str:
-        if self.text.startswith("![]"):
+        if self.legacy_text.startswith("![]"):
             return "Картинка"
 
-        text = remove_html(markdownify(self.text))
+        text = remove_html(markdownify(self.legacy_text))
         try:
             first_word = text.split()[0]
         except IndexError:  # zero length

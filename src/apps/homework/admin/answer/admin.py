@@ -28,12 +28,12 @@ class AnswerAdmin(ModelAdmin):
         "created",
         "author",
         "parent",
-        "text",
+        "legacy_text",
     ]
     readonly_fields = [
         "created",
         "author",
-        "text",
+        "legacy_text",
     ]
     raw_id_fields = [
         "parent",
@@ -47,7 +47,8 @@ class AnswerAdmin(ModelAdmin):
         "author__first_name",
         "author__last_name",
         "author__email",
-        "text",
+        "legacy_text",
+        "content",
     ]
 
     def get_queryset(self, request: HttpRequest) -> QuerySet:

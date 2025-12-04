@@ -11,7 +11,7 @@ def answer(mixer, question):
         "homework.Answer",
         question=question,
         slug="f593d1a9-120c-4c92-bed0-9f037537d4f4",
-        text="Сарынь на кичку!",
+        legacy_text="Сарынь на кичку!",
         author__first_name="Петрович",
         author__last_name="Львов",
     )
@@ -23,7 +23,7 @@ def another_answer(mixer, question):
         "homework.Answer",
         question=question,
         slug="16a973e4-40f1-4887-a502-beeb5677ab42",
-        text="Банзай!",
+        legacy_text="Банзай!",
         author__first_name="Василич",
         author__last_name="Теркин",
     )
@@ -70,7 +70,7 @@ def test_root_answer(notification, answer, another_answer):
 
 
 def test_markdown_to_html(notification, answer):
-    answer.update(text="# Вил би хтмл хедер")
+    answer.update(legacy_text="# Вил би хтмл хедер")
 
     context = notification(answer=answer, user=answer.author).get_context()
 
@@ -85,7 +85,7 @@ def test_is_root_answer_author_flag(notification, answer):
 
 def test_img_removed(notification, answer):
     answer.update(
-        text="Hello, you![Top 23 Great Job Memes for a Job Well Done That You'll Want to Share | Great  job meme, Job memes, Good job quotes](https://i.pinimg.com/736x/13/ff/49/13ff49773ca9c25ac2116c8bc6c4d2ee.jpg)"
+        legacy_text="Hello, you![Top 23 Great Job Memes for a Job Well Done That You'll Want to Share | Great  job meme, Job memes, Good job quotes](https://i.pinimg.com/736x/13/ff/49/13ff49773ca9c25ac2116c8bc6c4d2ee.jpg)"
     )
 
     text = notification(answer=answer, user=answer.author).get_text_with_markdown()
