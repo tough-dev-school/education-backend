@@ -41,6 +41,8 @@ class UserSelfSerializer(serializers.ModelSerializer):
             "telegram_username",
             "avatar",
             "is_staff",
+            "rank",
+            "rank_label_color",
         ]
 
 
@@ -70,4 +72,6 @@ class UserSafeSerializer(serializers.ModelSerializer):
             "first_name_en",
             "last_name_en",
             "avatar",
+            "rank",
+            "rank_label_color",
         ]
