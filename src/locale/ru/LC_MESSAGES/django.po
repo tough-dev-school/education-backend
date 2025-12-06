@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-04 17:44+0300\n"
+"POT-Creation-Date: 2025-12-06 21:46+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -63,7 +63,7 @@ msgid "Price"
 msgstr "Цена"
 
 #: apps/b2b/admin/deals/forms.py:14 apps/b2b/models/student.py:12
-#: apps/users/models.py:132
+#: apps/users/models.py:145
 msgid "Students"
 msgstr "Студенты"
 
@@ -159,7 +159,7 @@ msgid "In progress"
 msgstr "В работе"
 
 #: apps/b2b/models/student.py:11 apps/diplomas/admin/diploma.py:52
-#: apps/studying/models.py:8 apps/users/models.py:131
+#: apps/studying/models.py:8 apps/users/models.py:144
 msgid "Student"
 msgstr "Студент"
 
@@ -1179,7 +1179,7 @@ msgstr "Персональные данные"
 msgid "Name in english"
 msgstr "Имя на английском"
 
-#: apps/users/admin/user/admin.py:31 apps/users/models.py:43
+#: apps/users/admin/user/admin.py:31 apps/users/models.py:56
 msgid "Rank"
 msgstr "Звание"
 
@@ -1203,39 +1203,43 @@ msgstr "Фамилия"
 msgid "Users"
 msgstr "Юзеры"
 
-#: apps/users/models.py:22
+#: apps/users/models.py:28
+msgid "Color should be a hex color, like '#bebebe'"
+msgstr "Нужен HEX-цвет, типа #bebebe"
+
+#: apps/users/models.py:35
 msgid "Male"
 msgstr "Мужчина"
 
-#: apps/users/models.py:23
+#: apps/users/models.py:36
 msgid "Female"
 msgstr "Женщина"
 
-#: apps/users/models.py:25
+#: apps/users/models.py:38
 msgid "first name in english"
 msgstr "Имя на английском"
 
-#: apps/users/models.py:26
+#: apps/users/models.py:39
 msgid "last name in english"
 msgstr "Фамилия на английском"
 
-#: apps/users/models.py:29
+#: apps/users/models.py:42
 msgid "Gender"
 msgstr "Пол"
 
-#: apps/users/models.py:37
+#: apps/users/models.py:50
 msgid "Avatar"
 msgstr "Аватар"
 
-#: apps/users/models.py:44
+#: apps/users/models.py:57
 msgid "Rank label color"
 msgstr "Цвет плашки со званием"
 
-#: apps/users/models.py:53
+#: apps/users/models.py:66
 msgid "user"
 msgstr "пользователь"
 
-#: apps/users/models.py:54
+#: apps/users/models.py:67
 msgid "users"
 msgstr "пользователи"
 
