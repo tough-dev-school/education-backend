@@ -11,3 +11,21 @@ if TYPE_CHECKING:
 @register
 def image(self: "FixtureFactory", name: str = "image.gif", content_type: str = "image/gif") -> SimpleUploadedFile:
     return SimpleUploadedFile(name=name, content=self.faker.image(), content_type=content_type)
+
+
+@register
+def prosemirror(self: "FixtureFactory", text: str) -> dict:  # noqa: ARG001
+    return {
+        "type": "doc",
+        "content": [
+            {
+                "type": "paragraph",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": text,
+                    }
+                ],
+            }
+        ],
+    }

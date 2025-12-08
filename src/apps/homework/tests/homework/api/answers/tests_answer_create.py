@@ -9,21 +9,6 @@ pytestmark = [
     pytest.mark.usefixtures("purchase"),
 ]
 
-JSON = {
-    "type": "doc",
-    "content": [
-        {
-            "type": "paragraph",
-            "content": [
-                {
-                    "type": "text",
-                    "text": "Горите в аду",
-                }
-            ],
-        }
-    ],
-}
-
 
 @pytest.fixture
 def _no_purchase(purchase):
@@ -34,12 +19,12 @@ def get_answer():
     return Answer.objects.last()
 
 
-def test_creation_with_json(api, question, another_answer, purchase):
+def test_creation_with_json(api, factory, question, another_answer, purchase):
     """Drop it when you remove the 'text' field"""
     api.post(
         "/api/v2/homework/answers/",
         {
-            "content": JSON,
+            "content": factory.prosemirror("Горите в аду"),
             "question": question.slug,
             "parent": another_answer.slug,
         },
@@ -51,7 +36,7 @@ def test_creation_with_json(api, question, another_answer, purchase):
     assert created.parent == another_answer
     assert created.author == api.user
     assert created.study == purchase.study
-    assert created.content == JSON
+    assert created.content["content"][0]["content"][0]["text"] == "Горите в аду"
     assert created.legacy_text == "Горите в аду"
 
 
@@ -78,11 +63,11 @@ def test_non_prosemirror_json(api, question, another_answer):
     )
 
 
-def test_no_question(api, another_answer):
+def test_no_question(api, factory, another_answer):
     api.post(
         "/api/v2/homework/answers/",
         {
-            "content": JSON,
+            "content": factory.prosemirror("Горите в аду"),
             "parent": another_answer.slug,
         },
         expected_status_code=400,
@@ -112,11 +97,11 @@ def test_invalid_json(api, another_answer, question, shit):
 
 @pytest.mark.usefixtures("kamchatka_timezone")
 @pytest.mark.freeze_time("2023-01-23 08:30:40+12:00")
-def test_create_answer_fields(api, question, another_answer):
+def test_create_answer_fields(api, factory, question, another_answer):
     got = api.post(
         "/api/v2/homework/answers/",
         {
-            "content": JSON,
+            "content": factory.prosemirror("Горите в аду"),
             "question": question.slug,
             "parent": another_answer.slug,
         },
@@ -130,18 +115,18 @@ def test_create_answer_fields(api, question, another_answer):
     assert got["author"]["first_name"] == api.user.first_name
     assert got["author"]["last_name"] == api.user.last_name
     assert got["parent"] == str(another_answer.slug)
-    assert got["content"] == JSON
+    assert got["content"] == factory.prosemirror("Горите в аду")
     assert got["has_descendants"] is False  # newly created answer couldn't have descendants
     assert got["is_editable"] is True  # and should be editable
     assert got["reactions"] == []  # and couldn't have reactions
 
 
-def test_creating_root_answer(api, question):
+def test_creating_root_answer(api, factory, question):
     api.post(
         "/api/v2/homework/answers/",
         {
             "question": question.slug,
-            "content": JSON,
+            "content": factory.prosemirror("Горите в аду"),
         },
     )
 
@@ -151,26 +136,26 @@ def test_creating_root_answer(api, question):
     assert created.question == question
 
 
-def test_nonexistant_parent(api, question):
+def test_nonexistant_parent(api, factory, question):
     api.post(
         "/api/v2/homework/answers/",
         {
             "parent": "41c24524-3d44-4cb8-ace3-c4cded405b24",  # не существует, инфа сотка
             "question": question.slug,
-            "content": JSON,
+            "content": factory.prosemirror("Горите в аду"),
         },
         expected_status_code=400,
     )
 
 
 @pytest.mark.parametrize("empty_parent", ["", None])
-def test_empty_parent(api, question, empty_parent):
+def test_empty_parent(api, factory, question, empty_parent):
     api.post(
         "/api/v2/homework/answers/",
         {
             "parent": empty_parent,
             "question": question.slug,
-            "content": JSON,
+            "content": factory.prosemirror("Горите в аду"),
         },
     )
 
@@ -179,13 +164,13 @@ def test_empty_parent(api, question, empty_parent):
     assert created.parent is None
 
 
-def test_create_answer_without_parent_do_not_have_parent_field_in_response(api, question):
+def test_create_answer_without_parent_do_not_have_parent_field_in_response(api, factory, question):
     """Just to document weird behavior of our API: we hide the parent field when it is empty"""
     got = api.post(
         "/api/v2/homework/answers/",
         {
             "question": question.slug,
-            "content": JSON,
+            "content": factory.prosemirror("Горите в аду"),
         },
     )
 
@@ -193,12 +178,12 @@ def test_create_answer_without_parent_do_not_have_parent_field_in_response(api, 
 
 
 @pytest.mark.usefixtures("_no_purchase")
-def test_404_for_not_purchased_users(api, question):
+def test_404_for_not_purchased_users(api, factory, question):
     api.post(
         "/api/v2/homework/answers/",
         {
             "question": question.slug,
-            "content": JSON,
+            "content": factory.prosemirror("Горите в аду"),
         },
         expected_status_code=404,
     )
@@ -214,7 +199,7 @@ def test_ok_for_users_that_purchased_another_course_from_the_same_group(api, que
         "/api/v2/homework/answers/",
         {
             "question": question.slug,
-            "content": JSON,
+            "content": factory.prosemirror("Горите в аду"),
         },
         expected_status_code=201,
     )
@@ -231,7 +216,7 @@ def test_parent_answer_ok_for_users_that_purchased_another_course_from_the_same_
         {
             "question": question.slug,
             "parent": another_answer.slug,
-            "content": JSON,
+            "content": factory.prosemirror("Горите в аду"),
         },
         expected_status_code=201,
     )
@@ -245,7 +230,7 @@ def test_parent_answer_ok_for_users_that_purchased_another_course_from_the_same_
         "studying.purchased_all_courses",
     ],
 )
-def test_ok_for_users_with_permission(api, question, permission):
+def test_ok_for_users_with_permission(api, factory, question, permission):
     assert api.user.is_superuser is False
     api.user.add_perm(permission)
 
@@ -253,7 +238,7 @@ def test_ok_for_users_with_permission(api, question, permission):
         "/api/v2/homework/answers/",
         {
             "question": question.slug,
-            "content": JSON,
+            "content": factory.prosemirror("Горите в аду"),
         },
         expected_status_code=201,
     )
@@ -265,14 +250,14 @@ def test_ok_for_users_with_permission(api, question, permission):
 
 
 @pytest.mark.usefixtures("_no_purchase")
-def test_ok_for_superusers(api, question):
+def test_ok_for_superusers(api, factory, question):
     api.user.update(is_superuser=True)
 
     api.post(
         "/api/v2/homework/answers/",
         {
             "question": question.slug,
-            "content": JSON,
+            "content": factory.prosemirror("Горите в аду"),
         },
         expected_status_code=201,
     )
@@ -283,13 +268,13 @@ def test_ok_for_superusers(api, question):
     assert created.study is None
 
 
-def test_404_if_user_has_no_order_at_all(api, question, purchase):
+def test_404_if_user_has_no_order_at_all(api, factory, question, purchase):
     purchase.delete()
 
     api.post(
         "/api/v2/homework/answers/",
         {
-            "content": JSON,
+            "content": factory.prosemirror("Горите в аду"),
             "question": question.slug,
             "parent": None,
         },
@@ -301,13 +286,13 @@ def test_404_if_user_has_no_order_at_all(api, question, purchase):
 
 
 @pytest.mark.freeze_time("2032-01-01 12:30Z")
-def test_marks_crosscheck_as_checked(api, question, another_answer, mixer):
+def test_marks_crosscheck_as_checked(api, factory, question, another_answer, mixer):
     crosscheck = mixer.blend("homework.AnswerCrossCheck", answer=another_answer, checker=api.user)
 
     api.post(
         "/api/v2/homework/answers/",
         {
-            "content": JSON,
+            "content": factory.prosemirror("Горите в аду"),
             "question": question.slug,
             "parent": another_answer.slug,
         },
@@ -317,13 +302,13 @@ def test_marks_crosscheck_as_checked(api, question, another_answer, mixer):
     assert crosscheck.checked == datetime(2032, 1, 1, 12, 30, tzinfo=timezone.utc)
 
 
-def test_doesnt_marks_crosscheck_as_checked_for_another_answer(api, question, another_answer, mixer):
+def test_doesnt_marks_crosscheck_as_checked_for_another_answer(api, factory, question, another_answer, mixer):
     crosscheck = mixer.blend("homework.AnswerCrossCheck", checker=api.user)
 
     api.post(
         "/api/v2/homework/answers/",
         {
-            "content": JSON,
+            "content": factory.prosemirror("Горите в аду"),
             "question": question.slug,
             "parent": another_answer.slug,
         },
@@ -333,13 +318,13 @@ def test_doesnt_marks_crosscheck_as_checked_for_another_answer(api, question, an
     assert crosscheck.checked is None
 
 
-def test_doesnt_marks_crosscheck_as_checked_for_another_checker(api, question, another_answer, another_user, mixer):
+def test_doesnt_marks_crosscheck_as_checked_for_another_checker(api, factory, question, another_answer, another_user, mixer):
     crosscheck = mixer.blend("homework.AnswerCrossCheck", answer=another_answer, checker=another_user)
 
     api.post(
         "/api/v2/homework/answers/",
         {
-            "content": JSON,
+            "content": factory.prosemirror("Горите в аду"),
             "question": question.slug,
             "parent": another_answer.slug,
         },
