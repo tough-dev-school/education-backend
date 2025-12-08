@@ -27,11 +27,13 @@ def question(
 def answer(
     self: FixtureFactory,
     question: Question,
-    text: str | None,
-    author: User | None,
+    text: str | None = None,
+    author: User | None = None,
+    **kwargs: dict,
 ) -> Answer:
     return Answer.objects.create(
         question=question,
-        author=author or self.user(),
-        content=self.prosemirror_text(text if text is not None else self.faker.text()),
+        author=author or self.mixer.blend("users.User"),
+        content=self.prosemirror(text if text is not None else self.faker.text()),
+        **kwargs,
     )
