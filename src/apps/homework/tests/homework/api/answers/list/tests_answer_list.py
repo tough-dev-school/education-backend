@@ -50,6 +50,15 @@ def test_json_content(api, question, answer):
     assert got[0]["content"]["type"] == "doc"
 
 
+def test_author_rank(api, question, answer):
+    answer.author.update(rank="Эксперт Курса", rank_label_color="#cccccc")
+
+    got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
+
+    assert got[0]["author"]["rank"] == "Эксперт Курса"
+    assert got[0]["author"]["rank_label_color"] == "#cccccc"
+
+
 def test_has_reaction_fields_if_there_is_reaction(api, question, reaction):
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 

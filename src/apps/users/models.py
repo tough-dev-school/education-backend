@@ -1,3 +1,4 @@
+import re
 import uuid
 from datetime import timedelta
 from typing import cast
@@ -7,6 +8,7 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Permission
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GinIndex
+from django.core.exceptions import ValidationError
 from django.db.models import Index, TextChoices
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
@@ -15,6 +17,17 @@ from apps.diplomas.models import Languages
 from core.files import RandomFileName
 from core.models import TestUtilsMixin, models
 from core.types import Language
+
+
+def validate_hex_color(value: str | None) -> None:
+    if value is None:
+        return
+
+    if not re.match(r"^#[0-9A-Fa-f]{6}$", value):
+        raise ValidationError(
+            _("Color should be a hex color, like '#bebebe'"),
+            params={"value": value},
+        )
 
 
 class User(TestUtilsMixin, AbstractUser):
@@ -39,6 +52,9 @@ class User(TestUtilsMixin, AbstractUser):
         null=True,
         blank=True,
     )
+
+    rank = models.CharField(_("Rank"), max_length=32, blank=True, null=True)
+    rank_label_color = models.CharField(_("Rank label color"), max_length=7, blank=True, null=True, validators=[validate_hex_color])
 
     class Meta:
         abstract = False
