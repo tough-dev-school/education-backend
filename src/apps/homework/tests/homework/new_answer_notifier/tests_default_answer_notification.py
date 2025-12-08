@@ -6,26 +6,25 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def answer(mixer, question):
-    return mixer.blend(
-        "homework.Answer",
+def author(mixer):
+    return mixer.blend("users.User", first_name="Петрович", last_name="Львов")
+
+
+@pytest.fixture
+def answer(factory, question, author):
+    return factory.answer(
         question=question,
         slug="f593d1a9-120c-4c92-bed0-9f037537d4f4",
-        legacy_text="Сарынь на кичку!",
-        author__first_name="Петрович",
-        author__last_name="Львов",
+        author=author,
+        text="Не читал, но одобряю",
     )
 
 
 @pytest.fixture
-def another_answer(mixer, question):
-    return mixer.blend(
-        "homework.Answer",
+def another_answer(factory, question):
+    return factory.answer(
         question=question,
         slug="16a973e4-40f1-4887-a502-beeb5677ab42",
-        legacy_text="Банзай!",
-        author__first_name="Василич",
-        author__last_name="Теркин",
     )
 
 
@@ -53,7 +52,7 @@ def test_default(notification, answer, user):
     assert notification.get_context() == dict(
         discussion_url="https://frontend/lms/homework/answers/f593d1a9-120c-4c92-bed0-9f037537d4f4/",
         discussion_name="Вторая домашка",
-        answer_text="<p>Сарынь на кичку!</p>",
+        answer_text="Не читал, но одобряю",
         author_name="Петрович Львов",
         is_non_root_answer_author="1",
     )
@@ -69,28 +68,10 @@ def test_root_answer(notification, answer, another_answer):
     )
 
 
-def test_markdown_to_html(notification, answer):
-    answer.update(legacy_text="# Вил би хтмл хедер")
-
-    context = notification(answer=answer, user=answer.author).get_context()
-
-    assert context["answer_text"] == "<h1>Вил би хтмл хедер</h1>"
-
-
 def test_is_root_answer_author_flag(notification, answer):
     context = notification(answer=answer, user=answer.author).get_context()
 
     assert context["is_root_answer_author"] == "1"
-
-
-def test_img_removed(notification, answer):
-    answer.update(
-        legacy_text="Hello, you![Top 23 Great Job Memes for a Job Well Done That You'll Want to Share | Great  job meme, Job memes, Good job quotes](https://i.pinimg.com/736x/13/ff/49/13ff49773ca9c25ac2116c8bc6c4d2ee.jpg)"
-    )
-
-    text = notification(answer=answer, user=answer.author).get_text_with_markdown()
-
-    assert text == "<p>Hello, you</p>"
 
 
 def test_send(notification, send_mail, answer, user):
@@ -102,7 +83,7 @@ def test_send(notification, send_mail, answer, user):
         ctx={
             "discussion_name": "Вторая домашка",
             "discussion_url": "https://frontend/lms/homework/answers/f593d1a9-120c-4c92-bed0-9f037537d4f4/",
-            "answer_text": "<p>Сарынь на кичку!</p>",
+            "answer_text": "Не читал, но одобряю",
             "author_name": "Петрович Львов",
             "is_non_root_answer_author": "1",
         },

@@ -14,13 +14,13 @@ def question(factory, course):
 
 
 @pytest.fixture
-def another_answer(mixer, question):
-    return mixer.blend("homework.Answer", question=question)
+def another_answer(factory, question):
+    return factory.answer(question=question)
 
 
 @pytest.fixture
-def parent_of_another_answer(mixer, another_answer, question):
-    answer = mixer.blend("homework.Answer", question=question)
+def parent_of_another_answer(factory, another_answer, question):
+    answer = factory.answer(question=question)
 
     another_answer.update(parent=answer)
 

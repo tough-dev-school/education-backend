@@ -27,8 +27,8 @@ def test_parent_answer_author_is_in_the_list(notifier, answer, another_answer):
     assert another_answer.author in get_users_to_notify(notifier)
 
 
-def test_sibling_answer_author_is_not_in_the_list(notifier, answer, another_answer, mixer):
-    parent = mixer.blend("homework.Answer")
+def test_sibling_answer_author_is_not_in_the_list(notifier, answer, another_answer, factory):
+    parent = factory.answer(question=answer.question)
     answer.update(parent=parent)
     another_answer.update(parent=parent)
 
