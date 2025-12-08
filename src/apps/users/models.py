@@ -41,6 +41,8 @@ class User(TestUtilsMixin, AbstractUser):
 
     gender = models.CharField(_("Gender"), max_length=12, choices=GENDERS.choices, blank=True)
 
+    random_name = models.CharField(_("Randomly generated name"), max_length=128, blank=True, null=True)
+
     linkedin_username = models.CharField(max_length=256, blank=True, db_index=True, default="")
     github_username = models.CharField(max_length=256, blank=True, db_index=True, default="")
     telegram_username = models.CharField(max_length=256, blank=True, db_index=True, default="")

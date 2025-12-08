@@ -30,6 +30,13 @@ def test_default_username():
     assert created.username == "vedro.pomoev@gmail.com"
 
 
+def test_random_name_is_assigned():
+    created = UserCreator(name="Ведро Помоев", email="vedro.pomoev@gmail.com")()
+
+    assert len(created.random_name) > 5
+    assert " " in created.random_name
+
+
 @pytest.mark.parametrize("name", ["", " ", None])
 def test_empty_name(name):
     created = UserCreator(name=name, email="rulon.oboev@gmail.com")()
