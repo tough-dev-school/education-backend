@@ -8,7 +8,7 @@ pytestmark = [pytest.mark.django_db]
 @pytest.fixture
 def api(api):
     """Make all request as an ordinary user"""
-    api.user.update(is_staff=False, is_superuser=False)
+    api.user.update(is_staff=False, is_superuser=False, random_name="Самовлюбленный морской котик")
 
     return api
 
@@ -24,6 +24,7 @@ def test_ok(api):
     assert got["last_name"] == api.user.last_name
     assert got["first_name_en"] == api.user.first_name_en
     assert got["last_name_en"] == api.user.last_name_en
+    assert got["random_name"] == "Самовлюбленный морской котик"
     assert got["gender"] == api.user.gender
     assert got["linkedin_username"] == api.user.linkedin_username
     assert got["github_username"] == api.user.github_username
