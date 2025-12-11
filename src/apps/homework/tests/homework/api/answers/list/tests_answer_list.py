@@ -34,23 +34,21 @@ def test_ok(api, question, answer):
 
 
 def test_text_content(api, question, answer):
-    answer.update(content={}, text="*legacy*")
+    answer.update(content={}, legacy_text="*legacy*")
 
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 
     assert got[0]["content"] == {}
-    assert "legacy" in got[0]["text"]
     assert "legacy" in got[0]["legacy_text"]
-    assert "<em>" in got[0]["legacy_text"]
+    assert "<em>" in got[0]["legacy_text"], "markdown is rendered"
 
 
 def test_json_content(api, question, answer):
-    answer.update(content={"type": "doc"}, text="")
+    answer.update(content={"type": "doc"}, legacy_text="")
 
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 
     assert got[0]["content"]["type"] == "doc"
-    assert got[0]["text"] == ""
 
 
 def test_author_rank(api, question, answer):

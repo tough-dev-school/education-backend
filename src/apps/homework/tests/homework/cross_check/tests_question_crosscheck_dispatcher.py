@@ -93,7 +93,7 @@ def test_email_is_sent(question_dispatcher, send_mail, mocker, answers):
 
 
 def test_answer_text(question_dispatcher, send_mail, answers):
-    answers[0].update(text="Ссылка на members-x.com")
+    answers[0].update(legacy_text="Ссылка на members-x.com")
 
     question_dispatcher()
 
@@ -109,7 +109,7 @@ def test_answer_text(question_dispatcher, send_mail, answers):
 
 def test_empty_answer_text(question_dispatcher, send_mail, answers):
     """Template should not fail if answer has empty text"""
-    answers[0].update(text="")
+    answers[0].update(legacy_text="")
 
     question_dispatcher()
 

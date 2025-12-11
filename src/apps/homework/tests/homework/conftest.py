@@ -9,13 +9,13 @@ def question(factory):
 
 
 @pytest.fixture
-def answer(mixer, question):
-    return mixer.blend("homework.Answer", question=question, content={"type": "doc", "text": "тест"})
+def answer(factory, question):
+    return factory.answer(question=question, text="тест")
 
 
 @pytest.fixture
-def comments(answer, mixer, another_user):
-    return mixer.cycle(2).blend("homework.Answer", parent=answer, question=answer.question, author=another_user)
+def comments(answer, factory, another_user):
+    return factory.cycle(2).answer(parent=answer, question=answer.question, author=another_user)
 
 
 @pytest.fixture
