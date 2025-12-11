@@ -2,8 +2,8 @@ import pytest
 
 
 @pytest.fixture
-def user(mixer):
-    return mixer.blend("users.User")
+def user(factory):
+    return factory.user()
 
 
 @pytest.fixture

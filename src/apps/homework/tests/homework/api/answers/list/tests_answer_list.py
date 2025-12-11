@@ -26,6 +26,7 @@ def test_ok(api, question, answer):
     assert got[0]["author"]["uuid"] == str(api.user.uuid)
     assert got[0]["author"]["first_name"] == api.user.first_name
     assert got[0]["author"]["last_name"] == api.user.last_name
+    assert "random_name" in got[0]["author"]
     assert got[0]["author"]["avatar"] is None
     assert got[0]["has_descendants"] is False
     assert got[0]["is_editable"] is True
