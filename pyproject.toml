@@ -7,7 +7,7 @@ dependencies = [
     "bcrypt>=5.0.0,<5.1.0",
     "bleach>=6.0.0,<7.0.0",
     "boto3>=1.28.48,<2.0.0",
-    "celery==5.6.1",
+    "celery==5.6.2",
     "cmarkgfm>=2025.10.22,<2025.11.0",
     "dj-rest-auth>=7.0.0,<8.0.0",
     "django-admin-sortable2>=2.2.4,<3.0.0",
