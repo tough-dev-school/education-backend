@@ -457,6 +457,15 @@ wheels = [
 ]
 
 [[package]]
+name = "defusedxml"
+version = "0.7.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/0f/d5/c66da9b79e5bdb124974bfe172b4daf3c984ebd9c2a06e2b8a4dc7331c72/defusedxml-0.7.1.tar.gz", hash = "sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69", size = 75520, upload-time = "2021-03-08T10:59:26.269Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/07/6c/aa3f2f849e01cb6a001cd8554a88d4c77c5c1a31c95bdf1cf9301e6d9ef4/defusedxml-0.7.1-py2.py3-none-any.whl", hash = "sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61", size = 25604, upload-time = "2021-03-08T10:59:24.45Z" },
+]
+
+[[package]]
 name = "dj-rest-auth"
 version = "7.0.1"
 source = { registry = "https://pypi.org/simple" }
@@ -793,6 +802,7 @@ dependencies = [
     { name = "drf-jwt" },
     { name = "drf-spectacular", extra = ["sidecar"] },
     { name = "emoji" },
+    { name = "fpdf2" },
     { name = "geoip2fast" },
     { name = "httpx", extra = ["http2"] },
     { name = "pillow" },
@@ -842,6 +852,12 @@ dev = [
     { name = "types-simplejson" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "pypdf" },
+    { name = "types-fpdf2" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "babel", specifier = ">=2.12.1,<3.0.0" },
@@ -874,6 +890,7 @@ requires-dist = [
     { name = "drf-jwt", specifier = ">=1.19.2,<2.0.0" },
     { name = "drf-spectacular", extras = ["sidecar"], specifier = ">=0.28.0,<1.0.0" },
     { name = "emoji", specifier = ">=2.8.0,<3.0.0" },
+    { name = "fpdf2", specifier = ">=2.8.5" },
     { name = "geoip2fast", specifier = ">=1.2.2,<2.0.0" },
     { name = "httpx", extras = ["http2"], specifier = ">=0.27.0,<1.0.0" },
     { name = "ipython", marker = "extra == 'dev'", specifier = ">=9.0.0,<10.0.0" },
@@ -917,6 +934,12 @@ requires-dist = [
 ]
 provides-extras = ["dev"]
 
+[package.metadata.requires-dev]
+dev = [
+    { name = "pypdf", specifier = ">=6.6.0" },
+    { name = "types-fpdf2", specifier = ">=2.8.4.20251031" },
+]
+
 [[package]]
 name = "emoji"
 version = "2.15.0"
@@ -954,6 +977,37 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/89/f2/ea1966e890603e172b7f3bebde614813a24986390799d4dd43960aeffd18/Faker-12.0.1.tar.gz", hash = "sha256:aa7103805ae793277abbb85da9f6f05e76a1a295a9384a8e17c2fba2b3a690cb", size = 1428846, upload-time = "2022-02-04T16:01:33.267Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ae/10/9a650725c310f61160909637446c18b92db7585ddf3326bc0767b850075e/Faker-12.0.1-py3-none-any.whl", hash = "sha256:1dc2811f20e163892fefe7006f2ce00778f8099a40aee265bfa60a13400de63d", size = 1464239, upload-time = "2022-02-04T16:01:30.623Z" },
+]
+
+[[package]]
+name = "fonttools"
+version = "4.61.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ec/ca/cf17b88a8df95691275a3d77dc0a5ad9907f328ae53acbe6795da1b2f5ed/fonttools-4.61.1.tar.gz", hash = "sha256:6675329885c44657f826ef01d9e4fb33b9158e9d93c537d84ad8399539bc6f69", size = 3565756, upload-time = "2025-12-12T17:31:24.246Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/4b/cf/00ba28b0990982530addb8dc3e9e6f2fa9cb5c20df2abdda7baa755e8fe1/fonttools-4.61.1-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:8c56c488ab471628ff3bfa80964372fc13504ece601e0d97a78ee74126b2045c", size = 2846454, upload-time = "2025-12-12T17:30:24.938Z" },
+    { url = "https://files.pythonhosted.org/packages/5a/ca/468c9a8446a2103ae645d14fee3f610567b7042aba85031c1c65e3ef7471/fonttools-4.61.1-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:dc492779501fa723b04d0ab1f5be046797fee17d27700476edc7ee9ae535a61e", size = 2398191, upload-time = "2025-12-12T17:30:27.343Z" },
+    { url = "https://files.pythonhosted.org/packages/a3/4b/d67eedaed19def5967fade3297fed8161b25ba94699efc124b14fb68cdbc/fonttools-4.61.1-cp313-cp313-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:64102ca87e84261419c3747a0d20f396eb024bdbeb04c2bfb37e2891f5fadcb5", size = 4928410, upload-time = "2025-12-12T17:30:29.771Z" },
+    { url = "https://files.pythonhosted.org/packages/b0/8d/6fb3494dfe61a46258cd93d979cf4725ded4eb46c2a4ca35e4490d84daea/fonttools-4.61.1-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:4c1b526c8d3f615a7b1867f38a9410849c8f4aef078535742198e942fba0e9bd", size = 4984460, upload-time = "2025-12-12T17:30:32.073Z" },
+    { url = "https://files.pythonhosted.org/packages/f7/f1/a47f1d30b3dc00d75e7af762652d4cbc3dff5c2697a0dbd5203c81afd9c3/fonttools-4.61.1-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:41ed4b5ec103bd306bb68f81dc166e77409e5209443e5773cb4ed837bcc9b0d3", size = 4925800, upload-time = "2025-12-12T17:30:34.339Z" },
+    { url = "https://files.pythonhosted.org/packages/a7/01/e6ae64a0981076e8a66906fab01539799546181e32a37a0257b77e4aa88b/fonttools-4.61.1-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:b501c862d4901792adaec7c25b1ecc749e2662543f68bb194c42ba18d6eec98d", size = 5067859, upload-time = "2025-12-12T17:30:36.593Z" },
+    { url = "https://files.pythonhosted.org/packages/73/aa/28e40b8d6809a9b5075350a86779163f074d2b617c15d22343fce81918db/fonttools-4.61.1-cp313-cp313-win32.whl", hash = "sha256:4d7092bb38c53bbc78e9255a59158b150bcdc115a1e3b3ce0b5f267dc35dd63c", size = 2267821, upload-time = "2025-12-12T17:30:38.478Z" },
+    { url = "https://files.pythonhosted.org/packages/1a/59/453c06d1d83dc0951b69ef692d6b9f1846680342927df54e9a1ca91c6f90/fonttools-4.61.1-cp313-cp313-win_amd64.whl", hash = "sha256:21e7c8d76f62ab13c9472ccf74515ca5b9a761d1bde3265152a6dc58700d895b", size = 2318169, upload-time = "2025-12-12T17:30:40.951Z" },
+    { url = "https://files.pythonhosted.org/packages/c7/4e/ce75a57ff3aebf6fc1f4e9d508b8e5810618a33d900ad6c19eb30b290b97/fonttools-4.61.1-py3-none-any.whl", hash = "sha256:17d2bf5d541add43822bcf0c43d7d847b160c9bb01d15d5007d84e2217aaa371", size = 1148996, upload-time = "2025-12-12T17:31:21.03Z" },
+]
+
+[[package]]
+name = "fpdf2"
+version = "2.8.5"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "defusedxml" },
+    { name = "fonttools" },
+    { name = "pillow" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e9/c0/784b130a28f4ed612e9aff26d1118e1f91005713dcd0a35e60b54d316b56/fpdf2-2.8.5.tar.gz", hash = "sha256:af4491ef2e0a5fe476f9d61362925658949c995f7e804438c0e81008f1550247", size = 336046, upload-time = "2025-10-29T14:17:59.569Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/35/a7/8532d8fffe6d1c388ad4941d678dd0da4d8da80434f2dbf4f35de0fa8029/fpdf2-2.8.5-py3-none-any.whl", hash = "sha256:2356b94e2a5fcbd1fe53ac5cbb83494e9003308860ab180050255ba50961d913", size = 301627, upload-time = "2025-10-29T14:17:57.685Z" },
 ]
 
 [[package]]
@@ -1466,6 +1520,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/c6/f7/57ab7334cfb04f1e8a490578fc3e65346b83836a33d2b9ea4cfa582f987a/pymarkdownlnt-0.9.32.tar.gz", hash = "sha256:c7e1f333780ddef8decd28f575f9ab1211075d52115992d1651c4a0fd236bb1d", size = 420694, upload-time = "2025-08-14T03:45:35.965Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/67/57/1e8415f804c010ab7fca1ef2d9e0ce60c0ef582c4144e98f67d3c730b71b/pymarkdownlnt-0.9.32-py3-none-any.whl", hash = "sha256:7e825418925efb6ff3125484dd634c7f0af7ef0a26e2823ea781d8d5b6554a34", size = 503646, upload-time = "2025-08-14T03:45:34.495Z" },
+]
+
+[[package]]
+name = "pypdf"
+version = "6.6.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d8/f4/801632a8b62a805378b6af2b5a3fcbfd8923abf647e0ed1af846a83433b2/pypdf-6.6.0.tar.gz", hash = "sha256:4c887ef2ea38d86faded61141995a3c7d068c9d6ae8477be7ae5de8a8e16592f", size = 5281063, upload-time = "2026-01-09T11:20:11.786Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b2/ba/96f99276194f720e74ed99905a080f6e77810558874e8935e580331b46de/pypdf-6.6.0-py3-none-any.whl", hash = "sha256:bca9091ef6de36c7b1a81e09327c554b7ce51e88dad68f5890c2b4a4417f1fd7", size = 328963, upload-time = "2026-01-09T11:20:09.278Z" },
 ]
 
 [[package]]
@@ -2057,6 +2120,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/53/50/f85660f9893da1a2cea3e14675c9ab4a75f2a5c12a8ab79de959e5f3f2ad/types_bleach-6.2.0.20250809.tar.gz", hash = "sha256:188d7a1119f6c953140b513ed57ba4213755695815472c19d0c22ac09c79b90b", size = 11216, upload-time = "2025-08-09T03:16:46.876Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/7d/41/51075b7c9fd62f8ea636e6ca619ca25e5617c066a1a19d12e2f7d9343edb/types_bleach-6.2.0.20250809-py3-none-any.whl", hash = "sha256:0b372a75117947d9ac8a31ae733fd0f8d92ec75c4772e7b37093ba3fa5b48fb9", size = 11968, upload-time = "2025-08-09T03:16:46.174Z" },
+]
+
+[[package]]
+name = "types-fpdf2"
+version = "2.8.4.20251031"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pillow" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ff/43/0d26d48307ce8211493882e3a5643fa06a93810c6a0bcbe27f99dc5c7e5b/types_fpdf2-2.8.4.20251031.tar.gz", hash = "sha256:8cd23d1c31dad586fbdad67fbdb5eb7e9c8e437f836d7766bf9b4ce375c609a4", size = 41064, upload-time = "2025-10-31T03:03:54.091Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/99/77/d3acab07592414cacd771d86f159293ec84dfae4e241c8f6dc1243744c36/types_fpdf2-2.8.4.20251031-py3-none-any.whl", hash = "sha256:cd3083baa7dec9752dfc40a63f77ef31c1f501b74ce1e170baef3b9f8e78fcb0", size = 48302, upload-time = "2025-10-31T03:03:53.094Z" },
 ]
 
 [[package]]

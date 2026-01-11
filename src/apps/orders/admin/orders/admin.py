@@ -53,6 +53,7 @@ class OrderAdmin(ModelAdmin):
         actions.accept_homework,
         actions.disaccept_homework,
         actions.generate_diplomas,
+        actions.get_confirmation_pdf,
     ]
     readonly_fields = [
         "author",

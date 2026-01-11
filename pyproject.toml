@@ -1,3 +1,9 @@
+[dependency-groups]
+dev = [
+    "pypdf>=6.6.0",
+    "types-fpdf2>=2.8.4.20251031",
+]
+
 [project]
 authors = [
     {email = "fedor@borshev.com", name = "Fedor Borshev"},
@@ -30,6 +36,7 @@ dependencies = [
     "drf-jwt>=1.19.2,<2.0.0",
     "drf-spectacular[sidecar]>=0.28.0,<1.0.0",
     "emoji>=2.8.0,<3.0.0",
+    "fpdf2>=2.8.5",
     "geoip2fast>=1.2.2,<2.0.0",
     "httpx[http2]>=0.27.0,<1.0.0",
     "pillow>=12.1.0,<12.2.0",
