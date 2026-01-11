@@ -828,6 +828,7 @@ dev = [
     { name = "mixer" },
     { name = "mypy" },
     { name = "pymarkdownlnt" },
+    { name = "pypdf" },
     { name = "pytest-cov" },
     { name = "pytest-deadfixtures" },
     { name = "pytest-django" },
@@ -844,18 +845,13 @@ dev = [
     { name = "toml-sort" },
     { name = "types-babel" },
     { name = "types-bleach" },
+    { name = "types-fpdf2" },
     { name = "types-freezegun" },
     { name = "types-markdown" },
     { name = "types-pillow" },
     { name = "types-requests" },
     { name = "types-retry" },
     { name = "types-simplejson" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "pypdf" },
-    { name = "types-fpdf2" },
 ]
 
 [package.metadata]
@@ -900,6 +896,7 @@ requires-dist = [
     { name = "pillow", specifier = ">=12.1.0,<12.2.0" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.2.9,<4.0.0" },
     { name = "pymarkdownlnt", marker = "extra == 'dev'", specifier = ">=0.9.13.4,<1.0.0" },
+    { name = "pypdf", marker = "extra == 'dev'", specifier = ">=6.6.0" },
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=7.0.0,<7.1.0" },
     { name = "pytest-deadfixtures", marker = "extra == 'dev'", specifier = ">=3.0.0,<3.1.0" },
     { name = "pytest-django", marker = "extra == 'dev'", specifier = ">=4.5.2,<5.0.0" },
@@ -924,6 +921,7 @@ requires-dist = [
     { name = "tqdm", specifier = ">=4.67.1,<5.0.0" },
     { name = "types-babel", marker = "extra == 'dev'", specifier = ">=2.11.0.15,<3.0.0" },
     { name = "types-bleach", marker = "extra == 'dev'", specifier = ">=6.0.0.4,<7.0.0" },
+    { name = "types-fpdf2", marker = "extra == 'dev'", specifier = ">=2.8.4.20251031" },
     { name = "types-freezegun", marker = "extra == 'dev'", specifier = ">=1.1.10,<2.0.0" },
     { name = "types-markdown", marker = "extra == 'dev'", specifier = ">=3.4.2.10,<4.0.0" },
     { name = "types-pillow", marker = "extra == 'dev'", specifier = ">=10.0.0.3,<11.0.0" },
@@ -933,12 +931,6 @@ requires-dist = [
     { name = "whitenoise", specifier = ">=6.5.0,<7.0.0" },
 ]
 provides-extras = ["dev"]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "pypdf", specifier = ">=6.6.0" },
-    { name = "types-fpdf2", specifier = ">=2.8.4.20251031" },
-]
 
 [[package]]
 name = "emoji"
