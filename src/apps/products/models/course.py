@@ -116,6 +116,8 @@ class Course(TimestampedModel):
     )
 
     homework_check_recommendations = models.TextField(_("Homework check recommendations"), blank=True)
+    start_date = models.DateField(_("Start date (official)"), null=True, blank=True)
+    end_date = models.DateField(_("End date(official)"), null=True, blank=True)
 
     class Meta:
         ordering = ["-id"]

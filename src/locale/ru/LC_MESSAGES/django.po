@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-11 20:42+0300\n"
+"POT-Creation-Date: 2026-01-13 18:21+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -58,7 +58,7 @@ msgstr "Статус"
 
 #: apps/b2b/admin/deals/admin.py:71 apps/b2b/models/deal.py:22
 #: apps/orders/admin/orders/admin.py:104 apps/orders/models/order.py:45
-#: apps/products/admin/course.py:32 apps/products/admin/course.py:94
+#: apps/products/admin/course.py:32 apps/products/admin/course.py:103
 msgid "Price"
 msgstr "Цена"
 
@@ -238,7 +238,7 @@ msgstr "В списке только не запущенные и не заар�
 #: apps/homework/admin/crosscheck/admin.py:37
 #: apps/homework/admin/question/admin.py:44 apps/lms/admin/lesson/admin.py:81
 #: apps/orders/models/order.py:60 apps/products/admin/filters.py:12
-#: apps/products/models/course.py:122 apps/studying/models.py:9
+#: apps/products/models/course.py:124 apps/studying/models.py:9
 msgid "Course"
 msgstr "Курс"
 
@@ -740,11 +740,11 @@ msgstr "Сгенерировать дипломы"
 msgid "Get confirmation PDF"
 msgstr "Сделать справку об обучении"
 
-#: apps/orders/admin/orders/actions.py:110
+#: apps/orders/admin/orders/actions.py:111
 msgid "Accept homework"
 msgstr "Засчитать домашку"
 
-#: apps/orders/admin/orders/actions.py:125
+#: apps/orders/admin/orders/actions.py:126
 msgid "Disaccept homework"
 msgstr "Не засчитать домашку"
 
@@ -955,15 +955,21 @@ msgid "Amount to refund should be more or equal 0"
 msgstr ""
 
 #: apps/products/admin/course.py:41
+#, fuzzy
+#| msgid "Date"
+msgid "Dates"
+msgstr "Дата"
+
+#: apps/products/admin/course.py:50
 msgctxt "products"
 msgid "Invoices"
 msgstr "Чеки"
 
-#: apps/products/admin/course.py:52
+#: apps/products/admin/course.py:61
 msgid "Email messages"
 msgstr "Письма"
 
-#: apps/products/admin/course.py:61
+#: apps/products/admin/course.py:70
 msgid "Order confirmation"
 msgstr "Подтверждение покупки (для бесплатных курсов)"
 
@@ -1063,17 +1069,25 @@ msgstr "Обложка курса"
 msgid "Homework check recommendations"
 msgstr "Рекомендации по проверке домашки"
 
-#: apps/products/models/course.py:123
+#: apps/products/models/course.py:119
+msgid "Start date (official)"
+msgstr "Дата начала (документы)"
+
+#: apps/products/models/course.py:120
+msgid "End date(official)"
+msgstr "Дата окончания (документы)"
+
+#: apps/products/models/course.py:125
 msgid "Courses"
 msgstr "Курсы"
 
-#: apps/products/models/course.py:148
+#: apps/products/models/course.py:150
 msgid "Both confirmation_template_id and confirmation_success_url must be set"
 msgstr ""
 "У курсов с подтверждением обязательно нужно устанавливать оба поля: и "
 "почтовый шаблон и ссылку для упешного подтверждения "
 
-#: apps/products/models/course.py:151
+#: apps/products/models/course.py:153
 msgid "Courses with confirmation should have zero price"
 msgstr ""
 "Курсы с подтверждением могут быть только бесплатными. Если пользователь "
