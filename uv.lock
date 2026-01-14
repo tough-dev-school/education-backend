@@ -808,6 +808,7 @@ dependencies = [
     { name = "pillow" },
     { name = "psycopg", extra = ["binary"] },
     { name = "python-benedict" },
+    { name = "pytrovich" },
     { name = "redis" },
     { name = "retry" },
     { name = "sentry-sdk" },
@@ -907,6 +908,7 @@ requires-dist = [
     { name = "pytest-repeat", marker = "extra == 'dev'", specifier = ">=0.9.1,<1.0.0" },
     { name = "pytest-xdist", marker = "extra == 'dev'", specifier = ">=3.3.1,<4.0.0" },
     { name = "python-benedict", specifier = ">=0.34.0,<1.0.0" },
+    { name = "pytrovich", specifier = ">=0.0.5" },
     { name = "redis", specifier = ">=6.0.0,<7.0.0" },
     { name = "requests-mock", marker = "extra == 'dev'", specifier = ">=1.11.0,<2.0.0" },
     { name = "respx", marker = "extra == 'dev'", specifier = ">=0.22.0,<1.0.0" },
@@ -1724,6 +1726,15 @@ wheels = [
 [package.optional-dependencies]
 global = [
     { name = "platformdirs" },
+]
+
+[[package]]
+name = "pytrovich"
+version = "0.0.5"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/c6/86/4bb4fcc5710fa94e26dce2287a0e535c7e2956e373005b8b810618897584/pytrovich-0.0.5.tar.gz", hash = "sha256:f3fcd0794af91dae812a378382f3f2bf9f1dedf6a5ef096458b24492979c6527", size = 24050, upload-time = "2025-11-27T10:17:05.802Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/dc/63/fe9f89cac250de8b4932ce99ace94b9f8f66e883a119b17d8acdccbc22d3/pytrovich-0.0.5-py3-none-any.whl", hash = "sha256:3f924029827e437e50eadc9d9784bf878ff5f694c4a41344a014ef8e8f48afee", size = 26043, upload-time = "2025-11-27T10:17:04.696Z" },
 ]
 
 [[package]]

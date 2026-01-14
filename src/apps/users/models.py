@@ -14,6 +14,7 @@ from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
 from apps.diplomas.models import Languages
+from apps.users import gender
 from core.files import RandomFileName
 from core.models import TestUtilsMixin, models
 from core.types import Language
@@ -107,11 +108,14 @@ class User(TestUtilsMixin, AbstractUser):
         if len(name) > 3:
             return name
 
-    def get_printable_gender(self) -> str:
-        if self.gender and len(self.gender):
-            return self.gender
+    def get_printable_dative_name(self) -> str:
+        if not len(self.first_name) or not len(self.last_name):
+            return str(self)
 
-        return "male"  # sorry, flex scope
+        return gender.get_dative_name(self)
+
+    def get_printable_gender(self) -> str:
+        return gender.get_or_detect_gender(self)
 
     def add_perm(self, perm: str) -> None:
         """Add permission to the user.

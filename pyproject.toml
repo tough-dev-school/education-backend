@@ -36,6 +36,7 @@ dependencies = [
     "pillow>=12.1.0,<12.2.0",
     "psycopg[binary]>=3.2.9,<4.0.0",
     "python-benedict>=0.34.0,<1.0.0",
+    "pytrovich>=0.0.5",
     "redis>=6.0.0,<7.0.0",
     "retry>=0.9.2,<1.0.0",
     "sentry-sdk>=2.0.0,<3.0.0",
