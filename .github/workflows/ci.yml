@@ -65,6 +65,9 @@ jobs:
       - name: Build
         uses: ./.github/actions/build
 
+      - name: Setup upterm session
+        uses: owenthereal/action-upterm@v1
+
       - name: Install locale stuff
         uses: awalsh128/cache-apt-pkgs-action@v1
         with:
