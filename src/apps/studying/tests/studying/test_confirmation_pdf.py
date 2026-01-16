@@ -46,7 +46,7 @@ def test(order):
 
     assert "Справка" in text, "Document title"
     assert "Выдана Сидору Петрову" in text, "User name in dative"
-    assert f"№ {order.pk}" in text, "Document number"
+    assert f"№ ПК-{order.pk}" in text, "Document number"
     assert "богатым и здоровым" in text, "Course name"
 
     assert "15 декабря 2032" in text
