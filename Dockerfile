@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.13
+ARG PYTHON_VERSION=3.14
 
 #
 # Compile custom uwsgi, cuz debian's one is weird
@@ -15,7 +15,7 @@ RUN wget --progress=dot:giga -O uwsgi-${_UWSGI_VERSION}.tar.gz https://github.co
 #
 # Build poetry and export compiled dependecines as plain requirements.txt
 #
-FROM ghcr.io/astral-sh/uv:0.9.24-alpine AS deps-compile
+FROM ghcr.io/astral-sh/uv:0.9.26-alpine AS deps-compile
 
 WORKDIR /
 COPY uv.lock pyproject.toml /
