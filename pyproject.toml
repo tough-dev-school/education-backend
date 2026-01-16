@@ -47,7 +47,7 @@ dependencies = [
 description = ""
 name = "education-backend"
 readme = "README.md"
-requires-python = "~=3.13.0"
+requires-python = "~=3.14.0"
 version = "2025.08.29"
 
 [project.optional-dependencies]
@@ -106,6 +106,7 @@ filterwarnings = [
     "error",
     "ignore:.*datetime.datetime.utcnow.*:DeprecationWarning",
     "ignore:The FORMS_URLFIELD_ASSUME_HTTPS transitional setting is deprecated",
+    "ignore:.*_UnionGenericAlias.*:DeprecationWarning",
 ]
 markers = [
     "auditlog: enable admin logging",
