@@ -10,7 +10,7 @@ Configuration is stored in `src/core/.env`, for examples see `src/core/.env.ci`
 
 ## Installing on a local machine
 
-This project requires python 3.13. Deps are managed by [uv](https://docs.astral.sh/uv/).
+This project requires python 3.14. Deps are managed by [uv](https://docs.astral.sh/uv/).
 
 Install requirements:
 
