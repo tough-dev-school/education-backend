@@ -96,7 +96,10 @@ def generate_diplomas(modeladmin: Any, request: HttpRequest, queryset: QuerySet)
 
 @admin.action(description=_("Get confirmation PDF"))
 def get_confirmation_pdf(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> HttpResponse:  # NOQA: ARG001
-    order = queryset[:1].get()
+    order = queryset.paid().first()
+    if order is None:
+        modeladmin.message_user(request, "Order is not paid")
+        return
 
     study = order.study
 
