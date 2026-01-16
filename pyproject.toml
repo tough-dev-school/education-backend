@@ -104,9 +104,9 @@ env = [
 ]
 filterwarnings = [
     "error",
+    "ignore:.*_UnionGenericAlias.*:DeprecationWarning",
     "ignore:.*datetime.datetime.utcnow.*:DeprecationWarning",
     "ignore:The FORMS_URLFIELD_ASSUME_HTTPS transitional setting is deprecated",
-    "ignore:.*_UnionGenericAlias.*:DeprecationWarning",
 ]
 markers = [
     "auditlog: enable admin logging",
