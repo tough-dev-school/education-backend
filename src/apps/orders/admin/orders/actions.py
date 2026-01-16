@@ -1,15 +1,17 @@
 from collections import defaultdict
-from typing import Any
+from typing import Any, no_type_check
 
 from celery import group
 from django.contrib import messages
 from django.db.models import QuerySet
+from django.http import HttpResponse
 from django.http.request import HttpRequest
 from django.utils.translation import gettext as _
 
 from apps.orders import tasks
 from apps.orders.models import Order
 from apps.orders.services.order_refunder import OrderRefunderException
+from apps.studying.confirmation import pdf as confirmation
 from apps.studying.models import Study
 from core.admin import admin
 
@@ -90,6 +92,24 @@ def generate_diplomas(modeladmin: Any, request: HttpRequest, queryset: QuerySet)
     generate_diplomas.skew(step=2).apply_async()
 
     modeladmin.message_user(request, f"Started generation of {len(order_ids)} diplomas")
+
+
+@no_type_check
+@admin.action(description=_("Get confirmation PDF"))
+def get_confirmation_pdf(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> HttpResponse:  # NOQA: ARG001
+    order = queryset.paid().first()
+    if order is None:
+        modeladmin.message_user(request, "Order is not paid")
+        return
+
+    study = order.study
+
+    pdf = confirmation.get_pdf(study)
+
+    response = HttpResponse(pdf, content_type="application/pdf")
+    response["Content-Disposition"] = f'attachment; filename="confirmation_order_{order.slug}.pdf"'
+
+    return response
 
 
 @admin.action(description=_("Accept homework"))
