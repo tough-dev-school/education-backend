@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Any
+from typing import Any, no_type_check
 
 from celery import group
 from django.contrib import messages
@@ -94,6 +94,7 @@ def generate_diplomas(modeladmin: Any, request: HttpRequest, queryset: QuerySet)
     modeladmin.message_user(request, f"Started generation of {len(order_ids)} diplomas")
 
 
+@no_type_check
 @admin.action(description=_("Get confirmation PDF"))
 def get_confirmation_pdf(modeladmin: Any, request: HttpRequest, queryset: QuerySet) -> HttpResponse:  # NOQA: ARG001
     order = queryset.paid().first()
