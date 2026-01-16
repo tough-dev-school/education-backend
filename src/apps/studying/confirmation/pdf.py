@@ -1,6 +1,7 @@
-from pathlib import Path
 import re
+from pathlib import Path
 
+import pendulum
 from django.conf import settings
 from django.utils import timezone
 from fpdf import FPDF
@@ -16,15 +17,14 @@ CONTENT_TEMPLATE = Template(
         " ",
         """
     Выдана {{ student.get_printable_dative_name() }} в том, что он{% if gender == 'female'%}а{% endif %}
-    {% if start_date and end_date %}c {{ start_date }} по {{ end_date }}{% endif %}прослушал{% if gender == 'female'%}а{% endif%}
+    {% if start_date and end_date %}c {{ start_date }} по {{ end_date }} {% endif %}прослушал{% if gender == 'female'%}а{% endif%}
     курс «{{ course.product_name }}».
     """,
     ),
 )
 
 
-def _get_template_context(study: Study) -> dict[str]:
-    DATE_FORMAT = "%d %B %Y"
+def _get_template_context(study: Study) -> dict:
     context = {
         "student": study.student,
         "course": study.course,
@@ -34,8 +34,8 @@ def _get_template_context(study: Study) -> dict[str]:
     if study.course.start_date and study.course.end_date:
         context.update(
             {
-                "start_date": study.course.start_date.strftime(DATE_FORMAT),
-                "end_date": study.course.end_date.strftime(DATE_FORMAT),
+                "start_date": pendulum.instance(study.course.start_date).format("DD MMMM YYYY года", locale="ru"),
+                "end_date": pendulum.instance(study.course.end_date).format("DD MMMM YYYY года", locale="ru"),
             }
         )
 
@@ -72,7 +72,7 @@ def get_pdf(study: Study) -> bytes:
     date = timezone.now()
     title = "Справка"
     content = CONTENT_TEMPLATE.render(**_get_template_context(study))
-    document_number = f"№ {study.order.id} от {date.day:02d}.{date.month:02d}.{date.year}"
+    document_number = f"№ ПК-{study.order.id} от {date.day:02d}.{date.month:02d}.{date.year}"
 
     pdf = _get_boilerplate()
 
