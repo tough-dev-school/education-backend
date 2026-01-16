@@ -885,7 +885,7 @@ requires-dist = [
     { name = "psycopg", extras = ["binary"], specifier = ">=3.2.9,<4.0.0" },
     { name = "pymarkdownlnt", marker = "extra == 'dev'", specifier = ">=0.9.13.4,<1.0.0" },
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=7.0.0,<7.1.0" },
-    { name = "pytest-deadfixtures", marker = "extra == 'dev'", specifier = ">=3.0.0,<3.1.0" },
+    { name = "pytest-deadfixtures", marker = "extra == 'dev'", specifier = ">=3.1.0,<3.2.0" },
     { name = "pytest-django", marker = "extra == 'dev'", specifier = ">=4.5.2,<5.0.0" },
     { name = "pytest-env", marker = "extra == 'dev'", specifier = ">=1.0.1,<2.0.0" },
     { name = "pytest-freezer", marker = "extra == 'dev'", specifier = ">=0.4.9,<1.0.0" },
@@ -1501,14 +1501,14 @@ wheels = [
 
 [[package]]
 name = "pytest-deadfixtures"
-version = "3.0.0"
+version = "3.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pytest" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ad/20/3ee37e176c6f5c7ec3b9f63ac51898480ce2cb734fbfe5f5b833aab4ebb8/pytest_deadfixtures-3.0.0.tar.gz", hash = "sha256:08704a1301ee4c631d33f70af4c48ac5904ee4d48656161fa66e6eca07491492", size = 8683, upload-time = "2025-11-08T14:21:42.411Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/7b/b5/6fc6a3096e5bc3124c61af17c53d09290a5bfbca51fb8b94068d1e770d0e/pytest_deadfixtures-3.1.0.tar.gz", hash = "sha256:a8010e771183176fa9d918c8c49293ca5568597c8e1453ed2bbd41bcee67bde5", size = 9294, upload-time = "2026-01-15T20:05:40.825Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/bb/0e/e919fae3cb5530d2331391443f4f20342ef79e9e5b71fc4be563c6573ffd/pytest_deadfixtures-3.0.0-py2.py3-none-any.whl", hash = "sha256:f4b1484faec373b1f3b2be698d99a7c85be55f6473edcb6a110ff5217cf8753c", size = 6578, upload-time = "2025-11-08T14:21:41.003Z" },
+    { url = "https://files.pythonhosted.org/packages/fb/d0/67f83859706d11717498e1ef5e75f1c61835fd972c902f5bc9cbd9cb5659/pytest_deadfixtures-3.1.0-py2.py3-none-any.whl", hash = "sha256:898ba131c7472bd05551b73e2b99a51898fc3b8255c0589cf8b3c3c804e8f502", size = 7070, upload-time = "2026-01-15T20:05:39.599Z" },
 ]
 
 [[package]]
