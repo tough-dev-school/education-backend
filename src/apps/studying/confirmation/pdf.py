@@ -1,21 +1,48 @@
 from pathlib import Path
+import re
 
 from django.conf import settings
 from django.utils import timezone
 from fpdf import FPDF
 from fpdf.enums import XPos, YPos
+from jinja2 import Template
 
 from apps.studying.models import Study
 
 FONT_SIZE = 14
+CONTENT_TEMPLATE = Template(
+    re.sub(
+        r"\s+",
+        " ",
+        """
+    Выдана {{ student.get_printable_dative_name() }} в том, что он{% if gender == 'female'%}а{% endif %}
+    {% if start_date and end_date %}c {{ start_date }} по {{ end_date }}{% endif %}прослушал{% if gender == 'female'%}а{% endif%}
+    курс «{{ course.product_name }}».
+    """,
+    ),
+)
 
 
-def get_pdf(study: Study) -> bytes:
-    date = timezone.now()
-    title = "Справка"
-    content = f"Выдана {study.student} в том, что он прослушал курс «{study.course.product_name}»."
-    document_number = f"№ {study.order.id} от {date.day:02d}.{date.month:02d}.{date.year}"
+def _get_template_context(study: Study) -> dict[str]:
+    DATE_FORMAT = "%d %B %Y"
+    context = {
+        "student": study.student,
+        "course": study.course,
+        "gender": study.student.get_printable_gender(),
+    }
 
+    if study.course.start_date and study.course.end_date:
+        context.update(
+            {
+                "start_date": study.course.start_date.strftime(DATE_FORMAT),
+                "end_date": study.course.end_date.strftime(DATE_FORMAT),
+            }
+        )
+
+    return context
+
+
+def _get_boilerplate() -> FPDF:
     pdf = FPDF()
     pdf.add_page()
 
@@ -38,8 +65,19 @@ def get_pdf(study: Study) -> bytes:
     # Add logo (full-width at top-left corner)
     pdf.image(str(Path(settings.BASE_DIR / "paperwork/logo.jpg")), x=0, y=0, w=210)  # Full-width A4 (210mm), top-left corner
 
+    return pdf
+
+
+def get_pdf(study: Study) -> bytes:
+    date = timezone.now()
+    title = "Справка"
+    content = CONTENT_TEMPLATE.render(**_get_template_context(study))
+    document_number = f"№ {study.order.id} от {date.day:02d}.{date.month:02d}.{date.year}"
+
+    pdf = _get_boilerplate()
+
     # Add document number text (left-aligned, below logo)
-    pdf.ln(60)  # Move below full-width logo
+    pdf.ln(60)
     pdf.cell(0, 10, document_number, new_x=XPos.LMARGIN, new_y=YPos.NEXT, align="L")
 
     # Add title (centered, below document number, bold)
@@ -67,3 +105,8 @@ def get_pdf(study: Study) -> bytes:
         pdf.cell(signature_width, 5, signature_text, align="C")
 
     return bytes(pdf.output())
+
+
+__all__ = [
+    "get_pdf",
+]
