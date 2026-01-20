@@ -102,12 +102,16 @@ def get_confirmation_pdf(modeladmin: Any, request: HttpRequest, queryset: QueryS
         modeladmin.message_user(request, "Order is not paid")
         return
 
+    if not order.user.has_human_name():
+        modeladmin.message_user(request, "Student has no human name")
+        return
+
     study = order.study
 
     pdf = confirmation.get_pdf(study)
 
     response = HttpResponse(pdf, content_type="application/pdf")
-    response["Content-Disposition"] = f'attachment; filename="confirmation_order_{order.slug}.pdf"'
+    response["Content-Disposition"] = f'attachment; filename="study-confirmation-{order.slug}.pdf"'
 
     return response
 

@@ -70,15 +70,18 @@ class User(TestUtilsMixin, AbstractUser):
         verbose_name_plural = _("users")
 
     def __str__(self) -> str:
+        if self.has_human_name():
+            return f"{self.first_name} {self.last_name}".strip()
+
+        if self.random_name is not None and len(self.random_name):
+            return self.random_name
+
+        return "Anonymous"
+
+    def has_human_name(self) -> bool:
         name = f"{self.first_name} {self.last_name}".strip()
 
-        if len(name) < 3 and self.random_name is not None:
-            name = self.random_name
-
-        if len(name) < 3:
-            return "Anonymous"
-
-        return name
+        return len(name) >= 3
 
     @classmethod
     def parse_name(cls, name: str) -> dict:
