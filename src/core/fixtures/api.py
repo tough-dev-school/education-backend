@@ -7,7 +7,7 @@ from core.test.api_client import DRFClient
 
 
 @pytest.fixture
-def api():
+def api() -> DRFClient:
     return DRFClient()
 
 

@@ -5,6 +5,14 @@ from apps.users.models import User
 pytestmark = [pytest.mark.django_db]
 
 
+@pytest.fixture
+def api(api):
+    """Make all request as an ordinary user"""
+    api.user.update(is_staff=False, is_superuser=False, random_name="Самовлюбленный морской котик")
+
+    return api
+
+
 def test_ok(api):
     got = api.get("/api/v2/users/me/")
 
@@ -16,11 +24,21 @@ def test_ok(api):
     assert got["last_name"] == api.user.last_name
     assert got["first_name_en"] == api.user.first_name_en
     assert got["last_name_en"] == api.user.last_name_en
+    assert got["random_name"] == "Самовлюбленный морской котик"
     assert got["gender"] == api.user.gender
     assert got["linkedin_username"] == api.user.linkedin_username
     assert got["github_username"] == api.user.github_username
     assert got["telegram_username"] == api.user.telegram_username
     assert got["avatar"] == api.user.avatar
+
+
+def test_rank(api):
+    api.user.update(rank="Эксперт Курса", rank_label_color="#cccccc")
+
+    got = api.get("/api/v2/users/me/")
+
+    assert got["rank"] == "Эксперт Курса"
+    assert got["rank_label_color"] == "#cccccc"
 
 
 def test_anon(anon):
@@ -172,3 +190,21 @@ def test_country_code_and_ip(api, ip_addr, country):
 
     assert got.headers["X-Request-IP"] == ip_addr
     assert got.headers["X-Request-Country"] == country
+
+
+@pytest.mark.parametrize("flag", ["is_staff", "is_superuser"])
+def test_edit_is_staff(api, flag):
+    """Make sure user can't set himself as an admin"""
+
+    assert getattr(api.user, flag) is False
+
+    api.patch(
+        "/api/v2/users/me/",
+        {
+            flag: True,
+        },
+    )
+
+    api.user.refresh_from_db()
+
+    assert getattr(api.user, flag) is False

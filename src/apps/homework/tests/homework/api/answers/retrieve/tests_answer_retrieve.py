@@ -20,6 +20,7 @@ def test_ok(api, answer, question):
     assert got["author"]["first_name"] == api.user.first_name
     assert got["author"]["last_name"] == api.user.last_name
     assert got["author"]["avatar"] is None
+    assert "random_name" in got["author"]
     assert got["question"] == str(question.slug)
     assert got["has_descendants"] is False
     assert got["descendants"] == []
@@ -29,24 +30,31 @@ def test_ok(api, answer, question):
 
 
 def test_text_content(api, answer):
-    answer.update(content={}, text="*legacy*")
+    answer.update(content={}, legacy_text="*legacy*")
 
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
     assert got["content"] == {}
-    assert "legacy" in got["text"]
     assert "legacy" in got["legacy_text"]
-    assert "<em>" in got["legacy_text"]
+    assert "<em>" in got["legacy_text"], "markdown is rendered"
 
 
 def test_json_content(api, answer):
-    answer.update(content={"type": "doc"}, text="")
+    answer.update(content={"type": "doc"}, legacy_text="")
 
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
     assert got["content"]["type"] == "doc"
-    assert got["text"] == ""
     assert got["legacy_text"] == ""
+
+
+def test_author_rank(api, answer):
+    answer.author.update(rank="Эксперт Курса", rank_label_color="#cccccc")
+
+    got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
+
+    assert got["author"]["rank"] == "Эксперт Курса"
+    assert got["author"]["rank_label_color"] == "#cccccc"
 
 
 def test_has_descendants_is_true_if_answer_has_children(api, answer, another_answer, another_user):

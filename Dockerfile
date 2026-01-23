@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.13
+ARG PYTHON_VERSION=3.14
 
 #
 # Compile custom uwsgi, cuz debian's one is weird
@@ -15,7 +15,7 @@ RUN wget --progress=dot:giga -O uwsgi-${_UWSGI_VERSION}.tar.gz https://github.co
 #
 # Build poetry and export compiled dependecines as plain requirements.txt
 #
-FROM ghcr.io/astral-sh/uv:0.9.9-alpine AS deps-compile
+FROM ghcr.io/astral-sh/uv:0.9.26-alpine AS deps-compile
 
 WORKDIR /
 COPY uv.lock pyproject.toml /
@@ -27,8 +27,12 @@ RUN uv export -o /requirements.txt
 #
 FROM python:${PYTHON_VERSION}-slim-bookworm AS base
 
+ENV PYTHONUTF8=1
 ENV PYTHONUNBUFFERED=1
 ENV DEBIAN_FRONTEND=noninteractive
+
+ENV LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8
 
 ENV STATIC_ROOT=/var/lib/django-static
 ENV CELERY_APP=core.celery

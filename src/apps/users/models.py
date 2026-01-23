@@ -1,3 +1,4 @@
+import re
 import uuid
 from datetime import timedelta
 from typing import cast
@@ -7,14 +8,27 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Permission
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GinIndex
+from django.core.exceptions import ValidationError
 from django.db.models import Index, TextChoices
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
 from apps.diplomas.models import Languages
+from apps.users import gender
 from core.files import RandomFileName
 from core.models import TestUtilsMixin, models
 from core.types import Language
+
+
+def validate_hex_color(value: str | None) -> None:
+    if value is None:
+        return
+
+    if not re.match(r"^#[0-9A-Fa-f]{6}$", value):
+        raise ValidationError(
+            _("Color should be a hex color, like '#bebebe'"),
+            params={"value": value},
+        )
 
 
 class User(TestUtilsMixin, AbstractUser):
@@ -28,6 +42,8 @@ class User(TestUtilsMixin, AbstractUser):
 
     gender = models.CharField(_("Gender"), max_length=12, choices=GENDERS.choices, blank=True)
 
+    random_name = models.CharField(_("Randomly generated name"), max_length=128, blank=True, null=True)
+
     linkedin_username = models.CharField(max_length=256, blank=True, db_index=True, default="")
     github_username = models.CharField(max_length=256, blank=True, db_index=True, default="")
     telegram_username = models.CharField(max_length=256, blank=True, db_index=True, default="")
@@ -40,6 +56,9 @@ class User(TestUtilsMixin, AbstractUser):
         blank=True,
     )
 
+    rank = models.CharField(_("Rank"), max_length=32, blank=True, null=True)
+    rank_label_color = models.CharField(_("Rank label color"), max_length=7, blank=True, null=True, validators=[validate_hex_color])
+
     class Meta:
         abstract = False
         indexes = [
@@ -51,12 +70,18 @@ class User(TestUtilsMixin, AbstractUser):
         verbose_name_plural = _("users")
 
     def __str__(self) -> str:
-        name = f"{self.first_name} {self.last_name}"
+        if self.has_human_name():
+            return f"{self.first_name} {self.last_name}".strip()
 
-        if len(name) < 3:
-            return "Anonymous"
+        if self.random_name is not None and len(self.random_name):
+            return self.random_name
 
-        return name.strip()
+        return "Anonymous"
+
+    def has_human_name(self) -> bool:
+        name = f"{self.first_name} {self.last_name}".strip()
+
+        return len(name) >= 3
 
     @classmethod
     def parse_name(cls, name: str) -> dict:
@@ -86,11 +111,14 @@ class User(TestUtilsMixin, AbstractUser):
         if len(name) > 3:
             return name
 
-    def get_printable_gender(self) -> str:
-        if self.gender and len(self.gender):
-            return self.gender
+    def get_printable_dative_name(self) -> str:
+        if not len(self.first_name) or not len(self.last_name):
+            return str(self)
 
-        return "male"  # sorry, flex scope
+        return gender.get_dative_name(self)
+
+    def get_printable_gender(self) -> str:
+        return gender.get_or_detect_gender(self)
 
     def add_perm(self, perm: str) -> None:
         """Add permission to the user.

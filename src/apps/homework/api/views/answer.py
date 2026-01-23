@@ -1,9 +1,10 @@
 from typing import Any
 
 from django.utils.decorators import method_decorator
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import OpenApiExample, extend_schema, inline_serializer
 from rest_framework import generics
 from rest_framework.exceptions import MethodNotAllowed
+from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -25,15 +26,38 @@ from apps.homework.models.answer import AnswerQuerySet
 from apps.homework.services import AnswerCreator, AnswerRemover, AnswerUpdater
 from apps.users.models import User
 from core.api.mixins import DisablePaginationWithQueryParamMixin
+from core.api.swagger.fields import BinaryUploadField
 from core.viewsets import AppViewSet
 
 
+@method_decorator(
+    extend_schema(
+        request=inline_serializer(
+            name="AnswerImageRequestSerializer",
+            fields={
+                "image": BinaryUploadField(),
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                name="Default response",
+                response_only=True,
+                status_codes=[201],
+                value={
+                    "image": "https://cdn.tough-dev.school/homework/answers/typicalmacuser.jpg",
+                },
+            ),
+        ],
+    ),
+    name="post",
+)
 class ImageUploadView(generics.CreateAPIView):
     """Upload an image"""
 
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.AnswerImageSerializer
     queryset = AnswerImage.objects.all()
+    parser_classes = [MultiPartParser]
 
 
 @method_decorator(

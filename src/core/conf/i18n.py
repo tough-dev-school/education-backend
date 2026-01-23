@@ -3,6 +3,7 @@ from pathlib import Path
 from core.conf.boilerplate import BASE_DIR
 
 USE_i18N = True
+USE_L10N = True
 
 LANGUAGE_CODE = "ru"
 

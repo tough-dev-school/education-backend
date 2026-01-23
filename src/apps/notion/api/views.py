@@ -2,10 +2,9 @@ from typing import Any
 
 from django.contrib.admin.models import CHANGE
 from django.db.models import QuerySet
-from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema, inline_serializer
 from rest_framework import serializers
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -29,16 +28,26 @@ class MaterialStatusView(AdminAPIView, RetrieveAPIView):
     serializer_class = NotionCacheEntryStatusSerializer
 
     def get_object(self) -> NotionCacheEntryStatus:
-        material = get_object_or_404(Material, page_id=self.kwargs["page_id"])
+        material = Material.objects.get_by_page_id_or_slug(uuid_to_id(self.kwargs["page_id"]))
 
-        return get_object_or_404(NotionCacheEntryStatus, page_id=material.page_id)
+        if material is None:
+            raise NotFound()
+
+        try:
+            return NotionCacheEntryStatus.objects.get(page_id=material.page_id)
+        except NotionCacheEntryStatus.DoesNotExist:
+            raise ValidationError("Material has not been fetched yet, use v2/materials/<id>/update/ first.")
 
 
 class MaterialUpdateView(AdminAPIView):
     """Trigger material update"""
 
     def get_object(self) -> Material:
-        return get_object_or_404(Material, page_id=self.kwargs["page_id"])
+        material = Material.objects.get_by_page_id_or_slug(uuid_to_id(self.kwargs["page_id"]))
+        if material is None:
+            raise NotFound()
+
+        return material
 
     @extend_schema(request=None, responses={200: None})
     def put(self, request: Request, *args: Any, **kwargs: Any) -> Response:

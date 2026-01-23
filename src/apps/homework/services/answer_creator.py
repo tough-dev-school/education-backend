@@ -45,7 +45,7 @@ class AnswerCreator(BaseService):
             question=self.question,
             author=self.author,
             study=self.study,
-            text=prosemirror_to_text(self.content),
+            legacy_text=prosemirror_to_text(self.content),
             content=self.content,
         )
 

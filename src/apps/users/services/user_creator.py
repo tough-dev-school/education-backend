@@ -7,6 +7,7 @@ from rest_framework import serializers
 from apps.dashamail import tasks as dashamail
 from apps.dashamail.enabled import dashamail_enabled
 from apps.users.models import User
+from apps.users.random_name import random_name
 from core.services import BaseService
 
 
@@ -48,18 +49,13 @@ class UserCreator(BaseService):
             return User.objects.filter(is_active=True).filter(email__iexact=self.email).order_by("date_joined").first()
 
     def create(self) -> User:
-        serializer = UserCreateSerializer(
-            data={
-                "email": self.email.lower(),
-                "username": self.username,
-                **User.parse_name(self.name or ""),
-            }
+        user = User.objects.create(
+            email=self.email.lower(),
+            username=self.username,
+            random_name=random_name(),
+            **User.parse_name(self.name or ""),
         )
-        serializer.is_valid(raise_exception=True)
-
-        serializer.save()
-
-        return serializer.instance  # type: ignore
+        return user
 
     @staticmethod
     def push_to_dashamail(user: User) -> None:

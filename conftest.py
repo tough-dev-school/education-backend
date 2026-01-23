@@ -14,6 +14,7 @@ pytest_plugins = [
     "apps.orders.fixtures",
     "apps.products.factory",
     "apps.products.fixtures",
+    "apps.users.factory",
     "apps.users.fixtures",
     "core.factory",
     "core.fixtures",

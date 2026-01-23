@@ -38,6 +38,15 @@ class CourseAdmin(ModelAdmin):
             },
         ),
         (
+            _("Dates"),
+            {
+                "fields": [
+                    "start_date",
+                    "end_date",
+                ],
+            },
+        ),
+        (
             pgettext_lazy("products", "Invoices"),
             {
                 "fields": [

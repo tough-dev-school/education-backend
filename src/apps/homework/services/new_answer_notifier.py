@@ -9,7 +9,7 @@ from apps.homework.models import Answer
 from apps.homework.models.answer_cross_check import AnswerCrossCheckQuerySet
 from apps.mailing.tasks import send_mail
 from apps.users.models import User
-from core.markdown import markdownify, remove_img
+from core.prosemirror import prosemirror_to_text
 from core.services import BaseService
 
 
@@ -72,7 +72,7 @@ class DefaultAnswerNotification(BaseAnswerNotification):
         context = {
             "discussion_name": self.answer.question.name,
             "discussion_url": self.answer.get_absolute_url(),
-            "answer_text": self.get_text_with_markdown(),
+            "answer_text": self.get_answer_text(),
             "author_name": str(self.answer.author),
         }
 
@@ -87,8 +87,8 @@ class DefaultAnswerNotification(BaseAnswerNotification):
         """This is a default notification, so if no other notification can be sent, this one will be sent"""
         return True
 
-    def get_text_with_markdown(self) -> str:
-        return remove_img(markdownify(self.answer.text).strip())
+    def get_answer_text(self) -> str:
+        return prosemirror_to_text(self.answer.content)  # type: ignore
 
 
 @dataclass

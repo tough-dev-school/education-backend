@@ -122,5 +122,6 @@ src/frontend/static/js/*
 .postgres
 *.sqlite
 
+signature.png
 staticfiles
 requirements.txt

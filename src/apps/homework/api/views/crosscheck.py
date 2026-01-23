@@ -1,5 +1,7 @@
 from django.db.models import QuerySet
 from django.shortcuts import get_object_or_404
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework import generics
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
@@ -9,8 +11,13 @@ from apps.homework.models import AnswerCrossCheck, Question
 from core.helpers import is_valid_uuid
 
 
+@extend_schema(
+    parameters=[
+        OpenApiParameter(name="question", type=OpenApiTypes.UUID, required=True, description="Question id"),
+    ],
+)
 class CrossCheckView(generics.ListAPIView):
-    """Crosscheck status"""
+    """Crosscheck status by question"""
 
     queryset = AnswerCrossCheck.objects.for_viewset()
     serializer_class = CrossCheckSerializer
