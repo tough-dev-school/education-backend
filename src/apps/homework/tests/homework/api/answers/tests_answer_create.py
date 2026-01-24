@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 
 import pytest
 
-from apps.homework.models import Answer
+from apps.homework.models import Answer, AnswerCrossCheck
 
 pytestmark = [
     pytest.mark.django_db,
@@ -318,7 +318,7 @@ def test_doesnt_marks_crosscheck_as_checked_for_another_answer(api, factory, que
     assert crosscheck.checked is None
 
 
-def test_doesnt_marks_crosscheck_as_checked_for_another_checker(api, factory, question, another_answer, another_user, mixer):
+def test_does_not_mark_crosscheck_as_checked_for_another_checker(api, factory, question, another_answer, another_user, mixer):
     crosscheck = mixer.blend("homework.AnswerCrossCheck", answer=another_answer, checker=another_user)
 
     api.post(
@@ -332,3 +332,18 @@ def test_doesnt_marks_crosscheck_as_checked_for_another_checker(api, factory, qu
 
     crosscheck.refresh_from_db()
     assert crosscheck.checked is None
+
+
+def test_crosscheck_is_created_automaticaly_if_there_were_not(api, factory, question, another_answer):
+    api.post(
+        "/api/v2/homework/answers/",
+        {
+            "content": factory.prosemirror("Горите в аду"),
+            "question": question.slug,
+            "parent": another_answer.slug,
+        },
+    )
+
+    automaticaly_created_crosscheck = AnswerCrossCheck.objects.get(answer=another_answer, checker=api.user)
+
+    assert automaticaly_created_crosscheck.checked is not None

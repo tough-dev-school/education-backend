@@ -4,6 +4,7 @@ from apps.homework.models import AnswerCrossCheck
 
 pytestmark = [
     pytest.mark.django_db,
+    pytest.mark.usefixtures("_set_current_user"),
 ]
 
 

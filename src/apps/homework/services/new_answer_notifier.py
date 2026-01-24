@@ -5,7 +5,7 @@ from typing import Type
 from django.db.models import QuerySet
 from django.utils.functional import cached_property
 
-from apps.homework.models import Answer
+from apps.homework.models import Answer, AnswerCrossCheck
 from apps.homework.models.answer_cross_check import AnswerCrossCheckQuerySet
 from apps.mailing.tasks import send_mail
 from apps.users.models import User
@@ -132,7 +132,11 @@ class CrossCheckedAnswerNotification(BaseAnswerNotification):
 
     @cached_property
     def crosschecks(self) -> "AnswerCrossCheckQuerySet":
-        return self.user.answercrosscheck_set.filter(answer__question=self.answer.question, checked__isnull=True)
+        return AnswerCrossCheck.objects.filter(
+            checker=self.user,
+            answer__question=self.answer.question,
+            checked__isnull=True,
+        )
 
 
 @dataclass

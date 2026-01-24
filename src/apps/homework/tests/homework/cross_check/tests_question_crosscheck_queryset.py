@@ -1,6 +1,9 @@
 import pytest
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [
+    pytest.mark.django_db,
+    pytest.mark.usefixtures("_set_current_user"),
+]
 
 
 @pytest.fixture

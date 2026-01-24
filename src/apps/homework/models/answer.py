@@ -3,6 +3,7 @@ import uuid
 from typing import Annotated, TypedDict
 from urllib.parse import urljoin, urlparse
 
+from django.apps import apps
 from django.conf import settings
 from django.db.models import Count, IntegerField, Prefetch
 from django.db.models.expressions import RawSQL
@@ -171,13 +172,25 @@ class Answer(TimestampedModel):
         if not self.is_root or not self.is_author_of_root_answer(user):
             return queryset
 
-        students_should_check_my_answer = self.answercrosscheck_set.values_list("checker_id", flat=True)
+        students_should_check_my_answer = (
+            apps.get_model("homework.AnswerCrossCheck")
+            .objects.filter(
+                answer=self,
+            )
+            .values_list("checker_id", flat=True)
+        )
         answers_from_students_that_should_check_my_answer = queryset.filter(author_id__in=students_should_check_my_answer).values_list("pk", flat=True)
 
         if not answers_from_students_that_should_check_my_answer.exists():  # no crosschecked answers, so return default queryset to avoid extra queries
             return queryset
 
-        crosscheck_count = user.answercrosscheck_set.count_for_question(self.question)
+        crosscheck_count = (
+            apps.get_model("homework.AnswerCrossCheck")
+            .objects.filter(
+                checker=user,
+            )
+            .count_for_question(self.question)
+        )
 
         if crosscheck_count["total"] > crosscheck_count["checked"]:
             allowed_ids = answers_from_students_that_should_check_my_answer[

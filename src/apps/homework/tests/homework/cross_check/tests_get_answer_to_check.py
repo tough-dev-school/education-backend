@@ -5,6 +5,7 @@ from apps.homework.models import Answer
 pytestmark = [
     pytest.mark.django_db,
     pytest.mark.repeat(10),  # we have to repeat this test suite because the method does randomizing
+    pytest.mark.usefixtures("_set_current_user"),
 ]
 
 
