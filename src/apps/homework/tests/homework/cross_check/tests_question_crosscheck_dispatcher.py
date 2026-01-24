@@ -3,7 +3,10 @@ import pytest
 from apps.homework import tasks
 from apps.homework.models import AnswerCrossCheck
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [
+    pytest.mark.django_db,
+    pytest.mark.usefixtures("_set_current_user"),
+]
 
 
 @pytest.fixture(autouse=True)

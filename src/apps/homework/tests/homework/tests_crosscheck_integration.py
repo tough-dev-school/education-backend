@@ -3,7 +3,15 @@ import pytest
 from apps.homework import tasks
 from apps.homework.models import AnswerCrossCheck
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [
+    pytest.mark.django_db,
+]
+
+
+@pytest.fixture(autouse=True)
+def _set_current_user(mocker, user):
+    """Need such mock here cuz app-wide fixture does not affect celery tasks"""
+    mocker.patch("apps.homework.services.answer_crosscheck_dispatcher.get_current_user", return_value=user)
 
 
 @pytest.fixture
@@ -74,7 +82,7 @@ def submit_homework(users, submit_answer):
 
 def test_single_homework(users, submit_homework, questions, mailoutbox):
     submit_homework(questions[0])
-    tasks.dispatch_crosscheck(questions[0].id)
+    tasks.dispatch_crosscheck.delay(questions[0].id)
 
     assert len(mailoutbox) == 10
 
@@ -86,7 +94,7 @@ def test_triple_homework(users, submit_homework, questions, mailoutbox):
     for _ in range(3):
         submit_homework(questions[0])
 
-    tasks.dispatch_crosscheck(questions[0].id)
+    tasks.dispatch_crosscheck.delay(questions[0].id)
 
     assert len(mailoutbox) == 10
     for user in users:

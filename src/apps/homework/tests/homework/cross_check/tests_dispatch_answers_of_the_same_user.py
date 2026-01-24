@@ -4,6 +4,7 @@ from apps.homework.models import AnswerCrossCheck
 
 pytestmark = [
     pytest.mark.django_db,
+    pytest.mark.usefixtures("_set_current_user"),
     pytest.mark.repeat(10),  # we have to repeat this test suite because the method does randomizing
 ]
 

@@ -2,9 +2,11 @@ from dataclasses import dataclass
 
 from django.db import transaction
 from django.db.models import Count, Q, QuerySet
+from rest_framework.exceptions import NotAuthenticated
 
 from apps.homework.models import Answer, AnswerCrossCheck
 from apps.users.models import User
+from core.current_user import get_current_user
 from core.services import BaseService
 
 
@@ -48,7 +50,11 @@ class AnswerCrossCheckDispatcher(BaseService):
         )
 
     def give_answer_to_user(self, answer: Answer, user: User) -> AnswerCrossCheck:
-        return AnswerCrossCheck.objects.create(answer=answer, checker=user)
+        author = get_current_user()
+        if author is None:
+            raise NotAuthenticated
+
+        return AnswerCrossCheck.objects.create(answer=answer, checker=user, author=author)
 
     def get_answers_with_crosscheck_count(self) -> QuerySet[Answer]:
         return self.answers.annotate(

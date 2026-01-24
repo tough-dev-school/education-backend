@@ -23,8 +23,9 @@ class AnswerCrossCheckQuerySet(models.QuerySet):
 class AnswerCrossCheck(TimestampedModel):
     objects = AnswerCrossCheckQuerySet.as_manager()
 
+    author = models.ForeignKey("users.User", on_delete=models.PROTECT, related_name="+")
     answer = models.ForeignKey("homework.Answer", on_delete=models.CASCADE)
-    checker = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    checker = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="+")
     checked = models.DateTimeField(
         _("Date when crosscheck got checked"),
         null=True,

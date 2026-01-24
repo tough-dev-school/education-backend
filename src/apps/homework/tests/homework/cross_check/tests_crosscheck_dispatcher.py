@@ -2,7 +2,20 @@ import pytest
 
 from apps.homework.models import AnswerCrossCheck
 
-pytestmark = [pytest.mark.django_db]
+pytestmark = [
+    pytest.mark.django_db,
+]
+
+
+@pytest.fixture()
+def admin_user(factory):
+    return factory.user()
+
+
+@pytest.fixture(autouse=True)
+def _set_current_user(mocker, admin_user):
+    """Dedicated mock to set admin user for later checking authorship"""
+    mocker.patch("apps.homework.services.answer_crosscheck_dispatcher.get_current_user", return_value=admin_user)
 
 
 @pytest.fixture
@@ -25,3 +38,11 @@ def test_records_are_returned(dispatcher):
     records = dispatcher()
 
     assert len(records) == 2
+
+
+def test_authorship(dispatcher, answers, admin_user):
+    dispatcher()
+
+    crosscheck = AnswerCrossCheck.objects.get(answer=answers[0])
+
+    assert crosscheck.author == admin_user
