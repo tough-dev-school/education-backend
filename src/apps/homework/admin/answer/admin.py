@@ -5,7 +5,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from apps.homework.admin.answer.filters import IsRootFilter
-from apps.homework.models import Answer
+from apps.homework.models import Answer, TreeAnnotatedAnswer
 from core.admin import ModelAdmin, admin
 
 
@@ -63,8 +63,8 @@ class AnswerAdmin(ModelAdmin):
             return "—"
 
     @admin.display(description=_("Crosschecking people"), ordering="crosscheck_count")
-    def crosscheck_count(self, obj: Answer) -> str:
-        return obj.crosscheck_count or "—"
+    def crosscheck_count(self, obj: TreeAnnotatedAnswer) -> str:
+        return obj.crosscheck_count or "—"  # type: ignore[attr-defined]
 
     @mark_safe
     @admin.display(description=_("Author"), ordering="author")

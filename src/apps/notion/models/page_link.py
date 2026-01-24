@@ -26,4 +26,4 @@ class PageLink(TimestampedModel):
     def update_page_links(cls, page: "NotionId", links: list["NotionId"]) -> None:
         with transaction.atomic():
             cls.objects.filter(source=page).all().delete()
-            cls.objects.bulk_create([cls(source=page, destination=link) for link in set(links)])
+            cls.objects.bulk_create([cls(source=page, destination=link) for link in set(links)])  # type: ignore[misc]

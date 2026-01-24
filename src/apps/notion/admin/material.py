@@ -13,7 +13,7 @@ from apps.notion import tasks
 from apps.notion.client import NotionClient
 from apps.notion.exceptions import NotionError
 from apps.notion.id import page_url_to_id, uuid_to_id
-from apps.notion.models import Material, NotionCacheEntryStatus
+from apps.notion.models import FetchStatusAnnotatedMaterial, Material, NotionCacheEntryStatus
 from apps.products.admin.filters import CourseFilter
 from core.admin import ModelAdmin, ModelForm, admin
 
@@ -125,11 +125,11 @@ class NotionMaterialAdmin(ModelAdmin):
             {material.page_id}</a>"""
 
     @admin.display(description=_("Status"), ordering="-fetch_complete")
-    def status(self, material: Material) -> str:
-        if not material.fetch_started and not material.fetch_complete:
+    def status(self, material: FetchStatusAnnotatedMaterial) -> str:
+        if not material.fetch_started and not material.fetch_complete:  # type: ignore[attr-defined]
             return "—"
 
-        if not material.fetch_complete:
+        if not material.fetch_complete:  # type: ignore[attr-defined]
             return "Обновляется..."
 
-        return self._natural_datetime(material.fetch_complete)
+        return self._natural_datetime(material.fetch_complete)  # type: ignore[attr-defined]

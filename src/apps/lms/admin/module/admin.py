@@ -4,7 +4,7 @@ from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
 from apps.lms.admin.lesson.inline import LessonInline
-from apps.lms.models import Module
+from apps.lms.models import AnnotatedModule, Module
 from apps.products.admin.filters import CourseFilter
 from core.admin import ModelAdmin, admin
 from core.admin.actions import archive
@@ -53,11 +53,11 @@ class ModuleAdmin(SortableAdminBase, ModelAdmin):
         return super().get_queryset(request).for_admin()  # type: ignore
 
     @admin.display(description=_("Lesson count"), ordering="lesson_count")
-    def lesson_count(self, obj: Module) -> str:
-        if not obj.lesson_count:
+    def lesson_count(self, obj: AnnotatedModule) -> str:
+        if not obj.lesson_count:  # type: ignore[attr-defined]
             return "—"
 
-        return str(obj.lesson_count)
+        return str(obj.lesson_count)  # type: ignore[attr-defined]
 
 
 __all__ = [

@@ -1,4 +1,5 @@
 import uuid
+from typing import Annotated, TypedDict
 from urllib.parse import urljoin
 
 from django.apps import apps
@@ -7,6 +8,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.db.models import Exists, OuterRef, QuerySet, Value
 from django.db.models.expressions import RawSQL
 from django.utils.translation import gettext_lazy as _
+from django_stubs_ext.annotations import Annotations
 
 from apps.lms.models import Lesson
 from apps.products.models import Course
@@ -159,3 +161,15 @@ class Question(TimestampedModel):
         lesson = self.get_lesson(user)
         if lesson is not None:
             return lesson.module.course
+
+
+class QuestionAnnotations(TypedDict, total=False):
+    """All possible QuerySet annotations for Question."""
+
+    is_sent: bool  # from with_is_sent()
+    comment_count: int  # from with_comment_count()
+    crosschecks_total: int  # from with_crosscheck_stats()
+    crosschecks_checked: int  # from with_crosscheck_stats()
+
+
+StatsAnnotatedQuestion = Annotated[Question, Annotations[QuestionAnnotations]]

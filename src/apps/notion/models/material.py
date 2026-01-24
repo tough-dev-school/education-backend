@@ -1,7 +1,8 @@
 # ruff: noqa: S608, S611
 import contextlib
 import uuid
-from typing import Optional
+from datetime import datetime
+from typing import Annotated, Optional, TypedDict
 from urllib.parse import urljoin
 
 from django.apps import apps
@@ -10,6 +11,7 @@ from django.core.exceptions import ValidationError
 from django.db.models import Q, QuerySet, UniqueConstraint
 from django.db.models.expressions import RawSQL
 from django.utils.translation import gettext_lazy as _
+from django_stubs_ext.annotations import Annotations
 
 from apps.notion.id import uuid_to_id
 from apps.users.models import User
@@ -116,3 +118,13 @@ class Material(TimestampedModel):
 
     def get_short_slug(self) -> str:
         return uuid_to_id(str(self.slug))
+
+
+class MaterialAnnotations(TypedDict, total=False):
+    """All possible QuerySet annotations for Material."""
+
+    fetch_started: datetime | None  # from with_cache_status()
+    fetch_complete: datetime | None  # from with_cache_status()
+
+
+FetchStatusAnnotatedMaterial = Annotated[Material, Annotations[MaterialAnnotations]]

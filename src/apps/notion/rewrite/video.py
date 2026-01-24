@@ -16,10 +16,10 @@ def get_video_mapping() -> Mapping[str, Mapping[str, str]]:
 
     for video in Video.objects.all().iterator():
         mapping[video.youtube_id] = {
-            "youtube_embed": video.get_youtube_embed_src(),
-            "rutube_embed": video.get_rutube_embed_src(),
-            "rutube_url": video.get_rutube_url(),
-            "youtube_url": video.get_youtube_url(),
+            "youtube_embed": video.get_youtube_embed_src(),  # type: ignore[misc]
+            "rutube_embed": video.get_rutube_embed_src(),  # type: ignore[misc]
+            "rutube_url": video.get_rutube_url(),  # type: ignore[misc]
+            "youtube_url": video.get_youtube_url(),  # type: ignore[misc]
         }
 
     cache.set(key="notion-video-mapping", value=mapping, timeout=60)
