@@ -13,7 +13,7 @@ urlpatterns = [
     path("questions/<uuid:slug>/", QuestionView.as_view()),
     path("crosschecks/", CrossCheckView.as_view()),
     path("answers/image/", ImageUploadView.as_view()),
-    path("answers/attachment/", AttachmentUploadView.as_view()),
+    path("answers/<uuid:answer_slug>/attachment/", AttachmentUploadView.as_view()),
     path("", include(router.urls)),
     path("answers/<uuid:answer_slug>/", include(reaction_router.urls)),
 ]

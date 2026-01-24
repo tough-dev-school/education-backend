@@ -1,8 +1,10 @@
 from typing import Any
 
+from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from drf_spectacular.utils import OpenApiExample, extend_schema, inline_serializer
 from rest_framework import generics
+from rest_framework import serializers as drf_serializers
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
@@ -82,12 +84,16 @@ class ImageUploadView(generics.CreateAPIView):
     name="post",
 )
 class AttachmentUploadView(generics.CreateAPIView):
-    """Upload an attachment (PDF only)"""
+    """Upload an attachment (PDF only) to an answer"""
 
     permission_classes = [IsAuthenticated]
-    serializer_class = serializers.AnswerAttachmentSerializer
+    serializer_class = serializers.AnswerAttachmentUploadSerializer
     queryset = AnswerAttachment.objects.all()
     parser_classes = [MultiPartParser]
+
+    def perform_create(self, serializer: drf_serializers.BaseSerializer[Any]) -> None:
+        answer = get_object_or_404(Answer, slug=self.kwargs["answer_slug"])
+        serializer.save(answer=answer)
 
 
 @method_decorator(
@@ -174,7 +180,7 @@ class AnswerViewSet(DisablePaginationWithQueryParamMixin, AppViewSet):
         queryset = self.limit_queryset_to_user(queryset)  # type: ignore
         queryset = self.limit_queryset_for_list(queryset)
 
-        return queryset.with_children_count().order_by("created").prefetch_reactions()
+        return queryset.with_children_count().order_by("created").prefetch_reactions().prefetch_attachments()
 
     def limit_queryset_to_user(self, queryset: AnswerQuerySet) -> AnswerQuerySet:
         if self.action != "retrieve" and not self.user.has_perm("homework.see_all_answers"):
