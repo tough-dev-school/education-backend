@@ -21,7 +21,7 @@ from apps.homework.api.serializers import (
     AnswerTreeSerializer,
     AnswerUpdateSerializer,
 )
-from apps.homework.models import Answer, AnswerImage
+from apps.homework.models import Answer, AnswerAttachment, AnswerImage
 from apps.homework.models.answer import AnswerQuerySet
 from apps.homework.services import AnswerCreator, AnswerRemover, AnswerUpdater
 from apps.users.models import User
@@ -57,6 +57,36 @@ class ImageUploadView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.AnswerImageSerializer
     queryset = AnswerImage.objects.all()
+    parser_classes = [MultiPartParser]
+
+
+@method_decorator(
+    extend_schema(
+        request=inline_serializer(
+            name="AnswerAttachmentRequestSerializer",
+            fields={
+                "file": BinaryUploadField(),
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                name="Default response",
+                response_only=True,
+                status_codes=[201],
+                value={
+                    "file": "https://cdn.tough-dev.school/homework/attachments/document.pdf",
+                },
+            ),
+        ],
+    ),
+    name="post",
+)
+class AttachmentUploadView(generics.CreateAPIView):
+    """Upload an attachment (PDF only)"""
+
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.AnswerAttachmentSerializer
+    queryset = AnswerAttachment.objects.all()
     parser_classes = [MultiPartParser]
 
 
