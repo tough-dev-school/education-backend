@@ -1,5 +1,6 @@
 import textwrap
 import uuid
+from typing import Annotated, TypedDict
 from urllib.parse import urljoin, urlparse
 
 from django.conf import settings
@@ -7,6 +8,7 @@ from django.db.models import Count, IntegerField, Prefetch
 from django.db.models.expressions import RawSQL
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django_stubs_ext.annotations import Annotations
 from tree_queries.compiler import TreeQuery
 
 from apps.homework.models.reaction import Reaction
@@ -60,7 +62,7 @@ class AnswerQuerySet(models.QuerySet):
         if not hasattr(of, "tree_path"):
             of = self.with_tree_fields().get(pk=of.pk if hasattr(of, "pk") else of)
 
-        ids = of.tree_path[:-1]
+        ids = of.tree_path[:-1]  # type: ignore[attr-defined]
         return self.with_tree_fields().filter(pk__in=ids).extra(order_by=["__tree.tree_depth"])  # type: ignore[return-value]
 
     def descendants(self, of: "Answer") -> "AnswerQuerySet":
@@ -188,3 +190,14 @@ class Answer(TimestampedModel):
             return queryset.exclude(pk__in=ids_to_exclude)
 
         return queryset
+
+
+class AnswerAnnotations(TypedDict, total=False):
+    """All possible QuerySet annotations for Answer."""
+
+    tree_path: list[int]  # from with_tree_fields()
+    children_count: int  # from with_children_count()
+    crosscheck_count: int  # from with_crosscheck_count()
+
+
+TreeAnnotatedAnswer = Annotated[Answer, Annotations[AnswerAnnotations]]

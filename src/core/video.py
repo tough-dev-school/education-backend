@@ -15,7 +15,6 @@ class VideoModelMixin:
     def get_youtube_url(self: VideoModelProtocol) -> str:
         if self.youtube_id is not None:
             return f"https://youtu.be/{self.youtube_id}"
-
         return ""
 
     def get_rutube_embed_src(self: VideoModelProtocol) -> str:

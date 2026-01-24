@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 from apps.homework.api.serializers.question import QuestionSerializer
 from apps.homework.api.serializers.reaction import ReactionDetailedSerializer
-from apps.homework.models import Answer, Question
+from apps.homework.models import Answer, Question, TreeAnnotatedAnswer
 from apps.homework.models.answer import AnswerQuerySet
 from apps.users.api.serializers import UserSafeSerializer
 from core.serializers import MarkdownField, SoftField
@@ -45,11 +45,11 @@ class AnswerSerializer(serializers.ModelSerializer):
 
         return answer.get_limited_comments_for_user_by_crosschecks(user)
 
-    def get_has_descendants(self, answer: Answer) -> bool:
+    def get_has_descendants(self, answer: TreeAnnotatedAnswer) -> bool:
         if answer.author_id == self.context["request"].user.id:
             return self.get_descendants_queryset(answer).exists()
 
-        return answer.children_count > 0
+        return answer.children_count > 0  # type: ignore[attr-defined]
 
 
 class AnswerTreeSerializer(AnswerSerializer):

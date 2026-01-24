@@ -1,7 +1,10 @@
+from typing import Annotated, TypedDict
+
 from django.apps import apps
 from django.db.models import Case, Index, OuterRef, Q, QuerySet, Subquery, Value, When
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django_stubs_ext.annotations import Annotations
 
 from apps.users.models import User
 from core.models import SubqueryCount, TimestampedModel, models
@@ -68,3 +71,13 @@ class Module(TimestampedModel):
 
     def __str__(self) -> str:
         return f"{self.name} ({self.course})"
+
+
+class ModuleAnnotations(TypedDict, total=False):
+    """All possible QuerySet annotations for Module."""
+
+    lesson_count: int  # from for_admin() / for_viewset()
+    single_lesson_id: int | None  # from for_viewset()
+
+
+AnnotatedModule = Annotated[Module, Annotations[ModuleAnnotations]]

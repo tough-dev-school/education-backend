@@ -37,7 +37,7 @@ class OrderCreator(BaseService):
     subscribe: bool | None = False
     price: Decimal | None = None
     author: User | None = None
-    promocode: str | None = None
+    promocode: str | PromoCode | None = None
     desired_bank: str | None = None
     analytics: str | None = None
     deal: Deal | None = None
@@ -45,7 +45,8 @@ class OrderCreator(BaseService):
 
     def __post_init__(self) -> None:
         self.price = self.price if self.price is not None else self.item.price
-        self.promocode = self._get_promocode(self.promocode)
+        if isinstance(self.promocode, str):
+            self.promocode = self._get_promocode(self.promocode)
         if self.promocode is not None:
             self.price = self.promocode.apply(self.item)
 

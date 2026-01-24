@@ -1,6 +1,9 @@
+from typing import Annotated, TypedDict
+
 from django.apps import apps
 from django.db.models import OuterRef, QuerySet
 from django.utils.translation import pgettext_lazy
+from django_stubs_ext.annotations import Annotations
 
 from apps.products.models import Course as _Course
 from core.models import SubqueryCount, models
@@ -33,6 +36,15 @@ class Course(_Course):
         ordering = ["-created"]
         verbose_name = pgettext_lazy("lms", "Course")
         verbose_name_plural = pgettext_lazy("lms", "Courses")
+
+
+class CourseAnnotations(TypedDict, total=False):
+    """All possible QuerySet annotations for Course."""
+
+    module_count: int  # from for_admin()
+
+
+StatsAnnotatedCourse = Annotated[Course, Annotations[CourseAnnotations]]
 
 
 __all__ = [

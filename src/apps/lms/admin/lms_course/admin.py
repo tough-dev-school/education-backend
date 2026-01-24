@@ -6,7 +6,7 @@ from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
 from apps.lms.admin.module.inline import ModuleInline
-from apps.lms.models import Course, CourseLink
+from apps.lms.models import Course, CourseLink, StatsAnnotatedCourse
 from core.admin import ModelAdmin, StackedInline, admin
 
 
@@ -64,11 +64,11 @@ class CourseAdmin(SortableAdminBase, ModelAdmin):
         return super().get_queryset(request).for_admin()  # type: ignore
 
     @admin.display(description=_("Module count"), ordering="module_count")
-    def module_count(self, obj: Course) -> str:
-        if not obj.module_count:
+    def module_count(self, obj: StatsAnnotatedCourse) -> str:
+        if not obj.module_count:  # type: ignore[attr-defined]
             return "—"
 
-        return str(obj.module_count)
+        return str(obj.module_count)  # type: ignore[attr-defined]
 
     def has_add_permission(self, request: HttpRequest, obj: Any = None) -> bool:
         return False
