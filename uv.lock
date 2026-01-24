@@ -826,6 +826,7 @@ dependencies = [
     { name = "django-silk" },
     { name = "django-split-settings" },
     { name = "django-storages" },
+    { name = "django-stubs" },
     { name = "django-tree-queries" },
     { name = "djangorestframework" },
     { name = "drf-jwt" },
@@ -853,7 +854,6 @@ dependencies = [
 [package.optional-dependencies]
 dev = [
     { name = "boto3-stubs" },
-    { name = "django-stubs" },
     { name = "djangorestframework-stubs" },
     { name = "ipython" },
     { name = "jedi" },
@@ -911,7 +911,7 @@ requires-dist = [
     { name = "django-silk", specifier = ">=5.3.2,<6.0.0" },
     { name = "django-split-settings", specifier = ">=1.2.0,<2.0.0" },
     { name = "django-storages", specifier = ">=1.14,<2.0" },
-    { name = "django-stubs", marker = "extra == 'dev'", specifier = ">=5.2,<5.3" },
+    { name = "django-stubs", specifier = ">=5.2,<5.3" },
     { name = "django-tree-queries", specifier = ">=0.21.2" },
     { name = "djangorestframework", specifier = ">=3.14.0,<4.0.0" },
     { name = "djangorestframework-stubs", marker = "extra == 'dev'", specifier = ">=3.14.4,<4.0.0" },
