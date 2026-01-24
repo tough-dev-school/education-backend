@@ -334,8 +334,7 @@ def test_does_not_mark_crosscheck_as_checked_for_another_checker(api, factory, q
     assert crosscheck.checked is None
 
 
-@pytest.mark.skip(reason="WIP")
-def test_crosscheck_is_created_automaticaly_if_there_was_not(api, factory, question, another_answer):
+def test_crosscheck_is_created_automaticaly_if_there_were_not(api, factory, question, another_answer):
     api.post(
         "/api/v2/homework/answers/",
         {
@@ -345,4 +344,6 @@ def test_crosscheck_is_created_automaticaly_if_there_was_not(api, factory, quest
         },
     )
 
-    AnswerCrossCheck.objects.get(answer=another_answer, checker=api.user)
+    automaticaly_created_crosscheck = AnswerCrossCheck.objects.get(answer=another_answer, checker=api.user)
+
+    assert automaticaly_created_crosscheck.checked is not None

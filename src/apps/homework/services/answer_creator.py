@@ -9,7 +9,7 @@ from django.utils.functional import cached_property
 from rest_framework.exceptions import NotAuthenticated, NotFound, ValidationError
 
 from apps.homework import tasks
-from apps.homework.models import Answer, Question
+from apps.homework.models import Answer, AnswerCrossCheck, Question
 from apps.studying.models import Study
 from apps.users.models import User
 from core.current_user import get_current_user
@@ -30,6 +30,9 @@ class AnswerCreator(BaseService):
 
         if self.is_answer_to_crosscheck(instance):
             self.complete_crosscheck(instance)
+
+        else:
+            self.create_completed_crosscheck(instance)
 
         self.notify(instance)
 
@@ -93,11 +96,30 @@ class AnswerCreator(BaseService):
         if instance.parent is None:
             return False
 
-        return instance.parent.answercrosscheck_set.filter(checker=self.author).exists()
+        return AnswerCrossCheck.objects.filter(
+            answer=instance.parent,
+            checker=self.author,
+        ).exists()
 
     def complete_crosscheck(self, instance: Answer) -> None:
-        parent: Answer = instance.parent  # type: ignore[assignment]
-        parent.answercrosscheck_set.filter(checker=self.author).update(checked=timezone.now())
+        AnswerCrossCheck.objects.filter(
+            answer=instance.parent,
+            checker=self.author,
+        ).update(
+            checked=timezone.now(),
+        )
+
+    def create_completed_crosscheck(self, instance: Answer) -> None:
+        """If user comments on an answer without a crosscheck -- we should create a crosscheck for him to see his statistics"""
+        if instance.parent is None:  # root answers do not create crosschecks
+            return
+
+        AnswerCrossCheck.objects.create(
+            answer=instance.parent,
+            checker=self.author,
+            author=self.author,
+            checked=timezone.now(),
+        )
 
     def validate_content_field(self) -> None:
         if not isinstance(self.content, dict) or not len(self.content.keys()):
