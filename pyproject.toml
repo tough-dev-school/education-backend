@@ -103,7 +103,6 @@ env = [
     "CI = 1",
     "DEFAULT_FILE_STORAGE = django.core.files.storage.memory.InMemoryStorage",
     "DISABLE_HOMEWORK_PERMISSIONS_CHECKING = on",
-    "DISABLE_NEW_ANSWER_NOTIFICATIONS = on",
     "DISABLE_THROTTLING = on",
     "RELEASE = CI-testing",
 ]

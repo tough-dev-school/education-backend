@@ -2,7 +2,6 @@ import contextlib
 from dataclasses import dataclass
 from typing import Callable
 
-from django.conf import settings
 from django.db import transaction
 from django.utils import timezone
 from django.utils.functional import cached_property
@@ -126,9 +125,6 @@ class AnswerCreator(BaseService):
             raise ValidationError("Please provide content field")
 
     def notify(self, about: Answer) -> None:
-        if settings.DISABLE_NEW_ANSWER_NOTIFICATIONS:
-            return
-
         tasks.notify_about_new_answer.apply_async(
             countdown=60,
             kwargs={
