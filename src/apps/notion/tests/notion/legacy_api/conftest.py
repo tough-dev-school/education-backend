@@ -8,11 +8,6 @@ pytestmark = [
 
 
 @pytest.fixture
-def disable_notion_cache(mocker):
-    return mocker.patch("apps.notion.cache.should_bypass_cache", return_value=True)
-
-
-@pytest.fixture
 def api(api):
     """We test it as normal student, not superuser to check permissions"""
     api.user.update(is_superuser=False)

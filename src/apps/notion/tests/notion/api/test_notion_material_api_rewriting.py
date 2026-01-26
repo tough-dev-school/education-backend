@@ -8,7 +8,6 @@ pytestmark = [
     pytest.mark.usefixtures(
         "mock_notion_response",
         "_cdn_dev_storage",
-        "disable_notion_cache",
     ),
 ]
 
@@ -33,8 +32,7 @@ def raw_notion_cache_entry(page, material, mixer):
 
 
 @pytest.fixture
-def get_cached_material(api, disable_notion_cache, raw_notion_cache_entry, mock_notion_response):
-    disable_notion_cache.return_value = False
+def get_cached_material(api, raw_notion_cache_entry, mock_notion_response):
     assert raw_notion_cache_entry.content["blocks"][0]["id"] == "block-1"  # make sure cash entry is not ordered
 
     def _get_cached_material(page_id: str):
