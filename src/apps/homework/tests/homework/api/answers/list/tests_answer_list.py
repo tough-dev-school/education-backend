@@ -114,7 +114,9 @@ def test_nplusone(api, question, answer, another_answer, django_assert_num_queri
         mixer.blend("homework.Reaction", author=api.user, answer=answer)
         mixer.blend("homework.Reaction", author=api.user, answer=another_answer)
 
-    with django_assert_num_queries(11):
+        mixer.blend("homework.AnswerAttachment", author=api.user, answer=answer)
+
+    with django_assert_num_queries(12):
         api.get(f"/api/v2/homework/answers/?question={question.slug}")
 
 
