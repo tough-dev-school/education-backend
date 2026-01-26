@@ -1,6 +1,7 @@
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
+from apps.homework.api.serializers.attachment import AnswerAttachmentSerializer
 from apps.homework.api.serializers.question import QuestionSerializer
 from apps.homework.api.serializers.reaction import ReactionDetailedSerializer
 from apps.homework.models import Answer, Question, TreeAnnotatedAnswer
@@ -16,6 +17,7 @@ class AnswerSerializer(serializers.ModelSerializer):
     question = serializers.CharField(source="question.slug")
     has_descendants = serializers.SerializerMethodField()
     reactions = ReactionDetailedSerializer(many=True)
+    attachments = AnswerAttachmentSerializer(many=True, read_only=True)
     is_editable = serializers.SerializerMethodField()
     content = serializers.DictField(required=True)
 
@@ -33,6 +35,7 @@ class AnswerSerializer(serializers.ModelSerializer):
             "has_descendants",
             "is_editable",
             "reactions",
+            "attachments",
         ]
 
     def get_is_editable(self, answer: Answer) -> bool:

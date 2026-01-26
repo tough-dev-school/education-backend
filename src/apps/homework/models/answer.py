@@ -28,6 +28,12 @@ class AnswerQuerySet(models.QuerySet):
         """
         return self.prefetch_related(Prefetch("reactions", queryset=Reaction.objects.for_viewset()))
 
+    def prefetch_attachments(self) -> "AnswerQuerySet":
+        """
+        Prefetch attachments for the queryset
+        """
+        return self.prefetch_related("attachments")
+
     def with_crosscheck_count(self) -> "AnswerQuerySet":
         return self.annotate(crosscheck_count=Count("answercrosscheck"))
 

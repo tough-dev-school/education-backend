@@ -1,4 +1,4 @@
-from apps.homework.models import Answer, Question
+from apps.homework.models import Answer, AnswerAttachment, Question
 from apps.products.models import Course
 from apps.users.models import User
 from core.test.factory import FixtureFactory, register
@@ -35,5 +35,21 @@ def answer(
         question=question,
         author=author or self.mixer.blend("users.User"),
         content=self.prosemirror(text if text is not None else self.faker.text()),
+        **kwargs,
+    )
+
+
+@register
+def answer_attachment(
+    self: FixtureFactory,
+    answer: Answer,
+    author: User,
+    **kwargs: dict,
+) -> AnswerAttachment:
+    return self.mixer.blend(
+        AnswerAttachment,
+        answer=answer,
+        author=author,
+        file=self.pdf(),
         **kwargs,
     )
