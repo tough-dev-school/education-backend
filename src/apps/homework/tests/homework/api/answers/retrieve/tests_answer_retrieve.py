@@ -117,7 +117,10 @@ def test_query_count_for_answer_without_descendants(api, answer, django_assert_n
     for _ in range(25):
         mixer.blend("homework.Reaction", author=api.user, answer=answer)
 
-    with django_assert_num_queries(8):
+    for _ in range(25):
+        mixer.blend("homework.AnswerAttachment", author=api.user, answer=answer)
+
+    with django_assert_num_queries(9):
         api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
 

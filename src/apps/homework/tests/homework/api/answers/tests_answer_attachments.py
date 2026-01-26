@@ -24,12 +24,12 @@ def test_answer_with_no_attachments(api, factory, user):
     assert response["attachments"] == []
 
 
-def test_answer_with_multiple_attachments(api, factory, user):
+def test_answer_with_multiple_attachments(api, factory, user, django_assert_num_queries):
     question = factory.question()
     answer = factory.answer(question=question, author=user)
-    factory.answer_attachment(answer=answer, author=user)
-    factory.answer_attachment(answer=answer, author=user)
+    factory.cycle(25).answer_attachment(answer=answer, author=user)
 
-    response = api.get(f"/api/v2/homework/answers/{answer.slug}/")
+    with django_assert_num_queries(8):
+        response = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
-    assert len(response["attachments"]) == 2
+    assert len(response["attachments"]) == 25
