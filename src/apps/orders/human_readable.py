@@ -1,4 +1,3 @@
-from django.utils.html import format_html
 from django.utils.translation import gettext as _
 
 from apps.banking.selector import BANK_KEYS, get_bank
@@ -23,26 +22,21 @@ def get_order_payment_method_name(order: Order) -> str:
 
 def get_order_customer(order: Order) -> str:
     """Return order's customer in a human-friendly way."""
-    name_template = '{name} &lt;<a href="mailto:{email}">{email}</a>&gt;'
+    name_template = "{name} <{email}>"
     name = str(order.user)
     email = order.user.email
 
     total_length = len(name) + len(email)
 
     if total_length < 30:
-        return format_html(
-            name_template,
+        return name_template.format(
             name=name,
             email=email,
         )
     elif 30 <= total_length <= 34:
-        return format_html(
-            name_template,
+        return name_template.format(
             name=order.user.first_name,
             email=email,
         )
 
-    return format_html(
-        '<a href="mailto:{email}">{email}</a>',
-        email=email,
-    )
+    return email

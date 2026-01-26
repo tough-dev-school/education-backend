@@ -34,6 +34,7 @@ class OrderAdmin(ModelAdmin):
     ]
     list_display_links = [
         "date",
+        "customer",
     ]
 
     list_filter = [
