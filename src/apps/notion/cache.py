@@ -1,13 +1,9 @@
 from collections.abc import Callable
 
-from django.conf import settings
-
 from apps.notion.client import NotionClient
 from apps.notion.models import NotionCacheEntry, NotionCacheEntryStatus
 from apps.notion.page import NotionPage
 from apps.notion.types import NotionId
-from core.current_user import get_current_user
-from core.request import get_request
 
 
 class NotionCache:
@@ -36,28 +32,12 @@ class NotionCache:
         return content() if callable(content) else content
 
 
-cache = NotionCache()
-
-
-def should_bypass_cache() -> bool:
-    """This method should be removed after we drop the featureflag it checks"""
-    if settings.NOTION_CACHE_ONLY:
-        return False
-
-    request = get_request()
-    if request is not None and "x-new-material-cache-behaviour" in request.headers:
-        return False
-
-    user = get_current_user()
-    if user:
-        return user.is_staff
-
-    return False
+cache = NotionCache()  # global cache
 
 
 def get_cached_page_or_fetch(page_id: NotionId) -> NotionPage:
     page = cache.get(page_id)
-    if page is not None and not should_bypass_cache():
+    if page is not None:
         return page
 
     NotionCacheEntryStatus.log_start(page_id)
