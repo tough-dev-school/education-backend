@@ -9,28 +9,9 @@ if not env("DEBUG") and SENTRY_DSN:
     from sentry_sdk.integrations.httpx import HttpxIntegration
     from sentry_sdk.integrations.redis import RedisIntegration
 
-    def strip_transactions(event, hint):  # type: ignore[no-untyped-def]
-        del hint
-
-        if event["transaction"] in (
-            "/api/v2/healthchecks/{service}/",
-            "/api/v2/users/me/",
-            "/api/v2/studies/purchased/",
-            "apps.chains.tasks.send_chain_messages",
-            "apps.chains.tasks.send_active_chains",
-            "apps.amocrm.tasks.push_course",
-            "/admin/jsi18n/",
-            "/static/admin/",
-        ):
-            return None
-
-        return event
-
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration(), HttpxIntegration()],
-        traces_sample_rate=0.1,
         auto_session_tracking=False,
         send_default_pii=True,
-        before_send_transaction=strip_transactions,
     )
