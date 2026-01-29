@@ -59,6 +59,10 @@ class CourseAdmin(SortableAdminBase, ModelAdmin):
         CourseLinkInline,
         ModuleInline,
     ]
+    search_fields = [
+        "product_name",
+        "tariff_name",
+    ]
 
     def get_queryset(self, request: HttpRequest) -> QuerySet[Course]:
         return super().get_queryset(request).for_admin()  # type: ignore

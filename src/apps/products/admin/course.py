@@ -98,7 +98,10 @@ class CourseAdmin(ModelAdmin):
     )
 
     save_as = True
-    search_fields = ("name",)
+    search_fields = [
+        "product_name",
+        "tariff_name",
+    ]
 
     @admin.display(description=_("Price"), ordering="price")
     def formatted_price(self, course: Course) -> str:
