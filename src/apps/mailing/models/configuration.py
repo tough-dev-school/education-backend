@@ -13,8 +13,10 @@ class EmailConfiguration(TimestampedModel):
 
     backend = models.CharField(max_length=256, choices=BACKEND.choices, default=BACKEND.UNSET)
     course = models.OneToOneField("products.Course", related_name="email_configuration", on_delete=models.CASCADE)
-    from_email = models.CharField(_("Email sender"), max_length=256, help_text="E.g. Fedor Borshev &lt;fedor@borshev.com&gt;. MUST configure postmark!")
-    reply_to = models.CharField(_("Reply-to header"), max_length=256, help_text="E.g. Fedor Borshev &lt;fedor@borshev.com&gt;")
+    from_email = models.CharField(
+        _("Email sender"), max_length=256, help_text="E.g. Fedor Borshev &lt;fedor@education.borshev.com&gt;. MUST configure postmark!"
+    )
+    reply_to = models.CharField(_("Reply-to header"), max_length=256, help_text="E.g. Fedor Borshev &lt;fedor@education.borshev.com&gt;")
 
     backend_options = models.JSONField(default=dict, blank=True)
 

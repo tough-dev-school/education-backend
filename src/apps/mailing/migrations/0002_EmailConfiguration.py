@@ -21,7 +21,9 @@ class Migration(migrations.Migration):
                 (
                     "from_email",
                     models.CharField(
-                        help_text="E.g. Fedor Borshev &lt;fedor@borshev.com&gt;. MUST configure postmark!", max_length=256, verbose_name="Email sender"
+                        help_text="E.g. Fedor Borshev &lt;fedor@education.borshev.com&gt;. MUST configure postmark!",
+                        max_length=256,
+                        verbose_name="Email sender",
                     ),
                 ),
                 ("backend_options", models.JSONField(default=dict, blank=True)),

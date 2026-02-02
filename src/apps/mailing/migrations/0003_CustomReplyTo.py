@@ -22,13 +22,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="emailconfiguration",
             name="reply_to",
-            field=models.CharField(default="", help_text="E.g. Fedor Borshev &lt;fedor@borshev.com&gt;", max_length=256, verbose_name="Email sender"),
+            field=models.CharField(default="", help_text="E.g. Fedor Borshev &lt;fedor@education.borshev.com&gt;", max_length=256, verbose_name="Email sender"),
             preserve_default=False,
         ),
         migrations.RunPython(set_default_reply_to),
         migrations.AlterField(
             model_name="emailconfiguration",
             name="reply_to",
-            field=models.CharField(help_text="E.g. Fedor Borshev &lt;fedor@borshev.com&gt;", max_length=256, verbose_name="Reply-to header"),
+            field=models.CharField(help_text="E.g. Fedor Borshev &lt;fedor@education.borshev.com&gt;", max_length=256, verbose_name="Reply-to header"),
         ),
     ]
