@@ -110,6 +110,7 @@ filterwarnings = [
     "error",
     "ignore:.*_UnionGenericAlias.*:DeprecationWarning",
     "ignore:.*datetime.datetime.utcnow.*:DeprecationWarning",
+    "ignore:.*is an invalid escape sequence.*",
     "ignore:The FORMS_URLFIELD_ASSUME_HTTPS transitional setting is deprecated",
 ]
 markers = [
