@@ -115,7 +115,6 @@ class AnswerCreator(BaseService):
 
         if instance.parent.author == instance.author:  # answers to own answers do not create crosschecks
             return
-        
 
         AnswerCrossCheck.objects.create(
             answer=instance.parent,
