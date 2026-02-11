@@ -79,6 +79,8 @@ class QuestionQuerySet(QuerySet):
             # app-wide we match questions by name and course group, but i can't
             # figure out how to annotate it here, so we use use 'voodoo' dates
             checker=user,
+        ).exclude(
+            answer__author=user,
         )
 
         checked = total.filter(checked__isnull=False)
