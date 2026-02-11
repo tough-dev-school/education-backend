@@ -8,6 +8,11 @@ pytestmark = [
 
 
 @pytest.fixture
+def admin(factory):
+    return factory.user()
+
+
+@pytest.fixture
 def module(factory, course):
     return factory.module(course=course)
 
@@ -63,10 +68,13 @@ def answers_to_another_question(mixer, another_question):
 
 
 @pytest.fixture
-def answer_dispatcher():
-    return AnswerCrossCheckDispatcher
+def answer_dispatcher(admin):
+    def _dispatcher(**kwargs):
+        return AnswerCrossCheckDispatcher(author=admin, **kwargs)
+
+    return _dispatcher
 
 
 @pytest.fixture
-def question_dispatcher(question):
-    return QuestionCrossCheckDispatcher(question=question, answers_per_user=1)
+def question_dispatcher(question, admin):
+    return QuestionCrossCheckDispatcher(question=question, author=admin, answers_per_user=1)

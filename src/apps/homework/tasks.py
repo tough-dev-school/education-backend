@@ -1,7 +1,6 @@
-from typing import Any
-
 from apps.homework.models import Answer, Question
 from apps.homework.services import NewAnswerNotifier
+from apps.users.models import User
 from core.celery import celery
 
 
@@ -10,9 +9,10 @@ class AnswerDeletedBeforeNotification(Answer.DoesNotExist):
 
 
 @celery.task
-def dispatch_crosscheck(question_id: str, *args: Any, **kwargs: dict[str, Any]) -> None:
+def dispatch_crosscheck(question_id: str, author_id: int) -> None:
     question = Question.objects.get(pk=question_id)
-    question.dispatch_crosscheck(*args, **kwargs)
+    author = User.objects.get(pk=author_id)
+    question.dispatch_crosscheck(author=author)
 
 
 @celery.task

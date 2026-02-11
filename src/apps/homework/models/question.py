@@ -126,10 +126,10 @@ class Question(TimestampedModel):
     def get_absolute_url(self) -> str:
         return urljoin(settings.FRONTEND_URL, f"homework/question-admin/{self.slug}/")
 
-    def dispatch_crosscheck(self, **kwargs: dict) -> int:
+    def dispatch_crosscheck(self, author: "User", **kwargs: dict) -> int:
         from apps.homework.services import QuestionCrossCheckDispatcher
 
-        dispatcher = QuestionCrossCheckDispatcher(question=self, **kwargs)  # type: ignore
+        dispatcher = QuestionCrossCheckDispatcher(question=self, author=author, **kwargs)  # type: ignore
 
         return dispatcher()
 
