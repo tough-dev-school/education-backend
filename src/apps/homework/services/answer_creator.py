@@ -4,7 +4,6 @@ from typing import Callable
 
 from django.db import transaction
 from django.utils import timezone
-from django.utils.functional import cached_property
 from rest_framework.exceptions import NotAuthenticated, NotFound, ValidationError
 
 from apps.homework import tasks
@@ -55,7 +54,7 @@ class AnswerCreator(BaseService):
             content=self.content,
         )
 
-    @cached_property
+    @property
     def author(self) -> User:
         user = get_current_user()
         if user is None:
@@ -63,7 +62,7 @@ class AnswerCreator(BaseService):
 
         return user
 
-    @cached_property
+    @property
     def parent(self) -> Answer | None:
         if self.parent_slug is None or len(self.parent_slug) == 0:
             return None
@@ -71,7 +70,7 @@ class AnswerCreator(BaseService):
         with contextlib.suppress(Answer.DoesNotExist):
             return Answer.objects.get(slug=self.parent_slug)
 
-    @cached_property
+    @property
     def question(self) -> Question:
         try:
             return Question.objects.for_user(
@@ -83,7 +82,7 @@ class AnswerCreator(BaseService):
         except Question.DoesNotExist:
             raise NotFound()
 
-    @cached_property
+    @property
     def study(self) -> Study | None:
         """Find the study record of a student to the given course.
         No record means its is the answer from expert or one of us"""
