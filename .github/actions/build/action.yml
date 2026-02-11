@@ -21,7 +21,7 @@ runs:
     - name: Install deps
       if: steps.deps-cache.outputs.cache-hit != 'true'
       run:
-        uv sync --extra=dev
+        uv sync
       shell: bash
 
     - name: Save python version to the env
