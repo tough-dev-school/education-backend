@@ -92,3 +92,12 @@ def test_crosscheckes_where_current_user_is_author_are_ignored(api, question, cr
     got = api.get(f"/api/v2/homework/questions/{question.slug}/")
 
     assert got["homework"]["crosschecks"]["total"] == 0
+
+
+def test_crosschecks_where_user_checks_own_answer_are_ignored(api, question, crosscheck, answers):
+    """Crosschecks where the user is both checker and answer author should be excluded"""
+    crosscheck.update(answer=answers[0])
+
+    got = api.get(f"/api/v2/homework/questions/{question.slug}/")
+
+    assert got["homework"]["crosschecks"]["total"] == 0

@@ -25,7 +25,7 @@ class CrossCheckView(generics.ListAPIView):
     pagination_class = None
 
     def get_queryset(self) -> QuerySet[AnswerCrossCheck]:
-        return super().get_queryset().filter(checker=self.request.user)
+        return super().get_queryset().for_user(self.request.user)  # type: ignore[attr-defined]
 
     def filter_queryset(self, queryset: QuerySet[AnswerCrossCheck]) -> QuerySet[AnswerCrossCheck]:
         question_slug = self.request.GET.get("question")
