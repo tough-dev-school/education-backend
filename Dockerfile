@@ -20,7 +20,7 @@ FROM ghcr.io/astral-sh/uv:0.9.30-alpine AS deps-compile
 WORKDIR /
 COPY uv.lock pyproject.toml /
 
-RUN uv export -o /requirements.txt
+RUN uv export --no-dev -o /requirements.txt
 
 #
 # Base image with django dependecines
