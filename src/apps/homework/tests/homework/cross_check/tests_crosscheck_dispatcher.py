@@ -7,17 +7,6 @@ pytestmark = [
 ]
 
 
-@pytest.fixture()
-def admin_user(factory):
-    return factory.user()
-
-
-@pytest.fixture(autouse=True)
-def _set_current_user(mocker, admin_user):
-    """Dedicated mock to set admin user for later checking authorship"""
-    mocker.patch("apps.homework.services.answer_crosscheck_dispatcher.get_current_user", return_value=admin_user)
-
-
 @pytest.fixture
 def dispatcher(answer_dispatcher, answers):
     return answer_dispatcher(answers=answers, answers_per_user=1)
@@ -40,9 +29,9 @@ def test_records_are_returned(dispatcher):
     assert len(records) == 2
 
 
-def test_authorship(dispatcher, answers, admin_user):
+def test_authorship(dispatcher, answers, admin):
     dispatcher()
 
     crosscheck = AnswerCrossCheck.objects.get(answer=answers[0])
 
-    assert crosscheck.author == admin_user
+    assert crosscheck.author == admin

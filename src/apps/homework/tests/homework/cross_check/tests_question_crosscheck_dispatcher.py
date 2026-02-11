@@ -5,7 +5,6 @@ from apps.homework.models import AnswerCrossCheck
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures("_set_current_user"),
 ]
 
 
@@ -60,14 +59,14 @@ def test_anothers_to_another_questions_are_not_dispatched_if_name_matches_but_pr
     assert AnswerCrossCheck.objects.count() == 2
 
 
-def test_question_method_does_the_same(question):
-    question.dispatch_crosscheck(answers_per_user=1)
+def test_question_method_does_the_same(question, admin):
+    question.dispatch_crosscheck(author=admin, answers_per_user=1)
 
     assert AnswerCrossCheck.objects.count() == 2
 
 
-def test_task_does_the_same(question):
-    tasks.dispatch_crosscheck.delay(question_id=question.pk, answers_per_user=1)
+def test_task_does_the_same(question, admin):
+    tasks.dispatch_crosscheck.delay(question_id=question.pk, author_id=admin.pk)
 
     assert AnswerCrossCheck.objects.count() == 2
 

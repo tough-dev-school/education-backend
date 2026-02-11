@@ -20,6 +20,7 @@ class QuestionCrossCheckDispatcher(BaseService):
     """
 
     question: Question
+    author: User
     answers_per_user: int = 3
 
     def act(self) -> int:
@@ -31,6 +32,7 @@ class QuestionCrossCheckDispatcher(BaseService):
     def dispatch_crosschecks(self) -> list[AnswerCrossCheck]:
         dispatcher = AnswerCrossCheckDispatcher(
             answers=self.get_answers_to_check(),
+            author=self.author,
             answers_per_user=self.answers_per_user,
         )
         return dispatcher()
