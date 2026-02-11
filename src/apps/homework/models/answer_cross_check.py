@@ -7,11 +7,19 @@ from core.models import TimestampedModel, models
 
 if TYPE_CHECKING:
     from apps.homework.models import Question
+    from apps.users.models import User
 
 
 class AnswerCrossCheckQuerySet(models.QuerySet):
     def for_viewset(self) -> "AnswerCrossCheckQuerySet":
         return self.select_related("checker", "answer", "answer__question")
+
+    def for_user(self, user: "User") -> "AnswerCrossCheckQuerySet":
+        return self.filter(
+            checker=user,
+        ).exclude(
+            answer__author=user,
+        )
 
     def count_for_question(self, question: "Question") -> dict[str, int]:
         return self.filter(answer__question=question).aggregate(

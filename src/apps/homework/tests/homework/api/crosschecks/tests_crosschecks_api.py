@@ -15,7 +15,8 @@ def user(api):
 
 
 @pytest.fixture
-def crosscheck(mixer, answer, user):
+def crosscheck(mixer, question, user, another_user):
+    answer = mixer.blend("homework.Answer", question=question, author=another_user)
     return mixer.blend("homework.AnswerCrossCheck", answer=answer, checker=user)
 
 
@@ -27,8 +28,9 @@ def crosscheck_for_question_of_another_course(mixer, question_of_another_course,
 
 
 @pytest.fixture
-def another_crosscheck(mixer, another_answer, user):
-    return mixer.blend("homework.AnswerCrossCheck", answer=another_answer, checker=user, checked=datetime(2032, 1, 1, tzinfo=timezone.utc))
+def another_crosscheck(mixer, question, user, another_user):
+    answer = mixer.blend("homework.Answer", question=question, author=another_user)
+    return mixer.blend("homework.AnswerCrossCheck", answer=answer, checker=user, checked=datetime(2032, 1, 1, tzinfo=timezone.utc))
 
 
 def test_question_is_required(api):
@@ -82,6 +84,16 @@ def test_is_checked(api, question, crosscheck, checked, is_checked):
 
 def test_excludes_cross_check_from_another_checker(api, question, crosscheck, another_user):
     crosscheck.update(checker=another_user)
+
+    got = api.get(f"/api/v2/homework/crosschecks/?question={question.slug}")
+
+    assert len(got) == 0
+
+
+def test_excludes_cross_check_where_user_is_answer_author(api, question, mixer):
+    """Crosschecks where the user checks their own answer should be excluded"""
+    own_answer = mixer.blend("homework.Answer", question=question, author=api.user)
+    mixer.blend("homework.AnswerCrossCheck", answer=own_answer, checker=api.user)
 
     got = api.get(f"/api/v2/homework/crosschecks/?question={question.slug}")
 
