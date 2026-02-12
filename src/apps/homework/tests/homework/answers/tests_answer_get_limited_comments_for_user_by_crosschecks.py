@@ -101,3 +101,13 @@ def test_can_see_all_answers(answers, crosschecks, check_crosscheck):
     got = answers[0].get_limited_comments_for_user_by_crosschecks(answers[0].author)
 
     assert len(got) == 8
+
+
+def test_comments_from_users_with_always_display_comments_are_visible(answers, users, crosschecks, check_crosscheck):
+    """Users with always_display_comments=True should have their comments visible even when the author hasn't completed crosschecks"""
+    users[1].update(always_display_comments=True)
+    check_crosscheck(crosschecks[2])  # users[1] checks answers[0]
+
+    got = answers[0].get_limited_comments_for_user_by_crosschecks(answers[0].author)
+
+    assert len(got) == 6  # 5 base comments + 1 from always_display user

@@ -94,3 +94,14 @@ def test_user_with_permissions_may_access_all_comments_event_when_they_did_not_p
     got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
 
     assert len(got["descendants"]) == 2
+
+
+@pytest.mark.usefixtures("comments", "crosschecks")
+def test_comments_from_users_with_always_display_comments_are_visible(api, answer, another_user):
+    """Users with always_display_comments=True should have their comments visible even when the author hasn't completed crosschecks"""
+    another_user.update(always_display_comments=True)
+
+    got = api.get(f"/api/v2/homework/answers/{answer.slug}/")
+
+    assert got["has_descendants"] is True
+    assert len(got["descendants"]) == 2  # both comments visible
