@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-13 18:21+0300\n"
+"POT-Creation-Date: 2026-02-12 12:33+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -57,13 +57,13 @@ msgid "Status"
 msgstr "Статус"
 
 #: apps/b2b/admin/deals/admin.py:71 apps/b2b/models/deal.py:22
-#: apps/orders/admin/orders/admin.py:104 apps/orders/models/order.py:45
-#: apps/products/admin/course.py:32 apps/products/admin/course.py:103
+#: apps/orders/admin/orders/admin.py:105 apps/orders/models/order.py:45
+#: apps/products/admin/course.py:32 apps/products/admin/course.py:106
 msgid "Price"
 msgstr "Цена"
 
 #: apps/b2b/admin/deals/forms.py:14 apps/b2b/models/student.py:12
-#: apps/users/models.py:150
+#: apps/users/models.py:163
 msgid "Students"
 msgstr "Студенты"
 
@@ -81,7 +81,7 @@ msgstr ""
 msgid "name"
 msgstr "Имя"
 
-#: apps/b2b/admin/students.py:30 apps/orders/admin/orders/admin.py:100
+#: apps/b2b/admin/students.py:30 apps/orders/admin/orders/admin.py:101
 msgid "email"
 msgstr "Почта"
 
@@ -159,7 +159,7 @@ msgid "In progress"
 msgstr "В работе"
 
 #: apps/b2b/models/student.py:11 apps/diplomas/admin/diploma.py:52
-#: apps/studying/models.py:8 apps/users/models.py:149
+#: apps/studying/models.py:8 apps/users/models.py:162
 msgid "Student"
 msgstr "Студент"
 
@@ -215,8 +215,8 @@ msgstr "Комиссии банков"
 msgid "Zero Price"
 msgstr "Бесплатно"
 
-#: apps/chains/admin/chain.py:13 apps/homework/models/question.py:110
-#: apps/lms/models/module.py:57 core/admin/filters.py:58
+#: apps/chains/admin/chain.py:13 apps/homework/models/question.py:114
+#: apps/lms/models/module.py:60 core/admin/filters.py:58
 msgid "Archived"
 msgstr "В архиве"
 
@@ -243,7 +243,7 @@ msgid "Course"
 msgstr "Курс"
 
 #: apps/chains/models/chain.py:32 apps/chains/models/message.py:32
-#: apps/homework/models/question.py:104 apps/lms/admin/lesson/inline.py:28
+#: apps/homework/models/question.py:108 apps/lms/admin/lesson/inline.py:28
 #: apps/lms/admin/lms_course/admin.py:26 apps/lms/admin/module/inline.py:23
 #: apps/lms/models/call.py:9 apps/lms/models/course_link.py:8
 #: apps/products/admin/course.py:18 apps/products/models/course.py:65
@@ -290,12 +290,12 @@ msgstr "Письмо"
 msgid "Email chain messages"
 msgstr "Письма"
 
-#: apps/diplomas/admin/diploma.py:60 apps/homework/models/question.py:115
+#: apps/diplomas/admin/diploma.py:60 apps/homework/models/question.py:119
 #: apps/lms/admin/lesson/inline.py:42
 msgid "Homework"
 msgstr "Домашка"
 
-#: apps/diplomas/admin/diploma.py:64 apps/orders/admin/orders/admin.py:108
+#: apps/diplomas/admin/diploma.py:64 apps/orders/admin/orders/admin.py:109
 msgid "Date"
 msgstr "Дата"
 
@@ -397,7 +397,7 @@ msgid "Dispatch crosscheck"
 msgstr "Запустить p2p-проверку домашки"
 
 #: apps/homework/admin/question/form.py:13 apps/lms/admin/lesson/admin.py:85
-#: apps/lms/models/lesson.py:55 apps/lms/models/module.py:66
+#: apps/lms/models/lesson.py:55 apps/lms/models/module.py:69
 msgid "Module"
 msgstr "Модуль"
 
@@ -405,47 +405,47 @@ msgstr "Модуль"
 msgid "Lesson"
 msgstr "Урок"
 
-#: apps/homework/models/answer.py:78
+#: apps/homework/models/answer.py:88
 msgid "parent"
 msgstr "Родитель"
 
-#: apps/homework/models/answer.py:84
+#: apps/homework/models/answer.py:94
 msgid "Exclude from cross-checking"
 msgstr "Исключить из p2p-проверки"
 
-#: apps/homework/models/answer.py:90
+#: apps/homework/models/answer.py:100
 msgid "Homework answer"
 msgstr "Ответ на домашку"
 
-#: apps/homework/models/answer.py:91
+#: apps/homework/models/answer.py:101
 msgid "Homework answers"
 msgstr "Ответы на домашку"
 
-#: apps/homework/models/answer.py:94
+#: apps/homework/models/answer.py:104
 msgid "May see answers from every user"
 msgstr "Видит все ответы на домашку"
 
-#: apps/homework/models/answer_cross_check.py:29
+#: apps/homework/models/answer_cross_check.py:38
 msgid "Date when crosscheck got checked"
 msgstr "Когда проверен"
 
-#: apps/homework/models/question.py:105
+#: apps/homework/models/question.py:109
 msgid "Internal name"
 msgstr "Внутреннее название"
 
-#: apps/homework/models/question.py:109
+#: apps/homework/models/question.py:113
 msgid "Deadline"
 msgstr "Дедлайн"
 
-#: apps/homework/models/question.py:110 apps/lms/models/module.py:57
+#: apps/homework/models/question.py:114 apps/lms/models/module.py:60
 msgid "Hidden from the admin, but still acessible by users"
 msgstr "В админке будет не видно, в LMS все будет по старому"
 
-#: apps/homework/models/question.py:116
+#: apps/homework/models/question.py:120
 msgid "Homeworks"
 msgstr "Домашки"
 
-#: apps/homework/models/question.py:118
+#: apps/homework/models/question.py:122
 msgid "May see questions for all homeworks"
 msgstr "Видит все вопросы домашки"
 
@@ -487,7 +487,7 @@ msgstr "Страница в ноушене"
 msgid "URLs"
 msgstr "Ссылки"
 
-#: apps/lms/admin/lms_course/admin.py:66
+#: apps/lms/admin/lms_course/admin.py:70
 msgid "Module count"
 msgstr "Модули"
 
@@ -531,11 +531,11 @@ msgctxt "lms"
 msgid "Question"
 msgstr "Домашка"
 
-#: apps/lms/models/lesson.py:61 apps/lms/models/module.py:56
+#: apps/lms/models/lesson.py:61 apps/lms/models/module.py:59
 msgid "Hidden"
 msgstr "Скрыт"
 
-#: apps/lms/models/lesson.py:61 apps/lms/models/module.py:56
+#: apps/lms/models/lesson.py:61 apps/lms/models/module.py:59
 msgid "Users can't find such materials in the listing"
 msgstr "Студенты не видят"
 
@@ -549,29 +549,29 @@ msgctxt "lms"
 msgid "Lessons"
 msgstr "Уроки"
 
-#: apps/lms/models/lms_course.py:34
+#: apps/lms/models/lms_course.py:37
 msgctxt "lms"
 msgid "Course"
 msgstr "Курс"
 
-#: apps/lms/models/lms_course.py:35
+#: apps/lms/models/lms_course.py:38
 msgctxt "lms"
 msgid "Courses"
 msgstr "Курсы"
 
-#: apps/lms/models/module.py:52
+#: apps/lms/models/module.py:55
 msgid "Start date"
 msgstr "Дата начала"
 
-#: apps/lms/models/module.py:53
+#: apps/lms/models/module.py:56
 msgid "Short description"
 msgstr "Подзаг"
 
-#: apps/lms/models/module.py:54
+#: apps/lms/models/module.py:57
 msgid "Text"
 msgstr "Текст"
 
-#: apps/lms/models/module.py:67
+#: apps/lms/models/module.py:70
 msgid "Modules"
 msgstr "Модули"
 
@@ -583,19 +583,19 @@ msgstr "Дефолтный"
 msgid "Postmark"
 msgstr "Постмарк"
 
-#: apps/mailing/models/configuration.py:16
+#: apps/mailing/models/configuration.py:17
 msgid "Email sender"
 msgstr "Отправитель"
 
-#: apps/mailing/models/configuration.py:17
+#: apps/mailing/models/configuration.py:19
 msgid "Reply-to header"
 msgstr "Reply-to"
 
-#: apps/mailing/models/configuration.py:22
+#: apps/mailing/models/configuration.py:24
 msgid "Email configuration"
 msgstr "Способ отсылки"
 
-#: apps/mailing/models/configuration.py:23
+#: apps/mailing/models/configuration.py:25
 msgid "Email configurations"
 msgstr "Способы отсылки"
 
@@ -631,7 +631,7 @@ msgstr "Это видео уже добавлено"
 msgid "Youtube"
 msgstr "Youtube"
 
-#: apps/notion/admin/video.py:45 core/admin/video.py:12
+#: apps/notion/admin/video.py:46 core/admin/video.py:12
 msgid "RuTube"
 msgstr "Rutube"
 
@@ -647,44 +647,44 @@ msgstr "Файл ноушена"
 msgid "Notion assets"
 msgstr "Файлы ноушена"
 
-#: apps/notion/models/material.py:89
+#: apps/notion/models/material.py:91
 msgid "Our page id"
 msgstr "ID страницы LMS"
 
-#: apps/notion/models/material.py:91
+#: apps/notion/models/material.py:93
 msgid "Page title"
 msgstr "Заголовок страницы"
 
-#: apps/notion/models/material.py:91
+#: apps/notion/models/material.py:93
 msgid "Will be fetched automatically if empty"
 msgstr "Если не указать — попробуем скачать из ноушена"
 
-#: apps/notion/models/material.py:93
+#: apps/notion/models/material.py:95
 msgid "Notion page id"
 msgstr "ID страницы в ноушене"
 
-#: apps/notion/models/material.py:93
+#: apps/notion/models/material.py:95
 msgid "Paste it from apps.notion address bar"
 msgstr "Скопируйте адрес из строки браузера"
 
-#: apps/notion/models/material.py:94 apps/orders/admin/promocodes/admin.py:14
+#: apps/notion/models/material.py:96 apps/orders/admin/promocodes/admin.py:14
 #: apps/orders/admin/promocodes/admin.py:72 apps/orders/models/promocode.py:48
 msgid "Active"
 msgstr "Включено"
 
-#: apps/notion/models/material.py:95
+#: apps/notion/models/material.py:97
 msgid "Is home page of the course"
 msgstr "Главная страница курса"
 
-#: apps/notion/models/material.py:98
+#: apps/notion/models/material.py:100
 msgid "Notion material"
 msgstr "Материал"
 
-#: apps/notion/models/material.py:99
+#: apps/notion/models/material.py:101
 msgid "Notion materials"
 msgstr "Материалы"
 
-#: apps/notion/models/material.py:104
+#: apps/notion/models/material.py:106
 msgid "May access materials from every course"
 msgstr "Видит страницы ноушена от всех курсов"
 
@@ -736,31 +736,31 @@ msgstr "Ещё раз выполнить (если заказ не оплаче�
 msgid "Generate diplomas"
 msgstr "Сгенерировать дипломы"
 
-#: apps/orders/admin/orders/actions.py:97
+#: apps/orders/admin/orders/actions.py:98
 msgid "Get confirmation PDF"
 msgstr "Сделать справку об обучении"
 
-#: apps/orders/admin/orders/actions.py:111
+#: apps/orders/admin/orders/actions.py:119
 msgid "Accept homework"
 msgstr "Засчитать домашку"
 
-#: apps/orders/admin/orders/actions.py:126
+#: apps/orders/admin/orders/actions.py:134
 msgid "Disaccept homework"
 msgstr "Не засчитать домашку"
 
-#: apps/orders/admin/orders/admin.py:112 apps/orders/models/order.py:44
+#: apps/orders/admin/orders/admin.py:113 apps/orders/models/order.py:44
 msgid "User"
 msgstr "Юзер"
 
-#: apps/orders/admin/orders/admin.py:116
+#: apps/orders/admin/orders/admin.py:117
 msgid "Item"
 msgstr "Товар"
 
-#: apps/orders/admin/orders/admin.py:120
+#: apps/orders/admin/orders/admin.py:121
 msgid "Payment"
 msgstr "Оплата"
 
-#: apps/orders/admin/orders/admin.py:124
+#: apps/orders/admin/orders/admin.py:125
 msgid "Login as customer"
 msgstr "Зайти от имени студента"
 
@@ -777,7 +777,7 @@ msgstr "Не оплачен"
 msgid "Paid"
 msgstr "Оплачен"
 
-#: apps/orders/admin/orders/filters.py:20 apps/orders/human_readable.py:19
+#: apps/orders/admin/orders/filters.py:20 apps/orders/human_readable.py:18
 msgid "Shipped without payment"
 msgstr "Ждём денег"
 
@@ -805,11 +805,11 @@ msgstr "Частичный возврат"
 msgid "Partial refunds"
 msgstr "Возвраты"
 
-#: apps/orders/human_readable.py:14
+#: apps/orders/human_readable.py:13
 msgid "B2B"
 msgstr ""
 
-#: apps/orders/human_readable.py:16
+#: apps/orders/human_readable.py:15
 msgid "Is paid"
 msgstr "Оплачен"
 
@@ -1197,7 +1197,7 @@ msgstr "Персональные данные"
 msgid "Name in english"
 msgstr "Имя на английском"
 
-#: apps/users/admin/user/admin.py:31 apps/users/models.py:58
+#: apps/users/admin/user/admin.py:31 apps/users/models.py:59
 msgid "Rank"
 msgstr "Звание"
 
@@ -1221,47 +1221,55 @@ msgstr "Фамилия"
 msgid "Users"
 msgstr "Юзеры"
 
-#: apps/users/models.py:28
+#: apps/users/models.py:29
 msgid "Color should be a hex color, like '#bebebe'"
 msgstr "Нужен HEX-цвет, типа #bebebe"
 
-#: apps/users/models.py:35
+#: apps/users/models.py:36
 msgid "Male"
 msgstr "Мужчина"
 
-#: apps/users/models.py:36
+#: apps/users/models.py:37
 msgid "Female"
 msgstr "Женщина"
 
-#: apps/users/models.py:38
+#: apps/users/models.py:39
 msgid "first name in english"
 msgstr "Имя на английском"
 
-#: apps/users/models.py:39
+#: apps/users/models.py:40
 msgid "last name in english"
 msgstr "Фамилия на английском"
 
-#: apps/users/models.py:42
+#: apps/users/models.py:43
 msgid "Gender"
 msgstr "Пол"
 
-#: apps/users/models.py:44
+#: apps/users/models.py:45
 msgid "Randomly generated name"
 msgstr ""
 
-#: apps/users/models.py:52
+#: apps/users/models.py:53
 msgid "Avatar"
 msgstr "Аватар"
 
-#: apps/users/models.py:59
+#: apps/users/models.py:60
 msgid "Rank label color"
 msgstr "Цвет плашки со званием"
 
-#: apps/users/models.py:68
+#: apps/users/models.py:63
+msgid "Always display comments"
+msgstr "Показывать комменты до p2p-проверки"
+
+#: apps/users/models.py:65
+msgid "Useful for course experts"
+msgstr "Включать для экспертов курса — так студенты будут видеть их комменты до общей проверки"
+
+#: apps/users/models.py:75
 msgid "user"
 msgstr "пользователь"
 
-#: apps/users/models.py:69
+#: apps/users/models.py:76
 msgid "users"
 msgstr "пользователи"
 
