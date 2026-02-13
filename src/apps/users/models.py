@@ -59,6 +59,12 @@ class User(TestUtilsMixin, AbstractUser):
     rank = models.CharField(_("Rank"), max_length=32, blank=True, null=True)
     rank_label_color = models.CharField(_("Rank label color"), max_length=7, blank=True, null=True, validators=[validate_hex_color])
 
+    always_display_comments = models.BooleanField(
+        _("Always display comments"),
+        default=False,
+        help_text=_("Useful for course experts"),
+    )
+
     class Meta:
         abstract = False
         indexes = [
