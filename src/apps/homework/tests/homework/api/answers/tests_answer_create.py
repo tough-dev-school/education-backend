@@ -368,7 +368,6 @@ def test_crosscheck_is_not_created_when_replying_to_non_root_answer(api, factory
     root_answer = mixer.blend("homework.Answer", question=question, parent=None)
     answer_from_another_user = mixer.blend("homework.Answer", question=question, author=another_user, parent=root_answer)
 
-
     api.post(
         "/api/v2/homework/answers/",
         {
