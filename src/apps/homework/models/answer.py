@@ -57,6 +57,7 @@ class AnswerQuerySet(models.QuerySet):
         )
 
     def with_tree_fields(self) -> "AnswerQuerySet":
+        """The only remaining of djanto-tree-queries"""
         self.query.__class__ = TreeQuery
         self.query._setup_query()  # type: ignore[attr-defined]
         return self
@@ -185,7 +186,15 @@ class Answer(TimestampedModel):
             )
             .values_list("checker_id", flat=True)
         )
-        answers_from_students_that_should_check_my_answer = queryset.filter(author_id__in=students_should_check_my_answer).values_list("pk", flat=True)
+        answers_from_students_that_should_check_my_answer = (
+            queryset.filter(
+                author_id__in=students_should_check_my_answer,
+            )
+            .exclude(
+                author__always_display_comments=True,
+            )
+            .values_list("pk", flat=True)
+        )
 
         if not answers_from_students_that_should_check_my_answer.exists():  # no crosschecked answers, so return default queryset to avoid extra queries
             return queryset

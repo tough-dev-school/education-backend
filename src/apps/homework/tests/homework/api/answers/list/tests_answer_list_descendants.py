@@ -63,3 +63,13 @@ def test_endpoint_does_not_die_for_users_with_permissions(api, question, crossch
     got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
 
     assert got[0]["has_descendants"] is True
+
+
+@pytest.mark.usefixtures("comments", "crosschecks")
+def test_comments_from_users_with_always_display_comments_are_visible_in_list(api, question, another_user):
+    """Users with always_display_comments=True should have their comments visible in list view even when the author hasn't completed crosschecks"""
+    another_user.update(always_display_comments=True)
+
+    got = api.get(f"/api/v2/homework/answers/?question={question.slug}")["results"]
+
+    assert got[0]["has_descendants"] is True

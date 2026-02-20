@@ -28,7 +28,7 @@ class UserAdmin(ModelAdmin):
         (None, {"fields": ("username",)}),
         (_("Personal info"), {"fields": ("first_name", "last_name", "email", "gender")}),
         (_("Name in english"), {"fields": ("first_name_en", "last_name_en")}),
-        (_("Rank"), {"fields": ("rank", "rank_label_color")}),
+        (_("Rank"), {"fields": ("always_display_comments", "rank", "rank_label_color")}),
         (_("Marketing"), {"fields": ("tags",)}),
     )
     list_filter = (
