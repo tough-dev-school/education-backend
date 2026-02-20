@@ -362,3 +362,19 @@ def test_crosscheck_is_not_created_when_replying_to_own_answer(api, factory, que
     )
 
     assert not AnswerCrossCheck.objects.filter(answer=another_answer, checker=api.user).exists()
+
+
+def test_crosscheck_is_not_created_when_replying_to_non_root_answer(api, factory, question, another_user, mixer):
+    root_answer = mixer.blend("homework.Answer", question=question, parent=None)
+    answer_from_another_user = mixer.blend("homework.Answer", question=question, author=another_user, parent=root_answer)
+
+    api.post(
+        "/api/v2/homework/answers/",
+        {
+            "content": factory.prosemirror("Горите в аду"),
+            "question": question.slug,
+            "parent": answer_from_another_user.slug,
+        },
+    )
+
+    assert not AnswerCrossCheck.objects.filter(answer=answer_from_another_user, checker=api.user).exists()

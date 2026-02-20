@@ -109,10 +109,13 @@ class AnswerCreator(BaseService):
 
     def create_completed_crosscheck(self, instance: Answer) -> None:
         """If user comments on an answer without a crosscheck -- we should create a crosscheck for him to see his statistics"""
-        if instance.parent is None:  # root answers do not create crosschecks
+        if instance.parent is None:
             return
 
         if instance.parent.author == instance.author:  # answers to own answers do not create crosschecks
+            return
+
+        if not instance.parent.is_root:  # only answers to root answers create crosschecks
             return
 
         AnswerCrossCheck.objects.create(

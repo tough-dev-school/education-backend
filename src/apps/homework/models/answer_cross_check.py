@@ -15,10 +15,16 @@ class AnswerCrossCheckQuerySet(models.QuerySet):
         return self.select_related("checker", "answer", "answer__question")
 
     def for_user(self, user: "User") -> "AnswerCrossCheckQuerySet":
-        return self.filter(
-            checker=user,
-        ).exclude(
-            answer__author=user,
+        return (
+            self.filter(
+                checker=user,
+            )
+            .exclude(
+                answer__author=user,
+            )
+            .exclude(
+                author=user,
+            )
         )
 
     def count_for_question(self, question: "Question") -> dict[str, int]:

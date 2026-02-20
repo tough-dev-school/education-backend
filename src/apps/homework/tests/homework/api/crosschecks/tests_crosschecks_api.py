@@ -100,6 +100,16 @@ def test_excludes_cross_check_where_user_is_answer_author(api, question, mixer):
     assert len(got) == 0
 
 
+def test_excludes_cross_check_created_by_user(api, question, mixer, another_user):
+    """Crosschecks created by the user (author=user) should be excluded"""
+    answer = mixer.blend("homework.Answer", question=question, author=another_user)
+    mixer.blend("homework.AnswerCrossCheck", answer=answer, checker=api.user, author=api.user)
+
+    got = api.get(f"/api/v2/homework/crosschecks/?question={question.slug}")
+
+    assert len(got) == 0
+
+
 @pytest.mark.usefixtures("crosscheck")
 def test_excludes_cross_check_from_another_question(api, mixer, another_question, question, another_answer):
     """Generate a crosscheck for another question for the same course and make sure GET param filter ignores it"""
