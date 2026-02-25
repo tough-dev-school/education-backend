@@ -79,7 +79,7 @@ dependencies = [
     "sentry-sdk>=2.0.0,<3.0.0",
     "shortuuid>=1.0.11,<2.0.0",
     "simplejson>=3.19.1,<4.0.0",
-    "stripe>=14.3.0,<14.4.0",
+    "stripe>=14.4.0,<14.5.0",
     "tqdm>=4.67.1,<5.0.0",
     "whitenoise>=6.5.0,<7.0.0",
 ]
