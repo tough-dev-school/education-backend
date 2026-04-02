@@ -10,6 +10,26 @@ from apps.notion.rewrite import apply_our_adjustments
 from apps.notion.types import BlockData, BlockFormat, BlockProperties, BlockType, NotionId
 
 
+def _normalize_block_data(data: BlockData) -> BlockData:
+    """Normalize Notion API block data to the expected BlockData format.
+
+    Notion changed their API response format. The old format has `role` and `value`
+    at the top level. The new format wraps that in an extra `value` key:
+
+    Old: {"role": "reader", "value": {"id": "...", "type": "page"}}
+    New: {"value": {"role": "reader", "value": {"id": "...", "type": "page"}}, "spaceId": "..."}
+
+    This function detects the new format and unwraps it.
+    """
+    if "role" in data:
+        return data
+
+    if "value" in data and isinstance(data["value"], dict) and "role" in data["value"]:
+        return data["value"]  # type: ignore[return-value]  # value contains a nested BlockData
+
+    return data
+
+
 @dataclass
 class NotionBlock:
     id: NotionId
@@ -112,7 +132,7 @@ class NotionBlockList(UserList[NotionBlock]):
     def from_api_response(cls, api_response: dict[str, BlockData]) -> "NotionBlockList":
         instance = cls()
         for block_id, data in api_response.items():
-            instance.append(NotionBlock(id=block_id, data=data))
+            instance.append(NotionBlock(id=block_id, data=_normalize_block_data(data)))
 
         return instance
 
