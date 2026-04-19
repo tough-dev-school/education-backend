@@ -13,7 +13,7 @@ runs:
         key: deps-${{ hashFiles('uv.lock') }}
 
     - name: Install uv
-      uses: astral-sh/setup-uv@v7
+      uses: astral-sh/setup-uv@v8
       with:
         enable-cache: true
         activate-environment: true
