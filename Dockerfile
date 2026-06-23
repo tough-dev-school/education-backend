@@ -46,6 +46,17 @@ RUN pip install --no-cache-dir --upgrade pip==25.2
 COPY --from=deps-compile /requirements.txt /
 RUN pip install --no-cache-dir --root-user-action=ignore -r /requirements.txt
 
+# Trust Russian Minсвязи root + sub CAs alongside Debian's bundle.
+# update-ca-certificates appends every *.crt under /usr/local/share/ca-certificates/
+# to /etc/ssl/certs/ca-certificates.crt, then we point certifi at that bundle so
+# httpx/requests honor the additions on top of the Mozilla set.
+COPY .etc/ca-certificates/russian/*.crt /usr/local/share/ca-certificates/russian/
+RUN apt-get update \
+  && apt-get --no-install-recommends install -y ca-certificates \
+  && update-ca-certificates \
+  && ln -sf /etc/ssl/certs/ca-certificates.crt "$(python -c 'import certifi; print(certifi.where())')" \
+  && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /src
 COPY src /src
 
