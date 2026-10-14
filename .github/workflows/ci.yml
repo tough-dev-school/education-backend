@@ -30,14 +30,8 @@ jobs:
       - name: Lint the Dockerfile
         uses: hadolint/hadolint-action@v3.3.0
 
-      - name: Install xmllint
-        uses: awalsh128/cache-apt-pkgs-action@v1
-        with:
-          packages: libxml2-utils
-          version: 1
-
       - name: Lint XML files
-        run: find src/core -type f -name '*.xml'|xargs xmllint --noout
+        run: find src/core -type f -name '*.xml' -print0 | xargs -0 -n1 python3 -c 'import sys, xml.dom.minidom; xml.dom.minidom.parse(sys.argv[1])'
 
   test:
     needs: lint
