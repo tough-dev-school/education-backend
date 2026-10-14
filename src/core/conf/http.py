@@ -9,6 +9,8 @@ CORS_ALLOWED_ORIGINS = [
     "https://tough-dev.school",
     "https://certificates.tough-dev.school",
     "https://lms.tough-dev.school",
+    "https://codenest.school",
+    "http://codenest.school",
 ]
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://.*\.lms-frontend-v2\.pages\.dev",
