@@ -28,7 +28,7 @@ jobs:
         run: make lint
 
       - name: Lint the Dockerfile
-        uses: hadolint/hadolint-action@v3.3.0
+        uses: hadolint/hadolint-action@v3.5.0
 
       - name: Lint XML files
         run: find src/core -type f -name '*.xml' -print0 | xargs -0 -n1 python3 -c 'import sys, xml.dom.minidom; xml.dom.minidom.parse(sys.argv[1])'
